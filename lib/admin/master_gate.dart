@@ -1,0 +1,220 @@
+// lib/admin/master_gate.dart
+import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+// 🚀 KARARGAH ZIRHLARI VE HEDEF ROTA
+import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart';
+import 'admin_dashboard.dart'; // Giriş başarılı olunca buraya fırlatılacak!
+
+class MasterGateScreen extends StatefulWidget {
+  const MasterGateScreen({super.key});
+
+  @override
+  State<MasterGateScreen> createState() => _MasterGateScreenState();
+}
+
+class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerProviderStateMixin {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+  late AnimationController _pulseController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat(reverse: true);
+    _emailController.text = "admin@otodna.com"; // Test için kolaylık
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _pulseController.dispose();
+    super.dispose();
+  }
+
+  // --- 🔴 FİREBASE: SİBER DOĞRULAMA MOTORU ---
+  Future<void> _agaBaglan() async {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      _siberUyari("SİBER İHLAL: Lütfen tüm protokol şifrelerini girin!", SiberTema.kanKirmizi);
+      return;
+    }
+
+    setState(() => _isLoading = true);
+    FocusScope.of(context).unfocus();
+
+    try {
+      // SADECE VE SADECE GERÇEK FİREBASE DOĞRULAMASI!
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      if (!mounted) return;
+      _siberUyari("SİBER AĞ ONAYLANDI. Karargaha Geçiliyor... 🦅", SiberTema.kuantumCyan);
+
+      // Başarılı girişte doğrudan Süper Panele yönlendir!
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AdminSuperPaneli()));
+
+    } on FirebaseAuthException catch (e) {
+      String hataMesaji = "KUANTUM KİLİDİ AÇILAMADI!";
+      if (e.code == 'user-not-found' || e.code == 'invalid-email') {
+        hataMesaji = "ERİŞİM REDDEDİLDİ: Bu kimlik Siber Ağda bulunamadı.";
+      } else if (e.code == 'wrong-password' || e.code == 'invalid-credential') {
+        hataMesaji = "ERİŞİM REDDEDİLDİ: Hatalı Kuantum Şifresi!";
+      }
+
+      if (!mounted) return;
+      _siberUyari(hataMesaji, SiberTema.kanKirmizi);
+    } catch (e) {
+      if (!mounted) return;
+      _siberUyari("SİSTEM ÇÖKMESİ VEYA AĞ HATASI: $e", SiberTema.kanKirmizi);
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  void _siberUyari(String mesaj, Color renk) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(mesaj, style: TextStyle(color: renk == SiberTema.kuantumCyan ? SiberTema.oledBlack : Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1)),
+        backgroundColor: renk,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveKalkan(
+      child: Scaffold(
+        backgroundColor: Colors.transparent, // Arka plan ana uygulama rengiyle aynı (OLED Siyah)
+        body: Center(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(32.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // 1. SİBER KİLİT ANİMASYONU (Görkemli ve Büyük Logo)
+                AnimatedBuilder(
+                    animation: _pulseController,
+                    builder: (context, child) {
+                      return Container(
+                        padding: const EdgeInsets.all(32),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: SiberTema.oledBlack,
+                          border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5 + (_pulseController.value * 0.5)), width: 2),
+                          boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.2 * _pulseController.value), blurRadius: 40, spreadRadius: 10)],
+                        ),
+                        child: const Icon(Icons.security, color: SiberTema.kuantumCyan, size: 80), // İkon devasa boyuta çıkarıldı!
+                      );
+                    }
+                ),
+                const SizedBox(height: 32),
+
+                // 2. BAŞLIKLAR
+                const Text("MASTER GATE", style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: 6)),
+                const SizedBox(height: 8),
+                Text("OtoDNA Kuantum Karargahı Giriş Protokolü", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.7), fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                const SizedBox(height: 48),
+
+                // 3. CAM EFEKTLİ GİRİŞ FORMU
+                _buildCamEfektliKutu(
+                  child: Column(
+                    children: [
+                      _buildSiberTextField(
+                        controller: _emailController,
+                        hint: "Yönetici E-posta Kimliği",
+                        icon: Icons.alternate_email,
+                        isObscure: false,
+                      ),
+                      const SizedBox(height: 16),
+                      _buildSiberTextField(
+                        controller: _passwordController,
+                        hint: "Kuantum Şifresi",
+                        icon: Icons.password,
+                        isObscure: true,
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 40),
+
+                // 4. BAĞLANTI BUTONU
+                SizedBox(
+                  width: double.infinity,
+                  height: 60,
+                  child: ElevatedButton.icon(
+                    style: SiberTema.kuantumButonStili(),
+                    onPressed: _isLoading ? null : _agaBaglan,
+                    icon: _isLoading
+                        ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
+                        : const Icon(Icons.fingerprint, color: SiberTema.oledBlack, size: 28),
+                    label: Text(
+                        _isLoading ? "MÜHÜR DOĞRULANIYOR..." : "AĞA BAĞLAN VE GİRİŞ YAP",
+                        style: const TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 2)
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 30),
+                const Icon(Icons.lock_outline, color: Colors.white24, size: 16),
+                const SizedBox(height: 8),
+                const Text("256-Bit Kuantum Şifreleme Aktif", style: TextStyle(color: Colors.white24, fontSize: 10, letterSpacing: 1)),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // --- 🎨 SİBER GÖRSEL YARDIMCILAR ---
+  Widget _buildSiberTextField({required TextEditingController controller, required String hint, required IconData icon, required bool isObscure}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: SiberTema.matGrey,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white12),
+      ),
+      child: TextField(
+        controller: controller,
+        obscureText: isObscure,
+        keyboardType: isObscure ? TextInputType.text : TextInputType.emailAddress,
+        style: TextStyle(color: Colors.white, letterSpacing: isObscure ? 4 : 1, fontSize: 14),
+        decoration: InputDecoration(
+          prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
+          hintText: hint,
+          hintStyle: const TextStyle(color: Colors.white30, letterSpacing: 1, fontSize: 13),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCamEfektliKutu({required Widget child}) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: SiberTema.matGrey.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.2)),
+            boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.02), blurRadius: 30)],
+          ),
+          child: child,
+        ),
+      ),
+    );
+  }
+}

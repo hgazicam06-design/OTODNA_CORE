@@ -1,0 +1,17 @@
+[
+  {
+    "kategori": "Periyodik Bakım",
+    "parcalar": [
+      {"id": "PB-001", "ad": "Yağ Filtresi", "standart_kod": "HU719/7X", "markalar": ["Bosch", "Mann", "Fil"]},
+      {"id": "PB-002", "ad": "Hava Filtresi", "standart_kod": "C35154", "markalar": ["Bosch", "Mann"]},
+      {"id": "PB-003", "ad": "5W-30 Motor Yağı (4L)", "markalar": ["Mobil 1", "Castrol", "Shell"]}
+    ]
+  },
+  {
+    "kategori": "Fren Sistemi",
+    "parcalar": [
+      {"id": "FR-101", "ad": "Ön Fren Balatası", "markalar": ["TRW", "Valeo", "Brembo"]},
+      {"id": "FR-102", "ad": "Fren Diski", "markalar": ["TRW", "Bosch"]}
+    ]
+  }
+]

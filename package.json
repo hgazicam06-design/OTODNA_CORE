@@ -1,0 +1,29 @@
+{
+  "name": "otodna",
+  "version": "1.0.0",
+  "description": "A new Flutter project.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hgazicam06-design/OTODNA_CORE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/hgazicam06-design/OTODNA_CORE/issues"
+  },
+  "homepage": "https://github.com/hgazicam06-design/OTODNA_CORE#readme",
+  "dependencies": {
+    "jspdf": "^4.2.0",
+    "jspdf-autotable": "^5.0.7"
+  }
+}

@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── 🛡️ SİBER KİMLİK DOĞRULAMA (KARARGAH KALKANI) ──
+    // Sadece OtoDNA sistemine yetkili giriş yapmış personeli tanır
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // ── 🌐 WEB SORGULAMA VE MARKET (SİVİL VİTRİN - SADECE OKUMA) ──
+    // Web'den plaka/şase sorgulayan müşteriler ve marketi gezenler sadece veriyi GÖREBİLİR.
+    // Değişiklik yapmak (write) için yetkili olmak şarttır!
+    match /arac_kimlikleri/{document} {
+      allow read: if true;
+      allow write: if isAuth();
+    }
+
+    match /market_urunleri/{document} {
+      allow read: if true;
+      allow write: if isAuth();
+    }
+
+    // ── 🚨 KRİTİK İSTİHBARAT BİRİMLERİ (TAM KİLİTLİ KARARGAH KASASI) ──
+    // bayi_stoklari, sos_sinyalleri, yapilan_islemler, ariza_talepleri vb...
+    // BUNLARA SADECE SİBER KİMLİĞİ OLANLAR ERİŞEBİLİR! SİVİLLER GİREMEZ!
+    match /{document=**} {
+      allow read, write: if isAuth();
+    }
+
+  }
+}

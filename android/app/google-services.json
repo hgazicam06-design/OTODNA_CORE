@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "605026201993",
+    "project_id": "otodna-c3747",
+    "storage_bucket": "otodna-c3747.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605026201993:android:cf700ab48f52f95739f158",
+        "android_client_info": {
+          "package_name": "com.example.otodna"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAseWhC2ARi9pmZOSFsUh9Nqfr9M3raWD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

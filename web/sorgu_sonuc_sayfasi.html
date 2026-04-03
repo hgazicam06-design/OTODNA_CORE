@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OtoDNA SİBER SORGULAMA RADARI</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    /* ── 🎨 KARARGAH TASARIM DOKTRİNİ ── */
+    :root {
+      --oled-black: #000000;
+      --mat-grey: #111111;
+      --kuantum-cyan: #00FFC2;
+      --kan-kirmizi: #FF3B30;
+    }
+
+    body {
+      font-family: 'Courier New', Courier, monospace; /* Siber Karargah Fontu */
+      background-color: var(--oled-black);
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-image: radial-gradient(circle at 50% 50%, rgba(0, 255, 194, 0.05) 0%, transparent 60%);
+    }
+
+    /* 🛡️ SİBER CAM EFEKTİ (Glassmorphism) */
+    main {
+      width: 100%;
+      max-width: 500px;
+      background: rgba(17, 17, 17, 0.85);
+      padding: 40px;
+      border-radius: 16px;
+      border: 1px solid rgba(0, 255, 194, 0.3);
+      box-shadow: 0 0 40px rgba(0, 255, 194, 0.1);
+      backdrop-filter: blur(10px);
+      box-sizing: border-box;
+    }
+
+    h1 {
+      color: var(--kuantum-cyan);
+      font-size: 22px;
+      font-weight: 900;
+      text-align: center;
+      letter-spacing: 2px;
+      margin-top: 0;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px rgba(0, 255, 194, 0.5);
+    }
+
+    .istihbarat-paneli {
+      background: rgba(0, 255, 194, 0.05);
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid var(--kuantum-cyan);
+      margin-bottom: 25px;
+      font-size: 12px;
+      color: #aaaaaa;
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: var(--kuantum-cyan);
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    input[type=text] {
+      width: 100%;
+      padding: 15px;
+      background: var(--oled-black);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 16px;
+      font-family: inherit;
+      letter-spacing: 2px;
+      box-sizing: border-box;
+      margin-bottom: 25px;
+      transition: all 0.3s ease;
+    }
+
+    input[type=text]:focus {
+      outline: none;
+      border-color: var(--kuantum-cyan);
+      box-shadow: 0 0 15px rgba(0, 255, 194, 0.2);
+    }
+
+    /* 🚀 ATEŞLEME BUTONU */
+    .pdf-btn {
+      width: 100%;
+      background: var(--kuantum-cyan);
+      color: var(--oled-black);
+      padding: 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      box-shadow: 0 0 20px rgba(0, 255, 194, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .pdf-btn:hover {
+      background: #ffffff;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+    }
+
+    .pdf-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* 📡 SİBER RADAR (Yükleniyor) */
+    .loader {
+      display: none;
+      text-align: center;
+      color: var(--kuantum-cyan);
+      margin-top: 20px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.5; }
+      50% { opacity: 1; }
+      100% { opacity: 0.5; }
+    }
+
+    /* 🚨 KARARGAH UYARI SİSTEMİ (Snackbar) */
+    .snackbar {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--mat-grey);
+      color: #ffffff;
+      padding: 16px 24px;
+      border-radius: 8px;
+      border: 1px solid var(--kuantum-cyan);
+      box-shadow: 0 0 20px rgba(0, 255, 194, 0.2);
+      font-weight: bold;
+      letter-spacing: 1px;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 1000;
+    }
+
+    .snackbar.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .snackbar.error {
+      border-color: var(--kan-kirmizi);
+      box-shadow: 0 0 20px rgba(255, 59, 48, 0.3);
+      color: var(--kan-kirmizi);
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <h1>OTODNA SİBER RADARI</h1>
+
+  <div class="istihbarat-paneli">
+    <strong>KARARGAH PROTOKOLÜ:</strong> Aracınızın 17 haneli şase numarasını girerek Kuantum Ağında bulunan dijital DNA raporunuza (ekspertiz, arıza ve servis geçmişi) mühürlü bir PDF olarak anında ulaşabilirsiniz.
+  </div>
+
+  <label for="saseNo">ARAÇ ŞASE NUMARASI (DNA)</label>
+  <input id="saseNo" type="text" placeholder="ÖRN: WVWZZZ3CZCE..." autocomplete="off" spellcheck="false" />
+
+  <button id="downloadBtn" class="pdf-btn">DNA RAPORUNU ÇEK VE MÜHÜRLE</button>
+
+  <div id="loader" class="loader">SİBER AĞ TARANIYOR...</div>
+</main>
+
+<div id="snackbar" class="snackbar"></div>
+
+<script>
+  // ── 🛡️ KARARGAH SİBER SCRIPT MOTORU ──
+
+  function siberUyariGoster(mesaj, isError = false) {
+    const sb = document.getElementById('snackbar');
+    sb.textContent = mesaj;
+
+    if (isError) {
+      sb.classList.add('error');
+    } else {
+      sb.classList.remove('error');
+    }
+
+    sb.classList.add('show');
+    clearTimeout(sb._timeout);
+    sb._timeout = setTimeout(() => sb.classList.remove('show'), 4000);
+  }
+
+  // SİBER NOT: Gerçek projede bu fonksiyon doğrudan Firebase Firestore'dan verileri çeker.
+  async function matrikstenVeriCek(saseNo) {
+    // Simüle edilmiş bekleme süresi (Siber ağ taranıyor hissi)
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (saseNo.length < 5) {
+          reject("SİBER İHLAL: Geçersiz veya eksik Şase Numarası!");
+        } else {
+          // Firebase'den geldiği varsayılan örnek Karargah verisi
+          resolve([
+            { "KONTROL_NOKTASI": "Motor Bloğu", "DURUM": "✅ KUSURSUZ (Karargah Onaylı)" },
+            { "KONTROL_NOKTASI": "Fren Balataları", "DURUM": "⚠️ DEĞİŞİM ÖNERİLİYOR (Sınırda)" },
+            { "KONTROL_NOKTASI": "Şase & Podye", "DURUM": "✅ ORİJİNAL (İşlem Yok)" },
+            { "KONTROL_NOKTASI": "Akü Voltajı", "DURUM": "✅ %98 SAĞLIKLI" }
+          ]);
+        }
+      }, 1500);
+    });
+  }
+
+  async function kuantumRaporuUret(sonuclar, saseNo) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'pt' });
+
+    // 🎨 Kuantum Rapor Tasarımı
+    doc.setFillColor(0, 0, 0);
+    doc.rect(0, 0, 600, 850, 'F'); // Tam Siyah Arka Plan
+
+    doc.setTextColor(0, 255, 194); // Kuantum Turkuazı
+    doc.setFontSize(22);
+    doc.setFont("courier", "bold");
+    doc.text('OTODNA DİJİTAL REFERANS PROTOKOLÜ', 40, 60);
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(12);
+    doc.text(`HEDEF ŞASE (DNA): ${saseNo.toUpperCase()}`, 40, 100);
+    doc.text(`SORGULAMA TARİHİ: ${new Date().toLocaleString('tr-TR')}`, 40, 120);
+
+    // Çizgi
+    doc.setDrawColor(0, 255, 194);
+    doc.setLineWidth(2);
+    doc.line(40, 140, 550, 140);
+
+    doc.setFontSize(14);
+    doc.setTextColor(0, 255, 194);
+    doc.text('KARARGAH İSTİHBARAT SONUÇLARI:', 40, 170);
+
+    let y = 200;
+    const lineHeight = 25;
+    doc.setFontSize(11);
+
+    sonuclar.forEach((row, i) => {
+      doc.setTextColor(255, 255, 255);
+      doc.text(`[00${i + 1}] KONTROL: ${row.KONTROL_NOKTASI}`, 40, y);
+
+      if(row.DURUM.includes("✅")) {
+        doc.setTextColor(0, 255, 194);
+      } else if(row.DURUM.includes("⚠️")) {
+        doc.setTextColor(255, 165, 0);
+      } else {
+        doc.setTextColor(255, 59, 48);
+      }
+
+      doc.text(`     DURUM  : ${row.DURUM}`, 40, y + 12);
+
+      y += lineHeight + 10;
+
+      // Yeni sayfaya geçiş kontrolü
+      if (y > 750) {
+        doc.addPage();
+        doc.setFillColor(0, 0, 0);
+        doc.rect(0, 0, 600, 850, 'F');
+        y = 60;
+      }
+    });
+
+    // 🛡️ SİBER MÜHÜR
+    doc.setDrawColor(0, 255, 194);
+    doc.line(40, y + 20, 550, y + 20);
+    doc.setTextColor(100, 100, 100);
+    doc.setFontSize(9);
+    doc.text('BU BELGE OTODNA SİBER KARARGAHI TARAFINDAN OTONOM OLARAK MÜHÜRLENMİŞTİR.', 40, y + 40);
+    doc.text('Oynanmış veya sahte belgeler Matrix radarı tarafından anında tespit edilir.', 40, y + 55);
+
+    return doc;
+  }
+
+  // 🚀 ATEŞLEME MEKANİZMASI
+  document.getElementById('downloadBtn').addEventListener('click', async () => {
+    const saseNo = document.getElementById('saseNo').value.trim();
+    const loader = document.getElementById('loader');
+    const btn = document.getElementById('downloadBtn');
+
+    if (!saseNo) {
+      siberUyariGoster("SİBER İHLAL: Şase numarasını girmediniz!", true);
+      return;
+    }
+
+    // Radar animasyonunu başlat
+    btn.style.display = 'none';
+    loader.style.display = 'block';
+
+    try {
+      // 1. Matriksten Veriyi Çek (Firebase simülasyonu)
+      const sonuclar = await matrikstenVeriCek(saseNo);
+
+      // 2. Kuantum PDF'i Üret
+      const doc = await kuantumRaporuUret(sonuclar, saseNo);
+
+      // 3. Mührü İndir
+      const fileName = `OtoDNA_Siber_Rapor_${saseNo}.pdf`;
+      doc.save(fileName);
+
+      siberUyariGoster(`SİBER ONAY: Mühürlü Rapor İndirildi -> ${fileName}`);
+    } catch (err) {
+      console.error(err);
+      siberUyariGoster(err, true);
+    } finally {
+      // Radarı kapat, butonu geri getir
+      loader.style.display = 'none';
+      btn.style.display = 'block';
+    }
+  });
+</script>
+</body>
+</html>

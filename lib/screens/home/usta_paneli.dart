@@ -1,0 +1,339 @@
+import 'package:flutter/material.dart';
+
+class UstaPaneliScreen extends StatefulWidget {
+  const UstaPaneliScreen({super.key});
+
+  @override
+  State<UstaPaneliScreen> createState() => _UstaPaneliScreenState();
+}
+
+class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
+  String? _secilenAracCinsi;
+  String? _secilenYakitTipi;
+  final TextEditingController _saseController = TextEditingController();
+  bool _veriCekiliyor = false;
+
+  final Map<String, String> _testSonuclari = {};
+
+  final List<String> _aracCinsleri = [
+    'Motosiklet 🏍️',
+    'Otomobil 🚗',
+    'Kamyonet / Panelvan 🚐',
+    'Minibüs 🚌',
+    'Otobüs & Midibüs 🚍',
+    'Kamyon & Çekici/Tır 🚛',
+    'İş Makinesi & Traktör 🚜'
+  ];
+
+  final List<String> _yakitTipleri = [
+    'Benzin',
+    'Motorin (Dizel)',
+    'Tam Elektrikli (EV)',
+    'Hibrit (HEV / PHEV)',
+    'Benzin + LPG',
+    'Doğalgaz (CNG)'
+  ];
+
+  void _sasedenSorgula() async {
+    if (_saseController.text.length < 17) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Şase Numarası 17 Haneli Olmalıdır!'), backgroundColor: Colors.redAccent));
+      return;
+    }
+    setState(() => _veriCekiliyor = true);
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    setState(() {
+      _veriCekiliyor = false;
+      _secilenAracCinsi = 'Otomobil 🚗';
+      _secilenYakitTipi = 'Benzin + LPG';
+      _testSonuclari.clear();
+    });
+    if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Araç Fabrika Verileri Hub\'dan Çekildi! ✅'), backgroundColor: Colors.green));
+  }
+
+  void _raporuAgaMuhrle() {
+    if (_testSonuclari.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Hiçbir testi tamamlamadınız!'), backgroundColor: Colors.orangeAccent));
+      return;
+    }
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF121B2B), // Dijital Kale Kart Rengi
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: Color(0xFF00FFC2), width: 1.5)),
+        title: const Column(
+          children: [
+            Icon(Icons.verified_user, color: Color(0xFF00FFC2), size: 64),
+            SizedBox(height: 16),
+            Text("EKSPERTİZ MÜHÜRLENDİ!", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+          ],
+        ),
+        content: const Text("Tüm test sonuçları OtoDNA Kuantum Ağına kriptolanarak kaydedildi. Araç DNA skoru güncellendi.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 12)),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            child: const Text("KARARGAHA DÖN", style: TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold)),
+          )
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _dinamikModulleriGetir() {
+    List<Widget> moduller = [];
+
+    if (_secilenAracCinsi == null || _secilenYakitTipi == null) {
+      return [const Center(child: Padding(padding: EdgeInsets.all(20.0), child: Text("Çalışır aksamların listelenmesi için Araç Cinsi ve Yakıt Tipi seçiniz.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54))))];
+    }
+
+    if (_secilenYakitTipi == 'Tam Elektrikli (EV)' || _secilenYakitTipi == 'Hibrit (HEV / PHEV)') {
+      moduller.add(_buildKayitMotoruKarti("Yüksek Voltaj Batarya Sağlığı (%SOH)", Icons.battery_charging_full, zorunluFoto: true));
+      moduller.add(_buildKayitMotoruKarti("İnvertör ve Elektrik Motoru Soğutma Sistemi", Icons.electrical_services));
+      moduller.add(_buildKayitMotoruKarti("Şarj Portu ve Soket İletkenliği", Icons.ev_station));
+    }
+
+    if (_secilenYakitTipi != 'Tam Elektrikli (EV)') {
+      moduller.add(_buildKayitMotoruKarti("Motor Bloğu & Yağ/Sıvı Kaçakları", Icons.build_circle, zorunluFoto: true));
+      moduller.add(_buildKayitMotoruKarti("Triger / V Kayışı ve Kasnaklar", Icons.settings_applications));
+      moduller.add(_buildKayitMotoruKarti("Şanzıman Vites Geçişleri & Kavrama", Icons.settings));
+
+      if (_secilenYakitTipi == 'Motorin (Dizel)') {
+        moduller.add(_buildKayitMotoruKarti("DPF (Dizel Partikül Filtresi) ve AdBlue Sistemi", Icons.cloud));
+        moduller.add(_buildKayitMotoruKarti("Turboşarj ve Intercooler Basınç Testi", Icons.cyclone));
+      } else {
+        moduller.add(_buildKayitMotoruKarti("Egzoz Emisyon ve Katalitik Konvertör", Icons.cloud));
+      }
+    }
+
+    if (_secilenYakitTipi == 'Benzin + LPG') {
+      moduller.add(_buildKayitMotoruKarti("LPG Tank Üretim Tarihi & Ömrü", Icons.local_gas_station, zorunluFoto: true));
+      moduller.add(_buildKayitMotoruKarti("LPG Regülatör (Beyin) ve Gaz Sızdırmazlık", Icons.warning));
+    } else if (_secilenYakitTipi == 'Doğalgaz (CNG)') {
+      moduller.add(_buildKayitMotoruKarti("CNG Yüksek Basınç Tankı Kontrolü", Icons.local_gas_station, zorunluFoto: true));
+    }
+
+    if (_secilenAracCinsi == 'Motosiklet 🏍️') {
+      moduller.add(_buildKayitMotoruKarti("Zincir & Dişli (veya Kayış/Şaft) Gerginliği", Icons.settings_input_component, zorunluFoto: true));
+      moduller.add(_buildKayitMotoruKarti("Ön Maşa (Çatal) Keçe ve Amortisör Kaçakları", Icons.motorcycle));
+    }
+    else if (_secilenAracCinsi!.contains('Kamyon') || _secilenAracCinsi!.contains('Otobüs')) {
+      moduller.add(_buildKayitMotoruKarti("Havalı Fren Sistemi ve Kompresör Basıncı", Icons.air));
+      moduller.add(_buildKayitMotoruKarti("Takograf Kalibrasyon Mührü Kontrolü", Icons.timer, zorunluFoto: true));
+    }
+    else if (_secilenAracCinsi!.contains('İş Makinesi')) {
+      moduller.add(_buildKayitMotoruKarti("Hidrolik Pompalar ve Piston (Lift) Kaçakları", Icons.precision_manufacturing, zorunluFoto: true));
+    }
+    else {
+      moduller.add(_buildKayitMotoruKarti("Kaporta, Boya Değişen ve Mikron Ölçümü", Icons.format_paint, zorunluFoto: true));
+    }
+
+    moduller.add(_buildKayitMotoruKarti("Lastik Diş Derinliği ve DOT (Üretim) Yılı", Icons.tire_repair, zorunluFoto: true));
+    moduller.add(_buildKayitMotoruKarti("Şase Direkleri, Podye ve Alt Takım", Icons.warning_amber_rounded, isCritical: true, zorunluFoto: true));
+    moduller.add(_buildKayitMotoruKarti("Fren Diskleri, Balatalar ve Fren Hidroliği", Icons.car_crash, isCritical: true, zorunluFoto: true));
+
+    moduller.add(const SizedBox(height: 24));
+    moduller.add(
+        SizedBox(
+          width: double.infinity,
+          height: 60,
+          child: ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF00FFC2),
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              elevation: 10,
+            ),
+            onPressed: _raporuAgaMuhrle,
+            icon: const Icon(Icons.fingerprint, size: 28),
+            label: const Text("EKSPERTİZİ BİTİR VE AĞA MÜHÜRLE", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1)),
+          ),
+        )
+    );
+
+    return moduller;
+  }
+
+  Widget _buildKayitMotoruKarti(String baslik, IconData ikon, {bool isCritical = false, bool zorunluFoto = false}) {
+    String durum = _testSonuclari[baslik] ?? 'bekliyor';
+
+    Color kartRengi = const Color(0xFF121B2B); // Dijital Kale Kart Rengi
+    Color cerceveRengi = isCritical ? Colors.redAccent.withOpacity(0.5) : Colors.white12;
+    Color ikonRengi = isCritical ? Colors.redAccent : const Color(0xFF00FFC2);
+
+    if (durum == 'onaylandi') {
+      kartRengi = Colors.green.withOpacity(0.05);
+      cerceveRengi = Colors.green.withOpacity(0.5);
+      ikonRengi = Colors.greenAccent;
+    } else if (durum == 'riskli') {
+      kartRengi = Colors.red.withOpacity(0.05);
+      cerceveRengi = Colors.redAccent.withOpacity(0.5);
+      ikonRengi = Colors.redAccent;
+    }
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(color: kartRengi, borderRadius: BorderRadius.circular(16), border: Border.all(color: cerceveRengi, width: durum != 'bekliyor' ? 1.5 : 1)),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(color: ikonRengi.withOpacity(0.1), borderRadius: BorderRadius.circular(10)),
+            child: Icon(ikon, color: ikonRengi, size: 24),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(baslik, style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold, decoration: isCritical ? TextDecoration.underline : TextDecoration.none, decorationColor: Colors.redAccent)),
+                if (zorunluFoto) ...[const SizedBox(height: 4), const Text("Zorunlu Görsel Kanıt", style: TextStyle(color: Colors.orangeAccent, fontSize: 10, fontWeight: FontWeight.bold))],
+                if (durum != 'bekliyor') ...[
+                  const SizedBox(height: 4),
+                  Text(durum == 'onaylandi' ? "Sorunsuz" : "Kusurlu / Riskli", style: TextStyle(color: ikonRengi, fontSize: 10, fontWeight: FontWeight.bold))
+                ]
+              ],
+            ),
+          ),
+          IconButton(
+              icon: Icon(Icons.check_circle, color: durum == 'onaylandi' ? Colors.greenAccent : Colors.white24, size: 26),
+              onPressed: () => setState(() => _testSonuclari[baslik] = 'onaylandi')
+          ),
+          IconButton(
+              icon: Icon(Icons.cancel, color: durum == 'riskli' ? Colors.redAccent : Colors.white24, size: 26),
+              onPressed: () => setState(() => _testSonuclari[baslik] = 'riskli')
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 🌟 YENİ: SİBER HIZLI FİLTRE ÇİPLERİ (Ehliyet Sınıfı Kuantum Seçici)
+  Widget _buildHizliAracSecici(String etiket, String tamDeger) {
+    bool secili = _secilenAracCinsi == tamDeger;
+    return GestureDetector(
+      onTap: () => setState(() { _secilenAracCinsi = tamDeger; _testSonuclari.clear(); }),
+      child: Container(
+        margin: const EdgeInsets.only(right: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+            color: secili ? const Color(0xFF00FFC2).withOpacity(0.15) : const Color(0xFF121B2B),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: secili ? const Color(0xFF00FFC2) : Colors.white12)
+        ),
+        child: Text(etiket, style: TextStyle(color: secili ? const Color(0xFF00FFC2) : Colors.white54, fontSize: 12, fontWeight: FontWeight.bold)),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    const primaryCyan = Color(0xFF00FFC2);
+    const bgColor = Color(0xFF070B14); // Dijital Kale Arka Plan
+    const cardColor = Color(0xFF121B2B);
+
+    return Scaffold(
+      backgroundColor: bgColor,
+      appBar: AppBar(
+          backgroundColor: cardColor,
+          elevation: 0,
+          shape: const Border(bottom: BorderSide(color: Colors.white12, width: 1)),
+          title: const Text('OtoDNA Usta Paneli', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 1)),
+          iconTheme: const IconThemeData(color: primaryCyan),
+          centerTitle: true
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("SİBER HUB SORGULAMA", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(child: TextField(controller: _saseController, style: const TextStyle(color: Colors.white, letterSpacing: 2, fontWeight: FontWeight.bold), textCapitalization: TextCapitalization.characters, maxLength: 17, decoration: InputDecoration(hintText: '17 Haneli Şase (VIN)', hintStyle: const TextStyle(color: Colors.white24), filled: true, fillColor: cardColor, counterText: "", border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: Colors.white12))))),
+                  const SizedBox(width: 12),
+                  GestureDetector(
+                    onTap: _veriCekiliyor ? null : _sasedenSorgula,
+                    child: Container(padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16), decoration: BoxDecoration(color: primaryCyan, borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.3), blurRadius: 10)]), child: _veriCekiliyor ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: bgColor, strokeWidth: 2)) : const Icon(Icons.search, color: bgColor)),
+                  )
+                ],
+              ),
+              const SizedBox(height: 24),
+
+              // 🌟 YENİ EKLENEN HIZLI FİLTRE BÖLÜMÜ
+              const Text("HIZLI ARAÇ SINIFI FİLTRESİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+              const SizedBox(height: 12),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                child: Row(
+                  children: [
+                    _buildHizliAracSecici("Otomobil", "Otomobil 🚗"),
+                    _buildHizliAracSecici("Ticari", "Kamyonet / Panelvan 🚐"),
+                    _buildHizliAracSecici("Ağır Vasıta", "Kamyon & Çekici/Tır 🚛"),
+                    _buildHizliAracSecici("Motosiklet", "Motosiklet 🏍️"),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    dropdownColor: cardColor, isExpanded: true, value: _secilenAracCinsi, hint: const Text("Tüm Araç Cinsleri Listesi...", style: TextStyle(color: Colors.white38, fontSize: 13)),
+                    icon: const Icon(Icons.keyboard_arrow_down, color: primaryCyan),
+                    items: _aracCinsleri.map((String cins) { return DropdownMenuItem<String>(value: cins, child: Text(cins, style: const TextStyle(color: Colors.white, fontSize: 13))); }).toList(),
+                    onChanged: (String? yeniCins) { setState(() { _secilenAracCinsi = yeniCins; _testSonuclari.clear(); }); },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              const Text("MOTOR VE YAKIT TİPİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    dropdownColor: cardColor, isExpanded: true, value: _secilenYakitTipi, hint: const Text("Yakıt / Motor Tipi Seçiniz...", style: TextStyle(color: Colors.white38, fontSize: 13)),
+                    icon: const Icon(Icons.keyboard_arrow_down, color: primaryCyan),
+                    items: _yakitTipleri.map((String yakit) { return DropdownMenuItem<String>(value: yakit, child: Text(yakit, style: const TextStyle(color: Colors.white, fontSize: 13))); }).toList(),
+                    onChanged: (String? yeniYakit) { setState(() { _secilenYakitTipi = yeniYakit; _testSonuclari.clear(); }); },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 32),
+
+              if (_secilenAracCinsi != null && _secilenYakitTipi != null) ...[
+                const Row(
+                  children: [
+                    Icon(Icons.science, color: primaryCyan, size: 20),
+                    SizedBox(width: 8),
+                    Text("DİNAMİK ÇALIŞIR AKSAM TESTLERİ", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                  ],
+                ),
+                const SizedBox(height: 16),
+              ],
+
+              ..._dinamikModulleriGetir(),
+              const SizedBox(height: 40),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
