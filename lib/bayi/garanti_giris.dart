@@ -24,7 +24,8 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
   bool _isSaving = false;
   String _aiOnerisi = "Analiz ediliyor...";
 
-  static const _darkSpace = Color(0xFF060F0F); // Derin Karargah Siyahı
+  // 🌑 TESLA MİMARİSİ: %100 OLED Siyah
+  static const _darkSpace = Color(0xFF000000);
   static const _cyan = Color(0xFF00FFC2); // Kuantum Turkuazı
   static const _aiOrange = Color(0xFFFF9100); // AI Analiz Turuncusu
 
@@ -237,7 +238,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _cyan,
-                    foregroundColor: _darkSpace,
+                    foregroundColor: _darkSpace, // Siyah yazı
                     padding: const EdgeInsets.symmetric(vertical: 22),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     elevation: 15,

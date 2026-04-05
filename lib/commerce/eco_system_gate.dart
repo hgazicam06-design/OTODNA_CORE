@@ -12,38 +12,40 @@ class OtoDnaEcoSystem {
     required String saticiBayiAdi,
   }) async {
     try {
-      double musteriSatisFiyati = 0;
-      double komutanGaziPayi = 0;
-
       // ⚙️ TİCARET MOTORU: Kâr Marjı ve Komisyon Hesaplaması
-      if (saticiBayiAdi == "Murat Plaza") {
-        // Murat Plaza özel anlaşması: %30 Kâr Marjı
-        musteriSatisFiyati = parcaAlisFiyati * 1.30;
-        komutanGaziPayi = musteriSatisFiyati - parcaAlisFiyati;
-      } else {
-        // Diğer Tüm Bayiler: Komutan Gazi için %10 Kâr + %2 Vergi = Toplam %12 Sistem Payı
-        musteriSatisFiyati = parcaAlisFiyati * 1.12;
-        komutanGaziPayi = parcaAlisFiyati * 0.12;
-      }
+      // 🔥 SİBER KURAL: İMTİYAZ YOK! HERKESTEN %10 KÂR + %2 VERGİ = %12 KESİLİR!
+      double komutanGaziPayi = parcaAlisFiyati * 0.12;
+      double musteriSatisFiyati = parcaAlisFiyati + komutanGaziPayi;
 
-      // ⚙️ GİZLİLİK PROTOKOLÜ: Orijinal şirket isimleri gizlenir, ürün bayinin kendi adıyla sunulur.
+      // ⚙️ GİZLİLİK PROTOKOLÜ: Orijinal tedarikçi gizlenir, ürün işlemi yapan bayinin kendi adıyla sunulur.
       String gorunenTedarikci = saticiBayiAdi;
 
-      // 🚀 FİREBASE'E GERÇEK KAYIT BAŞLIYOR
-      await _firestore.collection('yedek_parca_onerileri').add({
+      // 🚀 FİREBASE'E GERÇEK KAYIT BAŞLIYOR (WriteBatch ile Kuantum Mührü)
+      WriteBatch batch = _firestore.batch();
+      DocumentReference oneriRef = _firestore.collection('yedek_parca_onerileri').doc();
+
+      batch.set(oneriRef, {
         'arac_plaka': plakaID,
         'sorunlu_parca': sorunluParca,
         'orijinal_alis_fiyati': parcaAlisFiyati, // Sadece Admin Görebilir
         'gazi_komisyon_vergi_payi': komutanGaziPayi, // Sadece Admin Görebilir
-        'musteri_satis_fiyati': musteriSatisFiyati, // Kullanıcının Uygulamada Göreceği Fiyat
+        'musteri_satis_fiyati': double.parse(musteriSatisFiyati.toStringAsFixed(2)), // Kuruşları yuvarla
         'sunan_bayi': gorunenTedarikci,
         'garanti': '1 Yıl OtoDNA Garantili',
         'durum': 'Müşteri Onayı Bekliyor',
         'olusturulma_tarihi': FieldValue.serverTimestamp(),
       });
 
+      await batch.commit(); // Füzeyi ateşle
+
     } catch (e) {
-      print("Kritik Ağ Hatası (Parça Önerisi): $e");
+      // 🚨 HATA DURUMUNDA KARA KUTUYA YAZ (Print yerine güvenli log)
+      await _firestore.collection('sistem_loglari').add({
+        'islem_turu': 'hata',
+        'islem_detayi': 'PARÇA ÖNERİ HATASI: $plakaID plakalı araca parça önerilemedi. $e',
+        'bayi_isim': saticiBayiAdi,
+        'tarih': FieldValue.serverTimestamp(),
+      });
     }
   }
 
@@ -55,7 +57,7 @@ class OtoDnaEcoSystem {
       DocumentSnapshot aracDoc = await _firestore.collection('araclar').doc(plakaID).get();
 
       if (aracDoc.exists) {
-        int dnaSkoru = aracDoc.get('dna_skoru') ?? 0;
+        int dnaSkoru = (aracDoc.data() as Map<String, dynamic>)['dna_skoru'] ?? 0;
 
         // Eğer usta Kırmızı X atmamışsa ve skor yüksekse Mühürle!
         if (dnaSkoru >= 80) {
@@ -67,7 +69,13 @@ class OtoDnaEcoSystem {
         }
       }
     } catch (e) {
-      print("Kritik Ağ Hatası (Mühürleme): $e");
+      // 🚨 HATA DURUMUNDA KARA KUTUYA YAZ
+      await _firestore.collection('sistem_loglari').add({
+        'islem_turu': 'hata',
+        'islem_detayi': 'DİJİTAL MÜHÜR HATASI: $plakaID plakalı araç ilana çıkarılamadı. $e',
+        'bayi_isim': 'OTOMATİK SİSTEM',
+        'tarih': FieldValue.serverTimestamp(),
+      });
     }
   }
 }

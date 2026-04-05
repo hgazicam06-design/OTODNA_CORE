@@ -4,10 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-// 🚀 KARARGAH ZIRHLARI
-import '../core/siber_tema.dart';
-import '../core/responsive_kalkan.dart';
+// 🚀 KARARGAH ZIRHLARI (Mutlak Rota)
+import 'package:otodna/core/siber_tema.dart';
+import 'package:otodna/core/responsive_kalkan.dart';
 
 class MegaRevizyonScreen extends StatefulWidget {
   final String plaka; // İşlem yapılacak aracın plakası
@@ -18,8 +19,10 @@ class MegaRevizyonScreen extends StatefulWidget {
 }
 
 class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
+  // 🔥 ANOMALİ GİDERİLDİ: Veritabanı motorları Kuantum Ağına tam bağlandı
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final ImagePicker _picker = ImagePicker();
 
   String _seciliAracTipi = 'Otomobil';
@@ -66,61 +69,64 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
       Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
       double toplamMaliyet = 0;
-      List<Map<String, dynamic>> mühürlenecekParcalar = [];
-    String islemId = _db.collection('islem_kayitlari').doc().id;
+      List<Map<String, dynamic>> muhurlenecekParcalar = [];
+      String islemId = _db.collection('islem_kayitlari').doc().id;
 
-    // 2. Görselleri Storage'a Yükle ve Linkleri Al
-    for (var parca in _secilenParcalar.entries) {
-    double fiyat = parca.value['fiyat'] ?? 0.0;
-    toplamMaliyet += fiyat;
-    String gorselUrl = '';
+      // 2. Görselleri Storage'a Yükle ve Linkleri Al
+      for (var parca in _secilenParcalar.entries) {
+        double fiyat = parca.value['fiyat'] ?? 0.0;
+        toplamMaliyet += fiyat;
+        String gorselUrl = '';
 
-    if (parca.value['gorsel'] != null) {
-    File dosya = parca.value['gorsel'];
-    TaskSnapshot snapshot = await _storage.ref('kanit_gorselleri/$islemId/${parca.key}.jpg').putFile(dosya);
-    gorselUrl = await snapshot.ref.getDownloadURL();
-    }
+        if (parca.value['gorsel'] != null) {
+          File dosya = parca.value['gorsel'];
+          TaskSnapshot snapshot = await _storage.ref('kanit_gorselleri/$islemId/${parca.key}.jpg').putFile(dosya);
+          gorselUrl = await snapshot.ref.getDownloadURL();
+        }
 
-    mühürlenecekParcalar.add({
-    'parca_adi': parca.key,
-    'fiyat': fiyat,
-    'gorsel_url': gorselUrl,
-    'firma_onayi': true, // Usta kendi girdiği için peşin onaylı
-    });
-    }
+        muhurlenecekParcalar.add({
+          'parca_adi': parca.key,
+          'fiyat': fiyat,
+          'gorsel_url': gorselUrl,
+          'firma_onayi': true, // Usta kendi girdiği için peşin onaylı
+        });
+      }
 
-    // 3. Karargah Finans Algoritması (Standart %12)
-    double komutanPayi = toplamMaliyet * 0.12;
+      // 3. Karargah Finans Algoritması (Evrensel Kural: %12 Pay)
+      double komutanPayi = toplamMaliyet * 0.12;
 
-    // 4. Atomik WriteBatch Atışı
-    WriteBatch batch = _db.batch();
+      // 🔥 GERÇEK BAYİ KİMLİĞİ
+      String gercekBayiId = _auth.currentUser?.uid ?? 'BILINMEYEN_BAYI_ID';
 
-    DocumentReference islemRef = _db.collection('islem_kayitlari').doc(islemId);
-    batch.set(islemRef, {
-    'islem_id': islemId,
-    'plaka': widget.plaka,
-    'arac_tipi': _seciliAracTipi,
-    'toplam_maliyet': toplamMaliyet,
-    'komutan_payi': komutanPayi, // Karargah kasasına yazıldı 💸
-    'parcalar': mühürlenecekParcalar,
-    'bayi_id': 'MevcutBayiID', // TODO: Auth'dan çekilecek
-    'islem_tarihi': FieldValue.serverTimestamp(),
-    // Çift Yönlü Onay Konum Damgası
-    'firma_onay_konumu': GeoPoint(position.latitude, position.longitude),
-    'musteri_onayi': 'bekliyor', // Müşteri ekranına düşecek
-    });
+      // 4. Atomik WriteBatch Atışı
+      WriteBatch batch = _db.batch();
 
-    // İşlemi Tetikle
-    await batch.commit();
+      DocumentReference islemRef = _db.collection('islem_kayitlari').doc(islemId);
+      batch.set(islemRef, {
+        'islem_id': islemId,
+        'plaka': widget.plaka,
+        'arac_tipi': _seciliAracTipi,
+        'toplam_maliyet': toplamMaliyet,
+        'komutan_payi': komutanPayi, // Karargah kasasına yazıldı 💸
+        'parcalar': muhurlenecekParcalar,
+        'bayi_id': gercekBayiId,
+        'islem_tarihi': FieldValue.serverTimestamp(),
+        // Çift Yönlü Onay Konum Damgası
+        'firma_onay_konumu': GeoPoint(position.latitude, position.longitude),
+        'musteri_onayi': 'bekliyor', // Müşteri ekranına düşecek
+      });
 
-    if (!mounted) return;
-    _siberUyari("SİBER MÜHÜR BASILDI: İşlem Ağa Kaydedildi!", isError: false);
-    Navigator.pop(context); // İşlem bitince çık
+      // 5. İşlemi Tetikle ve Mühürle
+      await batch.commit();
+
+      if (!mounted) return;
+      _siberUyari("SİBER MÜHÜR BASILDI: İşlem Ağa Kaydedildi!", isError: false);
+      Navigator.pop(context); // İşlem bitince çık
 
     } catch (e) {
-    _siberUyari("SİSTEM HATASI: $e", isError: true);
+      _siberUyari("SİSTEM HATASI: $e", isError: true);
     } finally {
-    setState(() => _isProcessing = false);
+      setState(() => _isProcessing = false);
     }
   }
 

@@ -20,8 +20,12 @@ class EkspertizServisi {
       }
 
       if (isSafe) {
-        // Parça sağlamsa sadece aracın ekspertiz raporuna "ONAYLANDI" olarak mühürle
-        await _db.collection('araclar').doc(aracId).collection('ekspertiz_noktalari').add({
+        // 🔥 YEŞİL TIK PROTOKOLÜ (ATOMİK - WRITEBATCH ZIRHI)
+        WriteBatch batch = _db.batch();
+
+        // Ekspertiz noktasına mühür vur
+        DocumentReference noktaRef = _db.collection('araclar').doc(aracId).collection('ekspertiz_noktalari').doc();
+        batch.set(noktaRef, {
           'parca': parcaAdi,
           'durum': 'ONAYLANDI',
           'detay': detay,
@@ -29,6 +33,16 @@ class EkspertizServisi {
           'bayi_id': bayiId,
           'tarih': FieldValue.serverTimestamp(),
         });
+
+        // Aracın kendi DNA sicilini de eşzamanlı güncelle
+        DocumentReference aracRef = _db.collection('araclar').doc(aracId);
+        batch.update(aracRef, {
+          'son_muayene_tarihi': FieldValue.serverTimestamp(),
+          'son_islem_yapan_bayi': bayiId,
+        });
+
+        await batch.commit(); // Füzeyi Ateşle!
+
         return {'basarili': true, 'mesaj': '✅ $parcaAdi onaylandı ve Kuantum Ağına mühürlendi.'};
       } else {
         // PARÇA HATALIYSA: KRİTİK HATA PROTOKOLÜNÜ (İDAM) BAŞLAT
