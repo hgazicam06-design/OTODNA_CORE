@@ -1,13 +1,11 @@
-// lib/core/responsive_kalkan.dart
 import 'package:flutter/material.dart';
+
+// 🔥 SİBER KÖPRÜ
 import 'siber_tema.dart';
 
-/// 🛡️ OTONOM EKRAN ZIRHI (ResponsiveKalkan)
-/// Uygulama devasa bir araç ekranında (Double-Din) veya Tablette açıldığında,
-/// içeriğin sünüp iğrenç görünmesini engeller. Tüm sistemi tam ortaya Kilitler!
 class ResponsiveKalkan extends StatelessWidget {
   final Widget child;
-  final bool isOledBackground; // Sayfanın arka planı simsiyah mı olsun?
+  final bool isOledBackground;
 
   const ResponsiveKalkan({
     super.key,
@@ -18,13 +16,16 @@ class ResponsiveKalkan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: isOledBackground ? SiberTema.oledBlack : Colors.transparent,
-      body: SafeArea(
-        child: Center(
-          // Kuantum Sınırı: İçerik 600 pikselden daha fazla genişleyemez!
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600),
-            child: child, // Senin tasarladığın asıl ekran bu zırhın içinde çalışır
+      backgroundColor: Colors.transparent, // Arka planı Container yönetecek
+      body: Container(
+        // 🔥 YENİ: Yorucu radar grid silindi, 3D Derinlik Gradienti eklendi!
+        decoration: isOledBackground ? SiberTema.siberArkaPlan : null,
+        child: SafeArea(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 600),
+              child: child,
+            ),
           ),
         ),
       ),

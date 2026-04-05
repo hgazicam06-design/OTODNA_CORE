@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// 🔥 SİBER KÖPRÜ (Göreceli Rota - Klasör kopmalarını engeller)
-import '../screens/scanner/qr_scanner_screen.dart';
+// 🔥 SİBER KÖPRÜ (Eski scanner klasörü silindi, yerine yeni QR Radar bağlandı)
+import '../screens/qr/siber_goz_radari.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(hosgeldinMesaji, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: const Color(0xFF00FFC2)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(hosgeldinMesaji, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), backgroundColor: const Color(0xFF00FFC2)));
 
     // İşlem başarılı, Ana Karargaha geç
     Navigator.pushReplacementNamed(context, '/home');
@@ -110,14 +110,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _showError(String message) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message, style: const TextStyle(color: Colors.white)), backgroundColor: Colors.redAccent));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message, style: const TextStyle(color: Colors.white, fontFamily: 'Avenir')), backgroundColor: Colors.redAccent));
   }
 
-  // QR Siber Göz
+  // 🔥 QR Siber Göz (Hata Onarıldı!)
   void _openQRScanner() async {
-    final scannedCode = await Navigator.push(context, MaterialPageRoute(builder: (context) => const QrScannerScreen()));
+    // const hatası kaldırıldı ve doğru rotaya bağlandı!
+    final scannedCode = await Navigator.push(context, MaterialPageRoute(builder: (context) => const SiberGozRadari()));
+
     if (scannedCode != null && mounted) {
-      _identifierController.text = scannedCode;
+      _identifierController.text = scannedCode; // Okunan QR kodunu direkt giriş kutusuna yazar
     }
   }
 
@@ -175,10 +177,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   ShaderMask(
                     shaderCallback: (bounds) => const LinearGradient(colors: [Colors.white, Color(0xFF00FFC2)], begin: Alignment.topCenter, end: Alignment.bottomCenter).createShader(bounds),
-                    child: const Text('OtoDNA', style: TextStyle(fontSize: 42, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 2.0)),
+                    child: const Text('OtoDNA', style: TextStyle(fontSize: 42, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 2.0, fontFamily: 'Avenir')),
                   ),
                   const SizedBox(height: 4),
-                  const Text('DİJİTAL REFERANS PROTOKOLÜ', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: primaryCyan, letterSpacing: 2.0)),
+                  const Text('DİJİTAL REFERANS PROTOKOLÜ', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: primaryCyan, letterSpacing: 2.0, fontFamily: 'Avenir')),
                 ],
               ),
               const SizedBox(height: 40),
@@ -227,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               )
                           ),
                           const SizedBox(width: 8),
-                          const Text('Beni Hatırla', style: TextStyle(color: textSecondary, fontSize: 13)),
+                          const Text('Beni Hatırla', style: TextStyle(color: textSecondary, fontSize: 13, fontFamily: 'Avenir')),
                         ],
                       ),
                     ),
@@ -257,7 +259,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.pushNamed(context, '/sifre_sifirlama');
                           },
                           style: TextButton.styleFrom(padding: EdgeInsets.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-                          child: const Text('Şifremi Unuttum', style: TextStyle(color: primaryCyan, fontSize: 13, fontWeight: FontWeight.bold))
+                          child: const Text('Şifremi Unuttum', style: TextStyle(color: primaryCyan, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))
                       ),
                     ),
                   ),
@@ -279,7 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent, shadowColor: Colors.transparent, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)), disabledBackgroundColor: Colors.transparent),
                   child: _isLoading
                       ? const SizedBox(height: 24, width: 24, child: CircularProgressIndicator(color: Color(0xFF000000), strokeWidth: 3))
-                      : const Text('SİSTEME GİRİŞ YAP', style: TextStyle(color: Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+                      : const Text('SİSTEME GİRİŞ YAP', style: TextStyle(color: Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1.2, fontFamily: 'Avenir')),
                 ),
               ),
 
@@ -292,7 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: OutlinedButton(
                   onPressed: () => Navigator.pushNamed(context, '/kayit_ol'),
                   style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.white24, width: 1.5), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
-                  child: const Text('HESABIN YOK MU? KAYIT OL', style: TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.bold)),
+                  child: const Text('HESABIN YOK MU? KAYIT OL', style: TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                 ),
               ),
               const SizedBox(height: 20),
@@ -308,10 +310,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
-      style: const TextStyle(color: Colors.white, fontSize: 16, letterSpacing: 1.0),
+      style: const TextStyle(color: Colors.white, fontSize: 16, letterSpacing: 1.0, fontFamily: 'Avenir'),
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: const TextStyle(color: Colors.white38, fontSize: 14, letterSpacing: 0),
+        hintStyle: const TextStyle(color: Colors.white38, fontSize: 14, letterSpacing: 0, fontFamily: 'Avenir'),
         prefixIcon: Icon(icon, color: Colors.white54, size: 22),
         suffixIcon: isPassword ? IconButton(icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility, color: primaryColor, size: 22), onPressed: onTogglePassword) : null,
         filled: true,

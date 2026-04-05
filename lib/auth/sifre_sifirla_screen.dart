@@ -2,6 +2,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// 🔥 SİBER KÖPRÜLER VE TEMA (Zırh v2.0)
+import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart';
+
 class SifreSifirlaScreen extends StatefulWidget {
   const SifreSifirlaScreen({super.key});
 
@@ -53,14 +57,14 @@ class _SifreSifirlaScreenState extends State<SifreSifirlaScreen> {
   void _siberUyariVer(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: isError ? Colors.redAccent.shade700 : const Color(0xFF00FFC2), // Kuantum Turkuazı
+        backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         content: Text(
           mesaj,
           style: TextStyle(
-            color: isError ? Colors.white : Colors.black,
-            fontWeight: FontWeight.w600,
+            color: isError ? Colors.white : SiberTema.oledBlack,
+            fontWeight: FontWeight.w900,
             fontSize: 14,
-            fontFamily: 'Avenir',
+            fontFamily: SiberTema.siberFont,
           ),
         ),
         duration: const Duration(seconds: 4),
@@ -72,128 +76,122 @@ class _SifreSifirlaScreenState extends State<SifreSifirlaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // 🌑 TESLA MİMARİSİ: %100 OLED Siyah
-    const Color neonCyan = Color(0xFF00FFC2);
-    const Color bgKaranlik = Color(0xFF000000);
-
-    return Scaffold(
-      backgroundColor: bgKaranlik,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: neonCyan),
-          onPressed: () => Navigator.pop(context),
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent, // Arka plan Zırhtan geliyor
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: const Text(
+            "ŞİFRE KURTARMA",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: SiberTema.siberFont, fontSize: 16),
+          ),
+          centerTitle: true,
         ),
-        title: const Text(
-          "ŞİFRE KURTARMA",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, letterSpacing: 2, fontFamily: 'Avenir', fontSize: 16),
-        ),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // 🔥 Siber Kilit İkonu
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: neonCyan.withOpacity(0.05),
-                  border: Border.all(color: neonCyan.withOpacity(0.3), width: 1.5),
-                  boxShadow: [
-                    BoxShadow(color: neonCyan.withOpacity(0.15), blurRadius: 30, spreadRadius: 2),
-                  ],
+        body: Center(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // 🔥 3D SİBER KİLİT İKONU
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: SiberTema.matGrey,
+                    border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
+                    boxShadow: SiberTema.siberGolgeDerin, // 🔥 3D Derinlik Gölgeleri
+                  ),
+                  child: const Center(
+                    child: Icon(Icons.lock_reset_rounded, color: SiberTema.kuantumCyan, size: 50, shadows: [Shadow(color: SiberTema.kuantumCyan, blurRadius: 10)]),
+                  ),
                 ),
-                child: const Center(
-                  child: Icon(Icons.lock_reset_outlined, color: neonCyan, size: 50),
-                ),
-              ),
-              const SizedBox(height: 30),
+                const SizedBox(height: 30),
 
-              const Text(
-                "SİBER KİLİT KIRILIYOR",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 3,
-                  fontFamily: 'Avenir',
+                const Text(
+                  "SİBER KİLİT KIRILIYOR",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 3,
+                    fontFamily: SiberTema.siberFont,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                "Karargaha kayıtlı yetkili e-posta adresinizi girin. Kuantum sıfırlama protokolü anında başlatılacaktır.",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.6),
-                  fontSize: 14,
-                  height: 1.5,
-                  fontFamily: 'Avenir',
+                const SizedBox(height: 12),
+                Text(
+                  "Karargaha kayıtlı yetkili e-posta adresinizi girin. Kuantum sıfırlama protokolü anında başlatılacaktır.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.6),
+                    fontSize: 14,
+                    height: 1.5,
+                    fontFamily: SiberTema.siberFont,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 40),
+                const SizedBox(height: 40),
 
-              // 🔥 SADE VE PREMIUM FORM ALANI
-              Container(
-                padding: const EdgeInsets.all(24.0),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.02),
-                  border: Border.all(color: Colors.white.withOpacity(0.05), width: 1),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: _emailCtrl,
-                      keyboardType: TextInputType.emailAddress,
-                      style: const TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Avenir', letterSpacing: 1.0),
-                      decoration: InputDecoration(
-                        hintText: "Siber E-Posta Adresi",
-                        hintStyle: const TextStyle(color: Colors.white30, fontSize: 14, fontFamily: 'Avenir'),
-                        prefixIcon: const Icon(Icons.alternate_email, color: Colors.white54, size: 22),
-                        filled: true,
-                        fillColor: Colors.black.withOpacity(0.2),
-                        contentPadding: const EdgeInsets.symmetric(vertical: 18),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide(color: Colors.white.withOpacity(0.08), width: 1),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: neonCyan, width: 1.5),
+                // 🔥 3D SİBER FORM ALANI
+                Container(
+                  padding: const EdgeInsets.all(24.0),
+                  decoration: BoxDecoration(
+                    color: SiberTema.matGrey.withOpacity(0.5),
+                    border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: SiberTema.siberGolgeKatmanli, // 🔥 Derinlik
+                  ),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: _emailCtrl,
+                        keyboardType: TextInputType.emailAddress,
+                        style: const TextStyle(color: Colors.white, fontSize: 16, fontFamily: SiberTema.siberFont, letterSpacing: 1.5, fontWeight: FontWeight.bold),
+                        decoration: InputDecoration(
+                          hintText: "Siber E-Posta Adresi",
+                          hintStyle: const TextStyle(color: Colors.white30, fontSize: 14, fontFamily: SiberTema.siberFont, letterSpacing: 1),
+                          prefixIcon: const Icon(Icons.alternate_email, color: Colors.white54, size: 22),
+                          filled: true,
+                          fillColor: SiberTema.oledBlack, // Derin Siyah
+                          contentPadding: const EdgeInsets.symmetric(vertical: 20),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide(color: Colors.white.withOpacity(0.05), width: 1.5),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 2),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 30),
+                      const SizedBox(height: 30),
 
-                    SizedBox(
-                      width: double.infinity,
-                      height: 55,
-                      child: _isLoading
-                          ? const Center(child: CircularProgressIndicator(color: neonCyan, strokeWidth: 3))
-                          : ElevatedButton(
-                        onPressed: _sifirlamaProtokolunuBaslat,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: neonCyan,
-                          foregroundColor: bgKaranlik,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                        ),
-                        child: const Text(
-                          "BAĞLANTIYI GÖNDER",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, letterSpacing: 2, fontFamily: 'Avenir'),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 55,
+                        child: _isLoading
+                            ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3))
+                            : ElevatedButton(
+                          onPressed: _sifirlamaProtokolunuBaslat,
+                          style: SiberTema.kuantumButonStili(), // 🔥 3D Kuantum Butonu
+                          child: const Text(
+                            "BAĞLANTIYI GÖNDER",
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: SiberTema.siberFont, color: SiberTema.oledBlack),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// 🔥 SİBER KÖPRÜLER VE TEMA (Zırh v2.0)
+import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart';
+
 class SiberKayitScreen extends StatefulWidget {
   const SiberKayitScreen({super.key});
 
@@ -17,16 +21,6 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
   final TextEditingController _confirmPasswordController = TextEditingController();
 
   bool _isLoading = false;
-  late AnimationController _radarController;
-
-  @override
-  void initState() {
-    super.initState();
-    _radarController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 6),
-    )..repeat();
-  }
 
   @override
   void dispose() {
@@ -34,7 +28,6 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
-    _radarController.dispose();
     super.dispose();
   }
 
@@ -78,7 +71,7 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
           'uid': userCredential.user!.uid,
           'fullName': name,
           'email': email,
-          'rol': 'user', // Başlangıç seviyesi: Kullanıcı (Karargahta 'role' değil 'rol' diyoruz)
+          'rol': 'user', // Başlangıç seviyesi: Kullanıcı
           'rating': 5, // OtoDNA 5 Yıldız Kuralı
           'is_blacklisted': false, // Karaliste (Black Star) durumu başlangıçta temiz
           'kayit_tarihi': FieldValue.serverTimestamp(),
@@ -110,14 +103,14 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
   void _siberUyariVer(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: isError ? Colors.redAccent.shade700 : const Color(0xFF00FFC2), // Kuantum Turkuazı
+        backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         content: Text(
           mesaj,
           style: TextStyle(
-            color: isError ? Colors.white : Colors.black,
-            fontWeight: FontWeight.w600,
+            color: isError ? Colors.white : SiberTema.oledBlack,
+            fontWeight: FontWeight.w900,
             fontSize: 14,
-            fontFamily: 'Avenir',
+            fontFamily: SiberTema.siberFont,
           ),
         ),
         duration: const Duration(seconds: 4),
@@ -129,156 +122,125 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    // 🌑 TESLA MİMARİSİ: %100 OLED SİYAH VE KUANTUM TURKUAZI
-    const Color neonCyan = Color(0xFF00FFC2);
-    const Color bgKaranlik = Color(0xFF000000);
-
-    return Scaffold(
-      backgroundColor: bgKaranlik,
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white70),
-          onPressed: () => Navigator.pop(context),
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent, // Arka plan Zırhtan geliyor
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
-      ),
-      body: Stack(
-        children: [
-          // Sade ve Şık Arka Plan Aydınlatması
-          Positioned.fill(
-            child: AnimatedBuilder(
-              animation: _radarController,
-              builder: (context, child) {
-                return Container(
+        body: Center(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // 🛡️ SİBER 3D YENİ YETKİLİ İKONU
+                Container(
+                  width: 90,
+                  height: 90,
                   decoration: BoxDecoration(
-                    gradient: RadialGradient(
-                      colors: [neonCyan.withOpacity(0.04), bgKaranlik],
-                      stops: [_radarController.value, _radarController.value + 0.8],
-                      radius: 1.2,
-                    ),
+                    shape: BoxShape.circle,
+                    color: SiberTema.matGrey,
+                    border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
+                    boxShadow: SiberTema.siberGolgeDerin, // 🔥 3D Derinlik
                   ),
-                );
-              },
-            ),
-          ),
-
-          SafeArea(
-            child: Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Siber Yeni Yetkili İkonu
-                    Container(
-                      width: 90,
-                      height: 90,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(0.02),
-                        border: Border.all(color: neonCyan.withOpacity(0.3), width: 1.5),
-                        boxShadow: [
-                          BoxShadow(color: neonCyan.withOpacity(0.15), blurRadius: 30, spreadRadius: 2),
-                        ],
-                      ),
-                      child: const Center(
-                        child: Icon(Icons.person_add_alt_1_outlined, color: neonCyan, size: 45),
-                      ),
-                    ),
-
-                    const SizedBox(height: 25),
-                    const Text(
-                      "AĞA KATIL",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 4,
-                        fontFamily: 'Avenir',
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      "YENİ YETKİLİ PROTOKOLÜ",
-                      style: TextStyle(
-                        color: neonCyan.withOpacity(0.8),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 3,
-                        fontFamily: 'Avenir',
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-
-                    // 🔥 SADE VE PREMIUM KAYIT FORM ALANI
-                    Container(
-                      padding: const EdgeInsets.all(24.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.02),
-                        border: Border.all(color: Colors.white.withOpacity(0.05), width: 1),
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: Column(
-                        children: [
-                          _buildPremiumInput(
-                            controller: _nameController,
-                            icon: Icons.badge_outlined,
-                            hint: "Ad Soyad / Firma Adı",
-                            isObscure: false,
-                          ),
-                          const SizedBox(height: 16),
-                          _buildPremiumInput(
-                            controller: _emailController,
-                            icon: Icons.email_outlined,
-                            hint: "Yetkili E-Posta",
-                            isObscure: false,
-                          ),
-                          const SizedBox(height: 16),
-                          _buildPremiumInput(
-                            controller: _passwordController,
-                            icon: Icons.lock_outline,
-                            hint: "Güvenlik Şifresi",
-                            isObscure: true,
-                          ),
-                          const SizedBox(height: 16),
-                          _buildPremiumInput(
-                            controller: _confirmPasswordController,
-                            icon: Icons.lock_reset_outlined,
-                            hint: "Şifreyi Doğrula",
-                            isObscure: true,
-                          ),
-                          const SizedBox(height: 35),
-
-                          SizedBox(
-                            width: double.infinity,
-                            height: 55,
-                            child: _isLoading
-                                ? const Center(child: CircularProgressIndicator(color: neonCyan, strokeWidth: 3))
-                                : ElevatedButton(
-                              onPressed: _kuantumKayitBaslat,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: neonCyan,
-                                foregroundColor: bgKaranlik,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                              ),
-                              child: const Text(
-                                "PROTOKOLÜ TAMAMLA",
-                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, letterSpacing: 1.5, fontFamily: 'Avenir'),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  child: const Center(
+                    child: Icon(Icons.person_add_alt_1_rounded, color: SiberTema.kuantumCyan, size: 40, shadows: [Shadow(color: SiberTema.kuantumCyan, blurRadius: 10)]),
+                  ),
                 ),
-              ),
+
+                const SizedBox(height: 25),
+                const Text(
+                  "AĞA KATIL",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 4,
+                    fontFamily: SiberTema.siberFont,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  "YENİ YETKİLİ PROTOKOLÜ",
+                  style: TextStyle(
+                    color: SiberTema.kuantumCyan.withOpacity(0.8),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 3,
+                    fontFamily: SiberTema.siberFont,
+                  ),
+                ),
+                const SizedBox(height: 40),
+
+                // 🔥 3D SADE VE PREMIUM KAYIT FORM ALANI
+                Container(
+                  padding: const EdgeInsets.all(24.0),
+                  decoration: BoxDecoration(
+                    color: SiberTema.matGrey.withOpacity(0.5),
+                    border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: SiberTema.siberGolgeKatmanli, // 🔥 Derinlik
+                  ),
+                  child: Column(
+                    children: [
+                      _buildPremiumInput(
+                        controller: _nameController,
+                        icon: Icons.badge_outlined,
+                        hint: "Ad Soyad / Firma Adı",
+                        isObscure: false,
+                      ),
+                      const SizedBox(height: 16),
+                      _buildPremiumInput(
+                        controller: _emailController,
+                        icon: Icons.email_outlined,
+                        hint: "Yetkili E-Posta",
+                        isObscure: false,
+                      ),
+                      const SizedBox(height: 16),
+                      _buildPremiumInput(
+                        controller: _passwordController,
+                        icon: Icons.lock_outline,
+                        hint: "Güvenlik Şifresi",
+                        isObscure: true,
+                      ),
+                      const SizedBox(height: 16),
+                      _buildPremiumInput(
+                        controller: _confirmPasswordController,
+                        icon: Icons.lock_reset_outlined,
+                        hint: "Şifreyi Doğrula",
+                        isObscure: true,
+                      ),
+                      const SizedBox(height: 35),
+
+                      SizedBox(
+                        width: double.infinity,
+                        height: 55,
+                        child: _isLoading
+                            ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3))
+                            : ElevatedButton(
+                          onPressed: _kuantumKayitBaslat,
+                          style: SiberTema.kuantumButonStili(), // 🔥 3D Buton
+                          child: const Text(
+                            "PROTOKOLÜ TAMAMLA",
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: SiberTema.siberFont, color: SiberTema.oledBlack),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -289,25 +251,24 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
     required String hint,
     required bool isObscure,
   }) {
-    const Color neonCyan = Color(0xFF00FFC2); // Kuantum Turkuazı
     return TextField(
       controller: controller,
       obscureText: isObscure,
-      style: const TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Avenir'),
+      style: const TextStyle(color: Colors.white, fontSize: 15, fontFamily: SiberTema.siberFont, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.white54, size: 22),
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.white30, fontSize: 14, fontFamily: 'Avenir'),
+        hintStyle: const TextStyle(color: Colors.white30, fontSize: 14, fontFamily: SiberTema.siberFont),
         filled: true,
-        fillColor: Colors.black.withOpacity(0.2),
+        fillColor: SiberTema.oledBlack, // Derin siyah giriş alanı
         contentPadding: const EdgeInsets.symmetric(vertical: 18),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.08), width: 1),
+          borderSide: BorderSide(color: Colors.white.withOpacity(0.05), width: 1.5),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: neonCyan, width: 1.5),
+          borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 2),
         ),
       ),
     );

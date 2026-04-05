@@ -1,37 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart'; // Firebase otonom yapılandırma dosyası
 
-// 🚀 KARARGAH ZIRHLARI VE TEMASI (Yeni mimariye göre yol hizalandı)
+// 🔥 SİBER KÖPRÜLER VE TEMA (Zırh v2.0)
 import 'core/siber_tema.dart';
 
-// 🔥 SİBER KAPININ (AUTH GATE) GERÇEK BAĞLANTISI (Yeni auth/ klasörüne göre rotalandı!)
+// 🚀 AUTH VE GİRİŞ EKRANLARI (Tüm kablolar buraya çekildi)
+import 'auth/siber_baslangic_screen.dart';
 import 'auth/otodna_auth_gate.dart';
+import 'auth/login_screen.dart';
+import 'auth/siber_kayit_screen.dart';
+import 'auth/sifre_sifirla_screen.dart';
+import 'auth/siber_sms_screen.dart';
 
 void main() async {
-  // 1. SİBER MOTORLARI HAZIRLA
+  // 1. Flutter Motorunu Emniyete Al
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 2. FIREBASE KUANTUM AĞINA CANLI BAĞLANTI (Maket yok, %100 Gerçek Veri!)
-  // Not: Mevcut google-services.json mimarisi için bu ateşleme kodu kusursuzdur.
-  await Firebase.initializeApp();
+  // 2. Kuantum Firebase Ağını Ateşle
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-  // 3. KARARGAHI ATEŞLE
-  runApp(const OtoDNAKarargah());
+  // 3. Karargahı Başlat
+  runApp(const OtoDnaApp());
 }
 
-class OtoDNAKarargah extends StatelessWidget {
-  const OtoDNAKarargah({super.key});
+class OtoDnaApp extends StatelessWidget {
+  const OtoDnaApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'OtoDNA Kuantum Ağı',
-      debugShowCheckedModeBanner: false,
-      theme: SiberTema.tema, // Kuantum Turkuazı ve Derin Siyah zırhımız
+      title: 'OtoDNA Karargahı',
+      debugShowCheckedModeBanner: false, // Sağ üstteki "Debug" kırmızı bandını yokedip atar
 
-      // 🔥 İŞTE SİBER KİLİDİ AÇAN KOD:
-      // Sistem artık doğrudan Firebase kimlik doğrulama radarına (OtoDnaAuthGate) bağlanıyor!
-      home: const OtoDnaAuthGate(),
+      // 💎 3D KUANTUM ZIRHI BURADAN TÜM UYGULAMAYA DAĞILIR!
+      theme: SiberTema.tema,
+
+      // 🚀 İLK AÇILIŞ EKRANI (SPLASH & HOLOGRAM ŞOVU)
+      home: const SiberBaslangicScreen(),
+
+      // 🧠 SİBER ROTALAR (Uygulama içi ışınlanma koordinatları)
+      routes: {
+        // '/home' rotası direkt AuthGate'e atar. AuthGate kişinin rütbesine bakıp
+        // Admin, Bayi veya Kullanıcı Paneline otonom olarak fırlatır!
+        '/home': (context) => const OtoDnaAuthGate(),
+
+        '/login': (context) => const LoginScreen(),
+        '/kayit_ol': (context) => const SiberKayitScreen(),
+        '/sifre_sifirlama': (context) => const SifreSifirlaScreen(),
+        '/sms_dogrulama': (context) => const SiberSmsScreen(),
+      },
     );
   }
 }

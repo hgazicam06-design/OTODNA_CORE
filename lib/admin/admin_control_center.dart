@@ -25,6 +25,15 @@ class AdminControlCenter extends StatelessWidget {
     await FirebaseAuth.instance.signOut();
   }
 
+  void _sistemAyarMenuAc(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const _SistemAyarlariTerminali(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
@@ -53,8 +62,8 @@ class AdminControlCenter extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 3,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
+              crossAxisSpacing: 15, // 🔥 3D kartlar için daha fazla boşluk
+              mainAxisSpacing: 15,
               childAspectRatio: 0.85,
               children: [
                 _buildSiberMenuKarti(context, "BÖLGE\nRADARI", Icons.radar, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BolgeKomutaMerkeziScreen()))),
@@ -63,10 +72,10 @@ class AdminControlCenter extends StatelessWidget {
                 _buildSiberMenuKarti(context, "BAYİ\nKOKPİTİ", Icons.store_mall_directory, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BayiPaneliScreen(bayiId: "TEST_BAYI_001")))),
                 _buildSiberMenuKarti(context, "KULLANICI\nYETKİ", Icons.people_alt, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const KullaniciYonetimScreen()))),
                 _buildSiberMenuKarti(context, "ONAY\nHAVUZU", Icons.verified_user, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AdminOnayHavuzuScreen()))),
-                // ✅ HATA ÇÖZÜLDÜ: MegaRevizyonScreen plaka parametresi alıyor!
                 _buildSiberMenuKarti(context, "MEGA\nREVİZYON", Icons.build_circle, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const MegaRevizyonScreen(plaka: "KARARGAH-GİRİŞİ")))),
                 _buildSiberMenuKarti(context, "EKSPERTİZ\nDNA", Icons.fact_check, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BayiEkosistemiScreen()))),
                 _buildSiberMenuKarti(context, "KASA\n& SOS", Icons.dashboard_customize, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AdminDashUI()))),
+                _buildSiberMenuKarti(context, "SİSTEM\nAYARLARI", Icons.tune, () => _sistemAyarMenuAc(context), isOzel: true),
               ],
             ),
             const SizedBox(height: 30),
@@ -76,7 +85,12 @@ class AdminControlCenter extends StatelessWidget {
             Container(
               height: 220,
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [SiberTema.oledBlack, SiberTema.matGrey.withOpacity(0.5)]), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5), boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 15, spreadRadius: -2, offset: const Offset(0, 5))]),
+              decoration: BoxDecoration(
+                  color: SiberTema.matGrey, // 🔥 3D Zemin Rengi
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
+                  boxShadow: SiberTema.siberGolgeDerin // 🔥 3D GÖLGE EKLENDİ
+              ),
               child: _canliHareketListesi(),
             ),
             const SizedBox(height: 40),
@@ -96,18 +110,33 @@ class AdminControlCenter extends StatelessWidget {
     );
   }
 
-  Widget _buildSiberMenuKarti(BuildContext context, String baslik, IconData ikon, VoidCallback onTap) {
+  Widget _buildSiberMenuKarti(BuildContext context, String baslik, IconData ikon, VoidCallback onTap, {bool isOzel = false}) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Container(
-        decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [SiberTema.matGrey.withOpacity(0.8), SiberTema.oledBlack]), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.1), width: 1), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.6), blurRadius: 10, spreadRadius: 1, offset: const Offset(0, 5))]),
+        decoration: BoxDecoration(
+            color: SiberTema.matGrey, // 🔥 Gradient yerine solid renk, üstüne 3D gölge!
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: isOzel ? SiberTema.altinSari.withOpacity(0.5) : Colors.white.withOpacity(0.1), width: isOzel ? 1.5 : 1),
+            boxShadow: SiberTema.siberGolgeDerin // 🔥 EFSANE 3D GÖLGE BURADA
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.05), shape: BoxShape.circle, border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.2))), child: Icon(ikon, color: SiberTema.kuantumCyan, size: 24)),
+            Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                    color: isOzel ? SiberTema.altinSari.withOpacity(0.1) : SiberTema.kuantumCyan.withOpacity(0.05),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: isOzel ? SiberTema.altinSari.withOpacity(0.5) : SiberTema.kuantumCyan.withOpacity(0.2)),
+                    // 🔥 İKONUN ARKASINA DA DERİNLİK KATALIM
+                    boxShadow: [BoxShadow(color: isOzel ? SiberTema.altinSari.withOpacity(0.1) : SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 10)]
+                ),
+                child: Icon(ikon, color: isOzel ? SiberTema.altinSari : SiberTema.kuantumCyan, size: 28, shadows: [Shadow(color: isOzel ? SiberTema.altinSari : SiberTema.kuantumCyan, blurRadius: 10)]) // 🔥 İKON NEON PARLASIN
+            ),
             const SizedBox(height: 12),
-            Text(baslik, textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(0.95), fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1.0, fontFamily: 'Avenir')),
+            Text(baslik, textAlign: TextAlign.center, style: TextStyle(color: isOzel ? SiberTema.altinSari : Colors.white.withOpacity(0.95), fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1.0, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -127,7 +156,12 @@ class AdminControlCenter extends StatelessWidget {
         }
         return Container(
           padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [SiberTema.oledBlack, SiberTema.matGrey.withOpacity(0.5)]), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5)),
+          decoration: BoxDecoration(
+              color: SiberTema.matGrey, // 🔥 3D Zemin
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
+              boxShadow: SiberTema.siberGolgeKatmanli // 🔥 KATMANLI DERİNLİK GÖLGESİ
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -185,4 +219,174 @@ class AdminControlCenter extends StatelessWidget {
   }
 
   Widget _buildKuantumLoader() => const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3));
+}
+
+// =====================================================================
+// ⚙️ SİSTEM AYARLARI VE HOLOGRAM KONTROL PANELİ
+// =====================================================================
+class _SistemAyarlariTerminali extends StatefulWidget {
+  const _SistemAyarlariTerminali();
+
+  @override
+  State<_SistemAyarlariTerminali> createState() => _SistemAyarlariTerminaliState();
+}
+
+class _SistemAyarlariTerminaliState extends State<_SistemAyarlariTerminali> {
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  bool _hologramAktif = false;
+  final TextEditingController _hologramBaslikCtrl = TextEditingController();
+  final TextEditingController _hologramMesajCtrl = TextEditingController();
+
+  bool _isSaving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _ayarlariCek();
+  }
+
+  Future<void> _ayarlariCek() async {
+    try {
+      DocumentSnapshot doc = await _db.collection('sistem_ayarlari').doc('genel_ayarlar').get();
+      if (doc.exists) {
+        var data = doc.data() as Map<String, dynamic>;
+        setState(() {
+          _hologramAktif = data['hologram_aktif'] ?? false;
+          _hologramBaslikCtrl.text = data['hologram_baslik'] ?? "";
+          _hologramMesajCtrl.text = data['hologram_mesaj'] ?? "";
+        });
+      }
+    } catch (e) {
+      // Varsayılan ayarlarla devam et
+    }
+  }
+
+  Future<void> _ayarlariKaydet() async {
+    setState(() => _isSaving = true);
+    try {
+      await _db.collection('sistem_ayarlari').doc('genel_ayarlar').set({
+        'hologram_aktif': _hologramAktif,
+        'hologram_baslik': _hologramBaslikCtrl.text.trim(),
+        'hologram_mesaj': _hologramMesajCtrl.text.trim(),
+        'guncellenme_tarihi': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("AĞA MÜHÜRLENDİ! Tüm kullanıcılarda anında değişecek.", style: TextStyle(fontWeight: FontWeight.bold, color: SiberTema.oledBlack)), backgroundColor: SiberTema.kuantumCyan));
+      Navigator.pop(context);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Siber Ağ Hatası! Kaydedilemedi."), backgroundColor: SiberTema.kanKirmizi));
+    } finally {
+      if (mounted) setState(() => _isSaving = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+        child: Container(
+          padding: const EdgeInsets.all(32),
+          decoration: BoxDecoration(
+            color: SiberTema.oledBlack.withOpacity(0.85),
+            border: Border(top: BorderSide(color: SiberTema.altinSari.withOpacity(0.5), width: 2)),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(10)))),
+                const SizedBox(height: 32),
+
+                const Row(
+                  children: [
+                    Icon(Icons.tune, color: SiberTema.altinSari, size: 28),
+                    SizedBox(width: 12),
+                    Text("SİSTEM AYARLARI", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 24), child: Divider(color: Colors.white12)),
+
+                // 🎇 HOLOGRAM ŞALTERİ
+                Row(
+                  children: [
+                    const Icon(Icons.celebration, color: SiberTema.kuantumCyan),
+                    const SizedBox(width: 12),
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("HOLOGRAM (KUTLAMA) EKRANI", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13, fontFamily: 'Avenir')),
+                          SizedBox(height: 4),
+                          Text("Açıldığında uygulamaya giren herkesin karşısına çıkar.", style: TextStyle(color: Colors.white54, fontSize: 10, fontFamily: 'Avenir')),
+                        ],
+                      ),
+                    ),
+                    Switch(
+                      value: _hologramAktif,
+                      activeColor: SiberTema.oledBlack,
+                      activeTrackColor: SiberTema.kuantumCyan,
+                      inactiveThumbColor: Colors.white54,
+                      inactiveTrackColor: Colors.white12,
+                      onChanged: (val) => setState(() => _hologramAktif = val),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+
+                // HOLOGRAM METİNLERİ
+                if (_hologramAktif) ...[
+                  _buildGirdi("Kutlama Başlığı", "Örn: 29 Ekim Cumhuriyet Bayramımız Kutlu Olsun!", _hologramBaslikCtrl),
+                  const SizedBox(height: 16),
+                  _buildGirdi("Kutlama / Duyuru Metni", "Kullanıcılara iletilecek detaylı mesaj...", _hologramMesajCtrl, maxLines: 3),
+                  const SizedBox(height: 24),
+                ],
+
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity, height: 56,
+                  child: ElevatedButton.icon(
+                    style: SiberTema.kuantumButonStili().copyWith(backgroundColor: MaterialStateProperty.all(SiberTema.altinSari)),
+                    onPressed: _isSaving ? null : _ayarlariKaydet,
+                    icon: _isSaving ? const SizedBox() : const Icon(Icons.save),
+                    label: _isSaving
+                        ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
+                        : const Text("TÜM AĞI GÜNCELLE VE MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir', color: SiberTema.oledBlack)),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGirdi(String baslik, String hint, TextEditingController ctrl, {int maxLines = 1}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(baslik, style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+        const SizedBox(height: 8),
+        TextField(
+          controller: ctrl,
+          maxLines: maxLines,
+          style: const TextStyle(color: Colors.white, fontSize: 13, fontFamily: 'Avenir'),
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: TextStyle(color: Colors.white.withOpacity(0.2)),
+            filled: true,
+            fillColor: SiberTema.matGrey,
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white12)),
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
+          ),
+        )
+      ],
+    );
+  }
 }

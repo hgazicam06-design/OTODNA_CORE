@@ -10,9 +10,9 @@ import '../core/responsive_kalkan.dart';
 import '../services/kuantum_ocr_motoru.dart';
 
 // 🔥 SİBER KÖPRÜLER
-import 'siber_goz_qr_screen.dart';
+import 'qr/siber_goz_radari.dart'; // ✅ ESKİ DOSYA SİLİNDİ, YENİ QR RADARI BAĞLANDI
 import 'arac_dna_raporu_screen.dart';
-import 'global_siber_pazar_screen.dart'; // ✅ HATA ÇÖZÜLDÜ
+import 'global_siber_pazar_screen.dart';
 
 class KullaniciPaneliScreen extends StatefulWidget {
   const KullaniciPaneliScreen({super.key});
@@ -138,7 +138,15 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: GestureDetector(onTap: () => _siberUyariVer("AKILLI TORPİDO AÇILIYOR...", isError: false), child: Container(width: double.infinity, padding: const EdgeInsets.all(16), decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [SiberTema.matGrey, SiberTema.oledBlack]), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.1), width: 1.5)), child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.folder_special, color: SiberTema.altinSari, size: 24), SizedBox(width: 12), Text("AKILLI TORPİDO (PDF BELGELERİ)", style: TextStyle(color: SiberTema.altinSari, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'))]))),
+                    child: GestureDetector(
+                        onTap: () => _siberUyariVer("AKILLI TORPİDO AÇILIYOR...", isError: false),
+                        child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [SiberTema.matGrey, SiberTema.oledBlack]), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.1), width: 1.5)),
+                            child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.folder_special, color: SiberTema.altinSari, size: 24), SizedBox(width: 12), Text("AKILLI TORPİDO (PDF BELGELERİ)", style: TextStyle(color: SiberTema.altinSari, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'))])
+                        )
+                    ),
                   ),
                   const SizedBox(height: 16),
                   Padding(
@@ -187,7 +195,18 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
             const SizedBox(height: 20),
             Row(children: [Expanded(child: OutlinedButton.icon(style: OutlinedButton.styleFrom(foregroundColor: SiberTema.kuantumCyan, side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5))), icon: const Icon(Icons.history, size: 16), label: const Text("TÜM İŞLEMLER", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)), onPressed: () {})), const SizedBox(width: 12), Expanded(child: ElevatedButton.icon(style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, foregroundColor: SiberTema.oledBlack), icon: const Icon(Icons.health_and_safety, size: 16), label: const Text("SAĞLIK RAPORU", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (_) => AracDnaRaporuScreen(plaka: plaka))); }))]),
             const SizedBox(height: 12),
-            SizedBox(width: double.infinity, child: ElevatedButton.icon(style: ElevatedButton.styleFrom(backgroundColor: SiberTema.oledBlack, foregroundColor: SiberTema.kuantumCyan, side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5))), icon: const Icon(Icons.qr_code_scanner, size: 16), label: const Text("SİBER GÖZ (QR)", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (_) => const SiberGozQrScreen())); })),
+            SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(backgroundColor: SiberTema.oledBlack, foregroundColor: SiberTema.kuantumCyan, side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5))),
+                    icon: const Icon(Icons.qr_code_scanner, size: 16),
+                    label: const Text("SİBER GÖZ (QR)", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                    onPressed: () {
+                      // ✅ CONST HATASI KALDIRILDI VE DOĞRU KÖPRÜYE BAĞLANDI
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const SiberGozRadari()));
+                    }
+                )
+            ),
           ],
         ),
       ),

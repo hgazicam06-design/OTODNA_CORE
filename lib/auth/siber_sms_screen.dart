@@ -1,7 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
+// 🔥 SİBER KÖPRÜLER VE TEMA (Zırh v2.0)
+import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart';
 
 class SiberSmsScreen extends StatefulWidget {
   const SiberSmsScreen({super.key});
@@ -17,6 +20,13 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
   bool _codeSent = false;
   bool _isLoading = false;
   String _verificationId = "";
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    _otpController.dispose();
+    super.dispose();
+  }
 
   // 🔥 FİREBASE SMS GÖNDERME MOTORU
   Future<void> _telefonuDogrulaBaslat() async {
@@ -35,7 +45,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
         phoneNumber: phoneNumber,
         timeout: const Duration(seconds: 60),
 
-        // 1. Durum: Android'de bazen kod sormadan otomatik doğrular (Harika bir durum)
+        // 1. Durum: Android'de bazen kod sormadan otomatik doğrular
         verificationCompleted: (PhoneAuthCredential credential) async {
           await _kullaniciHesabinaTelefonuBagla(credential);
         },
@@ -78,7 +88,6 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
     setState(() { _isLoading = true; });
 
     try {
-      // Girilen kodu ve daha önce aldığımız ID'yi birleştirip Kuantum Anahtarı (Credential) oluşturuyoruz
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: _verificationId,
         smsCode: smsCode,
@@ -99,8 +108,6 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
       UserCredential userCred = await FirebaseAuth.instance.signInWithCredential(credential);
 
       if (userCred.user != null) {
-        // 🔥 SİBER ZIRH: Eğer giriş başarılıysa, AuthGate bizi zaten rotamıza çekecektir.
-        // Bu yüzden sadece bu ekranı kapatıyoruz.
         _siberUyariVer("DOĞRULAMA TAMAMLANDI! Karargaha Geçiliyor...", isError: false);
         if (mounted) {
           Navigator.pop(context); // SMS ekranından çık, Ana kapı (AuthGate) devralsın.
@@ -119,14 +126,14 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
   void _siberUyariVer(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: isError ? Colors.redAccent.shade700 : const Color(0xFF00FFC2), // Kuantum Turkuazı
+        backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         content: Text(
           mesaj,
           style: TextStyle(
-            color: isError ? Colors.white : Colors.black,
-            fontWeight: FontWeight.w600,
+            color: isError ? Colors.white : SiberTema.oledBlack,
+            fontWeight: FontWeight.w900,
             fontSize: 14,
-            fontFamily: 'Avenir',
+            fontFamily: SiberTema.siberFont,
           ),
         ),
         duration: const Duration(seconds: 4),
@@ -138,140 +145,131 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const Color neonCyan = Color(0xFF00FFC2); // Kuantum Turkuazı
-    const Color bgKaranlik = Color(0xFF000000); // Tam OLED Siyah!
-
-    return Scaffold(
-      backgroundColor: bgKaranlik,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: neonCyan),
-          onPressed: () => Navigator.pop(context),
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent, // Zırh arka planı
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Şık İkon
-              Container(
-                width: 90,
-                height: 90,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: neonCyan.withOpacity(0.05),
-                  border: Border.all(color: neonCyan.withOpacity(0.3), width: 1.5),
-                  boxShadow: [
-                    BoxShadow(color: neonCyan.withOpacity(0.15), blurRadius: 30, spreadRadius: 2),
-                  ],
+        body: Center(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // 🛡️ ŞIK İKON (3D Derinlik Eklendi)
+                Container(
+                  width: 90,
+                  height: 90,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: SiberTema.matGrey,
+                    border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
+                    boxShadow: SiberTema.siberGolgeDerin, // 🔥 EFSANE 3D GÖLGE
+                  ),
+                  child: Icon(
+                    _codeSent ? Icons.mark_email_read_rounded : Icons.phonelink_ring_rounded,
+                    color: SiberTema.kuantumCyan,
+                    size: 40,
+                    shadows: const [Shadow(color: SiberTema.kuantumCyan, blurRadius: 10)], // İkon parlaması
+                  ),
                 ),
-                child: Icon(
-                    _codeSent ? Icons.mark_email_read_outlined : Icons.phonelink_ring_outlined,
-                    color: neonCyan,
-                    size: 40
-                ),
-              ),
-              const SizedBox(height: 30),
+                const SizedBox(height: 30),
 
-              Text(
-                _codeSent ? "KUANTUM ŞİFRESİ" : "SİBER DOĞRULAMA",
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 26,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 4,
-                  fontFamily: 'Avenir',
+                Text(
+                  _codeSent ? "KUANTUM ŞİFRESİ" : "SİBER DOĞRULAMA",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 26,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 4,
+                    fontFamily: SiberTema.siberFont,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                _codeSent
-                    ? "Telefonunuza gönderilen 6 haneli siber güvenlik kodunu girin."
-                    : "Sisteme giriş için telefon numaranızı +90 formatında doğrulayın.",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.6),
-                  fontSize: 14,
-                  height: 1.5,
-                  fontFamily: 'Avenir',
+                const SizedBox(height: 12),
+                Text(
+                  _codeSent
+                      ? "Telefonunuza gönderilen 6 haneli siber güvenlik kodunu girin."
+                      : "Sisteme giriş için telefon numaranızı +90 formatında doğrulayın.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.6),
+                    fontSize: 14,
+                    height: 1.5,
+                    fontFamily: SiberTema.siberFont,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 40),
+                const SizedBox(height: 40),
 
-              // Siber Form Alanı
-              Container(
-                padding: const EdgeInsets.all(24.0),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.02),
-                  border: Border.all(color: Colors.white.withOpacity(0.05), width: 1),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Column(
-                  children: [
-                    if (!_codeSent) ...[
-                      _buildPremiumInput(
-                        controller: _phoneController,
-                        icon: Icons.phone_android,
-                        hint: "+90 5XX XXX XX XX",
-                        keyboardType: TextInputType.phone,
-                      ),
-                      const SizedBox(height: 30),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 55,
-                        child: _isLoading
-                            ? const Center(child: CircularProgressIndicator(color: neonCyan, strokeWidth: 3))
-                            : ElevatedButton(
-                          onPressed: _telefonuDogrulaBaslat,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: neonCyan,
-                            foregroundColor: bgKaranlik,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                          ),
-                          child: const Text(
-                            "KOD GÖNDER",
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, letterSpacing: 2, fontFamily: 'Avenir'),
+                // 🔥 3D SİBER FORM ALANI
+                Container(
+                  padding: const EdgeInsets.all(24.0),
+                  decoration: BoxDecoration(
+                    color: SiberTema.matGrey.withOpacity(0.5),
+                    border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: SiberTema.siberGolgeKatmanli, // 🔥 Derinlik
+                  ),
+                  child: Column(
+                    children: [
+                      if (!_codeSent) ...[
+                        _buildPremiumInput(
+                          controller: _phoneController,
+                          icon: Icons.phone_android,
+                          hint: "+90 5XX XXX XX XX",
+                          keyboardType: TextInputType.phone,
+                        ),
+                        const SizedBox(height: 30),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 55,
+                          child: _isLoading
+                              ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3))
+                              : ElevatedButton(
+                            onPressed: _telefonuDogrulaBaslat,
+                            style: SiberTema.kuantumButonStili(), // 🔥 3D Buton
+                            child: const Text(
+                              "KOD GÖNDER",
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: SiberTema.siberFont, color: SiberTema.oledBlack),
+                            ),
                           ),
                         ),
-                      ),
-                    ] else ...[
-                      _buildPremiumInput(
-                        controller: _otpController,
-                        icon: Icons.password,
-                        hint: "6 Haneli Şifre",
-                        keyboardType: TextInputType.number,
-                        maxLength: 6,
-                      ),
-                      const SizedBox(height: 30),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 55,
-                        child: _isLoading
-                            ? const Center(child: CircularProgressIndicator(color: neonCyan, strokeWidth: 3))
-                            : ElevatedButton(
-                          onPressed: _koduDogrula,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: neonCyan,
-                            foregroundColor: bgKaranlik,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                          ),
-                          child: const Text(
-                            "DOĞRULA VE BAĞLAN",
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, letterSpacing: 1.5, fontFamily: 'Avenir'),
+                      ] else ...[
+                        _buildPremiumInput(
+                          controller: _otpController,
+                          icon: Icons.password,
+                          hint: "6 Haneli Şifre",
+                          keyboardType: TextInputType.number,
+                          maxLength: 6,
+                        ),
+                        const SizedBox(height: 30),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 55,
+                          child: _isLoading
+                              ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3))
+                              : ElevatedButton(
+                            onPressed: _koduDogrula,
+                            style: SiberTema.kuantumButonStili(), // 🔥 3D Buton
+                            child: const Text(
+                              "DOĞRULA VE BAĞLAN",
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: SiberTema.siberFont, color: SiberTema.oledBlack),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -285,27 +283,26 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
     required TextInputType keyboardType,
     int? maxLength,
   }) {
-    const Color neonCyan = Color(0xFF00FFC2);
     return TextField(
       controller: controller,
       keyboardType: keyboardType,
       maxLength: maxLength,
-      style: const TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Avenir', letterSpacing: 1.5),
+      style: const TextStyle(color: Colors.white, fontSize: 16, fontFamily: SiberTema.siberFont, letterSpacing: 1.5, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
         counterText: "", // maxLength yazısını gizler
         prefixIcon: Icon(icon, color: Colors.white54, size: 22),
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.white30, fontSize: 14, fontFamily: 'Avenir', letterSpacing: 1),
+        hintStyle: const TextStyle(color: Colors.white30, fontSize: 14, fontFamily: SiberTema.siberFont, letterSpacing: 1),
         filled: true,
-        fillColor: Colors.black.withOpacity(0.2),
+        fillColor: SiberTema.oledBlack, // Derin Siyah
         contentPadding: const EdgeInsets.symmetric(vertical: 20),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.08), width: 1),
+          borderSide: BorderSide(color: Colors.white.withOpacity(0.05), width: 1.5),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: neonCyan, width: 1.5),
+          borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 2),
         ),
       ),
     );

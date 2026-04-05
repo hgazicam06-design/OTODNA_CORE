@@ -2,75 +2,78 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// 🚀 SİBER KÖPRÜLER (Hata vermeyen, milimetrik hizalanmış rotalar)
-import 'login_screen.dart'; // 🟢 Aynı klasördeki (auth) doğru giriş ekranı!
-import '../admin/admin_control_center.dart'; // 🟢 lib/admin klasörüne gider
-import '../screens/bayi_paneli.dart'; // 🟢 lib/screens klasörüne gider
-import '../screens/kullanici_paneli_screen.dart'; // 🟢 lib/screens klasörüne gider (Eğer isminde hata alırsan CTRL+. ile düzelt)
+// 🚀 SİBER KÖPRÜLER VE TEMA
+import '../core/siber_tema.dart'; // ✅ Merkezi Renkler ve Zırh
+import '../core/responsive_kalkan.dart'; // ✅ Tüm Ekranlara Uyum
+
+import 'login_screen.dart';
+import '../admin/admin_control_center.dart';
+import '../screens/bayi_paneli.dart';
+import '../screens/kullanici_paneli_screen.dart';
 
 class OtoDnaAuthGate extends StatelessWidget {
   const OtoDnaAuthGate({super.key});
 
-  static const Color _oledBlack = Color(0xFF000000);
-  static const Color _kanKirmizi = Colors.redAccent;
-
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, authSnapshot) {
-        if (authSnapshot.connectionState == ConnectionState.waiting) {
-          return const _TeslaYuklemeEkrani(mesaj: "SİBER PROTOKOLLER TARANIYOR...");
-        }
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, authSnapshot) {
+          if (authSnapshot.connectionState == ConnectionState.waiting) {
+            return const _TeslaYuklemeEkrani(mesaj: "SİBER PROTOKOLLER TARANIYOR...");
+          }
 
-        // Eğer kullanıcı hiç giriş yapmamışsa Login (Giriş) ekranına fırlat!
-        if (!authSnapshot.hasData || authSnapshot.data == null) {
-          return const LoginScreen();
-        }
+          // Eğer kullanıcı hiç giriş yapmamışsa Login (Giriş) ekranına fırlat!
+          if (!authSnapshot.hasData || authSnapshot.data == null) {
+            return const LoginScreen();
+          }
 
-        final User currentUser = authSnapshot.data!;
+          final User currentUser = authSnapshot.data!;
 
-        return FutureBuilder<DocumentSnapshot>(
-          future: FirebaseFirestore.instance.collection('kullanicilar').doc(currentUser.uid).get(),
-          builder: (context, userSnapshot) {
-            if (userSnapshot.connectionState == ConnectionState.waiting) {
-              return const _TeslaYuklemeEkrani(mesaj: "KARARGAH YETKİLERİ DOĞRULANIYOR...");
-            }
+          return FutureBuilder<DocumentSnapshot>(
+            future: FirebaseFirestore.instance.collection('kullanicilar').doc(currentUser.uid).get(),
+            builder: (context, userSnapshot) {
+              if (userSnapshot.connectionState == ConnectionState.waiting) {
+                return const _TeslaYuklemeEkrani(mesaj: "KARARGAH YETKİLERİ DOĞRULANIYOR...");
+              }
 
-            if (userSnapshot.hasError || !userSnapshot.hasData || !userSnapshot.data!.exists) {
-              return _buildSiberHataEkrani("SİCİL BULUNAMADI - AĞDAN ÇIK");
-            }
+              if (userSnapshot.hasError || !userSnapshot.hasData || !userSnapshot.data!.exists) {
+                return _buildSiberHataEkrani("SİCİL BULUNAMADI - AĞDAN ÇIK");
+              }
 
-            var userData = userSnapshot.data!.data() as Map<String, dynamic>;
+              var userData = userSnapshot.data!.data() as Map<String, dynamic>;
 
-            String role = (userData['rol'] ?? "USER").toString().toUpperCase();
-            bool isBlacklisted = userData['is_blacklisted'] ?? userData['kara_liste'] ?? false;
+              String role = (userData['rol'] ?? "USER").toString().toUpperCase();
+              bool isBlacklisted = userData['is_blacklisted'] ?? userData['kara_liste'] ?? false;
 
-            if (isBlacklisted) {
-              return _buildSiberHataEkrani("KARALİSTE: ZORUNLU ÇIKIŞ YAP");
-            }
+              if (isBlacklisted) {
+                return _buildSiberHataEkrani("KARALİSTE: ZORUNLU ÇIKIŞ YAP");
+              }
 
-            // 🧠 KUANTUM YÖNLENDİRME MERKEZİ
-            if (role == "ADMIN" || role == "BOLGE_KOMUTANI") {
-              return const AdminControlCenter();
-            } else if (role == "BAYI" || role == "USTA") {
-              return BayiPaneliScreen(bayiId: currentUser.uid);
-            } else {
-              return const KullaniciPaneliScreen();
-            }
-          },
-        );
-      },
+              // 🧠 KUANTUM YÖNLENDİRME MERKEZİ
+              if (role == "ADMIN" || role == "BOLGE_KOMUTANI") {
+                return const AdminControlCenter();
+              } else if (role == "BAYI" || role == "USTA") {
+                return BayiPaneliScreen(bayiId: currentUser.uid);
+              } else {
+                return const KullaniciPaneliScreen();
+              }
+            },
+          );
+        },
+      ),
     );
   }
 
   Widget _buildSiberHataEkrani(String butonMetni) {
     return Scaffold(
-      backgroundColor: _oledBlack,
+      backgroundColor: SiberTema.oledBlack,
       body: Center(
         child: ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
-            backgroundColor: _kanKirmizi,
+            backgroundColor: SiberTema.kanKirmizi,
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           ),
@@ -114,9 +117,8 @@ class _TeslaYuklemeEkraniState extends State<_TeslaYuklemeEkrani> with SingleTic
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryCyan = Color(0xFF00FFC2);
     return Scaffold(
-      backgroundColor: const Color(0xFF000000), // OLED Siyah
+      backgroundColor: SiberTema.oledBlack,
       body: Center(
         child: AnimatedBuilder(
           animation: _controller,
@@ -128,15 +130,24 @@ class _TeslaYuklemeEkraniState extends State<_TeslaYuklemeEkrani> with SingleTic
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(padding: const EdgeInsets.all(32), decoration: BoxDecoration(shape: BoxShape.circle, color: primaryCyan.withOpacity(0.05), border: Border.all(color: primaryCyan.withOpacity(0.5), width: 2), boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.2), blurRadius: 40, spreadRadius: 10)]), child: const Icon(Icons.fingerprint, size: 80, color: primaryCyan)),
+                    Container(
+                        padding: const EdgeInsets.all(32),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: SiberTema.kuantumCyan.withOpacity(0.05),
+                            border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 2),
+                            boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.2), blurRadius: 40, spreadRadius: 10)]
+                        ),
+                        child: const Icon(Icons.fingerprint, size: 80, color: SiberTema.kuantumCyan)
+                    ),
                     const SizedBox(height: 48),
-                    const Text('OTODNA', style: TextStyle(fontSize: 48, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 8.0)),
+                    const Text('OTODNA', style: TextStyle(fontSize: 48, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 8.0, fontFamily: 'Avenir')),
                     const SizedBox(height: 12),
-                    const Text('DİJİTAL REFERANS PROTOKOLÜ', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, color: primaryCyan, letterSpacing: 2.0)),
+                    const Text('DİJİTAL REFERANS PROTOKOLÜ', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, color: SiberTema.kuantumCyan, letterSpacing: 2.0, fontFamily: 'Avenir')),
                     const SizedBox(height: 64),
-                    const CircularProgressIndicator(color: primaryCyan, strokeWidth: 2),
+                    const CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2),
                     const SizedBox(height: 24),
-                    Text(widget.mesaj, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2))
+                    Text(widget.mesaj, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir'))
                   ],
                 ),
               ),
