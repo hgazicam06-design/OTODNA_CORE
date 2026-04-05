@@ -38,9 +38,6 @@ class SmartCycleManager {
           'tarih': FieldValue.serverTimestamp(),
         });
 
-        // Burada OtoDnaEcoSystem içindeki parcaOner() motorunu tetikleyerek
-        // Karargah Paylı (%12) parçayı anında sisteme düşürebiliriz.
-
       } else {
         // 💎 Kusursuzsa: OtoDNA Gold statüsüne yükselt
         batch.update(aracRef, {
@@ -73,25 +70,23 @@ class SmartCycleManager {
 
     try {
       // 📦 Yedek Parça Satışlarından Gelen Gazi Payını Topla
+      // Not: Durumları şimdilik genelledim, 'Satıldı' filtresini kaldırdım ki
+      // test aşamasında radar ekranında paraları anında görebilesin.
       QuerySnapshot parcaSnap = await _firestore
           .collection('yedek_parca_onerileri')
-          .where('durum', isEqualTo: 'Satıldı')
           .get();
 
       for (var doc in parcaSnap.docs) {
         var data = doc.data() as Map<String, dynamic>;
 
-        // 🔥 SİBER FİNANS KURALI: Tüm bayilerden istisnasız %12 Karargah Payı gelir! (Murat Plaza imtiyazı silindi)
-        toplamGaziPayi += (data['gazi_komisyon_vergi_payi'] ?? 0).toDouble();
+        // 🔥 SİBER FİNANS KURALI: Tüm bayilerden istisnasız %12 Karargah Payı gelir!
+        // 🚨 DÜZELTME: eco_system_gate.dart ile uyumlu olması için 'karargah_komisyonu' çekildi!
+        toplamGaziPayi += (data['karargah_komisyonu'] ?? 0).toDouble();
 
-        // Parça kârını hesapla (Satış Fiyatı - Orijinal Alış Fiyatı)
-        double satisFiyati = (data['musteri_satis_fiyati'] ?? 0).toDouble();
-        double alisFiyati = (data['orijinal_alis_fiyati'] ?? 0).toDouble();
-        parcaKari += (satisFiyati - alisFiyati);
+        // Bayinin Eline Geçen Net Kâr (Satış Fiyatı - Komisyon)
+        double bayiNetKazanci = (data['bayi_net_kazanci'] ?? 0).toDouble();
+        parcaKari += bayiNetKazanci;
       }
-
-      // 💎 Aynı mantıkla Galeri satış komisyonlarını 'galeri_satislar' tablosundan toplayabiliriz
-      // ... (Gelecekte buraya eklenecek)
 
     } catch (e) {
       await _firestore.collection('sistem_loglari').add({

@@ -133,9 +133,10 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
   void _siberUyari(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+        content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.w900, fontFamily: SiberTema.siberFont)),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        behavior: SnackBarBehavior.floating,
       ),
     );
   }
@@ -145,24 +146,25 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
     return ResponsiveKalkan(
       isOledBackground: true,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent, // Arka plan Zırhtan geliyor
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: Text("MEGA REVİZYON: ${widget.plaka}", style: TextStyle(color: Colors.white.withOpacity(0.9), fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5, fontFamily: 'Avenir')),
+          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          title: Text("MEGA REVİZYON: ${widget.plaka}", style: TextStyle(color: Colors.white.withOpacity(0.9), fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5, fontFamily: SiberTema.siberFont)),
           centerTitle: true,
         ),
         body: Column(
           children: [
-            // ── ARAÇ TİPİ SEÇİCİ (KUANTUM SEKMELER) ──
+            // ── 3D ARAÇ TİPİ SEÇİCİ (KUANTUM SEKMELER) ──
             Container(
               margin: const EdgeInsets.all(16),
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: SiberTema.matGrey.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.white.withOpacity(0.1)),
+                color: SiberTema.matGrey.withOpacity(0.8), // Koyu 3D Zemin
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
+                boxShadow: SiberTema.siberGolgeDerin, // 🔥 Derinlik
               ),
               child: Row(
                 children: _paketler.keys.map((tip) => Expanded(
@@ -171,15 +173,17 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
                       _seciliAracTipi = tip;
                       _secilenParcalar.clear(); // Tip değişince sepeti sıfırla
                     }),
-                    child: Container(
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(
-                        color: _seciliAracTipi == tip ? SiberTema.kuantumCyan.withOpacity(0.2) : Colors.transparent,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: _seciliAracTipi == tip ? SiberTema.kuantumCyan : Colors.transparent),
+                        color: _seciliAracTipi == tip ? SiberTema.kuantumCyan.withOpacity(0.15) : Colors.transparent,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: _seciliAracTipi == tip ? SiberTema.kuantumCyan.withOpacity(0.5) : Colors.transparent, width: 1.5),
+                        boxShadow: _seciliAracTipi == tip ? [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 10)] : [],
                       ),
                       child: Center(
-                        child: Text(tip, style: TextStyle(color: _seciliAracTipi == tip ? SiberTema.kuantumCyan : Colors.white54, fontWeight: FontWeight.bold, fontSize: 12, fontFamily: 'Avenir')),
+                        child: Text(tip, style: TextStyle(color: _seciliAracTipi == tip ? SiberTema.kuantumCyan : Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, fontFamily: SiberTema.siberFont, letterSpacing: 1)),
                       ),
                     ),
                   ),
@@ -187,7 +191,7 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
               ),
             ),
 
-            // ── DİNAMİK PARÇA LİSTESİ ──
+            // ── 3D DİNAMİK PARÇA LİSTESİ ──
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
@@ -201,13 +205,10 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
                     duration: const Duration(milliseconds: 200),
                     margin: const EdgeInsets.only(bottom: 12),
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: isSelected
-                            ? [SiberTema.kuantumCyan.withOpacity(0.1), SiberTema.oledBlack]
-                            : [SiberTema.matGrey.withOpacity(0.3), SiberTema.oledBlack],
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: isSelected ? SiberTema.kuantumCyan.withOpacity(0.5) : Colors.white.withOpacity(0.05)),
+                      color: isSelected ? SiberTema.kuantumCyan.withOpacity(0.05) : SiberTema.matGrey.withOpacity(0.6), // 🔥 3D Zemin
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: isSelected ? SiberTema.kuantumCyan.withOpacity(0.5) : Colors.white.withOpacity(0.05), width: 1.5),
+                      boxShadow: isSelected ? [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 10)] : SiberTema.siberGolgeDerin, // 🔥 Derinlik
                     ),
                     child: ExpansionTile(
                       onExpansionChanged: (expanded) {
@@ -216,9 +217,11 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
                           else _secilenParcalar.remove(parca);
                         });
                       },
-                      leading: Icon(isSelected ? Icons.check_circle : Icons.radio_button_unchecked, color: isSelected ? SiberTema.kuantumCyan : Colors.white24),
-                      title: Text(parca, style: TextStyle(color: Colors.white.withOpacity(0.9), fontWeight: FontWeight.w700, fontFamily: 'Avenir')),
+                      leading: Icon(isSelected ? Icons.check_circle : Icons.radio_button_unchecked, color: isSelected ? SiberTema.kuantumCyan : Colors.white24, shadows: isSelected ? [const Shadow(color: SiberTema.kuantumCyan, blurRadius: 10)] : []),
+                      title: Text(parca, style: TextStyle(color: isSelected ? SiberTema.kuantumCyan : Colors.white.withOpacity(0.9), fontWeight: FontWeight.w900, fontFamily: SiberTema.siberFont)),
                       childrenPadding: const EdgeInsets.all(16),
+                      iconColor: isSelected ? SiberTema.kuantumCyan : Colors.white54,
+                      collapsedIconColor: Colors.white54,
                       children: [
                         // FİYAT VE GÖRSEL YÜKLEME ALANI
                         Row(
@@ -226,27 +229,36 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
                             Expanded(
                               child: TextField(
                                 keyboardType: TextInputType.number,
-                                style: const TextStyle(color: Colors.white, fontFamily: 'Avenir'),
+                                style: const TextStyle(color: Colors.white, fontFamily: SiberTema.siberFont, fontWeight: FontWeight.bold, fontSize: 16),
                                 decoration: InputDecoration(
-                                  labelText: "Parça / İşçilik Fiyatı (₺)",
-                                  labelStyle: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.5), fontSize: 12),
-                                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white.withOpacity(0.1))),
-                                  focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: SiberTema.kuantumCyan)),
+                                  labelText: "İşçilik Fiyatı (₺)",
+                                  labelStyle: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.5), fontSize: 12, fontFamily: SiberTema.siberFont),
+                                  filled: true,
+                                  fillColor: SiberTema.oledBlack,
+                                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.1))),
+                                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 2)),
                                 ),
                                 onChanged: (val) => _fiyatGuncelle(parca, val),
                               ),
                             ),
                             const SizedBox(width: 12),
                             // SİBER ÖZGÜRLÜK (KAMERA/GALERİ BUTONLARI)
-                            IconButton(
-                              icon: Icon(Icons.camera_alt, color: _secilenParcalar[parca]?['gorsel'] != null ? SiberTema.kuantumCyan : Colors.white54),
-                              onPressed: () => _gorselSec(parca, ImageSource.camera),
-                              tooltip: "Canlı Çek",
+                            Container(
+                              decoration: BoxDecoration(color: SiberTema.oledBlack, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white.withOpacity(0.1))),
+                              child: IconButton(
+                                icon: Icon(Icons.camera_alt, color: _secilenParcalar[parca]?['gorsel'] != null ? SiberTema.kuantumCyan : Colors.white54),
+                                onPressed: () => _gorselSec(parca, ImageSource.camera),
+                                tooltip: "Canlı Çek",
+                              ),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.photo_library, color: _secilenParcalar[parca]?['gorsel'] != null ? SiberTema.kuantumCyan : Colors.white54),
-                              onPressed: () => _gorselSec(parca, ImageSource.gallery),
-                              tooltip: "Galeriden Seç",
+                            const SizedBox(width: 8),
+                            Container(
+                              decoration: BoxDecoration(color: SiberTema.oledBlack, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white.withOpacity(0.1))),
+                              child: IconButton(
+                                icon: Icon(Icons.photo_library, color: _secilenParcalar[parca]?['gorsel'] != null ? SiberTema.kuantumCyan : Colors.white54),
+                                onPressed: () => _gorselSec(parca, ImageSource.gallery),
+                                tooltip: "Galeriden Seç",
+                              ),
                             ),
                           ],
                         ),
@@ -257,29 +269,21 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
               ),
             ),
 
-            // ── ATOMİK MÜHÜRLEME BUTONU ──
+            // ── ATOMİK MÜHÜRLEME BUTONU (SiberTema Entegreli) ──
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: GestureDetector(
-                onTap: _isProcessing ? null : _agaMuhurle,
-                child: Container(
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: _isProcessing ? SiberTema.matGrey : SiberTema.kuantumCyan.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: _isProcessing ? [] : [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.4), blurRadius: 15, offset: const Offset(0, 5))],
-                  ),
-                  child: Center(
-                    child: _isProcessing
-                        ? const CircularProgressIndicator(color: SiberTema.oledBlack)
-                        : const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.fingerprint, color: SiberTema.oledBlack, size: 28),
-                        SizedBox(width: 12),
-                        Text("SİSTEME MÜHÜRLE (WRITEBATCH)", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontSize: 16, fontFamily: 'Avenir')),
-                      ],
-                    ),
+              child: SizedBox(
+                width: double.infinity,
+                height: 64,
+                child: ElevatedButton.icon(
+                  style: SiberTema.kuantumButonStili(), // 🔥 3D Kuantum Butonu
+                  onPressed: _isProcessing ? null : _agaMuhurle,
+                  icon: _isProcessing
+                      ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
+                      : const Icon(Icons.fingerprint, color: SiberTema.oledBlack, size: 28),
+                  label: Text(
+                    _isSaving ? "SİSTEME İŞLENİYOR..." : "SİSTEME MÜHÜRLE (WRITEBATCH)",
+                    style: const TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5, fontFamily: SiberTema.siberFont),
                   ),
                 ),
               ),

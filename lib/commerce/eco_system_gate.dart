@@ -8,17 +8,17 @@ class OtoDnaEcoSystem {
   Future<void> parcaOner({
     required String plakaID,
     required String sorunluParca,
-    required double parcaAlisFiyati,
+    required double parcaSatisFiyati, // Firmanın kendi vitrinine yazdığı özgür fiyat!
     required String saticiBayiAdi,
   }) async {
     try {
-      // ⚙️ TİCARET MOTORU: Kâr Marjı ve Komisyon Hesaplaması
-      // 🔥 SİBER KURAL: İMTİYAZ YOK! HERKESTEN %10 KÂR + %2 VERGİ = %12 KESİLİR!
-      double komutanGaziPayi = parcaAlisFiyati * 0.12;
-      double musteriSatisFiyati = parcaAlisFiyati + komutanGaziPayi;
+      // ⚙️ TİCARET MOTORU: %12 MUTLAK KARARGAH KESİNTİSİ
+      // Firma fiyatı kendi belirler, OtoDNA bu fiyattan %12 (%10 Kâr + %2 Vergi) komisyonunu keser.
+      double karargahPayi = parcaSatisFiyati * 0.12;
+      double bayininElineGecen = parcaSatisFiyati - karargahPayi;
 
-      // ⚙️ GİZLİLİK PROTOKOLÜ: Orijinal tedarikçi gizlenir, ürün işlemi yapan bayinin kendi adıyla sunulur.
-      String gorunenTedarikci = saticiBayiAdi;
+      // ⚙️ VİTRİN PROTOKOLÜ: Herkes kendi adıyla sahaya çıkar! İsim gizleme veya maskeleme YOKTUR.
+      String sunanBayi = saticiBayiAdi;
 
       // 🚀 FİREBASE'E GERÇEK KAYIT BAŞLIYOR (WriteBatch ile Kuantum Mührü)
       WriteBatch batch = _firestore.batch();
@@ -27,11 +27,11 @@ class OtoDnaEcoSystem {
       batch.set(oneriRef, {
         'arac_plaka': plakaID,
         'sorunlu_parca': sorunluParca,
-        'orijinal_alis_fiyati': parcaAlisFiyati, // Sadece Admin Görebilir
-        'gazi_komisyon_vergi_payi': komutanGaziPayi, // Sadece Admin Görebilir
-        'musteri_satis_fiyati': double.parse(musteriSatisFiyati.toStringAsFixed(2)), // Kuruşları yuvarla
-        'sunan_bayi': gorunenTedarikci,
-        'garanti': '1 Yıl OtoDNA Garantili',
+        'musteri_satis_fiyati': double.parse(parcaSatisFiyati.toStringAsFixed(2)), // Müşterinin gördüğü fiyat
+        'karargah_komisyonu': double.parse(karargahPayi.toStringAsFixed(2)), // Bizim %12'miz
+        'bayi_net_kazanci': double.parse(bayininElineGecen.toStringAsFixed(2)), // Firmanın net aldığı
+        'sunan_bayi': sunanBayi, // Kendi orijinal ismiyle vitrinde
+        'garanti': 'OtoDNA Referanslı Satış',
         'durum': 'Müşteri Onayı Bekliyor',
         'olusturulma_tarihi': FieldValue.serverTimestamp(),
       });

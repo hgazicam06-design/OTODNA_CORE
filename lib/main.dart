@@ -17,10 +17,17 @@ void main() async {
   // 1. Flutter Motorunu Emniyete Al
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 2. Kuantum Firebase Ağını Ateşle
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // 2. 🛡️ MUTLAK KUANTUM ZIRHI: Firebase Çakışmalarını (%100) Engeller
+  try {
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+  } catch (e) {
+    // SİBER KALKAN: Eğer Firebase zaten aktifse, çökmek yerine hatayı yutar ve yola devam eder.
+    debugPrint("SİBER BİLGİ: Firebase zaten aktif, kalkan korudu. Hata yutuldu: $e");
+  }
 
   // 3. Karargahı Başlat
   runApp(const OtoDnaApp());

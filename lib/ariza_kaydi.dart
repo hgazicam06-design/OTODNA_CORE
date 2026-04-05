@@ -1,13 +1,15 @@
-// lib/screens/ariza_kaydi.dart
 import 'dart:io';
+import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// SİBER NOT: Gerçek projede Storage kullanılacak
-// import 'package:firebase_storage/firebase_storage.dart';
-import 'dart:developer' as developer;
+import 'package:firebase_storage/firebase_storage.dart'; // 🔥 GERÇEK STORAGE MOTORU
 
-/// 🛡️ KUANTUM KANIT VE MÜHÜRLEME MOTORU (SiberArizaKaydi)
+// 🚀 KARARGAH ZIRHLARI
+import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart';
+
+/// 🛡️ KUANTUM KANIT VE MÜHÜRLEME MOTORU
 /// Ustanın fotoğraf/video yüklemeden yeşil tık (✅) atmasını engelleyen acımasız denetim terminali.
 class SiberArizaKaydi extends StatefulWidget {
   final String saseNo;
@@ -27,8 +29,9 @@ class SiberArizaKaydi extends StatefulWidget {
 
 class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  File? _kanitMedya; // Kameradan veya galeriden alınan dosya
+  File? _kanitMedya; // Kameradan alınan dosya
   bool _islemSuruyor = false;
 
   // ── 📸 SİBER KAMERA / GALERİ ERİŞİMİ ──
@@ -38,7 +41,7 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
       final picker = ImagePicker();
       final secilenDosya = await picker.pickImage(
         source: kaynak,
-        imageQuality: 70, // Veritabanı optimizasyonu
+        imageQuality: 70, // Bulut optimizasyonu
       );
 
       if (secilenDosya != null) {
@@ -52,15 +55,15 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
     }
   }
 
-  // ── ⚖️ YARGI MOTORU (FOTOĞRAFSIZ ONAY ENGELİ) ──
+  // ── ⚖️ YARGI MOTORU (GERÇEK STORAGE VE WRITEBATCH ZIRHI) ──
   Future<void> _yesilTikOnayi() async {
     // 1. ZIRH: Fotoğraf Yoksa İhlal Ver!
     if (_kanitMedya == null) {
       developer.log("🚨 SİBER İHLAL: Kanıt yüklenmeden mühürleme yapılamaz!");
       _siberUyariGoster(
           "KANIT BULUNAMADI!",
-          "DİKKAT: Fotoğraf veya Video yüklemeden Yeşil Tık (✅) basamazsınız. Sistem kilitlendi.",
-          Colors.redAccent
+          "DİKKAT: Fotoğraf yüklemeden Yeşil Tık (✅) basamazsınız. Sistem kilitlendi.",
+          SiberTema.kanKirmizi
       );
       return;
     }
@@ -69,31 +72,38 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
     developer.log("🚀 MÜHÜRLEME BAŞLADI: Kanıt Karargaha iletiliyor...");
 
     try {
-      // 2. KANIT YÜKLEME (Firebase Storage Simülasyonu)
-      // SİBER NOT: Gerçek projede burada resim Firebase Storage'a atılıp indirme linki (URL) alınır.
-      // String dosyaUrl = await _storageaKanitYukle(_kanitMedya!);
-      String simuleEdilmisUrl = "https://otodna.karargah/storage/${widget.saseNo}_kanit.jpg";
+      // 2. GERÇEK BULUT YÜKLEMESİ (Firebase Storage)
+      String dosyaYolu = 'ekspertiz_kanitlari/${widget.saseNo}/${widget.modulKodu}_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      TaskSnapshot snapshot = await _storage.ref().child(dosyaYolu).putFile(_kanitMedya!);
+      String gercekKanitUrl = await snapshot.ref.getDownloadURL();
 
-      // 3. VERİTABANI MÜHRÜ (Firestore)
-      await _db.collection('ekspertiz_raporlari').add({
+      // 3. ATOMİK VERİTABANI MÜHRÜ (WriteBatch)
+      WriteBatch batch = _db.batch();
+      DocumentReference raporRef = _db.collection('ekspertiz_raporlari').doc();
+
+      batch.set(raporRef, {
         'sase_no': widget.saseNo,
         'modul_kodu': widget.modulKodu,
         'usta_id': widget.ustaId,
         'durum': 'ONAYLANDI_YESIL_TIK',
-        'kanit_url': simuleEdilmisUrl,
+        'kanit_url': gercekKanitUrl, // 🔥 Sahte link silindi, gerçek link eklendi
         'zaman_damgasi': FieldValue.serverTimestamp(),
       });
 
+      await batch.commit(); // Füzeyi ateşle!
+
       developer.log("✅ SİBER MÜHÜR BASILDI: İşlem Karargah ağında şifrelendi.");
 
-      _siberUyariGoster("SİBER MÜHÜR BASILDI!", "Kayıt başarıyla Karargaha işlendi.", const Color(0xFF00FFC2));
+      if (!mounted) return;
+      _siberUyariGoster("SİBER MÜHÜR BASILDI!", "Kayıt başarıyla Karargaha işlendi.", SiberTema.kuantumCyan);
 
-      // İşlem bitince ekranı kapat ve usta paneline dön
-      if (mounted) Navigator.pop(context);
+      // İşlem bitince ekranı kapat
+      Navigator.pop(context);
 
     } catch (e) {
       developer.log("AĞ ÇÖKTÜ: Mühürleme işlemi başarısız!", error: e);
-      _siberUyariGoster("BAĞLANTI HATASI", "Mühür Karargaha iletilemedi.", Colors.redAccent);
+      if (!mounted) return;
+      _siberUyariGoster("BAĞLANTI HATASI", "Mühür Karargaha iletilemedi.", SiberTema.kanKirmizi);
     } finally {
       if (mounted) setState(() => _islemSuruyor = false);
     }
@@ -103,19 +113,19 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
   void _siberUyariGoster(String baslik, String mesaj, Color renk) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: const Color(0xFF111111), // Mat Cam
+        backgroundColor: SiberTema.matGrey,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-          side: BorderSide(color: renk, width: 2),
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: renk.withOpacity(0.5), width: 2),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: SiberTema.siberFont)),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontFamily: SiberTema.siberFont)),
           ],
         ),
       ),
@@ -124,104 +134,121 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF000000), // OLED Siyah
-      appBar: AppBar(
-        title: const Text('KANIT YÜKLEME MERKEZİ', style: TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 16)),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Color(0xFF00FFC2)),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // 1. Üst Bilgi Paneli
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF111111),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.white24),
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent, // Arka plan Zırhtan geliyor
+        appBar: AppBar(
+          title: const Text('KANIT YÜKLEME MERKEZİ', style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 15, fontFamily: SiberTema.siberFont)),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
+            onPressed: () => Navigator.pop(context),
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1),
+            child: Container(color: SiberTema.kuantumCyan.withOpacity(0.2), height: 1),
+          ),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // 1. ÜST BİLGİ PANELİ (3D Derinlikli)
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: SiberTema.matGrey.withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
+                    boxShadow: SiberTema.siberGolgeKatmanli, // 🔥 3D Zırh
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("DENETİM MODÜLÜ", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontFamily: SiberTema.siberFont, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 6),
+                      Text(widget.modulKodu.replaceAll('_', ' '), style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: SiberTema.siberFont)),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          const Icon(Icons.pin_drop, color: SiberTema.altinSari, size: 16),
+                          const SizedBox(width: 8),
+                          Text("ŞASE: ${widget.saseNo}", style: const TextStyle(color: SiberTema.altinSari, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: SiberTema.siberFont)),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("DENETİM MODÜLÜ", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2)),
-                    const SizedBox(height: 4),
-                    Text(widget.modulKodu.replaceAll('_', ' '), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 30),
+                const SizedBox(height: 30),
 
-              // 2. Siber Medya Paneli
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => _medyaSec(ImageSource.camera),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: _kanitMedya == null ? const Color(0xFF111111) : Colors.transparent,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: _kanitMedya == null ? Colors.redAccent.withOpacity(0.5) : const Color(0xFF00FFC2),
-                        width: 2,
+                // 2. SİBER MEDYA PANELİ (Kamera Ekranı)
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => _medyaSec(ImageSource.camera),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _kanitMedya == null ? SiberTema.matGrey.withOpacity(0.5) : Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: _kanitMedya == null ? SiberTema.kanKirmizi.withOpacity(0.5) : SiberTema.kuantumCyan,
+                          width: 2,
+                        ),
+                        boxShadow: _kanitMedya == null ? SiberTema.siberGolgeDerin : [], // 🔥 3D Derinlik
+                        image: _kanitMedya != null
+                            ? DecorationImage(image: FileImage(_kanitMedya!), fit: BoxFit.cover)
+                            : null,
                       ),
-                      image: _kanitMedya != null
-                          ? DecorationImage(image: FileImage(_kanitMedya!), fit: BoxFit.cover)
-                          : null,
-                    ),
-                    child: _kanitMedya == null
-                        ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.add_a_photo_outlined, color: Colors.redAccent, size: 60),
-                        SizedBox(height: 16),
-                        Text("ZORUNLU KANIT GEREKİYOR", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
-                        SizedBox(height: 8),
-                        Text("Kamerayı Açmak İçin Dokun", style: TextStyle(color: Colors.white54, fontSize: 12)),
-                      ],
-                    )
-                        : Stack(
-                      alignment: Alignment.topRight,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.all(12),
-                          decoration: const BoxDecoration(color: Colors.black54, shape: BoxShape.circle),
-                          child: IconButton(
-                            icon: const Icon(Icons.close, color: Colors.white),
-                            onPressed: () => setState(() => _kanitMedya = null),
-                          ),
-                        )
-                      ],
+                      child: _kanitMedya == null
+                          ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.add_a_photo_rounded, color: SiberTema.kanKirmizi, size: 60, shadows: [Shadow(color: SiberTema.kanKirmizi, blurRadius: 15)]),
+                          const SizedBox(height: 16),
+                          const Text("ZORUNLU KANIT GEREKİYOR", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: SiberTema.siberFont)),
+                          const SizedBox(height: 8),
+                          Text("Kamerayı Açmak İçin Dokun", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontFamily: SiberTema.siberFont)),
+                        ],
+                      )
+                          : Stack(
+                        alignment: Alignment.topRight,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(color: SiberTema.oledBlack.withOpacity(0.7), shape: BoxShape.circle, border: Border.all(color: SiberTema.kanKirmizi)),
+                            child: IconButton(
+                              icon: const Icon(Icons.close, color: SiberTema.kanKirmizi),
+                              onPressed: () => setState(() => _kanitMedya = null),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              const SizedBox(height: 30),
+                const SizedBox(height: 30),
 
-              // 3. Karargah Mühürleme Butonu
-              SizedBox(
-                height: 60,
-                child: _islemSuruyor
-                    ? const Center(child: CircularProgressIndicator(color: Color(0xFF00FFC2)))
-                    : ElevatedButton.icon(
-                  icon: const Icon(Icons.check_circle_outline, color: Colors.black, size: 28),
-                  label: const Text("YEŞİL TIK (MÜHÜRLE)", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 16)),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00FFC2),
-                    foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    elevation: _kanitMedya == null ? 0 : 10,
-                    shadowColor: const Color(0xFF00FFC2).withOpacity(0.5),
+                // 3. KARARGAH MÜHÜRLEME BUTONU (3D)
+                SizedBox(
+                  height: 64,
+                  child: ElevatedButton.icon(
+                    icon: _islemSuruyor
+                        ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
+                        : const Icon(Icons.check_circle_outline, color: SiberTema.oledBlack, size: 28),
+                    label: Text(
+                        _islemSuruyor ? "AĞA YÜKLENİYOR..." : "YEŞİL TIK (MÜHÜRLE)",
+                        style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 15, fontFamily: SiberTema.siberFont, color: SiberTema.oledBlack)
+                    ),
+                    style: SiberTema.kuantumButonStili(), // 🔥 3D Kuantum Zırhı
+                    onPressed: _islemSuruyor ? null : _yesilTikOnayi,
                   ),
-                  onPressed: _yesilTikOnayi,
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
