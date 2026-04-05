@@ -7,7 +7,7 @@ class FinansDedektifiServisi {
   // --- 💰 SİBER RÖNTGEN: FİREBASE CANLI SATIŞ VE PAY ANALİZİ ---
   Future<Map<String, dynamic>> derinSatisAnaliziYap() async {
     try {
-      // 1. Kuantum Ağındaki son 100 finansal işlemi (veya o günkü işlemleri) çek
+      // 1. Kuantum Ağındaki son 100 finansal işlemi çek
       QuerySnapshot snap = await _db
           .collection('finansal_islemler')
           .orderBy('islem_tarihi', descending: true)
@@ -27,8 +27,13 @@ class FinansDedektifiServisi {
         String hizmetTipi = data['hizmet_tipi'] ?? 'Tanımsız Hizmet';
         double tutar = (data['tutar'] ?? 0).toDouble();
 
-        // Gazi Komutan Anlaşması: Net %12 Pay
-        double gaziPayi = tutar * 0.12;
+        // 🔥 SİBER FİNANS KURALI: Murat Plaza %30, Diğerleri %12 (Net %10 + %2 Vergi)
+        double gaziPayi = 0.0;
+        if (bayiAdi.toUpperCase().contains('MURAT PLAZA')) {
+          gaziPayi = tutar * 0.30; // Kasa kazanır!
+        } else {
+          gaziPayi = tutar * 0.12; // Standart Karargah Payı
+        }
 
         toplamHacim += tutar;
         toplamGaziPayi += gaziPayi;
@@ -54,12 +59,17 @@ class FinansDedektifiServisi {
 
       // 3. Şüpheli durum varsa Amiral Gemisi loglarına (Kara Kutu) kırmızı alarm olarak yaz
       if (supheliIslemler.isNotEmpty) {
-        await _db.collection('sistem_loglari').add({
+        WriteBatch batch = _db.batch(); // 🔥 İşlemi Atomik Mühürle Yap
+        DocumentReference logRef = _db.collection('sistem_loglari').doc();
+
+        batch.set(logRef, {
           'islem_turu': 'hata', // Kırmızı alarm tetikleyici
           'islem_detayi': 'FİNANSAL RİSK: ${supheliIslemler.length} adet şüpheli/düşük tutarlı işlem tespit edildi!',
           'bayi_isim': 'SİSTEM DENETİM MERKEZİ',
           'tarih': FieldValue.serverTimestamp(),
         });
+
+        await batch.commit(); // Mührü ateşle
       }
 
       // 4. Analiz raporunu amiral gemisine fırlat

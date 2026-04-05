@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_auth/firebase_auth.dart'; // Siber yetki kontrolü doğrudan auth_gate içinde yapılıyor
 
-// 🚀 KARARGAH ZIRHLARI VE TEMASI
-import 'package:otodna/core/siber_tema.dart';
+// 🚀 KARARGAH ZIRHLARI VE TEMASI (Yeni mimariye göre yol hizalandı)
+import 'core/siber_tema.dart';
 
-// 🔥 SİBER KAPININ (AUTH GATE) GERÇEK BAĞLANTISI
-import 'package:otodna/screens/auth/otodna_auth_gate.dart';
+// 🔥 SİBER KAPININ (AUTH GATE) GERÇEK BAĞLANTISI (Yeni auth/ klasörüne göre rotalandı!)
+import 'auth/otodna_auth_gate.dart';
 
 void main() async {
   // 1. SİBER MOTORLARI HAZIRLA
@@ -31,7 +30,6 @@ class OtoDNAKarargah extends StatelessWidget {
       theme: SiberTema.tema, // Kuantum Turkuazı ve Derin Siyah zırhımız
 
       // 🔥 İŞTE SİBER KİLİDİ AÇAN KOD:
-      // Sabit ve cansız maket ekran tamamen imha edildi.
       // Sistem artık doğrudan Firebase kimlik doğrulama radarına (OtoDnaAuthGate) bağlanıyor!
       home: const OtoDnaAuthGate(),
     );

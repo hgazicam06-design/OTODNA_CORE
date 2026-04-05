@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart'; // Sadece debug modunda log basmak için
 
 /// OTODNA KARA KUTU VE GÖLGE TELEMETRİ İSTİHBARAT SERVİSİ
 class KaraKutuServisi {
@@ -15,7 +16,10 @@ class KaraKutuServisi {
     required int zorlanmaSkoru, // 1 ile 10 arası motor/mekanik zorlanma
   }) async {
     try {
-      await _db.collection('kara_kutu_verileri').add({
+      WriteBatch batch = _db.batch(); // 🔥 Kuantum Mührü
+      DocumentReference telemetriRef = _db.collection('kara_kutu_verileri').doc();
+
+      batch.set(telemetriRef, {
         'kullanici_id': kullaniciId,
         'arac_id': aracId,
         'eklenen_km': mesafeKm,
@@ -23,9 +27,13 @@ class KaraKutuServisi {
         'zorlanma_skoru': zorlanmaSkoru,
         'gizli_kayit_tarihi': FieldValue.serverTimestamp(),
       });
+
+      await batch.commit(); // Sessizce Ateşle
     } catch (e) {
-      // Arka plan işlemi olduğu için kullanıcıya hata göstermiyoruz (Sessiz Protokol).
-      // İstenirse Firebase Crashlytics'e yönlendirilebilir.
+      // Sessiz Protokol: Kullanıcıya yansıtma ama geliştirici radarında tut!
+      if (kDebugMode) {
+        print("🔴 SİBER GÖLGE HATASI (TELEMETRİ KAYDEDİLEMEDİ): $e");
+      }
     }
   }
 
@@ -42,13 +50,18 @@ class KaraKutuServisi {
       String gercekSifre = yetkiDoc.exists ? (yetkiDoc.data() as Map<String, dynamic>)['master_key'] : "GAZI_YEDE_SIFRE_00";
 
       if (adminSifre != gercekSifre) {
-        // 🚨 SİBER İHLAL: Yetkisiz erişim denemesi anında füzeyi ateşler ve loglara yazar!
-        await _db.collection('sistem_loglari').add({
+        // 🚨 SİBER İHLAL: Yetkisiz erişim denemesi anında füzeyi ateşler ve loglara yazar! (Atomik olarak)
+        WriteBatch ihlalBatch = _db.batch();
+        DocumentReference ihlalLogRef = _db.collection('sistem_loglari').doc();
+
+        ihlalBatch.set(ihlalLogRef, {
           'islem_turu': 'sos', // Kırmızı Alarm (Admin Panelinde yanar)
           'islem_detayi': 'SİBER İHLAL: Kara Kutu verilerine YETKİSİZ ERİŞİM denemesi! Araç ID: $hedefAracId',
           'bayi_isim': 'YETKİSİZ TERMİNAL (ID: $adminId)',
           'tarih': FieldValue.serverTimestamp(),
         });
+
+        await ihlalBatch.commit();
         return {'basarili': false, 'mesaj': 'ERİŞİM REDDEDİLDİ: Geçersiz Güvenlik Mührü!'};
       }
 
@@ -58,13 +71,18 @@ class KaraKutuServisi {
           .orderBy('gizli_kayit_tarihi', descending: true)
           .get();
 
-      // 3. İnceleme Başlatıldığını Amiral Gemisine (Loglara) Kaydet
-      await _db.collection('sistem_loglari').add({
+      // 3. İnceleme Başlatıldığını Amiral Gemisine (Loglara) Kaydet (Atomik)
+      WriteBatch basariBatch = _db.batch();
+      DocumentReference basariLogRef = _db.collection('sistem_loglari').doc();
+
+      basariBatch.set(basariLogRef, {
         'islem_turu': 'basarili',
         'islem_detayi': 'DERİN İNCELEME: $hedefAracId plakalı aracın Kara Kutu verileri Karargaha açıldı.',
         'bayi_isim': 'AMİRAL GEMİSİ',
         'tarih': FieldValue.serverTimestamp(),
       });
+
+      await basariBatch.commit();
 
       List<Map<String, dynamic>> dokum = telemetriSnap.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
 

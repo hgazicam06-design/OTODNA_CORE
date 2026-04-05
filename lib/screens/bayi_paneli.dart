@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BayiPaneliScreen extends StatefulWidget {
-  const BayiPaneliScreen({super.key});
+  final String bayiId; // 🔥 İŞTE SİBER KİLİDİ ÇÖZEN PARAMETRE!
+
+  const BayiPaneliScreen({super.key, required this.bayiId});
 
   @override
   State<BayiPaneliScreen> createState() => _BayiPaneliScreenState();
@@ -105,6 +107,9 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
                 Icon(Icons.radar, color: primaryCyan, size: 20),
                 const SizedBox(width: 12),
                 const Text("CANLI SAHA TAKİBİ", style: TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                const Spacer(),
+                // Bayi kimliğini ekranda ufakça gösteriyoruz ki Kuantum hissi versin
+                Text("ID: ${widget.bayiId.substring(0, 6)}...", style: TextStyle(color: primaryCyan.withOpacity(0.5), fontSize: 8, fontWeight: FontWeight.bold)),
               ],
             ),
           ),

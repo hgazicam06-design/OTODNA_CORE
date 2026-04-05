@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// 🚀 DOĞRU ROTALAR (Gerçek dosya yolları)
-import 'package:otodna/screens/auth/siber_giris_screen.dart'; // Giriş ekranı
-import 'package:otodna/admin/admin_control_center.dart'; // Gerçek Admin dosyanızın yolu
+// 🚀 DOĞRU ROTALAR (lib/screens/auth/ konumuna göre milimetrik hizalandı)
+import 'siber_giris_screen.dart';
+import '../admin/admin_control_center.dart'; // 🟢 İki üst klasöre çıkıp admin'i bulur
+import '../screens/bayi_paneli.dart'; // 🟢 Bir üst klasöre çıkıp (screens) bayiyi bulur
+import '../screens/kullanici_paneli_screen.dart'; // 🟢 Bir üst klasöre çıkıp (screens) müşteriyi bulur
 
 class OtoDnaAuthGate extends StatelessWidget {
   const OtoDnaAuthGate({super.key});
@@ -17,36 +19,29 @@ class OtoDnaAuthGate extends StatelessWidget {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, authSnapshot) {
-
-        // 1. AŞAMA: Firebase bağlantısı beklenirken Tesla Yükleme Ekranı
         if (authSnapshot.connectionState == ConnectionState.waiting) {
           return const _TeslaYuklemeEkrani(mesaj: "SİBER PROTOKOLLER TARANIYOR...");
         }
 
-        // 2. AŞAMA: Kullanıcı giriş yapmamışsa anında Login'e at
         if (!authSnapshot.hasData || authSnapshot.data == null) {
           return const SiberGirisScreen();
         }
 
         final User currentUser = authSnapshot.data!;
 
-        // 3. AŞAMA: Kullanıcı Firebase'de var, şimdi Rolünü kontrol et
         return FutureBuilder<DocumentSnapshot>(
           future: FirebaseFirestore.instance.collection('kullanicilar').doc(currentUser.uid).get(),
           builder: (context, userSnapshot) {
-
             if (userSnapshot.connectionState == ConnectionState.waiting) {
               return const _TeslaYuklemeEkrani(mesaj: "KARARGAH YETKİLERİ DOĞRULANIYOR...");
             }
 
-            // Hata varsa veya adam veritabanından silinmişse
             if (userSnapshot.hasError || !userSnapshot.hasData || !userSnapshot.data!.exists) {
               return _buildSiberHataEkrani("SİCİL BULUNAMADI - AĞDAN ÇIK");
             }
 
             var userData = userSnapshot.data!.data() as Map<String, dynamic>;
 
-            // 🔥 ROL VE KARALİSTE MÜHRÜNÜ OKU
             String role = (userData['rol'] ?? "USER").toString().toUpperCase();
             bool isBlacklisted = userData['isBlacklisted'] ?? userData['kara_liste'] ?? false;
 
@@ -54,15 +49,12 @@ class OtoDnaAuthGate extends StatelessWidget {
               return _buildSiberHataEkrani("KARALİSTE: ZORUNLU ÇIKIŞ YAP");
             }
 
-            // 🚀 GÜVENLİK GEÇİLDİ -> İLGİLİ EKRANA FIRLAT!
-            // SİBER NOT: Şu an bayi_paneli.dart olmadığı için çökmesin diye herkesi Admin Paneline atıyoruz.
-            // İleride o ekranları kodladığımızda buradaki rotaları ayıracağız.
-            if (role == "ADMIN") {
+            if (role == "ADMIN" || role == "BOLGE_KOMUTANI") {
               return const AdminControlCenter();
             } else if (role == "BAYI" || role == "USTA") {
-              return const AdminControlCenter(); // TODO: Bayi Paneli yapılınca değiştir
+              return BayiPaneliScreen(bayiId: currentUser.uid);
             } else {
-              return const AdminControlCenter(); // TODO: Kullanıcı Kokpiti yapılınca değiştir
+              return const KullaniciPaneliScreen();
             }
           },
         );
@@ -70,7 +62,6 @@ class OtoDnaAuthGate extends StatelessWidget {
     );
   }
 
-  // --- SİBER HATA ZIRHI ---
   Widget _buildSiberHataEkrani(String butonMetni) {
     return Scaffold(
       backgroundColor: _oledBlack,
@@ -90,11 +81,9 @@ class OtoDnaAuthGate extends StatelessWidget {
   }
 }
 
-// --- 🌑 TESLA MİMARİSİ: GÖRSEL YÜKLEME MOTORU ---
 class _TeslaYuklemeEkrani extends StatefulWidget {
   final String mesaj;
   const _TeslaYuklemeEkrani({required this.mesaj});
-
   @override
   State<_TeslaYuklemeEkrani> createState() => _TeslaYuklemeEkraniState();
 }
@@ -103,7 +92,6 @@ class _TeslaYuklemeEkraniState extends State<_TeslaYuklemeEkrani> with SingleTic
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _opacityAnimation;
-
   @override
   void initState() {
     super.initState();
@@ -111,13 +99,11 @@ class _TeslaYuklemeEkraniState extends State<_TeslaYuklemeEkrani> with SingleTic
     _scaleAnimation = Tween<double>(begin: 0.9, end: 1.1).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
     _opacityAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
-
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     const Color primaryCyan = Color(0xFF00FFC2);
@@ -134,16 +120,7 @@ class _TeslaYuklemeEkraniState extends State<_TeslaYuklemeEkrani> with SingleTic
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(32),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: primaryCyan.withOpacity(0.05),
-                        border: Border.all(color: primaryCyan.withOpacity(0.5), width: 2),
-                        boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.2), blurRadius: 40, spreadRadius: 10)],
-                      ),
-                      child: const Icon(Icons.fingerprint, size: 80, color: primaryCyan),
-                    ),
+                    Container(padding: const EdgeInsets.all(32), decoration: BoxDecoration(shape: BoxShape.circle, color: primaryCyan.withOpacity(0.05), border: Border.all(color: primaryCyan.withOpacity(0.5), width: 2), boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.2), blurRadius: 40, spreadRadius: 10)]), child: const Icon(Icons.fingerprint, size: 80, color: primaryCyan)),
                     const SizedBox(height: 48),
                     const Text('OTODNA', style: TextStyle(fontSize: 48, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 8.0)),
                     const SizedBox(height: 12),

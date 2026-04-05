@@ -3,10 +3,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// 🚀 KARARGAH ZIRHLARI VE HEDEF ROTA
-import '../core/siber_tema.dart';
-import '../core/responsive_kalkan.dart';
-import 'admin_dashboard.dart'; // Giriş başarılı olunca buraya fırlatılacak!
+// 🚀 KARARGAH ZIRHLARI VE HEDEF ROTA (Mutlak Rota ile Bağlandı!)
+import 'package:otodna/core/siber_tema.dart';
+import 'package:otodna/core/responsive_kalkan.dart';
+// 🔥 Giriş başarılı olunca asıl Amiral Gemisine (hq_command_center) fırlatılacak!
+import 'package:otodna/admin/hq_command_center.dart';
 
 class MasterGateScreen extends StatefulWidget {
   const MasterGateScreen({super.key});
@@ -56,8 +57,8 @@ class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerPr
       if (!mounted) return;
       _siberUyari("SİBER AĞ ONAYLANDI. Karargaha Geçiliyor... 🦅", SiberTema.kuantumCyan);
 
-      // Başarılı girişte doğrudan Süper Panele yönlendir!
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AdminSuperPaneli()));
+      // 🔥 Başarılı girişte DOĞRUDAN Asıl Karargaha (HqCommandCenter) yönlendir!
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HqCommandCenterScreen()));
 
     } on FirebaseAuthException catch (e) {
       String hataMesaji = "KUANTUM KİLİDİ AÇILAMADI!";

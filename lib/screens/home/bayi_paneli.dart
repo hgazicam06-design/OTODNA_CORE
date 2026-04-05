@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:url_launcher/url_launcher.dart'; // 🚀 SİBER SİLAH: Harita Tetikleyici
+import 'package:url_launcher/url_launcher.dart';
+
+// 🚀 KARARGAH ZIRHLARI VE TEMASI
+import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart';
+
+// 🔥 ROTALAR (Bayi işleme başladığında buraya uçacak)
+import 'mega_revizyon_screen.dart';
 
 class BayiPaneliScreen extends StatefulWidget {
-  const BayiPaneliScreen({super.key});
+  final String bayiId; // Firebase Auth'dan gelecek olan Bayi UID'si
+
+  const BayiPaneliScreen({super.key, required this.bayiId});
 
   @override
   State<BayiPaneliScreen> createState() => _BayiPaneliScreenState();
 }
 
 class _BayiPaneliScreenState extends State<BayiPaneliScreen> {
-  final Color bgColor = const Color(0xFF0F172A);
-  final Color primaryCyan = const Color(0xFF00FFC2);
-  final Color cardColor = const Color(0xFF1E293B);
 
-  // Sinyal durumunu güncelleyen Firebase Motoru
+  // --- SOS SİNYAL GÜNCELLEME MOTORU ---
   Future<void> _sinyalDurumGuncelle(String docId, String yeniDurum, bool asilsizMi) async {
     try {
       await FirebaseFirestore.instance.collection('sos_sinyalleri').doc(docId).update({
@@ -22,211 +28,284 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> {
         'asilsiz_ihbar_mi': asilsizMi,
         'guncelleme_tarihi': FieldValue.serverTimestamp(),
       });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Kuantum Ağı: Sinyal Durumu "$yeniDurum" olarak mühürlendi!', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-            backgroundColor: primaryCyan,
-          ),
-        );
-      }
+      if (mounted) _siberUyariVer('Kuantum Ağı: Sinyal Durumu "$yeniDurum" olarak mühürlendi!', false);
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('🚨 GÜNCELLEME HATASI: $e'), backgroundColor: Colors.redAccent));
-      }
+      if (mounted) _siberUyariVer('🚨 GÜNCELLEME HATASI: $e', true);
     }
   }
 
   // --- GERÇEK HARİTADA AÇMA MOTORU ---
   Future<void> _haritayiAc(String konumStr) async {
     if (konumStr == 'Konum Alınamadı' || !konumStr.contains(',')) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Geçerli bir koordinat bulunamadı!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: Colors.orangeAccent),
-      );
+      _siberUyariVer('Geçerli bir koordinat bulunamadı!', true);
       return;
     }
 
     try {
-      // Koordinatları parçalıyoruz: Enlem ve Boylam
       final kordinatlar = konumStr.split(',');
       final lat = kordinatlar[0].trim();
       final lng = kordinatlar[1].trim();
-
-      // Haritalar (Google Maps / Apple Maps) Evrensel Tetikleyici URL
       final url = Uri.parse('https://www.google.com/maps/search/?api=1&query=$lat,$lng');
 
-      if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-        throw Exception('Harita açılamadı');
-      }
+      if (!await launchUrl(url, mode: LaunchMode.externalApplication)) throw Exception('Harita açılamadı');
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Siber Hata: Harita tetiklenemedi!', style: TextStyle(color: Colors.white)), backgroundColor: Colors.redAccent),
-        );
-      }
+      if (mounted) _siberUyariVer('Siber Hata: Harita tetiklenemedi!', true);
     }
+  }
+
+  void _siberUyariVer(String mesaj, bool isError) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+      backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
+      behavior: SnackBarBehavior.floating,
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        backgroundColor: bgColor,
-        elevation: 0,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.radar, color: primaryCyan, size: 28),
-            const SizedBox(width: 10),
-            Text('OTO DNA - BAYİ RADARI', style: TextStyle(color: primaryCyan, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontSize: 16)),
-          ],
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(icon: const Icon(Icons.radar, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          title: Text("BAYİ KOKPİTİ", style: TextStyle(color: Colors.white.withOpacity(0.9), fontWeight: FontWeight.w800, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
+          centerTitle: true,
+          bottom: PreferredSize(preferredSize: const Size.fromHeight(1), child: Container(color: Colors.white.withOpacity(0.05), height: 1)),
         ),
-        centerTitle: true,
+        body: Container(
+          decoration: const BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/radar_grid.png'), fit: BoxFit.cover, opacity: 0.05)),
+          child: Column(
+            children: [
+              // ── 1. ÜST PANEL: BAYİ İTİBAR VE İŞLEM BAŞLATMA ──
+              _buildBayiProfiliVeIslemMotoru(),
+
+              // ── 2. ALT PANEL: CANLI SOS RADARI ──
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Row(
+                  children: [
+                    const Icon(Icons.cell_tower, color: SiberTema.kanKirmizi, size: 18),
+                    const SizedBox(width: 8),
+                    Text("BÖLGESEL S.O.S RADARI", style: TextStyle(color: Colors.white.withOpacity(0.7), fontWeight: FontWeight.w800, letterSpacing: 1.5, fontSize: 12, fontFamily: 'Avenir')),
+                  ],
+                ),
+              ),
+              Expanded(child: _buildCanliSosMotoru()),
+            ],
+          ),
+        ),
       ),
-      // 📡 CANLI FİREBASE DİNLEYİCİSİ (S.O.S RADARI)
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('sos_sinyalleri')
-            .orderBy('sinyal_zamani', descending: true)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Center(child: Text('Kuantum Radarında bir hata oluştu!', style: TextStyle(color: Colors.redAccent)));
-          }
+    );
+  }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator(color: primaryCyan));
-          }
+  // --- 🟡 1. FİREBASE: BAYİ İTİBAR PROFİLİ VE MEGA REVİZYON BUTONU ---
+  Widget _buildBayiProfiliVeIslemMotoru() {
+    return StreamBuilder<DocumentSnapshot>(
+      // DİKKAT: Bayinin kendi ID'sine göre veri çekiyoruz
+      stream: FirebaseFirestore.instance.collection('bayiler').doc(widget.bayiId).snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Padding(padding: EdgeInsets.all(20), child: Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)));
+        }
 
-          final data = snapshot.requireData;
+        // Eğer bayi sistemde yoksa veya onay bekliyorsa
+        if (!snapshot.hasData || !snapshot.data!.exists) {
+          return _buildUyariKutusu("SİCİL BULUNAMADI VEYA ONAY BEKLİYOR.", SiberTema.kanKirmizi);
+        }
 
-          // EĞER SİNYAL YOKSA ÇIKACAK EKRAN
-          if (data.size == 0) {
-            return Center(
+        var data = snapshot.data!.data() as Map<String, dynamic>;
+        bool isKaraListe = data['kara_liste'] ?? false;
+        double puan = (data['puan'] ?? 5.0).toDouble();
+        String isim = data['firma_adi'] ?? 'Bilinmeyen Firma';
+
+        if (isKaraListe) return _buildUyariKutusu("KARA LİSTE: AĞA ERİŞİMİNİZ KESİLDİ.", SiberTema.oledBlack, isBlacklist: true);
+
+        return Padding(
+          padding: const EdgeInsets.all(20),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [SiberTema.matGrey.withOpacity(0.8), SiberTema.oledBlack]),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
+              boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 15, spreadRadius: 1)],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(child: Text(isim, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir'))),
+                    _buildRozetGosterici(puan),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                // 🚀 TRUVA ATI: MEGA REVİZYON TETİKLEYİCİSİ
+                GestureDetector(
+                  onTap: () {
+                    // Bayi işleme başladığında Mega Revizyon Ekranına fırlatıyoruz!
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const MegaRevizyonScreen()));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [SiberTema.kuantumCyan.withOpacity(0.9), SiberTema.kuantumCyan.withOpacity(0.6)]),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.4), offset: const Offset(0, 4), blurRadius: 10)],
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.build_circle, color: SiberTema.oledBlack, size: 20),
+                        SizedBox(width: 8),
+                        Text("YENİ ARAÇ İŞLEMİ BAŞLAT", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // --- 🔴 2. FİREBASE: CANLI SOS MOTORU (Senin kodun 3D zırhlı hali) ---
+  Widget _buildCanliSosMotoru() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('sos_sinyalleri').orderBy('sinyal_zamani', descending: true).snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kanKirmizi));
+        if (snapshot.hasError) return const Center(child: Text('Radar Hatası!', style: TextStyle(color: SiberTema.kanKirmizi)));
+
+        final data = snapshot.requireData;
+        if (data.size == 0) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.security, color: SiberTema.kuantumCyan.withOpacity(0.3), size: 64),
+                const SizedBox(height: 16),
+                Text('BÖLGE GÜVENDE. S.O.S YOK.', style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
+              ],
+            ),
+          );
+        }
+
+        return ListView.builder(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          itemCount: data.size,
+          itemBuilder: (context, index) {
+            var sinyalData = data.docs[index].data() as Map<String, dynamic>;
+            var docId = data.docs[index].id;
+            bool isBekliyor = sinyalData['durum'] == 'Bekliyor';
+            Color durumRengi = isBekliyor ? SiberTema.kanKirmizi : SiberTema.kuantumCyan;
+
+            return Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [SiberTema.oledBlack, SiberTema.matGrey.withOpacity(0.5)]),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: durumRengi.withOpacity(isBekliyor ? 0.5 : 0.2), width: isBekliyor ? 2 : 1),
+                boxShadow: isBekliyor ? [BoxShadow(color: SiberTema.kanKirmizi.withOpacity(0.15), blurRadius: 15, spreadRadius: 1)] : [],
+              ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.security, color: primaryCyan.withOpacity(0.3), size: 100),
-                  const SizedBox(height: 24),
-                  const Text('Sahada Her Şey Sakin.', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 8),
-                  const Text('Aktif S.O.S Sinyali Bulunmuyor.', textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 14)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(isBekliyor ? Icons.warning_amber_rounded : Icons.shield, color: durumRengi, size: 20),
+                          const SizedBox(width: 8),
+                          Text(sinyalData['plaka'] ?? 'BİLİNMİYOR', style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                        ],
+                      ),
+                      Text(sinyalData['durum'] ?? 'Bekliyor', style: TextStyle(color: durumRengi, fontWeight: FontWeight.bold, fontSize: 11, fontFamily: 'Avenir')),
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: Colors.white12)),
+
+                  // Harita Tetikleyici
+                  GestureDetector(
+                    onTap: () => _haritayiAc(sinyalData['konum'] ?? ''),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.location_on, color: SiberTema.altinSari, size: 18),
+                          const SizedBox(width: 8),
+                          const Expanded(child: Text("Navigasyon İçin Tıklayın", style: TextStyle(color: SiberTema.altinSari, fontSize: 12, fontWeight: FontWeight.bold))),
+                          const Icon(Icons.navigation, color: SiberTema.altinSari, size: 14),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  if (isBekliyor) ...[
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(foregroundColor: SiberTema.kanKirmizi, side: const BorderSide(color: SiberTema.kanKirmizi), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+                            onPressed: () => _sinyalDurumGuncelle(docId, 'Asılsız İhbar', true),
+                            child: const Text('ASILSIZ İHBAR', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kanKirmizi, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+                            onPressed: () => _sinyalDurumGuncelle(docId, 'Müdahale Edildi', false),
+                            child: const Text('MÜDAHALE ET', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                          ),
+                        ),
+                      ],
+                    )
+                  ]
                 ],
               ),
             );
-          }
+          },
+        );
+      },
+    );
+  }
 
-          // SİNYALLER LİSTESİ
-          return ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(20.0),
-            itemCount: data.size,
-            itemBuilder: (context, index) {
-              var sinyal = data.docs[index];
-              var docId = sinyal.id;
+  // --- YARDIMCI GÖRSELLER ---
+  Widget _buildRozetGosterici(double puan) {
+    Color renk = puan >= 4.5 ? SiberTema.altinSari : (puan >= 3.0 ? Colors.grey[300]! : SiberTema.kanKirmizi);
+    String metin = puan >= 4.5 ? "ALTIN ROZET" : (puan >= 3.0 ? "STANDART" : "RİSKLİ");
 
-              Map<String, dynamic> sinyalData = sinyal.data() as Map<String, dynamic>;
-
-              var plaka = sinyalData['plaka'] ?? 'Bilinmiyor';
-              var kullanici = sinyalData['kullanici'] ?? 'Siber Sürücü';
-              var durum = sinyalData['durum'] ?? 'Bekliyor';
-              var konum = sinyalData['konum'] ?? 'Konum Alınamadı';
-
-              bool isBekliyor = durum == 'Bekliyor';
-              Color durumRengi = isBekliyor ? Colors.redAccent : primaryCyan;
-
-              return Container(
-                margin: const EdgeInsets.only(bottom: 16),
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: isBekliyor ? Colors.redAccent.withOpacity(0.05) : cardColor,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: durumRengi.withOpacity(0.5), width: isBekliyor ? 2 : 1),
-                  boxShadow: isBekliyor ? [BoxShadow(color: Colors.redAccent.withOpacity(0.1), blurRadius: 20, spreadRadius: 2)] : [],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(color: durumRengi.withOpacity(0.2), shape: BoxShape.circle),
-                              child: Icon(isBekliyor ? Icons.warning_amber_rounded : Icons.shield, color: durumRengi, size: 20),
-                            ),
-                            const SizedBox(width: 12),
-                            Text(plaka, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
-                          ],
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(color: durumRengi.withOpacity(0.15), borderRadius: BorderRadius.circular(12), border: Border.all(color: durumRengi)),
-                          child: Text(durum, style: TextStyle(color: durumRengi, fontWeight: FontWeight.bold, fontSize: 11)),
-                        ),
-                      ],
-                    ),
-                    const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white12)),
-                    Row(children: [const Icon(Icons.person, color: Colors.white54, size: 16), const SizedBox(width: 8), Text('Sürücü: $kullanici', style: const TextStyle(color: Colors.white70, fontSize: 14))]),
-                    const SizedBox(height: 12),
-
-                    // --- İŞTE SENİN TIKLANABİLİR HARİTA BUTONUN ---
-                    GestureDetector(
-                      onTap: () => _haritayiAc(konum),
-                      child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.location_on, color: Colors.orangeAccent, size: 20),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                konum == 'Konum Alınamadı' ? konum : "Konuma Gitmek İçin Tıklayın (Navigasyon)",
-                                style: const TextStyle(color: Colors.orangeAccent, fontSize: 13, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            const Icon(Icons.navigation, color: Colors.orangeAccent, size: 16),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // MÜDAHALE BUTONLARI
-                    if (isBekliyor)
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ElevatedButton.icon(
-                              style: ElevatedButton.styleFrom(backgroundColor: primaryCyan, foregroundColor: bgColor, padding: const EdgeInsets.symmetric(vertical: 14), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-                              icon: const Icon(Icons.directions_car, size: 18),
-                              label: const Text('Müdahale Et', style: TextStyle(fontWeight: FontWeight.bold)),
-                              onPressed: () => _sinyalDurumGuncelle(docId, 'Müdahale Edildi', false),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              style: OutlinedButton.styleFrom(foregroundColor: Colors.redAccent, padding: const EdgeInsets.symmetric(vertical: 14), side: const BorderSide(color: Colors.redAccent), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-                              icon: const Icon(Icons.block, size: 18),
-                              label: const Text('Asılsız İhbar', style: TextStyle(fontWeight: FontWeight.bold)),
-                              onPressed: () => _sinyalDurumGuncelle(docId, 'Asılsız İhbar', true),
-                            ),
-                          ),
-                        ],
-                      )
-                  ],
-                ),
-              );
-            },
-          );
-        },
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(color: renk.withOpacity(0.1), border: Border.all(color: renk.withOpacity(0.5)), borderRadius: BorderRadius.circular(10)),
+      child: Row(
+        children: [
+          Icon(Icons.star, color: renk, size: 14),
+          const SizedBox(width: 4),
+          Text("$metin ($puan)", style: TextStyle(color: renk, fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+        ],
       ),
+    );
+  }
+
+  Widget _buildUyariKutusu(String mesaj, Color renk, {bool isBlacklist = false}) {
+    return Container(
+      margin: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(color: isBlacklist ? renk : renk.withOpacity(0.1), borderRadius: BorderRadius.circular(20), border: Border.all(color: isBlacklist ? SiberTema.kanKirmizi : renk.withOpacity(0.5), width: 2)),
+      child: Center(child: Text(mesaj, style: TextStyle(color: isBlacklist ? SiberTema.kanKirmizi : renk, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir', letterSpacing: 1), textAlign: TextAlign.center)),
     );
   }
 }

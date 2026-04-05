@@ -1,10 +1,12 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-// 🔥 YENİ: ROTA BAĞLANTILARI
-import 'bayi_yonetim_merkezi_screen.dart';
-import 'kullanici_yonetim_screen.dart';
+// 🔥 SİBER KÖPRÜLER (Mutlak Rota ile Zırhlandı - Asla kopmaz!)
+import 'package:otodna/screens/bayi_yonetim_merkezi_screen.dart';
+import 'package:otodna/screens/kullanici_yonetim_screen.dart';
+import 'package:otodna/screens/bayi_paneli.dart';
 
 class AmiralGemisi extends StatefulWidget {
   const AmiralGemisi({super.key});
@@ -44,7 +46,7 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
         ),
         child: Row(
           children: [
-            _buildSiberYanMenu(), // Düzeltilen fonksiyon adı
+            _buildSiberYanMenu(),
             Expanded(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -63,9 +65,17 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
                       children: [
                         Expanded(
                           child: _buildRotaButonu(
-                              "BAYİ PANELİ",
-                              Icons.store_mall_directory,
+                              "BAYİ AĞI MERKEZİ",
+                              Icons.business,
                                   () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BayiYonetimMerkeziScreen()))
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: _buildRotaButonu(
+                              "BAYİ PANELİ GİRİŞİ",
+                              Icons.store_mall_directory,
+                                  () => Navigator.push(context, MaterialPageRoute(builder: (_) => BayiPaneliScreen(bayiId: FirebaseAuth.instance.currentUser?.uid ?? 'ADMIN_BYPASS')))
                           ),
                         ),
                         const SizedBox(width: 16),
@@ -74,14 +84,6 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
                               "KULLANICI PANELİ",
                               Icons.people_alt,
                                   () => Navigator.push(context, MaterialPageRoute(builder: (_) => const KullaniciYonetimScreen()))
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: _buildRotaButonu(
-                              "SİSTEM AYARLARI",
-                              Icons.settings,
-                                  () => _rotaUyari("SİSTEM AYARLARI")
                           ),
                         ),
                         const SizedBox(width: 16),
@@ -178,7 +180,6 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
 
   // --- 🔴 FİREBASE MOTORLARI VE DERİN DEVLET FONKSİYONLARI ---
 
-  // 1. FİREBASE CANLI FİNANS MOTORU (Gazi Payı %10, Vergi %2)
   Widget _ustFinansalBant() {
     return StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance.collection('sistem_verileri').doc('finans').snapshots(),
@@ -210,10 +211,8 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
     );
   }
 
-  // 2. FİREBASE CANLI SİSTEM SAĞLIĞI VE GÜVENLİK
   Widget _teknikSistemSagligi() {
     return StreamBuilder<QuerySnapshot>(
-      // Son 24 saatteki hataları ve güvenlik ihlallerini çeker
       stream: FirebaseFirestore.instance.collection('sistem_loglari').where('islem_turu', isEqualTo: 'hata').limit(5).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) return _buildKuantumLoader(_neonBlue);
@@ -241,7 +240,6 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
     );
   }
 
-  // 3. FİREBASE LİDER BAYİLER MATRİSİ (En çok ciro yapan ilk 3 bayi)
   Widget _bayiPerformansMatrisi() {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance.collection('bayiler').where('aktif_mi', isEqualTo: true).orderBy('aylik_ciro', descending: true).limit(3).snapshots(),

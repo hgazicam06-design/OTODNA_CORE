@@ -2,7 +2,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'master_gate.dart';
+
+// 🔥 SİBER KÖPRÜLER (Mutlak Rota ile Zırhlandı - Bağlantı Asla Kopmaz!)
+import 'package:otodna/admin/master_gate.dart'; // Not: Eğer master_gate auth klasöründeyse CTRL+. ile yolunu teyit et Komutan!
 
 class HqCommandCenterScreen extends StatefulWidget {
   const HqCommandCenterScreen({super.key});
@@ -110,7 +112,8 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
           toplamHacim = ((snapshot.data!.data() as Map<String, dynamic>)['toplam_ciro'] ?? 0).toDouble();
         }
 
-        double gaziPayi = toplamHacim * 0.12; // Net %12 Anlaşma
+        // 💰 SİBER FİNANS KURALI: Sadece ve sadece %12 (Net %10 + Vergi %2)
+        double gaziPayi = toplamHacim * 0.12;
 
         return _buildCamEfektliKutu(
           borderColor: _cyan.withOpacity(0.5),
@@ -305,7 +308,6 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Colors.black,
-        // 🚨 MAYIN BURADAYDI, İMHA EDİLDİ (border -> side) 🚨
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: _alertRed.withOpacity(0.5))),
         title: const Row(
           children: [

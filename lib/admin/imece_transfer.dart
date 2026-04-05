@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// 🚀 KARARGAH ZIRHLARI
-import '../core/siber_tema.dart';
-import '../core/responsive_kalkan.dart';
+// 🚀 KARARGAH ZIRHLARI (Mutlak Rota ile Bağlandı)
+import 'package:otodna/core/siber_tema.dart';
+import 'package:otodna/core/responsive_kalkan.dart';
 
 class ImeceAdaletPaneli extends StatefulWidget {
   const ImeceAdaletPaneli({super.key});
@@ -32,25 +32,36 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
         String hataliBayiId = vakaData['hatali_bayi_id'];
         String onaranBayiId = vakaData['onaran_bayi_id'];
 
-        // 1. Hatalı Bayinin Hakedişinden Kes (Ceza)
+        // 🔥 SİBER KURAL: Adalet Divanında bile Karargah hakkını alır! (%12 Evrensel Kesinti)
+        double gaziPayi = tutar * 0.12;
+        double onaranBayiHakedis = tutar - gaziPayi;
+
+        // 1. Hatalı Bayinin Hakedişinden TAM TUTARI Kes (Ceza)
         DocumentReference hataliBayiRef = db.collection('kullanicilar').doc(hataliBayiId);
         batch.update(hataliBayiRef, {'toplam_hakedis': FieldValue.increment(-tutar)});
 
-        // 2. Onaran Bayinin Hakedişine Ekle (Ödül)
+        // 2. Onaran Bayinin Hakedişine NET TUTARI Ekle (Ödül)
         DocumentReference onaranBayiRef = db.collection('kullanicilar').doc(onaranBayiId);
-        batch.update(onaranBayiRef, {'toplam_hakedis': FieldValue.increment(tutar)});
+        batch.update(onaranBayiRef, {'toplam_hakedis': FieldValue.increment(onaranBayiHakedis)});
 
-        // 3. Vaka Durumunu Onaylandı Yap
+        // 3. Karargah Kasasına %12 Payı Ekle!
+        DocumentReference sistemFinansRef = db.collection('sistem_verileri').doc('finans');
+        batch.set(sistemFinansRef, {
+          'toplam_gazi_payi': FieldValue.increment(gaziPayi),
+          'toplam_ciro': FieldValue.increment(tutar), // İmece hacmini de ciroya yansıt
+        }, SetOptions(merge: true));
+
+        // 4. Vaka Durumunu Onaylandı Yap
         batch.update(vakaRef, {
           'durum': 'ONAYLANDI - TRANSFER EDİLDİ',
           'karar_tarihi': FieldValue.serverTimestamp(),
         });
 
-        // 4. Sistem Loglarına (Kara Kutu) İşle
+        // 5. Sistem Loglarına (Kara Kutu) İşle
         DocumentReference logRef = db.collection('sistem_loglari').doc();
         batch.set(logRef, {
           'islem_turu': 'basarili',
-          'islem_detayi': 'İMECE ADALETİ: ₺$tutar, $hataliBayiId bayisinden kesilip $onaranBayiId bayisine transfer edildi.',
+          'islem_detayi': 'İMECE ADALETİ: ₺$tutar ceza kesildi. ₺$onaranBayiHakedis onaran bayiye, ₺$gaziPayi Karargah kasasına aktarıldı.',
           'bayi_isim': 'ADALET DİVANI',
           'tarih': FieldValue.serverTimestamp(),
         });

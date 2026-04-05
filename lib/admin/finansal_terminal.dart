@@ -13,9 +13,17 @@ class FinansalTerminalServisi {
     required String islemTipi,
   }) async {
     try {
-      // 1. Kuantum Algoritması: Pay Dağılımı (Anlaşma: %10 Gazi, %2 Vergi)
-      double gaziNet = islemTutari * 0.10;
-      double vergiPayi = islemTutari * 0.02;
+      // 1. Kuantum Algoritması: Pay Dağılımı
+      // 🔥 SİBER KURAL: Murat Plaza'dan %30 (%28 Kâr + %2 Vergi), Diğerlerinden %12 (%10 Kâr + %2 Vergi) kesilir!
+      double vergiPayi = islemTutari * 0.02; // Devletin vergisi sabit %2
+      double gaziNet = 0.0;
+
+      if (bayiAdi.toUpperCase().contains('MURAT PLAZA')) {
+        gaziNet = islemTutari * 0.28; // Murat Plaza VIP Kesintisi (%30'a tamamlar, Kasa Kazanır!)
+      } else {
+        gaziNet = islemTutari * 0.10; // Standart Karargah Payı (%12'ye tamamlar)
+      }
+
       double bayiKalan = islemTutari - (gaziNet + vergiPayi);
 
       // SİBER ZIRH (WriteBatch): Eğer internet koparsa ya hiçbiri yazılmaz ya da hepsi birden yazılır.

@@ -7,6 +7,9 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
+// ✅ SİBER KÖPRÜ
+import 'arac_dna_raporu_screen.dart';
+
 class SiberGozQrScreen extends StatefulWidget {
   const SiberGozQrScreen({super.key});
 
@@ -23,11 +26,19 @@ class _SiberGozQrScreenState extends State<SiberGozQrScreen> {
   Future<void> _aracRontgeniCek(String qrData) async {
     if (_isProcessing) return;
     setState(() => _isProcessing = true);
-    _scannerController.stop(); // Taramayı durdur, veriyi işle
+    _scannerController.stop();
+
+    // 🛡️ KARARGAH GÜVENLİK KİLİDİ
+    if (!qrData.startsWith("OTODNA-")) {
+      _siberUyariVer("GECERSİZ MÜHÜR! Bu QR Kod OtoDNA Karargahına ait değil.", isError: true);
+      _sistemiSifirla();
+      return;
+    }
+
+    String gercekAracId = qrData.split("-").last;
 
     try {
-      // QR koddan gelen veri Aracın ID'si veya Plakası kabul edilir
-      DocumentSnapshot aracDoc = await _db.collection('araclar').doc(qrData).get();
+      DocumentSnapshot aracDoc = await _db.collection('araclar').doc(gercekAracId).get();
 
       if (!mounted) return;
 
@@ -52,8 +63,12 @@ class _SiberGozQrScreenState extends State<SiberGozQrScreen> {
   }
 
   void _sistemiSifirla() {
-    setState(() => _isProcessing = false);
-    _scannerController.start();
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        setState(() => _isProcessing = false);
+        _scannerController.start();
+      }
+    });
   }
 
   void _siberUyariVer(String mesaj, {required bool isError}) {
@@ -102,18 +117,41 @@ class _SiberGozQrScreenState extends State<SiberGozQrScreen> {
                   Text("GÜNCEL DNA SKORU: $dnaSkoru/100", style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                   const SizedBox(height: 32),
 
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.white.withOpacity(0.1), foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        _sistemiSifirla();
-                      },
-                      child: const Text("TARAMAYA DEVAM ET", style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
-                    ),
-                  )
+                  // ✅ YENİ EKLENEN SİBER BUTONLAR (KİTAPÇIK KÖPRÜSÜ)
+                  Column(
+                    children: [
+                      // 1. DNA KİTAPÇIĞINA GİT BUTONU
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, foregroundColor: SiberTema.oledBlack, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                          onPressed: () {
+                            Navigator.pop(context); // Önce alt pencereyi kapat
+                            // 🚀 SİBER KÖPRÜ ATEŞLENDİ!
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => AracDnaRaporuScreen(plaka: plaka))).then((_) => _sistemiSifirla());
+                          },
+                          icon: const Icon(Icons.menu_book),
+                          label: const Text("ULTRA DNA KİTAPÇIĞINI AÇ", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+
+                      // 2. TARAMAYA DEVAM ET BUTONU
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(foregroundColor: Colors.white, side: BorderSide(color: Colors.white.withOpacity(0.3)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            _sistemiSifirla();
+                          },
+                          child: const Text("TARAMAYA DEVAM ET", style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

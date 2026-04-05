@@ -8,7 +8,7 @@ class GaziPayiHesaplayici {
   static Future<Map<String, double>> hesaplaVeDenetle({
     required double sonSatisFiyati,
     required String bayiId,
-    required String bayiTipi
+    required String bayiTipi // Artık sadece loglama için tutuluyor, kesinti oranı HERKES İÇİN SABİT!
   }) async {
 
     // 🛡️ 1. AŞAMA KALKAN: Negatif veya sıfır tutar engellemesi!
@@ -23,7 +23,8 @@ class GaziPayiHesaplayici {
       throw Exception("Kuantum İhlali: İşlem tutarı 0 veya negatif olamaz!");
     }
 
-    // 💰 2. GAZİ KOMUTAN PAYI ALGORİTMASI (Değişmez Kural: Net %10 + Vergi %2)
+    // 💰 2. GAZİ KOMUTAN PAYI ALGORİTMASI (Değişmez Evrensel Kural: Net %10 + Vergi %2 = %12)
+    // Hiçbir bayiye ayrıcalık yoktur!
     double toplamGaziPayi = sonSatisFiyati * 0.12;
     double gaziNet = sonSatisFiyati * 0.10;
     double vergi = sonSatisFiyati * 0.02;

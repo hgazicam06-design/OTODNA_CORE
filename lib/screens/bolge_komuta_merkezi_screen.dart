@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // 🚀 KARARGAH ZIRHLARI VE SERVİSLER
 import '../core/siber_tema.dart';
@@ -131,7 +132,6 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
                       border: Border.all(color: _isScanning ? Colors.white24 : Colors.white.withOpacity(0.5), width: 1.5),
                       boxShadow: _isScanning ? [] : [
                         BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.3), offset: const Offset(0, 8), blurRadius: 15),
-                        const BoxShadow(color: Colors.white30, offset: Offset(0, -2), blurRadius: 2, inset: true),
                       ],
                     ),
                     child: Center(
@@ -165,17 +165,16 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
                           Text("SİBER İSTİHBARAT RAPORU: ${_seciliIl?.toUpperCase()}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.w800, letterSpacing: 1.5, fontFamily: 'Avenir')),
                           const SizedBox(height: 16),
 
-                          // Finansal Veriler (Komutan Payı)
                           Row(
                             children: [
                               Expanded(child: _buildVeriKutusu("AĞ CİROSU", "₺${_analizSonucu!['toplam_ciro'].toStringAsFixed(2)}", Icons.account_balance_wallet, Colors.white)),
                               const SizedBox(width: 12),
+                              // DİKKAT: %12 Standart Komutan Payı Kuantum Motoru (Tüm Ağ İçin Eşit)
                               Expanded(child: _buildVeriKutusu("KOMUTAN PAYI (%12)", "₺${_analizSonucu!['komutan_payi'].toStringAsFixed(2)}", Icons.diamond, SiberTema.kuantumCyan, isHighlight: true)),
                             ],
                           ),
                           const SizedBox(height: 12),
 
-                          // Operasyonel Veriler
                           Row(
                             children: [
                               Expanded(child: _buildVeriKutusu("AKTİF BAYİ", "${_analizSonucu!['aktif_bayi_sayisi']}", Icons.storefront, Colors.white)),
@@ -185,7 +184,6 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
                           ),
                           const SizedBox(height: 24),
 
-                          // Riskli Bayiler Listesi (Kırmızı Alarm)
                           if ((_analizSonucu!['riskli_bayiler'] as List).isNotEmpty) ...[
                             Text("⚠️ KARA LİSTE ADAYLARI (5+ ŞİKAYET)", style: TextStyle(color: SiberTema.kanKirmizi.withOpacity(0.9), fontSize: 12, fontWeight: FontWeight.w800, letterSpacing: 1.5, fontFamily: 'Avenir')),
                             const SizedBox(height: 12),
@@ -222,14 +220,13 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
     );
   }
 
-  // --- GÖRSEL ZIRH PARÇALARI (3D DERİNLİK EFEKTLERİ) ---
+  // --- GÖRSEL ZIRH PARÇALARI (3D SİBER CAM EFEKTLERİ) ---
 
   Widget _buildDropdownContainer({required String hint, required IconData icon, required String? value, required List<String> items, required void Function(String?)? onChanged}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        // 3D Dışa Çıkık Panel Hissi
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -259,7 +256,6 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        // 3D İçeri Çökük (Emboss) Veri Ekranı Hissi
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
