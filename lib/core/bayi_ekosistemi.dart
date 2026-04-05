@@ -3,70 +3,91 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class BayiEkosistemi {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // 1. BAYİ ÇIKARINI KOLLAYAN İŞLEM MODELİ (GERÇEK FİNANS VE İSTİHBARAT)
+  // 1. BAYİ ÇIKARINI KOLLAYAN İŞLEM MODELİ (EŞİTLİK PROTOKOLÜ)
   Future<void> islemBaslat({
     required String bayiId,
     required String bayiAdi,
-    required double islemTutari
+    required double islemTutari // Bu tutar müşterinin ödediği SON fiyattır (KDV dahil)
   }) async {
-    double bayiPayi = 0;
-    double gaziPayi = 0;
 
-    // ⚙️ TİCARİ PROTOKOL: Murat Plaza %30, Diğer Bayiler %12 (Kâr + Vergi)
-    if (bayiAdi == "Murat Plaza") {
-      gaziPayi = islemTutari * 0.30;
-      bayiPayi = islemTutari * 0.70;
-    } else {
-      gaziPayi = islemTutari * 0.12;
-      bayiPayi = islemTutari * 0.88;
-    }
+    // 🔥 SİBER KURAL: Murat Plaza imtiyazı YIKILDI! Herkesten net %12 OtoDNA payı kesilir.
+    double gaziPayi = islemTutari * 0.12; // OtoDNA'nın %12'lik komisyonu
+    double bayiPayi = islemTutari * 0.88; // Bayinin hesabına yatacak net tutar (Kendi KDV'si ve gideri içinden)
 
     try {
+      // SİBER ZIRH: Atomik WriteBatch Başlatıldı
+      WriteBatch batch = _db.batch();
+
       // Kuantum Defterine (Finansal Kayıtlara) İşlemi Yaz
-      await _db.collection('finansal_islemler').add({
+      DocumentReference finansRef = _db.collection('finansal_islemler').doc();
+      batch.set(finansRef, {
         "bayi_id": bayiId,
         "bayi_adi": bayiAdi,
         "toplam_tutar": islemTutari,
-        "bayi_kazanci": bayiPayi,
-        "sistem_kesintisi": gaziPayi, // Komutan Gazi Payı
+        "bayi_hesabina_yatacak": bayiPayi,
+        "otodna_kesintisi": gaziPayi, // Komutan Gazi Payı (%12)
         "tarih": FieldValue.serverTimestamp(),
       });
 
       // Bayinin cüzdan bakiyesini ve itibar puanını artır
-      await _db.collection('bayiler').doc(bayiId).update({
+      DocumentReference bayiRef = _db.collection('bayiler').doc(bayiId);
+      batch.update(bayiRef, {
         "toplam_kazanc": FieldValue.increment(bayiPayi),
         "itibar_puani": FieldValue.increment(10), // Dürüst işlem ödülü
         "son_islem_tarihi": FieldValue.serverTimestamp(),
       });
+
+      // Füzeleri aynı anda ateşle!
+      await batch.commit();
+
     } catch (e) {
-      print("Kritik Finansal Hata: $e");
-      throw Exception("Kuantum İşlem Başarısız: $e");
+      // Print yerine Karargahın Kara Kutusuna raporla
+      await _db.collection('sistem_loglari').add({
+        'islem_turu': 'hata',
+        'islem_detayi': 'KRİTİK FİNANSAL HATA: $bayiAdi işlemi mühürlenemedi! $e',
+        'tarih': FieldValue.serverTimestamp(),
+      });
     }
   }
 
-  // 2. ORTAK HAVUZDA GİZLİ ÜRÜN LİSTELEME (GİZLİLİK PROTOKOLÜ)
+  // 2. ŞEFFAF ÜRÜN LİSTELEME (GİZLİLİK KALKTI, HERKES KENDİ ADIYLA ÇIKAR)
   Future<void> urunListele({
-    required String asilSaticiId,
-    required String asilSaticiAdi,
+    required String saticiId,
+    required String saticiAdi,
     required String urunAd,
-    required double orijinalFiyat,
+    required double girilenFiyat,
+    required bool kdvDahilMi, // UI'dan %20 KDV dahil mi hariç mi seçeneği gelecek
     required String kategori
   }) async {
 
     try {
+      // KDV Hesaplaması: Eğer hariç girildiyse %20 ekle, dahilse aynen bırak.
+      double satisFiyati = kdvDahilMi ? girilenFiyat : girilenFiyat * 1.20;
+
+      // Satış gerçekleştiğinde kesilecek OtoDNA bedeli (%12)
+      double otodnaBedeli = satisFiyati * 0.12;
+      // Satıcıya kalacak net tutar (Kendi KDV'sini bu paranın içinden ödeyecek)
+      double saticiyaYatacak = satisFiyati - otodnaBedeli;
+
       await _db.collection('yedek_parcalar').add({
         "isim": urunAd,
-        "orijinal_fiyat": orijinalFiyat,
         "kategori": kategori,
-        "asil_satici_id": asilSaticiId,
-        "asil_satici_adi": asilSaticiAdi, // Arka planda paranın kime gideceği belli
-        "satici_goster": false, // Vitrinde ASLA gösterilmez!
-        "vitrin_etiketi": "Murat Plaza", // Herkes ürünleri Murat Plaza'nın sanacak
+        "girilen_ham_fiyat": girilenFiyat,
+        "kdv_durumu": kdvDahilMi ? "Dahil (%20)" : "Hariç (Sistem %20 Ekledi)",
+        "satis_fiyati": satisFiyati, // Müşterinin göreceği ve ödeyeceği tutar
+        "otodna_komisyonu_beklenen": otodnaBedeli, // Satılınca kesilecek Karargah payı
+        "saticiya_yatacak_tutar": saticiyaYatacak, // Satıcının göreceği net kazanç
+        "satici_id": saticiId,
+        "satici_adi": saticiAdi, // 🔥 ARTIK HERKES KENDİ İSMİYLE VİTRİNDE!
         "eklenme_tarihi": FieldValue.serverTimestamp(),
         "statu": "Aktif"
       });
     } catch (e) {
-      print("Kritik Ürün Ekleme Hatası: $e");
+      await _db.collection('sistem_loglari').add({
+        'islem_turu': 'hata',
+        'islem_detayi': 'ÜRÜN LİSTELEME HATASI: $urunAd vitrine çıkarılamadı! $e',
+        'tarih': FieldValue.serverTimestamp(),
+      });
     }
   }
 }
