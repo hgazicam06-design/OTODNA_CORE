@@ -140,7 +140,7 @@ class _KayitOlScreenState extends State<KayitOlScreen> with SingleTickerProvider
   }
 
   // ========================================================================
-  // 🚀 AŞAMA 3: FİREBASE'E MÜHÜRLEME İŞLEMİ (ALTIN VURUŞ & SAAS ENTEGRASYONU)
+  // 🚀 AŞAMA 3: FİREBASE'E MÜHÜRLEME İŞLEMİ (ATOMİK - WRITEBATCH)
   // ========================================================================
   Future<void> _profilTamamla() async {
     if (_tabController.index == 1 && !_garantiSozlesmesiOnay) {
@@ -158,6 +158,7 @@ class _KayitOlScreenState extends State<KayitOlScreen> with SingleTickerProvider
       await currentUser.updatePassword(_sifreCtrl.text.trim());
 
       Map<String, dynamic> userData = {};
+      WriteBatch batch = _db.batch(); // 🔥 Kuantum Mührü Başlatıldı
 
       // 2. Kuantum Ayrımı: Bireysel mi, Bayi mi?
       if (_tabController.index == 0) {
@@ -192,16 +193,24 @@ class _KayitOlScreenState extends State<KayitOlScreen> with SingleTickerProvider
           'kayit_tarihi': FieldValue.serverTimestamp(),
           'is_blacklisted': false,
         };
+
+        // Bayi ise, bayiler koleksiyonuna da bir kopya mühürle (Hızlı arama için)
+        DocumentReference bayiRef = _db.collection('bayiler').doc(currentUser.uid);
+        batch.set(bayiRef, userData);
       }
 
-      // 3. Veritabanına Beton Gibi Dök!
-      await _db.collection('kullanicilar').doc(currentUser.uid).set(userData);
+      // 3. Kullanıcıyı ana koleksiyona mühürle
+      DocumentReference userRef = _db.collection('kullanicilar').doc(currentUser.uid);
+      batch.set(userRef, userData);
+
+      // 🔥 Tüm Füzeleri Ateşle (Ya hep ya hiç!)
+      await batch.commit();
 
       _showSnackBar("OtoDNA Siber Kimliğiniz Başarıyla Mühürlendi! 🚀");
 
       // Her şey bitti, kullanıcıyı Ana Ekrana / Login'e yolla
       Future.delayed(const Duration(seconds: 2), () {
-        if (mounted) Navigator.pushReplacementNamed(context, '/home'); // veya '/login'
+        if (mounted) Navigator.pushReplacementNamed(context, '/home'); // Rota Kuantum ağında neresiyse
       });
 
     } catch (e) {

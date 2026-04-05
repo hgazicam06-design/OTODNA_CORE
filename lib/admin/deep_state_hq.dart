@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// 🔥 SİBER KÖPRÜLER (Mutlak Rota ile Zırhlandı - Asla kopmaz!)
-import 'package:otodna/screens/bayi_yonetim_merkezi_screen.dart';
-import 'package:otodna/screens/kullanici_yonetim_screen.dart';
-import 'package:otodna/screens/bayi_paneli.dart';
+// 🔥 SİBER KÖPRÜLER (Göreceli Rota ile Zırhlandı - Proje adına takılmaz!)
+import '../screens/bayi_yonetim_merkezi_screen.dart';
+import '../screens/kullanici_yonetim_screen.dart';
+import '../screens/bayi_paneli.dart';
 
 class AmiralGemisi extends StatefulWidget {
   const AmiralGemisi({super.key});

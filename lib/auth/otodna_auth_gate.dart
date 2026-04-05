@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// 🚀 DOĞRU ROTALAR (lib/screens/auth/ konumuna göre milimetrik hizalandı)
-import 'siber_giris_screen.dart';
-import '../admin/admin_control_center.dart'; // 🟢 İki üst klasöre çıkıp admin'i bulur
-import '../screens/bayi_paneli.dart'; // 🟢 Bir üst klasöre çıkıp (screens) bayiyi bulur
-import '../screens/kullanici_paneli_screen.dart'; // 🟢 Bir üst klasöre çıkıp (screens) müşteriyi bulur
+// 🚀 SİBER KÖPRÜLER (Hata vermeyen, milimetrik hizalanmış rotalar)
+import 'login_screen.dart'; // 🟢 Aynı klasördeki (auth) doğru giriş ekranı!
+import '../admin/admin_control_center.dart'; // 🟢 lib/admin klasörüne gider
+import '../screens/bayi_paneli.dart'; // 🟢 lib/screens klasörüne gider
+import '../screens/kullanici_paneli_screen.dart'; // 🟢 lib/screens klasörüne gider (Eğer isminde hata alırsan CTRL+. ile düzelt)
 
 class OtoDnaAuthGate extends StatelessWidget {
   const OtoDnaAuthGate({super.key});
@@ -23,8 +23,9 @@ class OtoDnaAuthGate extends StatelessWidget {
           return const _TeslaYuklemeEkrani(mesaj: "SİBER PROTOKOLLER TARANIYOR...");
         }
 
+        // Eğer kullanıcı hiç giriş yapmamışsa Login (Giriş) ekranına fırlat!
         if (!authSnapshot.hasData || authSnapshot.data == null) {
-          return const SiberGirisScreen();
+          return const LoginScreen();
         }
 
         final User currentUser = authSnapshot.data!;
@@ -43,12 +44,13 @@ class OtoDnaAuthGate extends StatelessWidget {
             var userData = userSnapshot.data!.data() as Map<String, dynamic>;
 
             String role = (userData['rol'] ?? "USER").toString().toUpperCase();
-            bool isBlacklisted = userData['isBlacklisted'] ?? userData['kara_liste'] ?? false;
+            bool isBlacklisted = userData['is_blacklisted'] ?? userData['kara_liste'] ?? false;
 
             if (isBlacklisted) {
               return _buildSiberHataEkrani("KARALİSTE: ZORUNLU ÇIKIŞ YAP");
             }
 
+            // 🧠 KUANTUM YÖNLENDİRME MERKEZİ
             if (role == "ADMIN" || role == "BOLGE_KOMUTANI") {
               return const AdminControlCenter();
             } else if (role == "BAYI" || role == "USTA") {
@@ -81,6 +83,9 @@ class OtoDnaAuthGate extends StatelessWidget {
   }
 }
 
+// -------------------------------------------------------------
+// 🌑 TESLA MİMARİSİ: OLED SİYAHI VE KUANTUM YÜKLEME EKRANI
+// -------------------------------------------------------------
 class _TeslaYuklemeEkrani extends StatefulWidget {
   final String mesaj;
   const _TeslaYuklemeEkrani({required this.mesaj});
@@ -92,6 +97,7 @@ class _TeslaYuklemeEkraniState extends State<_TeslaYuklemeEkrani> with SingleTic
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _opacityAnimation;
+
   @override
   void initState() {
     super.initState();
@@ -99,16 +105,18 @@ class _TeslaYuklemeEkraniState extends State<_TeslaYuklemeEkrani> with SingleTic
     _scaleAnimation = Tween<double>(begin: 0.9, end: 1.1).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
     _opacityAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
+
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     const Color primaryCyan = Color(0xFF00FFC2);
     return Scaffold(
-      backgroundColor: const Color(0xFF000000),
+      backgroundColor: const Color(0xFF000000), // OLED Siyah
       body: Center(
         child: AnimatedBuilder(
           animation: _controller,

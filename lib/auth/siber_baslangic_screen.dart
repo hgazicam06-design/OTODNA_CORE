@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-// 🚀 ROTALAR: İleride gideceğimiz hedeflerin importları (Kendi dosya yollarına göre açarsın)
-// import 'auth_login_screen.dart'; // Giriş yapılmamışsa gideceği yer
-// import 'siber_kokpit_screen.dart'; // Normal kullanıcı ise gideceği yer
-// import 'kara_kutu_screen.dart'; // ADMİN ise gideceği Kara Kutu
+// 🔥 SİBER KÖPRÜ: 2 saniyelik şovdan sonra asıl Güvenlik Kapısına gidilecek
+import 'otodna_auth_gate.dart';
 
 class SiberBaslangicScreen extends StatefulWidget {
   const SiberBaslangicScreen({super.key});
@@ -36,49 +32,28 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
     super.dispose();
   }
 
-  // --- 🔴 FİREBASE: ROL BAZLI SİBER YÖNLENDİRME MOTORU ---
+  // --- 🔴 ROL KONTROLÜNÜ ANA KAPIYA DEVRETME MOTORU ---
   Future<void> _kuantumKapilariniAc() async {
     // Sürücüye Karargahın gücünü hissettirmek için 2 saniye bekle
     await Future.delayed(const Duration(seconds: 2));
 
     if (!mounted) return;
 
-    User? currentUser = FirebaseAuth.instance.currentUser;
-
-    if (currentUser == null) {
-      // 1. İHTİMAL: ASKER KAYITLI DEĞİL (LOGIN EKRANINA GÖNDER)
-      debugPrint("SİBER UYARI: Kimlik bulunamadı, giriş kapısına yönlendiriliyor.");
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const AuthLoginScreen()));
-    } else {
-      // 2. İHTİMAL: ASKER İÇERİDE, RÜTBESİNİ KONTROL ET
-      try {
-        DocumentSnapshot doc = await FirebaseFirestore.instance.collection('kullanicilar').doc(currentUser.uid).get();
-
-        if (doc.exists && doc.data() != null) {
-          String role = (doc.data() as Map<String, dynamic>)['role'] ?? 'user';
-
-          if (role == 'admin') {
-            debugPrint("KARARGAH KOMUTANI GİRİŞ YAPTI! Kara Kutuya yönlendiriliyor...");
-            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const KaraKutuScreen()));
-          } else {
-            debugPrint("BİRLİK ONAYLANDI. Kullanıcı kokpitine yönlendiriliyor...");
-            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const SiberKokpitScreen()));
-          }
-        } else {
-          // Kullanıcı belgesi yoksa varsayılan olarak sivil kokpite gönder
-          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const SiberKokpitScreen()));
-        }
-      } catch (e) {
-        debugPrint("SİBER AĞ HATASI: Rütbe okunamadı. $e");
-        // Hata durumunda güvenli liman olarak giriş ekranına atabilirsin
-      }
-    }
+    // 🔥 SİBER YÖNLENDİRME: İşin geri kalanını OtoDnaAuthGate (Ana Kapı) halledecek!
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const OtoDnaAuthGate())
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    // 🌑 TESLA MİMARİSİ
+    const Color oledBlack = Color(0xFF000000);
+    const Color primaryCyan = Color(0xFF00FFC2);
+
     return Scaffold(
-      backgroundColor: const Color(0xFF050505), // Derin Karargah Siyahı
+      backgroundColor: oledBlack,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -94,10 +69,10 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
                     height: 90,
                     decoration: BoxDecoration(
                       boxShadow: [
-                        BoxShadow(color: const Color(0xFF00F0FF).withOpacity(0.5), blurRadius: 40, spreadRadius: 10)
+                        BoxShadow(color: primaryCyan.withOpacity(0.5), blurRadius: 40, spreadRadius: 10)
                       ],
                     ),
-                    child: const Icon(Icons.security, color: Color(0xFF00F0FF), size: 80),
+                    child: const Icon(Icons.security, color: primaryCyan, size: 80),
                   ),
                 );
               },
@@ -108,11 +83,11 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
             const Text(
               "OTODNA KARARGAHI ÇEVRİMİÇİ",
               style: TextStyle(
-                color: Color(0xFF00F0FF), // Kuantum Turkuazı
+                color: primaryCyan,
                 fontSize: 16,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 3,
-                fontFamily: 'Avenir', // Siber font
+                fontFamily: 'Avenir',
               ),
             ),
             const SizedBox(height: 12),
@@ -134,7 +109,7 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
               width: 30,
               height: 30,
               child: CircularProgressIndicator(
-                color: Color(0xFF00F0FF),
+                color: primaryCyan,
                 strokeWidth: 2,
               ),
             ),

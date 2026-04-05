@@ -3,11 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// Doğrulama sonrası gidilecek nihai karargah rotaları
-// import 'package:otodna/admin/admin_dashboard.dart'; // Yolu kendi projene göre ayarla
-// import 'package:otodna/screens/user/user_dashboard.dart'; // Örnek yol
-// import 'package:otodna/screens/bayi/bayi_dashboard.dart'; // Örnek yol
-
 class SiberSmsScreen extends StatefulWidget {
   const SiberSmsScreen({super.key});
 
@@ -100,57 +95,23 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
   // 🔥 TELEFON NUMARASINI MEVCUT HESABA BAĞLAMA VE YÖNLENDİRME
   Future<void> _kullaniciHesabinaTelefonuBagla(PhoneAuthCredential credential) async {
     try {
-      final User? currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser != null) {
-        // Zaten e-posta ile giriş yapmıştık, şimdi bu telefonu profiline "link"liyoruz (bağlıyoruz).
-        // Eğer telefon zaten başka bir hesaba bağlıysa Firebase hata fırlatır, güvenlik sağlanır.
-        await currentUser.linkWithCredential(credential);
+      // Giriş yap
+      UserCredential userCred = await FirebaseAuth.instance.signInWithCredential(credential);
 
-        // Firestore'a telefon numarasını da kaydedelim
-        await FirebaseFirestore.instance.collection('users').doc(currentUser.uid).update({
-          'phoneNumber': currentUser.phoneNumber, // Artık Firebase'den onaylı bir numarası var
-          'isPhoneVerified': true,
-        });
-
+      if (userCred.user != null) {
+        // 🔥 SİBER ZIRH: Eğer giriş başarılıysa, AuthGate bizi zaten rotamıza çekecektir.
+        // Bu yüzden sadece bu ekranı kapatıyoruz.
         _siberUyariVer("DOĞRULAMA TAMAMLANDI! Karargaha Geçiliyor...", isError: false);
-        _karargahaYonetlendir(currentUser.uid);
+        if (mounted) {
+          Navigator.pop(context); // SMS ekranından çık, Ana kapı (AuthGate) devralsın.
+        }
       }
     } on FirebaseAuthException catch (e) {
       setState(() { _isLoading = false; });
-      // Hata genellikle "provider-already-linked" (telefon zaten bu hesaba bağlı) veya "credential-already-in-use" (telefon başka bir hesaba bağlı) olur.
-      if (e.code == 'provider-already-linked') {
-        _siberUyariVer("ONAYLANDI: Bu telefon zaten siber ağa bağlı.", isError: false);
-        _karargahaYonetlendir(FirebaseAuth.instance.currentUser!.uid);
-      } else {
-        _siberUyariVer("BAĞLANTI HATASI: ${e.message}", isError: true);
-      }
+      _siberUyariVer("BAĞLANTI HATASI: ${e.message}", isError: true);
     } catch (e) {
       setState(() { _isLoading = false; });
-      _siberUyariVer("SİSTEM HATASI: Veritabanı eşleşmesi başarısız.", isError: true);
-    }
-  }
-
-  // 🔥 ROL BAZLI NİHAİ KARARGAH YÖNLENDİRMESİ
-  Future<void> _karargahaYonetlendir(String uid) async {
-    try{
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      if(userDoc.exists){
-        final String role = userDoc.get('role');
-
-        // Navigator.pushReplacement ile geri dönüş butonunu kapatarak nihai merkeze atıyoruz
-        if (role == 'admin') {
-          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AdminDashboard()));
-          _siberUyariVer("ADMİN Karargahına Yönlendiriliyor... (Ekran Yapım Aşamasında)", isError: false);
-        } else if (role == 'bayi') {
-          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const BayiDashboard()));
-          _siberUyariVer("BAYİ Karargahına Yönlendiriliyor... (Ekran Yapım Aşamasında)", isError: false);
-        } else {
-          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const UserDashboard()));
-          _siberUyariVer("KULLANICI Radarına Yönlendiriliyor... (Ekran Yapım Aşamasında)", isError: false);
-        }
-      }
-    }catch(e){
-      _siberUyariVer("HATA: Kullanıcı rolü tespit edilemedi.", isError: true);
+      _siberUyariVer("SİSTEM HATASI: Beklenmeyen anomali.", isError: true);
     }
   }
 
@@ -158,7 +119,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
   void _siberUyariVer(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: isError ? Colors.redAccent.shade700 : const Color(0xFF00F0FF),
+        backgroundColor: isError ? Colors.redAccent.shade700 : const Color(0xFF00FFC2), // Kuantum Turkuazı
         content: Text(
           mesaj,
           style: TextStyle(
@@ -177,8 +138,8 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const Color neonCyan = Color(0xFF00F0FF);
-    const Color bgKaranlik = Color(0xFF050505);
+    const Color neonCyan = Color(0xFF00FFC2); // Kuantum Turkuazı
+    const Color bgKaranlik = Color(0xFF000000); // Tam OLED Siyah!
 
     return Scaffold(
       backgroundColor: bgKaranlik,
@@ -324,7 +285,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
     required TextInputType keyboardType,
     int? maxLength,
   }) {
-    const Color neonCyan = Color(0xFF00F0FF);
+    const Color neonCyan = Color(0xFF00FFC2);
     return TextField(
       controller: controller,
       keyboardType: keyboardType,

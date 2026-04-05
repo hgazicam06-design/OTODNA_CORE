@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+// 🔥 SİBER KÖPRÜ (Göreceli Rota - Klasör kopmalarını engeller)
 import '../screens/scanner/qr_scanner_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -121,7 +123,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const bgColor = Color(0xFF0F172A);
+    // 🌑 TESLA MİMARİSİ: TAM OLED SİYAH
+    const bgColor = Color(0xFF000000);
     const primaryCyan = Color(0xFF00FFC2);
     const textSecondary = Colors.white70;
 
@@ -136,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 40),
 
               // =========================================================
-              // 🛡️ GAZİ PROTOKOLÜ: SİBER KALKAN VE LOGO (Geçici Logo)
+              // 🛡️ GAZİ PROTOKOLÜ: SİBER KALKAN VE LOGO
               // =========================================================
               Center(
                 child: Container(
@@ -205,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // SOL: Beni Hatırla (Expanded ile esnek alan kaplar)
+                  // SOL: Beni Hatırla
                   Expanded(
                     child: Align(
                       alignment: Alignment.centerLeft,
@@ -234,18 +237,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   GestureDetector(
                     onTap: _openQRScanner,
                     child: Container(
-                      padding: const EdgeInsets.all(12), // Kutu boyutu büyütüldü
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.05),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: primaryCyan.withOpacity(0.6), width: 1.5),
                           boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.2), blurRadius: 10, spreadRadius: 1)]
                       ),
-                      child: const Icon(Icons.qr_code_scanner, color: primaryCyan, size: 28), // İkon büyütüldü
+                      child: const Icon(Icons.qr_code_scanner, color: primaryCyan, size: 28),
                     ),
                   ),
 
-                  // SAĞ: Şifremi Unuttum (Expanded ile sağa yaslanır)
+                  // SAĞ: Şifremi Unuttum
                   Expanded(
                     child: Align(
                       alignment: Alignment.centerRight,
@@ -275,8 +278,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: _isLoading ? null : _smartLogin,
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent, shadowColor: Colors.transparent, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)), disabledBackgroundColor: Colors.transparent),
                   child: _isLoading
-                      ? const SizedBox(height: 24, width: 24, child: CircularProgressIndicator(color: Color(0xFF0F172A), strokeWidth: 3))
-                      : const Text('SİSTEME GİRİŞ YAP', style: TextStyle(color: Color(0xFF0F172A), fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+                      ? const SizedBox(height: 24, width: 24, child: CircularProgressIndicator(color: Color(0xFF000000), strokeWidth: 3))
+                      : const Text('SİSTEME GİRİŞ YAP', style: TextStyle(color: Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
                 ),
               ),
 

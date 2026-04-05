@@ -38,7 +38,7 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
     super.dispose();
   }
 
-  // GERÇEK FİREBASE KAYIT VE ATOMİK VERİTABANI YAZMA MOTORU
+  // GERÇEK FİREBASE KAYIT VE ATOMİK VERİTABANI YAZMA MOTORU (WRITEBATCH)
   Future<void> _kuantumKayitBaslat() async {
     final name = _nameController.text.trim();
     final email = _emailController.text.trim();
@@ -69,17 +69,23 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
         password: password,
       );
 
-      // 2. Firestore'a Kullanıcı Profilini ve OtoDNA Kurallarını Çak (Atomik İşlem)
+      // 2. Firestore'a Kullanıcı Profilini Çak (Atomik İşlem - WriteBatch)
       if (userCredential.user != null) {
-        await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+        WriteBatch batch = FirebaseFirestore.instance.batch();
+        DocumentReference userRef = FirebaseFirestore.instance.collection('kullanicilar').doc(userCredential.user!.uid);
+
+        batch.set(userRef, {
           'uid': userCredential.user!.uid,
           'fullName': name,
           'email': email,
-          'role': 'user', // Başlangıç seviyesi: Kullanıcı
+          'rol': 'user', // Başlangıç seviyesi: Kullanıcı (Karargahta 'role' değil 'rol' diyoruz)
           'rating': 5, // OtoDNA 5 Yıldız Kuralı
-          'isBlacklisted': false, // Karaliste (Black Star) durumu başlangıçta temiz
-          'createdAt': FieldValue.serverTimestamp(),
+          'is_blacklisted': false, // Karaliste (Black Star) durumu başlangıçta temiz
+          'kayit_tarihi': FieldValue.serverTimestamp(),
         });
+
+        // Füzeyi ateşle
+        await batch.commit();
 
         _siberUyariVer("OTODNA AĞINA HOŞ GELDİNİZ! Kuantum Kaydı Başarılı.", isError: false);
 
@@ -104,7 +110,7 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
   void _siberUyariVer(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: isError ? Colors.redAccent.shade700 : const Color(0xFF00F0FF),
+        backgroundColor: isError ? Colors.redAccent.shade700 : const Color(0xFF00FFC2), // Kuantum Turkuazı
         content: Text(
           mesaj,
           style: TextStyle(
@@ -123,8 +129,9 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    const Color neonCyan = Color(0xFF00F0FF);
-    const Color bgKaranlik = Color(0xFF050505);
+    // 🌑 TESLA MİMARİSİ: %100 OLED SİYAH VE KUANTUM TURKUAZI
+    const Color neonCyan = Color(0xFF00FFC2);
+    const Color bgKaranlik = Color(0xFF000000);
 
     return Scaffold(
       backgroundColor: bgKaranlik,
@@ -282,7 +289,7 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
     required String hint,
     required bool isObscure,
   }) {
-    const Color neonCyan = Color(0xFF00F0FF);
+    const Color neonCyan = Color(0xFF00FFC2); // Kuantum Turkuazı
     return TextField(
       controller: controller,
       obscureText: isObscure,
