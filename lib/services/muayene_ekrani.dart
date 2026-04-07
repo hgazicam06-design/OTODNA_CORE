@@ -1,29 +1,34 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-/// OTODNA KUANTUM EKSPERTİZ VE DENETİM SERVİSİ
+/// OTODNA KUANTUM EKSPERTİZ VE DENETİM SERVİSİ (V2.0 - ZIRHLI)
+/// Bu sınıf, araçların fiziki durumunu Kuantum Ağına mühürleyen ana motorudur.
 class EkspertizServisi {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // --- 🛠️ SİBER EKSPERTİZ: PARÇA KONTROL MOTORU ---
+  // [2026-02-22] Kararı: Görsel kanıt yüklenmeden hiçbir parça ONAYLANAMAZ!
   Future<Map<String, dynamic>> kontrolNoktasiGuncelle({
     required String aracId,
     required String bayiId,
     required String parcaAdi,
     required bool isSafe,
     required String detay,
-    required String fotoUrl, // [2026-02-22] Kuralı: Fotoğraf Zorunlu!
+    required String fotoUrl,
   }) async {
     try {
-      // 1. SİBER KALKAN: Kanıt yüklenmeden işlem yapılamaz!
+      // 1. AŞAMA: SİBER KANIT KONTROLÜ
       if (fotoUrl.isEmpty) {
-        return {'basarili': false, 'mesaj': 'SİBER İHLAL: Kanıt fotoğrafı yüklemek zorunludur!'};
+        return {
+          'basarili': false,
+          'mesaj': 'SİBER İHLAL: Kanıt fotoğrafı yüklemek zorunludur! DNA kaydı fotoğrapsız mühürlenemez.'
+        };
       }
 
       if (isSafe) {
         // 🔥 YEŞİL TIK PROTOKOLÜ (ATOMİK - WRITEBATCH ZIRHI)
         WriteBatch batch = _db.batch();
 
-        // Ekspertiz noktasına mühür vur
+        // A. Ekspertiz Noktasına Mühür Vur
         DocumentReference noktaRef = _db.collection('araclar').doc(aracId).collection('ekspertiz_noktalari').doc();
         batch.set(noktaRef, {
           'parca': parcaAdi,
@@ -34,22 +39,24 @@ class EkspertizServisi {
           'tarih': FieldValue.serverTimestamp(),
         });
 
-        // Aracın kendi DNA sicilini de eşzamanlı güncelle
+        // B. Aracın Kuantum DNA'sını Güncelle
         DocumentReference aracRef = _db.collection('araclar').doc(aracId);
         batch.update(aracRef, {
+          'dna_skoru': FieldValue.increment(1), // Her başarılı kontrol skoru yükseltir
           'son_muayene_tarihi': FieldValue.serverTimestamp(),
           'son_islem_yapan_bayi': bayiId,
+          'durum': 'AKTİF - GÜVENLİ',
         });
 
-        await batch.commit(); // Füzeyi Ateşle!
+        await batch.commit(); // Füzeyi Karargaha Gönder!
 
         return {'basarili': true, 'mesaj': '✅ $parcaAdi onaylandı ve Kuantum Ağına mühürlendi.'};
       } else {
-        // PARÇA HATALIYSA: KRİTİK HATA PROTOKOLÜNÜ (İDAM) BAŞLAT
+        // 🚨 PARÇA HATALIYSA: KRİTİK HATA PROTOKOLÜNÜ (İDAM) BAŞLAT
         return await _kritikHataRaporla(aracId: aracId, bayiId: bayiId, parcaAdi: parcaAdi, detay: detay, fotoUrl: fotoUrl);
       }
     } catch (e) {
-      return {'basarili': false, 'mesaj': 'Ağ Bağlantısı Koptu: $e'};
+      return {'basarili': false, 'mesaj': 'SİBER BAĞLANTI HATASI: $e'};
     }
   }
 
@@ -62,17 +69,17 @@ class EkspertizServisi {
     required String fotoUrl,
   }) async {
     try {
-      // Kopmaz Kuantum Bağı: Ya hepsi aynı anda yazılır, ya hiçbiri!
       WriteBatch batch = _db.batch();
 
-      // 1. Aracın Dijital Sicilini Anında Kilitle
+      // 1. Aracın Dijital Sicilini ANINDA Kilitle (Trafiğe Çıkamaz!)
       DocumentReference aracRef = _db.collection('araclar').doc(aracId);
       batch.update(aracRef, {
         'durum': 'RİSKLİ - TRAFİĞE ÇIKAMAZ',
+        'dna_skoru': FieldValue.increment(-10), // Kritik hata DNA skorunu çökertir
         'son_guncelleme': FieldValue.serverTimestamp(),
       });
 
-      // 2. Ekspertiz Raporuna Kritik Hata Olarak İşle
+      // 2. Ekspertiz Raporuna Kritik Hata Kaydını Göm
       DocumentReference raporRef = aracRef.collection('ekspertiz_noktalari').doc();
       batch.set(raporRef, {
         'parca': parcaAdi,
@@ -89,26 +96,26 @@ class EkspertizServisi {
         'hedef': 'ADMIN_VE_ALICI',
         'arac_id': aracId,
         'baslik': '🚨 TRAFİK ÇIKIŞ RİSKİ!',
-        'mesaj': '$parcaAdi parçasında kritik hata tespit edildi: $detay. Araç kilitlendi.',
+        'mesaj': '$parcaAdi parçasında kritik hata: $detay. Araç sistem tarafından kilitlendi.',
+        'oncelik': 'KRİTİK',
         'okundu': false,
         'tarih': FieldValue.serverTimestamp(),
       });
 
-      // 4. Sistem Loglarına (Kara Kutu) Kırmızı Alarm (SOS) Yaz
+      // 4. Kara Kutuya (Sistem Logları) SOS Kaydı Yaz
       DocumentReference logRef = _db.collection('sistem_loglari').doc();
       batch.set(logRef, {
-        'islem_turu': 'sos', // Admin panelinde kırmızı neon yakar!
-        'islem_detayi': 'EKSPERTİZ MÜDAHALESİ: $aracId plakalı araç $parcaAdi arızası yüzünden trafiğe kapatıldı!',
-        'bayi_isim': bayiId,
+        'islem_turu': 'sos',
+        'islem_detayi': 'SİBER MÜDAHALE: $aracId plakalı araç $parcaAdi arızası nedeniyle karantinaya alındı.',
+        'bayi_id': bayiId,
         'tarih': FieldValue.serverTimestamp(),
       });
 
-      // TÜM FÜZELERİ AYNI ANDA ATEŞLE!
-      await batch.commit();
+      await batch.commit(); // Tüm birimleri uyar ve sistemi kilitle!
 
-      return {'basarili': true, 'mesaj': '🚨 KRİTİK HATA AĞA İŞLENDİ! Araç trafiğe kapatıldı ve tüm birimler uyarıldı.'};
+      return {'basarili': true, 'mesaj': '🚨 KRİTİK HATA AĞA İŞLENDİ! Araç karantinaya alındı.'};
     } catch (e) {
-      return {'basarili': false, 'mesaj': 'HATA: Kritik rapor oluşturulamadı! Sistem yöneticisine başvurun. $e'};
+      return {'basarili': false, 'mesaj': 'SİSTEM ÇÖKTÜ: Kritik rapor oluşturulamadı! $e'};
     }
   }
 }

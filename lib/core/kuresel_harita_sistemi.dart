@@ -1,9 +1,13 @@
+// lib/core/kuresel_harita_sistemi.dart
+
+/// 🗺️ OTODNA KÜRESEL COĞRAFİ VERİ VE KONUM PROTOKOLÜ
+/// Ankara/Türkiye merkez üssü üzerinden tüm dünya operasyonlarını yönetir.
 class KureselHaritaSistemi {
-  // 🇹🇷 OLAN BİTEN HER ŞEYİN KÜRESEL MERKEZİ
+  // 🇹🇷 KARARGAH MERKEZ ÜSSÜ (HQ)
   static const String globalMerkezUlkemiz = "Türkiye";
   static const String globalMerkezSehir = "Ankara";
 
-  // 🌍 1. AŞAMA: KÜRESEL PAZAR (Aktif Ülkeler İskeleti)
+  // 🌍 AKTİF OPERASYON SAHALARI (Ülke İskeleti)
   static const List<String> aktifUlkeler = [
     "Türkiye",
     "Almanya",
@@ -14,7 +18,7 @@ class KureselHaritaSistemi {
   ];
 
   // ---------------------------------------------------------
-  // 🇹🇷 TÜRKİYE (MERKEZ ÜS) ALTYAPISI (7 BÖLGE VE 81 İL)
+  // 🇹🇷 TÜRKİYE ALTYAPISI (7 STRATEJİK BÖLGE VE 81 İL)
   // ---------------------------------------------------------
   static const List<String> turkiyeBolgeleri = [
     "İç Anadolu Bölgesi", "Marmara Bölgesi", "Ege Bölgesi",
@@ -32,7 +36,7 @@ class KureselHaritaSistemi {
   };
 
   // ---------------------------------------------------------
-  // ✈️ YURT DIŞI (GLOBAL) İSKELETİ (EYALET / ŞEHİR BAZLI)
+  // ✈️ GLOBAL OPERASYON BÖLGELERİ (Yurt Dışı Şehirleri)
   // ---------------------------------------------------------
   static const Map<String, List<String>> dunyaSehirleri = {
     "Almanya": ["Berlin", "Münih", "Frankfurt", "Köln", "Hamburg", "Stuttgart", "Düsseldorf"],
@@ -43,14 +47,13 @@ class KureselHaritaSistemi {
   };
 
   // ---------------------------------------------------------
-  // 🧠 KUANTUM AKILLI FİLTRELEME MOTORU (GÖRSEL ARAYÜZ İÇİN)
+  // 🧠 KUANTUM AKILLI FİLTRELEME MOTORU (UI Entegrasyonu)
   // ---------------------------------------------------------
   static List<String> sehirleriGetir(String seciliUlke, {String? seciliBolge}) {
     if (seciliUlke == "Türkiye") {
       if (seciliBolge != null && turkiyeIlleri.containsKey(seciliBolge)) {
         return turkiyeIlleri[seciliBolge]!;
       }
-      // Bölge seçilmemişse tüm Türkiye illerini tek bir listede birleştir (Arama motorları için)
       return turkiyeIlleri.values.expand((iller) => iller).toList();
     } else {
       return dunyaSehirleri[seciliUlke] ?? [];
@@ -58,9 +61,8 @@ class KureselHaritaSistemi {
   }
 
   // ---------------------------------------------------------
-  // 🔥 FİREBASE UYUMLU KAYIT YARDIMCISI (YENİ EKLENDİ)
+  // 🔥 FİREBASE KONUM MÜHÜRLEYİCİ
   // ---------------------------------------------------------
-  // Kullanıcı kaydolurken veya bayi eklerken bu veriyi Firebase'e hatasız yazmak için
   static Map<String, dynamic> firebaseKonumPaketi({
     required String ulke,
     String? bolge,
@@ -68,9 +70,12 @@ class KureselHaritaSistemi {
   }) {
     return {
       "ulke": ulke,
-      "bolge": ulke == "Türkiye" ? (bolge ?? "Belirtilmemiş") : "Yurt Dışı / Global",
+      "bolge": ulke == "Türkiye" ? (bolge ?? "Bölge Belirtilmedi") : "Yurt Dışı",
       "sehir": sehir,
-      "merkez_mesafe": ulke == globalMerkezUlkemiz && sehir == globalMerkezSehir ? "HQ (Merkez Üs)" : "Uzak Birim",
+      "merkez_durumu": (ulke == globalMerkezUlkemiz && sehir == globalMerkezSehir)
+          ? "KARARGAH (HQ)"
+          : "DIŞ BİRİM",
+      "kayit_tarihi": DateTime.now().toIso8601String(),
     };
   }
 }

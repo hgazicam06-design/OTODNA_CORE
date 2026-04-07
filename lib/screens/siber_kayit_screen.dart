@@ -1,11 +1,12 @@
+// lib/screens/auth/siber_kayit_screen.dart
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // 🔥 SİBER KÖPRÜLER VE TEMA (Zırh v2.0)
-import '../core/siber_tema.dart';
-import '../core/responsive_kalkan.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
 
 class SiberKayitScreen extends StatefulWidget {
   const SiberKayitScreen({super.key});

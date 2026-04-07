@@ -1,8 +1,12 @@
+// lib/core/responsive_kalkan.dart
 import 'package:flutter/material.dart';
 
-// 🔥 SİBER KÖPRÜ
+// 🔥 SİBER KÖPRÜ: Karargahın renk ve stil protokolleri
 import 'siber_tema.dart';
 
+/// 🛡️ RESPONSIVE KALKAN: OtoDNA Uygulamasının Evrensel Koruyucu Zırhı.
+/// Bu widget, tüm sayfaları siber tema ile sarar ve ekran boyutuna göre
+/// içeriği optimize ederek "Kuantum Uyumluluk" sağlar.
 class ResponsiveKalkan extends StatelessWidget {
   final Widget child;
   final bool isOledBackground;
@@ -16,13 +20,16 @@ class ResponsiveKalkan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent, // Arka planı Container yönetecek
+      // Scaffold arka planı şeffaf bırakıldı; derinlik Container tarafından yönetiliyor.
+      backgroundColor: Colors.transparent,
       body: Container(
-        // 🔥 YENİ: Yorucu radar grid silindi, 3D Derinlik Gradienti eklendi!
+        // 🔥 STRATEJİK GÜNCELLEME: 3D Derinlik Gradienti eklendi (SiberTema üzerinden çekilir)
         decoration: isOledBackground ? SiberTema.siberArkaPlan : null,
         child: SafeArea(
           child: Center(
             child: ConstrainedBox(
+              // 📐 DİSİPLİN KURALI: Ekran ne kadar büyük olursa olsun,
+              // içerik 600px genişliği aşarak görsel hiyerarşiyi bozamaz.
               constraints: const BoxConstraints(maxWidth: 600),
               child: child,
             ),

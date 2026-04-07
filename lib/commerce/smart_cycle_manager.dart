@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// OTODNA AKILLI ARA-MUAYENE, DEĞER ANALİZİ VE FİNANSAL RADAR MOTORU
 class SmartCycleManager {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -32,7 +33,7 @@ class SmartCycleManager {
         // 🔥 SİBER KALKAN: Bu değer kaybını Karargahın Kara Kutusuna raporla!
         DocumentReference logRef = _firestore.collection('sistem_loglari').doc();
         batch.set(logRef, {
-          'islem_turu': 'sos', // Sarı/Turuncu alarm
+          'islem_turu': 'sos', // Kırmızı Alarm
           'islem_detayi': 'DEĞER KAYBI: $plakaID plakalı araç Kırmızı X (Kritik Hata) sebebiyle %15 değer kaybetti.',
           'bayi_isim': 'SİBER ANALİZ MOTORU',
           'tarih': FieldValue.serverTimestamp(),
@@ -51,7 +52,6 @@ class SmartCycleManager {
       await batch.commit(); // Tüm işlemleri tek seferde Kuantum Ağına ateşle!
 
     } catch (e) {
-      // Print yerine Karargah Loglarına yazıyoruz
       await _firestore.collection('sistem_loglari').add({
         'islem_turu': 'hata',
         'islem_detayi': 'ANALİZ ÇÖKTÜ: $plakaID plakalı aracın siber değer analizi yapılamadı! Hata: $e',
@@ -65,26 +65,23 @@ class SmartCycleManager {
   // Bu fonksiyon UI ekranına (Siber Cüzdan) gerçek rakamları döndürür.
   Future<Map<String, double>> gunlukTicariOzet() async {
     double parcaKari = 0;
-    double galeriKari = 0;
     double toplamGaziPayi = 0; // Evrensel Kural: Her İşlemden Toplam %12
 
     try {
       // 📦 Yedek Parça Satışlarından Gelen Gazi Payını Topla
-      // Not: Durumları şimdilik genelledim, 'Satıldı' filtresini kaldırdım ki
-      // test aşamasında radar ekranında paraları anında görebilesin.
       QuerySnapshot parcaSnap = await _firestore
-          .collection('yedek_parca_onerileri')
+          .collection('parca_teklifleri')
           .get();
 
       for (var doc in parcaSnap.docs) {
         var data = doc.data() as Map<String, dynamic>;
 
-        // 🔥 SİBER FİNANS KURALI: Tüm bayilerden istisnasız %12 Karargah Payı gelir!
-        // 🚨 DÜZELTME: eco_system_gate.dart ile uyumlu olması için 'karargah_komisyonu' çekildi!
-        toplamGaziPayi += (data['karargah_komisyonu'] ?? 0).toDouble();
+        // 🔥 SİBER FİNANS KURALI: Tüm işlemlerden %12 Karargah Payı mühürlenir.
+        double komisyon = (data['karargah_payi'] ?? 0).toDouble();
+        toplamGaziPayi += komisyon;
 
-        // Bayinin Eline Geçen Net Kâr (Satış Fiyatı - Komisyon)
-        double bayiNetKazanci = (data['bayi_net_kazanci'] ?? 0).toDouble();
+        // Bayinin Eline Geçen Net Kâr (Hakediş)
+        double bayiNetKazanci = (data['bayi_hakedis'] ?? 0).toDouble();
         parcaKari += bayiNetKazanci;
       }
 
@@ -97,10 +94,8 @@ class SmartCycleManager {
       });
     }
 
-    // Arayüze (Ekrana) basılması için verileri paketleyip gönderiyoruz
     return {
       "parca_kari": parcaKari,
-      "galeri_kari": galeriKari,
       "toplam_gazi_payi": toplamGaziPayi,
     };
   }

@@ -1,9 +1,17 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // 🚀 KARARGAH ZIRHLARI
-import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
+// SiberTema içindeki yasaklı renkleri eziyoruz.
+// Sadece True Black, Kuantum Turkuazı, Neon Mor ve Kan Kırmızı kullanacağız.
+
+const Color bgDark = Color(0xFF000000); // True Black (Dipsiz Siyah)
+const Color glassBg = Color(0x0AFFFFFF); // Şeffaf Cam
+const Color renkIstihbarat = Color(0xFF00FFC2); // Kuantum Turkuazı (Onay)
+const Color renkKritik = Colors.redAccent; // Kan Kırmızı (Red)
+const Color renkOperasyon = Color(0xFFD500F9); // Neon Mor
 
 class AdminOnayHavuzuScreen extends StatefulWidget {
   const AdminOnayHavuzuScreen({super.key});
@@ -42,11 +50,11 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
 
       if (mounted) _siberUyariVer("SİBER ONAY: İşlem bayinin vitrinine mühürlendi!", isError: false);
     } catch (e) {
-      if (mounted) _siberUyariVer("SİBER HATA: İşlem reddedildi! Kalkanlar kapalı.", isError: true);
+      if (mounted) _siberUyariVer("SİBER HATA: İşlem onaylanamadı! Kalkanlar kapalı.", isError: true);
     }
   }
 
-  // --- ⚠️ FİREBASE: REDDETME MOTORU ---
+  // --- ⚠️ FİREBASE: REDDETME MOTORU (WRITEBATCH) ---
   Future<void> _talebiReddet(String docId, String firmaAdi, String onerilenIslem) async {
     try {
       final batch = _db.batch();
@@ -75,10 +83,10 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
   void _siberUyariVer(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
-        backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
+        content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : Colors.black, fontWeight: FontWeight.bold, letterSpacing: 1)),
+        backgroundColor: isError ? renkKritik : renkIstihbarat,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
@@ -88,219 +96,182 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
     return ResponsiveKalkan(
       isOledBackground: true,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: bgDark,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.security, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: Text("SİBER ONAY HAVUZU", style: TextStyle(color: Colors.white.withOpacity(0.9), fontWeight: FontWeight.w800, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
+          leading: IconButton(icon: const Icon(Icons.security, color: renkIstihbarat), onPressed: () => Navigator.pop(context)),
+          title: const Text("SİBER ONAY HAVUZU", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2)),
           centerTitle: true,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(1),
             child: Container(color: Colors.white.withOpacity(0.05), height: 1),
           ),
         ),
-        body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/images/radar_grid.png'), fit: BoxFit.cover, opacity: 0.05),
-          ),
-          child: StreamBuilder<QuerySnapshot>(
-            stream: _db.collection('onay_bekleyen_islemler').where('durum', isEqualTo: 'bekliyor').orderBy('tarih', descending: false).snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3));
-              }
-              if (snapshot.hasError) {
-                return const Center(child: Text("Radar Bağlantısı Koptu!", style: TextStyle(color: SiberTema.kanKirmizi, fontFamily: 'Avenir', fontWeight: FontWeight.bold)));
-              }
+        body: StreamBuilder<QuerySnapshot>(
+          stream: _db.collection('onay_bekleyen_islemler').where('durum', isEqualTo: 'bekliyor').orderBy('tarih', descending: false).snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator(color: renkIstihbarat, strokeWidth: 2.5));
+            }
+            if (snapshot.hasError) {
+              return const Center(child: Text("Radar Bağlantısı Koptu!", style: TextStyle(color: renkKritik, fontWeight: FontWeight.bold)));
+            }
 
-              final docs = snapshot.data?.docs ?? [];
+            final docs = snapshot.data?.docs ?? [];
 
-              if (docs.isEmpty) {
-                return Center(
-                  child: Container(
-                    padding: const EdgeInsets.all(32),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [SiberTema.oledBlack, SiberTema.matGrey.withOpacity(0.5)],
+            if (docs.isEmpty) {
+              return Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(24),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                    child: Container(
+                      padding: const EdgeInsets.all(40),
+                      decoration: BoxDecoration(
+                        color: glassBg,
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
                       ),
-                      borderRadius: BorderRadius.circular(24),
-                      border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.verified_user_outlined, size: 64, color: SiberTema.kuantumCyan.withOpacity(0.3)),
-                        const SizedBox(height: 16),
-                        Text("KARANTİNA HAVUZU TEMİZ", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 14, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-                      ],
-                    ),
-                  ),
-                );
-              }
-
-              return ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.all(20),
-                itemCount: docs.length,
-                itemBuilder: (context, index) {
-                  final data = docs[index].data() as Map<String, dynamic>;
-                  final docId = docs[index].id;
-                  final bayiId = data['bayi_id'] ?? '';
-                  final firmaAdi = data['firma_adi'] ?? 'Bilinmeyen Bayi';
-                  final onerilenIslem = data['onerilen_islem'] ?? 'Belirtilmemiş';
-
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 24),
-                    decoration: BoxDecoration(
-                      // 3D Dışa Çıkık İnceleme Paneli Hissi
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [SiberTema.matGrey.withOpacity(0.8), SiberTema.oledBlack],
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white.withOpacity(0.1), width: 1.5),
-                      boxShadow: [
-                        BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 10, spreadRadius: 1, offset: const Offset(0, 5)),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: SiberTema.altinSari.withOpacity(0.1),
-                                  shape: BoxShape.circle,
-                                  border: Border.all(color: SiberTema.altinSari.withOpacity(0.3)),
-                                ),
-                                child: const Icon(Icons.privacy_tip_outlined, color: SiberTema.altinSari, size: 24),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(firmaAdi, style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-                                    const SizedBox(height: 4),
-                                    Text("Vergi / Bayi ID: $bayiId", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontFamily: 'Avenir')),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                          Icon(Icons.verified_user_outlined, size: 56, color: renkIstihbarat.withOpacity(0.3)),
                           const SizedBox(height: 20),
-
-                          // 3D İçeri Çökük Talep Ekranı
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [SiberTema.oledBlack, SiberTema.matGrey.withOpacity(0.5)],
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
-                              boxShadow: [
-                                BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 10, spreadRadius: -2, offset: const Offset(0, 4)),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("TALEP EDİLEN ÖZEL İŞLEM:", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.8), fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
-                                const SizedBox(height: 8),
-                                Text(onerilenIslem, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w800, fontFamily: 'Avenir')),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-
-                          // 3D ONAY/RET BUTONLARI
-                          Row(
-                            children: [
-                              // 3D REDDET BUTONU
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () => _talebiReddet(docId, firmaAdi, onerilenIslem),
-                                  child: AnimatedContainer(
-                                    duration: const Duration(milliseconds: 150),
-                                    padding: const EdgeInsets.symmetric(vertical: 16),
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [SiberTema.kanKirmizi.withOpacity(0.15), SiberTema.kanKirmizi.withOpacity(0.05)],
-                                      ),
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.5), width: 1.5),
-                                      boxShadow: [
-                                        BoxShadow(color: SiberTema.kanKirmizi.withOpacity(0.1), offset: const Offset(0, 4), blurRadius: 8),
-                                      ],
-                                    ),
-                                    child: const Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.block, color: SiberTema.kanKirmizi, size: 18),
-                                        SizedBox(width: 8),
-                                        Text("REDDET", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              // 3D ONAYLA BUTONU
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () => _talebiOnayla(docId, bayiId, firmaAdi, onerilenIslem),
-                                  child: AnimatedContainer(
-                                    duration: const Duration(milliseconds: 150),
-                                    padding: const EdgeInsets.symmetric(vertical: 16),
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [SiberTema.kuantumCyan.withOpacity(0.9), SiberTema.kuantumCyan.withOpacity(0.6)],
-                                      ),
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(color: Colors.white.withOpacity(0.5), width: 1.5),
-                                      boxShadow: [
-                                        BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.3), offset: const Offset(0, 6), blurRadius: 12),
-                                      ],
-                                    ),
-                                    child: const Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.check_circle_outline, color: SiberTema.oledBlack, size: 18),
-                                        SizedBox(width: 8),
-                                        Text("ONAYLA", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
+                          Text("KARANTİNA HAVUZU TEMİZ", style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 12, letterSpacing: 2, fontWeight: FontWeight.w700)),
                         ],
                       ),
                     ),
-                  );
-                },
+                  ),
+                ),
               );
-            },
-          ),
+            }
+
+            return ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.all(24),
+              itemCount: docs.length,
+              itemBuilder: (context, index) {
+                final data = docs[index].data() as Map<String, dynamic>;
+                final docId = docs[index].id;
+                final bayiId = data['bayi_id'] ?? '';
+                final firmaAdi = data['firma_adi'] ?? 'Bilinmeyen Bayi';
+                final onerilenIslem = data['onerilen_islem'] ?? 'Belirtilmemiş';
+
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 24),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: glassBg,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.white.withOpacity(0.1), width: 1.5),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(24),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Bayi Bilgileri
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: glassBg,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: renkOperasyon.withOpacity(0.3), width: 1.5),
+                                    ),
+                                    child: const Icon(Icons.storefront_outlined, color: renkOperasyon, size: 24),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(firmaAdi, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w800)),
+                                        const SizedBox(height: 6),
+                                        Text("Bayi ID: $bayiId", style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 11, fontWeight: FontWeight.w500)),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 24),
+
+                              // Talep Ekranı (İç Cam Panel)
+                              Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  color: bgDark.withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(color: Colors.white.withOpacity(0.05), width: 1),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("TALEP EDİLEN İŞLEM", style: TextStyle(color: renkIstihbarat.withOpacity(0.7), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                                    const SizedBox(height: 12),
+                                    Text(onerilenIslem, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600)),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+
+                              // ONAY/RET BUTONLARI (Ferah)
+                              Row(
+                                children: [
+                                  // REDDET BUTONU
+                                  Expanded(
+                                    child: ElevatedButton.icon(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.transparent,
+                                        foregroundColor: renkKritik,
+                                        elevation: 0,
+                                        padding: const EdgeInsets.symmetric(vertical: 16),
+                                        side: BorderSide(color: renkKritik.withOpacity(0.5), width: 1.5),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                      ),
+                                      onPressed: () => _talebiReddet(docId, firmaAdi, onerilenIslem),
+                                      icon: const Icon(Icons.block, size: 18),
+                                      label: const Text("REDDET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 12)),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  // ONAYLA BUTONU
+                                  Expanded(
+                                    child: ElevatedButton.icon(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: renkIstihbarat.withOpacity(0.1),
+                                        foregroundColor: renkIstihbarat,
+                                        elevation: 0,
+                                        padding: const EdgeInsets.symmetric(vertical: 16),
+                                        side: const BorderSide(color: renkIstihbarat, width: 1.5),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                      ),
+                                      onPressed: () => _talebiOnayla(docId, bayiId, firmaAdi, onerilenIslem),
+                                      icon: const Icon(Icons.check_circle_outline, size: 18),
+                                      label: const Text("ONAYLA", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 12)),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
         ),
       ),
     );

@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// 🔥 SİBER KÖPRÜLER VE TEMA (Zırh v2.0)
+// 🔥 SİBER KÖPRÜLER VE TEMA (7D Zırh v2.0)
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
@@ -28,7 +28,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
   bool _isSaving = false;
   String _aiOnerisi = "Analiz ediliyor...";
 
-  static const Color _aiOrange = Color(0xFFFF9100); // AI Analiz Turuncusu
+  static const Color _aiOrange = Color(0xFFFF9100); // AI Analiz Turuncusu (Kehribar/Güvenlik Rengi)
 
   @override
   void initState() {
@@ -45,12 +45,10 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
   // --- 📡 FİREBASE: SİBER TELEMETRİ VE AI ANALİZİ ---
   Future<void> _telemetriVeAiAnaliziCek() async {
     try {
-      // Araç Kara Kutusundan gelen son veriyi (Sistem kararını) çeker
       DocumentSnapshot aiRaporu = await FirebaseFirestore.instance.collection('arac_raporlari').doc(widget.aracId).get();
 
       if (aiRaporu.exists && aiRaporu.data() != null) {
         var data = aiRaporu.data() as Map<String, dynamic>;
-        // Örn: Araç çok fazla araziye girmişse AI süreyi kısaltır
         setState(() {
           _aiOnerisi = data['ai_garanti_onerisi'] ?? "12 Ay / 20.000 KM";
           _garantiController.text = _aiOnerisi;
@@ -81,11 +79,11 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
 
     try {
       final db = FirebaseFirestore.instance;
-      WriteBatch batch = db.batch(); // Kopmaz Kuantum Bağı (Aynı anda yazılır)
+      WriteBatch batch = db.batch();
 
       String onaylananSure = _garantiController.text.trim();
 
-      // 1. İşlem Kaydını Güncelle (Müşteri bunu anında uygulamasında görür)
+      // 1. İşlem Kaydını Güncelle
       DocumentReference islemRef = db.collection('yapilan_islemler').doc(widget.islemId);
       batch.update(islemRef, {
         'garanti_suresi': onaylananSure,
@@ -101,7 +99,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
         'son_islem_bayi': widget.bayiId,
       }, SetOptions(merge: true));
 
-      // 3. Admin (Senin) Kara Kutu Loglarına İşle
+      // 3. Admin Kara Kutu Loglarına İşle
       DocumentReference logRef = db.collection('sistem_loglari').doc();
       batch.set(logRef, {
         'islem_turu': 'basarili',
@@ -110,11 +108,11 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
         'tarih': FieldValue.serverTimestamp(),
       });
 
-      await batch.commit(); // Füzeyi ateşle!
+      await batch.commit();
 
       if (!mounted) return;
       _siberUyariVer("MÜHÜR BASILDI: Dijital Sertifika Müşteriye İletildi! 🦅", false);
-      Navigator.pop(context); // İşlem bitince bayi ana ekranına döner
+      Navigator.pop(context);
 
     } catch (e) {
       if (!mounted) return;
@@ -139,7 +137,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
     return ResponsiveKalkan(
       isOledBackground: true,
       child: Scaffold(
-        backgroundColor: Colors.transparent, // Arka plan ResponsiveKalkan'dan gelir
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -157,65 +155,34 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. İŞLEM TAMAMLANDI BİLGİSİ
+              // 1. İŞLEM TAMAMLANDI BİLGİSİ (7D Glow Efekti)
               Row(
                 children: [
-                  _buildNeonIkon(Icons.verified_user, SiberTema.kuantumCyan),
+                  _build7DNeonIkon(Icons.verified_user, SiberTema.kuantumCyan),
                   const SizedBox(width: 16),
                   const Text("SİSTEM ONAYI: İşlem Tamamlandı", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: SiberTema.siberFont)),
                 ],
               ),
               const SizedBox(height: 24),
 
-              // 2. AI TELEMETRİ ANALİZ NOTU (Cam Efektli & 3D)
-              SiberTema.siberCamKalkan(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.memory, color: _aiOrange, size: 24, shadows: [Shadow(color: _aiOrange, blurRadius: 10)]),
-                        const SizedBox(width: 10),
-                        Text("KUANTUM A.I. TELEMETRİ ANALİZİ", style: TextStyle(color: _aiOrange, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 11, fontFamily: SiberTema.siberFont)),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      "Araç kullanıcısının geçmiş arazi şartları (Asfalt/Zorlu Arazi) ve kullanım alışkanlıkları incelenmiştir. Sistem, riski minimize etmek için aşağıdaki süreyi önermektedir.",
-                      style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12, height: 1.5, fontFamily: SiberTema.siberFont),
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                      decoration: BoxDecoration(
-                          color: _aiOrange.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: _aiOrange.withOpacity(0.3)),
-                          boxShadow: [BoxShadow(color: _aiOrange.withOpacity(0.05), blurRadius: 10)] // 3D Turuncu Parlama
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("Önerilen Güvenli Süre:", style: TextStyle(color: Colors.white70, fontSize: 12, fontFamily: SiberTema.siberFont, fontWeight: FontWeight.bold)),
-                          Text(_aiOnerisi, style: const TextStyle(color: _aiOrange, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: SiberTema.siberFont)),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              // 2. AI TELEMETRİ ANALİZ NOTU (7D Donanımsal Ekran)
+              _build7DAiTelemetriPaneli(),
+
               const SizedBox(height: 40),
 
-              // 3. MÜHÜRLENECEK SÜRE GİRİŞİ (3D Derinlikli)
+              // 3. MÜHÜRLENECEK SÜRE GİRİŞİ (7D İç Gölgeli Ekran)
               const Text("GARANTİ SÜRESİNİ ONAYLAYIN (VEYA DÜZENLEYİN)", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 10, fontFamily: SiberTema.siberFont)),
               const SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(
-                  color: SiberTema.matGrey, // Derin yüzey
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 1.5),
-                  boxShadow: SiberTema.siberGolgeDerin, // 🔥 3D GÖLGE EKLENDİ
+                    color: SiberTema.oledBlack, // Derin Siyah Ekran Hissi
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 1.5),
+                    // İçeri göçük (Inner Shadow) hissiyatı veren siber gölge
+                    boxShadow: [
+                      BoxShadow(color: Colors.black.withOpacity(0.9), blurRadius: 10, inset: true),
+                      BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 15, spreadRadius: 2), // Dış Neon Kalkanı
+                    ]
                 ),
                 child: TextField(
                   controller: _garantiController,
@@ -232,16 +199,16 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
 
               const SizedBox(height: 50),
 
-              // 4. MÜHÜRLEME BUTONU (3D Neon Buton)
+              // 4. MÜHÜRLEME BUTONU (7D Merkezi Neon Buton)
               SizedBox(
                 width: double.infinity,
                 height: 64,
                 child: ElevatedButton.icon(
-                  style: SiberTema.kuantumButonStili(), // Merkezi 3D buton tasarımı
+                  style: SiberTema.kuantumButonStili(),
                   onPressed: _isSaving ? null : _garantiyiKuantumAgaMuhurle,
                   icon: _isSaving
                       ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
-                      : const Icon(Icons.verified, size: 28, color: SiberTema.oledBlack),
+                      : const Icon(Icons.fingerprint, size: 28, color: SiberTema.oledBlack),
                   label: Text(
                       _isSaving ? "AĞA YAZILIYOR..." : "GARANTİYİ MÜHÜRLE VE TESLİM ET",
                       style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5, fontFamily: SiberTema.siberFont, color: SiberTema.oledBlack)
@@ -255,17 +222,79 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
     );
   }
 
-  // --- 🎨 SİBER GÖRSEL YARDIMCILAR ---
-  Widget _buildNeonIkon(IconData icon, Color renk) {
+  // --- 🎨 7D SİBER GÖRSEL YARDIMCILAR ---
+
+  // 🎇 7D LED İkon Parlaması
+  Widget _build7DNeonIkon(IconData icon, Color renk) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: renk.withOpacity(0.1),
+        color: Colors.black.withOpacity(0.5),
         shape: BoxShape.circle,
-        border: Border.all(color: renk.withOpacity(0.4)),
-        boxShadow: [BoxShadow(color: renk.withOpacity(0.2), blurRadius: 15, spreadRadius: 2)], // 🔥 Neon Parlama
+        border: Border.all(color: renk.withOpacity(0.4), width: 1.5),
+        boxShadow: [BoxShadow(color: renk.withOpacity(0.25), blurRadius: 15, spreadRadius: 2)], // Dış Glow
       ),
-      child: Icon(icon, color: renk, size: 24, shadows: [Shadow(color: renk, blurRadius: 10)]), // İkonun kendisi de parlar
+      child: Icon(icon, color: renk, size: 24, shadows: [Shadow(color: renk, blurRadius: 12)]), // İç Işık
+    );
+  }
+
+  // 📺 7D AI TELEMETRİ EKRANI (Donanımsal Titanyum Kasa)
+  Widget _build7DAiTelemetriPaneli() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          // Fırçalanmış Metal / Karbon Kasa Hissi
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF2A2D34), Color(0xFF141518), Color(0xFF0A0A0C)],
+            stops: [0.0, 0.4, 1.0],
+          ),
+          border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
+          boxShadow: [
+            BoxShadow(color: Colors.black.withOpacity(0.8), blurRadius: 15, offset: const Offset(0, 8)), // Kasa Derinliği
+          ]
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              _build7DNeonIkon(Icons.memory, _aiOrange), // AI Çekirdeği
+              const SizedBox(width: 12),
+              const Text("KUANTUM A.I. TELEMETRİ ANALİZİ", style: TextStyle(color: _aiOrange, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 11, fontFamily: SiberTema.siberFont)),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            "Araç kullanıcısının geçmiş arazi şartları (Asfalt/Zorlu Arazi) ve kullanım alışkanlıkları incelenmiştir. Sistem, riski minimize etmek için aşağıdaki süreyi önermektedir.",
+            style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12, height: 1.5, fontFamily: SiberTema.siberFont),
+          ),
+          const SizedBox(height: 20),
+
+          // 📟 AI Sonuç Ekranı (İçeri Göçük CRT Ekran Hissi)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            decoration: BoxDecoration(
+                color: const Color(0xFF1A0A00), // Koyu Turuncu-Siyah CRT Ekran
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: _aiOrange.withOpacity(0.4), width: 1.5),
+                boxShadow: [
+                  BoxShadow(color: Colors.black.withOpacity(0.9), blurRadius: 8, inset: true), // İç Derinlik
+                  BoxShadow(color: _aiOrange.withOpacity(0.1), blurRadius: 10, spreadRadius: 1) // Hafif Parlama
+                ]
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text("Önerilen Güvenli Süre:", style: TextStyle(color: Colors.white70, fontSize: 12, fontFamily: SiberTema.siberFont, fontWeight: FontWeight.bold)),
+                Text(_aiOnerisi, style: const TextStyle(color: _aiOrange, fontWeight: FontWeight.w900, fontSize: 15, fontFamily: SiberTema.siberFont, shadows: [Shadow(color: _aiOrange, blurRadius: 8)])),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

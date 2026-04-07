@@ -1,37 +1,42 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// 🚀 OTODNA MEGA PROTOKOLÜ: S.O.S VE ACIMASIZ CEZA MOTORU
+/// Bu sınıf, acil durum sinyallerini yönetir ve asılsız ihbarlarda kullanıcıyı sistemden tecrit eder.
 class OtoDnaMegaProtocol {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // ====================================================================
-  // 1. SİBER S.O.S FÜZESİNİ ATEŞLE (5 Saniye Basılı Tutulduğunda Tetiklenir)
+  // 1. SİBER S.O.S FÜZESİNİ ATEŞLE (5 Saniye Protokolü)
   // ====================================================================
   static Future<Map<String, dynamic>> sosSinyaliAtesle({
     required String kullaniciId,
     required String plaka,
     required String qrData,
-    required String konum, // GeoPoint veya String koordinat
+    required String konum, // Koordinat verisi
   }) async {
     try {
-      // 🛡️ Önce Kontrol Et: Bu adam Kırmızı Kart yemiş mi?
+      // 🛡️ SİBER KONTROL: Kullanıcı Kırmızı Kart (2 Ceza Puanı) yemiş mi?
       DocumentSnapshot userDoc = await _db.collection('kullanicilar').doc(kullaniciId).get();
       if (userDoc.exists) {
         var data = userDoc.data() as Map<String, dynamic>;
         int cezaPuan = data['sos_ceza_puani'] ?? 0;
 
         if (cezaPuan >= 2) {
-          return {'basarili': false, 'mesaj': 'SİSTEM KİLİTLİ: Asılsız ihbarlar nedeniyle (Kırmızı Kart) S.O.S yetkiniz alınmıştır!'};
+          return {
+            'basarili': false,
+            'mesaj': 'SİSTEM KİLİTLİ: Asılsız ihbarlar nedeniyle S.O.S yetkiniz kalıcı olarak askıya alınmıştır!'
+          };
         }
       }
 
-      WriteBatch batch = _db.batch(); // 🔥 Kuantum Mührü
+      // ⛓️ ATOMİK ZIRH: WriteBatch Başlatıldı
+      WriteBatch batch = _db.batch();
 
-      // Sinyali Ağ'a Bırak
+      // S.O.S Sinyalini Kuantum Ağına Bırak
       DocumentReference sosRef = _db.collection('sos_sinyalleri').doc();
       batch.set(sosRef, {
         'kullanici_id': kullaniciId,
-        'kullanici': 'OTODNA SÜRÜCÜSÜ', // Gizlilik için maskeli
+        'kullanici_maske': 'OTODNA_SÜRÜCÜSÜ', // Güvenlik protokolü gereği
         'plaka': plaka,
         'qr_veri': qrData,
         'konum': konum,
@@ -39,19 +44,20 @@ class OtoDnaMegaProtocol {
         'sinyal_zamani': FieldValue.serverTimestamp(),
       });
 
-      // Amiral Gemisine (Loglara) Kırmızı Alarm Gönder
+      // Amiral Gemisi Radarına (Sistem Logları) Kırmızı Alarm Gönder
       DocumentReference logRef = _db.collection('sistem_loglari').doc();
       batch.set(logRef, {
         'islem_turu': 'sos',
-        'islem_detayi': '🚨 SİBER S.O.S: $plaka plakalı araçtan acil durum sinyali alındı! Konum: $konum',
-        'bayi_isim': 'MERKEZ RADARI',
+        'islem_detayi': '🚨 ACİL DURUM: $plaka plakalı araçtan S.O.S alındı! Mevki: $konum',
+        'birim': 'MERKEZ_RADARI',
         'tarih': FieldValue.serverTimestamp(),
       });
 
       await batch.commit();
-      return {'basarili': true, 'mesaj': 'S.O.S Sinyali Kuantum Radarlarına Ulaştı! Bekleyin.'};
+      return {'basarili': true, 'mesaj': 'S.O.S Sinyali Kuantum Radarlarına Ulaştı! Karargah teyakkuzda.'};
+
     } catch (e) {
-      return {'basarili': false, 'mesaj': 'Ağ Hatası: $e'};
+      return {'basarili': false, 'mesaj': 'Sinyal Hatası: Karargahla bağlantı kurulamadı! $e'};
     }
   }
 
@@ -62,32 +68,34 @@ class OtoDnaMegaProtocol {
     try {
       WriteBatch batch = _db.batch();
 
-      // 1. S.O.S Kaydını "Asılsız" olarak işaretle
+      // 1. S.O.S Kaydını "Asılsız" olarak işaretle ve mühürle
       DocumentReference sosRef = _db.collection('sos_sinyalleri').doc(sosDocId);
       batch.update(sosRef, {'durum': 'Asılsız İhbar'});
 
-      // 2. Kullanıcının sicilini çek ve ceza puanını (Sarı/Kırmızı Kart) ayarla
+      // 2. Kullanıcının Siber Siciline Ceza Puanını İşle
       DocumentReference userRef = _db.collection('kullanicilar').doc(kullaniciId);
-
       batch.update(userRef, {
-        // Mevcut ceza puanını 1 artır
-        'sos_ceza_puani': FieldValue.increment(1),
-        // Eğer 2 olursa otomatik olarak üyeliği tehlikeye girer (Arayüzde okuyacağız)
+        'sos_ceza_puani': FieldValue.increment(1), // +1 Ceza Puanı
       });
 
-      // 3. Loglara Acımasızca Mühürle
+      // 3. Adalet Divanı Loglarına İhlali Kaydet
       DocumentReference logRef = _db.collection('sistem_loglari').doc();
       batch.set(logRef, {
-        'islem_turu': 'hata',
-        'islem_detayi': 'SİBER CEZA: Kullanıcıya asılsız SOS ihbarından dolayı SARI/KIRMIZI KART verildi!',
-        'bayi_isim': 'ADALET DİVANI',
+        'islem_turu': 'ceza',
+        'islem_detayi': 'SİBER İHLAL: $kullaniciId ID\'li kullanıcıya asılsız ihbar cezası kesildi.',
+        'birim': 'ADALET_DİVANI',
         'tarih': FieldValue.serverTimestamp(),
       });
 
       await batch.commit();
+
     } catch (e) {
-      // Sessiz hata yakalama (Sistem çökmesin diye)
-      print("Siber Ceza Motoru Hatası: $e");
+      // Hata durumunda sistem loglarına sessizce raporla
+      FirebaseFirestore.instance.collection('sistem_loglari').add({
+        'islem_turu': 'hata',
+        'islem_detayi': 'CEZA MOTORU ARIZASI: $e',
+        'tarih': FieldValue.serverTimestamp(),
+      });
     }
   }
 }

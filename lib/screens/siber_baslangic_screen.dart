@@ -2,9 +2,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// 🔥 SİBER KÖPRÜLER
+// 🔥 SİBER KÖPRÜLER VE TEMA (Zırh v2.0)
 import '../core/siber_tema.dart';
-import 'otodna_auth_gate.dart';
+import '../auth/otodna_auth_gate.dart';
 
 class SiberBaslangicScreen extends StatefulWidget {
   const SiberBaslangicScreen({super.key});
@@ -22,8 +22,12 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
   @override
   void initState() {
     super.initState();
+
+    // Kalkan için Kuantum Nefes Animasyonu (Görsel İşçilik)
     _pulseController = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat(reverse: true);
     _pulseAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut));
+
+    // Siber Yönlendirme Motorunu Ateşle
     _kuantumHologramKontrolu();
   }
 
@@ -33,11 +37,15 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
     super.dispose();
   }
 
+  // --- 🎆 HOLOGRAM VE KAPI KONTROL MOTORU ---
   Future<void> _kuantumHologramKontrolu() async {
+    // Sürücüye Karargahın gücünü hissettirmek için 1.5 saniyelik tarama süresi
     await Future.delayed(const Duration(milliseconds: 1500));
+
     if (!mounted) return;
 
     try {
+      // Firebase'den "genel_ayarlar" altındaki hologram verisini çek
       DocumentSnapshot ayarlar = await _db.collection('sistem_ayarlari').doc('genel_ayarlar').get();
 
       bool hologramGosterilsinMi = false;
@@ -56,17 +64,22 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
       } else {
         _anaKapiyaGecisYap();
       }
+
     } catch (e) {
+      // Herhangi bir ağ hatasında sistem kilitlenmez, güvenli kapıya geçer
       _anaKapiyaGecisYap();
     }
   }
 
   void _anaKapiyaGecisYap() {
     if (!mounted) return;
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const OtoDnaAuthGate()));
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const OtoDnaAuthGate())
+    );
   }
 
-  // --- 🎇 BAYRAM/DUYURU HOLOGRAMI EKRANI (3D ZIRHLI) ---
+  // --- 🎇 BAYRAM/DUYURU HOLOGRAMI EKRANI (Glassmorphism) ---
   void _hologramGoster(String baslik, String mesaj) {
     showDialog(
         context: context,
@@ -84,39 +97,42 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
                   decoration: BoxDecoration(
                     color: SiberTema.oledBlack.withOpacity(0.85),
                     border: Border.all(color: SiberTema.altinSari.withOpacity(0.5), width: 2),
-                    // 🔥 3D HOLOGRAM GÖLGESİ
-                    boxShadow: [BoxShadow(color: SiberTema.altinSari.withOpacity(0.2), blurRadius: 50, spreadRadius: 10, offset: const Offset(0, 10))],
+                    boxShadow: [
+                      BoxShadow(color: SiberTema.altinSari.withOpacity(0.1), blurRadius: 40, spreadRadius: 10)
+                    ],
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // 🔥 3D İKON
-                      const Icon(Icons.celebration, color: SiberTema.altinSari, size: 50, shadows: [Shadow(color: SiberTema.altinSari, blurRadius: 15)]),
+                      const Icon(Icons.celebration_rounded, color: SiberTema.altinSari, size: 50),
                       const SizedBox(height: 24),
                       Text(
                         baslik.toUpperCase(),
                         textAlign: TextAlign.center,
-                        style: const TextStyle(color: SiberTema.altinSari, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
+                        style: const TextStyle(color: SiberTema.altinSari, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2),
                       ),
-                      const Padding(padding: EdgeInsets.symmetric(vertical: 24), child: Divider(color: Colors.white24, height: 1)),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 24),
+                        child: Divider(color: Colors.white24, height: 1),
+                      ),
                       Text(
                         mesaj,
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 14, height: 1.5, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
+                        style: const TextStyle(color: Colors.white, fontSize: 14, height: 1.5, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 40),
                       SizedBox(
                         width: double.infinity,
                         height: 50,
-                        child: ElevatedButton.icon(
-                          // 🔥 3D BUTON STİLİ (SiberTema'dan çekildi)
-                          style: SiberTema.kuantumButonStili().copyWith(backgroundColor: MaterialStateProperty.all(SiberTema.altinSari)),
+                        child: ElevatedButton(
+                          style: SiberTema.kuantumButonStili().copyWith(
+                            backgroundColor: WidgetStateProperty.all(SiberTema.altinSari),
+                          ),
                           onPressed: () {
                             Navigator.pop(context);
                             _anaKapiyaGecisYap();
                           },
-                          icon: const Icon(Icons.check_circle_outline, size: 20, color: SiberTema.oledBlack),
-                          label: const Text("KARARGAHA GEÇ", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir', color: SiberTema.oledBlack)),
+                          child: const Text("KARARGAHA GEÇ", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900)),
                         ),
                       ),
                     ],
@@ -132,9 +148,9 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent, // Arka planı responsive kalkan veya container'a bırak
+      backgroundColor: SiberTema.oledBlack,
       body: Container(
-        decoration: SiberTema.siberArkaPlan, // 🔥 YENİ 3D ARKA PLAN
+        decoration: SiberTema.siberArkaPlan,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -144,24 +160,22 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
                 builder: (context, child) {
                   return Transform.scale(
                     scale: _pulseAnimation.value,
-                    child: Container(
-                      width: 80,
-                      height: 90,
-                      decoration: BoxDecoration(
-                        // 🔥 3D KALKAN GÖLGESİ
-                        boxShadow: SiberTema.siberGolgeDerin,
-                      ),
-                      child: const Icon(Icons.security, color: SiberTema.kuantumCyan, size: 80, shadows: [Shadow(color: SiberTema.kuantumCyan, blurRadius: 10)]),
-                    ),
+                    child: const Icon(Icons.security, color: SiberTema.kuantumCyan, size: 100),
                   );
                 },
               ),
               const SizedBox(height: 40),
-              const Text("OTODNA KARARGAHI ÇEVRİMİÇİ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir')),
+              const Text(
+                "OTODNA KARARGAHI ÇEVRİMİÇİ",
+                style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 3),
+              ),
               const SizedBox(height: 12),
-              Text("Siber Kalkanlar Aktif, Emir Bekleniyor...", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontWeight: FontWeight.w600, letterSpacing: 1, fontFamily: 'Avenir')),
+              Text(
+                "Siber Kalkanlar Aktif, Emir Bekleniyor...",
+                style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontWeight: FontWeight.w600),
+              ),
               const SizedBox(height: 60),
-              const SizedBox(width: 30, height: 30, child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3)),
+              const CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3),
             ],
           ),
         ),

@@ -8,10 +8,10 @@ import 'core/siber_tema.dart';
 // 🚀 AUTH VE GİRİŞ EKRANLARI (Tüm kablolar buraya çekildi)
 import 'auth/siber_baslangic_screen.dart';
 import 'auth/otodna_auth_gate.dart';
-import 'auth/login_screen.dart';
-import 'auth/siber_kayit_screen.dart';
-import 'auth/sifre_sifirla_screen.dart';
-import 'auth/siber_sms_screen.dart';
+import 'screens/siber_giris_screen.dart'; // ✅ ESKİ LOGİN SİLİNDİ, YENİ SİBER GİRİŞ BAĞLANDI
+import 'screens/siber_kayit_screen.dart';
+import 'screens/sifre_sifirla_screen.dart';
+import 'screens/siber_sms_screen.dart';
 
 void main() async {
   // 1. Flutter Motorunu Emniyete Al
@@ -54,7 +54,7 @@ class OtoDnaApp extends StatelessWidget {
         // Admin, Bayi veya Kullanıcı Paneline otonom olarak fırlatır!
         '/home': (context) => const OtoDnaAuthGate(),
 
-        '/login': (context) => const LoginScreen(),
+        '/login': (context) => const SiberGirisScreen(), // ✅ ROTANIN KABLOSU YENİLENDİ
         '/kayit_ol': (context) => const SiberKayitScreen(),
         '/sifre_sifirlama': (context) => const SifreSifirlaScreen(),
         '/sms_dogrulama': (context) => const SiberSmsScreen(),
