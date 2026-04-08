@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// TODO: Kendi Admin Karargahı ekranını buraya import etmeyi unutma
-// import '../screens/admin/master_gate.dart';
+// 🔥 SİBER KÖPRÜLER - YÖNETİM KULESİ BAĞLANTISI
+import '../screens/yonetim_kulesi/admin_global_panel.dart';
+import '../core/siber_tema.dart';
 
 class AuthManager {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -33,19 +34,18 @@ class AuthManager {
       Duration fark = suAn.difference(olusturulmaVakti);
 
       if (fark.inSeconds <= 180 && girilenKod == gercekKod) {
-        // Kalkanlar indirildi! Kod doğru ve süresi dolmamış.
-        // GÜVENLİK PROTOKOLÜ: Tek kullanımlık olduğu için kodu veritabanından hemen imha et!
+        // GÜVENLİK PROTOKOLÜ: Tek kullanımlık kod imha ediliyor...
         await _db.collection('kullanicilar').doc(kullaniciId).update({
           'iki_asamali_kod': FieldValue.delete(),
           'kod_zaman_damgasi': FieldValue.delete(),
         });
         return true;
       } else {
-        print("Siber Güvenlik İhlali: Kod yanlış veya 3 dakikalık süre dolmuş!");
+        debugPrint("SİBER UYARI: Geçersiz Kod veya Zaman Aşımı!");
         return false;
       }
     } catch (e) {
-      print("2FA Doğrulama Hatası: $e");
+      debugPrint("2FA KRİTİK HATA: $e");
       return false;
     }
   }
@@ -63,28 +63,37 @@ class AuthManager {
     // Sadece 5 saniye veya daha fazla basılırsa motoru ateşle
     if (pressDuration.inSeconds >= 5) {
       try {
-        // Her 5 saniye basanı içeri alma! Gerçekten Kuantum Ağında ADMIN mi diye teyit et.
+        // Kuantum Ağında yetki kontrolü
         DocumentSnapshot userDoc = await _db.collection('kullanicilar').doc(kullaniciId).get();
 
         if (userDoc.exists && userDoc.get('rol') == 'ADMIN') {
-          print("Şifre Çözüldü. Siber Karargah Kilitleri Açılıyor...");
 
           if (!context.mounted) return;
+
+          // Siber Karargah Giriş Efekti
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Siber Komutan Gazi, Karargaha Hoş Geldiniz! 🦅", style: TextStyle(color: Color(0xFF0F172A), fontWeight: FontWeight.bold)),
-              backgroundColor: Color(0xFF00FFC2),
-              duration: Duration(seconds: 2),
+            SnackBar(
+              content: const Text(
+                  "Siber Komutan Gazi, Karargaha Hoş Geldiniz! 🦅",
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Avenir')
+              ),
+              backgroundColor: SiberTema.kuantumCyan,
+              duration: const Duration(seconds: 3),
+              behavior: SnackBarBehavior.floating,
             ),
           );
 
-          // 🚀 YÖNLENDİRME FÜZESİ (Baştaki import'u ve bu satırı kendi ekranına göre aç)
-          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MasterGateScreen()));
+          // 🚀 YÖNLENDİRME FÜZESİ: YÖNETİM KULESİNE NAKİL
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AdminGlobalPanel())
+          );
+
         } else {
-          print("SİBER ALARM: Yetkisiz Karargah Erişim Girişimi Engellendi!");
+          debugPrint("SİBER ALARM: Yetkisiz Erişim Girişimi!");
         }
       } catch (e) {
-        print("Karargah Bağlantı Hatası: $e");
+        debugPrint("KARARGAH BAĞLANTISI KOPTU: $e");
       }
     }
   }

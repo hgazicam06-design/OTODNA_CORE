@@ -6,6 +6,8 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 // 🔥 SİBER KÖPRÜLER
 import '../../core/siber_tema.dart';
 
+/// 🦅 KARGO KİMLİK EŞLEŞTİRME PROTOKOLÜ
+/// Sipariş teslimatını QR ile mühürleyen ve kimlik doğrulaması yapan siber ünite.
 class KargoTeslimatQrScreen extends StatefulWidget {
   final String kullaniciId; // Kamerayı açan alıcının Karargah kimliği
 
@@ -30,7 +32,7 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
       String siparisId = okunanQrVerisi.replaceAll("KARGO_", "");
       DocumentReference siparisRef = _db.collection('siparisler').doc(siparisId);
 
-      // ACID Transaction: İnternet kopsa bile veri bütünlüğü korunur
+      // 🔐 ACID Transaction: Atomik veri bütünlüğü koruması
       await _db.runTransaction((transaction) async {
         DocumentSnapshot snapshot = await transaction.get(siparisRef);
 
@@ -43,30 +45,30 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
         // 🛡️ ZIRH 1: KİMLİK EŞLEŞMESİ (Siparişi veren ile okutan aynı mı?)
         String siparisSahibi = data['alici_id'] ?? "";
         if (siparisSahibi != widget.kullaniciId) {
-          throw Exception("KİMLİK REDDEDİLDİ: Bu kargo sizin adınıza kayıtlı değil! Eşleşme başarısız.");
+          throw Exception("KİMLİK REDDEDİLDİ: Bu kargo sizin adınıza kayıtlı değil!");
         }
 
-        // 🛡️ ZIRH 2: DAHA ÖNCE İMHA EDİLMİŞ Mİ KONTROLÜ
+        // 🛡️ ZIRH 2: ÇİFT OKUMA KORUMASI
         if (data['durum'] == 'TESLİM EDİLDİ') {
-          throw Exception("GEÇERSİZ QR: Bu kod daha önce okutulmuş ve sistemden tamamen SİLİNMİŞTİR.");
+          throw Exception("GEÇERSİZ QR: Bu kod daha önce kullanılmış ve imha edilmiştir.");
         }
 
-        // 🚀 İŞLEM ONAYI, SAYAÇ BAŞLATMA VE VERİ İMHASI!
+        // 🚀 İŞLEM ONAYI VE VERİ MÜHÜRLENMESİ
         transaction.update(siparisRef, {
           'durum': 'TESLİM EDİLDİ',
           'qr_kullanildi': true,
           'teslim_alan_id': widget.kullaniciId,
           'teslim_tarihi': FieldValue.serverTimestamp(),
-          'iade_baslangic_tarihi': FieldValue.serverTimestamp(), // 15 Günlük Havuz Kalkanı Başladı
+          'iade_baslangic_tarihi': FieldValue.serverTimestamp(), // 15 Günlük Koruma Başladı
         });
       });
 
       HapticFeedback.vibrate();
 
       if (mounted) {
-        _siberUyariGoster("KİMLİK EŞLEŞTİ VE QR SİLİNDİ\nÜrün adınıza teslim edildi. 15 günlük Karargah güvenceniz başladı.", SiberTema.kuantumCyan);
+        _siberUyariGoster("KİMLİK EŞLEŞTİ VE QR İMHA EDİLDİ\nÜrün teslim alındı. 15 günlük güvenceniz aktif.", SiberTema.kuantumCyan);
         Future.delayed(const Duration(seconds: 2), () {
-          if (mounted) Navigator.pop(context); // İşlem bitince tarayıcıyı otonom kapatır
+          if (mounted) Navigator.pop(context);
         });
       }
 
@@ -75,7 +77,7 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
       if (mounted) {
         _siberUyariGoster("SİSTEM REDDETTİ: ${e.toString().replaceAll("Exception:", "").trim()}", SiberTema.kanKirmizi);
         Future.delayed(const Duration(seconds: 2), () {
-          if (mounted) setState(() => _islemSuruyor = false); // Tekrar okuma izni ver
+          if (mounted) setState(() => _islemSuruyor = false);
         });
       }
     }
@@ -102,7 +104,7 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
       ),
       body: Stack(
         children: [
-          // 📸 SİBER KAMERA TARAYICI
+          // 📸 SİBER KAMERA TARAYICI (MobileScanner v3+)
           MobileScanner(
             onDetect: (capture) {
               final List<Barcode> barcodes = capture.barcodes;
@@ -112,46 +114,50 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
             },
           ),
 
-          // 🛡️ HEDEF GÖSTERGESİ
+          // 🛡️ HOLOGRAFİK HEDEF GÖSTERGESİ
           Center(
             child: Container(
               width: 250, height: 250,
               decoration: BoxDecoration(
                   border: Border.all(color: _islemSuruyor ? Colors.orangeAccent : SiberTema.kuantumCyan.withOpacity(0.8), width: 3),
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [BoxShadow(color: (_islemSuruyor ? Colors.orangeAccent : SiberTema.kuantumCyan).withOpacity(0.2), blurRadius: 40, spreadRadius: 5)]
+                  borderRadius: BorderRadius.circular(32),
+                  boxShadow: [BoxShadow(color: (_islemSuruyor ? Colors.orangeAccent : SiberTema.kuantumCyan).withOpacity(0.2), blurRadius: 50, spreadRadius: 5)]
               ),
             ),
           ),
 
-          // 📜 ALT BİLGİ PANELİ
+          // 📜 ALT BİLGİ PANELİ (Siber Cam Efekti)
           Positioned(
             bottom: 40, left: 20, right: 20,
             child: SiberTema.siberCamKalkan(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(24),
               child: const Column(
                 children: [
-                  Icon(Icons.fingerprint, color: SiberTema.kuantumCyan, size: 40),
-                  SizedBox(height: 12),
-                  Text("KİMLİK DOĞRULAMA BEKLENİYOR", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 12, fontFamily: 'Avenir')),
-                  SizedBox(height: 8),
-                  Text("Kargonun üzerindeki QR kod sadece siparişi veren hesapla eşleşir. Okutma başarılı olduğunda kod imha edilir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.5, fontFamily: 'Avenir')),
+                  Icon(Icons.fingerprint, color: SiberTema.kuantumCyan, size: 48),
+                  SizedBox(height: 16),
+                  Text("DOĞRULAMA BEKLENİYOR", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 2, fontSize: 12)),
+                  const SizedBox(height: 12),
+                  Text(
+                    "Kargonun üzerindeki QR kod sadece siparişi veren Karargah hesabı ile eşleşir. Onay anında sistem güncellenir.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.6),
+                  ),
                 ],
               ),
             ),
           ),
 
-          // ⏳ YÜKLENİYOR EKRANI
+          // ⏳ İŞLEM SÜRÜYOR KATMANI
           if (_islemSuruyor)
             Container(
-              color: SiberTema.oledBlack.withOpacity(0.85),
+              color: SiberTema.oledBlack.withOpacity(0.9),
               child: const Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3),
-                    SizedBox(height: 16),
-                    Text("KİMLİK EŞLEŞTİRİLİYOR VE KOD SİLİNİYOR...", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                    CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 4),
+                    SizedBox(height: 24),
+                    Text("KİMLİK DOĞRULANIYOR...", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, letterSpacing: 2)),
                   ],
                 ),
               ),

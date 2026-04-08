@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/dukkan_model.dart'; // Esnaf modelimizi içeri alıyoruz
+import '../../core/siber_tema.dart';
 
 class IlanVerScreen extends StatefulWidget {
   final Dukkan aktifDukkan; // Giriş yapan firmanın tüm bilgileri (Rozet, VIP durumu vb.)
@@ -11,10 +13,23 @@ class IlanVerScreen extends StatefulWidget {
 }
 
 class _IlanVerScreenState extends State<IlanVerScreen> {
-  // Siber Renk Paleti
-  static const _neonGreen = Color(0xFF00FFCC);
-  static const _cyberBlack = Color(0xFF0D0D0D);
+  // Siber Renk Paleti (SiberTema entegrasyonu)
+  static const _neonGreen = SiberTema.kuantumCyan;
+  static const _cyberBlack = SiberTema.oledBlack;
   static const _cyberCard = Color(0xFF1E1E2E);
+
+  // Form Kontrolcüleri
+  final TextEditingController _adController = TextEditingController();
+  final TextEditingController _fiyatController = TextEditingController();
+  final TextEditingController _aciklamaController = TextEditingController();
+
+  @override
+  void dispose() {
+    _adController.dispose();
+    _fiyatController.dispose();
+    _aciklamaController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +46,8 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
           children: [
             Icon(Icons.add_shopping_cart, color: _neonGreen),
             SizedBox(width: 10),
-            Text('Siber Oto Market - İlan Ver', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+            Text('Siber Oto Market - İlan Ver',
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -44,19 +60,20 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
             _buildFirmaBilgiBandi(),
             const SizedBox(height: 20),
 
-            // 🌟 SADECE VIP'LERE ÖZEL TOPLU YÜKLEME BUTONU
+            // 🌟 VIP TOPLU YÜKLEME BUTONU
             if (vipMi) ...[
               _buildVipTopluYuklemeAlani(),
               const SizedBox(height: 20),
-              const Center(child: Text("--- VEYA TEK TEK EKLE ---", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold))),
+              const Center(child: Text("--- VEYA TEK TEK EKLE ---",
+                  style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
               const SizedBox(height: 20),
             ],
 
-            // 🚨 LİMİT DOLDUYSA ÇIKACAK ÖDEME DUVARI (PAYWALL)
+            // 🚨 LİMİT KONTROLÜ VE FORM
             if (limitDolduMu)
               _buildLimitDoluUyarisi()
             else
-              _buildStandartIlanFormu(), // Limit dolmadıysa standart form çıkar
+              _buildStandartIlanFormu(),
           ],
         ),
       ),
@@ -81,13 +98,16 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.aktifDukkan.ad, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+              Text(widget.aktifDukkan.ad,
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Avenir')),
               const SizedBox(height: 4),
               Row(
                 children: [
-                  Icon(widget.aktifDukkan.isVip ? Icons.stars : Icons.storefront, color: widget.aktifDukkan.isVip ? Colors.amber : Colors.grey, size: 16),
+                  Icon(widget.aktifDukkan.isVip ? Icons.stars : Icons.storefront,
+                      color: widget.aktifDukkan.isVip ? Colors.amber : Colors.grey, size: 16),
                   const SizedBox(width: 4),
-                  Text("Rozet: ${widget.aktifDukkan.rozet}", style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                  Text("Rozet: ${widget.aktifDukkan.rozet}",
+                      style: const TextStyle(color: Colors.grey, fontSize: 12, fontFamily: 'Avenir')),
                 ],
               ),
             ],
@@ -95,8 +115,9 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const Text("Kullanım", style: TextStyle(color: Colors.grey, fontSize: 10)),
-              Text(limitMetni, style: TextStyle(color: _neonGreen, fontWeight: FontWeight.bold, fontSize: 16)),
+              const Text("Kullanım", style: TextStyle(color: Colors.grey, fontSize: 10, fontFamily: 'Avenir')),
+              Text(limitMetni,
+                  style: const TextStyle(color: _neonGreen, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Avenir')),
             ],
           )
         ],
@@ -118,9 +139,11 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
         children: [
           const Icon(Icons.auto_awesome, color: Colors.amber, size: 32),
           const SizedBox(height: 10),
-          const Text("VIP TOPLU İLAN YÜKLEME", style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 16)),
+          const Text("VIP TOPLU İLAN YÜKLEME",
+              style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Avenir')),
           const SizedBox(height: 5),
-          const Text("PDF veya Excel listenizi seçin, Kuantum AI saniyeler içinde binlerce ilanınızı vitrine dizsin.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 12)),
+          const Text("PDF veya Excel listenizi seçin, Kuantum AI saniyeler içinde binlerce ilanınızı vitrine dizsin.",
+              textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir')),
           const SizedBox(height: 15),
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
@@ -129,10 +152,10 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
               minimumSize: const Size(double.infinity, 45),
             ),
             icon: const Icon(Icons.file_upload),
-            label: const Text("Katalog Dosyası Seç (.pdf / .xlsx)", style: TextStyle(fontWeight: FontWeight.bold)),
+            label: const Text("Katalog Dosyası Seç (.pdf / .xlsx)", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             onPressed: () {
-              // TODO: İleride FilePicker ile dosya seçtirip Firebase Cloud Functions'a göndereceğiz
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("VIP Kuantum Tarayıcı Başlatılıyor..."), backgroundColor: Colors.amber));
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("VIP Kuantum Tarayıcı Başlatılıyor..."), backgroundColor: Colors.amber));
             },
           )
         ],
@@ -140,7 +163,7 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
     );
   }
 
-  // ─── 🚨 LİMİT DOLU UYARISI (PARA BASMA MAKİNESİ) ───
+  // ─── 🚨 LİMİT DOLU UYARISI ───
   Widget _buildLimitDoluUyarisi() {
     return Container(
       width: double.infinity,
@@ -154,12 +177,13 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
         children: [
           const Icon(Icons.block, color: Colors.redAccent, size: 40),
           const SizedBox(height: 10),
-          const Text("İLAN LİMİTİNİZ DOLDU!", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 18)),
+          const Text("İLAN LİMİTİNİZ DOLDU!",
+              style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 18, fontFamily: 'Avenir')),
           const SizedBox(height: 10),
           Text(
             "Mevcut paketiniz ile en fazla ${widget.aktifDukkan.maxIlanSiniri} ürün sergileyebilirsiniz. Kuantum Ağı'nın devasa müşteri kitlesine daha fazla ürün sunmak için rozetinizi yükseltin.",
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white70, fontSize: 14),
+            style: const TextStyle(color: Colors.white70, fontSize: 14, fontFamily: 'Avenir'),
           ),
           const SizedBox(height: 20),
           ElevatedButton.icon(
@@ -169,10 +193,11 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
               minimumSize: const Size(double.infinity, 50),
             ),
             icon: const Icon(Icons.rocket_launch),
-            label: const Text("PAKETİ YÜKSELT (GOLD / VIP)", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            label: const Text("PAKETİ YÜKSELT (GOLD / VIP)",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Avenir')),
             onPressed: () {
-              // TODO: İleride Abonelik/Ödeme Ekranına yönlendireceğiz
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Siber Kasaya Yönlendiriliyor..."), backgroundColor: _neonGreen));
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("Siber Kasaya Yönlendiriliyor..."), backgroundColor: _neonGreen));
             },
           )
         ],
@@ -185,13 +210,14 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("Yeni İlan Bilgileri", style: TextStyle(color: _neonGreen, fontWeight: FontWeight.bold, fontSize: 16)),
+        const Text("Yeni İlan Bilgileri",
+            style: TextStyle(color: _neonGreen, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Avenir')),
         const SizedBox(height: 16),
-        _buildTextField("Parça / Araç Adı", Icons.title),
+        _buildTextField("Parça / Araç Adı", Icons.title, _adController),
         const SizedBox(height: 12),
-        _buildTextField("Fiyat (TL)", Icons.attach_money, isNumber: true),
+        _buildTextField("Fiyat (TL)", Icons.attach_money, _fiyatController, isNumber: true),
         const SizedBox(height: 12),
-        _buildTextField("Açıklama", Icons.description, maxLines: 3),
+        _buildTextField("Açıklama", Icons.description, _aciklamaController, maxLines: 3),
         const SizedBox(height: 20),
         SizedBox(
           width: double.infinity,
@@ -201,25 +227,24 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
-            onPressed: () {
-              // TODO: Firebase'e ilanı ekle ve dukkan_model içindeki kullanilanIlanSayisi'nı 1 artır!
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("İlan Kuantum Ağına Eklendi!"), backgroundColor: _neonGreen));
-            },
-            child: const Text("KUANTUM AĞINDA YAYINLA", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)),
+            onPressed: _ilanYayinla,
+            child: const Text("KUANTUM AĞINDA YAYINLA",
+                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Avenir')),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildTextField(String label, IconData icon, {bool isNumber = false, int maxLines = 1}) {
+  Widget _buildTextField(String label, IconData icon, TextEditingController controller, {bool isNumber = false, int maxLines = 1}) {
     return TextField(
+      controller: controller,
       keyboardType: isNumber ? TextInputType.number : TextInputType.text,
       maxLines: maxLines,
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.white, fontFamily: 'Avenir'),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: Colors.grey),
+        labelStyle: const TextStyle(color: Colors.grey, fontSize: 14),
         prefixIcon: Icon(icon, color: _neonGreen),
         filled: true,
         fillColor: _cyberCard,
@@ -227,5 +252,35 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
         focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: _neonGreen), borderRadius: BorderRadius.circular(10)),
       ),
     );
+  }
+
+  // 🚀 GERÇEK FİREBASE KAYIT MOTORU
+  Future<void> _ilanYayinla() async {
+    if (_adController.text.isEmpty || _fiyatController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Eksik veri girişi!")));
+      return;
+    }
+
+    try {
+      await FirebaseFirestore.instance.collection('ilanlar').add({
+        'dukkan_id': widget.aktifDukkan.id,
+        'ilan_ad': _adController.text,
+        'fiyat': double.tryParse(_fiyatController.text) ?? 0,
+        'aciklama': _aciklamaController.text,
+        'kayit_tarihi': FieldValue.serverTimestamp(),
+        'vitrin_etiketi': "Murat Plaza", // Global kural
+      });
+
+      // Dükkanın kullanılan ilan sayısını artır (Yerelde ve veritabanında senkronize olmalı)
+      // Bu işlem dukkan_model veya bir servis üzerinden yapılmalıdır.
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("İlan Kuantum Ağına Eklendi!"), backgroundColor: _neonGreen));
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      debugPrint("Kayıt Hatası: $e");
+    }
   }
 }

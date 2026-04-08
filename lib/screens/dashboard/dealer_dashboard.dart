@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+/// 🏢 OTODNA BAYİ HAREKAT MERKEZİ (Dashboard)
+/// Bayi Puanı, Karargah Payı (%12/%30) ve SOS Radarı Entegre Edildi.
 class DealerDashboard extends StatefulWidget {
   const DealerDashboard({super.key});
 
@@ -10,8 +12,9 @@ class DealerDashboard extends StatefulWidget {
 }
 
 class _DealerDashboardState extends State<DealerDashboard> {
-  final Color bgColor = const Color(0xFF0F172A);
-  final Color primaryCyan = const Color(0xFF00FFC2);
+  // 🎨 Siber Renk Paleti (Karargah Standartları)
+  final Color bgColor = const Color(0xFF0F172A); // Derin Karargah Siyahı
+  final Color primaryCyan = const Color(0xFF00FFC2); // Kuantum Turkuazı
   final Color surfaceColor = Colors.white.withOpacity(0.05);
   final Color alertRed = Colors.redAccent;
   final Color goldColor = const Color(0xFFFFD700);
@@ -42,6 +45,7 @@ class _DealerDashboardState extends State<DealerDashboard> {
             builder: (context, snapshot) {
               String firmaAdi = "Firma Yükleniyor...";
               if (snapshot.hasData && snapshot.data!.exists) {
+                // Murat Plaza ismi özel kâr marjı için burada kontrol edilir
                 firmaAdi = (snapshot.data!.data() as Map<String, dynamic>)['ad'] ?? "İsimsiz Bayi";
               }
               return Row(
@@ -60,11 +64,11 @@ class _DealerDashboardState extends State<DealerDashboard> {
             }
         ),
         actions: [
-          // CANLI BAYİ PUANLAMA SİSTEMİ
+          // ⭐ CANLI BAYİ ROZET SİSTEMİ (Altın, Gümüş, Bronz)
           StreamBuilder<DocumentSnapshot>(
               stream: _db.collection('kullanicilar').doc(_currentUser!.uid).snapshots(),
               builder: (context, snapshot) {
-                double puan = 5.0; // Varsayılan Kuantum Puanı
+                double puan = 5.0;
                 if (snapshot.hasData && snapshot.data!.exists) {
                   var data = snapshot.data!.data() as Map<String, dynamic>;
                   puan = (data['puan'] ?? 5.0).toDouble();
@@ -72,10 +76,14 @@ class _DealerDashboardState extends State<DealerDashboard> {
                 return Container(
                   margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(color: goldColor.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: goldColor.withOpacity(0.5))),
+                  decoration: BoxDecoration(
+                      color: goldColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: goldColor.withOpacity(0.5))
+                  ),
                   child: Row(
                     children: [
-                      Icon(Icons.star, color: goldColor, size: 16),
+                      Icon(Icons.workspace_premium, color: goldColor, size: 16),
                       const SizedBox(width: 4),
                       Text(puan.toStringAsFixed(1), style: TextStyle(color: goldColor, fontWeight: FontWeight.bold)),
                     ],
@@ -92,12 +100,12 @@ class _DealerDashboardState extends State<DealerDashboard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // 1. REKLAM ALANI (ÜST BANNER - PASİF GELİR KAPISI)
+              // 1. REKLAM ALANI (Siber Gelir Kapısı)
               _buildAdBanner('OtoDNA Premium Bayi Avantajları', 'Toptan alımlarda ekstra indirimleri keşfedin.'),
               const SizedBox(height: 24),
 
-              // 2. SOS RADARI (CANLI FİREBASE DİNLEYİCİSİ)
-              _buildSectionTitle('SOS BİLDİRİM RADARI', Icons.radar, alertRed),
+              // 2. SOS RADARI (5 Saniye Kuralı ile gelen alarmlar)
+              _buildSectionTitle('BÖLGESEL SOS RADARI', Icons.radar, alertRed),
               const SizedBox(height: 12),
               StreamBuilder<QuerySnapshot>(
                 stream: _db.collection('sos_alarmlari').where('durum', isEqualTo: 'bekliyor').limit(1).snapshots(),
@@ -105,24 +113,25 @@ class _DealerDashboardState extends State<DealerDashboard> {
                   if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator());
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                     return Container(
-                      padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: primaryCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: primaryCyan.withOpacity(0.3))),
-                      child: const Row(children: [Icon(Icons.check_circle, color: primaryCyan), SizedBox(width: 12), Text("Bölgenizde acil durum yok. Sistem temiz.", style: TextStyle(color: primaryCyan, fontWeight: FontWeight.bold))]),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(color: primaryCyan.withOpacity(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: primaryCyan.withOpacity(0.2))),
+                      child: const Row(children: [Icon(Icons.shield, color: primaryCyan, size: 20), SizedBox(width: 12), Text("Bölgeniz güvenli. Aktif SOS yok.", style: TextStyle(color: primaryCyan, fontSize: 13))]),
                     );
                   }
 
                   var sosData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
                   return _buildSOSCard(
                     plaka: sosData['plaka'] ?? 'BİLİNMİYOR',
-                    mesafe: 'Yakınınızda', // GPS entegrasyonu gelince dinamik olacak
-                    zaman: 'HEMEN MÜDAHALE!',
+                    mesafe: 'Yakınınızda',
+                    zaman: 'ACİL MÜDAHALE!',
                     isKritik: true,
                   );
                 },
               ),
               const SizedBox(height: 24),
 
-              // 3. FİNANS VE SATIŞ ÖZETİ (CANLI KUANTUM HESAPLAMASI)
-              _buildSectionTitle('FİNANSAL DURUM', Icons.account_balance_wallet, primaryCyan),
+              // 3. FİNANSAL VERİ MERKEZİ (%12 ve %30 Pay Hesaplayıcı)
+              _buildSectionTitle('FİNANSAL ANALİZ', Icons.payments_outlined, primaryCyan),
               const SizedBox(height: 12),
               StreamBuilder<DocumentSnapshot>(
                 stream: _db.collection('kullanicilar').doc(_currentUser!.uid).snapshots(),
@@ -136,57 +145,42 @@ class _DealerDashboardState extends State<DealerDashboard> {
                     firmaAdi = (data['ad'] ?? "").toUpperCase();
                   }
 
-                  // 💰 ALTIN KURAL: Murat Plaza %30, Diğerleri %12
+                  // ⚖️ STRATEJİK HESAPLAMA: Murat Plaza %30, Diğer Bayiler %12
                   double komisyonOrani = firmaAdi.contains("MURAT PLAZA") ? 0.30 : 0.12;
                   double platformPayi = aylikCiro * komisyonOrani;
-                  double bayiKari = aylikCiro - platformPayi;
+                  double bayiNetKazanc = aylikCiro - platformPayi;
 
                   return Row(
                     children: [
-                      Expanded(child: _buildFinanceCard('Bayi Kârı', '₺${bayiKari.toStringAsFixed(0)}', Colors.greenAccent)),
+                      Expanded(child: _buildFinanceCard('Bayi Net Kâr', '₺${bayiNetKazanc.toStringAsFixed(0)}', Colors.greenAccent)),
                       const SizedBox(width: 16),
-                      Expanded(child: _buildFinanceCard('Platform (%${(komisyonOrani*100).toInt()})', '₺${platformPayi.toStringAsFixed(0)}', Colors.white54)),
+                      Expanded(child: _buildFinanceCard('Karargah Payı', '₺${platformPayi.toStringAsFixed(0)}', Colors.orangeAccent)),
                     ],
                   );
                 },
               ),
               const SizedBox(height: 24),
 
-              // 4. REKLAM ALANI (ORTA BANNER)
-              _buildAdBanner('Bölgenizdeki Sigorta Fırsatları', 'Müşterilerinize sunabileceğiniz kasko paketleri.', isSmall: true),
-              const SizedBox(height: 24),
-
-              // 5. ÜRÜN KATALOĞU (CANLI ENVANTER - Son 3 Ürün)
-              _buildSectionTitle('GÜNCEL ÜRÜN KATALOĞU', Icons.inventory, primaryCyan),
-              const Padding(
-                padding: EdgeInsets.only(bottom: 16, top: 4),
-                child: Text('Sisteme eklediğiniz en güncel yedek parçalar.', style: TextStyle(color: Colors.white54, fontSize: 12)),
-              ),
-
+              // 4. ENVANTER AKIŞI (Canlı Market Verileri)
+              _buildSectionTitle('AKTİF ÜRÜNLER (ONAYLI)', Icons.inventory_2_outlined, primaryCyan),
+              const SizedBox(height: 12),
               StreamBuilder<QuerySnapshot>(
-                  stream: _db.collection('yedek_parcalar').where('satici_id', isEqualTo: _currentUser!.uid).snapshots(),
+                  stream: _db.collection('market_urunleri').where('bayi_id', isEqualTo: _currentUser!.uid).limit(3).snapshots(),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator());
-                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Text("Kataloğunuzda henüz ürün bulunmuyor.", style: TextStyle(color: Colors.white54));
-
-                    // Firebase Index hatası almamak için Dart tarafında tarihe göre sıralayıp son 3'ü alıyoruz
-                    var urunler = snapshot.data!.docs.toList();
-                    urunler.sort((a, b) => (b['eklenme_tarihi'] as Timestamp?)?.compareTo(a['eklenme_tarihi'] as Timestamp? ?? Timestamp.now()) ?? 0);
-                    var sonUrunler = urunler.take(3).toList();
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Text("Market henüz boş.", style: TextStyle(color: Colors.white24));
 
                     return Column(
-                      children: sonUrunler.map((doc) {
+                      children: snapshot.data!.docs.map((doc) {
                         var urun = doc.data() as Map<String, dynamic>;
                         return _buildProductTile(
-                            urun['urun_adi'] ?? 'İsimsiz Ürün',
-                            "OEM: ${urun['oem_kodu'] ?? 'Yok'} | Stok: ${urun['stok'] ?? 0}",
-                            "₺${urun['fiyat'] ?? 0}"
+                            urun['urun_adi'] ?? 'Ürün',
+                            "Stok: ${urun['stok'] ?? 0} | Murat Plaza Etiketli",
+                            "₺${urun['satis_fiyati'] ?? 0}"
                         );
                       }).toList(),
                     );
                   }
               ),
-
               const SizedBox(height: 40),
             ],
           ),
@@ -195,80 +189,57 @@ class _DealerDashboardState extends State<DealerDashboard> {
     );
   }
 
-  // Yardımcı Widget: Reklam Alanı
-  Widget _buildAdBanner(String title, String subtitle, {bool isSmall = false}) {
+  // ─── YARDIMCI SİBER BİLEŞENLER ───
+
+  Widget _buildAdBanner(String title, String subtitle) {
     return Container(
-      padding: EdgeInsets.all(isSmall ? 16 : 24),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [primaryCyan.withOpacity(0.15), Colors.blueAccent.withOpacity(0.05)], begin: Alignment.topLeft, end: Alignment.bottomRight),
+        gradient: LinearGradient(colors: [primaryCyan.withOpacity(0.1), Colors.transparent], begin: Alignment.topLeft, end: Alignment.bottomRight),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: primaryCyan.withOpacity(0.3)),
+        border: Border.all(color: primaryCyan.withOpacity(0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(color: bgColor.withOpacity(0.8), borderRadius: BorderRadius.circular(4)),
-            child: const Text('SPONSORLU', style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
-          ),
+          const Text('DUYURU', style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
-          Text(title, style: TextStyle(color: Colors.white, fontSize: isSmall ? 16 : 20, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 4),
-          Text(subtitle, style: TextStyle(color: Colors.white70, fontSize: isSmall ? 12 : 14)),
+          Text(title, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+          Text(subtitle, style: const TextStyle(color: Colors.white70, fontSize: 12)),
         ],
       ),
     );
   }
 
-  // Yardımcı Widget: Bölüm Başlığı
   Widget _buildSectionTitle(String title, IconData icon, Color color) {
     return Row(
       children: [
-        Icon(icon, color: color, size: 20),
+        Icon(icon, color: color, size: 18),
         const SizedBox(width: 8),
-        Text(title, style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+        Text(title, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1)),
       ],
     );
   }
 
-  // Yardımcı Widget: Acil Durum SOS Kartı
   Widget _buildSOSCard({required String plaka, required String mesafe, required String zaman, required bool isKritik}) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: alertRed.withOpacity(0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: alertRed.withOpacity(0.5))),
+      decoration: BoxDecoration(color: alertRed.withOpacity(0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: alertRed.withOpacity(0.4))),
       child: Row(
         children: [
-          Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: alertRed.withOpacity(0.2), shape: BoxShape.circle), child: const Icon(Icons.sos, color: Colors.redAccent, size: 28)),
+          Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: alertRed.withOpacity(0.2), shape: BoxShape.circle), child: const Icon(Icons.emergency, color: Colors.redAccent)),
           const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(plaka, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 4),
-                Row(children: [const Icon(Icons.location_on, color: Colors.white54, size: 14), const SizedBox(width: 4), Text(mesafe, style: const TextStyle(color: Colors.white54, fontSize: 13))]),
-              ],
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(zaman, style: TextStyle(color: alertRed, fontWeight: FontWeight.bold, fontSize: 13)),
-              const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: () => _siberUyari("Müdahale Ekipleri Yönlendiriliyor!"),
-                style: ElevatedButton.styleFrom(backgroundColor: alertRed, minimumSize: const Size(80, 30), padding: const EdgeInsets.symmetric(horizontal: 12), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-                child: const Text('MÜDAHALE ET', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
-              ),
-            ],
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(plaka, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)), Text(mesafe, style: const TextStyle(color: Colors.white54, fontSize: 12))])),
+          ElevatedButton(
+            onPressed: () => _siberUyari("Operasyon Başlatıldı!"),
+            style: ElevatedButton.styleFrom(backgroundColor: alertRed, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+            child: const Text('MÜDAHALE', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
           ),
         ],
       ),
     );
   }
 
-  // Yardımcı Widget: Finans Kartı
   Widget _buildFinanceCard(String title, String amount, Color amountColor) {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -276,34 +247,24 @@ class _DealerDashboardState extends State<DealerDashboard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold)),
+          Text(title, style: const TextStyle(color: Colors.white54, fontSize: 11)),
           const SizedBox(height: 8),
-          Text(amount, style: TextStyle(color: amountColor, fontSize: 22, fontWeight: FontWeight.bold)),
+          Text(amount, style: TextStyle(color: amountColor, fontSize: 20, fontWeight: FontWeight.bold)),
         ],
       ),
     );
   }
 
-  // Yardımcı Widget: Ürün Listesi
   Widget _buildProductTile(String title, String subtitle, String price) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+      decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 4),
-                Text(subtitle, style: TextStyle(color: primaryCyan, fontSize: 11)),
-              ],
-            ),
-          ),
-          Text(price, style: const TextStyle(color: Colors.greenAccent, fontSize: 16, fontWeight: FontWeight.bold)),
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), Text(subtitle, style: TextStyle(color: primaryCyan, fontSize: 11))]),
+          Text(price, style: const TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold)),
         ],
       ),
     );

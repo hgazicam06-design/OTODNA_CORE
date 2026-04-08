@@ -29,37 +29,27 @@ class LocationData {
     ],
   };
 
-  // ---------------------------------------------------------
-  // 🧠 1. TÜM ŞEHİRLERİ GETİR (Arama ve Dropdown İçin)
-  // ---------------------------------------------------------
+  // 🧠 1. TÜM ŞEHİRLERİ GETİR
   static List<String> getAllCities() {
     List<String> allCities = [];
     for (var cities in regionsAndCities.values) {
       allCities.addAll(cities);
     }
-    allCities.sort(); // Kullanıcı kolay bulsun diye A-Z alfabetik sıralama
+    allCities.sort();
     return allCities;
   }
 
-  // ---------------------------------------------------------
-  // 🎯 2. ŞEHRİN BÖLGESİNİ OTOMATİK BULMA MOTORU (YENİ)
-  // ---------------------------------------------------------
-  /// Kullanıcı arayüzde sadece "İstanbul" seçtiğinde, Firebase'e kaydederken
-  /// "Marmara" bölgesini de arka planda otomatik bulup veritabanına eklemek için kullanılır.
+  // 🎯 2. ŞEHRİN BÖLGESİNİ OTOMATİK BULMA MOTORU
   static String getRegionForCity(String cityName) {
     for (var entry in regionsAndCities.entries) {
       if (entry.value.contains(cityName)) {
-        return entry.key; // Örn: "Marmara" döndürür
+        return entry.key;
       }
     }
     return "Bilinmeyen Bölge";
   }
 
-  // ---------------------------------------------------------
   // 🚨 3. ANA KARARGAH (HQ) KONTROLÜ
-  // ---------------------------------------------------------
-  /// Lojistik, SOS müdahaleleri veya kargo hesaplamaları için
-  /// hedefin Ankara Merkez olup olmadığını saniyesinde teyit eder.
   static bool isHQ(String cityName) {
     return cityName == "Ankara (Merkez)";
   }

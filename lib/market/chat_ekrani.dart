@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
+// 🔥 SİBER KÖPRÜLER
+import '../../core/siber_tema.dart';
+
 class OtoDnaChatScreen extends StatefulWidget {
   final String chatId; // Gerçek veritabanındaki odanın kimliği
   final String aktifKullaniciId; // Mesajı atan kişi
@@ -23,9 +26,9 @@ class OtoDnaChatScreen extends StatefulWidget {
 }
 
 class _OtoDnaChatScreenState extends State<OtoDnaChatScreen> {
-  // Siber Renk Paleti
-  static const _neonGreen = Color(0xFF00FFCC);
-  static const _cyberBlack = Color(0xFF0D0D0D);
+  // Siber Renk Paleti (SiberTema'dan besleniyor)
+  static const _neonGreen = SiberTema.kuantumCyan;
+  static const _cyberBlack = SiberTema.oledBlack;
   static const _cyberCard = Color(0xFF1E1E2E);
   static const _karsiMesaj = Color(0xFF2A2A3A);
 
@@ -66,12 +69,12 @@ class _OtoDnaChatScreenState extends State<OtoDnaChatScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.saticiAdi, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(widget.saticiAdi, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                 const Row(
                   children: [
                     Icon(Icons.circle, color: _neonGreen, size: 10),
                     SizedBox(width: 4),
-                    Text("Kuantum Ağına Bağlı", style: TextStyle(color: _neonGreen, fontSize: 12)),
+                    Text("Kuantum Ağına Bağlı", style: TextStyle(color: _neonGreen, fontSize: 12, fontFamily: 'Avenir')),
                   ],
                 )
               ],
@@ -107,8 +110,8 @@ class _OtoDnaChatScreenState extends State<OtoDnaChatScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(child: Text(widget.urunAdi, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14))),
-                  Text(widget.urunFiyati, style: const TextStyle(color: _neonGreen, fontWeight: FontWeight.bold, fontSize: 16)),
+                  Expanded(child: Text(widget.urunAdi, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14, fontFamily: 'Avenir'))),
+                  Text(widget.urunFiyati, style: const TextStyle(color: _neonGreen, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Avenir')),
                 ],
               ),
               const Divider(color: Colors.white24),
@@ -120,8 +123,8 @@ class _OtoDnaChatScreenState extends State<OtoDnaChatScreen> {
                     child: Text(
                       havuzDurumu == 1
                           ? "Ödeme OtoDNA Siber Kasa'da güvende. Satıcı kargolama yapacak."
-                          : "Ürün teslim alındı. 15 Günlük İade Süreci Başladı! Kalan: 14 Gün.",
-                      style: const TextStyle(color: Colors.grey, fontSize: 12),
+                          : "Ürün teslim alındı. 15 Günlük İade Süreci Başladı!",
+                      style: const TextStyle(color: Colors.grey, fontSize: 12, fontFamily: 'Avenir'),
                     ),
                   ),
                 ],
@@ -148,12 +151,10 @@ class _OtoDnaChatScreenState extends State<OtoDnaChatScreen> {
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text("OtoDNA Kriptolu Sohbet Başladı", style: TextStyle(color: Colors.white54)));
+          return const Center(child: Text("OtoDNA Kriptolu Sohbet Başladı", style: TextStyle(color: Colors.white54, fontFamily: 'Avenir')));
         }
 
         var mesajlar = snapshot.data!.docs;
-
-        // Yeni mesaj gelince en alta kaydırma tetikleyicisi
         WidgetsBinding.instance.addPostFrameCallback((_) => _listeyiEnAtaKaydir());
 
         return ListView.builder(
@@ -171,19 +172,17 @@ class _OtoDnaChatScreenState extends State<OtoDnaChatScreen> {
               saat = DateFormat('HH:mm').format(dt);
             }
 
-            // Eğer Sistem Mesajıysa (Sarı Renk)
             if (isSistem) {
               return Center(
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(color: Colors.amber.withOpacity(0.2), borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.amber)),
-                  child: Text(msj["metin"] ?? "", style: const TextStyle(color: Colors.amberAccent, fontSize: 12, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                  child: Text(msj["metin"] ?? "", style: const TextStyle(color: Colors.amberAccent, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir'), textAlign: TextAlign.center),
                 ),
               );
             }
 
-            // Normal Mesaj Baloncuğu
             return Align(
               alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
               child: Container(
@@ -203,11 +202,11 @@ class _OtoDnaChatScreenState extends State<OtoDnaChatScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(msj["metin"] ?? "", style: const TextStyle(color: Colors.white, fontSize: 14)),
+                    Text(msj["metin"] ?? "", style: const TextStyle(color: Colors.white, fontSize: 14, fontFamily: 'Avenir')),
                     const SizedBox(height: 4),
                     Align(
                       alignment: Alignment.bottomRight,
-                      child: Text(saat, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 10)),
+                      child: Text(saat, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 10, fontFamily: 'Avenir')),
                     ),
                   ],
                 ),
@@ -225,26 +224,23 @@ class _OtoDnaChatScreenState extends State<OtoDnaChatScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Row(
         children: [
-          // SATICI İÇİN: Fotoğraf Çek
           Expanded(
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(backgroundColor: _cyberCard, side: BorderSide(color: _neonGreen.withOpacity(0.5))),
               icon: const Icon(Icons.camera_alt, color: _neonGreen, size: 18),
-              label: const Text("Mühürlü Foto Çek", style: TextStyle(color: Colors.white, fontSize: 12)),
+              label: const Text("Mühürlü Foto Çek", style: TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'Avenir')),
               onPressed: () {
-                _sistemMesajiGonder("📸 Satıcı ürünü paketlerken OtoDNA Mühürlü fotoğraf yükledi. (Sistem Kaydı Alındı)");
+                _sistemMesajiGonder("📸 Satıcı ürünü paketlerken OtoDNA Mühürlü fotoğraf yükledi.");
               },
             ),
           ),
           const SizedBox(width: 8),
-          // ALICI İÇİN: Havuzu Serbest Bırak
           Expanded(
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(backgroundColor: _neonGreen),
               icon: const Icon(Icons.check_circle, color: Colors.black, size: 18),
-              label: const Text("Teslim Aldım", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12)),
+              label: const Text("Teslim Aldım", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12, fontFamily: 'Avenir')),
               onPressed: () async {
-                // CANLI FİREBASE GÜNCELLEMESİ (Havuzu 2 yap)
                 await _db.collection('ticaret_havuzu').doc(widget.chatId).set({'havuz_durumu': 2}, SetOptions(merge: true));
                 _sistemMesajiGonder("✅ Alıcı ürünü teslim aldığını onayladı. 15 Günlük Güvenlik Sayacı başladı!");
               },
@@ -271,10 +267,10 @@ class _OtoDnaChatScreenState extends State<OtoDnaChatScreen> {
               decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white24)),
               child: TextField(
                 controller: _mesajController,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white, fontFamily: 'Avenir'),
                 decoration: const InputDecoration(
                   hintText: "Kriptolu Mesaj yazın...",
-                  hintStyle: TextStyle(color: Colors.grey),
+                  hintStyle: TextStyle(color: Colors.grey, fontSize: 13),
                   border: InputBorder.none,
                 ),
               ),
@@ -299,27 +295,23 @@ class _OtoDnaChatScreenState extends State<OtoDnaChatScreen> {
     String metin = _mesajController.text.trim();
     if (metin.isEmpty) return;
 
-    // SİBER KORUMA: Telefon numarası veya IBAN yakalayıcı (Komisyon Kaçakçılığı Önleme Motoru)
+    // SİBER KORUMA: Telefon numarası veya IBAN yakalayıcı
     bool ihlalVar = metin.contains(RegExp(r'[0-9]{10}')) ||
         metin.toLowerCase().contains("iban") ||
         (metin.toLowerCase().contains("tr") && metin.contains(RegExp(r'[0-9]{5}')));
 
     if (ihlalVar) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("🚨 SİBER GÜVENLİK İHLALİ: Telefon numarası veya IBAN paylaşmak KESİNLİKLE yasaktır!", style: TextStyle(fontWeight: FontWeight.bold)),
+        content: Text("🚨 SİBER GÜVENLİK İHLALİ: İletişim bilgisi paylaşmak yasaktır!", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         backgroundColor: Colors.redAccent,
-        duration: Duration(seconds: 4),
       ));
       _mesajController.clear();
-
-      // Adminin görmesi için sistemi uyar
-      _sistemMesajiGonder("⚠️ SİSTEM UYARISI: Bir kullanıcı iletişim bilgisi/IBAN paylaşmaya çalıştı ve Kuantum Kalkanı tarafından engellendi.");
+      _sistemMesajiGonder("⚠️ SİSTEM UYARISI: Güvenlik kalkanı ihlal girişimi engelledi.");
       return;
     }
 
-    _mesajController.clear(); // Hızlı hissettirmek için anında sil
+    _mesajController.clear();
 
-    // GERÇEK FİREBASE KAYDI
     try {
       await _db.collection('ticaret_havuzu').doc(widget.chatId).collection('mesajlar').add({
         "gonderen_id": widget.aktifKullaniciId,
@@ -328,11 +320,10 @@ class _OtoDnaChatScreenState extends State<OtoDnaChatScreen> {
         "zaman_damgasi": FieldValue.serverTimestamp(),
       });
     } catch (e) {
-      print("Mesaj Gönderim Hatası: $e");
+      debugPrint("Hata: $e");
     }
   }
 
-  // ─── SİSTEM LOGU GÖNDERİCİ (FİREBASE) ───
   Future<void> _sistemMesajiGonder(String metin) async {
     try {
       await _db.collection('ticaret_havuzu').doc(widget.chatId).collection('mesajlar').add({
@@ -342,17 +333,13 @@ class _OtoDnaChatScreenState extends State<OtoDnaChatScreen> {
         "zaman_damgasi": FieldValue.serverTimestamp(),
       });
     } catch (e) {
-      print("Sistem Mesaj Hatası: $e");
+      debugPrint("Hata: $e");
     }
   }
 
   void _listeyiEnAtaKaydir() {
     if (_scrollController.hasClients) {
-      _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut
-      );
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     }
   }
 }

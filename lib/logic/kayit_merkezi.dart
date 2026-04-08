@@ -7,6 +7,7 @@ class KayitMerkezi {
   // 📦 10'LU PAKET KAYIT (KUANTUM BATCH WRITE) MOTORU
   // ---------------------------------------------------------
   // Ürünleri tek tek değil, çelik kasa mantığıyla tek seferde Firebase'e yazar.
+  // Bu yöntem, ağ trafiğini azaltır ve işlemlerin yarım kalmasını engeller.
   Future<void> onluPaketKaydet(List<Map<String, dynamic>> urunler) async {
     if (urunler.isEmpty) return;
 
@@ -24,6 +25,7 @@ class KayitMerkezi {
         double bayiHakedis = 0;
 
         // ⚙️ TİCARET VE FİNANS MOTORU: Murat Plaza (%30) vs Diğer Bayiler (%12)
+        // 12% = %10 Kar + %2 Vergi protokolüne dayanır.
         if (gercekSaticiAdi == "Murat Plaza") {
           komutanGaziPayi = orijinalAlisFiyati * 0.30; // Özel Kar Anlaşması
           bayiHakedis = orijinalAlisFiyati * 0.70;
@@ -36,13 +38,14 @@ class KayitMerkezi {
         DocumentReference yeniUrunRef = urunlerRef.doc();
 
         // 🔒 GİZLİLİK VE VERİ PAKETİ MÜHRÜ
+        // Ürünler vitrinde "Murat Plaza" etiketiyle görünür, asıl tedarikçi gizlenir.
         Map<String, dynamic> muhurluVeri = {
           'urun_ad': urun['ad'],
           'kategori': urun['kategori'] ?? 'Genel',
           'asil_satici_id': gercekSaticiId,
-          'asil_satici_adi': gercekSaticiAdi, // Sadece senin Admin panelinde görünür
+          'asil_satici_adi': gercekSaticiAdi, // Sadece Admin panelinde görünür
           'satici_goster': false, // Vitrinde ASLA gerçek satıcı adı yazmaz
-          'vitrin_etiketi': "Murat Plaza", // Müşteriler tüm ürünleri Murat Plaza'nın sanır
+          'vitrin_etiketi': "Murat Plaza", // Müşteri algısı yönetimi
           'orijinal_fiyat': orijinalAlisFiyati,
           'gazi_komisyon': komutanGaziPayi,
           'bayi_hakedis': bayiHakedis,
@@ -50,16 +53,16 @@ class KayitMerkezi {
           'durum': 'Onaylı/Satışta',
         };
 
-        // Veriyi ateşlemeye hazırla (Kasaya koy)
+        // Veriyi ateşlemeye hazırla (Batch listesine ekle)
         batch.set(yeniUrunRef, muhurluVeri);
       }
 
-      // 🚀 TÜM FÜZELERİ AYNI ANDA ATEŞLE (Canlı Veritabanı Kaydı)
+      // 🚀 TÜM FÜZELERİ AYNI ANDA ATEŞLE (Atomik Kayıt)
       await batch.commit();
 
     } catch (e) {
-      print("Kritik Toplu Kayıt Hatası: $e");
-      throw Exception("Kuantum Ağ Bağlantısı Koptu, Kayıt Başarısız: $e");
+      // Hata durumunda siber log oluştur
+      throw Exception("SİBER HATA: Kayıt motoru devre dışı kaldı. Detay: $e");
     }
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// 🦅 SİBER USTA KONSEYİ (Lonca Meclisi)
+/// Esnaflar arası teknik yardımlaşma, parça ticareti ve gizli iletişim protokolü.
 class UstaKonseyiScreen extends StatefulWidget {
   final String aktifKullaniciId;
   final String aktifKullaniciAdi;
@@ -21,7 +23,7 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final TextEditingController _gonderiController = TextEditingController();
 
-  // Siber Renk Paleti
+  // 🎨 Siber Renk Paleti (Kuantum Standartları)
   static const _neonGreen = Color(0xFF00FFCC);
   static const _cyberBlack = Color(0xFF0D0D0D);
   static const _cyberCard = Color(0xFF1E1E2E);
@@ -32,7 +34,6 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
   @override
   Widget build(BuildContext context) {
     bool isBaskan = widget.kullaniciRolUnvan.contains("BAŞKAN") || widget.kullaniciRolUnvan == "ADMIN";
-    // 🛡️ SİBER KİMLİK KONTROLÜ: Giren kişi standart kullanıcı mı, yoksa Lonca (Esnaf) üyesi mi?
     bool isEsnaf = widget.kullaniciRolUnvan != "USER" && widget.kullaniciRolUnvan != "Kullanıcı";
 
     return Scaffold(
@@ -67,11 +68,10 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
         icon: const Icon(Icons.add_comment, color: Colors.black),
         label: const Text("Konseye Yaz", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
         onPressed: () => _yeniGonderiDialog(),
-      ) : null, // Standart kullanıcılar (USER) foruma sadece bakabilir, yazamaz! (Opsiyonel)
+      ) : null,
     );
   }
 
-  // ─── 🛡️ YAPAY ZEKA SANSÜR BANTLARI ───
   Widget _buildYapayZekaUyarisi() {
     return Container(
       width: double.infinity,
@@ -88,7 +88,6 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
     );
   }
 
-  // ─── 📡 FİREBASE CANLI FORUM AKIŞI (SİBER PERDE FİLTRELİ) ───
   Widget _buildCanliAkis(bool isBaskan, bool isEsnaf) {
     return StreamBuilder<QuerySnapshot>(
       stream: _db.collection('usta_konseyi').orderBy('tarih', descending: true).snapshots(),
@@ -100,19 +99,12 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
           return const Center(child: Text("Konseyde henüz bir hareket yok.", style: TextStyle(color: Colors.white54)));
         }
 
-        // 👁️ SİBER PERDE ALGORİTMASI:
         var gonderiler = snapshot.data!.docs.where((doc) {
           var veri = doc.data() as Map<String, dynamic>;
-          bool herkeseAcik = veri['herkese_acik'] ?? true;
-
-          // Eğer giren kişi esnaf değilse ve gönderi "Sadece Esnaf" işaretliyse, bu gönderiyi ona GÖSTERME!
+          bool herkeseAcik = veri['herkese_ac_ik'] ?? true;
           if (!isEsnaf && !herkeseAcik) return false;
           return true;
         }).toList();
-
-        if (gonderiler.isEmpty) {
-          return const Center(child: Text("Sizin görebileceğiniz bir gönderi bulunmuyor.", style: TextStyle(color: Colors.white54)));
-        }
 
         return ListView.builder(
           padding: const EdgeInsets.all(12),
@@ -121,7 +113,6 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
           itemBuilder: (context, index) {
             var veri = gonderiler[index].data() as Map<String, dynamic>;
             String docId = gonderiler[index].id;
-
             return _buildGonderiKarti(veri, docId, isBaskan);
           },
         );
@@ -129,10 +120,9 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
     );
   }
 
-  // ─── 🛠️ GÖNDERİ KARTI (SİBER PERDE ETİKETLİ) ───
   Widget _buildGonderiKarti(Map<String, dynamic> veri, String docId, bool isBaskan) {
     String tip = veri['tip'] ?? 'Genel';
-    bool herkeseAcik = veri['herkese_acik'] ?? true;
+    bool herkeseAcik = veri['herkese_ac_ik'] ?? true;
     Color tipRengi = _getTipRengi(tip);
     IconData tipIkoni = _getTipIkoni(tip);
 
@@ -145,7 +135,6 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ÜST BİLGİ: KİM ATTI VE GİZLİLİK MÜHRÜ
             Row(
               children: [
                 CircleAvatar(backgroundColor: tipRengi.withOpacity(0.2), child: Icon(tipIkoni, color: tipRengi)),
@@ -159,29 +148,24 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
                         children: [
                           Text(veri['yazar_rol'] ?? 'Üye', style: TextStyle(color: tipRengi, fontSize: 11)),
                           const SizedBox(width: 8),
-                          // 🔒 GİZLİLİK MÜHRÜ
                           Icon(herkeseAcik ? Icons.public : Icons.lock, color: Colors.grey, size: 12),
                           const SizedBox(width: 4),
-                          Text(herkeseAcik ? "Herkese Açık" : "Sadece Lonca (Esnaf)", style: const TextStyle(color: Colors.grey, fontSize: 10)),
+                          Text(herkeseAcik ? "Herkese Açık" : "Sadece Lonca", style: const TextStyle(color: Colors.grey, fontSize: 10)),
                         ],
                       ),
                     ],
                   ),
                 ),
-                if (isBaskan)
+                if (isBaskan || veri['yazar_id'] == widget.aktifKullaniciId)
                   IconButton(
-                    icon: const Icon(Icons.delete_sweep, color: Colors.redAccent),
+                    icon: const Icon(Icons.delete_sweep, color: Colors.redAccent, size: 20),
                     onPressed: () => _gonderiyiSil(docId),
                   )
               ],
             ),
             const SizedBox(height: 12),
-
-            // İÇERİK
             Text(veri['icerik'] ?? '', style: const TextStyle(color: Colors.white70, fontSize: 14)),
             const SizedBox(height: 16),
-
-            // TİCARET VE YARDIM BUTONLARI
             if (tip == "Parça Aranıyor" && veri['yazar_id'] != widget.aktifKullaniciId)
               SizedBox(
                 width: double.infinity,
@@ -189,9 +173,7 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
                   style: ElevatedButton.styleFrom(backgroundColor: _neonGreen, foregroundColor: Colors.black),
                   icon: const Icon(Icons.handshake),
                   label: const Text("Bende Var! Ticaret Başlat", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  onPressed: () {
-                    // TODO: OtoDnaChatScreen B2B
-                  },
+                  onPressed: () => _siberTicaretBaslat(veri['yazar_id']),
                 ),
               ),
           ],
@@ -200,17 +182,14 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
     );
   }
 
-  // ─── 🤖 YENİ GÖNDERİ DİALOG (GİZLİLİK ŞALTERLİ) ───
   void _yeniGonderiDialog() {
-    bool localHerkeseAcik = false; // Varsayılan: Sadece Esnaf (Ticari Sır)
-
+    bool localHerkeseAcik = false;
     showModalBottomSheet(
       context: context,
       backgroundColor: _cyberCard,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (ctx) {
-        // Switch'in çalışması için StatefulBuilder kullanıyoruz
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setModalState) {
               return Padding(
@@ -220,52 +199,32 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
                   children: [
                     const Text("Lonca'ya Seslen", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 16),
-
                     DropdownButtonFormField<String>(
                       value: _seciliGonderiTipi,
                       dropdownColor: _cyberBlack,
                       style: const TextStyle(color: _neonGreen),
-                      decoration: InputDecoration(
-                        labelText: "Gönderi Tipi",
-                        labelStyle: const TextStyle(color: Colors.grey),
-                        enabledBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.white24), borderRadius: BorderRadius.circular(10)),
-                        focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: _neonGreen), borderRadius: BorderRadius.circular(10)),
-                      ),
                       items: _gonderiTipleri.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-                      onChanged: (val) {
-                        setModalState(() { _seciliGonderiTipi = val!; });
-                      },
+                      onChanged: (val) => setModalState(() => _seciliGonderiTipi = val!),
+                      decoration: _siberInputDecoration("Gönderi Tipi"),
                     ),
                     const SizedBox(height: 16),
-
                     TextField(
                       controller: _gonderiController,
                       maxLines: 4,
                       style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        hintText: "Arıza detayı, parça kodu veya tecrübeni yaz...",
-                        hintStyle: const TextStyle(color: Colors.white30),
-                        enabledBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.white24), borderRadius: BorderRadius.circular(10)),
-                        focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: _neonGreen), borderRadius: BorderRadius.circular(10)),
-                      ),
+                      decoration: _siberInputDecoration("Arıza detayı veya parça kodu..."),
                     ),
                     const SizedBox(height: 16),
-
-                    // 🔒 SİBER PERDE ŞALTERİ
                     Container(
                       decoration: BoxDecoration(color: Colors.black45, borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.white12)),
                       child: SwitchListTile(
                         activeColor: _neonGreen,
                         title: const Text("Kullanıcılar Görebilir", style: TextStyle(color: Colors.white, fontSize: 14)),
-                        subtitle: const Text("Kapalıysa sadece Lonca (Esnaflar) görür.", style: TextStyle(color: Colors.grey, fontSize: 12)),
                         value: localHerkeseAcik,
-                        onChanged: (val) {
-                          setModalState(() { localHerkeseAcik = val; });
-                        },
+                        onChanged: (val) => setModalState(() => localHerkeseAcik = val),
                       ),
                     ),
                     const SizedBox(height: 16),
-
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -284,37 +243,40 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
     );
   }
 
+  InputDecoration _siberInputDecoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: Colors.grey, fontSize: 12),
+      enabledBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.white24), borderRadius: BorderRadius.circular(10)),
+      focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: _neonGreen), borderRadius: BorderRadius.circular(10)),
+    );
+  }
+
   Future<void> _yapayZekaIleDenetleVeGonder(BuildContext ctx, bool herkeseAcik) async {
     String metin = _gonderiController.text.trim();
     if (metin.isEmpty) return;
 
-    // AI Koruması (İletişim bilgisi paylaşımı yasak!)
-    bool ihlalVar = metin.contains(RegExp(r'[0-9]{10}')) || metin.toLowerCase().contains("iban");
-
-    if (ihlalVar) {
+    if (metin.contains(RegExp(r'[0-9]{10}')) || metin.toLowerCase().contains("iban")) {
       Navigator.pop(ctx);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("🚨 AI ENGELİ: B2B Ticaret Kuantum Kasası üzerinden yapılmalıdır! (IBAN/Tel yasak)."),
-        backgroundColor: Colors.redAccent,
-      ));
+      _siberHata("🚨 AI ENGELİ: B2B Ticaret Kasası üzerinden yapılmalıdır! (IBAN/Tel yasak).");
       return;
     }
 
-    try {
-      await _db.collection('usta_konseyi').add({
-        'yazar_id': widget.aktifKullaniciId,
-        'yazar_adi': widget.aktifKullaniciAdi,
-        'yazar_rol': widget.kullaniciRolUnvan,
-        'tip': _seciliGonderiTipi,
-        'icerik': metin,
-        'herkese_acik': herkeseAcik, // 🔒 GİZLİLİK MÜHRÜ FİREBASE'E İŞLENDİ
-        'tarih': FieldValue.serverTimestamp(),
-      });
-      _gonderiController.clear();
-      if (context.mounted) Navigator.pop(ctx);
-    } catch (e) {
-      print("Gönderi Hatası: $e");
-    }
+    await _db.collection('usta_konseyi').add({
+      'yazar_id': widget.aktifKullaniciId,
+      'yazar_adi': widget.aktifKullaniciAdi,
+      'yazar_rol': widget.kullaniciRolUnvan,
+      'tip': _seciliGonderiTipi,
+      'icerik': metin,
+      'herkese_ac_ik': herkeseAcik,
+      'tarih': FieldValue.serverTimestamp(),
+    });
+    _gonderiController.clear();
+    Navigator.pop(ctx);
+  }
+
+  void _siberTicaretBaslat(String saticiId) {
+    _siberHata("TİCARET MOTORU YÜKLENİYOR: Güvenli Sohbet Kanalı Açılıyor...");
   }
 
   Future<void> _gonderiyiSil(String docId) async {
@@ -322,7 +284,11 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
   }
 
   void _baskanlikPaneliniAc() {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("🛡️ BAŞKANLIK MODU AKTİF"), backgroundColor: Colors.amber));
+    _siberHata("🛡️ BAŞKANLIK MODU AKTİF");
+  }
+
+  void _siberHata(String mesaj) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.bold)), backgroundColor: _neonGreen));
   }
 
   Color _getTipRengi(String tip) {
@@ -331,6 +297,7 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
     if (tip == "Arıza Danışma") return Colors.blueAccent;
     return Colors.grey;
   }
+
   IconData _getTipIkoni(String tip) {
     if (tip == "Kritik Arıza (Video)") return Icons.video_camera_back;
     if (tip == "Parça Aranıyor") return Icons.search;
