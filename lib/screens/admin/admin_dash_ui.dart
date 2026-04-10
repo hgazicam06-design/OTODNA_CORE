@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // 🚀 KARARGAH ZIRHLARINI İÇERİ AKTARIYORUZ
-import '../core/siber_tema.dart';
-import '../core/responsive_kalkan.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
 
 class AdminDashUI extends StatelessWidget {
   const AdminDashUI({super.key});

@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// service_model.dart - Kuantum Servis Geçmişi ve İş Emri Motoru
-
+/// 🦅 OTODNA KUANTUM SERVİS GEÇMİŞİ VE İŞ EMRİ MOTORU
+/// Bu model, aracın dijital servis defterini oluşturur ve "Takip Radarı"nı besler.
 class ServiceRecord {
   final String? id; // Firebase Document ID
-  final String saseNo; // Hangi araca işlem yapıldı?
+  final String saseNo; // Hangi araca işlem yapıldı? (DNA Anahtarı)
   final String plaka;
   final String dukkanId; // İşlemi yapan esnafın sistem ID'si
   final String dukkanAdi;
@@ -17,7 +17,7 @@ class ServiceRecord {
 
   // 📅 ZAMAN ÇİZELGESİ VE RADAR
   final DateTime islemTarihi;
-  final DateTime? sonrakiBakimTarihi; // Takip Radarı'nı tetikleyecek tarih
+  final DateTime? sonrakiBakimTarihi; // Takip Radarı'nı tetikleyecek kritik tarih
 
   ServiceRecord({
     this.id,
@@ -33,11 +33,12 @@ class ServiceRecord {
     this.sonrakiBakimTarihi,
   }) : islemTarihi = islemTarihi ?? DateTime.now();
 
-  // 🚀 FİREBASE'E YAZMA MOTORU (Usta "İşlemi Bitir" dediği an dijital servis defterine düşer)
+  // 🚀 FİREBASE'E ATOMİK YAZMA MOTORU
+  // Usta "İşlemi Bitir" dediği an dijital servis defterine kalıcı olarak mühürlenir.
   Map<String, dynamic> toMap() {
     return {
-      'sase_no': saseNo,
-      'plaka': plaka.toUpperCase(),
+      'sase_no': saseNo.trim().toUpperCase(),
+      'plaka': plaka.trim().toUpperCase(),
       'dukkan_id': dukkanId,
       'dukkan_adi': dukkanAdi,
       'kilometre': kilometre,
@@ -45,17 +46,19 @@ class ServiceRecord {
       'usta_notu': ustaNotu,
       'toplam_tutar': toplamTutar,
 
-      // 🌟 YENİ TİCARET KURALI: Ustanın emeğinden %12 kesinti YOK!
-      // Komisyonu Randevu'dan alıyoruz. Burası sadece aracın resmi CV'sini oluşturur.
+      // 🛡️ TİCARET PROTOKOLÜ: Ustanın emeğinden %12 kesinti YAPILMAZ!
+      // Bu kayıt, aracın şeffaflık puanını (DNA Skoru) artırır.
+      // Komisyon motoru "Randevu" ve "Ekspertiz" üzerinden Gazi Kasası'na çalışır.
 
       'islem_tarihi': FieldValue.serverTimestamp(),
       'sonraki_bakim_tarihi': sonrakiBakimTarihi != null ? Timestamp.fromDate(sonrakiBakimTarihi!) : null,
     };
   }
 
-  // 📥 FİREBASE'DEN OKUMA MOTORU (Kullanıcı "Servis Geçmişim" ekranını açtığında)
+  // 📥 FİREBASE'DEN ANALİTİK OKUMA MOTORU
+  // Kullanıcı "Servis Geçmişim" ekranını açtığında verileri atomik olarak çeker.
   factory ServiceRecord.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    final data = doc.data() as Map<String, dynamic>? ?? {};
 
     return ServiceRecord(
       id: doc.id,
@@ -63,7 +66,7 @@ class ServiceRecord {
       plaka: data['plaka'] ?? 'PLAKA YOK',
       dukkanId: data['dukkan_id'] ?? '',
       dukkanAdi: data['dukkan_adi'] ?? 'Gizli Servis',
-      kilometre: data['kilometre'] ?? 0,
+      kilometre: (data['kilometre'] ?? 0).toInt(),
       yapilanIslemler: List<String>.from(data['yapilan_islemler'] ?? []),
       toplamTutar: (data['toplam_tutar'] ?? 0).toDouble(),
       ustaNotu: data['usta_notu'] ?? '',

@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// car_specs_model.dart - Kuantum Fabrika Teknik Dökümanı (Kozmik Oda)
-
+/// 🦅 OTODNA KUANTUM FABRİKA TEKNİK DÖKÜMANI (KOZMİK ODA)
+/// Bu sınıf, araçların fabrikasyon verilerini ve yapay zeka destekli kronik sorun bilgilerini taşır.
 class CarSpecs {
   final String? id; // Firebase Document ID
-  final String brandModel; // Örn: Toyota-Corolla-1.8-Hybrid
-  final String modelCode; // Örn: E210, BMW-G20
+  final String brandModel; // Örn: TOYOTA COROLLA 1.8 HYBRID
+  final String modelCode; // Örn: E210
   final int hp;           // Beygir Gücü
   final int torque;       // Tork
   final double engineSize; // Motor Hacmi
   final String fuelType;  // Yakıt Tipi
-  final String oilType;   // Tavsiye Edilen Yağ (Ustalar için kritik bilgi!)
+  final String oilType;   // Tavsiye Edilen Yağ (Usta Terminali İçin Kritik!)
   final int tirePressure; // Tavsiye Edilen Lastik Basıncı (PSI)
 
   // 🧠 KUANTUM EKSTRASI: Yapay Zekanın Ustayı Uyaracağı Kronik Sorunlar
@@ -29,11 +29,11 @@ class CarSpecs {
     this.kronikArizalar = const [],
   });
 
-  // 🚀 FİREBASE'E YAZMA MOTORU (Admin Panelinden yeni bir araç kataloğa eklendiğinde)
+  // 🚀 FİREBASE'E ATOMİK YAZMA MOTORU (KATALOG GÜNCELLEME)
   Map<String, dynamic> toMap() {
     return {
-      'brand_model': brandModel,
-      'model_code': modelCode,
+      'brand_model': brandModel.toUpperCase(),
+      'model_code': modelCode.toUpperCase(),
       'hp': hp,
       'torque': torque,
       'engine_size': engineSize,
@@ -45,20 +45,20 @@ class CarSpecs {
     };
   }
 
-  // 📥 FİREBASE'DEN OKUMA MOTORU (Siber Göz aracı taradığında ustaya dökülecek veriler)
+  // 📥 FİREBASE'DEN ANALİTİK OKUMA MOTORU (SİBER GÖZ AKTİF)
   factory CarSpecs.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    final data = doc.data() as Map<String, dynamic>? ?? {};
 
     return CarSpecs(
       id: doc.id,
-      brandModel: data['brand_model'] ?? 'Bilinmeyen Araç',
-      modelCode: data['model_code'] ?? 'Bilinmeyen Kod',
-      hp: data['hp'] ?? 0,
-      torque: data['torque'] ?? 0,
-      engineSize: (data['engine_size'] ?? 0).toDouble(),
+      brandModel: data['brand_model'] ?? 'BİLİNMEYEN ARAÇ',
+      modelCode: data['model_code'] ?? 'KOD BELİRTİLMEDİ',
+      hp: (data['hp'] ?? 0).toInt(),
+      torque: (data['torque'] ?? 0).toInt(),
+      engineSize: (data['engine_size'] ?? 0.0).toDouble(),
       fuelType: data['fuel_type'] ?? 'Belirtilmemiş',
       oilType: data['oil_type'] ?? 'Belirtilmemiş',
-      tirePressure: data['tire_pressure'] ?? 32, // Varsayılan güvenlik basıncı
+      tirePressure: (data['tire_pressure'] ?? 32).toInt(),
       kronikArizalar: List<String>.from(data['kronik_arizalar'] ?? []),
     );
   }

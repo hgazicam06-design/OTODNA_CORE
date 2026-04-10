@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🔥 SİBER KÖPRÜLER
 import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
+import '../../core/providers/siber_kimlik_provider.dart';
 
-class AddProductScreen extends StatefulWidget {
+class AddProductScreen extends ConsumerStatefulWidget {
   const AddProductScreen({super.key});
 
   @override
-  State<AddProductScreen> createState() => _AddProductScreenState();
+  ConsumerState<AddProductScreen> createState() => _AddProductScreenState();
 }
 
-class _AddProductScreenState extends State<AddProductScreen> {
+class _AddProductScreenState extends ConsumerState<AddProductScreen> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // Siber Renk Paleti - Merkezi Temadan Çekiliyor
+  // Siber Renk Paleti
   final Color _primaryCyan = SiberTema.kuantumCyan;
   final Color _cyberBlack = SiberTema.oledBlack;
   final Color _surfaceColor = SiberTema.matGrey.withOpacity(0.2);
@@ -27,7 +29,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   String _secilenMarka = "Marka Seçilmedi";
   bool _isLoading = false;
 
-  // 🧠 YAPAY ZEKA GÖRÜNTÜ İŞLEME SİMÜLASYONU
+  // 🧠 YAPAY ZEKA GÖRÜNTÜ İŞLEME (Siber Analiz)
   Future<void> _yapayZekaIleTani() async {
     _showCyberLoading("AI Parçayı Analiz Ediyor...");
     await Future.delayed(const Duration(seconds: 2));
@@ -47,7 +49,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     ));
   }
 
-  // 📸 ŞASİ / BARKOD TARAMA SİMÜLASYONU
+  // 📸 RUHSAT DNA TARAMA
   Future<void> _barkodTara() async {
     _showCyberLoading("Ruhsat DNA'sı Çözülüyor...");
     await Future.delayed(const Duration(seconds: 2));
@@ -87,26 +89,39 @@ class _AddProductScreenState extends State<AddProductScreen> {
     );
   }
 
-  // 🚀 FİREBASE'E GERÇEK KAYIT MOTORU (WriteBatch Potansiyelli)
+  // 🚀 FİREBASE'E GERÇEK KAYIT MOTORU (Zırhlı ve Mühürlü)
   Future<void> _urunuAgaMuhurle() async {
+    final sicil = ref.read(siberSicilProvider).value;
+
+    if (sicil == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("🚨 Yetkisiz Erişim: Sicil Kaydı Bulunamadı!")));
+      return;
+    }
+
     if (_urunAdController.text.isEmpty || _fiyatController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Eksik veri girişi tespit edildi!", style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.redAccent));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Eksik veri girişi tespit edildi!"), backgroundColor: Colors.redAccent));
       return;
     }
 
     setState(() => _isLoading = true);
 
     try {
-      // Murat Plaza Kuralı: %30 kâr marjı burada veya servis katmanında hesaplanabilir
+      final double hamFiyat = double.tryParse(_fiyatController.text) ?? 0.0;
+      final String dukkanAd = sicil['dukkan_adi'] ?? "Bilinmeyen Bayi";
+
+      // 💰 MURAT PLAZA ÖZEL KAR MARJI KONTROLÜ
+      final double komisyonOrani = dukkanAd == "Murat Plaza" ? 0.30 : 0.12;
+      final double gaziPayi = hamFiyat * komisyonOrani;
+
       await _db.collection('yedek_parcalar').add({
         'urun_ad': _urunAdController.text,
         'oem_kodu': _oemKoduController.text,
         'marka': _secilenMarka,
-        'fiyat': double.tryParse(_fiyatController.text) ?? 0.0,
+        'liste_fiyati': hamFiyat,
+        'gazi_payi': gaziPayi,
+        'bayi_id': sicil['uid'],
+        'bayi_adi': dukkanAd,
         'durum': 'Onaylı/Satışta',
-        'ekleyen_birim': 'Siber Terminal',
         'eklenme_tarihi': FieldValue.serverTimestamp(),
       });
 
@@ -117,9 +132,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           backgroundColor: _primaryCyan));
       Navigator.pop(context);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Ağ Hatası: $e", style: const TextStyle(color: Colors.white)),
-          backgroundColor: Colors.redAccent));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Ağ Hatası: $e"), backgroundColor: Colors.redAccent));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }

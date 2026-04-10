@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // 🔥 SİBER KÖPRÜLER (Mutlak Rota ile Zırhlandı - Bağlantı Asla Kopmaz!)
-import 'package:otodna/admin/master_gate.dart'; // Not: Eğer master_gate auth klasöründeyse CTRL+. ile yolunu teyit et Komutan!
+import 'package:otodna/screens/admin/master_gate.dart'; // Not: Eğer master_gate auth klasöründeyse CTRL+. ile yolunu teyit et Komutan!
 
 class HqCommandCenterScreen extends StatefulWidget {
   const HqCommandCenterScreen({super.key});

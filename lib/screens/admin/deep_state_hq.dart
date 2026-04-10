@@ -4,12 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // 🔥 SİBER KÖPRÜLER VE TEMA (Zırh v2.0)
-import '../core/siber_tema.dart';
-import '../core/responsive_kalkan.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
 
-import '../screens/bayi_yonetim_merkezi_screen.dart';
-import '../screens/kullanici_yonetim_screen.dart';
-import '../screens/bayi_paneli.dart';
+import '../bayi_yonetim_merkezi_screen.dart';
+import '../kullanici_yonetim_screen.dart';
+import '../bayi_paneli.dart';
 import 'admin_control_center.dart';
 
 class AmiralGemisi extends StatefulWidget {

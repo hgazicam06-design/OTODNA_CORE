@@ -1,16 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// 🦅 OTODNA ARAC MODELİ - KUANTUM DİJİTAL KİMLİK
+/// Bu sınıf aracın siber dünyadaki tüm geçmişini ve DNA skorunu taşır.
 class AracModel {
   final String? id;
   final String sahibiUid;
 
-  // 👤 Kullanıcı Bilgileri
+  // 👤 KULLANICI / SAHİP BİLGİLERİ
   final String kullaniciAdi;
   final String ad;
   final String soyad;
   final DateTime dogumTarihi;
 
-  // 🚘 Araç Kimlik Bilgileri
+  // 🚘 ARAÇ KİMLİK (SİBER GENETİK) BİLGİLERİ
   final String plaka;
   final String il;
   final String ilce;
@@ -18,27 +20,25 @@ class AracModel {
   final String marka;
   final String model;
   final String renk;
-  final String saseNo; // VIN — 17 karakter, doğrulanmış
+  final String saseNo; // VIN — 17 Karakterlik Dijital Parmak İzi
 
-  // 📅 Tarihler
+  // 📅 KRİTİK TAKİP TARİHLERİ
   final DateTime? muayeneBitis;
   final DateTime? emisyonBitis;
   final DateTime? sigortaBitis;
   final DateTime? kaskoBitis;
 
-  // ⏳ Muayene Periyodu (Yıl)
+  // ⏳ OPERASYONEL PARAMETRELER
   final int muayenePeriyodu;
-
-  // 🛡️ Sistem Durumu
   final bool saseOnaylandi;
   final String? fcmToken;
   final DateTime kayitTarihi;
 
-  // 🚀 OTODNA KUANTUM ÖZEL DEĞERLERİ (YENİ EKLENDİ)
-  final int dnaSkoru;
-  final bool kritikHataVarMi;
-  final String muayeneDurumu;
-  final String ilanDurumu;
+  // 🚀 OTODNA KUANTUM ÖZEL DEĞERLERİ
+  final int dnaSkoru; // 0-100 arası sağlık puanı
+  final bool kritikHataVarMi; // Trafiğe çıkış riski (Kırmızı X tetikleyici)
+  final String muayeneDurumu; // "OtoDNA Onaylı", "Riskli", "Beklemede"
+  final String ilanDurumu; // "Yayında", "Arşivde", "Satıldı"
   final double fiyat;
   final String resimUrl;
 
@@ -65,24 +65,22 @@ class AracModel {
     this.saseOnaylandi = false,
     this.fcmToken,
     DateTime? kayitTarihi,
-
-    // ⚙️ OtoDNA Kuantum Varsayılanları
-    this.dnaSkoru = 100, // Fabrikadan çıkmış gibi kusursuz başlar, usta puanladıkça düşer/çıkar
+    this.dnaSkoru = 100,
     this.kritikHataVarMi = false,
     this.muayeneDurumu = "Değerlendirme Bekliyor",
-    this.ilanDurumu = "Yayında Değil", // "Yayında" olursa Galeriye düşer
+    this.ilanDurumu = "Yayında Değil",
     this.fiyat = 0.0,
     this.resimUrl = "",
   }) : kayitTarihi = kayitTarihi ?? DateTime.now();
 
-  // FİREBASE'E YAZMA MOTORU (Çelik Kasa)
+  // 🔥 FİREBASE'E ATOMİK YAZMA MOTORU (SİBER MÜHÜR)
   Map<String, dynamic> toMap() => {
     'sahibiUid': sahibiUid,
     'kullaniciAdi': kullaniciAdi,
     'ad': ad,
     'soyad': soyad,
     'dogumTarihi': Timestamp.fromDate(dogumTarihi),
-    'plaka': plaka.toUpperCase(),
+    'plaka': plaka.toUpperCase().replaceAll(' ', ''),
     'il': il,
     'ilce': ilce,
     'postaKodu': postaKodu,
@@ -98,9 +96,6 @@ class AracModel {
     'saseOnaylandi': saseOnaylandi,
     'fcmToken': fcmToken,
     'kayitTarihi': Timestamp.fromDate(kayitTarihi),
-    'engelliIpler': [],
-
-    // 🚀 OtoDNA Kuantum Verileri (Galeri, Usta ve Radar için)
     'dna_skoru': dnaSkoru,
     'kritik_hata_var_mi': kritikHataVarMi,
     'muayene_durumu': muayeneDurumu,
@@ -109,7 +104,7 @@ class AracModel {
     'resim_url': resimUrl,
   };
 
-  // FİREBASE'DEN OKUMA MOTORU
+  // 📥 FİREBASE'DEN ANALİTİK OKUMA MOTORU
   factory AracModel.fromMap(Map<String, dynamic> m, String docId) => AracModel(
     id: docId,
     sahibiUid: m['sahibiUid'] ?? '',
@@ -133,8 +128,6 @@ class AracModel {
     saseOnaylandi: m['saseOnaylandi'] ?? false,
     fcmToken: m['fcmToken'],
     kayitTarihi: (m['kayitTarihi'] as Timestamp?)?.toDate() ?? DateTime.now(),
-
-    // 🚀 OtoDNA Kuantum Verileri Okunuyor
     dnaSkoru: m['dna_skoru'] ?? 100,
     kritikHataVarMi: m['kritik_hata_var_mi'] ?? false,
     muayeneDurumu: m['muayene_durumu'] ?? "Değerlendirme Bekliyor",

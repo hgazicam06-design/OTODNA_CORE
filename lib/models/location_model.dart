@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// location_model.dart - Kuantum Global Genişleme ve Konum Motoru
+/// 🦅 OTODNA KUANTUM GLOBAL GENİŞLEME VE KONUM MOTORU
+/// Bu model, global hiyerarşiyi (Ülke > Bölge > Şehir) ve operasyonel yetki alanlarını yönetir.
 
 // ---------------------------------------------------------
 // 1. ŞEHİR BİRİMİ (EN ALT KATMAN)
@@ -18,16 +19,18 @@ class City {
     this.merkezUsMu = false,
   });
 
+  // 🔥 SİBER MÜHÜR: Veriyi Firebase formatına çevirir
   Map<String, dynamic> toMap() {
     return {
       'name': name,
       'plate_code': plateCode,
       'districts': districts,
-      // SİBER KORUMA: Eğer şehir Ankara ise, sistemin merkez üssü olduğunu otomatik mühürler!
-      'merkez_us_mu': name.toLowerCase() == "ankara" ? true : merkezUsMu,
+      // 🛡️ STRATEJİK KORUMA: Eğer şehir Ankara ise, sistemin merkez üssü olduğunu otomatik mühürler!
+      'merkez_us_mu': name.trim().toLowerCase() == "ankara" ? true : merkezUsMu,
     };
   }
 
+  // 📥 ANALİTİK OKUMA: Map verisini City nesnesine dönüştürür
   factory City.fromMap(Map<String, dynamic> map) {
     return City(
       name: map['name'] ?? 'Bilinmeyen Şehir',
@@ -50,7 +53,7 @@ class Region {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'cities': cities.map((c) => c.toMap()).toList(), // Şehirleri Firebase JSON tipine çevirir
+      'cities': cities.map((c) => c.toMap()).toList(),
     };
   }
 
@@ -72,8 +75,8 @@ class Country {
   final String code; // TR, DE, AZ
   final List<Region> regions;
 
-  // 🚀 OTODNA KUANTUM OPERASYON DURUMU
-  final bool operasyonaAcikMi; // Eğer false ise o ülkede ticaret/komisyon motoru durur
+  // 🚀 OTODNA KUANTUM OPERASYON DURUMU (KILL SWITCH)
+  final bool operasyonaAcikMi; // Eğer false ise o ülkede ticaret/komisyon motoru durur!
   final DateTime guncellemeTarihi;
 
   Country({
@@ -85,7 +88,7 @@ class Country {
     DateTime? guncellemeTarihi,
   }) : guncellemeTarihi = guncellemeTarihi ?? DateTime.now();
 
-  // 🚀 FİREBASE'E YAZMA MOTORU (Tüm Ülkeyi Tek Hamlede Çelik Kasaya Gönderir)
+  // 🚀 FİREBASE'E ATOMİK YAZMA MOTORU
   Map<String, dynamic> toMap() {
     return {
       'name': name,
@@ -96,9 +99,9 @@ class Country {
     };
   }
 
-  // 📥 FİREBASE'DEN OKUMA MOTORU (Kullanıcı kayıt olurken "Ülke Seç" dediğinde çalışır)
+  // 📥 FİREBASE'DEN ANALİTİK OKUMA MOTORU
   factory Country.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    final data = doc.data() as Map<String, dynamic>? ?? {};
     var regionList = (data['regions'] as List<dynamic>?) ?? [];
 
     return Country(

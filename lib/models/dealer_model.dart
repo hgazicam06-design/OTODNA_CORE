@@ -1,18 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// dealer_model.dart - OtoDNA Kuantum Bayi Kimlik ve Finans Motoru
-
+/// 🦅 OTODNA KUANTUM BAYİ KİMLİK VE FİNANS MOTORU
+/// Bu model, Gazi'nin %12 (10+2) mutlak finans kuralına göre modernize edilmiştir.
 class Dealer {
   final String? id; // Firebase Document ID
-  final String dealerName; // Örn: Gazi Otomotiv veya Murat Plaza
-  final String city;       // Şehir (Ankara, İstanbul vb.)
-  final String taxNumber;  // Vergi Numarası (Resmiyet için)
-  final String region;     // 7 Bölgeden hangisi?
+  final String dealerName;
+  final String city;
+  final String taxNumber;
+  final String region;
 
-  // 🚀 OTODNA KUANTUM FİNANS VE GÜVENLİK VERİLERİ
-  final double komisyonOrani; // Murat Plaza için %30 (0.30), diğerleri için %12 (0.12)
-  final bool aktifMi; // Karalisteye alınan bayileri anında sistemden atmak için
-  final String rozet; // Altın, Gümüş, Bronz, Black Star (Karaliste)
+  // 💰 OTODNA MUTLAK FİNANS PROTOKOLÜ
+  // Tüm bayiler (İstisnasız): %10 Kâr + %2 Vergi = %12 (0.12)
+  final double komisyonOrani;
+  final bool aktifMi; // Karaliste kalkanı
+  final String rozet; // Altın, Gümüş, Bronz, Black Star
   final DateTime kayitTarihi;
 
   Dealer({
@@ -21,58 +22,51 @@ class Dealer {
     required this.city,
     required this.taxNumber,
     required this.region,
-    this.komisyonOrani = 0.12, // Varsayılan: %10 Kar + %2 Vergi
+    this.komisyonOrani = 0.12, // Varsayılan Gazi Protokolü
     this.aktifMi = true,
-    this.rozet = "Bronz", // Yeni başlayan bayi Bronz başlar
+    this.rozet = "Bronz",
     DateTime? kayitTarihi,
   }) : kayitTarihi = kayitTarihi ?? DateTime.now();
 
-  // 🚀 FİREBASE'E YAZMA MOTORU (Admin panelinden yeni bayi eklendiğinde)
+  // 🔥 FİREBASE'E ATOMİK YAZMA MOTORU (SİBER MÜHÜR)
   Map<String, dynamic> toMap() {
     return {
       'dealer_name': dealerName,
       'city': city,
       'tax_number': taxNumber,
       'region': region,
-      // 💰 SİBER FİNANS KALKANI: İsmi Murat Plaza olanın komisyonunu otomatik %30'a çivile!
-      'komisyon_orani': dealerName == "Murat Plaza" ? 0.30 : komisyonOrani,
+      // 🛡️ SİBER FİNANS ZIRHI: Murat Plaza dahil tüm bayiler %12'ye sabitlendi.
+      'komisyon_orani': 0.12,
       'aktif_mi': aktifMi,
       'rozet': rozet,
       'kayit_tarihi': FieldValue.serverTimestamp(),
     };
   }
 
-  // 📥 FİREBASE'DEN OKUMA MOTORU (Bayi uygulamaya giriş yaptığında)
+  // 📥 FİREBASE'DEN ANALİTİK OKUMA MOTORU
   factory Dealer.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    final data = doc.data() as Map<String, dynamic>? ?? {};
 
     return Dealer(
       id: doc.id,
-      dealerName: data['dealer_name'] ?? 'İsimsiz Bayi',
-      city: data['city'] ?? 'Belirtilmedi',
+      dealerName: data['dealer_name'] ?? 'İSİMSİZ OPERATÖR',
+      city: data['city'] ?? 'BELİRTİLMEDİ',
       taxNumber: data['tax_number'] ?? '0000000000',
-      region: data['region'] ?? 'Bilinmeyen Bölge',
-      komisyonOrani: (data['komisyon_orani'] ?? 0.12).toDouble(),
+      region: data['region'] ?? 'BİLİNMEYEN BÖLGE',
+      // Veritabanında hatalı veri olsa dahi kod seviyesinde %12 güvenliği sağla
+      komisyonOrani: 0.12,
       aktifMi: data['aktif_mi'] ?? false,
-      rozet: data['rozet'] ?? 'Black Star', // Hata varsa güvenli mod: Karaliste say
+      rozet: data['rozet'] ?? 'Black Star', // Güvenli mod: Karaliste
       kayitTarihi: (data['kayit_tarihi'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
 
-  // --- 🖨️ ÇIKTILARDA (PDF) GÖRÜNECEK RESMİ MÜHÜRLER ---
+  // --- 🖨️ SİBER MÜHÜRLER (RESMİ DÖKÜMANLAR İÇİN) ---
 
-  // Örn: GAZİ OTOMOTİV - OTODNA SERVİS FORMU
-  String get officialHeader {
-    return "${dealerName.toUpperCase()} - OTODNA SİBER SERVİS FORMU";
-  }
+  String get officialHeader => "${dealerName.toUpperCase()} - OTODNA SİBER SERVİS FORMU";
+  String get offerHeader => "${dealerName.toUpperCase()} - OTODNA KUANTUM FİYAT TEKLİFİ";
 
-  // Örn: GAZİ OTOMOTİV - OTODNA FİYAT TEKLİFİ
-  String get offerHeader {
-    return "${dealerName.toUpperCase()} - OTODNA KUANTUM FİYAT TEKLİFİ";
-  }
-
-  // Bayi Bilgi Özeti (PDF Alt Bilgisi ve Faturalar için)
   String get dealerInfoSummary {
-    return "$dealerName | $city | $region | Vergi No: $taxNumber | Kuantum Rozet: $rozet";
+    return "$dealerName | $city | $region | Vergi No: $taxNumber | ROZET: $rozet";
   }
 }

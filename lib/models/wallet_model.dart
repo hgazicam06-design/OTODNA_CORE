@@ -1,16 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// wallet_model.dart - Kuantum Cüzdan, Bilanço ve Hakediş Motoru
+/// 🦅 OTODNA KUANTUM CÜZDAN, BİLANÇO VE HAKEDİŞ MOTORU
+/// Bu model, esnafın siber kasasını ve sistemin %12 (veya %30) payını yönetir.
 
 // ---------------------------------------------------------
-// 1. İŞLEM KALEMİ (CÜZDAN GEÇMİŞİ)
+// 1. İŞLEM KALEMİ (CÜZDAN GEÇMİŞİ - SİBER MAKBUZ)
 // ---------------------------------------------------------
 class OtoDNA_Islem {
   final String islemId;
   final DateTime tarih;
   final double tutar;
-  final String aciklama; // Örn: "Fiat Egea Balata Satışı" veya "Randevu Kaporası"
-  final bool gelirMi; // Esnafın kasasına para girdiyse true, biz komisyon kestiysek false
+  final String aciklama; // Örn: "Fiat Egea Balata Satışı"
+  final bool gelirMi; // Esnafa para girdiyse true, biz komisyon kestiysek false
 
   OtoDNA_Islem({
     required this.islemId,
@@ -20,6 +21,7 @@ class OtoDNA_Islem {
     this.gelirMi = true,
   });
 
+  // 🚀 FİREBASE'E MÜHÜRLEME
   Map<String, dynamic> toMap() {
     return {
       'islem_id': islemId,
@@ -30,6 +32,7 @@ class OtoDNA_Islem {
     };
   }
 
+  // 📥 ANALİTİK OKUMA
   factory OtoDNA_Islem.fromMap(Map<String, dynamic> map) {
     return OtoDNA_Islem(
       islemId: map['islem_id'] ?? '',
@@ -42,17 +45,17 @@ class OtoDNA_Islem {
 }
 
 // ---------------------------------------------------------
-// 2. ANA CÜZDAN (ESNAF BİLANÇOSU)
+// 2. ANA CÜZDAN (ESNAF BİLANÇOSU VE GAZİ KASASI)
 // ---------------------------------------------------------
 class OtoDNA_Wallet {
-  final String? id; // Firebase Document ID (Genelde dükkan ID ile aynı olur)
+  final String? id; // Firebase Document ID (Dükkan ID ile eşleşir)
   final String dukkanId;
 
-  // 💰 BİLANÇO VE MUHASEBE
+  // 💰 BİLANÇO VE MUHASEBE (Siber Zırhlı)
   final double toplamBakiye;    // Sisteme giren brüt para
   final double netKarPayi;      // Bizim %10'luk net kısmımız
   final double vergiPayi;       // Devlet için ayrılan %2'lik kısım
-  final double esnafHakedis;    // Esnafa kalan %88'lik net hakediş
+  final double esnafHakedis;    // Esnafa kalan net hakediş
 
   final List<OtoDNA_Islem> gecmisIslemler;
 
@@ -66,10 +69,10 @@ class OtoDNA_Wallet {
     this.gecmisIslemler = const [],
   });
 
-  // Toplam %12'lik OtoDNA kesintisini hesaplayan canlı fonksiyon
+  // 🛡️ SİSTEMİN TOPLAM PAYI (%12 Kuralı: %10 Kâr + %2 Vergi)
   double get toplamKesinti => netKarPayi + vergiPayi;
 
-  // 🚀 FİREBASE'E YAZMA MOTORU (Esnaf her satış yaptığında cüzdan güncellenir)
+  // 🚀 FİREBASE'E YAZMA MOTORU (Atomik Güncelleme İçin)
   Map<String, dynamic> toMap() {
     return {
       'dukkan_id': dukkanId,
@@ -77,17 +80,14 @@ class OtoDNA_Wallet {
       'net_kar_payi': netKarPayi,
       'vergi_payi': vergiPayi,
       'esnaf_hakedis': esnafHakedis,
-      // İşlemleri Firebase'in anlayacağı liste haritasına (List<Map>) çeviriyoruz
       'gecmis_islemler': gecmisIslemler.map((islem) => islem.toMap()).toList(),
       'son_guncellenme': FieldValue.serverTimestamp(),
     };
   }
 
-  // 📥 FİREBASE'DEN OKUMA MOTORU (Esnaf "Cüzdanım" ekranını açtığında)
+  // 📥 FİREBASE'DEN OKUMA MOTORU
   factory OtoDNA_Wallet.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-
-    // İşlem listesini güvenli bir şekilde çekiyoruz
+    final data = doc.data() as Map<String, dynamic>? ?? {};
     var islemListesi = (data['gecmis_islemler'] as List<dynamic>?) ?? [];
 
     return OtoDNA_Wallet(
@@ -97,7 +97,9 @@ class OtoDNA_Wallet {
       netKarPayi: (data['net_kar_payi'] ?? 0).toDouble(),
       vergiPayi: (data['vergi_payi'] ?? 0).toDouble(),
       esnafHakedis: (data['esnaf_hakedis'] ?? 0).toDouble(),
-      gecmisIslemler: islemListesi.map((item) => OtoDNA_Islem.fromMap(item as Map<String, dynamic>)).toList(),
+      gecmisIslemler: islemListesi
+          .map((item) => OtoDNA_Islem.fromMap(Map<String, dynamic>.from(item)))
+          .toList(),
     );
   }
 }

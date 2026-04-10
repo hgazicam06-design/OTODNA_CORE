@@ -1,6 +1,13 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-// 💎 YARDIMCI BİLEŞEN: SİBER GÜVENLİK ONAY MODÜLÜ
+// 🔥 SİBER KÖPRÜLER VE TEMA
+import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart';
+
+/// 🛡️ SİBER GÜVENLİK ONAY MODÜLÜ (KUANTUM MÜHÜR)
 class SiberOnayKutusu extends StatefulWidget {
   final Function(bool) onChanged;
 
@@ -12,8 +19,6 @@ class SiberOnayKutusu extends StatefulWidget {
 
 class _SiberOnayKutusuState extends State<SiberOnayKutusu> {
   bool _onayliMi = false;
-  final Color primaryCyan = const Color(0xFF00FFC2);
-  final Color surfaceColor = const Color(0xFF111111);
 
   @override
   Widget build(BuildContext context) {
@@ -24,47 +29,56 @@ class _SiberOnayKutusuState extends State<SiberOnayKutusu> {
         if (_onayliMi) {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: const Text('Siber Güvenlik Protokolü Onaylandı. Ağa Bağlanıyor... 🚀', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                backgroundColor: primaryCyan,
-                duration: const Duration(seconds: 1),
+                content: const Text('Siber Güvenlik Protokolü Aktif. Kuantum Mührü Hazırlanıyor... 🚀',
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                backgroundColor: SiberTema.kuantumCyan,
+                behavior: SnackBarBehavior.floating,
+                duration: const Duration(seconds: 2),
               )
           );
         }
       },
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
         margin: const EdgeInsets.symmetric(vertical: 16),
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: _onayliMi ? primaryCyan.withOpacity(0.05) : surfaceColor,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: _onayliMi ? primaryCyan.withOpacity(0.5) : Colors.white.withOpacity(0.05)),
+          color: _onayliMi ? SiberTema.kuantumCyan.withOpacity(0.05) : SiberTema.matGrey.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+              color: _onayliMi ? SiberTema.kuantumCyan : Colors.white.withOpacity(0.05),
+              width: 1.5
+          ),
+          boxShadow: _onayliMi ? [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 20)] : [],
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Siber Mühür (Kutu)
+            // Siber Mühür (Check Kutusu)
             AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
-              width: 24, height: 24,
+              duration: const Duration(milliseconds: 300),
+              width: 28, height: 28,
               decoration: BoxDecoration(
-                color: _onayliMi ? primaryCyan : Colors.transparent,
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: _onayliMi ? primaryCyan : Colors.white38, width: 2),
-                boxShadow: _onayliMi ? [BoxShadow(color: primaryCyan.withOpacity(0.5), blurRadius: 10)] : [],
+                color: _onayliMi ? SiberTema.kuantumCyan : Colors.transparent,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: _onayliMi ? SiberTema.kuantumCyan : Colors.white24, width: 2),
               ),
-              child: _onayliMi ? const Icon(Icons.check, color: Colors.black, size: 16, weight: 900) : null,
+              child: _onayliMi ? const Icon(Icons.verified_user, color: Colors.black, size: 18) : null,
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 20),
 
-            // Sözleşme Metni
+            // Protokol Metni
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("OTODNA SİBER GÜVENLİK PROTOKOLÜ", style: TextStyle(color: _onayliMi ? primaryCyan : Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
-                  const SizedBox(height: 4),
-                  const Text("Kuantum Ağı Veri Gizliliği Sözleşmesi'ni okudum, anladım ve aracıma ait dijital DNA'nın işlenmesini şifreli olarak onaylıyorum.", style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.5, fontWeight: FontWeight.bold)),
+                  Text("OTODNA SİBER GÜVENLİK PROTOKOLÜ",
+                      style: TextStyle(color: _onayliMi ? SiberTema.kuantumCyan : Colors.white54,
+                          fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                  const SizedBox(height: 6),
+                  const Text(
+                      "Kuantum Ağı Veri Gizliliği Sözleşmesi'ni okudum. Aracımın dijital DNA'sının şifreli işlenmesini ve siber arşive mühürlenmesini onaylıyorum.",
+                      style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.4, fontWeight: FontWeight.w600)),
                 ],
               ),
             )
@@ -75,11 +89,6 @@ class _SiberOnayKutusuState extends State<SiberOnayKutusu> {
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// EĞER SENİN DOSYANIN TAMAMI SADECE BİR CHECKBOXTAN İBARETSE (Ki sanmıyorum),
-// BU DA O DOSYANIN (analysis_report.dart) TAM KULLANIMA HAZIR HALİ:
-// -----------------------------------------------------------------------------------------
-
 class AnalysisReportScreen extends StatefulWidget {
   const AnalysisReportScreen({super.key});
 
@@ -88,55 +97,113 @@ class AnalysisReportScreen extends StatefulWidget {
 }
 
 class _AnalysisReportScreenState extends State<AnalysisReportScreen> {
-  final Color bgColor = const Color(0xFF000000);
-  final Color primaryCyan = const Color(0xFF00FFC2);
   bool _sistemOnaylandi = false;
+  bool _isProcessing = false;
+
+  // --- 🔴 FİREBASE: PROTOKOL MÜHÜRLEME MOTORU ---
+  Future<void> _protokoluMuhurleVeGirisYap() async {
+    setState(() => _isProcessing = true);
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    try {
+      // Protokol Onayını Firestore'a Kalıcı Olarak İşliyoruz (Gerçek Sistem)
+      await FirebaseFirestore.instance.collection('kullanicilar').doc(user.uid).update({
+        'siber_onay_durumu': true,
+        'onay_tarihi': FieldValue.serverTimestamp(),
+        'protokolu_onaylayan_ip': 'DYNAMIC_IP_LOGGED', // Simüle edilmiş siber veri
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("ERİŞİM YETKİSİ ONAYLANDI. AĞA GİRİLİYOR..."))
+        );
+        // Burada bir sonraki ana ekrana veya radar ekranına yönlendirme yapılabilir.
+        // Navigator.pushReplacementNamed(context, '/ana_ekran');
+      }
+    } catch (e) {
+      debugPrint("SİBER HATA: Protokol mühürlenemedi: $e");
+    } finally {
+      if (mounted) setState(() => _isProcessing = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent, elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text('A N A L İ Z   R A P O R U', style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3)),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          children: [
-            const Spacer(),
-
-            // İşte o zırhladığımız onay modülü burada çağrılıyor:
-            SiberOnayKutusu(
-              onChanged: (val) {
-                setState(() => _sistemOnaylandi = val);
-              },
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+              onPressed: () => Navigator.pop(context)
+          ),
+          title: const Text('A N A L İ Z   R A P O R U',
+              style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3)),
+          centerTitle: true,
+        ),
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: const AssetImage('assets/images/radar_grid.png'),
+              fit: BoxFit.cover,
+              opacity: 0.03,
+              colorFilter: ColorFilter.mode(SiberTema.kuantumCyan, BlendMode.srcIn),
             ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Üst Kuantum İkonu
+                Icon(Icons.security_update_good, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 64),
+                const SizedBox(height: 20),
+                const Text("ERİŞİM İZNİ BEKLENİYOR",
+                    style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                const SizedBox(height: 8),
+                const Text("Sisteme devam etmek için güvenlik protokolünü onaylamanız gerekmektedir.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white38, fontSize: 12, fontWeight: FontWeight.bold)),
 
-            const SizedBox(height: 24),
+                const SizedBox(height: 40),
 
-            // Onaylanmadan basılamayan İleri Butonu
-            SizedBox(
-              width: double.infinity, height: 60,
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _sistemOnaylandi ? primaryCyan : Colors.white.withOpacity(0.05),
-                  foregroundColor: _sistemOnaylandi ? Colors.black : Colors.white38,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                // Siber Onay Modülü
+                SiberOnayKutusu(
+                  onChanged: (val) => setState(() => _sistemOnaylandi = val),
                 ),
-                onPressed: _sistemOnaylandi ? () {
-                  // İŞLEMİ BAŞLAT
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ağa Bağlanıyor...")));
-                } : null, // Onay yoksa buton ölüdür!
-                icon: Icon(_sistemOnaylandi ? Icons.lock_open : Icons.lock_outline, size: 24),
-                label: Text(_sistemOnaylandi ? "SİSTEME GİRİŞ YAP" : "ÖNCE PROTOKOLÜ ONAYLAYIN", style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
-              ),
+
+                const SizedBox(height: 24),
+
+                // Aksiyon Butonu
+                SizedBox(
+                  width: double.infinity, height: 65,
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _sistemOnaylandi ? SiberTema.kuantumCyan : Colors.white.withOpacity(0.05),
+                      foregroundColor: _sistemOnaylandi ? Colors.black : Colors.white24,
+                      elevation: _sistemOnaylandi ? 15 : 0,
+                      shadowColor: SiberTema.kuantumCyan.withOpacity(0.4),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      side: BorderSide(color: _sistemOnaylandi ? Colors.transparent : Colors.white12),
+                    ),
+                    onPressed: (_sistemOnaylandi && !_isProcessing) ? _protokoluMuhurleVeGirisYap : null,
+                    icon: _isProcessing
+                        ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black))
+                        : Icon(_sistemOnaylandi ? Icons.lock_open_rounded : Icons.lock_person_rounded, size: 22),
+                    label: Text(
+                        _isProcessing ? "YETKİ ALINIYOR..." : (_sistemOnaylandi ? "SİSTEME GİRİŞ YAP" : "PROTOKOLÜ ONAYLAYIN"),
+                        style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5)
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 40),
-          ],
+          ),
         ),
       ),
     );

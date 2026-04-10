@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // 🚀 KARARGAH ZIRHLARI
-import '../core/responsive_kalkan.dart';
+import '../../core/responsive_kalkan.dart';
 // SiberTema içindeki yasaklı renkleri eziyoruz.
 // Sadece True Black, Kuantum Turkuazı, Neon Mor ve Kan Kırmızı kullanacağız.
 

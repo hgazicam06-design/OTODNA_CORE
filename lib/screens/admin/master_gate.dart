@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:otodna/core/siber_tema.dart';
 import 'package:otodna/core/responsive_kalkan.dart';
 // 🔥 Giriş başarılı olunca asıl Amiral Gemisine (hq_command_center) fırlatılacak!
-import 'package:otodna/admin/hq_command_center.dart';
+import 'package:otodna/screens/admin/hq_command_center.dart';
 
 class MasterGateScreen extends StatefulWidget {
   const MasterGateScreen({super.key});

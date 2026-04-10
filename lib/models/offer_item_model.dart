@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// offer_item_model.dart - Kuantum Fiyat Teklifi ve Fatura Satırı
-
+/// 🦅 OTODNA KUANTUM FİYAT TEKLİFİ VE FATURA SATIRI MOTORU
+/// Bu model, her bir kalem ürün/hizmetin finansal analizini ve Gazi Payı hesaplamasını yapar.
 class OfferItem {
   final String? id; // Firebase alt koleksiyon ID'si
-  final String saticiAdi; // Kuantum Kuralı: Murat Plaza veya Diğerleri
+  final String saticiAdi; // Murat Plaza veya Diğerleri
   final String description; // Örn: Mobil 1 5W-30 Yağ, Triger Seti
   final int quantity;       // Adet
   final double unitPrice;   // Birim Fiyat (KDV Hariç)
@@ -23,25 +23,28 @@ class OfferItem {
     this.indirim = 0.0,
   });
 
-  // --- 💰 DİNAMİK FİNANS HESAPLAMALARI ---
+  // --- 💰 DİNAMİK KUANTUM HESAPLAMALARI ---
 
   // 1. KDV'siz net toplam (İndirim düşülmüş)
   double get totalPrice => (quantity * unitPrice) - indirim;
 
-  // 2. Müşterinin göreceği ve ödeyeceği KDV'li son rakam
+  // 2. Müşterinin ödeyeceği KDV dahil son rakam
   double get totalWithTax => totalPrice * (1 + taxRate);
 
-  // 3. KUANTUM KURALI: Murat Plaza %30, Diğer Esnaflar %12 Kesinti!
-  double get komisyonOrani => saticiAdi == "Murat Plaza" ? 0.30 : 0.12;
+  // 3. 🛡️ GAZİ FİNANS PROTOKOLÜ: Murat Plaza %30, Diğerleri %12 (10+2)
+  double get komisyonOrani {
+    // İsim kontrolü yapılırken boşluk ve büyük/küçük harf toleransı eklendi
+    return saticiAdi.trim().toLowerCase() == "murat plaza" ? 0.30 : 0.12;
+  }
 
-  // 4. Komutan Gazi'nin (Sistemin) Kasasına Girecek Net Pay
+  // 4. 👑 SİBER KOMUTAN PAYI (Net Sistem Geliri)
   double get gaziPayi => totalWithTax * komisyonOrani;
 
-  // 5. Bayinin (Ustaların) Cebine Girecek Net Hakediş
+  // 5. 🛠️ BAYİ HAKEDİŞİ (Esnafın Cebine Kalan)
   double get bayiHakedisi => totalWithTax - gaziPayi;
 
 
-  // 🚀 FİREBASE'E YAZMA MOTORU (Fatura/Teklif Müşteriye Atıldığı An Çalışır)
+  // 🚀 FİREBASE'E ATOMİK YAZMA MOTORU
   Map<String, dynamic> toMap() {
     return {
       'satici_adi': saticiAdi,
@@ -51,21 +54,22 @@ class OfferItem {
       'tax_rate': taxRate,
       'indirim': indirim,
 
-      // RAPORLAMA İÇİN HAYATİ ÖNEM: Hesaplanmış verileri de Firebase'e mühürlüyoruz.
-      // Böylece ay sonunda "Gazi Payı ne kadar birikti?" sorgusunu saniyesinde çekeriz.
-      'toplam_tutar': totalWithTax,
-      'gazi_payi': gaziPayi,
-      'bayi_hakedisi': bayiHakedisi,
+      // 📊 ANALİTİK VERİ MÜHÜRLERİ: Sorgu hızını artırmak için hesaplanmış değerleri kaydediyoruz.
+      'toplam_tutar_kdvli': totalWithTax,
+      'gazi_payi_hesaplanan': gaziPayi,
+      'bayi_hakedisi_hesaplanan': bayiHakedisi,
+      'komisyon_orani_uygulanan': komisyonOrani,
+      'islem_tarihi': FieldValue.serverTimestamp(),
     };
   }
 
-  // 📥 FİREBASE'DEN OKUMA MOTORU (Müşteri PDF'i veya Teklif Ekranını Açtığında)
+  // 📥 FİREBASE'DEN ANALİTİK OKUMA MOTORU
   factory OfferItem.fromMap(Map<String, dynamic> map, [String? docId]) {
     return OfferItem(
       id: docId,
       saticiAdi: map['satici_adi'] ?? 'Bilinmeyen Satıcı',
-      description: map['description'] ?? 'Belirtilmemiş Ürün',
-      quantity: map['quantity'] ?? 1,
+      description: map['description'] ?? 'Belirtilmemiş Ürün/Hizmet',
+      quantity: (map['quantity'] ?? 1).toInt(),
       unitPrice: (map['unit_price'] ?? 0).toDouble(),
       taxRate: (map['tax_rate'] ?? 0.20).toDouble(),
       indirim: (map['indirim'] ?? 0.0).toDouble(),

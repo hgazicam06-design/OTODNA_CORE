@@ -4,19 +4,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // 🚀 KARARGAH ZIRHLARI
-import '../core/siber_tema.dart';
-import '../core/responsive_kalkan.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
 
 // 🔥 SİBER KÖPRÜLER
 import 'admin_onay_havuzu_screen.dart';
-import 'admin_dash_ui.dart';
-import '../screens/bayi_itibar_merkezi_screen.dart';
-import '../screens/bayi_yonetim_merkezi_screen.dart';
-import '../screens/bolge_komuta_merkezi_screen.dart';
-import '../screens/mega_revizyon_screen.dart';
-import '../screens/bayi_paneli.dart';
-import '../screens/kullanici_yonetim_screen.dart';
-import '../screens/bayi_ekosistemi_screen.dart';
+import '../../admin/admin_dash_ui.dart';
+import 'bayi_itibar_merkezi_screen.dart';
+import '../bayi_yonetim_merkezi_screen.dart';
+import '../bolge_komuta_merkezi_screen.dart';
+import '../mega_revizyon_screen.dart';
+import '../bayi_paneli.dart';
+import '../kullanici_yonetim_screen.dart';
+import '../bayi_ekosistemi_screen.dart';
 
 // 🎨 SİNEMATIK VE TAKTİKSEL RENK KODLARI (TRUE BLACK & KUANTUM TURKUAZI ZIRHI)
 const Color renkIstihbarat = Color(0xFF00FFC2); // Kuantum Turkuazı (Ağ ve Finans)

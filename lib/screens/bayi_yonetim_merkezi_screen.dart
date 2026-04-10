@@ -42,7 +42,7 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
     'Amerikan Grubu (Ford, Chevrolet)',
     'Sadece Tek Marka (Özel Servis)'
   ];
-  final Set<String> _seciliAracGruplari = {}; // Tıklananları hafızada tutar
+  final Set<String> _seciliAracGruplari = {};
 
   // Siber Arama Motorunu Koruyan Sabit Liste
   final List<String> _uzmanlikAlanlari = [
@@ -52,7 +52,7 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
     'Oto Elektrik & Elektronik',
     'Ekspertiz Merkezi',
     'Yedek Parça Tedariği',
-    'Diğer (Yeni İşlem Ekle)' // Deep State Onayına Gider
+    'Diğer (Yeni İşlem Ekle)'
   ];
 
   @override
@@ -84,7 +84,6 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
       return;
     }
 
-    // Özel İşlem Kontrolü
     if (_seciliUzmanlik == 'Diğer (Yeni İşlem Ekle)' && _yeniIslemController.text.trim().isEmpty) {
       _siberUyariVer("SİBER İHLAL: Önermek istediğiniz yeni işlemi yazmalısınız!", isError: true);
       return;
@@ -97,7 +96,7 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
     String nihaiUzmanlik = _seciliUzmanlik == 'Diğer (Yeni İşlem Ekle)' ? 'ONAY BEKLİYOR' : _seciliUzmanlik!;
 
     try {
-      // 1. Bayiyi Kuantum Ağına Mühürle
+      // 🚀 ATOMİK YAZMA: Bayiyi Kuantum Ağına Mühürle
       await FirebaseFirestore.instance.collection('bayiler').doc(bayiiID).set({
         "firma_adi": _firmaAdiController.text.trim(),
         "vergi_no": bayiiID,
@@ -111,24 +110,24 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
         "arac_gruplari": _seciliAracGruplari.toList(),
         "tanitim_metni": _tanitimController.text.trim(),
         "aktif_mi": true,
-        "onay": false, // Merkez onaylayana kadar vitrinde görünmez
+        "onay": false,
         "puan": 5.0,
         "kayit_tarihi": FieldValue.serverTimestamp(),
       });
 
-      // 2. Yeni İşlem Karantina (Onay) Havuzuna Gönder
+      // 🛡️ KARANTİNA HAVUZU: Yeni İşlem Onayına Gönder
       if (_seciliUzmanlik == 'Diğer (Yeni İşlem Ekle)') {
         await FirebaseFirestore.instance.collection('onay_bekleyen_islemler').add({
           "bayi_id": bayiiID,
           "firma_adi": _firmaAdiController.text.trim(),
           "onerilen_islem": _yeniIslemController.text.trim(),
           "tarih": FieldValue.serverTimestamp(),
-          "durum": "bekliyor" // Admin Karargahından onay alacak
+          "durum": "bekliyor"
         });
       }
 
       if (!mounted) return;
-      _siberUyariVer("ONAYLANDI: Bayi Ağa Kaydedildi! (Varsa yeni işlem onaya gönderildi) 🦅", isError: false);
+      _siberUyariVer("ONAYLANDI: Bayi Ağa Kaydedildi! 🦅", isError: false);
       Navigator.pop(context);
     } catch (e) {
       if (!mounted) return;
@@ -182,9 +181,8 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   _buildBolumBasligi("FİRMA & KURUM BİLGİLERİ (RESMİ)"),
-                  _buildSiberTextField("Gerçek Ticari Ünvan (Örn: Gazi Oto. San. Tic.)", Icons.storefront, _firmaAdiController),
+                  _buildSiberTextField("Gerçek Ticari Ünvan", Icons.storefront, _firmaAdiController),
                   _buildSiberTextField("Vergi Kimlik Numarası", Icons.receipt_long, _vergiNoController, isNumber: true),
                   _buildSiberTextField("Yetkili Kişi Ad Soyad", Icons.person_outline, _yetkiliKisiController),
                   _buildSiberTextField("İletişim Numarası", Icons.phone_android, _telefonController, isNumber: true),
@@ -220,7 +218,6 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
                   const SizedBox(height: 20),
                   _buildBolumBasligi("ŞEFFAF VİTRİN VE HİZMET AĞI"),
 
-                  // 🛠️ UZMANLIK ALANI SEÇİMİ (KARIŞIKLIĞI ÖNLER)
                   _buildDropdownContainer(
                     hint: "Ana Uzmanlık / Hizmet Türü Seçin",
                     icon: Icons.build_circle_outlined,
@@ -231,7 +228,6 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
                     },
                   ),
 
-                  // 🛠️ LİSTEDE YOKSA AÇILAN SİBER ONAY KUTUSU
                   if (_seciliUzmanlik == 'Diğer (Yeni İşlem Ekle)') ...[
                     Container(
                       padding: const EdgeInsets.all(16),
@@ -258,10 +254,9 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
                     ),
                   ],
 
-                  // 🔥 ARAÇ GRUBU SEÇİMİ (ÇOKLU TIKLAMA)
                   Padding(
                     padding: const EdgeInsets.only(top: 8, bottom: 12),
-                    child: Text("Hizmet Verilen Araç Grupları (Birden fazla seçilebilir):", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.8), fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                    child: Text("Hizmet Verilen Araç Grupları:", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.8), fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                   ),
                   Wrap(
                     spacing: 8.0,
@@ -292,9 +287,8 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
                   ),
                   const SizedBox(height: 20),
 
-                  // 🛠️ FİRMA ÇALIŞMA ŞEKLİ VE TANITIM VİTRİNİ
                   _buildSiberTextField(
-                      "Çalışma şekliniz, koşullarınız ve hizmet detaylarınız hakkında bilgi verin. Bu metin müşteri vitrininde şeffaf olarak görünecektir.",
+                      "Çalışma şekliniz ve hizmet detaylarınız...",
                       Icons.text_snippet_outlined,
                       _tanitimController,
                       isMultiline: true
@@ -302,7 +296,6 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
 
                   const SizedBox(height: 40),
 
-                  // 🚀 3D FİZYOLOJİK FİREBASE KAYIT BUTONU
                   GestureDetector(
                     onTap: _isSaving ? null : _bayiyiAgaKaydet,
                     child: AnimatedContainer(
@@ -320,21 +313,20 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: _isSaving ? Colors.white24 : Colors.white.withOpacity(0.5), width: 1.5),
                         boxShadow: _isSaving ? [] : [
-                          // Tuşun altındaki karanlık derinlik (3D yükseklik hissi)
                           BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.3), offset: const Offset(0, 8), blurRadius: 15),
                         ],
                       ),
                       child: Center(
                         child: _isSaving
                             ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
-                            : Row(
+                            : const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.add_business, size: 24, color: SiberTema.oledBlack),
-                            const SizedBox(width: 12),
-                            const Text(
+                            Icon(Icons.add_business, size: 24, color: SiberTema.oledBlack),
+                            SizedBox(width: 12),
+                            Text(
                               "BAYİYİ ONAYLA VE AĞA BAĞLA",
-                              style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 1.5, fontFamily: 'Avenir', shadows: [Shadow(color: Colors.white54, blurRadius: 2, offset: Offset(0, 1))]),
+                              style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 1.5, fontFamily: 'Avenir'),
                             ),
                           ],
                         ),
@@ -351,8 +343,6 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
     );
   }
 
-  // --- 🎨 SİBER GÖRSEL ZIRHLAR (3D VE DERİNLİK EFEKTLERİ) ---
-
   Widget _buildBolumBasligi(String baslik) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
@@ -364,7 +354,6 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        // 3D İçeri Çökük (Emboss) Hissi
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -372,31 +361,20 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
-        boxShadow: [
-          // Dış Kuantum Parlaması
-          BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 15, spreadRadius: -2, offset: const Offset(0, 5)),
-        ],
       ),
       child: TextFormField(
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : (isMultiline ? TextInputType.multiline : TextInputType.text),
         maxLines: isMultiline ? 4 : 1,
-        style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 14, fontFamily: 'Avenir', fontWeight: FontWeight.w500),
+        style: const TextStyle(color: Colors.white, fontSize: 14, fontFamily: 'Avenir'),
         decoration: InputDecoration(
-          prefixIcon: isMultiline
-              ? Padding(padding: const EdgeInsets.only(bottom: 60), child: Icon(icon, color: SiberTema.kuantumCyan, size: 20))
-              : Icon(icon, color: SiberTema.kuantumCyan, size: 20),
+          prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
           hintText: hint,
-          hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 13, fontFamily: 'Avenir'),
+          hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 13),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          contentPadding: const EdgeInsets.all(16),
         ),
-        validator: (value) {
-          if (!isMultiline && (value == null || value.trim().isEmpty)) {
-            return "Bu alan boş bırakılamaz";
-          }
-          return null;
-        },
+        validator: (value) => value == null || value.trim().isEmpty ? "Zorunlu Alan" : null,
       ),
     );
   }
@@ -406,26 +384,18 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        // 3D Dışa Çıkık Panel Hissi
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [SiberTema.matGrey.withOpacity(0.8), SiberTema.oledBlack],
-        ),
+        color: SiberTema.matGrey.withOpacity(0.8),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 10, spreadRadius: 1, offset: const Offset(0, 4)),
-        ],
+        border: Border.all(color: Colors.white.withOpacity(0.1)),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           isExpanded: true,
           dropdownColor: SiberTema.matGrey,
           icon: const Icon(Icons.arrow_drop_down_circle, color: SiberTema.kuantumCyan),
-          hint: Row(children: [Icon(icon, color: SiberTema.kuantumCyan, size: 20), const SizedBox(width: 16), Text(hint, style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 13, fontFamily: 'Avenir'))]),
+          hint: Text(hint, style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 13)),
           value: value,
-          items: items.map((String item) => DropdownMenuItem<String>(value: item, child: Row(children: [Icon(icon, color: SiberTema.kuantumCyan, size: 20), const SizedBox(width: 16), Text(item, style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 14, fontFamily: 'Avenir', fontWeight: FontWeight.w500))]))).toList(),
+          items: items.map((String item) => DropdownMenuItem<String>(value: item, child: Text(item, style: const TextStyle(color: Colors.white, fontSize: 14)))).toList(),
           onChanged: onChanged,
         ),
       ),

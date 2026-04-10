@@ -1,115 +1,40 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SiberTema {
-  // KARARGAH RENK PALETİ
-  static const Color oledBlack = Color(0xFF050505);
-  static const Color kuantumCyan = Color(0xFF00F0FF);
-  static const Color kanKirmizi = Color(0xFFFF2A2A);
-  static const Color matGrey = Color(0xFF1A1A1A);
-  static const Color altinSari = Color(0xFFFFD700); // 🟢 EKLENDİ: Altın Sarı Zırhı
+  // 🌑 KUANTUM RENK PALETİ (TESLA STANDARTLARINDA)
+  static const Color oledBlack = Color(0xFF000000);
+  static const Color kuantumCyan = Color(0xFF00FFC2); // Neon Turkuaz
+  static const Color neonPurple = Color(0xFF9D00FF);
+  static const Color siberGold = Color(0xFFFFD700);
+  static const Color kritikRed = Color(0xFFFF003C);
 
-  // 🔠 YAZI TİPİ
-  static const String siberFont = 'Avenir';
-
-  // 🖼️ 3D DERİNLİKLİ SİBER ARKA PLAN
-  static BoxDecoration siberArkaPlan = const BoxDecoration(
-    color: oledBlack,
-    gradient: RadialGradient(
-      center: Alignment(0, -0.3),
-      radius: 1.5,
-      colors: [
-        Color(0xFF111A2C), // Hafif aydınlık merkez (Derinlik hissi)
-        oledBlack,
-      ],
-      stops: [0.2, 1.0],
-    ),
-  );
-
-  // 💎 3D DERİNLİK GÖLGELERİ (İkonlar ve Küçük Kartlar için)
-  static List<BoxShadow> siberGolgeDerin = [
-    BoxShadow(
-      color: Colors.black.withOpacity(0.8),
-      blurRadius: 15,
-      spreadRadius: 2,
-      offset: const Offset(0, 10),
-    ),
-    BoxShadow(
-      color: kuantumCyan.withOpacity(0.1),
-      blurRadius: 20,
-      spreadRadius: -5,
-      offset: const Offset(0, -5),
-    ),
-  ];
-
-  // 💎 3D KATMANLI GÖLGELER (Büyük formlar ve arayüzler için)
-  static List<BoxShadow> siberGolgeKatmanli = [
-    BoxShadow(
-      color: Colors.black.withOpacity(0.5),
-      blurRadius: 10,
-      offset: const Offset(0, 5),
-    ),
-    BoxShadow(
-      color: Colors.black.withOpacity(0.3),
-      blurRadius: 20,
-      offset: const Offset(0, 10),
-    ),
-  ];
-
-  // SİBER CAM KALKANI (GLASSMORPHISM)
-  static Widget siberCamKalkan({required Widget child, double sigma = 10.0, EdgeInsetsGeometry? padding, String? bgImagePath}) {
-    return ClipRRect(
+  // 🏗️ 7D SİBER CAM EFEKTİ (GLASSMORPHISM)
+  static BoxDecoration siberCamZirh({Color? renk}) {
+    return BoxDecoration(
+      color: (renk ?? Colors.white).withOpacity(0.05),
       borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: sigma, sigmaY: sigma),
-        child: Container(
-          padding: padding ?? const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.03),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: kuantumCyan.withOpacity(0.2), width: 1),
-            image: bgImagePath != null ? DecorationImage(image: AssetImage(bgImagePath), fit: BoxFit.cover, opacity: 0.2) : null,
-            boxShadow: [
-              BoxShadow(color: kuantumCyan.withOpacity(0.05), blurRadius: 30, spreadRadius: -5)
-            ],
-          ),
-          child: child,
-        ),
-      ),
+      border: Border.all(color: Colors.white.withOpacity(0.1), width: 1.5),
     );
   }
 
-  // KUANTUM BUTON STİLİ (Artık daha 3D)
-  static ButtonStyle kuantumButonStili({bool isKirmizi = false}) {
-    Color anaRenk = isKirmizi ? kanKirmizi : kuantumCyan;
+  // ⚡ KUANTUM BUTON STİLİ
+  static ButtonStyle kuantumButonStili({Color renk = kuantumCyan}) {
     return ElevatedButton.styleFrom(
-      backgroundColor: anaRenk,
+      backgroundColor: renk,
       foregroundColor: oledBlack,
-      elevation: 15, // 3D Yükseklik Eklendi
-      shadowColor: anaRenk.withOpacity(0.6),
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+      elevation: 8,
+      shadowColor: renk.withOpacity(0.5),
     );
   }
 
-  // ANA TEMA MOTORU
-  static ThemeData get tema {
-    return ThemeData(
-      scaffoldBackgroundColor: oledBlack,
-      primaryColor: kuantumCyan,
-      fontFamily: siberFont,
-      colorScheme: const ColorScheme.dark(
-        primary: kuantumCyan,
-        secondary: kuantumCyan,
-        error: kanKirmizi,
-        background: oledBlack,
-        surface: matGrey,
-      ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-      ),
-    );
-  }
+  // 📡 SİBER METİN STİLLERİ
+  static TextStyle kuantumBaslik = GoogleFonts.orbitron(
+    color: kuantumCyan,
+    fontSize: 22,
+    fontWeight: FontWeight.w900,
+    letterSpacing: 2,
+  );
 }

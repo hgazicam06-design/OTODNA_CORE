@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// dukkan_model.dart - Kuantum Esnaf Abonelik ve Limit Motoru
-
+/// 🦅 OTODNA KUANTUM ESNAF ABONELİK VE LİMİT MOTORU
+/// Bu model, esnafların (dükkanların) sisteme katılımını, limitlerini ve puanlamasını yönetir.
 class Dukkan {
   final String? id; // Firebase Document ID
   final String ad;
@@ -13,11 +13,11 @@ class Dukkan {
   final double puan;
   final bool onayliMi;
   final bool aktifMi;
-  final String rozet; // Standart, Gümüş, Gold, Black Star vb.
-  final bool isVip; // VIP (Sınırsız) yetkisi var mı?
+  final String rozet; // "Bronz", "Gümüş", "Altın", "Black Star"
+  final bool isVip; // VIP (Kuantum Sınırsızlık) yetkisi
 
-  // 📊 YENİ STRATEJİ: İLAN LİMİTİ VE KULLANIM TAKİBİ
-  final int kullanilanIlanSayisi; // O an vitrinde olan parça/araç sayısı
+  // 📊 LİMİT VE KULLANIM TAKİBİ
+  final int kullanilanIlanSayisi; // Aktif yayındaki parça/araç sayısı
 
   // 💰 STANDART FİNANS: %12 Kuralı
   final double komisyonOrani;
@@ -32,49 +32,38 @@ class Dukkan {
     this.puan = 5.0,
     this.onayliMi = false,
     this.aktifMi = true,
-    this.rozet = "Standart",
+    this.rozet = "Bronz",
     this.isVip = false,
-    this.kullanilanIlanSayisi = 0, // Başlangıçta 0 ilanı var
+    this.kullanilanIlanSayisi = 0,
     this.komisyonOrani = 0.12,
     DateTime? kayitTarihi,
   }) : kayitTarihi = kayitTarihi ?? DateTime.now();
 
   // 🧠 KUANTUM LİMİT HESAPLAYICI (SaaS Zekası)
-  // Firmanın rozetine göre ekleyebileceği MAKSİMUM ürün sayısını belirler
   int get maxIlanSiniri {
-    if (isVip) return -1; // -1: Kuantum Sınırsızlık Kodu (Limitsiz)
-    if (rozet == "Gold" || rozet == "Altın") return 50; // Gold Paket
-    return 10; // Standart Firma Paketi
+    if (isVip) return -1; // -1: Kuantum Sınırsızlık Kodu
+
+    switch (rozet) {
+      case "Altın":
+      case "Gold":
+        return 50;
+      case "Gümüş":
+      case "Silver":
+        return 25;
+      case "Bronz":
+        return 10;
+      default:
+        return 5; // Blacklist veya Tanımsızlar için minimum limit
+    }
   }
 
-  // Usta yeni ilan eklerken buton bu şaltere bakar!
+  // 🛡️ SİBER ŞALTER: Yeni ürün/ilan girişi yapılabilir mi?
   bool get yeniIlanEklenebilirMi {
-    if (maxIlanSiniri == -1) return true; // VIP ise geç
-    return kullanilanIlanSayisi < maxIlanSiniri; // Limiti dolmadıysa geç
+    if (maxIlanSiniri == -1) return true;
+    return kullanilanIlanSayisi < maxIlanSiniri;
   }
 
-  // 📥 FİREBASE'DEN OKUMA MOTORU
-  factory Dukkan.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-
-    return Dukkan(
-      id: doc.id,
-      ad: data['ad'] ?? 'İsimsiz Dükkan',
-      sehir: data['sehir'] ?? 'Bilinmeyen Şehir',
-      bolge: data['bolge'] ?? 'Bilinmeyen Bölge',
-      hizmetKategorisi: data['hizmet_kategorisi'] ?? 'Genel Servis',
-      puan: (data['puan'] ?? 5.0).toDouble(),
-      onayliMi: data['onayli_mi'] ?? false,
-      aktifMi: data['aktif_mi'] ?? false,
-      rozet: data['rozet'] ?? 'Standart',
-      isVip: data['is_vip'] ?? false,
-      kullanilanIlanSayisi: data['kullanilan_ilan_sayisi'] ?? 0,
-      komisyonOrani: (data['komisyon_orani'] ?? 0.12).toDouble(),
-      kayitTarihi: (data['kayit_tarihi'] as Timestamp?)?.toDate() ?? DateTime.now(),
-    );
-  }
-
-  // 🚀 FİREBASE'E YAZMA MOTORU
+  // 🚀 FİREBASE'E ATOMİK YAZMA MOTORU
   Map<String, dynamic> toMap() {
     return {
       'ad': ad,
@@ -90,5 +79,26 @@ class Dukkan {
       'komisyon_orani': komisyonOrani,
       'kayit_tarihi': FieldValue.serverTimestamp(),
     };
+  }
+
+  // 📥 FİREBASE'DEN ANALİTİK OKUMA MOTORU
+  factory Dukkan.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>? ?? {};
+
+    return Dukkan(
+      id: doc.id,
+      ad: data['ad'] ?? 'İSİMSİZ İŞLETME',
+      sehir: data['sehir'] ?? 'BELİRTİLMEDİ',
+      bolge: data['bolge'] ?? 'BELİRTİLMEDİ',
+      hizmetKategorisi: data['hizmet_kategorisi'] ?? 'Genel Servis',
+      puan: (data['puan'] ?? 5.0).toDouble(),
+      onayliMi: data['onayli_mi'] ?? false,
+      aktifMi: data['aktif_mi'] ?? false,
+      rozet: data['rozet'] ?? 'Bronz',
+      isVip: data['is_vip'] ?? false,
+      kullanilanIlanSayisi: (data['kullanilan_ilan_sayisi'] ?? 0).toInt(),
+      komisyonOrani: (data['komisyon_orani'] ?? 0.12).toDouble(),
+      kayitTarihi: (data['kayit_tarihi'] as Timestamp?)?.toDate() ?? DateTime.now(),
+    );
   }
 }

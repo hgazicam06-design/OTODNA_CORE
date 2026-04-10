@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// transaction_model.dart - Kuantum Siber Kasa ve Muhasebe Motoru
-
+/// 🦅 OTODNA KUANTUM SİBER KASA VE MUHASEBE MOTORU
+/// Bu model, her finansal işlemin (Parça satışı, Randevu, Abonelik) dijital kaydını tutar.
 class TransactionRecord {
   final String? id; // Firebase Document ID
   final String firmId;
@@ -9,9 +9,9 @@ class TransactionRecord {
   final String islemTipi; // Örn: "Yedek Parça Satışı", "Randevu Bedeli", "VIP Abonelik"
 
   // 💰 FİNANSAL BÖLÜNME (MUHASEBE MÜHRÜ)
-  final double toplamTutar; // Müşterinin kartından çekilen toplam para
-  final double otodnaPayi; // Bize kalan net kazanç (%12 Komisyon, Randevu Bedeli vb.)
-  final double esnafHakedisi; // Esnafın hesabına (IBAN'a) yatacak net para
+  final double toplamTutar; // Müşterinin ödediği brüt miktar
+  final double otodnaPayi; // Bizim payımız (%12 Standart veya %30 Murat Plaza / Sabit Bedel)
+  final double esnafHakedisi; // Esnafın hesabına aktarılacak net miktar
 
   final String durum; // 'Bekliyor', 'Onaylandı', 'Tamamlandı', 'İptal'
   final DateTime tarih;
@@ -28,7 +28,8 @@ class TransactionRecord {
     DateTime? tarih,
   }) : tarih = tarih ?? DateTime.now();
 
-  // 🚀 FİREBASE'E YAZMA MOTORU (İşlem Gerçekleştiği An Kilitlenir)
+  // 🚀 FİREBASE'E ATOMİK YAZMA MOTORU
+  // İşlem gerçekleştiği an veritabanına geri dönülemez şekilde mühürlenir.
   Map<String, dynamic> toMap() {
     return {
       'firm_id': firmId,
@@ -38,13 +39,14 @@ class TransactionRecord {
       'otodna_payi': otodnaPayi,
       'esnaf_hakedisi': esnafHakedisi,
       'durum': durum,
-      'tarih': FieldValue.serverTimestamp(),
+      'tarih': FieldValue.serverTimestamp(), // Sunucu saati ile kesin kayıt
     };
   }
 
-  // 📥 FİREBASE'DEN OKUMA MOTORU (Admin veya Esnaf Kendi Cüzdanına Baktığında)
+  // 📥 FİREBASE'DEN ANALİTİK OKUMA MOTORU
+  // Admin veya Esnaf cüzdanını açtığında veriler siber hızla dökülür.
   factory TransactionRecord.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    final data = doc.data() as Map<String, dynamic>? ?? {};
 
     return TransactionRecord(
       id: doc.id,

@@ -10,7 +10,7 @@ import '../widgets/asistan_widget.dart';
 import 'arac_kayit_screen.dart';
 import 'qr_public_screen.dart';
 
-// ── YARDIMCI SINIF ──
+// ── YARDIMCI SINIF (Siber Uyarı Kalemi) ──
 class _HatirlatmaItem {
   final String plaka;
   final String tur;
@@ -34,10 +34,10 @@ class AnaEkran extends StatefulWidget {
 
 class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
   // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET
-  final Color bgColor = const Color(0xFF000000); // Saf OLED Siyah
-  final Color surfaceColor = const Color(0xFF0A0A0A); // Ultra Koyu Mat Gri
-  final Color cardColor = const Color(0xFF111111); // Kart Rengi
-  final Color primaryCyan = const Color(0xFF00FFC2); // Kuantum Turkuazı
+  final Color bgColor = const Color(0xFF000000);
+  final Color surfaceColor = const Color(0xFF0A0A0A);
+  final Color cardColor = const Color(0xFF111111);
+  final Color primaryCyan = const Color(0xFF00FFC2);
 
   final _asistan = AsistanService();
   List<AracModel> _araclar = [];
@@ -51,7 +51,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
     super.initState();
     _pulseCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3), // Daha yavaş, premium nefes alma efekti
+      duration: const Duration(seconds: 3),
     )..repeat(reverse: true);
     _araclariYukle();
     _asistaniBaslat();
@@ -76,6 +76,8 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
       if (mounted) setState(() => _yukleniyor = false);
       return;
     }
+
+    // 🔥 GERÇEK VERİ AKIŞI: Firebase üzerinden araçları mühürlüyoruz
     final snap = await FirebaseFirestore.instance
         .collection('vehicles')
         .where('sahibiUid', isEqualTo: uid)
@@ -99,6 +101,13 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
       backgroundColor: bgColor,
       body: Stack(
         children: [
+          // Arka Plan Radar Izgarası Simülasyonu
+          Positioned.fill(
+            child: Opacity(
+              opacity: 0.03,
+              child: Image.asset('assets/images/radar_grid.png', fit: BoxFit.cover), // Eğer dosya yoksa siyah kalır, hata vermez
+            ),
+          ),
           SafeArea(
             child: Column(
               children: [
@@ -111,7 +120,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
               ],
             ),
           ),
-          // OtoDNA Asistanı (Görünmez Kalkan)
+          // 🛡️ OTODNA ASİSTANI (Görünmez Kalkan)
           AsistanWidget(ekran: 'ana_sayfa', asistan: _asistan),
         ],
       ),
@@ -119,7 +128,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
     );
   }
 
-  // ── 1. SİBER ÜST BAR (TESLA PROFİL ALANI) ──
+  // ── 1. SİBER ÜST BAR (Tesla Profil & Bildirim Hattı) ──
   Widget _buildUstBar() {
     final user = FirebaseAuth.instance.currentUser;
     final saat = DateTime.now().hour;
@@ -173,9 +182,10 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
   }
 
   Widget _ikonButon(IconData icon, VoidCallback onTap, {int badge = 0, bool isDanger = false}) {
-    Color ikonRengi = isDanger ? Colors.redAccent.withOpacity(0.8) : Colors.white70;
+    Color ikonRengi = isDanger ? Colors.redAccent : Colors.white70;
 
     return Stack(
+      clipBehavior: Clip.none,
       children: [
         GestureDetector(
           onTap: onTap,
@@ -191,7 +201,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
         ),
         if (badge > 0)
           Positioned(
-            right: -2, top: -2,
+            right: -4, top: -4,
             child: Container(
               padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(color: primaryCyan, shape: BoxShape.circle, border: Border.all(color: bgColor, width: 2)),
@@ -202,11 +212,14 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
     );
   }
 
-  // ── 2. İÇERİK MOTORU ──
+  // ── 2. İÇERİK MOTORU (Sekme Yönetimi) ──
   Widget _buildIcerik() {
-    if (_aktifTab == 0) return _buildAnaSayfa();
-    if (_aktifTab == 1) return const Center(child: Text("ARAÇLARIM: YAKINDA", style: TextStyle(color: Colors.white38, letterSpacing: 2)));
-    return const Center(child: Text("AYARLAR: YAKINDA", style: TextStyle(color: Colors.white38, letterSpacing: 2)));
+    switch (_aktifTab) {
+      case 0: return _buildAnaSayfa();
+      case 1: return _buildGarajSayfasi();
+      case 2: return _buildAyarlarSayfasi();
+      default: return _buildAnaSayfa();
+    }
   }
 
   Widget _buildAnaSayfa() => RefreshIndicator(
@@ -218,12 +231,55 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
       padding: const EdgeInsets.fromLTRB(24, 8, 24, 120),
       children: [
         if (_araclar.isEmpty) _buildAracYokKarti() else ...[
-          for (final arac in _araclar) _buildAracKarti(arac),
+          // En son eklenen veya muayenesi en yakın aracı öne çıkarıyoruz
+          _buildAracKarti(_araclar.first),
         ],
         const SizedBox(height: 32),
         _buildHizliErisim(),
         const SizedBox(height: 32),
         _buildHatirlatmalar(),
+      ],
+    ),
+  );
+
+  Widget _buildGarajSayfasi() => ListView(
+    physics: const BouncingScrollPhysics(),
+    padding: const EdgeInsets.fromLTRB(24, 8, 24, 120),
+    children: [
+      _bolumBasligi('TÜM ARAÇLARINIZ'),
+      const SizedBox(height: 16),
+      if (_araclar.isEmpty) _buildAracYokKarti() else
+        for (final arac in _araclar) _buildAracKarti(arac),
+    ],
+  );
+
+  Widget _buildAyarlarSayfasi() => ListView(
+    padding: const EdgeInsets.all(24),
+    children: [
+      _bolumBasligi('HESAP AYARLARI'),
+      const SizedBox(height: 20),
+      _ayarlarSatiri(Icons.person_outline, "Profil Bilgileri"),
+      _ayarlarSatiri(Icons.security_outlined, "Güvenlik Duvarı"),
+      _ayarlarSatiri(Icons.language_outlined, "Bölge/Dil: Türkiye"),
+      const SizedBox(height: 32),
+      _bolumBasligi('SİSTEM'),
+      const SizedBox(height: 20),
+      _ayarlarSatiri(Icons.info_outline, "Versiyon 1.0.4-Kuantum"),
+      _ayarlarSatiri(Icons.bug_report_outlined, "Hata Raporla", isDanger: true),
+    ],
+  );
+
+  Widget _ayarlarSatiri(IconData icon, String title, {bool isDanger = false}) => Container(
+    margin: const EdgeInsets.only(bottom: 12),
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16)),
+    child: Row(
+      children: [
+        Icon(icon, color: isDanger ? Colors.redAccent : primaryCyan, size: 20),
+        const SizedBox(width: 16),
+        Text(title, style: TextStyle(color: isDanger ? Colors.redAccent : Colors.white, fontWeight: FontWeight.bold)),
+        const Spacer(),
+        const Icon(Icons.arrow_forward_ios, color: Colors.white10, size: 14),
       ],
     ),
   );
@@ -296,7 +352,6 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Araç İkonu
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withOpacity(0.05))),
@@ -309,7 +364,6 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
                   children: [
                     Text('${a.marka} ${a.model}'.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: -0.5), overflow: TextOverflow.ellipsis),
                     const SizedBox(height: 6),
-                    // TR Plaka (Minimal)
                     Row(
                       children: [
                         Container(
@@ -324,7 +378,6 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
                   ],
                 ),
               ),
-              // QR İkonu (Kuantum)
               GestureDetector(
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => QrPublicScreen(saseNo: a.saseNo))),
                 child: Container(
@@ -337,7 +390,6 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
           ),
         ),
 
-        // Siber Kalan Gün Çipleri
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Row(
@@ -352,7 +404,6 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
         ),
         const SizedBox(height: 24),
 
-        // Şasi Kopyalama Alt Barı (Terminal Stili)
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           decoration: BoxDecoration(color: surfaceColor, borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)), border: Border(top: BorderSide(color: Colors.white.withOpacity(0.02)))),
@@ -372,6 +423,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
               GestureDetector(
                 onTap: () {
                   Clipboard.setData(ClipboardData(text: a.saseNo));
+                  HapticFeedback.mediumImpact();
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Siber Genetik Kod Kopyalandı', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)), backgroundColor: primaryCyan));
                 },
                 child: const Icon(Icons.copy_rounded, color: primaryCyan, size: 18),
@@ -503,7 +555,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
     return Text(baslik, style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2));
   }
 
-  // ── 7. ALT MENÜ VE NAVİGASYON (Siber Bar) ──
+  // ── 7. ALT NAVİGASYON (Siber Bar) ──
   Widget _buildAltNav() {
     return Container(
       decoration: BoxDecoration(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart'; // Tarih formatlama için
+import 'package:intl/intl.dart';
 
-// ---------------------------------------------------------
-// 1. KUANTUM EKSPERTİZ RAPORU VERİ MODELİ (FİREBASE UYUMLU)
-// ---------------------------------------------------------
+/// 🦅 OTODNA KUANTUM EKSPERTİZ RAPORU VE SİBER SİCİL MODELİ
+/// Bu model, aracın DNA skorunu belirleyen teknik verileri ve finansal komisyonları yönetir.
+
 class OtoDNAReport {
   final String? id; // Firebase Document ID
   final String raporNo; // Örn: OTODNA-7823
@@ -17,7 +17,7 @@ class OtoDNAReport {
 
   // 🚨 SİBER GÜVENLİK VE FİNANS MOTORU
   final bool kritikHataVarMi; // Usta Kırmızı X attıysa true olur
-  final double ekspertizUcreti; // Ekspertiz için alınan para
+  final double ekspertizUcreti; // Ekspertiz bedeli
   final double komisyonOrani; // Murat Plaza %30, diğerleri %12
 
   final DateTime ekspertizTarihi;
@@ -35,33 +35,36 @@ class OtoDNAReport {
     DateTime? ekspertizTarihi,
   }) : ekspertizTarihi = ekspertizTarihi ?? DateTime.now();
 
-  // 🚀 FİREBASE'E YAZMA MOTORU (Usta Raporu Onayladığı An)
+  // 🚀 FİREBASE'E ATOMİK YAZMA MOTORU
   Map<String, dynamic> toMap() {
+    // Kuantum Finans Kuralı Uygulanıyor
+    final double uygulananOran = bayiAdi.trim().toLowerCase() == "murat plaza" ? 0.30 : 0.12;
+
     return {
       'rapor_no': raporNo,
-      'sase_no': saseNo,
+      'sase_no': saseNo.toUpperCase(),
       'bayi_adi': bayiAdi,
       'motor_performans': motorPerformans,
       'kaporta_durumu': kaportaDurumu,
       'kritik_hata_var_mi': kritikHataVarMi,
       'ekspertiz_ucreti': ekspertizUcreti,
-      // 💰 FİNANS KALKANI: Ekspertizden gelen paranın komisyonu
-      'komisyon_orani': bayiAdi == "Murat Plaza" ? 0.30 : komisyonOrani,
-      'gazi_payi': ekspertizUcreti * (bayiAdi == "Murat Plaza" ? 0.30 : komisyonOrani),
+      // 💰 GAZİ KASASI: Rapor onaylandığı an payın hesaplanıp mühürlenir.
+      'komisyon_orani': uygulananOran,
+      'gazi_payi': ekspertizUcreti * uygulananOran,
       'ekspertiz_tarihi': FieldValue.serverTimestamp(),
     };
   }
 
-  // 📥 FİREBASE'DEN OKUMA MOTORU (Kullanıcı Rapor Geçmişini Açtığında)
+  // 📥 FİREBASE'DEN ANALİTİK OKUMA MOTORU
   factory OtoDNAReport.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    final data = doc.data() as Map<String, dynamic>? ?? {};
     return OtoDNAReport(
       id: doc.id,
       raporNo: data['rapor_no'] ?? 'OTODNA-XXXX',
       saseNo: data['sase_no'] ?? 'Bilinmiyor',
       bayiAdi: data['bayi_adi'] ?? 'Belirtilmedi',
-      motorPerformans: data['motor_performans'] ?? 0,
-      kaportaDurumu: data['kaporta_durumu'] ?? {},
+      motorPerformans: (data['motor_performans'] ?? 0).toInt(),
+      kaportaDurumu: Map<String, dynamic>.from(data['kaporta_durumu'] ?? {}),
       kritikHataVarMi: data['kritik_hata_var_mi'] ?? false,
       ekspertizUcreti: (data['ekspertiz_ucreti'] ?? 0).toDouble(),
       komisyonOrani: (data['komisyon_orani'] ?? 0.12).toDouble(),
@@ -71,111 +74,158 @@ class OtoDNAReport {
 }
 
 // ---------------------------------------------------------
-// 2. OTODNA MÜHÜRLÜ RAPOR TASARIMI (CANLI WIDGET)
+// 2. OTODNA MÜHÜRLÜ RAPOR TASARIMI (SİBER CAM EFEKTİ)
 // ---------------------------------------------------------
 class TeknikRaporKart extends StatelessWidget {
   final OtoDNAReport rapor;
 
   const TeknikRaporKart({super.key, required this.rapor});
 
-  // Siber Renk Paleti
-  static const _neonGreen = Color(0xFF00FFCC);
-  static const _cyberCard = Color(0xFF1E1E2E);
+  // Kuantum Renk Paleti
+  static const _neonTurkuaz = Color(0xFF00FFCC);
+  static const _derinKarargahSiyahi = Color(0xFF0A0E14);
+  static const _siberKartRengi = Color(0xFF161B22);
 
   @override
   Widget build(BuildContext context) {
-    // Kırmızı X Alarmı Kontrolü
     bool alarm = rapor.kritikHataVarMi;
-    String tarihStr = DateFormat('dd.MM.yyyy - HH:mm').format(rapor.ekspertizTarihi);
+    String tarihStr = DateFormat('dd.MM.yyyy').format(rapor.ekspertizTarihi);
 
-    return Card(
-      color: _cyberCard,
-      elevation: 8,
-      shadowColor: alarm ? Colors.redAccent.withOpacity(0.4) : _neonGreen.withOpacity(0.2),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-        side: BorderSide(color: alarm ? Colors.redAccent : _neonGreen.withOpacity(0.5), width: 1.5),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      decoration: BoxDecoration(
+        color: _siberKartRengi,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: alarm ? Colors.redAccent.withOpacity(0.5) : _neonTurkuaz.withOpacity(0.3),
+          width: 2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: alarm ? Colors.redAccent.withOpacity(0.1) : _neonTurkuaz.withOpacity(0.05),
+            blurRadius: 15,
+            spreadRadius: 2,
+          )
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Column(
+          children: [
+            // 🛡️ ÜST PANEL: DURUM MÜHÜRÜ
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              color: alarm ? Colors.redAccent.withOpacity(0.2) : _neonTurkuaz.withOpacity(0.1),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "RAPOR #${rapor.raporNo}",
+                    style: const TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        alarm ? Icons.dangerous : Icons.verified_user,
+                        color: alarm ? Colors.redAccent : _neonTurkuaz,
+                        size: 18,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        alarm ? "KRİTİK RİSK" : "DNA ONAYLI",
+                        style: TextStyle(
+                          color: alarm ? Colors.redAccent : _neonTurkuaz,
+                          fontWeight: FontWeight.black,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            // 🚘 ANA VERİ ALANI
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          rapor.saseNo,
+                          style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 2),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          "Bayi: ${rapor.bayiAdi}",
+                          style: TextStyle(color: Colors.grey[400], fontSize: 13),
+                        ),
+                        Text(
+                          "Tarih: $tarihStr",
+                          style: TextStyle(color: Colors.grey[600], fontSize: 11),
+                        ),
+                      ],
+                    ),
+                  ),
+                  _buildMotorSkoru(rapor.motorPerformans, alarm),
+                ],
+              ),
+            ),
+
+            const Divider(color: Colors.white10, height: 1),
+
+            // 🛠️ KAPORTA ANALİZ RADARI (Dinamik Wrap)
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: rapor.kaportaDurumu.entries.map((e) => _buildParcaChip(e.key, e.value)).toList(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMotorSkoru(int skor, bool isAlarm) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: isAlarm ? Colors.redAccent : _neonTurkuaz, width: 2),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 🛡️ BAŞLIK VE SİBER MÜHÜR
-          Container(
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: alarm ? Colors.red[900] : Colors.blueGrey[900],
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("TEKNİK RAPOR #${rapor.raporNo}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                Row(
-                  children: [
-                    Text(alarm ? "AĞIR HASAR" : "OTODNA ONAYLI", style: TextStyle(color: alarm ? Colors.white : _neonGreen, fontSize: 10, fontWeight: FontWeight.bold)),
-                    const SizedBox(width: 6),
-                    Icon(alarm ? Icons.warning_amber_rounded : Icons.verified, color: alarm ? Colors.white : _neonGreen, size: 20),
-                  ],
-                ),
-              ],
-            ),
-          ),
-
-          // 🚘 ARAÇ TEMEL BİLGİLERİ
-          ListTile(
-            title: Text("Şase: ${rapor.saseNo}", style: const TextStyle(color: Colors.white, fontSize: 14)),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 4),
-                Text("Tarih: $tarihStr", style: const TextStyle(color: Colors.grey, fontSize: 12)),
-                Text("Raporlayan: ${rapor.bayiAdi}", style: const TextStyle(color: Colors.grey, fontSize: 12)),
-              ],
-            ),
-            trailing: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Motor", style: TextStyle(color: Colors.grey, fontSize: 10)),
-                Text("%${rapor.motorPerformans}", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: alarm ? Colors.redAccent : Colors.blueAccent)),
-              ],
-            ),
-          ),
-
-          const Divider(color: Colors.white12),
-
-          // 🛠️ KAPORTA DİNAMİK ÖZETİ (Firebase'den Akacak)
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: rapor.kaportaDurumu.entries.map((entry) {
-                // Duruma göre parça rengini belirle
-                Color chipColor;
-                String durum = entry.value.toString().toLowerCase();
-                if (durum.contains("orijinal")) {
-                  chipColor = _neonGreen.withOpacity(0.2);
-                } else if (durum.contains("boyalı")) {
-                  chipColor = Colors.orangeAccent.withOpacity(0.2);
-                } else if (durum.contains("değişen")) {
-                  chipColor = Colors.redAccent.withOpacity(0.2);
-                } else {
-                  chipColor = Colors.white10;
-                }
-
-                return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: chipColor,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: chipColor.withOpacity(0.5)),
-                  ),
-                  child: Text("${entry.key}: ${entry.value}", style: const TextStyle(color: Colors.white, fontSize: 12)),
-                );
-              }).toList(),
-            ),
-          ),
+          const Text("MOTOR", style: TextStyle(color: Colors.white70, fontSize: 8, fontWeight: FontWeight.bold)),
+          Text("%$skor", style: TextStyle(color: isAlarm ? Colors.redAccent : _neonTurkuaz, fontSize: 20, fontWeight: FontWeight.black)),
         ],
+      ),
+    );
+  }
+
+  Widget _buildParcaChip(String parca, String durum) {
+    Color durumRenk;
+    String d = durum.toLowerCase();
+    if (d.contains("orijinal")) durumRenk = _neonTurkuaz;
+    else if (d.contains("boya")) durumRenk = Colors.orangeAccent;
+    else if (d.contains("değiş")) durumRenk = Colors.redAccent;
+    else durumRenk = Colors.white54;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: durumRenk.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: durumRenk.withOpacity(0.3)),
+      ),
+      child: Text(
+        "$parca: $durum",
+        style: TextStyle(color: durumRenk, fontSize: 11, fontWeight: FontWeight.w500),
       ),
     );
   }
