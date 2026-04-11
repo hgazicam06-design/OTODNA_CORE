@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// 🦅 OTODNA SİBER PROTOKOL MERKEZİ
+/// [2026-03-28] GÜNCELLEME: Finansal %12 Kuralı ve Karaliste Yasakları İşlendi.
 class KurallarScreen extends StatelessWidget {
   const KurallarScreen({super.key});
 
@@ -22,14 +24,20 @@ class KurallarScreen extends StatelessWidget {
         ),
         title: const Text(
           "SİBER SÖZLEŞME VE PROTOKOLLER",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w900,
+            fontSize: 11,
+            letterSpacing: 2,
+            fontFamily: 'Avenir',
+          ),
         ),
         centerTitle: true,
       ),
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 800), // 🖥️ Web / Double Teyp Kalkanı
+            constraints: const BoxConstraints(maxWidth: 800), // 🖥️ Web / Geniş Ekran Kalkanı
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24.0),
               physics: const BouncingScrollPhysics(),
@@ -44,7 +52,13 @@ class KurallarScreen extends StatelessWidget {
                         shape: BoxShape.circle,
                         color: surfaceColor,
                         border: Border.all(color: primaryCyan.withOpacity(0.5), width: 2),
-                        boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.15), blurRadius: 40, spreadRadius: 10)],
+                        boxShadow: [
+                          BoxShadow(
+                              color: primaryCyan.withOpacity(0.15),
+                              blurRadius: 40,
+                              spreadRadius: 10
+                          )
+                        ],
                       ),
                       child: const Icon(Icons.gavel, color: primaryCyan, size: 64),
                     ),
@@ -53,13 +67,25 @@ class KurallarScreen extends StatelessWidget {
                   const Text(
                     'OTODNA DİJİTAL REFERANS PROTOKOLÜ',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 2,
+                        fontFamily: 'Avenir'
+                    ),
                   ),
                   const SizedBox(height: 12),
                   const Text(
-                    'Aşağıdaki kurallar, Kuantum Ağına bağlanan tüm Bireysel Sürücüler ve Yetkili Bayiler için bağlayıcıdır. Sistemi kullanan herkes bu şartları peşinen kabul etmiş sayılır.',
+                    'Kuantum Ağına bağlanan tüm Sürücüler ve Bayiler için bağlayıcıdır. Sistemi kullanan herkes bu mühürlü şartları kabul etmiş sayılır.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.6, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: Colors.white54,
+                        fontSize: 11,
+                        height: 1.6,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Avenir'
+                    ),
                   ),
                   const SizedBox(height: 48),
 
@@ -68,31 +94,37 @@ class KurallarScreen extends StatelessWidget {
                     icon: Icons.memory,
                     title: '1. SİSTEMİN İŞLEYİŞİ VE DNA SKORU',
                     color: primaryCyan,
-                    content: 'OtoDNA, araçların seceresini tutan ve donanımını koruyan dijital bir zırhtır. Sisteme kaydedilen her araca bir "DNA Skoru (0-100)" atanır. Ekspertiz, bakım ve hasar durumları bu skoru doğrudan etkiler. Sistemin amacı şeffaf, manipüle edilemez bir dijital araç kimliği oluşturmaktır.',
+                    content: 'OtoDNA, araç seceresini manipüle edilemez şekilde dijital zırha alır. Her araca atanan "DNA Skoru (0-100)", usta onaylı fotoğraflar ve videolarla desteklenen gerçek verilerle güncellenir.',
                   ),
 
-                  // 💰 BÖLÜM 2: FİNANS VE TİCARİ KURALLAR (%12 Komisyon Zırhı)
+                  // 💰 BÖLÜM 2: FİNANS VE TİCARİ KURALLAR
                   _buildRuleCard(
                     icon: Icons.account_balance,
-                    title: '2. FİNANS VE KOMİSYON PROTOKOLÜ',
+                    title: '2. FİNANS VE %12 KOMİSYON ZIRHI',
                     color: Colors.amber,
-                    content: '• Servis / Tamir İşlemleri: Ustaların el emeğinden ve işçilik faturasından KESİNLİKLE KOMİSYON ALINMAZ. Sistem sadece randevu hizmet bedeli talep eder.\n\n• Oto Market: Kuantum Ağı üzerinden satılan her fiziksel yedek parça ve araçtan Kasa Payı (%10) + Vergi Fonu (%2) olmak üzere toplam %12 net komisyon kesilir.\n\n• Limitler: Standart kullanıcılar ve firmalar maksimum 10 ilan yükleyebilir. Sınırsız ilan ve toplu dosya (PDF/Excel) yükleme hakkı sadece "VIP Rozetli" yetkili bayilere (Örn: Murat Plaza) aittir.',
+                    content: '• Servis İşlemleri: Ustaların işçilik bedelinden komisyon alınmaz.\n'
+                        '• Siber Pazar: Satılan her ürün ve parçadan %10 Karargah Payı + %2 Vergi olmak üzere toplam %12 komisyon kesilir.\n'
+                        '• İlan Limitleri: Standart bayiler 10 ilanla sınırlıdır. VIP Bayiler (Murat Plaza vb.) sınırsız mühürleme hakkına sahiptir.',
                   ),
 
                   // 🚨 BÖLÜM 3: KESİN YASAKLAR VE KARALİSTE
                   _buildRuleCard(
                     icon: Icons.block,
-                    title: '3. KESİN YASAKLAR (KIRMIZI ÇİZGİLER)',
+                    title: '3. KARALİSTE (BLACKLIST) KRİTERLERİ',
                     color: dangerColor,
-                    content: 'Aşağıdaki eylemlerin tespiti halinde Siber Güvenlik Duvarı devreye girer ve hesabınız anında KARALİSTEYE (Blacklist) alınarak Kuantum Ağından sınırsız uzaklaştırılır:\n\n1. Kilometre (Odometer) Düşürme veya sahte ekspertiz raporu yükleme.\n2. Sistem dışından (komisyonu aşmak için) gizli ticaret yapmaya çalışmak.\n3. SOS (Acil Durum) Mega Protokolünü asılsız yere meşgul etmek.\n4. Bayilerin 30 dakikalık kritik müdahale süresini mazeretsiz ihlal etmesi.\n5. Çalıntı veya ağır hasar kayıtlı (Pert) araçları kusursuz gibi vitrine koymak.',
+                    content: 'Aşağıdaki ihlallerde hesap anında süresiz olarak kapatılır:\n'
+                        '1. Kilometre (Odometer) manipülasyonu veya sahte rapor.\n'
+                        '2. SOS Mega Protokolünü asılsız yere meşgul etmek.\n'
+                        '3. Bayilerin 30 dakikalık acil müdahale süresini mazeretsiz aşması.\n'
+                        '4. Ağ dışından gizli ticaret teşebbüsü.',
                   ),
 
                   // ⚖️ BÖLÜM 4: HUKUKİ YÜKÜMLÜLÜK
                   _buildRuleCard(
                     icon: Icons.policy,
-                    title: '4. ULUSAL ÇAPRAZ GARANTİ SÖZLEŞMESİ',
+                    title: '4. ULUSAL ÇAPRAZ GARANTİ',
                     color: Colors.blueAccent,
-                    content: 'Sisteme dahil olan her Bayi, OtoDNA Kuantum Ağı üzerinden yaptığı işlemlerde müşteriye "Ulusal Çapraz Garanti" vermekle yükümlüdür. İşlem sonrası doğacak mağduriyetlerden yetkili bayi tam sorumludur.',
+                    content: 'Sisteme dahil olan her Bayi, OtoDNA üzerinden yapılan işlemlerde müşteriye "Ulusal Çapraz Garanti" vermek zorundadır. Yapılan her işlemin altında ustanın dijital imzası bulunur.',
                   ),
 
                   const SizedBox(height: 32),
@@ -110,13 +142,10 @@ class KurallarScreen extends StatelessWidget {
                       ),
                       icon: const Icon(Icons.verified_user, size: 24),
                       label: const Text(
-                        'PROTOKOLÜ ANLADIM VE KABUL EDİYORUM',
-                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+                        'PROTOKOLÜ ANLADIM VE MÜHÜRLÜYORUM',
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir'),
                       ),
-                      onPressed: () {
-                        // Kuantum ağına mühür vurulup önceki sayfaya dönülür
-                        Navigator.pop(context);
-                      },
+                      onPressed: () => Navigator.pop(context),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -160,7 +189,7 @@ class KurallarScreen extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+                  style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir'),
                 ),
               ),
             ],
@@ -171,7 +200,7 @@ class KurallarScreen extends StatelessWidget {
           ),
           Text(
             content,
-            style: const TextStyle(color: Colors.white70, fontSize: 12, height: 1.6, fontWeight: FontWeight.bold),
+            style: const TextStyle(color: Colors.white70, fontSize: 12, height: 1.6, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
           ),
         ],
       ),

@@ -12,7 +12,7 @@ import 'admin_onay_havuzu_screen.dart';
 import '../../admin/admin_dash_ui.dart';
 import 'bayi_itibar_merkezi_screen.dart';
 import '../bayi_yonetim_merkezi_screen.dart';
-import '../bolge_komuta_merkezi_screen.dart';
+import '../../services/bolge_komuta_merkezi_screen.dart';
 import '../mega_revizyon_screen.dart';
 import '../bayi_paneli.dart';
 import '../kullanici_yonetim_screen.dart';

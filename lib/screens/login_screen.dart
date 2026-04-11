@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'home/home_screen.dart';
-import 'register_screen.dart';
+import 'home_screen.dart'; // Karargah ana ekranı
+import 'register_screen.dart'; // Kayıt protokolü
 import 'dart:ui'; // Siber-cam efekti için gerekli
 
+/// 🦅 OTODNA SİBER GİRİŞ KALKANI - V2
+/// [2026-03-28] GÜNCELLEME: Firebase Gerçek Zamanlı Kimlik Doğrulama ve Glassmorphism
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -21,8 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _sifreController = TextEditingController();
 
   bool _isProcessing = false;
-  bool _sifreGizli = true; // Şifre görünürlüğü için siber göz kontrolü
-  bool _isKullaniciGirisi = true; // Segmented Control (Kullanıcı/Bayi) durumu
+  bool _sifreGizli = true; // Siber Göz (Şifre Görünürlüğü)
+  bool _isKullaniciGirisi = true; // Segmented Control Durumu
 
   @override
   void dispose() {
@@ -44,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isProcessing = true);
 
     try {
-      // Kuantum Ağına Kimlik Doğrulaması (Kullanıcı ve Bayi ayrımı Firestore tarafında HomeScreen'de yapılacak)
+      // Kuantum Ağına Bağlantı Kuruluyor
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: sifre,
@@ -53,6 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted) return;
       _uyariGoster("KİMLİK DOĞRULANDI: MERKEZ KARARGAHA GİRİLİYOR... 🦅");
 
+      // Başarılı Giriş: Ana Karargaha Yönlendir
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
@@ -62,12 +65,12 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted) return;
       String hataMesaji = "AĞ ERİŞİMİ REDDEDİLDİ.";
       if (e.code == 'user-not-found' || e.code == 'wrong-password' || e.code == 'invalid-credential') {
-        hataMesaji = "GEÇERSİZ KİMLİK VEYA SİFRE!";
+        hataMesaji = "GEÇERSİZ KİMLİK VEYA ŞİFRE!";
       }
       _uyariGoster(hataMesaji, isError: true);
     } catch (e) {
       if (!mounted) return;
-      _uyariGoster("SİSTEM HATASI: Kuantum bağlantısı koptu.", isError: true);
+      _uyariGoster("SİSTEM HATASI: Bağlantı koptu.", isError: true);
     } finally {
       if (mounted) setState(() => _isProcessing = false);
     }
@@ -76,10 +79,10 @@ class _LoginScreenState extends State<LoginScreen> {
   void _uyariGoster(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 0.5, color: Colors.black)),
+        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0.5, color: Colors.black, fontSize: 11)),
         backgroundColor: isError ? dangerColor : primaryCyan,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
@@ -91,29 +94,8 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // --- ÜST KOMUTA MERKEZİ (HEADER) ---
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(Icons.notifications_none, color: primaryCyan, size: 28),
-                  Column(
-                    children: [
-                      const Text(
-                        "OtoDNA",
-                        style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 1.5),
-                      ),
-                      Text(
-                        "Siber Karargah",
-                        style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontWeight: FontWeight.w500, letterSpacing: 1),
-                      ),
-                    ],
-                  ),
-                  const Icon(Icons.account_circle_outlined, color: primaryCyan, size: 28),
-                ],
-              ),
-            ),
+            // --- ÜST KOMUTA MERKEZİ ---
+            _buildHeader(),
 
             Expanded(
               child: Center(
@@ -126,175 +108,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        // --- SİBER CAM PANEL İÇİNDE GİRİŞ ZIRHI ---
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(24),
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0), // Glassmorphism efekti
-                            child: Container(
-                              padding: const EdgeInsets.all(32),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.05),
-                                borderRadius: BorderRadius.circular(24),
-                                border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
-                              ),
-                              child: Column(
-                                children: [
-                                  // --- 1. İKİLİ GİRİŞ SİSTEMİ (SEGMENTED CONTROL) ---
-                                  Container(
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.5),
-                                      borderRadius: BorderRadius.circular(25),
-                                      border: Border.all(color: Colors.white.withOpacity(0.05)),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () => setState(() => _isKullaniciGirisi = true),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: _isKullaniciGirisi ? Colors.transparent : Colors.transparent,
-                                                borderRadius: BorderRadius.circular(25),
-                                                border: _isKullaniciGirisi ? Border.all(color: primaryCyan, width: 1.5) : null,
-                                              ),
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                "Kullanıcı",
-                                                style: TextStyle(
-                                                  color: _isKullaniciGirisi ? primaryCyan : Colors.white54,
-                                                  fontWeight: _isKullaniciGirisi ? FontWeight.w800 : FontWeight.w500,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () => setState(() => _isKullaniciGirisi = false),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: !_isKullaniciGirisi ? Colors.transparent : Colors.transparent,
-                                                borderRadius: BorderRadius.circular(25),
-                                                border: !_isKullaniciGirisi ? Border.all(color: primaryCyan, width: 1.5) : null,
-                                              ),
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                "Yetkili Bayi",
-                                                style: TextStyle(
-                                                  color: !_isKullaniciGirisi ? primaryCyan : Colors.white54,
-                                                  fontWeight: !_isKullaniciGirisi ? FontWeight.w800 : FontWeight.w500,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 32),
-
-                                  // --- SİBER KİMLİK HİTABI ---
-                                  const Text(
-                                    "İyi Günler,\nSiber Komutan Gazi Çam",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600, height: 1.3),
-                                  ),
-                                  const SizedBox(height: 32),
-
-                                  // --- 2. GİRİŞ KUTULARI (EMAİL VE ŞİFRE) ---
-                                  _buildSiberTextField(
-                                    controller: _emailController,
-                                    icon: Icons.person_outline,
-                                    hint: _isKullaniciGirisi ? "E-Posta Adresi" : "Bayi Kodu / E-Posta",
-                                  ),
-                                  const SizedBox(height: 16),
-
-                                  // Siber Göz (Şifre Göster/Gizle) içeren Şifre Kutusu
-                                  _buildSiberTextField(
-                                    controller: _sifreController,
-                                    icon: Icons.lock_outline,
-                                    hint: "Kuantum Şifre",
-                                    isPassword: true,
-                                    sifreGizli: _sifreGizli,
-                                    onVisibilityToggle: () {
-                                      setState(() {
-                                        _sifreGizli = !_sifreGizli;
-                                      });
-                                    },
-                                  ),
-                                  const SizedBox(height: 24),
-
-                                  // --- 3. ŞİFREMİ UNUTTUM / BENİ HATIRLA ---
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      TextButton(
-                                        onPressed: () {
-                                          _uyariGoster("ŞİFRE SIFIRLAMA PROTOKOLÜ BAŞLATILIYOR...");
-                                        },
-                                        style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: const Size(50, 30), tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-                                        child: const Text("Şifremi Unuttum", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w500)),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          _uyariGoster("CİHAZ HAFIZAYA ALINIYOR...");
-                                        },
-                                        style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: const Size(50, 30), tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-                                        child: const Text("Beni Hatırla", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w500)),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 32),
-
-                                  // --- 4. ATEŞLEME (GİRİŞ YAP) BUTONU ---
-                                  SizedBox(
-                                    width: double.infinity,
-                                    height: 56,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.transparent,
-                                        foregroundColor: primaryCyan,
-                                        elevation: 0,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(16),
-                                            side: const BorderSide(color: primaryCyan, width: 1.5)
-                                        ),
-                                      ),
-                                      onPressed: _isProcessing ? null : _girisYap,
-                                      child: _isProcessing
-                                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: primaryCyan, strokeWidth: 2))
-                                          : const Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text("Giriş Yap", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                          SizedBox(width: 8),
-                                          Icon(Icons.lock_open, size: 18),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-
+                        // --- SİBER CAM PANEL ---
+                        _buildGlassCard(),
                         const SizedBox(height: 32),
                         // --- KAYIT OL BAĞLANTISI ---
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text("Ağa henüz kayıtlı değil misin? ", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w500)),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
-                              },
-                              child: const Text("Kayıt Ol", style: TextStyle(color: primaryCyan, fontSize: 12, fontWeight: FontWeight.w700)),
-                            ),
-                          ],
-                        )
+                        _buildRegisterLink(),
                       ],
                     ),
                   ),
@@ -302,103 +120,187 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
 
-            // --- ALT KOMUTA MERKEZİ (SADE, KURUMSAL, JET QR) ---
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.02),
-                border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05))),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildBottomNavIcon(Icons.build_circle_outlined, "Parça\nTedarik"),
-                  _buildBottomNavIcon(Icons.home_repair_service_outlined, "Siber\nServis"),
-
-                  // Merkez Jet QR
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: primaryCyan, width: 1.5),
-                          boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.3), blurRadius: 15, spreadRadius: 1)],
-                        ),
-                        child: const Icon(Icons.qr_code_scanner, color: primaryCyan, size: 28),
-                      ),
-                      const SizedBox(height: 4),
-                      const Text("Jet QR", style: TextStyle(color: primaryCyan, fontSize: 10, fontWeight: FontWeight.w700)),
-                    ],
-                  ),
-
-                  _buildBottomNavIcon(Icons.pie_chart_outline, "Kuantum\nAnalizler"),
-                  _buildBottomNavIcon(Icons.touch_app_outlined, "Operasyon\nKontrol"),
-                ],
-              ),
-            ),
+            // --- ALT KOMUTA MERKEZİ (QR VE ANALİZLER) ---
+            _buildBottomNav(),
           ],
         ),
       ),
     );
   }
 
-  // 💎 YARDIMCI BİLEŞEN: SİBER TEXTFIELD (Siber Göz ile)
-  Widget _buildSiberTextField({
-    required TextEditingController controller,
-    required IconData icon,
-    required String hint,
-    bool isPassword = false,
-    bool sifreGizli = false,
-    VoidCallback? onVisibilityToggle
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.4),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white.withOpacity(0.1))
+  Widget _buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Icon(Icons.notifications_none, color: primaryCyan, size: 28),
+          const Column(
+            children: [
+              Text("OtoDNA", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+              Text("Siber Karargah", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w500, letterSpacing: 2)),
+            ],
+          ),
+          Icon(Icons.security, color: primaryCyan.withOpacity(0.5), size: 28),
+        ],
       ),
-      child: TextField(
-        controller: controller,
-        obscureText: isPassword && sifreGizli,
-        keyboardType: isPassword ? TextInputType.text : TextInputType.emailAddress,
-        style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
-        decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: Colors.white54, size: 20),
-          suffixIcon: isPassword
-              ? IconButton(
-            icon: Icon(sifreGizli ? Icons.visibility_off : Icons.visibility, color: primaryCyan, size: 20), // Kurumsal Siber Göz
-            onPressed: onVisibilityToggle,
-          )
-              : null,
-          hintText: hint,
-          hintStyle: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 13, fontWeight: FontWeight.w400),
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: primaryCyan, width: 1.5),
+    );
+  }
+
+  Widget _buildGlassCard() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(24),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
+        child: Container(
+          padding: const EdgeInsets.all(32),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.03),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: Colors.white.withOpacity(0.08), width: 1),
+          ),
+          child: Column(
+            children: [
+              // Segmented Control (Kullanıcı / Bayi)
+              _buildSegmentedControl(),
+              const SizedBox(height: 32),
+              const Text("HOŞ GELDİNİZ\nKOMUTAN GAZİ", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1)),
+              const SizedBox(height: 32),
+              _buildSiberTextField(controller: _emailController, icon: Icons.alternate_email, hint: "AĞ ADRESİ (E-POSTA)"),
+              const SizedBox(height: 16),
+              _buildSiberTextField(
+                controller: _sifreController,
+                icon: Icons.vpn_key_outlined,
+                hint: "SİBER ŞİFRE",
+                isPassword: true,
+                sifreGizli: _sifreGizli,
+                onVisibilityToggle: () => setState(() => _sifreGizli = !_sifreGizli),
+              ),
+              const SizedBox(height: 40),
+              _buildAteslemeButonu(),
+            ],
           ),
         ),
       ),
     );
   }
 
-  // 💎 YARDIMCI BİLEŞEN: ALT MENÜ İKONLARI
-  Widget _buildBottomNavIcon(IconData icon, String label) {
+  Widget _buildSegmentedControl() {
+    return Container(
+      height: 44,
+      decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(22), border: Border.all(color: Colors.white10)),
+      child: Row(
+        children: [
+          _buildSegmentTab("Kullanıcı", _isKullaniciGirisi, () => setState(() => _isKullaniciGirisi = true)),
+          _buildSegmentTab("Yetkili Bayi", !_isKullaniciGirisi, () => setState(() => _isKullaniciGirisi = false)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSegmentTab(String title, bool isActive, VoidCallback onTap) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            color: isActive ? primaryCyan : Colors.transparent,
+            borderRadius: BorderRadius.circular(22),
+          ),
+          alignment: Alignment.center,
+          child: Text(title, style: TextStyle(color: isActive ? Colors.black : Colors.white38, fontSize: 12, fontWeight: FontWeight.w900)),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAteslemeButonu() {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          foregroundColor: primaryCyan,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: primaryCyan, width: 2)),
+          elevation: 0,
+        ),
+        onPressed: _isProcessing ? null : _girisYap,
+        child: _isProcessing
+            ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: primaryCyan, strokeWidth: 2))
+            : const Text("AĞI AKTİFLEŞTİR", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2)),
+      ),
+    );
+  }
+
+  Widget _buildRegisterLink() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("Henüz kayıtlı değil misin? ", style: TextStyle(color: Colors.white38, fontSize: 12)),
+        GestureDetector(
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen())),
+          child: const Text("YENİ KAYIT AÇ", style: TextStyle(color: primaryCyan, fontSize: 12, fontWeight: FontWeight.w900)),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBottomNav() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+      decoration: BoxDecoration(color: Colors.white.withOpacity(0.01), border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05)))),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildNavIcon(Icons.dashboard_customize_outlined, "Panel"),
+          _buildNavIcon(Icons.analytics_outlined, "Analiz"),
+          // Jet QR Merkezi
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              shape: BoxShape.circle,
+              border: Border.all(color: primaryCyan, width: 2),
+              boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.2), blurRadius: 15)],
+            ),
+            child: const Icon(Icons.qr_code_scanner, color: primaryCyan, size: 28),
+          ),
+          _buildNavIcon(Icons.settings_input_component, "Servis"),
+          _buildNavIcon(Icons.admin_panel_settings_outlined, "Kontrol"),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavIcon(IconData icon, String label) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: Colors.white54, size: 24),
-        const SizedBox(height: 6),
-        Text(
-          label,
-          textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.white54, fontSize: 9, fontWeight: FontWeight.w500, height: 1.2),
-        ),
+        Icon(icon, color: Colors.white24, size: 24),
+        const SizedBox(height: 4),
+        Text(label, style: const TextStyle(color: Colors.white24, fontSize: 8, fontWeight: FontWeight.bold)),
       ],
+    );
+  }
+
+  Widget _buildSiberTextField({required TextEditingController controller, required IconData icon, required String hint, bool isPassword = false, bool sifreGizli = false, VoidCallback? onVisibilityToggle}) {
+    return Container(
+      decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white10)),
+      child: TextField(
+        controller: controller,
+        obscureText: isPassword && sifreGizli,
+        style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+        decoration: InputDecoration(
+          prefixIcon: Icon(icon, color: primaryCyan.withOpacity(0.5), size: 20),
+          suffixIcon: isPassword ? IconButton(icon: Icon(sifreGizli ? Icons.visibility_off : Icons.visibility, color: primaryCyan, size: 20), onPressed: onVisibilityToggle) : null,
+          hintText: hint,
+          hintStyle: TextStyle(color: Colors.white12, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: primaryCyan, width: 1.5)),
+        ),
+      ),
     );
   }
 }

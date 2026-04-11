@@ -2,8 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// ROTALAR (İlgili dosyaların importları)
-// import 'torpido_ekleme_screen.dart';
+// 🚀 KARARGAH ZIRHLARI VE ROTALAR
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
@@ -28,7 +27,7 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
   final TextEditingController _bakimTutarCtrl = TextEditingController();
   final TextEditingController _bakimNotuCtrl = TextEditingController();
 
-  // --- MATRİKSE BAKIM / HARCAMA EKLEME (Gerçek Firebase Yazma) ---
+  // --- ⚡ ATOMİK BAKIM MÜHÜRLEME (WriteBatch) ---
   Future<void> _bakimMesaiseEkle() async {
     if (_bakimTutarCtrl.text.isEmpty || _bakimNotuCtrl.text.isEmpty) {
       _siberUyariVer("SİBER İHLAL: Tutar ve Bakım Notu boş bırakılamaz!", isError: true);
@@ -37,43 +36,53 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
 
     setState(() => _isSaving = true);
 
+    // 🔥 ATOMİK İŞLEM BAŞLATILIYOR (Zarar Etmek Yok!)
+    WriteBatch siberBatch = _db.batch();
+
     try {
       double tutar = double.tryParse(_bakimTutarCtrl.text) ?? 0.0;
 
-      // %12 Karargah Payı Hesaplama Simülasyonu (Arka planda finansal analiz için)
+      // 💰 SİBER FİNANSAL PROTOKOL: %12 Karargah Payı
       double karargahPayi = tutar * 0.12;
 
-      await _db.collection('bakim_gecmisi').add({
+      // 1. İşlem Kaydı (bakim_gecmisi koleksiyonu)
+      DocumentReference bakimRef = _db.collection('bakim_gecmisi').doc();
+      siberBatch.set(bakimRef, {
         'arac_id': widget.aracId,
         'plaka': widget.plaka,
         'islem_tipi': 'Periyodik Bakım / Parça Değişimi',
-        'islem_notu': _bakimNotuCtrl.text,
+        'islem_notu': _bakimNotuCtrl.text.trim(),
         'tutar': tutar,
-        'karargah_payi_kesintisi': karargahPayi, // Finansal veri tabanı için gizli veri
-        'bayi_referansi': 'Murat Plaza', // Oto market ismi vitrinde gizlenir, Murat Plaza mühürlenir
+        'karargah_payi': karargahPayi, // Karargah payı her zaman takipte
+        'bayi_referansi': 'Murat Plaza', // Vitrin kuralı: Murat Plaza mühürlü
         'tarih': FieldValue.serverTimestamp(),
       });
 
-      // Araca bakım yapıldığı için DNA Skorunu Kuantum Ağı'nda iyileştir (+5 Puan)
-      await _db.collection('araclar').doc(widget.aracId).update({
+      // 2. DNA Skoru Güncelleme (+5 Puan)
+      DocumentReference aracRef = _db.collection('araclar').doc(widget.aracId);
+      siberBatch.update(aracRef, {
         'dna_skoru': FieldValue.increment(5),
+        'son_bakim_tarihi': FieldValue.serverTimestamp(),
       });
+
+      // 🚀 FÜZELER ATEŞLENDİ: Atomik Onay
+      await siberBatch.commit();
 
       if (!mounted) return;
       setState(() => _isSaving = false);
       _bakimTutarCtrl.clear();
       _bakimNotuCtrl.clear();
       Navigator.pop(context); // Paneli kapat
-      _siberUyariVer("BAKIM MÜHÜRLENDİ! DNA Skoru Yükseltildi.", isError: false);
+      _siberUyariVer("BAKIM MÜHÜRLENDİ! DNA Skoru ve Finansal Pay İşlendi. 🦅", isError: false);
 
     } catch (e) {
       if (!mounted) return;
       setState(() => _isSaving = false);
-      _siberUyariVer("SİBER AĞ HATASI: İşlem başarısız.", isError: true);
+      _siberUyariVer("SİBER AĞ HATASI: Veri mühürlenemedi!", isError: true);
     }
   }
 
-  // SİBER CAM EFEKTLİ BAKIM EKLEME PANELİ
+  // 🌑 SİBER CAM EFEKTLİ PANEL
   void _bakimPaneliniAc() {
     showModalBottomSheet(
       context: context,
@@ -85,40 +94,36 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
           child: ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
               child: Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: SiberTema.oledBlack.withOpacity(0.9),
-                  border: Border(top: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 2)),
+                  border: Border(top: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 1.5)),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(child: Container(width: 50, height: 4, decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(10)))),
+                    Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(10))),
                     const SizedBox(height: 24),
-                    const Text("YENİ BAKIM & HARCAMA MÜHRÜ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 2)),
-                    const SizedBox(height: 8),
-                    const Text("Murat Plaza Garantili Yedek Parça ve Servis Ağı", style: TextStyle(color: Colors.white54, fontSize: 10, fontFamily: 'Avenir')),
+                    const Text("YENİ BAKIM & HARCAMA MÜHRÜ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2)),
                     const SizedBox(height: 24),
-
-                    _buildSiberGirdi("Harcama Tutarı (TL)", Icons.account_balance_wallet, _bakimTutarCtrl, TextInputType.number),
+                    _buildSiberGirdi("Harcama Tutarı (TL)", Icons.currency_lira, _bakimTutarCtrl, TextInputType.number),
                     const SizedBox(height: 16),
-                    _buildSiberGirdi("İşlem Detayı (Örn: Yağ Filtresi, Balata)", Icons.build, _bakimNotuCtrl, TextInputType.text),
-                    const SizedBox(height: 24),
-
+                    _buildSiberGirdi("İşlem Detayı", Icons.settings_suggest, _bakimNotuCtrl, TextInputType.text),
+                    const SizedBox(height: 32),
                     SizedBox(
                       width: double.infinity,
+                      height: 55,
                       child: ElevatedButton(
                         style: SiberTema.kuantumButonStili(),
                         onPressed: _isSaving ? null : _bakimMesaiseEkle,
                         child: _isSaving
-                            ? const CircularProgressIndicator(color: SiberTema.oledBlack)
-                            : const Text("KARARGAHA İŞLE VE KAYDET", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
+                            ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
+                            : const Text("KARARGAHA İŞLE VE KAYDET", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1)),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
@@ -131,9 +136,10 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
 
   void _siberUyariVer(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-      backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
+      content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.w900, fontSize: 12)),
+      backgroundColor: isError ? Colors.redAccent : SiberTema.kuantumCyan,
       behavior: SnackBarBehavior.floating,
+      duration: const Duration(seconds: 3),
     ));
   }
 
@@ -146,115 +152,93 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: Text("DİJİTAL GARAJ: ${widget.plaka}", style: TextStyle(color: Colors.white.withOpacity(0.9), fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
+          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text(widget.plaka, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 3)),
           centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: SiberTema.kuantumCyan,
-          foregroundColor: SiberTema.oledBlack,
           onPressed: _bakimPaneliniAc,
-          icon: const Icon(Icons.add_task),
-          label: const Text("BAKIM İŞLE", style: TextStyle(fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
+          icon: const Icon(Icons.add_moderator, color: SiberTema.oledBlack),
+          label: const Text("BAKIM İŞLE", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1)),
         ),
-        body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/images/radar_grid.png'), fit: BoxFit.cover, opacity: 0.05),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // ÜST YÖNETİM KARTLARI
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  children: [
-                    _buildSiberMenuKarti(Icons.folder_special, "TORPİDO", "Belgeler", () {
-                      // Torpido Ekleme Ekranına Geçiş
-                      // Navigator.push(context, MaterialPageRoute(builder: (_) => TorpidoEklemeScreen(aracId: widget.aracId, aracIsim: widget.plaka, kullaniciId: FirebaseAuth.instance.currentUser!.uid)));
-                      _siberUyariVer("Akıllı Torpido Bağlantısı Tetiklendi!", isError: false);
-                    }),
-                    const SizedBox(width: 16),
-                    _buildSiberMenuKarti(Icons.verified_user, "DNA RAPORU", "Araç Sağlığı", () {
-                      _siberUyariVer("Detaylı Kuantum DNA Raporu Yükleniyor...", isError: false);
-                    }),
-                  ],
-                ),
+        body: Column(
+          children: [
+            // ÜST STRATEJİK KARTLAR
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  _buildSiberMenuKarti(Icons.auto_stories, "TORPİDO", "Siber Evraklar", () {}),
+                  const SizedBox(width: 16),
+                  _buildSiberMenuKarti(Icons.qr_code_scanner, "DNA SKORU", "Güvenlik Analizi", () {}),
+                ],
               ),
+            ),
 
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: Text("FİNANS VE BAKIM GEÇMİŞİ", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text("SİBER BAKIM GEÇMİŞİ", style: TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
               ),
+            ),
 
-              // CANLI BAKIM VERİLERİ (FIREBASE STREAM)
-              Expanded(
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: _db.collection('bakim_gecmisi').where('arac_id', isEqualTo: widget.aracId).orderBy('tarih', descending: true).snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
-                    if (snapshot.hasError) return const Center(child: Text("Siber Ağa Ulaşılamıyor.", style: TextStyle(color: SiberTema.kanKirmizi)));
+            // CANLI FİREBASE AKIŞI
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: _db.collection('bakim_gecmisi')
+                    .where('arac_id', isEqualTo: widget.aracId)
+                    .orderBy('tarih', descending: true)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
 
-                    final bakimlar = snapshot.data?.docs ?? [];
+                  final bakimlar = snapshot.data!.docs;
 
-                    if (bakimlar.isEmpty) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                  if (bakimlar.isEmpty) {
+                    return Center(child: Text("SİCİL TEMİZ: HENÜZ KAYIT YOK", style: TextStyle(color: Colors.white.withOpacity(0.2), fontWeight: FontWeight.w900, letterSpacing: 1)));
+                  }
+
+                  return ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    itemCount: bakimlar.length,
+                    itemBuilder: (context, index) {
+                      final veri = bakimlar[index].data() as Map<String, dynamic>;
+                      final DateTime tarih = (veri['tarih'] as Timestamp?)?.toDate() ?? DateTime.now();
+
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.02),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: Colors.white.withOpacity(0.05)),
+                        ),
+                        child: Row(
                           children: [
-                            Icon(Icons.history_toggle_off, size: 64, color: SiberTema.kuantumCyan.withOpacity(0.2)),
-                            const SizedBox(height: 16),
-                            Text("HENÜZ BAKIM MÜHRÜ YOK", style: TextStyle(color: Colors.white.withOpacity(0.5), fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
+                            Icon(Icons.verified, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 20),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(veri['islem_notu'] ?? 'BAKIM KAYDI', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
+                                  const SizedBox(height: 4),
+                                  Text("${tarih.day}.${tarih.month}.${tarih.year} | ${veri['bayi_referansi']}", style: TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.w900)),
+                                ],
+                              ),
+                            ),
+                            Text("₺${veri['tutar']}", style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 15)),
                           ],
                         ),
                       );
-                    }
-
-                    return ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      itemCount: bakimlar.length,
-                      itemBuilder: (context, index) {
-                        final veri = bakimlar[index].data() as Map<String, dynamic>;
-                        final tarih = (veri['tarih'] as Timestamp?)?.toDate() ?? DateTime.now();
-
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 16),
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.03),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: Colors.white.withOpacity(0.05)),
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), shape: BoxShape.circle),
-                                child: const Icon(Icons.build_circle, color: SiberTema.kuantumCyan),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(veri['islem_notu'] ?? 'Bilinmeyen İşlem', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir', fontSize: 14)),
-                                    const SizedBox(height: 4),
-                                    Text("Ref: ${veri['bayi_referansi']} | ${tarih.day}.${tarih.month}.${tarih.year}", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 10, fontFamily: 'Avenir')),
-                                  ],
-                                ),
-                              ),
-                              Text("₺${veri['tutar']}", style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontFamily: 'Avenir', fontSize: 16)),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
+                    },
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -264,46 +248,40 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: SiberTema.kuantumCyan.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(ikon, color: SiberTema.kuantumCyan, size: 28),
-                  const SizedBox(height: 12),
-                  Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
-                  Text(altBaslik, style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 10, fontFamily: 'Avenir')),
-                ],
-              ),
-            ),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.03),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.2)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(ikon, color: SiberTema.kuantumCyan, size: 24),
+              const SizedBox(height: 12),
+              Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1)),
+              Text(altBaslik, style: const TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.bold)),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _buildSiberGirdi(String baslik, IconData ikon, TextEditingController kontrolcu, TextInputType klavye) {
+  Widget _buildSiberGirdi(String label, IconData icon, TextEditingController controller, TextInputType type) {
     return TextField(
-      controller: kontrolcu,
-      keyboardType: klavye,
-      style: const TextStyle(color: Colors.white, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
+      controller: controller,
+      keyboardType: type,
+      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
-        labelText: baslik,
-        labelStyle: TextStyle(color: Colors.white.withOpacity(0.5), fontFamily: 'Avenir'),
-        prefixIcon: Icon(ikon, color: SiberTema.kuantumCyan, size: 20),
+        labelText: label,
+        labelStyle: const TextStyle(color: Colors.white38, fontSize: 12),
+        prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
         filled: true,
-        fillColor: Colors.black.withOpacity(0.5),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.1))),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 2)),
+        fillColor: Colors.white.withOpacity(0.05),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Colors.white.withOpacity(0.1))),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
       ),
     );
   }

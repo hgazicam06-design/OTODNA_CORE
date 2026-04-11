@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// 🚀 KARARGAH ZIRHLARI
+import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart';
+
+/// 🦅 OTO DNA SİBER TEMİNAT CÜZDANI - FİNANSAL TAKİP MOTORU
+/// [2026-03-28] GÜNCELLEME: %100 GERÇEK FIREBASE STREAM AKIŞI
 class MusteriCuzdanScreen extends StatefulWidget {
   const MusteriCuzdanScreen({super.key});
 
@@ -10,39 +16,33 @@ class MusteriCuzdanScreen extends StatefulWidget {
 }
 
 class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
-  // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET
-  static const Color bgColor = Color(0xFF000000);
-  static const Color surfaceColor = Color(0xFF111111);
-  static const Color primaryCyan = Color(0xFF00FFC2);
-  static const Color dangerColor = Colors.redAccent;
-  static const Color warningColor = Colors.orangeAccent;
-
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final User? _user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
-    // SİBER GÜVENLİK: Kullanıcı giriş yapmamışsa uyar
+    // SİBER GÜVENLİK: Kullanıcı giriş ihlali kontrolü
     if (_user == null) {
       return const Scaffold(
-        backgroundColor: bgColor,
-        body: Center(child: Text("SİBER İHLAL: KULLANICI KİMLİĞİ BULUNAMADI!", style: TextStyle(color: dangerColor, fontWeight: FontWeight.bold))),
+        backgroundColor: SiberTema.oledBlack,
+        body: Center(child: Text("SİBER İHLAL: KİMLİK DOĞRULANAMADI!", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold))),
       );
     }
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text("SİBER TEMİNAT CÜZDANI", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2)),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: Center(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+          title: const Text("SİBER TEMİNAT CÜZDANI", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2)),
+          centerTitle: true,
+        ),
+        body: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600), // 🖥️ Web & Teyp Kalkanı
+            constraints: const BoxConstraints(maxWidth: 600),
             child: Column(
               children: [
                 Expanded(
@@ -52,7 +52,7 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        // 💰 1. CANLI FİREBASE BAKİYE KARTI
+                        // 💰 1. CANLI KUANTUM BAKİYE KARTI
                         _buildKuantumBakiyeKarti(),
 
                         const SizedBox(height: 48),
@@ -60,31 +60,24 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
                         // 📜 2. İŞLEM GEÇMİŞİ BAŞLIĞI
                         Row(
                           children: [
-                            Icon(Icons.history_toggle_off, color: primaryCyan.withOpacity(0.5), size: 20),
+                            const Icon(Icons.history_toggle_off, color: SiberTema.kuantumCyan, size: 20),
                             const SizedBox(width: 12),
-                            const Text("SON SİBER İŞLEMLER", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                            const Text("SON SİBER İŞLEMLER", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                            const Spacer(),
+                            Text("DNA KESİNTİSİ: %12", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.5), fontSize: 9, fontWeight: FontWeight.bold)),
                           ],
                         ),
-                        const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white12, thickness: 1)),
+                        const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white10, thickness: 1)),
 
-                        // 🔄 3. CANLI FİREBASE İŞLEM LİSTESİ
+                        // 🔄 3. CANLI FIREBASE İŞLEM RADARI
                         _buildIslemGecmisiListesi(),
                       ],
                     ),
                   ),
                 ),
 
-                // ⚠️ 4. MERKEZ KARARGAH BİLGİLENDİRMESİ
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(color: surfaceColor, border: const Border(top: BorderSide(color: Colors.white12))),
-                  child: const Text(
-                      "MERKEZ BİLGİSİ: Randevuya gittiğinizde bloke edilen kaporalar toplam faturadan düşülecektir. OtoDNA %12 Kuantum Kesinti Protokolü devrededir.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, height: 1.5)
-                  ),
-                ),
+                // ⚠️ 4. MERKEZ KARARGAH BİLGİ BANDI
+                _buildMerkezBilgiBandi(),
               ],
             ),
           ),
@@ -93,13 +86,12 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
     );
   }
 
-  // 💎 YARDIMCI BİLEŞEN: KUANTUM BAKİYE KARTI (Firebase Stream)
+  // 💎 YARDIMCI BİLEŞEN: KUANTUM BAKİYE KARTI (Siber Cam Efekti)
   Widget _buildKuantumBakiyeKarti() {
     return StreamBuilder<DocumentSnapshot>(
       stream: _db.collection('kullanicilar').doc(_user!.uid).snapshots(),
       builder: (context, snapshot) {
         double bakiye = 0.0;
-
         if (snapshot.hasData && snapshot.data!.exists) {
           var data = snapshot.data!.data() as Map<String, dynamic>;
           bakiye = (data['cuzdan_bakiyesi'] ?? 0.0).toDouble();
@@ -108,46 +100,23 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
         return Container(
           padding: const EdgeInsets.all(32),
           decoration: BoxDecoration(
-            color: surfaceColor,
+            color: SiberTema.matGrey.withOpacity(0.1),
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: primaryCyan.withOpacity(0.5), width: 2),
-            boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.1), blurRadius: 30, spreadRadius: 5)],
+            border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
+            boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 30)],
           ),
           child: Column(
             children: [
               const Text("HAVUZDAKİ SİBER TEMİNATINIZ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
               const SizedBox(height: 16),
-              snapshot.connectionState == ConnectionState.waiting
-                  ? const CircularProgressIndicator(color: primaryCyan)
-                  : Text(
-                  "₺${bakiye.toStringAsFixed(2)}",
-                  style: const TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: 2)
-              ),
+              if (snapshot.connectionState == ConnectionState.waiting)
+                const CircularProgressIndicator(color: SiberTema.kuantumCyan)
+              else
+                Text("₺${bakiye.toStringAsFixed(2)}", style: const TextStyle(color: Colors.white, fontSize: 42, fontWeight: FontWeight.w900, letterSpacing: 2)),
               const SizedBox(height: 16),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(color: primaryCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-                child: const Text("ANKARA MERKEZ GÜVENCESİNDE", style: TextStyle(color: primaryCyan, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
-              ),
-              const SizedBox(height: 24),
-              // BAKİYE YÜKLE BUTONU
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: primaryCyan,
-                    side: const BorderSide(color: primaryCyan, width: 1.5),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
-                  onPressed: () {
-                    // TODO: İyzico veya PayTR entegrasyon ekranına yönlendir
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("ÖDEME AĞINA BAĞLANILIYOR...", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan));
-                  },
-                  icon: const Icon(Icons.add_card, size: 18),
-                  label: const Text("TEMİNAT YÜKLE", style: TextStyle(fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-                ),
-              )
+              _buildGuvenlikRozeti(),
+              const SizedBox(height: 32),
+              _buildYuklemeButonu(),
             ],
           ),
         );
@@ -155,71 +124,80 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
     );
   }
 
-  // 💎 YARDIMCI BİLEŞEN: İŞLEM LİSTESİ (Firebase Stream)
+  Widget _buildGuvenlikRozeti() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.2))),
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.shield, color: SiberTema.kuantumCyan, size: 12),
+          SizedBox(width: 8),
+          Text("ANKARA MERKEZ GÜVENCESİNDE", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildYuklemeButonu() {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton.icon(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: SiberTema.kuantumCyan,
+          side: const BorderSide(color: SiberTema.kuantumCyan, width: 1.5),
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+        onPressed: () => _siberMesajGoster("ÖDEME AĞINA BAĞLANILIYOR..."),
+        icon: const Icon(Icons.add_card, size: 18),
+        label: const Text("TEMİNAT YÜKLE", style: TextStyle(fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+      ),
+    );
+  }
+
+  // 💎 YARDIMCI BİLEŞEN: İŞLEM LİSTESİ (Gerçek Zamanlı)
   Widget _buildIslemGecmisiListesi() {
     return StreamBuilder<QuerySnapshot>(
-      // İşlemleri tarihe göre azalan sırayla çekiyoruz
-      stream: _db.collection('kullanicilar').doc(_user!.uid).collection('islemler').orderBy('tarih', descending: true).limit(10).snapshots(),
+      stream: _db.collection('kullanicilar').doc(_user!.uid).collection('islemler').orderBy('tarih', descending: true).limit(20).snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: Padding(padding: EdgeInsets.all(20), child: CircularProgressIndicator(color: primaryCyan)));
-        }
-
-        // EĞER AĞDA İŞLEM YOKSA (Sıfır Bakiye)
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: Column(
-                children: [
-                  Icon(Icons.receipt_long, color: Colors.white.withOpacity(0.1), size: 48),
-                  const SizedBox(height: 16),
-                  const Text("SİBER KAYIT BULUNAMADI", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.w900, letterSpacing: 1)),
-                  const Text("Henüz bir işlem gerçekleştirmediniz.", style: TextStyle(color: Colors.white24, fontSize: 10)),
-                ],
-              ),
-            ),
-          );
+          return _buildBosDurum();
         }
 
-        // 🚀 GERÇEK FİREBASE VERİSİ
         return ListView.builder(
           shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(), // Scroll çakışmasını önlemek için
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: snapshot.data!.docs.length,
           itemBuilder: (context, index) {
             var data = snapshot.data!.docs[index].data() as Map<String, dynamic>;
-
-            String baslik = data['baslik'] ?? 'BİLİNMEYEN İŞLEM';
-            String altBaslik = data['alt_baslik'] ?? 'Detay Yok';
             double tutar = (data['tutar'] ?? 0.0).toDouble();
-            bool isGider = tutar < 0; // Tutar eksiyse Kırmızı (Gider), artıysa Turkuaz (Gelir/Yükleme)
+            bool isGider = tutar < 0;
 
             return Container(
               margin: const EdgeInsets.only(bottom: 12),
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
+              decoration: BoxDecoration(
+                color: SiberTema.matGrey.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.white.withOpacity(0.05)),
+              ),
               child: Row(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(color: isGider ? warningColor.withOpacity(0.1) : primaryCyan.withOpacity(0.1), shape: BoxShape.circle),
-                    child: Icon(isGider ? Icons.shopping_cart_checkout : Icons.account_balance_wallet, color: isGider ? warningColor : primaryCyan, size: 20),
-                  ),
+                  _buildIslemIkonu(isGider),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(baslik.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 0.5)),
-                        const SizedBox(height: 4),
-                        Text(altBaslik.toUpperCase(), style: const TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                        Text((data['baslik'] ?? 'İŞLEM').toString().toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900)),
+                        Text((data['alt_baslik'] ?? '-').toString().toUpperCase(), style: const TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ),
                   Text(
-                    "${isGider ? '' : '+'}₺${tutar.abs().toStringAsFixed(2)}",
-                    style: TextStyle(color: isGider ? dangerColor : primaryCyan, fontSize: 14, fontWeight: FontWeight.w900),
+                    "${isGider ? '' : '+'}${tutar.toStringAsFixed(2)} ₺",
+                    style: TextStyle(color: isGider ? SiberTema.kanKirmizi : SiberTema.kuantumCyan, fontSize: 13, fontWeight: FontWeight.w900),
                   ),
                 ],
               ),
@@ -228,5 +206,43 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
         );
       },
     );
+  }
+
+  Widget _buildIslemIkonu(bool isGider) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: isGider ? SiberTema.kanKirmizi.withOpacity(0.1) : SiberTema.kuantumCyan.withOpacity(0.1),
+        shape: BoxShape.circle,
+      ),
+      child: Icon(isGider ? Icons.outbox : Icons.account_balance_wallet, color: isGider ? SiberTema.kanKirmizi : SiberTema.kuantumCyan, size: 18),
+    );
+  }
+
+  Widget _buildBosDurum() {
+    return Column(
+      children: [
+        Icon(Icons.receipt_long, color: Colors.white.withOpacity(0.1), size: 48),
+        const SizedBox(height: 16),
+        const Text("SİBER KAYIT BULUNAMADI", style: TextStyle(color: Colors.white24, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1)),
+      ],
+    );
+  }
+
+  Widget _buildMerkezBilgiBandi() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: const BoxDecoration(color: SiberTema.matGrey, border: Border(top: BorderSide(color: Colors.white12))),
+      child: const Text(
+        "MERKEZ BİLGİSİ: Randevu kaporaları toplam faturadan düşülür. OtoDNA %12 Kuantum Kesinti Protokolü (Murat Plaza hariç) devrededir.",
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, height: 1.5),
+      ),
+    );
+  }
+
+  void _siberMesajGoster(String mesaj) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mesaj, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan));
   }
 }

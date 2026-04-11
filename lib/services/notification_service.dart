@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:developer' as developer;
+import 'package:flutter/material.dart';
 
-/// 🛡️ KUANTUM İLETİŞİM VE BİLDİRİM MOTORU (NotificationService)
+/// 🛡️ KUANTUM İLETİŞİM VE BİLDİRİM MOTORU (V2.1 - ZIRHLI)
 /// Araçlara QR okutulduğunda fırlatılan S.O.S ve uyarı sinyallerini Karargah standartlarıyla yönetir.
 class NotificationService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -35,7 +36,7 @@ class NotificationService {
     required String mesaj,
     required String gonderenIp,
     required List<String> engelliIpler,
-    required String fcmToken,
+    String? fcmToken,
   }) async {
     try {
       // 🛡️ SİBER GÜVENLİK: IP Kara Liste (Spam/Taciz) Kontrolü
@@ -46,8 +47,9 @@ class NotificationService {
 
       String mühürlüSase = saseNo.toUpperCase();
 
+    // 🚨 KRİTİK: Koleksiyon adı 'vehicles' olarak stabilize edildi (Ekspertiz ve DNA Motoruyla Tam Uyum)
     final ref = await _db
-        .collection('araclar') // İngilizce 'vehicles' yerine Karargah dili!
+        .collection('vehicles')
         .doc(mühürlüSase)
         .collection('bildirimler')
         .add({
@@ -72,7 +74,7 @@ class NotificationService {
   // ── 📡 3. CANLI SİNYAL RADARI (STREAM) ─────────────────────────────────────
   Stream<DocumentSnapshot<Map<String, dynamic>>> bildirimStream(String saseNo, String bildirimId) {
     return _db
-        .collection('araclar')
+        .collection('vehicles')
         .doc(saseNo.toUpperCase())
         .collection('bildirimler')
         .doc(bildirimId)
@@ -86,7 +88,7 @@ class NotificationService {
       if (durum == 'okundu') updates['okundu'] = true;
 
       await _db
-          .collection('araclar')
+          .collection('vehicles')
           .doc(saseNo.toUpperCase())
           .collection('bildirimler')
           .doc(bildirimId)
@@ -101,7 +103,7 @@ class NotificationService {
   Future<void> saveCevap(String saseNo, String bildirimId, String cevap) async {
     try {
       await _db
-          .collection('araclar')
+          .collection('vehicles')
           .doc(saseNo.toUpperCase())
           .collection('bildirimler')
           .doc(bildirimId)
@@ -114,23 +116,29 @@ class NotificationService {
   }
 
   // ── 🏷️ 5. SİBER BİLDİRİM ETİKETLERİ VE İKONLARI ───────────────────────────
-  String turLabel(String tur) {
+  // UI Ekranlarında (BildirimlerScreen) doğrudan çağrılan görsel protokoller
+
+  String turLabel(String? tur) {
     switch (tur) {
       case 'yanlis_park': return 'Yanlış Park İhlali';
-      case 'kaza':        return 'Araç Kazaya Karıştı';
+      case 'kaza':        return 'Kritik Kaza Raporu';
       case 'cam_acik':    return 'Araç Camı Açık';
-      case 'far_acik':    return 'Far / Işık Açık Kaldı';
-      default:            return 'Siber Sinyal (Diğer)';
+      case 'far_acik':    return 'Far/Işık Açık Kaldı';
+      case 'sos':         return 'ACİL DURUM (SOS)';
+      case 'mesaj':       return 'Vatandaş Mesajı';
+      default:            return 'Sistem Bildirimi';
     }
   }
 
-  String turIcon(String tur) {
+  String turIcon(String? tur) {
     switch (tur) {
       case 'yanlis_park': return '🅿️';
       case 'kaza':        return '💥';
       case 'cam_acik':    return '🪟';
       case 'far_acik':    return '🔦';
-      default:            return '🚨'; // Karargah alarmı
+      case 'sos':         return '🚨';
+      case 'mesaj':       return '💬';
+      default:            return '📡';
     }
   }
 }

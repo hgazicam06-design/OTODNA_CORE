@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart';
 import '../tests/sistem_test_motoru.dart';
 import 'catalog_screen.dart';
 import 'appointment_screen.dart';
 
+/// 🦅 OTODNA ANKARA KARARGAH KOMUTA MERKEZİ
+/// Bu ekran, sistemin tüm alt modüllerine erişim sağlayan ana siber portaldır.
 class OtoDNADashboard extends StatelessWidget {
   const OtoDNADashboard({super.key});
 
@@ -14,7 +19,7 @@ class OtoDNADashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 💻 Web Responsive (Duyarlı) Kalkanı: Ekran genişliğine göre sütun sayısını ayarla
+    // 💻 Web Responsive (Duyarlı) Kalkanı
     double screenWidth = MediaQuery.of(context).size.width;
     int crossAxisCount = screenWidth > 1200 ? 4 : (screenWidth > 800 ? 3 : 2);
 
@@ -26,14 +31,25 @@ class OtoDNADashboard extends StatelessWidget {
         centerTitle: true,
         title: const Text(
           'O T O D N A   A N K A R A   K A R A R G A H I',
-          style: TextStyle(color: Colors.white54, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 3),
+          style: TextStyle(
+              color: Colors.white54,
+              fontSize: 13,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 3,
+              fontFamily: 'Avenir'
+          ),
         ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 24.0),
             child: OutlinedButton.icon(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Siber Tarama Başlatılıyor...", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan));
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text("SİBER TARAMA BAŞLATILIYOR...", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                        backgroundColor: primaryCyan
+                    )
+                );
                 SistemTestMotoru.tumSistemiTestEt(context);
               },
               icon: const Icon(Icons.radar, color: Colors.orangeAccent, size: 18),
@@ -48,33 +64,64 @@ class OtoDNADashboard extends StatelessWidget {
       ),
       body: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1400), // Geniş ekranlarda sonsuza uzamayı kilitler
+          constraints: const BoxConstraints(maxWidth: 1400),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // 🛰️ SİBER BAŞLIK
               Padding(
                 padding: const EdgeInsets.fromLTRB(24, 32, 24, 16),
                 child: Row(
                   children: [
                     Icon(Icons.dashboard_customize_outlined, color: primaryCyan, size: 24),
                     const SizedBox(width: 12),
-                    const Text("SİBER KOMUTA MODÜLLERİ", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                    const Text(
+                        "SİBER KOMUTA MODÜLLERİ",
+                        style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2)
+                    ),
                   ],
                 ),
               ),
+
+              // 📦 MODÜLER IZGARA
               Expanded(
                 child: GridView.count(
                   crossAxisCount: crossAxisCount,
                   padding: const EdgeInsets.all(24),
                   crossAxisSpacing: 24,
                   mainAxisSpacing: 24,
-                  childAspectRatio: 1.2, // Kartların genişlik/yükseklik oranı (Tesla ekranı hissi)
+                  childAspectRatio: 1.2,
                   physics: const BouncingScrollPhysics(),
                   children: [
-                    _buildSiberMenuTile(context, "SİBER KATALOG", "Oto Market Ağı", Icons.view_list_rounded, const CatalogScreen()),
-                    _buildSiberMenuTile(context, "AKILLI SÖZLEŞME", "Randevu Mühürleme", Icons.event_available_rounded, const AppointmentScreen()),
-                    _buildSiberMenuTile(context, "FİNANS & HAVUZ", "Kasa ve %12 Kesintiler", Icons.account_balance_wallet_rounded, Scaffold(backgroundColor: bgColor, appBar: AppBar(backgroundColor: surfaceColor, title: const Text("SİBER KASA")))),
-                    _buildSiberMenuTile(context, "MERKEZ DESTEK", "İstihbarat ve Yardım", Icons.support_agent_rounded, Scaffold(backgroundColor: bgColor, appBar: AppBar(backgroundColor: surfaceColor, title: const Text("DESTEK AĞI")))),
+                    _buildSiberMenuTile(
+                        context,
+                        "SİBER KATALOG",
+                        "Oto Market Ağı",
+                        Icons.view_list_rounded,
+                        const CatalogScreen()
+                    ),
+                    _buildSiberMenuTile(
+                        context,
+                        "AKILLI SÖZLEŞME",
+                        "Randevu Mühürleme",
+                        Icons.event_available_rounded,
+                        const AppointmentScreen()
+                    ),
+                    // Finans Modülü: Burası %12 payımızı takip edeceğimiz terminale bağlanacak
+                    _buildSiberMenuTile(
+                        context,
+                        "FİNANS & HAVUZ",
+                        "Kasa ve %12 Kesintiler",
+                        Icons.account_balance_wallet_rounded,
+                        _dummyScreen("SİBER FİNANS TERMİNALİ")
+                    ),
+                    _buildSiberMenuTile(
+                        context,
+                        "MERKEZ DESTEK",
+                        "İstihbarat ve Yardım",
+                        Icons.support_agent_rounded,
+                        _dummyScreen("KARARGAH DESTEK HATTI")
+                    ),
                   ],
                 ),
               ),
@@ -90,8 +137,6 @@ class OtoDNADashboard extends StatelessWidget {
     return InkWell(
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => page)),
       borderRadius: BorderRadius.circular(24),
-      splashColor: primaryCyan.withOpacity(0.1),
-      highlightColor: primaryCyan.withOpacity(0.05),
       child: Container(
         decoration: BoxDecoration(
           color: surfaceColor,
@@ -129,6 +174,21 @@ class OtoDNADashboard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _dummyScreen(String title) {
+    return Scaffold(
+      backgroundColor: bgColor,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(title, style: const TextStyle(color: primaryCyan, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+        leading: const BackButton(color: Colors.white),
+      ),
+      body: const Center(
+        child: Text("SİBER PROTOKOLLER YÜKLENİYOR...", style: TextStyle(color: Colors.white24, fontWeight: FontWeight.bold)),
       ),
     );
   }

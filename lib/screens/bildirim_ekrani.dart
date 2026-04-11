@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+// 🚀 KARARGAH ZIRHLARI
+import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart';
+
+/// 🦅 OTODNA BİLDİRİM TERMİNALİ
+/// Vatandaşların veya Adminlerin ağ üzerinden sinyal fırlattığı merkez üssü.
 class OtoDNABildirimEkrani extends StatefulWidget {
   const OtoDNABildirimEkrani({super.key});
 
@@ -9,218 +16,218 @@ class OtoDNABildirimEkrani extends StatefulWidget {
 }
 
 class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
-  // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET (WEB UYUMLU)
-  final Color bgColor = const Color(0xFF000000);
-  final Color surfaceColor = const Color(0xFF111111);
-  final Color primaryCyan = const Color(0xFF00FFC2);
-  final Color dangerColor = Colors.redAccent;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool _isProcessing = false;
   bool _isGlobalProcessing = false;
 
-  // --- 1. SİBER BİLDİRİM MOTORU (FİREBASE) ---
+  // --- 🛰️ SİBER BİLDİRİM MOTORU (GERÇEK VERİ YAZIMI) ---
   Future<void> bildirimGonder(String qrID) async {
     setState(() => _isProcessing = true);
 
-    // Kuantum Güvenlik: Cihaz tespiti (Gerçekte DeviceInfo eklenecek)
-    String cihazIP = "192.168.1.XX";
-    String cihazID = "DEVICE_12345";
-
     try {
-      // 1. ADIM: KARA LİSTE (BLACKLIST) KONTROLÜ
-      final blacklistRef = await FirebaseFirestore.instance.collection('kara_liste').doc(cihazID).get();
+      // 1. ADIM: KARA LİSTE KONTROLÜ (GÜVENLİK DUVARI)
+      // Cihaz bazlı engelleme için auth id veya anonim token kullanılır
+      String gonderenUID = _auth.currentUser?.uid ?? "ANONIM_SIBER_YOLCU";
+
+      final blacklistRef = await _db.collection('kara_liste').doc(gonderenUID).get();
       if (blacklistRef.exists) {
         if (!mounted) return;
-        _uyariGoster("İHLAL TESPİTİ: CİHAZINIZ AĞDAN ENGELLENDİ!", isError: true);
+        _uyariGoster("İHLAL TESPİTİ: SİBER YETKİLERİNİZ ASKIYA ALINDI!", isError: true);
         return;
       }
 
-      // 2. ADIM: ARAÇ SAHİBİNİ BUL
-      final qrSorgu = await FirebaseFirestore.instance.collection('araclar').where('qr_id', isEqualTo: qrID).limit(1).get();
+      // 2. ADIM: HEDEF ARAÇ ANALİZİ
+      final qrSorgu = await _db.collection('araclar').where('qr_id', isEqualTo: qrID).limit(1).get();
 
       if (qrSorgu.docs.isEmpty) {
         if (!mounted) return;
-        _uyariGoster("HEDEF BULUNAMADI: ARAÇ OTODNA AĞINDA DEĞİL.", isError: true);
+        _uyariGoster("HEDEF BULUNAMADI: ARAÇ SİSTEME KAYITLI DEĞİL.", isError: true);
         return;
       }
 
-      String aracSahibiID = qrSorgu.docs.first.data()['sahibi_id'] ?? 'Bilinmiyor';
+      var aracData = qrSorgu.docs.first.data();
+      String aracSahibiID = aracData['sahibi_id'] ?? 'Bilinmiyor';
 
-      // 3. ADIM: GERÇEK BİLDİRİMİ YAZ (WriteBatch mantığına hazır)
-      await FirebaseFirestore.instance.collection('bildirimler').add({
+      // 3. ADIM: ATOMİK BİLDİRİM MÜHRÜ (WriteBatch)
+      WriteBatch batch = _db.batch();
+      DocumentReference bildirimRef = _db.collection('bildirimler').doc();
+
+      batch.set(bildirimRef, {
         "alici_id": aracSahibiID,
-        "gonderen_ip": cihazIP,
-        "gonderen_cihaz_id": cihazID,
-        "baslik": "SİBER ACİL DURUM BİLDİRİMİ",
-        "mesaj": "Aracınızın yanından bir bildirim fırlatıldı (Hatalı Park / Acil Durum ihtimali). Lütfen radarı kontrol ediniz.",
+        "gonderen_id": gonderenUID,
+        "baslik": "🚨 SİBER ACİL DURUM SİNYALİ",
+        "mesaj": "Aracınızın QR kodu taratıldı. Acil bir durum veya park ihlali olabilir.",
         "qr_kodu": qrID,
+        "plaka": aracData['plaka'],
         "okundu_mu": false,
+        "tip": "VATANDAS_IHBARI",
         "tarih": FieldValue.serverTimestamp(),
       });
 
+      await batch.commit();
+
       if (!mounted) return;
-      _uyariGoster("SİNYAL İLETİLDİ! HEDEFE ULAŞILDI. 🦅");
+      _uyariGoster("SİNYAL FIRLATILDI! ARAÇ SAHİBİNE ULAŞILDI. 🦅");
 
     } catch (e) {
       if (!mounted) return;
-      _uyariGoster("AĞ BAĞLANTI HATASI: Kuantum sinyali koptu.", isError: true);
+      _uyariGoster("AĞ BAĞLANTISI KOPUK: SİNYAL İLETİLEMEDİ.", isError: true);
     } finally {
       if (mounted) setState(() => _isProcessing = false);
     }
   }
 
-  // --- GAZİ YETKİSİ: GLOBAL PUSH NOTIFICATION ---
-  void _globalBildirimAtesle() async {
+  // --- ⚔️ GAZİ YETKİSİ: GLOBAL SİNYAL (ADMIN ONLY) ---
+  Future<void> _globalBildirimAtesle() async {
     setState(() => _isGlobalProcessing = true);
-    // TODO: Cloud Functions ile tüm kullanıcılara FCM Push Atılacak
-    await Future.delayed(const Duration(seconds: 2)); // Simülasyon Kalkanı
-    if (!mounted) return;
-    setState(() => _isGlobalProcessing = false);
-    _uyariGoster("GAZİ YETKİSİ ONAYLANDI: TÜM AĞA BİLDİRİM FÜZELERİ ATEŞLENDİ! 🚀");
+
+    try {
+      // Bu işlem doğrudan 'sistem_mesajlari' koleksiyonuna mühürlenir.
+      // Cloud Functions bu koleksiyonu dinleyerek tüm ağa (FCM) push notification fırlatır.
+      await _db.collection('sistem_mesajlari').add({
+        "baslik": "🔴 OTODNA GENEL KARARGAH EMRİ",
+        "mesaj": "Tüm birimlerin dikkatine: Sistem genelinde kuantum güncellemesi başlamıştır.",
+        "gonderen": "Siber Komutan Gazi",
+        "tarih": FieldValue.serverTimestamp(),
+        "hedef": "TUM_AG",
+      });
+
+      if (!mounted) return;
+      _uyariGoster("GAZİ EMRİ ONAYLANDI: TÜM AĞA SİNYAL FIRLATILDI! 🚀");
+    } catch (e) {
+      _uyariGoster("KRİTİK HATA: GLOBAL SİNYAL BAŞARISIZ.", isError: true);
+    } finally {
+      if (mounted) setState(() => _isGlobalProcessing = false);
+    }
   }
 
   void _uyariGoster(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.black, letterSpacing: 1)),
-        backgroundColor: isError ? dangerColor : primaryCyan,
+        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.black, fontSize: 12, letterSpacing: 1)),
+        backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     );
   }
 
-  // --- 2. WEB & MOBİL ARAYÜZ (RESPONSIVE) ---
   @override
   Widget build(BuildContext context) {
-    // 💻 Cihaz genişliğini alıp Web/Mobil kararı veriyoruz
-    final isDesktop = MediaQuery.of(context).size.width > 800;
-
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20), onPressed: () => Navigator.pop(context)),
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.flag_outlined, color: Colors.redAccent, size: 20),
-            const SizedBox(width: 12),
-            Text(
-              'Y E R L İ   V E   M İ L L İ   A Ğ',
-              style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 3),
+        appBar: _buildAppBar(),
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1200),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24.0),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth > 800) {
+                    return _buildDesktopLayout();
+                  } else {
+                    return _buildMobileLayout();
+                  }
+                },
+              ),
             ),
-          ],
-        ),
-      ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200), // Web ekranında sonsuza uzamayı engeller
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: isDesktop ? _buildDesktopLayout() : _buildMobileLayout(),
           ),
         ),
       ),
     );
   }
 
-  // MASAÜSTÜ: YAN YANA PANELLER
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+        onPressed: () => Navigator.pop(context),
+      ),
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.security, color: SiberTema.kuantumCyan, size: 18),
+          const SizedBox(width: 12),
+          Text(
+            'SİBER İLETİŞİM KULESİ',
+            style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildDesktopLayout() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          flex: 5,
+          flex: 6,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildQrOkumaKarti(),
-              const SizedBox(height: 32),
+              const SizedBox(height: 24),
               _buildKayitDavetiKarti(),
             ],
           ),
         ),
-        const SizedBox(width: 40),
+        const SizedBox(width: 24),
         Expanded(
           flex: 4,
-          child: _buildGaziYetkisiKarti(), // Sağ tarafta Kırmızı Nükleer Panel
+          child: _buildGaziYetkisiKarti(),
         ),
       ],
     );
   }
 
-  // MOBİL: ALT ALTA LİSTE
   Widget _buildMobileLayout() {
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildQrOkumaKarti(),
-          const SizedBox(height: 32),
-          _buildKayitDavetiKarti(),
-          const SizedBox(height: 40),
-          _buildGaziYetkisiKarti(),
-        ],
-      ),
+    return Column(
+      children: [
+        _buildQrOkumaKarti(),
+        const SizedBox(height: 24),
+        _buildKayitDavetiKarti(),
+        const SizedBox(height: 24),
+        _buildGaziYetkisiKarti(),
+      ],
     );
   }
 
-  // 💎 BİLEŞEN 1: QR RADAR
   Widget _buildQrOkumaKarti() {
-    return Container(
-      padding: const EdgeInsets.all(32),
-      decoration: BoxDecoration(
-        color: surfaceColor,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: primaryCyan.withOpacity(0.3), width: 1.5),
-        boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.05), blurRadius: 30)],
-      ),
+    return SiberTema.siberCamKalkan(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(color: primaryCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(16)),
-                child: Icon(Icons.qr_code_scanner, color: primaryCyan, size: 32),
-              ),
-              const SizedBox(width: 20),
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("SİBER QR RADAR", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-                    SizedBox(height: 6),
-                    Text("Hatalı Park Veya Acil Durum İhbarı Fırlat", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold)),
-                  ],
-                ),
-              ),
+              Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 30),
+              const SizedBox(width: 16),
+              const Text("HIZLI SİNYAL RADARI", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
             ],
+          ),
+          const SizedBox(height: 24),
+          const Text(
+            "Aracın üzerindeki QR kodu tarattıysanız, aşağıdaki butona basarak araç sahibine anonim bir 'Acil Durum' uyarısı gönderebilirsiniz.",
+            style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5),
           ),
           const SizedBox(height: 32),
           SizedBox(
-            height: 64,
             width: double.infinity,
+            height: 60,
             child: ElevatedButton.icon(
               onPressed: _isProcessing ? null : () => bildirimGonder("ARAC-QR-001"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: primaryCyan.withOpacity(0.05),
-                foregroundColor: primaryCyan,
-                elevation: 0,
-                side: BorderSide(color: primaryCyan.withOpacity(0.5), width: 1.5),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              ),
+              style: SiberTema.kuantumButonStili(renk: SiberTema.kuantumCyan),
               icon: _isProcessing
-                  ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: primaryCyan, strokeWidth: 2))
-                  : Icon(Icons.radar, color: primaryCyan, size: 24),
-              label: Text(
-                _isProcessing ? "AĞ TARANIYOR..." : "HEDEFE SİNYAL GÖNDER",
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5),
-              ),
+                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
+                  : const Icon(Icons.send_rounded, color: Colors.black),
+              label: Text(_isProcessing ? "İLETİLİYOR..." : "SİNYALİ ATEŞLE", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900)),
             ),
           ),
         ],
@@ -228,87 +235,48 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
     );
   }
 
-  // 💎 BİLEŞEN 2: DİJİTAL KİMLİK DAVETİ
   Widget _buildKayitDavetiKarti() {
     return Container(
-      padding: const EdgeInsets.all(32),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(24),
+        color: SiberTema.matGrey.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.white.withOpacity(0.05)),
       ),
       child: Column(
         children: [
-          Icon(Icons.shield_outlined, color: primaryCyan, size: 48),
-          const SizedBox(height: 20),
-          const Text("OTODNA DİJİTAL KİMLİK", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2)),
-          const SizedBox(height: 12),
-          const Text(
-            "Aracınızın Siber Genetik Haritasını oluşturun ve kuantum ağına dahil olun. Güvenlik protokollerini anında aktifleştirin.",
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.6, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 24),
-          OutlinedButton(
-            onPressed: () {},
-            style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.white,
-              side: BorderSide(color: Colors.white.withOpacity(0.2)),
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            ),
-            child: const Text("AĞA KAYIT OL", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
-          )
+          const Icon(Icons.fingerprint, color: Colors.white24, size: 40),
+          const SizedBox(height: 16),
+          const Text("KENDİ ARAÇ DNA'NI OLUŞTUR", style: TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
+          const SizedBox(height: 8),
+          const Text("Siz de bu ağa katılarak aracınızı koruma altına alabilirsiniz.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white38, fontSize: 10)),
         ],
       ),
     );
   }
 
-  // 💎 BİLEŞEN 3: GAZİ NÜKLEER PANEL (ADMİN)
   Widget _buildGaziYetkisiKarti() {
-    return Container(
-      padding: const EdgeInsets.all(32),
-      decoration: BoxDecoration(
-        color: dangerColor.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: dangerColor.withOpacity(0.3), width: 1.5),
-        boxShadow: [BoxShadow(color: dangerColor.withOpacity(0.05), blurRadius: 40)],
-      ),
+    return SiberTema.siberCamKalkan(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            padding: const EdgeInsets.all(32),
-            decoration: BoxDecoration(color: dangerColor.withOpacity(0.1), shape: BoxShape.circle),
-            child: Icon(Icons.cell_tower, color: dangerColor, size: 56),
+          const Icon(Icons.admin_panel_settings, color: SiberTema.kanKirmizi, size: 50),
+          const SizedBox(height: 20),
+          const Text("KOMUTA MERKEZİ", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          const SizedBox(height: 12),
+          const Text(
+            "Bu alan sadece Siber Komutan yetkisiyle erişilebilir. Tüm Türkiye geneline anlık push notification gönderilir.",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.5),
           ),
           const SizedBox(height: 32),
-          Text("GAZİ YETKİSİ:\nMERKEZİ İLETİŞİM", textAlign: TextAlign.center, style: TextStyle(color: dangerColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-          const SizedBox(height: 16),
-          const Text(
-            "Bu terminal, Türkiye genelindeki tüm OtoDNA ağına anlık Push Notification füzeleri fırlatmak için kullanılır. Yalnızca Siber Komutan yetkisiyle ateşlenebilir.",
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white70, fontSize: 12, height: 1.6),
-          ),
-          const SizedBox(height: 40),
           SizedBox(
-            height: 64,
             width: double.infinity,
+            height: 65,
             child: ElevatedButton.icon(
               onPressed: _isGlobalProcessing ? null : _globalBildirimAtesle,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: dangerColor,
-                foregroundColor: Colors.black,
-                elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              ),
-              icon: _isGlobalProcessing
-                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
-                  : const Icon(Icons.rocket_launch, size: 24),
-              label: Text(
-                _isGlobalProcessing ? "FÜZELER ATEŞLENİYOR..." : "TÜM AĞA BİLDİRİM FIRLAT",
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5),
-              ),
+              style: SiberTema.kuantumButonStili(renk: SiberTema.kanKirmizi),
+              icon: const Icon(Icons.rocket_launch, color: Colors.black),
+              label: Text(_isGlobalProcessing ? "ATEŞLENİYOR..." : "TÜM AĞA DUYURU YAP", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900)),
             ),
           ),
         ],

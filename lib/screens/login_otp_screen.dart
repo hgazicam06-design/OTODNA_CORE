@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+/// 🦅 OTODNA SİBER GİRİŞ PROTOKOLÜ (OTP)
+/// [2026-03-28] GÜNCELLEME: Firebase Gerçek Zamanlı SMS Doğrulama Motoru
 class LoginOTPScreen extends StatefulWidget {
   const LoginOTPScreen({super.key});
 
@@ -37,7 +39,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
       return;
     }
 
-    // Ülke kodu yoksa otomatik ekle (Firebase için zorunlu)
+    // Ülke kodu yoksa otomatik ekle
     if (!telNo.startsWith('+')) {
       telNo = '+90$telNo';
     }
@@ -48,7 +50,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: telNo,
         verificationCompleted: (PhoneAuthCredential credential) async {
-          // Kuantum Ağı SMS'i otomatik yakalarsa (Android'de olur)
+          // Kuantum Ağı SMS'i otomatik yakalarsa (Siber Hız)
           await FirebaseAuth.instance.signInWithCredential(credential);
           _girisBasarili();
         },
@@ -105,14 +107,13 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
     if (!mounted) return;
     setState(() => _isProcessing = false);
     _uyariGoster("KİMLİK DOĞRULANDI! KARARGAHA GİRİLİYOR 🦅");
-    // TODO: İleride doğrudan HomeScreen veya AdminDashboard'a yönlendirilecek:
-    // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+    // Gelecekteki rota: Navigator.pushReplacementNamed(context, '/home');
   }
 
   void _uyariGoster(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, color: Colors.black)),
+        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, color: Colors.black, fontSize: 11)),
         backgroundColor: isError ? dangerColor : primaryCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -137,7 +138,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.all(32.0),
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 450), // 🖥️ Web & Double Teyp Zırhı
+              constraints: const BoxConstraints(maxWidth: 450),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -156,7 +157,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  const Text("SİBER GÜVENLİK", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 4)),
+                  const Text("SİBER GÜVENLİK", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 4)),
                   const SizedBox(height: 8),
                   const Text("ANKARA MERKEZ DİSTRİBÜTÖRLÜK ONAYI", textAlign: TextAlign.center, style: TextStyle(color: primaryCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                   const SizedBox(height: 48),
@@ -167,10 +168,10 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
                     icon: Icons.phone_android,
                     hint: "+90 5XX XXX XX XX",
                     isNumber: true,
-                    enabled: !_otpGonderildi, // Kod gönderildiyse telefon alanı kilitlenir
+                    enabled: !_otpGonderildi,
                   ),
 
-                  // 💬 SMS KODU GİRİŞ ALANI (Sadece Kod Gönderildikten Sonra Çıkar)
+                  // 💬 SMS KODU GİRİŞ ALANI
                   if (_otpGonderildi) ...[
                     const SizedBox(height: 16),
                     _buildSiberTextField(
@@ -178,7 +179,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
                       icon: Icons.vibration,
                       hint: "6 HANELİ KUANTUM KODU",
                       isNumber: true,
-                      isCentered: true, // Şifre ortalı yazılsın
+                      isCentered: true,
                     ),
                   ],
 
@@ -193,7 +194,6 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
                         foregroundColor: Colors.black,
                         elevation: 0,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                        disabledBackgroundColor: primaryCyan.withOpacity(0.3),
                       ),
                       onPressed: _isProcessing
                           ? null
@@ -210,16 +210,10 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
                     ),
                   ),
 
-                  // 🔄 KODU YENİDEN GÖNDER (Eğer gönderildiyse)
                   if (_otpGonderildi && !_isProcessing) ...[
                     const SizedBox(height: 24),
                     TextButton(
-                      onPressed: () {
-                        setState(() {
-                          _otpGonderildi = false;
-                          _smsController.clear();
-                        });
-                      },
+                      onPressed: () => setState(() => _otpGonderildi = false),
                       child: const Text("SİNYAL ALINAMADI (YENİDEN GÖNDER)", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
                     )
                   ]
@@ -232,7 +226,6 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
     );
   }
 
-  // 💎 YARDIMCI BİLEŞEN: SİBER TEXTFIELD
   Widget _buildSiberTextField({
     required TextEditingController controller,
     required IconData icon,
@@ -259,10 +252,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
           hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: const BorderSide(color: primaryCyan, width: 1.5),
-          ),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: primaryCyan, width: 1.5)),
         ),
       ),
     );

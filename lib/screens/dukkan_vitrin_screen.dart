@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// 🚀 SİBER ZIRHLAR VE MERKEZİ TEMA
+import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart';
+
 class DukkanVitrinScreen extends StatelessWidget {
   final String dukkanId;
-  final String dukkanAdi;
+  final String dukkanAdi; // Her bayi kendi gerçek ismiyle burada yer alır.
 
-  const DukkanVitrinScreen({super.key, required this.dukkanId, required this.dukkanAdi});
+  const DukkanVitrinScreen({
+    super.key,
+    required this.dukkanId,
+    required this.dukkanAdi
+  });
 
   // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET
   static const Color bgColor = Color(0xFF000000);
@@ -19,80 +27,83 @@ class DukkanVitrinScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     int crossAxisCount = screenWidth > 1200 ? 5 : (screenWidth > 800 ? 4 : (screenWidth > 600 ? 3 : 2));
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Column(
-          children: [
-            const Text('S İ B E R   V İ T R İ N', style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 3)),
-            const SizedBox(height: 2),
-            Text(dukkanAdi.toUpperCase(), style: const TextStyle(color: Color(0xFF00FFC2), fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 2)),
-          ],
-        ),
-      ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1400),
-          child: Column(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: Column(
             children: [
-              _buildSiberDukkanHeader(),
-              Expanded(
-                child: StreamBuilder<QuerySnapshot>(
-                  // Firebase'den bu dükkana ait yedek parçaları/stokları anlık çekiyoruz
-                  stream: FirebaseFirestore.instance
-                      .collection('yedek_parcalar')
-                      .where('satici_id', isEqualTo: dukkanId)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator(color: primaryCyan, strokeWidth: 2));
-                    }
-
-                    if (snapshot.hasError) {
-                      return _buildBilgiEkrani(Icons.warning_amber_rounded, dangerColor, 'AĞ BAĞLANTI HATASI');
-                    }
-
-                    final docs = snapshot.data?.docs ?? [];
-
-                    // Eğer firmanın stoğu yoksa
-                    if (docs.isEmpty) {
-                      return _buildBilgiEkrani(Icons.inventory_2_outlined, Colors.white24, 'BU FİRMANIN SİBER STOĞU BOŞ');
-                    }
-
-                    return GridView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.all(24),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: crossAxisCount,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                        childAspectRatio: 0.75, // Kartın uzunluk-genişlik oranı (Tesla dikey kartlar)
-                      ),
-                      itemCount: docs.length,
-                      itemBuilder: (context, index) {
-                        final data = docs[index].data() as Map<String, dynamic>;
-                        return _buildKuantumUrunKarti(context, data);
-                      },
-                    );
-                  },
-                ),
-              ),
+              const Text('S İ B E R   V İ T R İ N', style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 3)),
+              const SizedBox(height: 2),
+              // 🛡️ ŞEFFAFLIK PROTOKOLÜ: Hiçbir maskeleme yok, bayi adı doğrudan basılıyor.
+              Text(dukkanAdi.toUpperCase(), style: const TextStyle(color: primaryCyan, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 2)),
             ],
+          ),
+        ),
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1400),
+            child: Column(
+              children: [
+                _buildSiberDukkanHeader(dukkanAdi),
+                Expanded(
+                  child: StreamBuilder<QuerySnapshot>(
+                    // Firebase'den bu dükkana ait yedek parçaları/stokları anlık çekiyoruz
+                    stream: FirebaseFirestore.instance
+                        .collection('yedek_parcalar')
+                        .where('satici_id', isEqualTo: dukkanId)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator(color: primaryCyan, strokeWidth: 2));
+                      }
+
+                      if (snapshot.hasError) {
+                        return _buildBilgiEkrani(Icons.warning_amber_rounded, dangerColor, 'AĞ BAĞLANTI HATASI');
+                      }
+
+                      final docs = snapshot.data?.docs ?? [];
+
+                      if (docs.isEmpty) {
+                        return _buildBilgiEkrani(Icons.inventory_2_outlined, Colors.white24, 'BU FİRMANIN SİBER STOĞU BOŞ');
+                      }
+
+                      return GridView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        padding: const EdgeInsets.all(24),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 0.70,
+                        ),
+                        itemCount: docs.length,
+                        itemBuilder: (context, index) {
+                          final data = docs[index].data() as Map<String, dynamic>;
+                          return _buildKuantumUrunKarti(context, data);
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  // 💎 YARDIMCI BİLEŞEN: DÜKKAN MÜHRÜ (HEADER)
-  Widget _buildSiberDukkanHeader() {
+  // 💎 DÜKKAN MÜHRÜ: Bayi Öz Kimliği
+  Widget _buildSiberDukkanHeader(String ad) {
     return Container(
       margin: const EdgeInsets.fromLTRB(24, 16, 24, 16),
       padding: const EdgeInsets.all(24),
@@ -104,7 +115,6 @@ class DukkanVitrinScreen extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Kuantum Çemberli Firma Logosu/İkonu
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -112,7 +122,7 @@ class DukkanVitrinScreen extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(color: primaryCyan.withOpacity(0.5)),
             ),
-            child: const Icon(Icons.store_mall_directory_outlined, color: primaryCyan, size: 32),
+            child: const Icon(Icons.account_balance_outlined, color: primaryCyan, size: 32),
           ),
           const SizedBox(width: 20),
           Expanded(
@@ -121,13 +131,13 @@ class DukkanVitrinScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.verified, color: primaryCyan, size: 14),
+                    const Icon(Icons.verified_user_outlined, color: primaryCyan, size: 14),
                     const SizedBox(width: 6),
-                    const Text("OTODNA ONAYLI BAYİ AĞI", style: TextStyle(color: primaryCyan, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                    const Text("OTODNA RESMİ TEDARİK NOKTASI", style: TextStyle(color: primaryCyan, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 2)),
                   ],
                 ),
                 const SizedBox(height: 8),
-                Text(dukkanAdi.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                Text(ad.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1)),
               ],
             ),
           ),
@@ -136,12 +146,16 @@ class DukkanVitrinScreen extends StatelessWidget {
     );
   }
 
-  // 💎 YARDIMCI BİLEŞEN: DİNAMİK ÜRÜN KARTI
+  // 💎 KUANTUM ÜRÜN KARTI: Standart %12 Kâr Payı ile
   Widget _buildKuantumUrunKarti(BuildContext context, Map<String, dynamic> data) {
     final ad = data['urunAdi'] ?? 'BİLİNMEYEN DONANIM';
-    final fiyat = (data['fiyat'] ?? 0).toDouble();
+    final hamFiyat = (data['fiyat'] ?? 0).toDouble();
+
+    // 💰 KUANTUM FİNANSAL MOTOR: Tüm bayiler için standart %12 Karargah Payı
+    final double guncelFiyat = hamFiyat * 1.12;
+
     final stokDurumu = data['stokta_var_mi'] ?? true;
-    final gorsel = data['gorsel_url']; // İleride Image.network eklenecek
+    final String? gorselUrl = data['gorsel_url'];
 
     return Container(
       decoration: BoxDecoration(
@@ -152,27 +166,27 @@ class DukkanVitrinScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Holografik Görsel Alanı
           Expanded(
             flex: 3,
             child: Container(
+              clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                 color: bgColor,
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-                border: Border(bottom: BorderSide(color: Colors.white.withOpacity(0.05))),
               ),
-              child: Center(
-                child: gorsel != null && gorsel.toString().isNotEmpty
-                    ? const Icon(Icons.image_outlined, color: Colors.white24, size: 48) // Geçiçi network kalkanı
-                    : const Icon(Icons.settings_suggest_outlined, color: Colors.white24, size: 48),
-              ),
+              child: gorselUrl != null && gorselUrl.isNotEmpty
+                  ? Image.network(
+                gorselUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (c, e, s) => const Icon(Icons.broken_image_outlined, color: Colors.white10, size: 40),
+              )
+                  : const Icon(Icons.settings_input_hdmi_outlined, color: Colors.white10, size: 40),
             ),
           ),
-          // Bilgi Alanı
           Expanded(
             flex: 2,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -181,26 +195,29 @@ class DukkanVitrinScreen extends StatelessWidget {
                     ad.toString().toUpperCase(),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, height: 1.4),
+                    style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w900, height: 1.3),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "₺${fiyat.toStringAsFixed(2)}",
-                        style: TextStyle(color: stokDurumu ? primaryCyan : Colors.white38, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'monospace'),
+                        "₺${guncelFiyat.toStringAsFixed(2)}",
+                        style: TextStyle(color: stokDurumu ? primaryCyan : Colors.white38, fontSize: 15, fontWeight: FontWeight.w900, fontFamily: 'monospace'),
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: stokDurumu ? primaryCyan.withOpacity(0.1) : dangerColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(
-                          stokDurumu ? Icons.add_shopping_cart : Icons.block,
-                          color: stokDurumu ? primaryCyan : dangerColor,
-                          size: 16,
-                        ),
+                      const SizedBox(height: 4),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            stokDurumu ? "STOKTA" : "YOK",
+                            style: TextStyle(color: stokDurumu ? Colors.white38 : dangerColor, fontSize: 8, fontWeight: FontWeight.bold),
+                          ),
+                          Icon(
+                            stokDurumu ? Icons.add_circle_outline : Icons.not_interested,
+                            color: stokDurumu ? primaryCyan : dangerColor,
+                            size: 18,
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -213,7 +230,6 @@ class DukkanVitrinScreen extends StatelessWidget {
     );
   }
 
-  // 💎 YARDIMCI BİLEŞEN: BİLGİ / HATA EKRANI
   Widget _buildBilgiEkrani(IconData icon, Color renk, String mesaj) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
