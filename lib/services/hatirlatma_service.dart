@@ -71,11 +71,15 @@ class HatirlatmaService {
   }
 
   // ── 📡 İLETİŞİM SİNYALİ GÜNCELLEME (FCM TOKEN) ────────────────────────────
-  /// Araca anlık (Push) bildirim atabilmek için cihazın kimliğini (Token) günceller.
+  /// Araca anlık (Push) bildirim atabilmek için cihazın kimliğini (Token) günceller ve zırhlar.
   static Future<void> fcmTokenGuncelle(String saseNo) async {
     try {
       final token = await FirebaseMessaging.instance.getToken();
-      if (token == null) return;
+
+      // 🚨 ZIRH EKLENDİ: Cihazdan sinyal alınamazsa sistemi sessizce geçiştirme!
+      if (token == null) {
+        throw Exception("SİBER HATA: Cihazdan hedefe kilitlenme (FCM) sinyali alınamadı!");
+      }
 
       await _db.collection('araclar').doc(saseNo.toUpperCase()).set(
           {'fcmToken': token, 'son_sinyal_tarihi': FieldValue.serverTimestamp()},
@@ -83,7 +87,9 @@ class HatirlatmaService {
       );
       developer.log("SİBER BİLGİ: Cihazın hedef kilit (FCM) sinyali güncellendi.");
     } catch (e) {
-      developer.log("İLETİŞİM HATASI: FCM Token alınamadı veya yazılamadı!", error: e);
+      developer.log("İLETİŞİM HATASI: FCM Token alınamadı veya ağa mühürlenemedi!", error: e);
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: UI tarafına kırmızı alarm fırlatılır.
+      throw Exception("RADAR KOPTU: Araç bildirim ağına bağlanılamadı!");
     }
   }
 
