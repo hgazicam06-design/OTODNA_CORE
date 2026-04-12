@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'dart:ui';
+import 'dart:developer' as developer; // 🚀 SİBER LOGLAMA İÇİN EKLENDİ
 
 // 🚀 KARARGAH ZIRHLARI
 import '../../core/siber_tema.dart';
@@ -60,10 +61,11 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
         _selectedFile = File(result.files.single.path!);
       });
       _siberMesaj("DOSYA ANALİZ İÇİN YÜKLENDİ. AI MOTORU TETİKLENİYOR...");
+      developer.log("SİBER RADAR: Yeni bir tedarik evrakı tarandı.");
     }
   }
 
-  // 🚀 ATOMİK MÜHÜRLEME MOTORU (Storage + WriteBatch)
+  // 🚀 ATOMİK MÜHÜRLEME MOTORU (Storage + WriteBatch + Kara Kutu)
   Future<void> _sistemeMuhurle() async {
     if (!_formKey.currentState!.validate()) return;
     if (_selectedFile == null) {
@@ -75,8 +77,11 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
 
     final String uid = FirebaseAuth.instance.currentUser?.uid ?? "ANONIM_BAYI";
     final String docId = FirebaseFirestore.instance.collection('yedek_parcalar').doc().id;
+    final String urunAdiSiber = _adController.text.trim().toUpperCase();
 
     try {
+      developer.log("SİBER HAREKAT: $urunAdiSiber için Kuantum mühürleme başlatıldı...");
+
       // 1. Dosyayı Firebase Storage'a mühürle
       Reference ref = FirebaseStorage.instance.ref().child('urun_evraklari/$docId');
       await ref.putFile(_selectedFile!);
@@ -84,14 +89,15 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
 
       // 2. Veritabanı Kaydı (WriteBatch - %100 Gerçek Kayıt)
       WriteBatch batch = FirebaseFirestore.instance.batch();
-      DocumentReference urunRef = FirebaseFirestore.instance.collection('yedek_parcalar').doc(docId);
 
+      // Ürün Verisi
+      DocumentReference urunRef = FirebaseFirestore.instance.collection('yedek_parcalar').doc(docId);
       double hamFiyat = double.parse(_fiyatController.text);
 
       batch.set(urunRef, {
         'urun_id': docId,
         'bayi_id': uid,
-        'urun_adi': _adController.text.trim().toUpperCase(),
+        'urun_adi': urunAdiSiber,
         'ham_fiyat': hamFiyat,
         'karargah_payi': _karargahPayi,
         'toplam_satis_fiyati': hamFiyat + _karargahPayi,
@@ -99,11 +105,21 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
         'evrak_url': fileUrl,
         'olusturma_tarihi': FieldValue.serverTimestamp(),
         'onay_durumu': 'BEKLEMEDE',
-        'vitrin_etiketi': "Murat Plaza",
+        'vitrin_etiketi': "Murat Plaza", // Karargah Gizlilik Kuralı
         'satici_goster': false,
       });
 
+      // 🚨 SİBER YAMA: Kara Kutuya (Sistem Loglarına) Otonom Loglama
+      DocumentReference logRef = FirebaseFirestore.instance.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'YENI_TEDARIK_GIRISI',
+        'islem_detayi': 'SİBER BİLGİ: $uid ID\'li yetkili "$urunAdiSiber" mühimmatını Karargah stoklarına yükledi.',
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      // Füzeleri Ateşle!
       await batch.commit();
+      developer.log("SİBER ONAY: ✅ Ürün başarıyla kasaya kilitlendi ve loglandı!");
       _siberMesaj("ÜRÜN VE EVRAK KUANTUM AĞINA MÜHÜRLENDİ!");
 
       _formKey.currentState!.reset();
@@ -115,7 +131,8 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
       if (mounted) Navigator.pop(context);
 
     } catch (e) {
-      _siberMesaj("SİBER HATA: Protokol başarısız!", isError: true);
+      developer.log("AĞ ÇÖKTÜ: Tedarik terminali arızalandı!", error: e);
+      _siberMesaj("SİBER HATA: Protokol başarısız! Ağınızı kontrol edin.", isError: true);
     } finally {
       if (mounted) setState(() => _isProcessing = false);
     }
@@ -246,7 +263,7 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
         onPressed: _isProcessing ? null : _sistemeMuhurle,
         child: _isProcessing
             ? const CircularProgressIndicator(color: SiberTema.oledBlack)
-            : const Text("SİBER AĞA MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900)),
+            : const Text("SİBER AĞA MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5)),
       ),
     );
   }
