@@ -1,19 +1,23 @@
 import 'dart:developer' as developer;
-// import 'firestore_servis.dart'; // İleride Karargah havuzuna bağlamak için
+import 'firestore_servis.dart'; // 🚀 MAKET YIKILDI: Karargah havuzu bağlantısı aktif!
 
 /// 🛡️ KUANTUM ÖDEME VE TAHSİLAT MOTORU (OdemeServisi)
 /// Müşteri kaporalarını Kuantum Havuzuna kilitler ve caydırıcı siber yargı uyarılarını yönetir.
 class OdemeServisi {
 
-  // ── 💰 SİBER KAPORA VE HAVUZ PROTOKOLÜ ──────────────────────────────────
+  // ── 💰 SİBER KAPORA VE HAVUZ PROTOKOLÜ (GERÇEK BAĞLANTI) ─────────────────
   /// Müşteriden kaporayı otonom olarak alır, Karargah kilitlerine alır ve oranları hesaplar.
-  Future<void> kaporaAl(String musteriId, double tutar) async {
+  Future<void> kaporaAl({
+    required String musteriId,
+    required String ustaId,
+    required double tutar,
+  }) async {
     try {
       if (tutar <= 0) {
         throw Exception("SİBER İHLAL: Kapora tutarı sıfır veya negatif olamaz!");
       }
 
-      developer.log("SİBER FİNANS: ₺$tutar tutarındaki kapora OtoDNA Kuantum Havuzuna kilitlendi.");
+      developer.log("SİBER FİNANS: ₺$tutar tutarındaki kapora OtoDNA Kuantum Havuzuna kilitleniyor...");
 
       // ⚖️ KARARGAH YARGISI (Otonom Ceza Paylaştırma):
       // Tutar ne olursa olsun, randevu ihlalinde bedel yarı yarıya (%50) bölünür.
@@ -23,8 +27,11 @@ class OdemeServisi {
       developer.log("SİBER YARGI (MÜŞTERİ BİLDİRİMİ): Randevuya gelmemeniz durumunda siber kaporanızı kaybedersiniz.");
       developer.log("İSTİHBARAT: İhlal durumunda kaporanın ₺$cezaPayi kadarı Ustaya, ₺$cezaPayi kadarı Karargah (OtoDNA) sistemine kalacaktır.");
 
-      // 🚀 GERÇEK VERİTABANI BAĞLANTISI (Gelecek Hamle)
-      // await FirestoreServis().kaporaKaydet(musteriId, "bekleyen_usta_id", tutar: tutar);
+      // 🚀 GERÇEK VERİTABANI ATEŞLEMESİ
+      // Yorum satırları imha edildi, doğrudan Atomik FirestoreServis Kalkanı tetikleniyor!
+      await FirestoreServis().kaporaKaydet(musteriId, ustaId, tutar: tutar);
+
+      developer.log("SİBER ONAY: Kapora tahsilatı ve havuz kilitleme işlemi kusursuz tamamlandı.");
 
     } catch (e) {
       developer.log("AĞ ÇÖKTÜ: Ödeme havuzuna ulaşılamadı!", error: e);

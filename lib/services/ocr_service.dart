@@ -20,10 +20,12 @@ class OcrService {
         developer.log("SİBER BİLGİ: Optik göz hedefe kilitlendi. Fotoğraf alındı.");
         return File(picked.path);
       }
+      // Kullanıcı işlemi iptal ederse sessizce geri dön (Bu bir hata değildir)
       return null;
     } catch (e) {
       developer.log("DONANIM HATASI: Optik lense (Kameraya) ulaşılamadı!", error: e);
-      return null;
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: Donanım hatası arayüze fırlatılır!
+      throw Exception("SİBER KÖRLÜK: Kamera veya Galeri erişimi reddedildi! Lütfen cihaz izinlerini kontrol edin.");
     }
   }
 
@@ -37,7 +39,8 @@ class OcrService {
       return recognized.text;
     } catch (e) {
       developer.log("YAZILIM HATASI: Metin çözümleme motoru (ML) çöktü!", error: e);
-      return "";
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: ML çökerse boş metin dönme, sistemi uyar!
+      throw Exception("YAPAY ZEKA ARIZASI: Belge okuma motoru çöktü, sistem metni çözümleyemiyor!");
     } finally {
       textRecognizer.close();
     }
