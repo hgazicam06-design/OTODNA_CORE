@@ -1,12 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer' as developer;
 
-/// OTODNA FİNANSAL İSTİHBARAT VE DENETİM SERVİSİ (KARA KASA)
+/// 🛡️ OTODNA FİNANSAL İSTİHBARAT VE DENETİM SERVİSİ (KARA KASA)
+/// Tüm finansal işlemleri %12 (Mutlak Pay) kuralına göre otonom denetler.
 class FinansDedektifiServisi {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // --- 💰 SİBER RÖNTGEN: FİREBASE CANLI SATIŞ VE PAY ANALİZİ ---
   Future<Map<String, dynamic>> derinSatisAnaliziYap() async {
     try {
+      developer.log("SİBER RADAR: Finansal röntgen başlatıldı. Son 100 işlem Kuantum Ağından çekiliyor...");
+
       // 1. Kuantum Ağındaki son 100 finansal işlemi çek
       QuerySnapshot snap = await _db
           .collection('finansal_islemler')
@@ -27,13 +31,8 @@ class FinansDedektifiServisi {
         String hizmetTipi = data['hizmet_tipi'] ?? 'Tanımsız Hizmet';
         double tutar = (data['tutar'] ?? 0).toDouble();
 
-        // 🔥 SİBER FİNANS KURALI: Murat Plaza %30, Diğerleri %12 (Net %10 + %2 Vergi)
-        double gaziPayi = 0.0;
-        if (bayiAdi.toUpperCase().contains('MURAT PLAZA')) {
-          gaziPayi = tutar * 0.30; // Kasa kazanır!
-        } else {
-          gaziPayi = tutar * 0.12; // Standart Karargah Payı
-        }
+        // 🔥 SİBER FİNANS KURALI: İSTİSNA YOK! Her işlem için Karargah Payı Mutlak %12'dir.
+        double gaziPayi = tutar * 0.12;
 
         toplamHacim += tutar;
         toplamGaziPayi += gaziPayi;
@@ -59,11 +58,13 @@ class FinansDedektifiServisi {
 
       // 3. Şüpheli durum varsa Amiral Gemisi loglarına (Kara Kutu) kırmızı alarm olarak yaz
       if (supheliIslemler.isNotEmpty) {
+        developer.log("SİBER İHLAL: ${supheliIslemler.length} adet şüpheli/düşük tutarlı işlem tespit edildi. Kara Kutuya mühürleniyor!");
+
         WriteBatch batch = _db.batch(); // 🔥 İşlemi Atomik Mühürle Yap
         DocumentReference logRef = _db.collection('sistem_loglari').doc();
 
         batch.set(logRef, {
-          'islem_turu': 'hata', // Kırmızı alarm tetikleyici
+          'islem_turu': 'KRİTİK_HATA', // Kırmızı alarm tetikleyici
           'islem_detayi': 'FİNANSAL RİSK: ${supheliIslemler.length} adet şüpheli/düşük tutarlı işlem tespit edildi!',
           'bayi_isim': 'SİSTEM DENETİM MERKEZİ',
           'tarih': FieldValue.serverTimestamp(),
@@ -71,6 +72,8 @@ class FinansDedektifiServisi {
 
         await batch.commit(); // Mührü ateşle
       }
+
+      developer.log("SİBER BİLGİ: Finansal röntgen tamamlandı. Toplam Hacim: ₺$toplamHacim, Karargah Payı: ₺$toplamGaziPayi");
 
       // 4. Analiz raporunu amiral gemisine fırlat
       return {
@@ -83,11 +86,9 @@ class FinansDedektifiServisi {
       };
 
     } catch (e) {
-      // Hata durumunda sistemi çökertme, log fırlat
-      return {
-        'basarili': false,
-        'hata': 'Siber Finans Ağına Bağlanılamadı: $e'
-      };
+      developer.log("AĞ ÇÖKTÜ: Siber Finans Ağına Bağlanılamadı!", error: e);
+      // Hata durumunda sistemi sessizce çökertme, Arayüze KIRMIZI ALARM fırlat!
+      throw Exception("FİNANSAL RÖNTGEN HATASI: Kuantum Ağına erişilemiyor!");
     }
   }
 }

@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer' as developer;
 
-/// OTODNA KUANTUM FİNANSAL TERMİNAL SERVİSİ (KARA KASA)
+/// 🛡️ OTODNA KUANTUM FİNANSAL TERMİNAL SERVİSİ (KARA KASA)
+/// Tüm bayiler için %12 kesinti ve anlık ciro dağıtımını otonom yönetir.
 class FinansalTerminalServisi {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // --- 💰 SİBER KASA: ANLIK PAY HESAPLAMA VE DAĞITIM MOTORU ---
-  Future<Map<String, dynamic>> islemKaydetVeHakedisDagit({
+  Future<void> islemKaydetVeHakedisDagit({
     required String bayiId,
     required String bayiAdi,
     required String sehir,
@@ -13,20 +15,15 @@ class FinansalTerminalServisi {
     required String islemTipi,
   }) async {
     try {
+      developer.log("SİBER FİNANS: $bayiAdi ($sehir) için ₺$islemTutari tutarında işlem mühürleniyor...");
+
       // 1. Kuantum Algoritması: Pay Dağılımı
-      // 🔥 SİBER KURAL: Murat Plaza'dan %30 (%28 Kâr + %2 Vergi), Diğerlerinden %12 (%10 Kâr + %2 Vergi) kesilir!
+      // 🔥 SİBER KURAL: İSTİSNA YOK! Tüm bayiler için Mutlak Pay %12'dir (%10 Net Kâr + %2 Vergi).
       double vergiPayi = islemTutari * 0.02; // Devletin vergisi sabit %2
-      double gaziNet = 0.0;
-
-      if (bayiAdi.toUpperCase().contains('MURAT PLAZA')) {
-        gaziNet = islemTutari * 0.28; // Murat Plaza VIP Kesintisi (%30'a tamamlar, Kasa Kazanır!)
-      } else {
-        gaziNet = islemTutari * 0.10; // Standart Karargah Payı (%12'ye tamamlar)
-      }
-
+      double gaziNet = islemTutari * 0.10;   // Standart Karargah Payı (%10)
       double bayiKalan = islemTutari - (gaziNet + vergiPayi);
 
-      // SİBER ZIRH (WriteBatch): Eğer internet koparsa ya hiçbiri yazılmaz ya da hepsi birden yazılır.
+      // ⛓️ SİBER ZIRH (WriteBatch): Eğer internet koparsa ya hiçbiri yazılmaz ya da hepsi birden yazılır.
       // Kuruş şaşmaz, kasa açık vermez!
       WriteBatch batch = _db.batch();
 
@@ -70,10 +67,12 @@ class FinansalTerminalServisi {
       // TÜM FÜZELERİ AYNI ANDA ATEŞLE!
       await batch.commit();
 
-      return {'basarili': true, 'mesaj': 'Finansal işlem başarıyla Kuantum Ağına mühürlendi.'};
+      developer.log("SİBER BİLGİ: Finansal operasyon başarıyla Kuantum Ağına mühürlendi.");
+
     } catch (e) {
-      // Hata olursa işlemi geri aldırırız, kasa asla eksiye düşmez.
-      return {'basarili': false, 'mesaj': 'SİBER AĞ HATASI: Kasa işlemi başarısız oldu. $e'};
+      developer.log("SİBER İHLAL: Kasa işlemi başarısız oldu!", error: e);
+      // 🚨 Sessiz Çöküş Engellendi! Arayüze (UI) Kırmızı Alarm Fırlatıyoruz.
+      throw Exception("FİNANSAL MOTOR ARIZASI: İşlem ağa kaydedilemedi!");
     }
   }
 

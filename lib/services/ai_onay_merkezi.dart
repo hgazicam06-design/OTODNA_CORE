@@ -25,8 +25,11 @@ class AiOnayMerkezi {
         aiNotu = "SİBER İHLAL TESPİTİ: Kullanıcı beyanındaki motor kodu (${userEntry['motor_kodu']}) ile fabrika verisi (${hubVerisi['motor_kodu']}) UYUŞMUYOR! Usta, motor bloğunu ve ruhsatı kesinlikle fiziksel olarak incelemelidir.";
       }
 
-      // 3. Analiz Raporunu Firebase'e Mühürle (Ustanın paneline düşmesi için)
-      DocumentReference analizRef = await _db.collection('ai_analiz_raporlari').add({
+      // 3. ATOMİK MÜHÜR (WriteBatch): Analiz Raporunu Firebase'e Zırhlı Kaydet
+      WriteBatch batch = _db.batch();
+      DocumentReference analizRef = _db.collection('ai_analiz_raporlari').doc();
+
+      batch.set(analizRef, {
         'sase_no': saseNo,
         'kullanici_beyani': userEntry,
         'fabrika_verisi': hubVerisi,
@@ -35,6 +38,8 @@ class AiOnayMerkezi {
         'durum': 'USTA_ONAYI_BEKLIYOR',
         'olusturulma_tarihi': FieldValue.serverTimestamp(),
       });
+
+      await batch.commit(); // Zırhlı Paketi Fırlat!
 
       // 4. Analiz sonucunu arayüze döndür
       return {
@@ -62,14 +67,19 @@ class AiOnayMerkezi {
     try {
       String guncelDurum = onaylandi ? "USTA_TARAFINDAN_ONAYLANDI" : "REDDEDILDI_FIZIKSEL_KONTROL_SART";
 
-      // Firebase'deki o kaydı bul ve Kuantum Mührünü vur!
-      await _db.collection('ai_analiz_raporlari').doc(analizId).update({
+      // ATOMİK MÜHÜR (WriteBatch): Firebase'deki o kaydı bul ve Zırhlı Güncelle!
+      WriteBatch batch = _db.batch();
+      DocumentReference docRef = _db.collection('ai_analiz_raporlari').doc(analizId);
+
+      batch.update(docRef, {
         'durum': guncelDurum,
         'onaylayan_usta_id': ustaId,
         'usta_notu': ekstraNot ?? (onaylandi ? "Usta gözle teyit etti, siber mühür vuruldu." : "Fiziksel uyuşmazlık tespit edildi, işlem reddedildi."),
         'onay_tarihi': FieldValue.serverTimestamp(),
-        'dijital_referans_muhru': onaylandi ? true : false,
+        'dijital_referans_muhru': onaylandi, // true/false olarak Boolean tutulması daha sağlıklıdır
       });
+
+      await batch.commit(); // Mührü Ağ'a İşle!
 
       // SİBER NOT: İleride Blockchain altyapısına geçildiğinde aşağıdaki kod aktif edilecek:
       // if(onaylandi) await BlockchainService.muhurle(analizId, "USTA_TEYIDI");

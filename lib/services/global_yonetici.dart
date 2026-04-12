@@ -32,6 +32,8 @@ class GlobalYonetici {
       developer.log("SİBER BİLGİ: Karargah operasyon merkezi '$formatliUlke' olarak güncellendi. Para Birimi: $aktifParaBirimi");
     } else {
       developer.log("SİBER İHLAL: '$formatliUlke' ağı henüz Kuantum Radarına tanımlanmadı! İşlem reddedildi.");
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: UI'a (Arayüze) Kırmızı Alarm Fırlat!
+      throw Exception("KÜRESEL AĞ HATASI: Desteklenmeyen operasyon bölgesi ($formatliUlke)!");
     }
   }
 
@@ -47,9 +49,7 @@ class GlobalYonetici {
   /// İstihbarat: Bir şehrin hangi bölgede olduğunu CityService üzerinden tespit eder.
   static String bolgeyiGetir(String sehir) {
     developer.log("SİBER RADAR: ${sehir.toUpperCase()} şehri için bölge taranıyor...");
-
-    // SİBER NOT: Gerçek bir sistemde CityService içinde "Tersine Arama (Reverse Lookup)"
-    // yapan bir fonksiyon çağrılır. Şimdilik arayüze hata vermemesi için Kalkan devrede.
-    return "SİBER BÖLGE İSTİHBARATI DEVREDE";
+    // 🚀 MAKET YOK! Doğrudan CityService üzerinden Tersine İstihbarat araması yapılır.
+    return CityService.sehirdenBolgeBul(sehir, ulke: _aktifUlke);
   }
 }

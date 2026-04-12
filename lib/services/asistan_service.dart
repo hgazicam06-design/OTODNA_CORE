@@ -2,7 +2,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'dart:developer' as developer;
 
 /// 🛡️ KUANTUM ASİSTAN: OtoDNA AI (Gemini Destekli)
-/// Kullanıcıyı karşılar, istihbarat verir, işlemleri yönetir ve rotaları belirler.
+/// Kullanıcıyı karşılar, istihbarat verir, işlemleri yönetir ve Karargah rotalarını belirler.
 class AsistanService {
   static const _sistem = '''
 Sen OtoDNA'nın (Kuantum Araç Ağı ve Dijital Referans Protokolü) yapay zeka asistanısın. 
@@ -18,19 +18,19 @@ OtoDNA'nın Siber Kuralları:
 Görevlerin:
 1. Kullanıcının niyetini anla ve en kısa yoldan çözüme ulaştır.
 2. Bilmediğin bir şey sorulursa uydurma. "Bu konuda Ankara Merkez Karargahına sinyal gönderebilirim." de.
-3. EKRAN YÖNLENDİRMESİ: Eğer kullanıcının net olarak bir ekrana gitmesi gerekiyorsa, cevabının EN SONUNA mutlaka şu formatta bir siber sinyal ekle: [ROTA: <hedef>]
+3. EKRAN YÖNLENDİRMESİ: Eğer kullanıcının Karargahta net olarak bir ekrana gitmesi gerekiyorsa, cevabının EN SONUNA mutlaka şu formatta bir siber sinyal ekle: [ROTA: <hedef>]
 
-Geçerli <hedef> Kodları:
-- Araç kayıt etmek istiyorsa -> [ROTA: arac_kayit]
-- Bakım veya servis geçmişi istiyorsa -> [ROTA: servis_gecmisi]
-- Yeni bir randevu almak istiyorsa -> [ROTA: randevu]
-- Sigorta/Muayene takibi için -> [ROTA: tarih_takip]
-- Usta veya firma arıyorsa -> [ROTA: firma_ara]
-- QR okutmak/bildirim atmak istiyorsa -> [ROTA: qr_bildirim]
-- Destek veya merkeze ulaşmak istiyorsa -> [ROTA: destek]
+Geçerli <hedef> Kodları (Sadece Bunları Kullan):
+- Yeni araç kayıt etmek istiyorsa -> [ROTA: /arac_kayit]
+- Usta, bayi veya servis arıyorsa -> [ROTA: /usta_arama]
+- Yedek parça marketine gidecekse -> [ROTA: /market]
+- Cüzdan, bakiye ve finansal işlemler için -> [ROTA: /cuzdan]
+- Acil durum (S.O.S) bildirecekse -> [ROTA: /sos_merkezi]
+- QR okutmak (Siber Göz) istiyorsa -> [ROTA: /siber_goz]
+- Destek ve Karargah iletişimi için -> [ROTA: /destek]
 
 Örnek Cevap:
-"Tabii, size en yakın ve mühürlü ustaları hemen haritada gösteriyorum. [ROTA: firma_ara]"
+"Tabii, size en yakın ve Kuantum mühürlü ustaları hemen radar ekranında gösteriyorum. [ROTA: /usta_arama]"
 ''';
 
   GenerativeModel? _model;
@@ -46,7 +46,7 @@ Geçerli <hedef> Kodları:
       apiKey: apiAnahtar,
       systemInstruction: Content.system(_sistem),
       generationConfig: GenerationConfig(
-        temperature: 0.5, // Daha net ve kurumsal (hallüsinasyon riski düşük)
+        temperature: 0.5, // Daha net ve kurumsal (halüsinasyon riski düşük)
         maxOutputTokens: 512,
       ),
     );
@@ -68,8 +68,8 @@ Geçerli <hedef> Kodları:
   // ── 🧠 Ana Sorgu ve Cevaplama Motoru ───────────────────────────────────────
   Future<AsistanCevap> sor(String soru) async {
     if (!_hazir) {
-      return AsistanCevap(
-          metin: 'SİBER BAĞLANTI KOPTU: Asistan şu an Ankara Merkeze ulaşamıyor. Lütfen ağı kontrol edin.',
+      return const AsistanCevap(
+          metin: 'SİBER BAĞLANTI KOPTU: Asistan şu an Ankara Merkeze ulaşamıyor. Lütfen Kuantum Ağını kontrol edin.',
           yonlendirme: null);
     }
 
@@ -98,14 +98,15 @@ Geçerli <hedef> Kodları:
       return cevap.text ?? 'SİBER HATA: Boş sinyal alındı.';
     } catch (e) {
       developer.log("SİBER İHLAL: Gemini API çöktü veya zaman aşımı!", error: e);
-      return 'Bağlantı şifrelenemedi. Lütfen tekrar deneyin Ortak.';
+      return 'Kuantum bağlantısı şifrelenemedi. Lütfen tekrar deneyin Ortak.';
     }
   }
 
   // ── 📡 Kuantum Rota Sensörü ────────────────────────────────────────────────
-  /// Gemini'nin metni içindeki "[ROTA: arac_kayit]" formatını tespit eder.
+  /// Gemini'nin metni içindeki "[ROTA: /arac_kayit]" formatını tespit eder.
   String? _rotaSensoru(String cevap) {
-    final RegExp rotaRegExp = RegExp(r'\[ROTA:\s*([a-zA-Z0-9_]+)\]');
+    // Regex güncellendi: Artık "/" ve harfleri kusursuz algılar.
+    final RegExp rotaRegExp = RegExp(r'\[ROTA:\s*([a-zA-Z0-9_\/]+)\]');
     final Match? match = rotaRegExp.firstMatch(cevap);
 
     if (match != null && match.groupCount >= 1) {

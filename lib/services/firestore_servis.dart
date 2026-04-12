@@ -3,7 +3,7 @@ import 'dart:developer' as developer;
 import '../models/dukkan_model.dart';
 
 /// 🛡️ KUANTUM VERİTABANI VE FİNANS MOTORU (FirestoreServis)
-/// Ankara Merkez mühürlü dükkanları tarar ve finansal kapora havuzunu yönetir.
+/// Ankara Merkez mühürlü dükkanları tarar ve finansal kapora havuzunu atomik yönetir.
 class FirestoreServis {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -25,18 +25,24 @@ class FirestoreServis {
     })
         .handleError((error) {
       developer.log("AĞ ÇÖKTÜ: Dükkan istihbaratı radara düşmedi!", error: error);
-      return <Dukkan>[]; // Sistem çökmesini engellemek için boş liste fırlat
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: UI'a "dükkan yok" yalanını söylemek yerine hata fırlat!
+      throw Exception("RADAR ÇÖKTÜ: Kuantum Ağına bağlanılamadı!");
     });
   }
 
-  // ── 💰 02. SİBER FİNANS HAVUZU (KAPORA MÜHÜRLEME) ────────────────────────
-  /// Müşterinin kaporasını Karargah Havuzuna alır, %12 komisyonu otonom keser.
+  // ── 💰 02. SİBER FİNANS HAVUZU VE ATOMİK KAPORA MÜHÜRLEME ────────────────
+  /// Müşterinin kaporasını Karargah Havuzuna alır, %12 komisyonu otonom keser ve zırhlar.
   Future<void> kaporaKaydet(String musteriId, String ustaId, {double tutar = 200.0}) async {
     try {
       // 🚀 KUSURSUZ ÇARK: Karargahın %12'lik net komisyonu otonom hesaplanır.
       double merkezPayi = tutar * 0.12; // Örn: 200 TL'nin %12'si = 24 TL
 
-      await _db.collection('finans_havuzu').add({
+      // ⛓️ SİBER ZIRH: Atomik WriteBatch Başlatıldı
+      WriteBatch batch = _db.batch();
+
+      // 1. İşlemi Finans Havuzuna (Kasa) Mühürle
+      DocumentReference havuzRef = _db.collection('finans_havuzu').doc();
+      batch.set(havuzRef, {
         'musteriId': musteriId,
         'ustaId': ustaId,
         'islem_tutari': tutar,
@@ -46,10 +52,20 @@ class FirestoreServis {
         'siber_onay': false,
       });
 
-      developer.log("SİBER FİNANS: ₺$tutar kapora Kuantum Havuzuna mühürlendi! Karargah Payı: ₺$merkezPayi");
+      // 2. Kara Kutuya (Sistem Logları) Kayıt Düş
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'KAPORA_ALINDI',
+        'islem_detayi': 'Müşteri ($musteriId), Usta ($ustaId) için ₺$tutar kapora kilitledi.',
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit(); // Füzeleri ateşle! (Kayıtlar aynı saniyede mühürlenir)
+
+      developer.log("SİBER FİNANS: ₺$tutar kapora Kuantum Havuzuna atomik olarak mühürlendi! Karargah Payı: ₺$merkezPayi");
     } catch (e) {
       developer.log("FİNANSAL İHLAL: Kapora Karargah havuzuna mühürlenemedi!", error: e);
-      throw Exception("SİBER HATA: Finans ağına ulaşılamıyor.");
+      throw Exception("SİBER HATA: Finans ağına ulaşılamıyor. İşlem reddedildi.");
     }
   }
 }

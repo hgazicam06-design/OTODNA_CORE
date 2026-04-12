@@ -1,9 +1,13 @@
 import 'dart:io';
+import 'dart:async';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class AiServis {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final stt.SpeechToText _speechToText = stt.SpeechToText();
 
   // ===========================================================================
   // 👁️ 1. SİBER OPTİK (OCR): RUHSATTAN ŞASE (VIN) OKUMA MOTORU
@@ -36,59 +40,75 @@ class AiServis {
   }
 
   // ===========================================================================
-  // 🎙️ 2. SESLİ İSTİHBARAT MOTORU (SPEECH-TO-TEXT)
+  // 🎙️ 2. SESLİ İSTİHBARAT MOTORU (SPEECH-TO-TEXT) - %100 GERÇEK
   // ===========================================================================
   Future<String> sesiMetneCevir() async {
-    try {
-      // TODO: pubspec.yaml'daki 'speech_to_text' paketi UI tarafında dinleme yapacak.
-      // Şimdilik Kuantum Simülasyonu çalışıyor.
-      await Future.delayed(const Duration(seconds: 1));
-      return "FREN BALATASI";
-    } catch (e) {
-      throw Exception("MİKROFON SİNYALİ KOPTU: Ses metne çevrilemedi!");
-    }
-  }
+    Completer<String> completer = Completer<String>();
 
-  // ===========================================================================
-  // ☁️ 3. BULUT TEKNİK KATALOG VE DNA MOTORU
-  // ===========================================================================
-  Future<Map<String, String>> parcaDetaylariniBuluttanGetir(String saseNo) async {
     try {
-      // 🚀 FİREBASE'DEN GERÇEK VERİ ÇEKME YUVASI
-      /*
-      var doc = await _db.collection('arac_katalog').doc(saseNo).get();
-      if(doc.exists) {
-        return Map<String, String>.from(doc.data()!['parcalar']);
+      bool available = await _speechToText.initialize();
+      if (available) {
+        _speechToText.listen(
+          onResult: (result) {
+            if (result.finalResult) {
+              completer.complete(result.recognizedWords);
+            }
+          },
+        );
+
+        // 🛡️ Siber Kalkan: 5 Saniye içinde ses gelmezse sistemi kapatır
+        Future.delayed(const Duration(seconds: 5), () {
+          if (!completer.isCompleted) {
+            _speechToText.stop();
+            completer.completeError("SESSİZLİK: Ses algılanamadı, mikrofon kapatıldı.");
+          }
+        });
+      } else {
+        completer.completeError("SİBER İHLAL: Mikrofon izni reddedildi veya donanım bulunamadı!");
       }
-      */
 
-      // Veritabanı dolana kadar Kuantum Simülasyonu devrede:
-      await Future.delayed(const Duration(milliseconds: 800));
-      return {
-        "Krank Keçesi": "ÖLÇÜ: 40x55x7 MM (ORİJİNAL KOD: 55210333)",
-        "Teker Rulmanı": "KOD: VKBA 3539 (SKF MÜHÜRLÜ)",
-        "Aksesuar Uyumu": "OTODNA ONAYLI YAN BASAMAK UYUMLU",
-        "Şanzıman Keçesi": "ÖLÇÜ: 29.8x52x10 MM (CORTECO)",
-        "V Kayışı Rulmanı": "KOD: 532 0504 10 (INA)",
-      };
+      return completer.future;
     } catch (e) {
-      throw Exception("VERİTABANI BAĞLANTISI KOPTU: Siber Katalog çekilemedi!");
+      throw Exception("MİKROFON SİNYALİ KOPTU: Hata: $e");
     }
   }
 
   // ===========================================================================
-  // 🗺️ 4. SİBER HARİTA VE DİSTRİBÜTÖR EŞLEŞTİRME
+  // ☁️ 3. BULUT TEKNİK KATALOG VE DNA MOTORU - %100 GERÇEK FİREBASE
   // ===========================================================================
-  Future<String> esnaflariHaritadaGoster(String parcaAdi) async {
+  Future<Map<String, dynamic>> parcaDetaylariniBuluttanGetir(String saseNo) async {
     try {
-      // İleride 'url_launcher' ile Google Haritalar rotası fırlatılacak
-      // Örn: url_launcher.launchUrl(Uri.parse('google.navigation:q=Oto+Parçacı+Ankara'));
+      // 🚀 MAKET YOK! DOĞRUDAN MATRIX'E (FIREBASE) BAĞLANTI
+      DocumentSnapshot doc = await _db.collection('arac_katalog').doc(saseNo).get();
 
-      await Future.delayed(const Duration(milliseconds: 500));
-      // Arayüze fırlatılacak istihbarat mesajı
-      return "SİBER ROTA OLUŞTURULDU: $parcaAdi için Ankara/Ostim distribütörleri haritada işaretlendi.";
+      if (doc.exists && doc.data() != null) {
+        var data = doc.data() as Map<String, dynamic>;
+        return data['parcalar'] ?? {};
+      } else {
+        throw Exception("İSTİHBARAT BOŞ: Bu şaseye ($saseNo) ait Kuantum Kataloğu bulunamadı!");
+      }
     } catch (e) {
-      throw Exception("RADAR ÇÖKTÜ: Harita sinyali alınamıyor!");
+      throw Exception("VERİTABANI BAĞLANTISI KOPTU: Siber Katalog çekilemedi! $e");
+    }
+  }
+
+  // ===========================================================================
+  // 🗺️ 4. SİBER HARİTA VE DİSTRİBÜTÖR EŞLEŞTİRME - %100 GERÇEK YÖNLENDİRME
+  // ===========================================================================
+  Future<void> esnaflariHaritadaGoster(String parcaAdi, String sehir) async {
+    try {
+      // 🚀 Gerçek Google Maps Rotasını Oluştur (Örn: "Fren Balatası Oto Parçacı Ankara")
+      final String query = Uri.encodeComponent("$parcaAdi Oto Parçacı $sehir");
+      final Uri mapUrl = Uri.parse('https://www.google.com/maps/search/?api=1&query=$query');
+
+      // Harita uygulamasını (Google Maps/Apple Maps) tetikle
+      if (await canLaunchUrl(mapUrl)) {
+        await launchUrl(mapUrl, mode: LaunchMode.externalApplication);
+      } else {
+        throw Exception("RADAR ÇÖKTÜ: Cihazda harita protokolü başlatılamadı!");
+      }
+    } catch (e) {
+      throw Exception("SİBER ROTA HATASI: Hedef koordinatlar çizilemedi! $e");
     }
   }
 }

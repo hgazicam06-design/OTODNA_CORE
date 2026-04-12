@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer' as developer;
 
 /// 🛡️ OTODNA BAYİ VE FİNANSAL YÖNETİM MERKEZİ
 /// Tüm bayiler için %12 (10+2) komisyon protokolü burada işletilir.
@@ -41,6 +42,7 @@ class BayiEkosistemi {
 
       // Füzeleri aynı anda ateşle!
       await batch.commit();
+      developer.log("SİBER BİLGİ: Finansal işlem başarıyla Kuantum Ağına mühürlendi.");
 
     } catch (e) {
       // Karargahın Kara Kutusuna (Sistem Logları) Hatayı Raporla
@@ -49,6 +51,9 @@ class BayiEkosistemi {
         'islem_detayi': 'FİNANSAL MOTOR ARIZASI: $bayiAdi işlemi başarısız! Hata: $e',
         'tarih': FieldValue.serverTimestamp(),
       });
+      developer.log("SİBER İHLAL: Finans motoru çöktü!", error: e);
+      // 🚨 UI TARAFINA SİNYAL GÖNDER (Sessizce çökmesini engelle, Kırmızı SnackBara düşsün)
+      throw Exception("FİNANSAL MOTOR ARIZASI: İşlem tamamlanamadı!");
     }
   }
 
@@ -87,12 +92,17 @@ class BayiEkosistemi {
         "stok_durumu": true
       });
 
+      developer.log("SİBER BİLGİ: $urunAd başarıyla vitrine mühürlendi.");
+
     } catch (e) {
       await _db.collection('sistem_loglari').add({
         'islem_turu': 'HATA',
         'islem_detayi': 'VİTRİN ARIZASI: $urunAd listelenemedi! Hata: $e',
         'tarih': FieldValue.serverTimestamp(),
       });
+      developer.log("SİBER İHLAL: Vitrin bağlantısı koptu!", error: e);
+      // 🚨 EKRANIN (UI) HABERİ OLMASI İÇİN HATAYI FIRLAT
+      throw Exception("VİTRİN ARIZASI: Ürün ağa yüklenemedi!");
     }
   }
 }

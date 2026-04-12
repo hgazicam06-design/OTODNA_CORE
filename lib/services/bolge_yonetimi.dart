@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer' as developer;
 
 // --- 1. MODEL KATMANI: BÖLGE KOMUTANI ---
 class BolgeKomutani {
@@ -33,6 +34,8 @@ class BolgeYonetimServisi {
   // --- 📡 SİBER RÖNTGEN: İL BAZLI CANLI FİREBASE ANALİZİ ---
   Future<Map<String, dynamic>> ilAnaliziYap(String sehir) async {
     try {
+      developer.log("SİBER RADAR: $sehir için Bölge İstihbarat taraması başlatıldı...");
+
       // 1. O şehre ait aktif tüm bayileri Kuantum Ağında tara
       final querySnapshot = await _db
           .collection('bayiler')
@@ -59,6 +62,8 @@ class BolgeYonetimServisi {
         }
       }
 
+      developer.log("SİBER BİLGİ: $sehir taraması tamamlandı. Aktif Bayi: ${querySnapshot.docs.length}");
+
       return {
         'basarili': true,
         'sehir': sehir,
@@ -69,17 +74,20 @@ class BolgeYonetimServisi {
         'riskli_bayiler': riskliBayiler,
       };
     } catch (e) {
-      return {'basarili': false, 'hata': 'SİBER AĞ HATASI: $e'};
+      developer.log("SİBER İHLAL: Bölge röntgeni çekilemedi!", error: e);
+      // Ekranda sonsuz dönmeyi engellemek için hatayı UI'a fırlatıyoruz!
+      throw Exception("SİBER AĞ HATASI: $sehir bölgesi taranamadı!");
     }
   }
 
   // --- 🛡️ ATAMA PROTOKOLÜ (ATOMİK - WRITEBATCH) ---
-  Future<Map<String, dynamic>> bolgeKomutaniAta({
+  Future<void> bolgeKomutaniAta({
     required String kullaniciId,
     required String isim,
     required String bolge
   }) async {
     try {
+      developer.log("SİBER BİLGİ: $isim, $bolge bölgesi için komutan olarak atanıyor...");
       WriteBatch batch = _db.batch();
 
       // 1. Kullanıcı Profilini Mühürle
@@ -103,45 +111,53 @@ class BolgeYonetimServisi {
       // 3. Kara Kutu Logu
       DocumentReference logRef = _db.collection('sistem_loglari').doc();
       batch.set(logRef, {
-        'islem_turu': 'basarili',
+        'islem_turu': 'ATAMA_BASARILI',
         'islem_detayi': 'MÜHÜR: $isim, $bolge Komutanı olarak atandı.',
         'bayi_isim': 'ANKARA MERKEZ KARARGAH',
         'tarih': FieldValue.serverTimestamp(),
       });
 
       await batch.commit();
-      return {'basarili': true, 'mesaj': '$isim Yetkilendirildi.'};
+      developer.log("SİBER BİLGİ: Atama işlemi Kuantum Ağına mühürlendi.");
+
     } catch (e) {
-      return {'basarili': false, 'mesaj': 'Atama başarısız: $e'};
+      developer.log("SİBER İHLAL: Atama işlemi başarısız oldu!", error: e);
+      throw Exception("ATAMA BAŞARISIZ: Yetki protokolü mühürlenemedi!");
     }
   }
 
   // --- ❌ İHRAÇ PROTOKOLÜ (ATOMİK - WRITEBATCH) ---
-  Future<Map<String, dynamic>> komutanliktanIhracEt(String kullaniciId, String isim) async {
+  Future<void> komutanliktanIhracEt(String kullaniciId, String isim) async {
     try {
+      developer.log("SİBER BİLGİ: $isim için İhraç Protokolü devrede...");
       WriteBatch batch = _db.batch();
 
+      // 1. Kullanıcı rolünü düşür
       batch.update(_db.collection('kullanicilar').doc(kullaniciId), {
         'rol': 'kullanici',
         'sorumlu_bolge': FieldValue.delete(),
       });
 
+      // 2. Komutanı pasife çek
       batch.update(_db.collection('bolge_komutanlari').doc(kullaniciId), {
         'aktif': false,
         'gorevden_alinma_tarihi': FieldValue.serverTimestamp(),
       });
 
+      // 3. Kara Kutu Logu
       batch.set(_db.collection('sistem_loglari').doc(), {
-        'islem_turu': 'hata',
+        'islem_turu': 'IHRAC_EDILDI',
         'islem_detayi': 'İHRAÇ: $isim adlı personelin yetkileri sıfırlandı.',
         'bayi_isim': 'ANKARA MERKEZ KARARGAH',
         'tarih': FieldValue.serverTimestamp(),
       });
 
       await batch.commit();
-      return {'basarili': true, 'mesaj': '$isim İhraç Edildi.'};
+      developer.log("SİBER BİLGİ: İhraç işlemi tamamlandı ve ağa mühürlendi.");
+
     } catch (e) {
-      return {'basarili': false, 'mesaj': 'İhraç başarısız: $e'};
+      developer.log("SİBER İHLAL: İhraç operasyonu başarısız!", error: e);
+      throw Exception("İHRAÇ BAŞARISIZ: Personel yetkileri sıfırlanamadı!");
     }
   }
 }

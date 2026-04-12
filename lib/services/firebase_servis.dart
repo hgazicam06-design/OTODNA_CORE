@@ -61,7 +61,9 @@ class FirebaseServis {
 
     } catch (e) {
       developer.log("SORGULAMA HATASI: İstihbarat ağı koptu!", error: e);
-      return []; // Sistem çökmesin diye boş liste döndürülür
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: Boş liste döndürmek yerine Arayüze (UI) fırlatıyoruz!
+      // Aksi halde sistem hasarlı aracı "servis kaydı yok, temiz" olarak gösterirdi.
+      throw Exception("RADAR ÇÖKTÜ: Araç DNA'sı sorgulanamıyor, Karargah bağlantınızı kontrol edin!");
     }
   }
 }

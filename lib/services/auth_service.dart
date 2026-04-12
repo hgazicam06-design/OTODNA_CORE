@@ -8,7 +8,7 @@ final authServiceProvider = Provider<AuthService>((ref) {
 });
 
 /// 🛡️ KUANTUM KİMLİK MOTORU (AuthService)
-/// Karargaha giriş, çıkış ve SMS yakalama protokollerini yönetir.
+/// Karargaha giriş, çıkış, SMS yakalama ve şifre kalkanı protokollerini yönetir.
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -36,7 +36,19 @@ class AuthService {
     }
   }
 
-  // ── 2. OTONOM SMS RADARI (Kodu Havada Yakalama) ─────────────────────────
+  // ── 2. ŞİFRE SIFIRLAMA (RECOVERY) PROTOKOLÜ (YENİ ZIRH) ─────────────────
+  Future<void> siberSifreSifirla(String email) async {
+    try {
+      developer.log("SİBER BİLGİ: $email adresi için kurtarma sinyali fırlatılıyor...");
+      await _auth.sendPasswordResetEmail(email: email.trim());
+      developer.log("SİBER BİLGİ: Kurtarma sinyali hedefe ulaştı.");
+    } on FirebaseAuthException catch (e) {
+      developer.log("AĞ ÇÖKTÜ: Şifre sıfırlama sinyali koptu! Hata: ${e.code}");
+      throw Exception(_getTurkishErrorMessage(e.code));
+    }
+  }
+
+  // ── 3. OTONOM SMS RADARI (Kodu Havada Yakalama) ─────────────────────────
   Future<void> verifySiberPhone({
     required String phoneNumber,
     required Function(PhoneAuthCredential) onAutoVerify,
@@ -73,7 +85,7 @@ class AuthService {
     );
   }
 
-  // ── 3. YAKALANAN VEYA YAZILAN KOD İLE GİRİŞİ TAMAMLAMA ──────────────────
+  // ── 4. YAKALANAN VEYA YAZILAN KOD İLE GİRİŞİ TAMAMLAMA ──────────────────
   Future<UserCredential?> signInWithPhoneCredential(PhoneAuthCredential credential) async {
     try {
       return await _auth.signInWithCredential(credential);
@@ -82,7 +94,7 @@ class AuthService {
     }
   }
 
-  // ── 4. SİSTEMDEN GÜVENLİ ÇIKIŞ PROTOKOLÜ ────────────────────────────────
+  // ── 5. SİSTEMDEN GÜVENLİ ÇIKIŞ PROTOKOLÜ ────────────────────────────────
   Future<void> signOut() async {
     developer.log("SİBER BİLGİ: Karargahtan güvenli çıkış yapılıyor...");
     await _auth.signOut();
@@ -106,6 +118,8 @@ class AuthService {
         return 'AĞ ÇÖKTÜ: Karargah ile bağlantı koptu. İnternetinizi kontrol edin.';
       case 'too-many-requests':
         return 'ŞÜPHELİ AKTİVİTE: Çok fazla istek attınız. Sistem geçici olarak kilitlendi.';
+      case 'user-disabled':
+        return 'SİBER ENGEL: Bu kimlik Karargah tarafından dondurulmuştur.';
       default:
         return 'SİSTEMSEL ANOMALİ: Bilinmeyen bir siber hata oluştu ($errorCode).';
     }

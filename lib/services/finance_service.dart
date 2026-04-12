@@ -1,22 +1,21 @@
 import 'dart:developer' as developer;
 
 /// 🛡️ KUANTUM FİNANS VE HESAPLAMA MOTORU (FinanceService)
-/// OtoDNA Ağındaki para akışını, Karargah kesintilerini ve Murat Plaza marjlarını otonom yönetir.
+/// OtoDNA Ağındaki para akışını ve Karargahın %12'lik mutlak payını otonom yönetir.
+/// SİBER KURAL: İstisna yoktur. Tüm bayiler ve işlemler için kesinti %12'dir.
 class FinanceService {
-  // ── 💰 SİBER ORANLAR ────────────────────────────────────────────────────────
-  // Karargahın (OtoDNA) standart bayi satışlarından aldığı vergi dahil toplam oran: %12
+  // ── 💰 SİBER ORANLAR (MUTLAK KURAL: %12) ──────────────────────────────────
+  // Karargahın (OtoDNA) tüm bayi satışlarından aldığı vergi dahil toplam oran: %12
   static const double _toplamKesintiOrani = 0.12;
-  static const double _otodnaNetPayOrani = 0.10;  // Net %10 Bizim
+  static const double _otodnaNetPayOrani = 0.10;  // Net %10 Bizim (Karargah Kârı)
 
-  // Murat Plaza'ya özel tanımlanmış kâr marjı: %30
-  static const double _muratPlazaMarjOrani = 0.30;
-
-  // ── 📊 STANDART BAYİ HESAPLAMASI (%12 KESİNTİ) ─────────────────────────────
-  /// Dış bayilerin (Ostim, İskitler vb.) yaptığı işlemlerde Karargaha aktarılacak payı hesaplar.
+  // ── 📊 TEK VE MUTLAK BAYİ HESAPLAMASI (%12 KESİNTİ) ──────────────────────
+  /// Tüm bayilerin (İstisnasız) yaptığı işlemlerde Karargaha aktarılacak payı hesaplar.
   static Map<String, double> bayiSatisHesapla(double satisFiyati) {
     if (satisFiyati <= 0) {
-      developer.log("SİBER HATA: Finans motoruna geçersiz/sıfır tutar girildi!");
-      return {};
+      developer.log("SİBER İHLAL: Finans motoruna geçersiz/sıfır tutar girildi!");
+      // 🚨 Sessiz Çöküş Engellendi: UI'ın boş Map okuyup çökmemesi için Kırmızı Alarm fırlatıyoruz!
+      throw Exception("FİNANSAL HATA: Satış fiyatı 0 veya negatif olamaz!");
     }
 
     double toplamKesinti = satisFiyati * _toplamKesintiOrani; // 100 TL'de 12 TL
@@ -24,7 +23,7 @@ class FinanceService {
     double kdvPayi = toplamKesinti - otodnaNetPay;            // 100 TL'de 2 TL
     double esnafaKalan = satisFiyati - toplamKesinti;         // 100 TL'de 88 TL
 
-    developer.log("SİBER FİNANS: ₺$satisFiyati tutarındaki standart bayi işlemi mühürlendi. Karargah Payı: ₺$otodnaNetPay");
+    developer.log("SİBER FİNANS: ₺$satisFiyati tutarındaki işlem mühürlendi. Karargah Payı: ₺$otodnaNetPay, KDV: ₺$kdvPayi");
 
     return {
       'satis_fiyati': satisFiyati,
@@ -32,27 +31,6 @@ class FinanceService {
       'kdv_tutari': kdvPayi,
       'toplam_kesinti': toplamKesinti,
       'esnafa_kalan_net': esnafaKalan,
-    };
-  }
-
-  // ── 🏢 MURAT PLAZA ÖZEL HESAPLAMASI (%30 KÂR) ──────────────────────────────
-  /// Diğer firmalardan gelen ürünlerin Murat Plaza üzerinden satışı sırasındaki net kârı hesaplar.
-  static Map<String, double> muratPlazaSatisHesapla(double urunGelisFiyati) {
-    if (urunGelisFiyati <= 0) {
-      developer.log("SİBER HATA: Murat Plaza finans motoruna sıfır tutar girildi!");
-      return {};
-    }
-
-    // Geliş fiyatının üzerine %30 kâr koyarak nihai satış fiyatını belirler
-    double netKar = urunGelisFiyati * _muratPlazaMarjOrani;
-    double satisFiyati = urunGelisFiyati + netKar;
-
-    developer.log("SİBER FİNANS: Murat Plaza için ₺$urunGelisFiyati gelişli ürüne %30 marj eklendi. Yeni Satış: ₺$satisFiyati");
-
-    return {
-      'gelis_fiyati': urunGelisFiyati,
-      'murat_plaza_net_kar': netKar,
-      'satis_fiyati': satisFiyati,
     };
   }
 }

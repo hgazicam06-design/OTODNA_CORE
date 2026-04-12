@@ -1,57 +1,67 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
 /// 🛡️ KUANTUM VERİ VE ARAÇ KATALOG MOTORU (DataService)
-/// Araç markaları, modelleri ve sistemsel sabit verileri barındırır.
-/// SİBER NOT: Şehir ve bölge verileri artık sadece 'CityService' üzerinden çekilmelidir!
+/// Araç markaları ve modellerini doğrudan Kuantum Ağından (Firebase) çeker.
+/// SİBER NOT: Şehir ve bölge verileri 'CityService' üzerinden çekilmektedir.
 class DataService {
+  static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // 🚗 SİBER ARAÇ MARKALARI KATALOĞU (Genişletilmiş Karargah Verisi)
-  static const List<String> _markalar = [
-    'AUDI', 'BMW', 'CHEVROLET', 'CITROEN', 'DACIA', 'FIAT', 'FORD',
-    'HONDA', 'HYUNDAI', 'KIA', 'MERCEDES-BENZ', 'NISSAN', 'OPEL',
-    'PEUGEOT', 'RENAULT', 'SEAT', 'SKODA', 'TESLA', 'TOYOTA', 'VOLKSWAGEN', 'VOLVO', 'TOGG'
-  ];
-
-  // ── 📡 ARAÇ MARKALARINI SORGULA ────────────────────────────────────────────
-  /// İleride Firebase'den çekileceği için Future (Asenkron) yapıda kurulmuştur.
+  // ── 📡 ARAÇ MARKALARINI SORGULA (100% CANLI FİREBASE) ──────────────────
   static Future<List<String>> markalariGetir() async {
     try {
-      developer.log("SİBER BİLGİ: Araç marka kataloğu radara yükleniyor...");
+      developer.log("SİBER RADAR: Araç marka kataloğu Kuantum Ağından çekiliyor...");
 
-      // Kuantum Veritabanı Gecikme Simülasyonu
-      await Future.delayed(const Duration(milliseconds: 300));
+      // 🚀 MAKET YOK: Firebase 'arac_markalari' koleksiyonundaki tüm aktif markaları çek
+      QuerySnapshot snapshot = await _db
+          .collection('arac_markalari')
+          .where('aktif', isEqualTo: true)
+          .get();
 
-      List<String> siraliMarkalar = List.from(_markalar)..sort();
-      return siraliMarkalar;
+      if (snapshot.docs.isEmpty) {
+        developer.log("SİBER UYARI: Karargahta hiç marka bulunamadı.");
+        return [];
+      }
+
+      // Doküman ID'lerini (Örn: RENAULT, BMW) marka adı olarak alıp alfabetik sıralıyoruz
+      List<String> markalar = snapshot.docs.map((doc) => doc.id.toUpperCase()).toList();
+      markalar.sort(); // Alfabetik mühür
+
+      developer.log("SİBER BİLGİ: ${markalar.length} adet marka radara yüklendi.");
+      return markalar;
+
     } catch (e) {
       developer.log("AĞ ÇÖKTÜ: Marka kataloğu çekilemedi!", error: e);
-      return [];
+      // UI EKRANINDA KIRMIZI ALARM VERMESİ İÇİN HATAYI FIRLAT
+      throw Exception("SİBER AĞ HATASI: Araç markaları Karargahtan yüklenemedi!");
     }
   }
 
-  // ── 📡 MARKAYA GÖRE MODEL SORGULAMA MOTORU ───────────────────────────────
-  /// Seçilen markaya ait modelleri Kuantum ağından çeker.
+  // ── 📡 MARKAYA GÖRE MODEL SORGULAMA MOTORU (100% CANLI FİREBASE) ───────
   static Future<List<String>> modelleriGetir(String marka) async {
     try {
       developer.log("SİBER BİLGİ: $marka markası için model istihbaratı çekiliyor...");
-      await Future.delayed(const Duration(milliseconds: 400));
 
-      // TODO: İleride bu veri Firebase 'arac_modelleri' tablosundan canlı çekilecek.
-      // Şimdilik Karargahın içine gömülü (Hardcoded) Kuantum Simülasyonu:
-      switch (marka.toUpperCase()) {
-        case 'RENAULT': return ['CLIO', 'MEGANE', 'SYMBOL', 'TALISMAN', 'KADJAR', 'AUSTRAL'];
-        case 'FIAT': return ['EGEA', 'LINEA', 'FIORINO', 'DOBLO', 'PUNTO', '500X'];
-        case 'VOLKSWAGEN': return ['GOLF', 'PASSAT', 'POLO', 'TIGUAN', 'CADDY', 'T-ROC'];
-        case 'TOYOTA': return ['COROLLA', 'YARIS', 'AURIS', 'C-HR', 'HILUX', 'RAV4'];
-        case 'FORD': return ['FOCUS', 'FIESTA', 'MONDEO', 'TRANSIT', 'KUGA', 'PUMA'];
-        case 'TOGG': return ['T10X', 'T10F'];
-        case 'BMW': return ['1 SERİSİ', '3 SERİSİ', '5 SERİSİ', 'X1', 'X3', 'X5'];
-        case 'MERCEDES-BENZ': return ['A-SERİSİ', 'C-SERİSİ', 'E-SERİSİ', 'GLA', 'GLC'];
-        default: return ['STANDART MODEL 1', 'STANDART MODEL 2', 'DİĞER'];
+      // 🚀 MAKET YOK: Firebase 'arac_markalari' koleksiyonundan markanın belgesini oku
+      DocumentSnapshot doc = await _db.collection('arac_markalari').doc(marka.toUpperCase()).get();
+
+      if (doc.exists && doc.data() != null) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+        // 'modeller' dizisini (Array) Firebase'den çek
+        List<String> modeller = List<String>.from(data['modeller'] ?? []);
+        modeller.sort(); // Alfabetik mühür
+
+        developer.log("SİBER BİLGİ: $marka için ${modeller.length} model tespit edildi.");
+        return modeller;
+      } else {
+        developer.log("SİBER UYARI: $marka markasına ait model istihbaratı bulunamadı!");
+        return [];
       }
+
     } catch (e) {
       developer.log("AĞ ÇÖKTÜ: Model verileri alınamadı!", error: e);
-      return [];
+      throw Exception("SİBER AĞ HATASI: $marka modelleri ağdan çekilemedi!");
     }
   }
 }
