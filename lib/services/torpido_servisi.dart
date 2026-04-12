@@ -1,12 +1,12 @@
 import 'dart:io';
+import 'dart:developer' as developer;
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
-import 'package:flutter/foundation.dart';
 
-/// OTODNA SİBER NEŞTER VE DİJİTAL KASA SERVİSİ
+/// 🛡️ OTODNA SİBER NEŞTER VE DİJİTAL KASA SERVİSİ
 class TorpidoServisi {
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -16,28 +16,35 @@ class TorpidoServisi {
   final String _removeBgApiKey = "YOUR_REMOVE_BG_API_KEY_HERE";
 
   /// GALERİDEN VEYA KAMERADAN RESİM SEÇ, ARKA PLANINI YOK ET VE BULUTA MÜHÜRLE
-  Future<Map<String, dynamic>> torpidoyaBelgeEkle({
+  Future<String?> torpidoyaBelgeEkle({
     required String kullaniciId,
     required String aracId,
     required ImageSource source,
   }) async {
     try {
+      developer.log("SİBER GÖZ: Optik lens açılıyor, belge taranacak...");
+
       // 1. ADIM: SİBER GÖZ İLE GÖRÜNTÜYÜ YAKALA
       final XFile? pickedFile = await _picker.pickImage(source: source, imageQuality: 85);
-      if (pickedFile == null) return {'basarili': false, 'mesaj': 'Siber İptal: Görüntü seçilmedi.'};
+      if (pickedFile == null) {
+        developer.log("SİBER İPTAL: Kullanıcı taramadan vazgeçti.");
+        return null; // Sessiz çöküş değil, bu bir kullanıcı iptalidir.
+      }
 
       File originalFile = File(pickedFile.path);
 
       // 2. ADIM: SİBER NEŞTER İLE ARKA PLANI KES (API CALL)
+      developer.log("SİBER NEŞTER: Arka plan temizliği için yapay zeka tetikleniyor...");
       File? processedFile = await _arkaPlanSilSiberNester(originalFile);
 
-      // API yanıt vermezse orijinali kullan
+      // API yanıt vermezse orijinali kullan (İşlemi durdurmamak için Taktiksel Geri Çekilme)
       File finalFile = processedFile ?? originalFile;
       String filename = "belge_${DateTime.now().millisecondsSinceEpoch}_${path.basename(finalFile.path)}";
 
       // 3. ADIM: KUANTUM BULUTUNA (FIREBASE STORAGE) YÜKLE
-      // Klasör Yapısı: torpido_kasasi / KullaniciUID / AracID
-      String storagePath = 'torpido_kasasi/$kullaniciId/$aracId/$filename';
+      developer.log("KUANTUM BULUT: Belge Karargah sunucularına şifrelenerek yükleniyor...");
+      String storagePath = 'torpido_kasasi/$kullaniciId/${aracId.toUpperCase()}/$filename';
+
       TaskSnapshot snapshot = await _storage.ref().child(storagePath).putFile(
         finalFile,
         SettableMetadata(contentType: 'image/png'), // Transparan mühür
@@ -47,7 +54,8 @@ class TorpidoServisi {
       String downloadUrl = await snapshot.ref.getDownloadURL();
 
       // 5. ADIM: FIRESTORE ARAÇ KÜTÜĞÜNE (ARRAY) İŞLE
-      await _db.collection('araclar').doc(aracId).update({
+      developer.log("SİBER MÜHÜR: Belge URL'si araç DNA'sına işleniyor...");
+      await _db.collection('araclar').doc(aracId.toUpperCase()).update({
         'torpido_belgeleri': FieldValue.arrayUnion([
           {
             'resim_url': downloadUrl,
@@ -57,14 +65,14 @@ class TorpidoServisi {
         ]),
       });
 
-      return {
-        'basarili': true,
-        'resim_url': downloadUrl,
-        'mesaj': 'Belge transparan olarak Karargaha mühürlendi.'
-      };
+      developer.log("GÖREV TAMAM: ✅ Belge transparan olarak Karargaha mühürlendi.");
+
+      return downloadUrl; // Arayüzde anında göstermek için linki geri fırlat
+
     } catch (e) {
-      debugPrint("SİBER AĞ HATASI (Torpido): $e");
-      return {'basarili': false, 'mesaj': 'Kritik Hata: Veri buluta iletilemedi.'};
+      developer.log("AĞ ÇÖKTÜ: Torpido servisi bağlantısı koptu!", error: e);
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: UI tarafına kırmızı alarm fırlatılır.
+      throw Exception("SİBER KASA HATASI: Belge buluta yüklenemedi! Lütfen internet bağlantınızı kontrol edin.");
     }
   }
 
@@ -72,7 +80,7 @@ class TorpidoServisi {
   Future<File?> _arkaPlanSilSiberNester(File imageFile) async {
     try {
       if (_removeBgApiKey == "YOUR_REMOVE_BG_API_KEY_HERE" || _removeBgApiKey.isEmpty) {
-        debugPrint("SİBER UYARI: API Key eksik. Orijinal dosya mühürleniyor.");
+        developer.log("SİBER UYARI: Neşter API Key eksik. Orijinal dosya mühürleniyor.");
         return null;
       }
 
@@ -86,13 +94,14 @@ class TorpidoServisi {
       if (response.statusCode == 200) {
         http.Response res = await http.Response.fromStream(response);
         String tempPath = path.join(path.dirname(imageFile.path), "siber_kesim_${DateTime.now().millisecondsSinceEpoch}.png");
+        developer.log("SİBER NEŞTER: Arka plan başarıyla imha edildi!");
         return await File(tempPath).writeAsBytes(res.bodyBytes);
       } else {
-        debugPrint("SİBER NEŞTER REDDEDİLDİ: HTTP ${response.statusCode}");
-        return null;
+        developer.log("SİBER NEŞTER REDDEDİLDİ: HTTP ${response.statusCode}");
+        return null; // Başarısızlık durumunda orijinal dosyaya döner
       }
     } catch (e) {
-      debugPrint("SİBER NEŞTER ÇÖKTÜ: $e");
+      developer.log("SİBER NEŞTER ÇÖKTÜ!", error: e);
       return null;
     }
   }

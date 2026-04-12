@@ -11,6 +11,11 @@ class SorguMerkezi {
   static Future<Map<String, dynamic>> tamKapsamliSorgula(String saseNo) async {
     // 🛡️ Otonom Şase Temizliği (Küçük harf veya boşluk girilirse düzeltir)
     String siberSase = saseNo.trim().toUpperCase();
+
+    if (siberSase.isEmpty) {
+      throw Exception("SİBER İHLAL: Şase numarası boş bırakılamaz, hedef belirlenemedi!");
+    }
+
     developer.log("SİBER RADAR: 🔍 $siberSase için Kuantum Derin Tarama başlatıldı...");
 
     Map<String, dynamic> yerelVeri = {};
@@ -23,23 +28,25 @@ class SorguMerkezi {
       if (doc.exists) {
         yerelVeri = doc.data()!;
         developer.log("SİBER BİLGİ: Karargah (OtoDNA) mühürleri bulundu!");
+      } else {
+        developer.log("SİBER UYARI: Hedef araç Karargah radarlarında bulunamadı.");
       }
     } catch (e) {
       developer.log("VERİTABANI İHLALİ: Yerli veri ağına ulaşılamadı!", error: e);
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: Sisteme yalan bilgi verme, UI'a Kırmızı Alarm fırlat!
+      throw Exception("RADAR ÇÖKTÜ: Karargah veritabanına ulaşılamıyor. Lütfen Kuantum Ağınızı kontrol edin!");
     }
 
-    // ── 🌍 2. ADIM: KÜRESEL HUB (DIŞ İSTİHBARAT) ──
+    // ── 🌍 2. ADIM: KÜRESEL HUB (DIŞ İSTİHBARAT - ALTYAPI HAZIRLIĞI) ──
     try {
       developer.log("SİBER İSTİHBARAT: Dış kaynaklar (Global Hub) taranıyor...");
 
-      // SİBER NOT: Gerçek HubService bağlandığında alttaki satır açılacak
+      // 🚀 MAKET İMHA EDİLDİ: Future.delayed gibi sahte bekletmeler Karargahta yasaktır!
+      // SİBER NOT: Gerçek HubService bağlandığında alttaki satır açılacak ve otonom akış devam edecek.
       // hubVerisi = await HubService.fetchGlobalData(siberSase);
 
-      // Simülasyon Kalkanı (Arayüz çökmesin diye şimdilik boş bekletiyoruz):
-      await Future.delayed(const Duration(milliseconds: 500));
-
     } catch (e) {
-      // 🛡️ DIŞ AĞ ÇÖKSE BİLE UYGULAMA ÇÖKMEZ! Sadece log atar.
+      // 🛡️ DIŞ AĞ ÇÖKSE BİLE UYGULAMA ÇÖKMEZ! Dış veri opsiyoneldir, yerel veriyle devam edilir.
       developer.log("AĞ HATASI: Küresel Hub bağlantısı koptu! Sistem yerli veriyle devam ediyor.", error: e);
     }
 
@@ -50,8 +57,8 @@ class SorguMerkezi {
       "sase_no": siberSase,
       // Hub'da isim yoksa bizim veritabanına bak, ikisinde de yoksa BİLİNMİYOR de:
       "marka_model": hubVerisi['title'] ?? yerelVeri['marka_model'] ?? "BİLİNMEYEN ARAÇ",
-      "teknik": hubVerisi['specs'] ?? "Teknik veri dış istihbarattan alınamadı.",
-      "hasar_gecmisi": hubVerisi['history'] ?? "Kayıtlı hasar verisi bulunamadı.",
+      "teknik": hubVerisi['specs'] ?? yerelVeri['teknik_bilgi'] ?? "Teknik veri dış istihbarattan alınamadı.",
+      "hasar_gecmisi": hubVerisi['history'] ?? yerelVeri['hasar_gecmisi'] ?? "Kayıtlı hasar verisi bulunamadı.",
 
       // OtoDNA Notu: Eğer yerel veri boş değilse bizim notumuzu, boşsa uyarıyı bas!
       "otodna_notu": yerelVeri.isNotEmpty

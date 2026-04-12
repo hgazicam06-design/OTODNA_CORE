@@ -22,15 +22,25 @@ class SupportService {
     required String mesaj,
   }) async {
     try {
-      // 🛡️ SİBER KALKAN: Boş rapor gönderimi engellendi!
+      developer.log("SİBER BİLGİ: [$kategori] kategorisinde yeni bir destek talebi şifreleniyor...");
+
+      // 🛡️ SİBER KALKAN 1: Boş rapor gönderimi engellendi!
       if (mesaj.trim().isEmpty) {
         throw Exception("SİBER İHLAL: Boş bir istihbarat raporu Karargaha gönderilemez!");
       }
 
-      developer.log("SİBER BİLGİ: [$kategori] kategorisinde yeni bir destek talebi şifreleniyor...");
+      // 🛡️ SİBER KALKAN 2: Kategori Manipülasyonu Engellendi!
+      if (!kategoriler.contains(kategori)) {
+        developer.log("SİBER İHLAL: Tanımlanmayan kategori tespit edildi -> $kategori");
+        throw Exception("SİBER İHLAL: Sahte veya yetkisiz bir destek kategorisi seçilemez!");
+      }
+
+      // ⛓️ SİBER ZIRH: ATOMİK WRITEBATCH BAŞLATILDI
+      WriteBatch batch = _db.batch();
 
       // 1. Bilet verisini Karargah veritabanına mühürle
-      await _db.collection('destek_biletleri').add({
+      DocumentReference biletRef = _db.collection('destek_biletleri').doc();
+      batch.set(biletRef, {
         'kullanici_id': userId, // Bileti kimin açtığı artık belli
         'kategori': kategori,
         'mesaj': mesaj.trim(),
@@ -39,11 +49,23 @@ class SupportService {
         'hedef_merkez': 'ANK-MERKEZ', // Tüm biletlerin ana hedefi
       });
 
-      developer.log("SİBER İLETİM: ✅ Destek bileti doğrudan Ankara Merkez Admin Paneline mühürlendi!");
+      // 2. Kara Kutuya (Sistem Logları) Alarm Sinyali Gönder
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'DESTEK_TALEBI',
+        'islem_detayi': 'SİBER DESTEK: Bir kullanıcı "$kategori" kategorisinde merkeze yeni bir bilet açtı.',
+        'birim': 'ANK-MERKEZ',
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      // Tüm Füzeleri Aynı Anda Ateşle!
+      await batch.commit();
+
+      developer.log("SİBER İLETİM: ✅ Destek bileti doğrudan Ankara Merkez Admin Paneline atomik olarak mühürlendi!");
 
     } catch (e) {
       developer.log("AĞ ÇÖKTÜ: Destek bileti Karargaha iletilemedi!", error: e);
-      throw Exception("SİSTEMSEL HATA: Destek talebiniz şu an iletilemiyor, lütfen bağlantınızı kontrol edin.");
+      throw Exception("SİSTEMSEL HATA: Destek talebiniz şu an iletilemiyor, lütfen Kuantum Ağınızı kontrol edin.");
     }
   }
 }
