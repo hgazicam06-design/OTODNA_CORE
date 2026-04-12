@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// 🛡️ KUANTUM DİJİTAL REFERANS VE MÜHÜR MOTORU (MuhurlemeServisi)
 /// Kullanıcının AI yardımıyla girdiği ve fotoğrafladığı verileri Ustanın önüne getirir,
-/// AI Kalfanın sunumuyla onaylatır ve Karargah mührünü vurur.
+/// AI Kalfanın sunumuyla onaylatır ve Karargah mührünü atomik zırhla vurur.
 class MuhurlemeServisi {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -29,57 +29,73 @@ class MuhurlemeServisi {
       }
 
       // 2. 🤖 AI KALFA (SİBER ÇIRAK) SUNUMU
-      // Ustanın ekranında işlemi AI özetler. "Sen yapmadın, ben görmedim" dönemi biter.
       developer.log("🤖 AI KALFA SUNUMU: '$aiKalfaOzeti'");
       developer.log("SİBER ONAY: Usta, kullanıcının yüklediği görsel kanıtları ve AI Kalfanın raporunu inceleyip onayladı.");
 
-      // 3. KIRMIZI X (Kritik Risk) Kontrolü
-      if (kontroller.values.contains("KIRMIZI_X")) {
-        _kritikHataBildir(saseNo);
-      }
+      // ⛓️ SİBER ZIRH: ATOMİK WRITEBATCH BAŞLATILDI
+      WriteBatch batch = _db.batch();
 
-      // 4. FİNANSAL ÇARK TETİKLEMESİ (Toplam %12 Kesinti)
-      _payHesaplaVeGonder(islemUcreti);
+      // 3. FİNANSAL ÇARK HESAPLAMASI (Toplam %12 Kesinti)
+      double gaziNet = islemUcreti * 0.10; // %10 Net Karargah Payı
+      double vergi = islemUcreti * 0.02;   // %2 Vergi
 
-      // 5. DİJİTAL İMZA VE ZAMAN DAMGASI
-      var dijitalMuhur = {
+      // 4. DİJİTAL İMZA VE ZAMAN DAMGASI (Blockchain'e Hazırlık)
+      DocumentReference muhurRef = _db.collection('dijital_muhurler').doc();
+      batch.set(muhurRef, {
         "timestamp": FieldValue.serverTimestamp(),
         "usta_id": ustaId,
         "sase_no": saseNo.toUpperCase(),
         "veriler": kontroller,
         "kanitlar": kanitMedyaYollari,
-        "ai_kalfa_ozeti": aiKalfaOzeti, // Kalfanın sözleri de blockchain'e mühürlenir
+        "ai_kalfa_ozeti": aiKalfaOzeti,
         "islem_ucreti": islemUcreti,
+        "komutan_payi": gaziNet,
+        "vergi_payi": vergi,
         "dijital_referans_onayi": true,
-      };
+      });
 
-      // 🚀 Kaydı sonsuza kadar Karargah veritabanına mühürle
-      await _db.collection('dijital_muhurler').add(dijitalMuhur);
+      // 5. KARA KUTUYA İŞLEMİ MÜHÜRLE
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'DIJITAL_MUHUR',
+        'islem_detayi': 'MÜHÜR: $saseNo şaseli araç AI Kalfa onayıyla ağa kilitlendi. Karargah Payı: ₺$gaziNet',
+        'bayi_id': ustaId,
+        'tarih': FieldValue.serverTimestamp(),
+      });
 
-      // İleride Blockchain aktif edildiğinde tetiklenecek siber komut:
+      // 6. 🚨 KIRMIZI X PROTOKOLÜ (TRAFİĞE ÇIKIŞ ENGELİ)
+      if (kontroller.values.contains("KIRMIZI_X")) {
+        developer.log("KIRMIZI ALARM ⚠️: $saseNo şaseli araçta 'KIRMIZI_X' tespit edildi! İdam protokolü tetikleniyor...");
+
+        // Aracı direkt trafiğe çıkamaz olarak kilitle
+        DocumentReference aracRef = _db.collection('araclar').doc(saseNo.toUpperCase());
+        batch.update(aracRef, {
+          'durum': 'RİSKLİ - TRAFİĞE ÇIKAMAZ',
+          'dna_skoru': FieldValue.increment(-20), // Kritik hata DNA skorunu çökertir
+          'son_guncelleme': FieldValue.serverTimestamp(),
+        });
+
+        // Kara Kutuya Kırmızı X (SOS) Sinyali Gönder
+        DocumentReference sosLogRef = _db.collection('sistem_loglari').doc();
+        batch.set(sosLogRef, {
+          'islem_turu': 'sos',
+          'islem_detayi': 'SİBER MÜDAHALE: $saseNo şaseli araç KIRMIZI_X tespit edildiği için karantinaya alındı!',
+          'bayi_id': ustaId,
+          'tarih': FieldValue.serverTimestamp(),
+        });
+      }
+
+      // TÜM FÜZELERİ AYNI ANDA ATEŞLE!
+      await batch.commit();
+
+      // İleride Blockchain aktif edildiğinde tetiklenecek siber komut (Batch sonrası):
       // await BlockchainLogger.save(dijitalMuhur);
 
       developer.log("SİBER MÜHÜR: ✅ Araç OtoDNA Sistemine kusursuzca mühürlendi!");
 
     } catch (e) {
       developer.log("AĞ ÇÖKTÜ: Mühürleme işlemi başarısız oldu!", error: e);
-      throw Exception("SİBER HATA: Araç DNA'sına mühür vurulamadı. Lütfen görsel kanıtları kontrol edin.");
+      throw Exception("SİBER HATA: Araç DNA'sına mühür vurulamadı. Lütfen Kuantum Ağınızı ve kanıtları kontrol edin.");
     }
-  }
-
-  // ── 💰 FİNANSAL ÇARK (KARARGAH VE VERGİ PAYI) ────────────────────────
-  void _payHesaplaVeGonder(double tutar) {
-    if(tutar <= 0) return;
-
-    double gaziNet = tutar * 0.10; // %10 Net Karargah Payı
-    double vergi = tutar * 0.02;   // %2 Vergi
-
-    developer.log("SİBER FİNANS: İşlem: ₺$tutar | Karargah Net: ₺$gaziNet | Vergi: ₺$vergi mühürlendi.");
-  }
-
-  // ── 🚨 KRİTİK RİSK BİLDİRİMİ (KIRMIZI X PROTOKOLÜ) ────────────────────
-  void _kritikHataBildir(String sase) {
-    developer.log("KIRMIZI ALARM ⚠️: $sase şaseli araçta 'KIRMIZI_X' tespit edildi!");
-    developer.log("SİBER İSTİHBARAT: Bu aracın trafiğe çıkışının riskli olduğu otonom olarak raporlandı.");
   }
 }

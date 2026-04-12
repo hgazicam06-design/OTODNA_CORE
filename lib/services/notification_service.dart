@@ -16,16 +16,23 @@ class NotificationService {
       developer.log("SİBER BİLGİ: Kuantum İletişim Modülü (FCM) izni başarıyla alındı.");
     } catch (e) {
       developer.log("AĞ ÇÖKTÜ: İletişim izni alınamadı!", error: e);
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ
+      throw Exception("SİBER İHLAL: Bildirim izinleri reddedildi, iletişim modülü başlatılamıyor!");
     }
   }
 
   // Cihazın hedef kimliğini (Token) alır
-  Future<String?> getToken() async {
+  Future<String> getToken() async {
     try {
-      return await _fcm.getToken();
+      String? token = await _fcm.getToken();
+      if (token == null) {
+        throw Exception("Kuantum mühürü (Token) boş döndü!");
+      }
+      return token;
     } catch (e) {
       developer.log("İLETİŞİM HATASI: Cihaz mühürü (Token) okunamadı!", error: e);
-      return null;
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ
+      throw Exception("RADAR HATASI: Cihazın hedef kimliği alınamadı, sinyal fırlatılamaz!");
     }
   }
 
@@ -42,32 +49,33 @@ class NotificationService {
       // 🛡️ SİBER GÜVENLİK: IP Kara Liste (Spam/Taciz) Kontrolü
       if (engelliIpler.contains(gonderenIp)) {
         developer.log("SİBER ENGEL: $gonderenIp numaralı IP Kara Listede! Sinyal reddedildi.");
-        return {'success': false, 'reason': 'blocked'};
+        return {'success': false, 'reason': 'blocked'}; // Bu bilerek Exception atılmaz, spamcıya hata gösterilmez.
       }
 
-      String mühürlüSase = saseNo.toUpperCase();
+      String muhurluSase = saseNo.toUpperCase();
 
-    // 🚨 KRİTİK: Koleksiyon adı 'vehicles' olarak stabilize edildi (Ekspertiz ve DNA Motoruyla Tam Uyum)
-    final ref = await _db
-        .collection('vehicles')
-        .doc(mühürlüSase)
-        .collection('bildirimler')
-        .add({
-    'tur': tur,
-    'mesaj': mesaj,
-    'gonderenIp': gonderenIp,
-    'tarih': FieldValue.serverTimestamp(),
-    'okundu': false,
-    'durum': 'gonderildi',
-    'cevap': '',
-    });
+      // 🚨 KRİTİK: Koleksiyon adı 'vehicles' olarak stabilize edildi
+      final ref = await _db
+          .collection('vehicles')
+          .doc(muhurluSase)
+          .collection('bildirimler')
+          .add({
+        'tur': tur,
+        'mesaj': mesaj,
+        'gonderenIp': gonderenIp,
+        'tarih': FieldValue.serverTimestamp(),
+        'okundu': false,
+        'durum': 'gonderildi',
+        'cevap': '',
+      });
 
-    developer.log("SİBER SİNYAL: $mühürlüSase şaseli araca '$tur' kodlu bildirim fırlatıldı.");
-    return {'success': true, 'bildirimId': ref.id};
+      developer.log("SİBER SİNYAL: $muhurluSase şaseli araca '$tur' kodlu bildirim fırlatıldı.");
+      return {'success': true, 'bildirimId': ref.id};
 
     } catch (e) {
-    developer.log("SİNYAL KOPTU: Bildirim veritabanına mühürlenemedi!", error: e);
-    return {'success': false, 'reason': 'error'};
+      developer.log("SİNYAL KOPTU: Bildirim veritabanına mühürlenemedi!", error: e);
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ
+      throw Exception("SİNYAL KOPTU: Bildirim Kuantum Ağına işlenemedi. Bağlantınızı kontrol edin!");
     }
   }
 
@@ -97,6 +105,8 @@ class NotificationService {
       developer.log("SİBER BİLGİ: Sinyal durumu '$durum' olarak Karargaha işlendi.");
     } catch (e) {
       developer.log("AĞ HATASI: Sinyal durumu güncellenemedi!", error: e);
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ
+      throw Exception("VERİTABANI İHLALİ: Sinyal durumu ağa mühürlenemedi!");
     }
   }
 
@@ -112,6 +122,8 @@ class NotificationService {
       developer.log("SİBER CEVAP: Araç sahibinin cevabı mühürlendi: '$cevap'");
     } catch (e) {
       developer.log("AĞ HATASI: Müşteri cevabı mühürlenemedi!", error: e);
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ
+      throw Exception("İLETİŞİM KOPTU: Cevabınız Karargaha iletilemedi. Lütfen tekrar deneyin!");
     }
   }
 
