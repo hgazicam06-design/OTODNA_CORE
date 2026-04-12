@@ -8,24 +8,35 @@ class QREngineService {
   static String generateVehicleDNAString({required String plateNumber, required String dealerId}) {
     try {
       String siberPlate = plateNumber.trim().toUpperCase().replaceAll(' ', '');
-      if (siberPlate.isEmpty) throw Exception("SİBER İHLAL: Eksik DNA verisi!");
+      String siberDealer = dealerId.trim().toUpperCase();
 
-      // Kuantum Şifreleme Formatı: OTODNA_TAG_34DNA2026_ZAMANDAMGASİ
-      String qrSinyali = 'OTODNA_TAG_${siberPlate}_${DateTime.now().millisecondsSinceEpoch}';
-      developer.log("SİBER KRİPTOGRAFİ: Şifrelendi -> $qrSinyali");
+      if (siberPlate.isEmpty || siberDealer.isEmpty) {
+        throw Exception("SİBER İHLAL: Eksik DNA veya Bayi İstihbaratı!");
+      }
+
+      // Kuantum Şifreleme Formatı: OTODNA_TAG_34DNA2026_BAYIID_ZAMANDAMGASİ
+      // 🚀 ZAFİYET GİDERİLDİ: dealerId artık şifreye atomik olarak gömülü!
+      String qrSinyali = 'OTODNA_TAG_${siberPlate}_${siberDealer}_${DateTime.now().millisecondsSinceEpoch}';
+      developer.log("SİBER KRİPTOGRAFİ: Kuantum QR Mührü Şifrelendi -> $qrSinyali");
+
       return qrSinyali;
     } catch (e) {
-      return 'OTODNA::ERROR';
+      developer.log("KRİPTOGRAFİ ÇÖKTÜ: Şifreleme başarısız!", error: e);
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: Sahte string dönmek yerine Kırmızı Alarm fırlatılır!
+      throw Exception("SİBER HATA: QR Kodu oluşturulamadı. Lütfen araç ve bayi verilerini kontrol edin!");
     }
   }
 
   // ── 📲 2. SİBER QR EKRAN ÇİZİCİ ──
   static Widget buildSiberQRCode(String dnaData, {double size = 200.0}) {
-    if (dnaData.isEmpty || dnaData == 'OTODNA::ERROR') {
+    // Eğer dışarıdan gelen bir hatayla boş data gelirse arayüzü çökertmek yerine İhlal Ekranı basar
+    if (dnaData.isEmpty) {
       return Container(
         width: size, height: size,
         decoration: BoxDecoration(color: Colors.red.shade900, borderRadius: BorderRadius.circular(16)),
-        child: const Center(child: Text("SİBER İHLAL\nQR ÇÖKTÜ", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
+        child: const Center(
+            child: Text("SİBER İHLAL\nEKSİK VERİ", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))
+        ),
       );
     }
 
@@ -34,8 +45,10 @@ class QREngineService {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFF00FFC2), width: 3),
-        boxShadow: [BoxShadow(color: const Color(0xFF00FFC2).withOpacity(0.5), blurRadius: 25, spreadRadius: 3)],
+        border: Border.all(color: const Color(0xFF00FFC2), width: 3), // Kuantum Turkuazı
+        boxShadow: [
+          BoxShadow(color: const Color(0xFF00FFC2).withOpacity(0.5), blurRadius: 25, spreadRadius: 3)
+        ],
       ),
       child: QrImageView(
         data: dnaData,

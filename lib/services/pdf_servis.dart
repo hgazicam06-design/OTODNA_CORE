@@ -31,12 +31,19 @@ class PdfServis {
           build: (context) => [
             _buildHeader(saseNo),
             pw.SizedBox(height: 20),
-            _buildSummaryTable(kayitlar),
-            pw.SizedBox(height: 20),
-            pw.Text("SERVIS GECMISI DETAYLARI", style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 14)),
-            pw.Divider(color: PdfColors.blue900, thickness: 2),
-            pw.SizedBox(height: 10),
-            ...kayitlar.map((k) => _buildKayitItem(k)).toList(),
+
+            // 🛡️ SİBER KONTROL: Araç sicili temiz mi, yoksa kabarık mı?
+            if (kayitlar.isEmpty)
+              _buildTemizSicilPaneli()
+            else ...[
+              _buildSummaryTable(kayitlar),
+              pw.SizedBox(height: 20),
+              pw.Text("SERVIS GECMISI DETAYLARI", style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 14)),
+              pw.Divider(color: PdfColors.blue900, thickness: 2),
+              pw.SizedBox(height: 10),
+              ...kayitlar.map((k) => _buildKayitItem(k)).toList(),
+            ],
+
             pw.SizedBox(height: 40),
             _buildOfficialSeal(), // Ankara Merkez Dijital Mührü
           ],
@@ -53,6 +60,7 @@ class PdfServis {
 
     } catch (e) {
       developer.log("AĞ ÇÖKTÜ: PDF Raporu basılamadı!", error: e);
+      // 🚨 KUSURSUZ ZIRH: Komutan Gazi'nin kurduğu Kırmızı Alarm kalkanı aktiftir!
       throw Exception("SİBER HATA: Belge oluşturulamadı. Lütfen cihazın depolama izinlerini kontrol edin.");
     }
   }
@@ -68,7 +76,7 @@ class PdfServis {
           children: [
             pw.Text("OtoDNA ARAC DNA RAPORU", style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold, color: PdfColors.blue900)),
             pw.Text("Sase No: ${sase.toUpperCase()}", style: const pw.TextStyle(fontSize: 12)),
-            pw.Text("Rapor Tarihi: ${DateTime.now().toString().split(' ')[0]}"),
+            pw.Text("Rapor Tarihi: ${DateTime.now().toString().split(' ')[0]}", style: const pw.TextStyle(color: PdfColors.grey700)),
           ],
         ),
         pw.Container(
@@ -81,6 +89,31 @@ class PdfServis {
           child: pw.Center(child: pw.Text("DNA", style: pw.TextStyle(color: PdfColors.white, fontWeight: pw.FontWeight.bold, fontSize: 18))),
         ),
       ],
+    );
+  }
+
+  // Eğer araçta hiçbir hasar/kayıt yoksa basılacak Siber Yeşil Pano
+  pw.Widget _buildTemizSicilPaneli() {
+    return pw.Container(
+      padding: const pw.EdgeInsets.all(20),
+      decoration: pw.BoxDecoration(
+        color: PdfColor.fromHex('#E8F5E9'), // Açık yeşil siber arka plan
+        border: pw.Border.all(color: PdfColors.green800, width: 2),
+        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(8)),
+      ),
+      child: pw.Center(
+        child: pw.Column(
+          children: [
+            pw.Text("KUSURSUZ SİCİL", style: pw.TextStyle(color: PdfColors.green900, fontSize: 18, fontWeight: pw.FontWeight.bold)),
+            pw.SizedBox(height: 8),
+            pw.Text(
+              "Siber İstihbarat Radarlarımıza gore bu araca ait herhangi bir servis, kaza veya revizyon kaydi BULUNMAMAKTADIR.",
+              style: pw.TextStyle(color: PdfColors.green800, fontSize: 12),
+              textAlign: pw.TextAlign.center,
+            ),
+          ],
+        ),
+      ),
     );
   }
 

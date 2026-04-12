@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer' as developer;
 
 /// 🚀 OTODNA MEGA PROTOKOLÜ: S.O.S VE ACIMASIZ CEZA MOTORU
 /// Bu sınıf, acil durum sinyallerini yönetir ve asılsız ihbarlarda kullanıcıyı sistemden tecrit eder.
@@ -8,24 +9,25 @@ class OtoDnaMegaProtocol {
   // ====================================================================
   // 1. SİBER S.O.S FÜZESİNİ ATEŞLE (5 Saniye Protokolü)
   // ====================================================================
-  static Future<Map<String, dynamic>> sosSinyaliAtesle({
+  static Future<void> sosSinyaliAtesle({
     required String kullaniciId,
     required String plaka,
     required String qrData,
     required String konum, // Koordinat verisi
   }) async {
     try {
+      developer.log("SİBER RADAR: $plaka plakalı araçtan S.O.S sinyali algılandı. Doğrulama yapılıyor...");
+
       // 🛡️ SİBER KONTROL: Kullanıcı Kırmızı Kart (2 Ceza Puanı) yemiş mi?
       DocumentSnapshot userDoc = await _db.collection('kullanicilar').doc(kullaniciId).get();
       if (userDoc.exists) {
-        var data = userDoc.data() as Map<String, dynamic>;
+        var data = userDoc.data() as Map<String, dynamic>? ?? {};
         int cezaPuan = data['sos_ceza_puani'] ?? 0;
 
         if (cezaPuan >= 2) {
-          return {
-            'basarili': false,
-            'mesaj': 'SİSTEM KİLİTLİ: Asılsız ihbarlar nedeniyle S.O.S yetkiniz kalıcı olarak askıya alınmıştır!'
-          };
+          developer.log("SİBER ENGEL: Kırmızı kartlı kullanıcı S.O.S ateşlemeye çalıştı. İŞLEM REDDEDİLDİ!");
+          // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: UI'a Kırmızı Alarm Fırlat!
+          throw Exception("SİSTEM KİLİTLİ: Asılsız ihbarlar nedeniyle S.O.S yetkiniz kalıcı olarak askıya alınmıştır!");
         }
       }
 
@@ -54,10 +56,12 @@ class OtoDnaMegaProtocol {
       });
 
       await batch.commit();
-      return {'basarili': true, 'mesaj': 'S.O.S Sinyali Kuantum Radarlarına Ulaştı! Karargah teyakkuzda.'};
+      developer.log("SİBER MÜHÜR: S.O.S Sinyali Kuantum Radarlarına Ulaştı! Karargah teyakkuzda.");
 
     } catch (e) {
-      return {'basarili': false, 'mesaj': 'Sinyal Hatası: Karargahla bağlantı kurulamadı! $e'};
+      developer.log("SİNYAL KOPTU: S.O.S sinyali Karargaha iletilemedi!", error: e);
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ
+      throw Exception("SİBER HATA: Karargahla bağlantı kurulamadı. Lütfen ağınızı kontrol edin!");
     }
   }
 
@@ -66,6 +70,7 @@ class OtoDnaMegaProtocol {
   // ====================================================================
   static Future<void> asilsizIhbarCezasiKes(String kullaniciId, String sosDocId) async {
     try {
+      developer.log("SİBER YARGI: $kullaniciId numaralı kullanıcı için asılsız ihbar cezası kesiliyor...");
       WriteBatch batch = _db.batch();
 
       // 1. S.O.S Kaydını "Asılsız" olarak işaretle ve mühürle
@@ -88,14 +93,12 @@ class OtoDnaMegaProtocol {
       });
 
       await batch.commit();
+      developer.log("SİBER CEZA ONAYLANDI: Kullanıcının siciline +1 ceza puanı mühürlendi.");
 
     } catch (e) {
-      // Hata durumunda sistem loglarına sessizce raporla
-      FirebaseFirestore.instance.collection('sistem_loglari').add({
-        'islem_turu': 'hata',
-        'islem_detayi': 'CEZA MOTORU ARIZASI: $e',
-        'tarih': FieldValue.serverTimestamp(),
-      });
+      developer.log("AĞ ÇÖKTÜ: Ceza motoru arızalandı!", error: e);
+      // 🚨 KARARGAHTA SESSİZLİK İHANETTİR: O "sessizce raporla" yalanı imha edildi!
+      throw Exception("ADALET MOTORU ARIZASI: Ceza işlemi Kuantum Ağına işlenemedi! Sisteminizi kontrol edin.");
     }
   }
 }
