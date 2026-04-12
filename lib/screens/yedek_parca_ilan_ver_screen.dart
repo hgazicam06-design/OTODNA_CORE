@@ -181,7 +181,7 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
                         : const Icon(Icons.satellite_alt, color: SiberTema.oledBlack, size: 24),
                     label: Text(
                         _isLoading ? "MÜHÜRLENİYOR..." : "AĞA YÜKLE VE SATIŞA BAŞLA",
-                        style: const TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 14)
+                        style: const TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 14, fontFamily: 'Avenir')
                     ),
                   ),
                 ),

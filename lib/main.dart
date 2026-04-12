@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'; // 🛰️ KUANTUM VERİ AĞI
+
 import 'core/siber_tema.dart';
+import 'core/app_router.dart'; // 🚀 Kuantum Rota Merkezi Eklendi
 import 'auth/otodna_auth_gate.dart';
-import 'firebase_options.dart'; // 🔥 FİREBASE YAPILANDIRMASI (Otomatik oluşturulmuş olmalı)
+import 'firebase_options.dart'; // 🔥 FİREBASE YAPILANDIRMASI
 
 void main() async {
   // 🛡️ SİBER ÇEKİRDEK BAŞLATILIYOR
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 🚀 FIREBASE KUANTUM MOTORUNU ATEŞLE (DefaultOptions ile güvenli başlatma)
+  // 🚀 FIREBASE KUANTUM MOTORUNU ATEŞLE
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -31,6 +33,10 @@ class OtoDNA extends StatelessWidget {
       title: 'OtoDNA Kuantum Ağı',
       debugShowCheckedModeBanner: false,
 
+      // 🚀 YÖNLENDİRME MERKEZİ (ROUTER)
+      initialRoute: '/',
+      onGenerateRoute: KuantumRota.atesle,
+
       // 🎨 SİBER TEMA ENJEKSİYONU (OLED ve Kuantum Renkleri)
       theme: ThemeData(
         useMaterial3: true, // 🛠️ Yeni nesil siber arayüz motoru
@@ -44,10 +50,8 @@ class OtoDNA extends StatelessWidget {
         ),
         fontFamily: 'Avenir', // Kurumsal Karargah Fontu
 
-        // Kaydırma efektlerini siber akıcılığa uyarla
         visualDensity: VisualDensity.adaptivePlatformDensity,
 
-        // Siber Cam Efekti için AppBar düzenlemesi
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -55,8 +59,7 @@ class OtoDNA extends StatelessWidget {
         ),
       ),
 
-      // 🛡️ SİBER KAPI (OTODNA AUTH GATE)
-      // Bu kapı artık siber_kimlik_provider üzerinden yetki kontrolü yapacak.
+      // 🛡️ SİBER KAPI (ROUTER TARAFINDAN YÖNETİLİYOR, '/' ROTASI)
       home: const OtoDnaAuthGate(),
     );
   }

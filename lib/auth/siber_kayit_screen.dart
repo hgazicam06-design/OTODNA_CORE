@@ -111,7 +111,7 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
             color: isError ? Colors.white : SiberTema.oledBlack,
             fontWeight: FontWeight.w900,
             fontSize: 14,
-            fontFamily: SiberTema.siberFont,
+            fontFamily: 'Avenir', // 🛠️ DÜZELTİLDİ
           ),
         ),
         duration: const Duration(seconds: 4),
@@ -150,7 +150,7 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
                     shape: BoxShape.circle,
                     color: SiberTema.matGrey,
                     border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
-                    boxShadow: SiberTema.siberGolgeDerin, // 🔥 3D Derinlik
+                    boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.2), blurRadius: 20, spreadRadius: 2)], // 🛠️ DÜZELTİLDİ
                   ),
                   child: const Center(
                     child: Icon(Icons.person_add_alt_1_rounded, color: SiberTema.kuantumCyan, size: 40, shadows: [Shadow(color: SiberTema.kuantumCyan, blurRadius: 10)]),
@@ -165,7 +165,7 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
                     fontSize: 30,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 4,
-                    fontFamily: SiberTema.siberFont,
+                    fontFamily: 'Avenir', // 🛠️ DÜZELTİLDİ
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -176,7 +176,7 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
                     fontSize: 12,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 3,
-                    fontFamily: SiberTema.siberFont,
+                    fontFamily: 'Avenir', // 🛠️ DÜZELTİLDİ
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -188,7 +188,7 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
                     color: SiberTema.matGrey.withOpacity(0.5),
                     border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
                     borderRadius: BorderRadius.circular(24),
-                    boxShadow: SiberTema.siberGolgeKatmanli, // 🔥 Derinlik
+                    boxShadow: const [BoxShadow(color: Colors.black54, blurRadius: 20, offset: Offset(0, 10))], // 🛠️ DÜZELTİLDİ
                   ),
                   child: Column(
                     children: [
@@ -231,7 +231,7 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
                           style: SiberTema.kuantumButonStili(), // 🔥 3D Buton
                           child: const Text(
                             "PROTOKOLÜ TAMAMLA",
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: SiberTema.siberFont, color: SiberTema.oledBlack),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir', color: SiberTema.oledBlack), // 🛠️ DÜZELTİLDİ
                           ),
                         ),
                       ),
@@ -255,11 +255,11 @@ class _SiberKayitScreenState extends State<SiberKayitScreen> with SingleTickerPr
     return TextField(
       controller: controller,
       obscureText: isObscure,
-      style: const TextStyle(color: Colors.white, fontSize: 15, fontFamily: SiberTema.siberFont, fontWeight: FontWeight.bold),
+      style: const TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Avenir', fontWeight: FontWeight.bold), // 🛠️ DÜZELTİLDİ
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.white54, size: 22),
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.white30, fontSize: 14, fontFamily: SiberTema.siberFont),
+        hintStyle: const TextStyle(color: Colors.white30, fontSize: 14, fontFamily: 'Avenir'), // 🛠️ DÜZELTİLDİ
         filled: true,
         fillColor: SiberTema.oledBlack, // Derin siyah giriş alanı
         contentPadding: const EdgeInsets.symmetric(vertical: 18),

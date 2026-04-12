@@ -23,22 +23,22 @@ class _CartScreenState extends State<CartScreen> {
   final Color primaryCyan = SiberTema.kuantumCyan;
   final Color dangerColor = Colors.redAccent;
 
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   bool _isProcessing = false;
 
   // ── 🚀 1. ATOMİK ADET GÜNCELLEME MOTORU ────────────────────────────────────
   Future<void> _adetGuncelle(DocumentReference docRef, int mevcutAdet, int artis) async {
-    // Çift tıklama ve aşırı yüklenme kalkanı
     if (_isProcessing) return;
 
     try {
       int yeniAdet = mevcutAdet + artis;
 
       if (yeniAdet <= 0) {
-        // 🔥 ATOMİK İMHA: Ürün sepetten tamamen siliniyor
         await docRef.delete();
         _siberBildirim('DONANIM SEPETTEN İMHA EDİLDİ', isError: true);
       } else {
-        // ⚡ KUANTUM GÜNCELLEME: Sadece gerekli alan
         await docRef.update({'adet': yeniAdet});
       }
     } catch (e) {
@@ -46,18 +46,43 @@ class _CartScreenState extends State<CartScreen> {
     }
   }
 
-  // ── 💳 2. GÜVENLİ ÖDEME VE FİNANSAL KÖPRÜ ─────────────────────────────────
-  void _odemeAdiminaGec() async {
+  // ── 💳 2. GÜVENLİ ÖDEME VE FİNANSAL KÖPRÜ (GERÇEK SİSTEM) ───────────────────
+  Future<void> _odemeProtokolunuBaslat(List<QueryDocumentSnapshot> sepetDokumanlari, double toplamTutar) async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null || _isProcessing) return;
+
     setState(() => _isProcessing = true);
 
     try {
-      // TODO: Burada Iyzico veya Stripe Payload hazırlanacak
-      // %12 Karargah Payı bu aşamada ödeme sistemine net veri olarak aktarılır.
-      await Future.delayed(const Duration(seconds: 2));
+      // 🔥 ATOMİK İŞLEM: Ödeme kaydı oluştur ve sepeti imha et
+      WriteBatch batch = _db.batch();
+
+      // 1. Sipariş Dokümanı (Finansal Çekirdek Dahil)
+      DocumentReference orderRef = _db.collection('siparisler').doc();
+      double karargahPayi = toplamTutar * 0.12;
+
+      batch.set(orderRef, {
+        'kullaniciId': uid,
+        'toplamTutar': toplamTutar,
+        'karargahPayi': karargahPayi, // %12 Protokolü
+        'tarih': FieldValue.serverTimestamp(),
+        'durum': 'Onay Bekliyor',
+        'urunler': sepetDokumanlari.map((e) => e.data()).toList(),
+      });
+
+      // 2. Sepeti Boşalt (Kuantum Temizlik)
+      for (var doc in sepetDokumanlari) {
+        batch.delete(doc.reference);
+      }
+
+      await batch.commit();
 
       if (!mounted) return;
-      _siberBildirim('KUANTUM ÖDEME AĞINA BAĞLANILIYOR... 💳');
+      _siberBildirim('ÖDEME EMRİ VERİLDİ! SİNYAL MÜHÜRLENDİ. 🛡️');
+      Navigator.pop(context);
 
+    } catch (e) {
+      _siberBildirim('SİBER HATA: İşlem başarısız!', isError: true);
     } finally {
       if (mounted) setState(() => _isProcessing = false);
     }
@@ -65,19 +90,17 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = _auth.currentUser?.uid;
 
     return ResponsiveKalkan(
       isOledBackground: true,
       child: Scaffold(
-        backgroundColor: Colors.transparent, // Kalkanın arka planını kullan
+        backgroundColor: Colors.transparent,
         appBar: _buildAppBar(),
         body: uid == null ? _buildHataEkrani('YETKİSİZ ERİŞİM: GİRİŞ YAPIN') : _buildSepetAkisi(uid),
       ),
     );
   }
-
-  // ── 🛡️ UI BİLEŞENLERİ: KOMUTA MERKEZİ ───────────────────────────────────────
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
@@ -97,11 +120,7 @@ class _CartScreenState extends State<CartScreen> {
 
   Widget _buildSepetAkisi(String uid) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('kullanicilar')
-          .doc(uid)
-          .collection('sepet')
-          .snapshots(),
+      stream: _db.collection('kullanicilar').doc(uid).collection('sepet').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator(color: primaryCyan, strokeWidth: 1));
@@ -146,7 +165,6 @@ class _CartScreenState extends State<CartScreen> {
       ),
       child: Row(
         children: [
-          // 💿 ÜRÜN İKONU (GLASSMORPHISM)
           Container(
             height: 50, width: 50,
             decoration: BoxDecoration(
@@ -157,7 +175,6 @@ class _CartScreenState extends State<CartScreen> {
             child: Icon(Icons.settings_input_component_rounded, color: primaryCyan, size: 20),
           ),
           const SizedBox(width: 16),
-          // 📝 ÜRÜN BİLGİSİ
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +185,6 @@ class _CartScreenState extends State<CartScreen> {
               ],
             ),
           ),
-          // 🕹️ ADET KONTROLÜ
           _buildAdetKontrolcu(docRef, adet),
         ],
       ),
@@ -222,14 +238,14 @@ class _CartScreenState extends State<CartScreen> {
             children: [
               _buildFinansSatir('ARA TOPLAM', '₺${toplamTutar.toStringAsFixed(2)}'),
               const SizedBox(height: 8),
-              _buildFinansSatir('KARARGAH PAYI (%12 DAHİL)', '₺${(toplamTutar * 0.12).toStringAsFixed(2)}', isSmall: true),
+              _buildFinansSatir('KARARGAH PAYI (%12)', '₺${(toplamTutar * 0.12).toStringAsFixed(2)}', isSmall: true),
               const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white10)),
               _buildFinansSatir('GENEL TOPLAM', '₺${toplamTutar.toStringAsFixed(2)}', isBold: true),
               const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity, height: 55,
                 child: ElevatedButton(
-                  onPressed: _isProcessing ? null : _odemeAdiminaGec,
+                  onPressed: _isProcessing ? null : () => _odemeProtokolunuBaslat(docs, toplamTutar),
                   style: SiberTema.kuantumButonStili(),
                   child: _isProcessing
                       ? const CircularProgressIndicator(color: Colors.black, strokeWidth: 2)

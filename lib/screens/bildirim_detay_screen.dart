@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
 
 // 🚀 KARARGAH ZIRHLARI
 import '../core/siber_tema.dart';
@@ -23,7 +24,7 @@ class _BildirimDetayScreenState extends ConsumerState<BildirimDetayScreen> {
   Future<void> _yanitProtokolu(String mesaj) async {
     setState(() => _isProcessing = true);
     try {
-      // Bildirimi mühürle ve yanıtı karşı tarafa (vatandaş koleksiyonuna) ilet
+      // Bildirimi mühürle ve durumu "Müdahale Edildi" olarak güncelle
       await _db.collection('bildirimler').doc(widget.bildirimId).update({
         'yanit': mesaj,
         'durum': 'Müdahale Edildi',
@@ -34,8 +35,8 @@ class _BildirimDetayScreenState extends ConsumerState<BildirimDetayScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: SiberTema.kuantumCyan,
-          content: Text('\"$mesaj\" protokolü ağa mühürlendi. 🦅',
-              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+          content: Text('"$mesaj" protokolü ağa mühürlendi. 🦅',
+              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, letterSpacing: 1)),
         ),
       );
     } catch (e) {
@@ -45,24 +46,37 @@ class _BildirimDetayScreenState extends ConsumerState<BildirimDetayScreen> {
     }
   }
 
-  // 🛡️ SİBER SAVUNMA: CİHAZ ENGELLEME (KARALİSTE)
+  // 🛡️ SİBER SAVUNMA: ATOMİK ENGELLEME (WRITEBATCH)
   Future<void> _kullaniciyiEngelle(String ipAdresi) async {
     setState(() => _isProcessing = true);
     try {
-      // IP ve Cihaz ID'sini siber karalisteye mühürle
-      await _db.collection('karaliste').add({
+      WriteBatch batch = _db.batch();
+
+      // 1. IP Adresini Karalisteye Sabit ID ile Mühürle (Mükerrer Kaydı Önler)
+      DocumentReference blacklistRef = _db.collection('karaliste').doc(ipAdresi.replaceAll('.', '_'));
+      batch.set(blacklistRef, {
         'ip': ipAdresi,
-        'neden': 'Hatalı/Taciz Bildirimi',
+        'neden': 'Siber Taciz / Hatalı İhbar',
         'tarih': FieldValue.serverTimestamp(),
-        'tip': 'DEVICE_BAN'
+        'tip': 'DEVICE_BAN',
+        'derece': 'KRİTİK'
       });
 
-      await _db.collection('bildirimler').doc(widget.bildirimId).update({'durum': 'ENGELLENDİ'});
+      // 2. Bildirim Durumunu Güncelle
+      DocumentReference bildirimRef = _db.collection('bildirimler').doc(widget.bildirimId);
+      batch.update(bildirimRef, {'durum': 'ENGELLENDİ'});
+
+      await batch.commit();
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(backgroundColor: Colors.redAccent, content: Text('SİBER İHLAL: Cihaz ağdan kalıcı olarak silindi.')),
+        const SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text('SİBER İHLAL: Cihaz ağdan kalıcı olarak dışlandı.', style: TextStyle(fontWeight: FontWeight.bold))
+        ),
       );
+    } catch (e) {
+      debugPrint("SAVUNMA HATASI: $e");
     } finally {
       setState(() => _isProcessing = false);
     }
@@ -71,37 +85,77 @@ class _BildirimDetayScreenState extends ConsumerState<BildirimDetayScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
+      isOledBackground: true,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white), onPressed: () => Navigator.pop(context)),
-          title: const Text('ACİL DURUM TERMİNALİ', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
+              onPressed: () => Navigator.pop(context)
+          ),
+          title: const Text('ACİL DURUM TERMİNALİ',
+              style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3)
+          ),
+          centerTitle: true,
         ),
         body: StreamBuilder<DocumentSnapshot>(
           stream: _db.collection('bildirimler').doc(widget.bildirimId).snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
 
-            var data = snapshot.data!.data() as Map<String, dynamic>;
+            var data = snapshot.data!.data() as Map<String, dynamic>?;
+            if (data == null) return const Center(child: Text("SİNYAL KAYBI: VERİ OKUNAMADI", style: TextStyle(color: Colors.white38)));
+
             bool isBlocked = data['durum'] == 'ENGELLENDİ';
+            bool isIntervened = data['durum'] == 'Müdahale Edildi';
 
             return SingleChildScrollView(
               padding: const EdgeInsets.all(24),
               child: Column(
                 children: [
+                  _buildZamanSayaci(data['tarih']),
+                  const SizedBox(height: 20),
                   _buildAlertCard(data),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
                   _buildLogPanel(data),
-                  const SizedBox(height: 24),
-                  if (!isBlocked) _buildAksiyonPanel(data),
+                  const SizedBox(height: 32),
+                  if (!isBlocked && !isIntervened) _buildAksiyonPanel(data),
+                  if (isIntervened) _buildMudahaleOzeti(data),
                   if (isBlocked) _buildEngellemeMesaji(),
                 ],
               ),
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget _buildZamanSayaci(dynamic timestamp) {
+    if (timestamp == null) return const SizedBox();
+    DateTime olusma = (timestamp as Timestamp).toDate();
+    Duration fark = DateTime.now().difference(olusma);
+    int kalanDakika = 30 - fark.inMinutes;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+          color: kalanDakika > 0 ? Colors.orangeAccent.withOpacity(0.1) : Colors.redAccent.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: kalanDakika > 0 ? Colors.orangeAccent.withOpacity(0.3) : Colors.redAccent)
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.timer, color: kalanDakika > 0 ? Colors.orangeAccent : Colors.redAccent, size: 16),
+          const SizedBox(width: 8),
+          Text(
+            kalanDakika > 0 ? "ADMİN MÜDAHALESİNE: $kalanDakika DK" : "ADMİN MÜDAHALE SÜRESİ DOLDU!",
+            style: TextStyle(color: kalanDakika > 0 ? Colors.orangeAccent : Colors.redAccent, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
+          ),
+        ],
       ),
     );
   }
@@ -113,13 +167,19 @@ class _BildirimDetayScreenState extends ConsumerState<BildirimDetayScreen> {
         children: [
           Row(
             children: [
-              const Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 40),
+              const Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 32),
               const SizedBox(width: 16),
-              Expanded(child: Text(data['baslik'] ?? 'BİLİNMEYEN SİNYAL', style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900))),
+              Expanded(
+                  child: Text(data['baslik']?.toString().toUpperCase() ?? 'BİLİNMEYEN SİNYAL',
+                      style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)
+                  )
+              ),
             ],
           ),
           const Divider(color: Colors.white10, height: 32),
-          Text(data['mesaj'] ?? 'Mesaj içeriği okunamadı.', style: const TextStyle(color: Colors.white70, height: 1.5)),
+          Text(data['mesaj'] ?? 'Mesaj içeriği okunamadı.',
+              style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.6, fontWeight: FontWeight.w500)
+          ),
         ],
       ),
     );
@@ -131,21 +191,27 @@ class _BildirimDetayScreenState extends ConsumerState<BildirimDetayScreen> {
         children: [
           _logSatiri('IP ADRESİ', data['gonderen_ip'] ?? 'Gizli Sinyal', Icons.radar),
           _logSatiri('KONUM', data['konum_etiketi'] ?? 'Tespit Edilemedi', Icons.location_on),
-          _logSatiri('SAAT', (data['tarih'] as Timestamp).toDate().toString().substring(11, 16), Icons.access_time),
+          _logSatiri('SİNYAL SAATİ', _formatTimestamp(data['tarih']), Icons.access_time),
         ],
       ),
     );
   }
 
+  String _formatTimestamp(dynamic ts) {
+    if (ts == null) return "--:--";
+    DateTime date = (ts as Timestamp).toDate();
+    return "${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}";
+  }
+
   Widget _logSatiri(String t, String v, IconData i) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(children: [
-        Icon(i, color: SiberTema.kuantumCyan, size: 16),
+        Icon(i, color: SiberTema.kuantumCyan, size: 14),
         const SizedBox(width: 12),
-        Text(t, style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold)),
+        Text(t, style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
         const Spacer(),
-        Text(v, style: const TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'monospace')),
+        Text(v, style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 11, fontFamily: 'monospace', fontWeight: FontWeight.bold)),
       ]),
     );
   }
@@ -153,36 +219,77 @@ class _BildirimDetayScreenState extends ConsumerState<BildirimDetayScreen> {
   Widget _buildAksiyonPanel(Map<String, dynamic> data) {
     return Column(
       children: [
-        _buildAksiyonButon('5 DAKİKAYA GELİYORUM', () => _yanitProtokolu('5 Dakikaya oradayım.')),
+        _buildAksiyonButon('5 DAKİKAYA GELİYORUM', () => _yanitProtokolu('5 Dakikaya oradayım.'), SiberTema.kuantumCyan),
         const SizedBox(height: 12),
-        _buildAksiyonButon('ARACIN BAŞINDA BEKLEYİN', () => _yanitProtokolu('Hemen geliyorum, ayrılmayın.')),
-        const SizedBox(height: 24),
+        _buildAksiyonButon('ARACIN BAŞINDA BEKLEYİN', () => _yanitProtokolu('Hemen geliyorum, ayrılmayın.'), Colors.white),
+        const SizedBox(height: 32),
         TextButton.icon(
-          onPressed: () => _kullaniciyiEngelle(data['gonderen_ip'] ?? '0.0.0.0'),
-          icon: const Icon(Icons.block, color: Colors.redAccent),
-          label: const Text('RAHATSIZ EDİCİ BİLDİRİM (ENGELLE)', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+          onPressed: _isProcessing ? null : () => _kullaniciyiEngelle(data['gonderen_ip'] ?? '0.0.0.0'),
+          icon: const Icon(Icons.block, color: Colors.redAccent, size: 18),
+          label: const Text('RAHATSIZ EDİCİ BİLDİRİM (AĞDAN DIŞLA)',
+              style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1)
+          ),
         )
       ],
     );
   }
 
-  Widget _buildAksiyonButon(String metin, VoidCallback onTap) {
+  Widget _buildAksiyonButon(String metin, VoidCallback onTap, Color accent) {
     return SizedBox(
       width: double.infinity,
       height: 55,
       child: ElevatedButton(
-        style: SiberTema.kuantumButonStili(),
+        style: ElevatedButton.styleFrom(
+            backgroundColor: accent == SiberTema.kuantumCyan ? SiberTema.kuantumCyan : Colors.transparent,
+            side: accent == Colors.white ? const BorderSide(color: Colors.white24) : null,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            elevation: accent == SiberTema.kuantumCyan ? 10 : 0,
+            shadowColor: accent.withOpacity(0.3)
+        ),
         onPressed: _isProcessing ? null : onTap,
-        child: Text(metin, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900)),
+        child: Text(metin, style: TextStyle(color: accent == SiberTema.kuantumCyan ? Colors.black : Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 12)),
+      ),
+    );
+  }
+
+  Widget _buildMudahaleOzeti(Map<String, dynamic> data) {
+    return SiberTema.siberCamKalkan(
+      child: Column(
+        children: [
+          const Icon(Icons.check_circle_outline, color: SiberTema.kuantumCyan, size: 40),
+          const SizedBox(height: 12),
+          const Text("MÜDAHALE EDİLDİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          const SizedBox(height: 8),
+          Text("GÖNDERİLEN YANIT: ${data['yanit']}",
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold)
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildEngellemeMesaji() {
     return Container(
+      width: double.infinity,
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(color: Colors.redAccent.withOpacity(0.1), borderRadius: BorderRadius.circular(16)),
-      child: const Text('SİBER SAVUNMA AKTİF: BU SİNYAL KAYNAĞI AĞDAN DIŞLANDI.', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+      decoration: BoxDecoration(
+          color: Colors.redAccent.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.redAccent.withOpacity(0.3))
+      ),
+      child: const Column(
+        children: [
+          Icon(Icons.gpp_bad, color: Colors.redAccent, size: 40),
+          const SizedBox(height: 16),
+          Text('SİBER SAVUNMA AKTİF', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          SizedBox(height: 8),
+          Text('BU SİNYAL KAYNAĞI AĞDAN KALICI OLARAK DIŞLANDI.',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.redAccent, fontSize: 10, fontWeight: FontWeight.bold)
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+// 🚀 KARARGAH ZIRHLARI
 import '../core/siber_tema.dart';
 
 /// 🦅 SİBER CHAT TERMİNALİ
@@ -25,17 +27,25 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
   void initState() {
     super.initState();
     // 🛡️ SİBER GÜVENLİK: Benzersiz Sohbet Anahtarı Oluşturma
+    // Alfabetik sıralama yapılarak, kim başlatırsa başlatsın aynı ID elde edilir.
     currentUserId = FirebaseAuth.instance.currentUser?.uid ?? 'BILINMEYEN_AJAN';
     sohbetId = currentUserId.compareTo(widget.ustaId) > 0
         ? '${currentUserId}_${widget.ustaId}'
         : '${widget.ustaId}_$currentUserId';
   }
 
-  // 🚀 FİREBASE ATEŞLEME MOTORU
+  @override
+  void dispose() {
+    _mesajKutusu.dispose();
+    super.dispose();
+  }
+
+  // 🚀 FİREBASE ATEŞLEME MOTORU (GERÇEK ZAMANLI VERİ YAZMA)
   Future<void> _mesajGonder() async {
     final mesaj = _mesajKutusu.text.trim();
     if (mesaj.isEmpty) return;
 
+    // Mesaj fırlatıldığı an kutuyu temizle
     _mesajKutusu.clear();
 
     try {
@@ -50,7 +60,7 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text('SİBER BAĞLANTI HATASI: $e'),
+              content: Text('SİBER BAĞLANTI HATASI: $e', style: const TextStyle(fontWeight: FontWeight.bold)),
               backgroundColor: Colors.redAccent
           )
       );
@@ -127,26 +137,34 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
     );
   }
 
-  // 💎 MESAJ LİSTESİ MOTORU (STREAM)
+  // 💎 MESAJ LİSTESİ MOTORU (CANLI AKIŞ)
   Widget _buildMesajListesi() {
     return StreamBuilder<QuerySnapshot>(
       stream: _db.collection('sohbet_aglari').doc(sohbetId).collection('mesajlar')
           .orderBy('zaman_damgasi', descending: true).snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+        }
 
-        final docs = snapshot.data!.docs;
+        if (snapshot.hasError) {
+          return const Center(child: Text("SİBER AĞ KOPUKLUĞU", style: TextStyle(color: Colors.redAccent)));
+        }
+
+        final docs = snapshot.data?.docs ?? [];
         if (docs.isEmpty) return _buildBosSohbet();
 
         return ListView.builder(
-          reverse: true,
-          padding: const EdgeInsets.all(24),
+          reverse: true, // En yeni mesaj en altta görünür (Chat mantığı)
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           itemCount: docs.length,
           itemBuilder: (context, index) {
             var data = docs[index].data() as Map<String, dynamic>;
             bool isMe = data['gonderen_id'] == currentUserId;
+
+            // Zaman damgasını biçimlendirme
             DateTime? dt = (data['zaman_damgasi'] as Timestamp?)?.toDate();
-            String zamanStr = dt != null ? "${dt.hour}:${dt.minute.toString().padLeft(2,'0')}" : "--:--";
+            String zamanStr = dt != null ? "${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2,'0')}" : "--:--";
 
             return _buildSiberBalon(data['mesaj'] ?? '', isMe, zamanStr);
           },
@@ -178,7 +196,7 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
           children: [
             Text(metin, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
-            Text(zaman, style: TextStyle(color: isMe ? SiberTema.kuantumCyan : Colors.white38, fontSize: 9, fontFamily: 'monospace')),
+            Text(zaman, style: TextStyle(color: isMe ? SiberTema.kuantumCyan : Colors.white38, fontSize: 9, fontFamily: 'monospace', fontWeight: FontWeight.bold)),
           ],
         ),
       ),
@@ -195,12 +213,15 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
           const SizedBox(height: 16),
           const Text("SİBER İLETİŞİM HATTI GÜVENLİ",
               style: TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          const SizedBox(height: 8),
+          const Text("Sohbeti başlatmak için bir mesaj ateşleyin.",
+              style: TextStyle(color: Colors.white12, fontSize: 10, fontWeight: FontWeight.bold)),
         ],
       ),
     );
   }
 
-  // 💎 ATEŞLEME PANELİ
+  // 💎 ATEŞLEME PANELİ (Girdi Alanı)
   Widget _buildAteslemePaneli() {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
@@ -223,9 +244,10 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
                 style: const TextStyle(color: Colors.white, fontSize: 14),
                 decoration: const InputDecoration(
                   hintText: 'Siber ileti gönder...',
-                  hintStyle: TextStyle(color: Colors.white24, fontSize: 13),
+                  hintStyle: TextStyle(color: Colors.white24, fontSize: 13, fontWeight: FontWeight.bold),
                   border: InputBorder.none,
                 ),
+                onSubmitted: (_) => _mesajGonder(), // Klavyeden enter'a basınca da gönder
               ),
             ),
           ),

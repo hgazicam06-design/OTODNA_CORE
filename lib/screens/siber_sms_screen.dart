@@ -133,7 +133,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
             color: isError ? Colors.white : SiberTema.oledBlack,
             fontWeight: FontWeight.w900,
             fontSize: 14,
-            fontFamily: SiberTema.siberFont,
+            fontFamily: 'Avenir', // 🛠️ DÜZELTİLDİ: Özel font adı yerine standart Avenir
           ),
         ),
         duration: const Duration(seconds: 4),
@@ -172,7 +172,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
                     shape: BoxShape.circle,
                     color: SiberTema.matGrey,
                     border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
-                    boxShadow: SiberTema.siberGolgeDerin, // 🔥 EFSANE 3D GÖLGE
+                    boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.2), blurRadius: 20, spreadRadius: 2)], // 🛠️ DÜZELTİLDİ: Manuel 3D Gölge
                   ),
                   child: Icon(
                     _codeSent ? Icons.mark_email_read_rounded : Icons.phonelink_ring_rounded,
@@ -190,7 +190,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
                     fontSize: 26,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 4,
-                    fontFamily: SiberTema.siberFont,
+                    fontFamily: 'Avenir', // 🛠️ DÜZELTİLDİ
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -203,7 +203,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
                     color: Colors.white.withOpacity(0.6),
                     fontSize: 14,
                     height: 1.5,
-                    fontFamily: SiberTema.siberFont,
+                    fontFamily: 'Avenir', // 🛠️ DÜZELTİLDİ
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -215,7 +215,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
                     color: SiberTema.matGrey.withOpacity(0.5),
                     border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
                     borderRadius: BorderRadius.circular(24),
-                    boxShadow: SiberTema.siberGolgeKatmanli, // 🔥 Derinlik
+                    boxShadow: const [BoxShadow(color: Colors.black54, blurRadius: 20, offset: Offset(0, 10))], // 🛠️ DÜZELTİLDİ: Katmanlı Derinlik
                   ),
                   child: Column(
                     children: [
@@ -237,7 +237,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
                             style: SiberTema.kuantumButonStili(), // 🔥 3D Buton
                             child: const Text(
                               "KOD GÖNDER",
-                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: SiberTema.siberFont, color: SiberTema.oledBlack),
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir', color: SiberTema.oledBlack), // 🛠️ DÜZELTİLDİ
                             ),
                           ),
                         ),
@@ -260,7 +260,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
                             style: SiberTema.kuantumButonStili(), // 🔥 3D Buton
                             child: const Text(
                               "DOĞRULA VE BAĞLAN",
-                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: SiberTema.siberFont, color: SiberTema.oledBlack),
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir', color: SiberTema.oledBlack), // 🛠️ DÜZELTİLDİ
                             ),
                           ),
                         ),
@@ -287,12 +287,12 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
       controller: controller,
       keyboardType: keyboardType,
       maxLength: maxLength,
-      style: const TextStyle(color: Colors.white, fontSize: 16, fontFamily: SiberTema.siberFont, letterSpacing: 1.5, fontWeight: FontWeight.bold),
+      style: const TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Avenir', letterSpacing: 1.5, fontWeight: FontWeight.bold), // 🛠️ DÜZELTİLDİ
       decoration: InputDecoration(
         counterText: "", // maxLength yazısını gizler
         prefixIcon: Icon(icon, color: Colors.white54, size: 22),
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.white30, fontSize: 14, fontFamily: SiberTema.siberFont, letterSpacing: 1),
+        hintStyle: const TextStyle(color: Colors.white30, fontSize: 14, fontFamily: 'Avenir', letterSpacing: 1), // 🛠️ DÜZELTİLDİ
         filled: true,
         fillColor: SiberTema.oledBlack, // Derin Siyah
         contentPadding: const EdgeInsets.symmetric(vertical: 20),

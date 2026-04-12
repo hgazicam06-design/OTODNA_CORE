@@ -87,7 +87,7 @@ class _YedekParcaVitriniScreenState extends State<YedekParcaVitriniScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir', fontSize: 12)),
-        backgroundColor: isError ? const Color(0xFFFF0040) : SiberTema.kuantumCyan,
+        backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
@@ -142,13 +142,13 @@ class _YedekParcaVitriniScreenState extends State<YedekParcaVitriniScreen> {
                   final siparisler = snapshot.data?.docs ?? [];
 
                   if (siparisler.isEmpty) {
-                    return Center(
+                    return const Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.radar, color: Colors.white10, size: 64),
-                          const SizedBox(height: 16),
-                          Text("RADAR TEMİZ: BEKLEYEN TEKLİF YOK", style: TextStyle(color: Colors.white24, fontWeight: FontWeight.bold, letterSpacing: 2, fontSize: 10)),
+                          SizedBox(height: 16),
+                          Text("RADAR TEMİZ: BEKLEYEN TEKLİF YOK", style: TextStyle(color: Colors.white24, fontWeight: FontWeight.bold, letterSpacing: 2, fontSize: 10, fontFamily: 'Avenir')),
                         ],
                       ),
                     );
@@ -199,14 +199,14 @@ class _YedekParcaVitriniScreenState extends State<YedekParcaVitriniScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(bayi.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                    Text(bayi.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                     if (isMuratPlaza)
                       const Icon(Icons.stars, color: SiberTema.kuantumCyan, size: 18),
                   ],
                 ),
                 const SizedBox(height: 15),
-                Text("ÖNERİLEN PARÇA", style: TextStyle(color: Colors.white30, fontSize: 10, letterSpacing: 1)),
-                Text(parca, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text("ÖNERİLEN PARÇA", style: TextStyle(color: Colors.white30, fontSize: 10, letterSpacing: 1, fontFamily: 'Avenir')),
+                Text(parca, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -214,8 +214,8 @@ class _YedekParcaVitriniScreenState extends State<YedekParcaVitriniScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("MÜHÜR BEDELİ", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.bold)),
-                        Text("₺${fiyat.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 22, fontWeight: FontWeight.w900, fontFamily: 'Courier')),
+                        Text("MÜHÜR BEDELİ", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                        Text("₺${fiyat.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 22, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                       ],
                     ),
                     ElevatedButton(
@@ -226,7 +226,7 @@ class _YedekParcaVitriniScreenState extends State<YedekParcaVitriniScreen> {
                           fiyat: fiyat,
                           bayiId: bayiId
                       ),
-                      child: const Text("SİPARİŞİ MÜHÜRLE", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontSize: 11)),
+                      child: const Text("SİPARİŞİ MÜHÜRLE", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontSize: 11, fontFamily: 'Avenir')),
                     ),
                   ],
                 ),

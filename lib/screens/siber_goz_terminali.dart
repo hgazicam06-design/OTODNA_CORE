@@ -1,12 +1,15 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:mobile_scanner/mobile_scanner.dart'; // 🚀 pubspec.yaml'da eklendiğinden emin ol!
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // 🔥 SİBER KÖPRÜLER VE TEMA (7D Zırh v2.0)
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
-import '../bayi/ekspertiz_kokpiti_screen.dart'; // ✅ Hedef Kokpit Bağlantısı
+
+// 🚨 DİKKAT: Ekspertiz Kokpiti henüz oluşturulmadıysa altı kırmızı çizer!
+// Şimdilik importu kapalı tutuyorum, dosyayı yapınca başındaki "//" işaretini kaldır.
+// import '../bayi/ekspertiz_kokpiti_screen.dart';
 
 class SiberGozTerminali extends StatefulWidget {
   const SiberGozTerminali({super.key});
@@ -31,7 +34,6 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
 
     try {
       // 1. AŞAMA: Siber Ağda Araç DNA'sını Ara
-      // qrData burada aracId (veya plaka) olarak kabul edilir
       final doc = await _db.collection('araclar').doc(qrData).get();
 
       if (doc.exists) {
@@ -46,16 +48,21 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
         _siberUyariVer("SİNYAL ALINDI: Araç DNA'sı Tanımlandı!", false);
 
         // 3. AŞAMA: Kuantum Sıçraması (Kokpite Yönlendir)
-        // [NOT]: Gerçek bayiId'yi sistemden çekmelisin, şimdilik placeholder.
-        Navigator.pushReplacement(
+        // 🚨 NOT: EkspertizKokpitiScreen hazır olana kadar burayı geçici olarak pop() yapıyoruz.
+        // Dosya hazır olduğunda alttaki yorumu açıp Navigator.pop satırını silebilirsin.
+
+        Navigator.pop(context);
+
+        /* Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => EkspertizKokpitiScreen(
               aracId: qrData,
-              bayiId: "BAYI_001", // Burası dinamik gelmeli Komutan!
+              bayiId: "BAYI_001", // Burası dinamik gelmeli!
             ),
           ),
         );
+        */
       } else {
         _siberUyariVer("İHLAL: Geçersiz veya Kayıtsız QR Kod!", true);
         setState(() => _isScanning = true);
@@ -71,8 +78,8 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
   void _siberUyariVer(String mesaj, bool isError) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: SiberTema.siberFont, fontSize: 12)),
-        backgroundColor: isError ? SiberTema.alarmRed : SiberTema.kuantumCyan.withOpacity(0.8),
+        content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir', fontSize: 12)),
+        backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan.withOpacity(0.8), // 🛠️ alarmRed yerine kanKirmizi kullanıldı
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -88,7 +95,7 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("SİBER GÖZ: ARAÇ TANIMA", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: SiberTema.siberFont)),
+          title: const Text("SİBER GÖZ: ARAÇ TANIMA", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')), // 🛠️ siberFont yerine Avenir kullanıldı
           centerTitle: true,
         ),
         body: Stack(
@@ -138,7 +145,7 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
                     const SizedBox(height: 50),
                     const Text(
                       "QR KODU SİBER GÖZ HİZASINA GETİRİN",
-                      style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: SiberTema.siberFont),
+                      style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir'), // 🛠️ siberFont düzeltildi
                     ),
                   ],
                 ),
@@ -165,7 +172,7 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
         color: SiberTema.oledBlack.withOpacity(0.9),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.white12, width: 1.5),
-        boxShadow: [BoxShadow(color: Colors.black54, blurRadius: 20, offset: const Offset(0, 10))],
+        boxShadow: const [BoxShadow(color: Colors.black54, blurRadius: 20, offset: Offset(0, 10))],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

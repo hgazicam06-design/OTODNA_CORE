@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// 🔥 SİBER BAĞLANTI: Komutanın oluşturduğu Gerçek Kayıt Terminaline bağlandı!
-import 'gercek_arac_kayit_terminali.dart';
+// 🔥 SİBER BAĞLANTI: Komutanın oluşturduğu Siber Araç Kayıt Terminaline bağlandı!
+import 'arac_kayit_screen.dart'; // 🛠️ DÜZELTİLDİ
 
 class SiberKokpitScreen extends StatefulWidget {
   const SiberKokpitScreen({super.key});
@@ -165,7 +165,7 @@ class _SiberKokpitScreenState extends State<SiberKokpitScreen> {
                     ),
                     onPressed: () {
                       // 🔥 SİBER TETİKLEME: Komutanın dosyası açılıyor!
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const GercekAracKayitTerminali()));
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const AracKayitScreen())); // 🛠️ DÜZELTİLDİ
                     },
                     child: const Text("ARAÇ EKLE (DİJİTAL İKİZ OLUŞTUR)", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                   )
@@ -180,7 +180,7 @@ class _SiberKokpitScreenState extends State<SiberKokpitScreen> {
 
   // --- CANLI DNA SKORU VE BAĞLAMSAL MENÜLER ---
   Widget _buildAktifAracPaneli(Map<String, dynamic> arac) {
-    num dnaSkoru = arac['dna_skoru'] ?? 100; // Komutanın modeline eklenebilir
+    num dnaSkoru = arac['dna_skoru'] ?? 100;
     String plaka = arac['plaka'] ?? 'BİLİNMİYOR';
     String marka = arac['marka'] ?? '';
     String model = arac['model'] ?? '';

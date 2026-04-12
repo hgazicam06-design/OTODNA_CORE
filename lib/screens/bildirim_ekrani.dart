@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
-/// 🦅 OTODNA BİLDİRİM TERMİNALİ
+/// 🦅 OTODNA BİLDİRİM TERMİNALİ - V3 (ZIRHLI)
 /// Vatandaşların veya Adminlerin ağ üzerinden sinyal fırlattığı merkez üssü.
 class OtoDNABildirimEkrani extends StatefulWidget {
   const OtoDNABildirimEkrani({super.key});
@@ -18,17 +18,48 @@ class OtoDNABildirimEkrani extends StatefulWidget {
 class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final TextEditingController _qrController = TextEditingController();
 
   bool _isProcessing = false;
   bool _isGlobalProcessing = false;
+  bool _isAdmin = false; // Siber Yetki Kontrolü
+
+  @override
+  void initState() {
+    super.initState();
+    _yetkiKontrolEt();
+  }
+
+  @override
+  void dispose() {
+    _qrController.dispose();
+    super.dispose();
+  }
+
+  // --- 🔐 YETKİ KONTROL MOTORU ---
+  Future<void> _yetkiKontrolEt() async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      final doc = await _db.collection('kullanicilar').doc(user.uid).get();
+      if (doc.exists && doc.data()?['rol'] == 'ADMIN') {
+        setState(() => _isAdmin = true);
+      }
+    }
+  }
 
   // --- 🛰️ SİBER BİLDİRİM MOTORU (GERÇEK VERİ YAZIMI) ---
-  Future<void> bildirimGonder(String qrID) async {
+  Future<void> bildirimGonder() async {
+    final String qrID = _qrController.text.trim().toUpperCase();
+
+    if (qrID.isEmpty) {
+      _uyariGoster("SİBER HATA: HEDEF QR KODU BOŞ BIRAKILAMAZ!", isError: true);
+      return;
+    }
+
     setState(() => _isProcessing = true);
 
     try {
       // 1. ADIM: KARA LİSTE KONTROLÜ (GÜVENLİK DUVARI)
-      // Cihaz bazlı engelleme için auth id veya anonim token kullanılır
       String gonderenUID = _auth.currentUser?.uid ?? "ANONIM_SIBER_YOLCU";
 
       final blacklistRef = await _db.collection('kara_liste').doc(gonderenUID).get();
@@ -43,7 +74,7 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
 
       if (qrSorgu.docs.isEmpty) {
         if (!mounted) return;
-        _uyariGoster("HEDEF BULUNAMADI: ARAÇ SİSTEME KAYITLI DEĞİL.", isError: true);
+        _uyariGoster("HEDEF BULUNAMADI: $qrID SİSTEME KAYITLI DEĞİL.", isError: true);
         return;
       }
 
@@ -58,9 +89,10 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
         "alici_id": aracSahibiID,
         "gonderen_id": gonderenUID,
         "baslik": "🚨 SİBER ACİL DURUM SİNYALİ",
-        "mesaj": "Aracınızın QR kodu taratıldı. Acil bir durum veya park ihlali olabilir.",
+        "mesaj": "Aracınızın ($qrID) QR kodu taratıldı. Acil bir durum veya park ihlali olabilir.",
         "qr_kodu": qrID,
         "plaka": aracData['plaka'],
+        "durum": "BEKLEMEDE",
         "okundu_mu": false,
         "tip": "VATANDAS_IHBARI",
         "tarih": FieldValue.serverTimestamp(),
@@ -69,6 +101,7 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
       await batch.commit();
 
       if (!mounted) return;
+      _qrController.clear();
       _uyariGoster("SİNYAL FIRLATILDI! ARAÇ SAHİBİNE ULAŞILDI. 🦅");
 
     } catch (e) {
@@ -81,14 +114,17 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
 
   // --- ⚔️ GAZİ YETKİSİ: GLOBAL SİNYAL (ADMIN ONLY) ---
   Future<void> _globalBildirimAtesle() async {
+    if (!_isAdmin) {
+      _uyariGoster("YETKİSİZ ERİŞİM: SADECE KOMUTAN GAZİ BU EMRİ VEREBİLİR!", isError: true);
+      return;
+    }
+
     setState(() => _isGlobalProcessing = true);
 
     try {
-      // Bu işlem doğrudan 'sistem_mesajlari' koleksiyonuna mühürlenir.
-      // Cloud Functions bu koleksiyonu dinleyerek tüm ağa (FCM) push notification fırlatır.
       await _db.collection('sistem_mesajlari').add({
         "baslik": "🔴 OTODNA GENEL KARARGAH EMRİ",
-        "mesaj": "Tüm birimlerin dikkatine: Sistem genelinde kuantum güncellemesi başlamıştır.",
+        "mesaj": "Tüm birimlerin dikkatine: Sistem genelinde kuantum güncellemesi başlamıştır. Bağlantınızı koparmayın.",
         "gonderen": "Siber Komutan Gazi",
         "tarih": FieldValue.serverTimestamp(),
         "hedef": "TUM_AG",
@@ -123,7 +159,7 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
         appBar: _buildAppBar(),
         body: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1200),
+            constraints: const BoxConstraints(maxWidth: 1000),
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24.0),
               child: LayoutBuilder(
@@ -173,7 +209,7 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
           flex: 6,
           child: Column(
             children: [
-              _buildQrOkumaKarti(),
+              _buildQrGirisKarti(),
               const SizedBox(height: 24),
               _buildKayitDavetiKarti(),
             ],
@@ -191,95 +227,137 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
   Widget _buildMobileLayout() {
     return Column(
       children: [
-        _buildQrOkumaKarti(),
-        const SizedBox(height: 24),
-        _buildKayitDavetiKarti(),
+        _buildQrGirisKarti(),
         const SizedBox(height: 24),
         _buildGaziYetkisiKarti(),
+        const SizedBox(height: 24),
+        _buildKayitDavetiKarti(),
       ],
     );
   }
 
-  Widget _buildQrOkumaKarti() {
+  Widget _buildQrGirisKarti() {
     return SiberTema.siberCamKalkan(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 30),
+              const Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 30),
               const SizedBox(width: 16),
               const Text("HIZLI SİNYAL RADARI", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
             ],
           ),
           const SizedBox(height: 24),
           const Text(
-            "Aracın üzerindeki QR kodu tarattıysanız, aşağıdaki butona basarak araç sahibine anonim bir 'Acil Durum' uyarısı gönderebilirsiniz.",
+            "Hedef aracın siber kimliğini (QR Kodu) girerek araç sahibine anonim bir 'Müdahale Çağrısı' bırakın.",
             style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5),
+          ),
+          const SizedBox(height: 24),
+          _buildSiberTextField(
+            controller: _qrController,
+            hint: "QR KODUNU BURAYA MÜHÜRLE (Örn: ARAC-123)",
+            icon: Icons.qr_code_scanner,
           ),
           const SizedBox(height: 32),
           SizedBox(
             width: double.infinity,
             height: 60,
             child: ElevatedButton.icon(
-              onPressed: _isProcessing ? null : () => bildirimGonder("ARAC-QR-001"),
+              onPressed: _isProcessing ? null : bildirimGonder,
               style: SiberTema.kuantumButonStili(renk: SiberTema.kuantumCyan),
               icon: _isProcessing
                   ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
                   : const Icon(Icons.send_rounded, color: Colors.black),
-              label: Text(_isProcessing ? "İLETİLİYOR..." : "SİNYALİ ATEŞLE", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900)),
+              label: Text(_isProcessing ? "İŞLENİYOR..." : "SİNYALİ ATEŞLE", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900)),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSiberTextField({required TextEditingController controller, required String hint, required IconData icon}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.03),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withOpacity(0.1)),
+      ),
+      child: TextField(
+        controller: controller,
+        style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, letterSpacing: 1.5),
+        decoration: InputDecoration(
+          prefixIcon: Icon(icon, color: Colors.white24),
+          hintText: hint,
+          hintStyle: const TextStyle(color: Colors.white12, fontSize: 11, fontWeight: FontWeight.bold),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.all(18),
+        ),
       ),
     );
   }
 
   Widget _buildKayitDavetiKarti() {
     return Container(
+      width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: SiberTema.matGrey.withOpacity(0.1),
+        color: SiberTema.matGrey.withOpacity(0.05),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.white.withOpacity(0.02)),
       ),
       child: Column(
         children: [
-          const Icon(Icons.fingerprint, color: Colors.white24, size: 40),
+          const Icon(Icons.fingerprint, color: Colors.white12, size: 40),
           const SizedBox(height: 16),
-          const Text("KENDİ ARAÇ DNA'NI OLUŞTUR", style: TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
+          const Text("ARACINI AĞA KAYDET", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
           const SizedBox(height: 8),
-          const Text("Siz de bu ağa katılarak aracınızı koruma altına alabilirsiniz.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white38, fontSize: 10)),
+          const Text(
+            "Siz de aracınızı koruma altına almak ve QR bildirimleri almak için Profil > Araçlarım sekmesinden DNA kaydı yapabilirsiniz.",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white24, fontSize: 9, height: 1.4),
+          ),
         ],
       ),
     );
   }
 
   Widget _buildGaziYetkisiKarti() {
-    return SiberTema.siberCamKalkan(
-      child: Column(
-        children: [
-          const Icon(Icons.admin_panel_settings, color: SiberTema.kanKirmizi, size: 50),
-          const SizedBox(height: 20),
-          const Text("KOMUTA MERKEZİ", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)),
-          const SizedBox(height: 12),
-          const Text(
-            "Bu alan sadece Siber Komutan yetkisiyle erişilebilir. Tüm Türkiye geneline anlık push notification gönderilir.",
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.5),
-          ),
-          const SizedBox(height: 32),
-          SizedBox(
-            width: double.infinity,
-            height: 65,
-            child: ElevatedButton.icon(
-              onPressed: _isGlobalProcessing ? null : _globalBildirimAtesle,
-              style: SiberTema.kuantumButonStili(renk: SiberTema.kanKirmizi),
-              icon: const Icon(Icons.rocket_launch, color: Colors.black),
-              label: Text(_isGlobalProcessing ? "ATEŞLENİYOR..." : "TÜM AĞA DUYURU YAP", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900)),
+    // Eğer admin değilse bu kartı siber bir gizlilikle saklıyoruz veya sadece kilitli gösteriyoruz
+    return Opacity(
+      opacity: _isAdmin ? 1.0 : 0.4,
+      child: SiberTema.siberCamKalkan(
+        child: Column(
+          children: [
+            Icon(Icons.admin_panel_settings, color: _isAdmin ? SiberTema.kanKirmizi : Colors.white24, size: 50),
+            const SizedBox(height: 20),
+            Text(
+                "KOMUTA MERKEZİ",
+                style: TextStyle(color: _isAdmin ? SiberTema.kanKirmizi : Colors.white38, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)
             ),
-          ),
-        ],
+            const SizedBox(height: 12),
+            const Text(
+              "BU ALAN SADECE SİBER KOMUTAN YETKİSİYLE ERİŞİLEBİLİR. TÜM TÜRKİYE GENELİNE ANLIK PUSH NOTIFICATION GÖNDERİLİR.",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white38, fontSize: 10, height: 1.5, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 32),
+            SizedBox(
+              width: double.infinity,
+              height: 65,
+              child: ElevatedButton.icon(
+                onPressed: (_isAdmin && !_isGlobalProcessing) ? _globalBildirimAtesle : null,
+                style: SiberTema.kuantumButonStili(renk: _isAdmin ? SiberTema.kanKirmizi : Colors.grey.shade900),
+                icon: Icon(_isAdmin ? Icons.rocket_launch : Icons.lock, color: Colors.black),
+                label: Text(
+                    _isGlobalProcessing ? "ATEŞLENİYOR..." : (_isAdmin ? "TÜM AĞA DUYURU YAP" : "ERİŞİM ENGELLENDİ"),
+                    style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900)
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -3,14 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // 🚀 SİBER KÖPRÜLER VE TEMA
-import '../core/siber_tema.dart'; // ✅ Merkezi Renkler ve Zırh
-import '../core/responsive_kalkan.dart'; // ✅ Tüm Ekranlara Uyum
+import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart';
 
-// ✅ YENİ ZIRHLI GİRİŞ EKRANIMIZA (LoginScreen) BAĞLANTI:
+// 🚀 EKRANLAR
 import '../screens/login_screen.dart';
-import '../admin/admin_control_center.dart';
-import '../screens/bayi_paneli.dart';
-import '../screens/kullanici_paneli_screen.dart';
+import '../admin/super_admin_screen.dart'; // Super Admin modülüne yönlendirildi
+import '../screens/usta_panel_screen.dart'; // Bayi/Usta Paneline yönlendirildi
+import '../screens/siber_kokpit_screen.dart'; // Standart Kullanıcı Kokpitine yönlendirildi
 
 class OtoDnaAuthGate extends StatelessWidget {
   const OtoDnaAuthGate({super.key});
@@ -26,7 +26,7 @@ class OtoDnaAuthGate extends StatelessWidget {
             return const _KuantumYuklemeEkrani(mesaj: "SİBER PROTOKOLLER TARANIYOR...");
           }
 
-          // Eğer kullanıcı hiç giriş yapmamışsa YENİ zırhlı LoginScreen'e fırlat!
+          // Eğer kullanıcı hiç giriş yapmamışsa Zırhlı LoginScreen'e fırlat!
           if (!authSnapshot.hasData || authSnapshot.data == null) {
             return const LoginScreen();
           }
@@ -40,7 +40,7 @@ class OtoDnaAuthGate extends StatelessWidget {
                 return const _KuantumYuklemeEkrani(mesaj: "KARARGAH YETKİLERİ DOĞRULANIYOR...");
               }
 
-              // Kullanıcı Firebase Auth'ta var ama Firestore 'kullanicilar' koleksiyonunda kaydı yoksa
+              // Kullanıcı Firebase Auth'ta var ama Firestore'da kaydı yoksa
               if (userSnapshot.hasError || !userSnapshot.hasData || !userSnapshot.data!.exists) {
                 return _buildSiberHataEkrani("SİCİL BULUNAMADI - AĞDAN ÇIK");
               }
@@ -54,13 +54,13 @@ class OtoDnaAuthGate extends StatelessWidget {
                 return _buildSiberHataEkrani("KARALİSTE (BLACK STAR): ZORUNLU ÇIKIŞ YAP");
               }
 
-              // 🧠 KUANTUM YÖNLENDİRME MERKEZİ (%12 Kuralının Temeli Burada Atılıyor)
-              if (role == "ADMIN" || role == "BOLGE_KOMUTANI") {
-                return const AdminControlCenter();
+              // 🧠 KUANTUM YÖNLENDİRME MERKEZİ
+              if (role == "ADMIN" || role == "BOLGE_KOMUTANI" || role == "SUPER_ADMIN") {
+                return const SuperAdminScreen();
               } else if (role == "BAYI" || role == "USTA") {
-                return BayiPaneliScreen(bayiId: currentUser.uid);
+                return const UstaPanelScreen();
               } else {
-                return const KullaniciPaneliScreen();
+                return const SiberKokpitScreen();
               }
             },
           );
@@ -71,7 +71,7 @@ class OtoDnaAuthGate extends StatelessWidget {
 
   Widget _buildSiberHataEkrani(String butonMetni) {
     return Scaffold(
-      backgroundColor: SiberTema.oledBlack, // True Black Zemin
+      backgroundColor: SiberTema.oledBlack,
       body: Center(
         child: ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
@@ -82,7 +82,7 @@ class OtoDnaAuthGate extends StatelessWidget {
           ),
           onPressed: () => FirebaseAuth.instance.signOut(),
           icon: const Icon(Icons.warning_amber_rounded),
-          label: Text(butonMetni, style: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1)),
+          label: Text(butonMetni, style: const TextStyle(fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
         ),
       ),
     );
@@ -99,12 +99,11 @@ class _KuantumYuklemeEkrani extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SiberTema.oledBlack, // Saf Siyah Zemin
+      backgroundColor: SiberTema.oledBlack,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Aşırı animasyonlu parmak izi yerine kurumsal, ağırbaşlı logo alanı
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
@@ -112,24 +111,22 @@ class _KuantumYuklemeEkrani extends StatelessWidget {
                 border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
                 boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 20, spreadRadius: 5)],
               ),
-              child: const Icon(Icons.shield_outlined, size: 56, color: SiberTema.kuantumCyan), // Güvenlik Kalkanı
+              child: const Icon(Icons.shield_outlined, size: 56, color: SiberTema.kuantumCyan),
             ),
             const SizedBox(height: 40),
 
-            // Kurumsal Font ve Hitap
             const Text(
               'OtoDNA',
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 4.0),
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: Colors.white, fontFamily: 'Avenir', letterSpacing: 4.0),
             ),
             const SizedBox(height: 8),
             const Text(
               'SİBER KARARGAH BAĞLANTISI',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: SiberTema.kuantumCyan, letterSpacing: 3.0),
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: SiberTema.kuantumCyan, fontFamily: 'Avenir', letterSpacing: 3.0),
             ),
 
             const SizedBox(height: 64),
 
-            // Minimalist Yükleme Göstergesi
             const SizedBox(
               width: 32,
               height: 32,
@@ -137,10 +134,9 @@ class _KuantumYuklemeEkrani extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // Durum Mesajı
             Text(
               mesaj,
-              style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5),
+              style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir', letterSpacing: 1.5),
             )
           ],
         ),

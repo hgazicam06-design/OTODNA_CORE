@@ -92,7 +92,7 @@ class BildirimlerScreen extends StatelessWidget {
     );
   }
 
-  // --- ⚔️ ATOMİK ONAY MOTORU ---
+  // --- ⚔️ ATOMİK ONAY MOTORU (WRITEBATCH) ---
   Future<void> _tumunuOnayla(BuildContext context, FirebaseFirestore db) async {
     final snap = await db.collection('vehicles').doc(saseNo).collection('bildirimler').where('okundu', isEqualTo: false).get();
 
@@ -106,7 +106,11 @@ class BildirimlerScreen extends StatelessWidget {
 
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("TÜM SİNYALLER ARŞİVLENDİ.", style: TextStyle(fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan)
+        const SnackBar(
+          content: Text("TÜM SİNYALLER ARŞİVLENDİ VE MÜHÜRLENDİ.", style: TextStyle(fontWeight: FontWeight.w900, color: Colors.black)),
+          backgroundColor: SiberTema.kuantumCyan,
+          behavior: SnackBarBehavior.floating,
+        )
     );
   }
 
@@ -120,15 +124,14 @@ class BildirimlerScreen extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
+        // 🛰️ ANLIK GÜNCELLEME: Dokunulduğu anda okundu mühürü basılır
         if (!okundu) doc.reference.update({'okundu': true});
+
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (_) => BildirimDetayScreen(
-              // Not: BildirimDetayScreen parametrelerini mevcut modeline göre güncelledim
-              // saseNo: saseNo,
-              // bildirimId: doc.id,
-              // data: data,
+              bildirimId: doc.id, // 🔥 Hedef bildirimin benzersiz kimliği aktarıldı
             ),
           ),
         );
@@ -148,7 +151,16 @@ class BildirimlerScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(baslik.toUpperCase(), style: TextStyle(color: okundu ? Colors.white54 : Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1)),
-                        if (!okundu) Container(width: 8, height: 8, decoration: const BoxDecoration(color: SiberTema.kuantumCyan, shape: BoxShape.circle)),
+                        // ⚡ KUANTUM IŞIĞI: Okunmamış bildirimlerde yanar
+                        if (!okundu)
+                          Container(
+                              width: 8, height: 8,
+                              decoration: const BoxDecoration(
+                                  color: SiberTema.kuantumCyan,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [BoxShadow(color: SiberTema.kuantumCyan, blurRadius: 4)]
+                              )
+                          ),
                       ],
                     ),
                     const SizedBox(height: 6),
