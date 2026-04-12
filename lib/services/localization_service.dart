@@ -16,7 +16,8 @@ class LocalizationService {
       return "${tutar.toStringAsFixed(2)} $aktifBirim";
     } catch (e) {
       developer.log("SİBER FORMAT HATASI: Finansal veri maskelenemedi!", error: e);
-      return tutar.toString(); // Sistem çökmesin diye düz rakam fırlat
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: Para birimsiz yalan yanlış rakam göstermek yerine hata fırlat!
+      throw Exception("FİNANSAL FORMAT HATASI: Tutar siber ekrana yansıtılamadı!");
     }
   }
 
@@ -38,7 +39,8 @@ class LocalizationService {
       return "$gun $ay $yil";
     } catch (e) {
       developer.log("SİBER ZAMAN HATASI: Tarih verisi çözülemedi!", error: e);
-      return "Bilinmeyen Tarih";
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: "Bilinmeyen Tarih" yalanı yerine sistemi uyar!
+      throw Exception("ZAMAN ÇİZELGESİ HATASI: Tarih verisi Karargah standartlarına çevrilemedi!");
     }
   }
 

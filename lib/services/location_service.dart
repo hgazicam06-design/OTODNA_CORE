@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:developer' as developer;
 
@@ -7,6 +8,7 @@ import 'dart:developer' as developer;
 class LocationService {
   // Radarı istediğimiz zaman kapatabilmek için hafızaya alıyoruz (Batarya koruması)
   StreamSubscription<Position>? _konumRadari;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // ── 🔐 1. GPS İZİN VE GÜVENLİK PROTOKOLÜ ──────────────────────────────────
   Future<bool> _izinleriDogrula() async {
@@ -37,12 +39,13 @@ class LocationService {
   Future<void> izlemeyiBaslat({
     required String bayiId,
     required String bayiKonumLat,
-    required String bayiKonumLong
+    required String bayiKonumLong,
+    required String aracPlaka, // Mühürleme için plaka verisi eklendi
   }) async {
     try {
       // 1. İzinleri Kontrol Et
       bool izinVarMi = await _izinleriDogrula();
-      if (!izinVarMi) throw Exception("GPS erişimi sağlanamadı.");
+      if (!izinVarMi) throw Exception("GPS erişimi sağlanamadı. Konum ayarlarınızı açın.");
 
       // 2. Hedef Koordinatları Siber Formata Çevir
       double hedefLat = double.parse(bayiKonumLat);
@@ -70,25 +73,37 @@ class LocationService {
 
         // 4. Araç 50 metre menzile (Dükkana) girdiyse vur!
         if (mesafe < 50) {
-          _konumDogrula(bayiId);
+          _konumDogrula(bayiId, aracPlaka);
         }
       });
 
     } catch (e) {
       developer.log("AĞ ÇÖKTÜ: Radar başlatılamadı!", error: e);
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: UI tarafına kırmızı alarm fırlatılır.
+      throw Exception("RADAR HATASI: GPS bağlantısı kurulamadı. Hedefe kilitlenilemiyor!");
     }
   }
 
-  // ── 🎯 3. HEDEFİ VURMA VE RADARI KAPATMA ──────────────────────────────────
-  void _konumDogrula(String bayiId) {
-    developer.log("🚨 HEDEF MENZİLDE! Araç $bayiId kodlu dükkana giriş yaptı.");
+  // ── 🎯 3. HEDEFİ VURMA VE RADARI KAPATMA (MAKET DEĞİL, GERÇEK SİSTEM) ────
+  Future<void> _konumDogrula(String bayiId, String aracPlaka) async {
+    try {
+      developer.log("🚨 HEDEF MENZİLDE! $aracPlaka plakalı araç $bayiId kodlu dükkana giriş yaptı.");
 
-    // İleride buraya eklenecek Karargah API Komutları:
-    // ApiService.sendArrivalStatus(bayiId, "Araç dükkana giriş yaptı!");
-    // LocalNotification.show("Hoş geldiniz! OtoDNA Pasaportunuz ustaya iletildi.");
+      // 🚀 MAKET YOK: Doğrudan Karargaha (Firebase) aracın giriş yaptığını mühürle
+      await _db.collection('sistem_loglari').add({
+        'islem_turu': 'RADAR_TESPIT',
+        'islem_detayi': 'SİBER ÇİT TETİKLENDİ: $aracPlaka plakalı araç dükkana (Menzil < 50m) giriş yaptı.',
+        'bayi_isim': bayiId,
+        'tarih': FieldValue.serverTimestamp(),
+      });
 
-    // GÖREV TAMAMLANDI: Bataryayı sömürmemek için radarı kapat!
-    izlemeyiDurdur();
+      developer.log("SİBER BİLGİ: Araç girişi Kuantum Ağına mühürlendi!");
+    } catch (e) {
+      developer.log("SİBER İHLAL: Radar tespiti ağa yazılamadı!", error: e);
+    } finally {
+      // GÖREV TAMAMLANDI: Bataryayı sömürmemek için radarı kapat! (Hata olsa bile kapanır)
+      izlemeyiDurdur();
+    }
   }
 
   // ── 🛑 4. SİBER FREN (RADAR İPTALİ) ───────────────────────────────────────
