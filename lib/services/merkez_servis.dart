@@ -23,14 +23,19 @@ class MerkezServis {
       return onayli;
     } catch (e) {
       developer.log("AĞ ÇÖKTÜ: Şehir doğrulama motoru arızalandı!", error: e);
-      return false; // Güvenlik için sistem çökerse onayı reddet
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: Sisteme yalan bilgi verme, alarm fırlat!
+      throw Exception("SİBER RADAR HATASI: Şehir doğrulama sistemi Kuantum Ağına erişemedi!");
     }
   }
 
   // ── 💰 02. MERKEZ KAZANÇ DENETİMİ (FİNANS ENTEGRASYONU) ─────────────────
   /// Karargahın sarsılmaz Net Payını (%10) standart finans motorundan doğrular.
   static double netKazancGetir(double brut) {
-    if (brut <= 0) return 0.0;
+    if (brut <= 0) {
+      developer.log("SİBER İHLAL: Merkez denetimine geçersiz tutar sızmaya çalıştı!");
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ
+      throw Exception("FİNANSAL İHLAL: Brüt kazanç 0 veya negatif olamaz!");
+    }
 
     // 🚀 SİBER MİMARİ: Hesaplama burada yapılmaz, uzmanı olan FinanceService'e sorulur!
     Map<String, double> finansRaporu = FinanceService.bayiSatisHesapla(brut);
@@ -68,7 +73,8 @@ class MerkezServis {
       };
     } catch (e) {
       developer.log("SİSTEMSEL ANOMALİ: Ceza yargı motoru çöktü!", error: e);
-      return {"durum": "HATA", "mesaj": "Yargı protoklü çalıştırılamadı."};
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: UI tarafına doğrudan fırlat.
+      throw Exception("YARGI MOTORU ARIZASI: Ceza protokolü Kuantum Ağına işlenemedi!");
     }
   }
 }

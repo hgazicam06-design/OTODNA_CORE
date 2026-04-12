@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer' as developer;
 
 /// OTODNA KUANTUM EKSPERTİZ VE DENETİM SERVİSİ (V2.0 - ZIRHLI)
 /// Bu sınıf, araçların fiziki durumunu Kuantum Ağına mühürleyen ana motorudur.
@@ -7,7 +8,7 @@ class EkspertizServisi {
 
   // --- 🛠️ SİBER EKSPERTİZ: PARÇA KONTROL MOTORU ---
   // [2026-02-22] Kararı: Görsel kanıt yüklenmeden hiçbir parça ONAYLANAMAZ!
-  Future<Map<String, dynamic>> kontrolNoktasiGuncelle({
+  Future<void> kontrolNoktasiGuncelle({
     required String aracId,
     required String bayiId,
     required String parcaAdi,
@@ -16,12 +17,13 @@ class EkspertizServisi {
     required String fotoUrl,
   }) async {
     try {
+      developer.log("SİBER EKSPERTİZ: $aracId aracı için '$parcaAdi' kontrolü başlatıldı...");
+
       // 1. AŞAMA: SİBER KANIT KONTROLÜ
       if (fotoUrl.isEmpty) {
-        return {
-          'basarili': false,
-          'mesaj': 'SİBER İHLAL: Kanıt fotoğrafı yüklemek zorunludur! DNA kaydı fotoğrapsız mühürlenemez.'
-        };
+        developer.log("SİBER İHLAL: Kanıt fotoğrafı eksik!");
+        // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: UI tarafına doğrudan fırlat!
+        throw Exception("SİBER İHLAL: Kanıt fotoğrafı yüklemek zorunludur! DNA kaydı fotoğrafsız mühürlenemez.");
       }
 
       if (isSafe) {
@@ -49,19 +51,20 @@ class EkspertizServisi {
         });
 
         await batch.commit(); // Füzeyi Karargaha Gönder!
+        developer.log("SİBER MÜHÜR: ✅ $parcaAdi onaylandı ve Kuantum Ağına kilitlendi.");
 
-        return {'basarili': true, 'mesaj': '✅ $parcaAdi onaylandı ve Kuantum Ağına mühürlendi.'};
       } else {
         // 🚨 PARÇA HATALIYSA: KRİTİK HATA PROTOKOLÜNÜ (İDAM) BAŞLAT
-        return await _kritikHataRaporla(aracId: aracId, bayiId: bayiId, parcaAdi: parcaAdi, detay: detay, fotoUrl: fotoUrl);
+        await _kritikHataRaporla(aracId: aracId, bayiId: bayiId, parcaAdi: parcaAdi, detay: detay, fotoUrl: fotoUrl);
       }
     } catch (e) {
-      return {'basarili': false, 'mesaj': 'SİBER BAĞLANTI HATASI: $e'};
+      developer.log("SİBER İHLAL: Kontrol noktası güncellenemedi!", error: e);
+      throw Exception("EKSPERTİZ HATASI: Parça onayı ağa işlenemedi. Lütfen Kuantum Ağınızı kontrol edin! Hata: $e");
     }
   }
 
   // --- 🚨 KIRMIZI ALARM: TRAFİĞE ÇIKIŞ ENGELİ (ATOMİK PROTOKOL) ---
-  Future<Map<String, dynamic>> _kritikHataRaporla({
+  Future<void> _kritikHataRaporla({
     required String aracId,
     required String bayiId,
     required String parcaAdi,
@@ -69,6 +72,7 @@ class EkspertizServisi {
     required String fotoUrl,
   }) async {
     try {
+      developer.log("🚨 KIRMIZI ALARM: $parcaAdi için Kritik Hata Protokolü (İdam) devrede!");
       WriteBatch batch = _db.batch();
 
       // 1. Aracın Dijital Sicilini ANINDA Kilitle (Trafiğe Çıkamaz!)
@@ -112,10 +116,11 @@ class EkspertizServisi {
       });
 
       await batch.commit(); // Tüm birimleri uyar ve sistemi kilitle!
+      developer.log("SİBER BİLGİ: 🚨 KRİTİK HATA AĞA İŞLENDİ! Araç karantinaya alındı.");
 
-      return {'basarili': true, 'mesaj': '🚨 KRİTİK HATA AĞA İŞLENDİ! Araç karantinaya alındı.'};
     } catch (e) {
-      return {'basarili': false, 'mesaj': 'SİSTEM ÇÖKTÜ: Kritik rapor oluşturulamadı! $e'};
+      developer.log("SİSTEM ÇÖKTÜ: Kritik rapor oluşturulamadı!", error: e);
+      throw Exception("SİSTEMSEL ANOMALİ: Kritik hata raporu Karargaha iletilemedi! Güvenli bağlantıyı kontrol edin.");
     }
   }
 }
