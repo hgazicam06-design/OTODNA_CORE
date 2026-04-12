@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // 🚀 KARARGAH LOGLAMASI İÇİN EKLENDİ
 import 'dart:developer' as developer;
 
 /// 🛡️ KUANTUM ANA GİRİŞ KAPISI (SiberLoginTerminali)
@@ -18,7 +19,7 @@ class _LoginNewState extends State<LoginNew> {
 
   bool _sistemMesgulMu = false;
 
-  // ── 🔐 SİBER DOĞRULAMA MOTORU (FIREBASE AUTH) ───────────────────────────
+  // ── 🔐 SİBER DOĞRULAMA VE İZ SÜRME MOTORU ───────────────────────────────
   Future<void> _kuantumKapilariniAc() async {
     final String gaziId = _idController.text.trim();
     final String masterKey = _masterKeyController.text.trim();
@@ -34,12 +35,20 @@ class _LoginNewState extends State<LoginNew> {
 
     try {
       // 2. Kuantum Ağına (Firebase) Bağlantı
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential cred = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: gaziId,
         password: masterKey,
       );
 
-      developer.log("SİBER ONAY: ✅ Kimlik doğrulandı! Ana Karargaha geçiş yapılıyor.");
+      // 🚨 KARARGAH KURALI: GİRİŞ İŞLEMİNİ KARA KUTUYA MÜHÜRLE! (Kayıt Dışılık Engellendi)
+      await FirebaseFirestore.instance.collection('sistem_loglari').add({
+        'islem_turu': 'SİSTEM_GİRİŞİ',
+        'islem_detayi': 'SİBER ONAY: $gaziId yetkilisi Ana Karargaha başarıyla giriş yaptı.',
+        'kullanici_id': cred.user?.uid ?? 'BİLİNMİYOR',
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      developer.log("SİBER ONAY: ✅ Kimlik doğrulandı ve giriş Karargaha loglandı! Ana Karargaha geçiş yapılıyor.");
 
       // SİBER NOT: Giriş başarılı olunca kullanıcıyı Ana Gövdeye yönlendir
       // if (!mounted) return;
@@ -48,6 +57,18 @@ class _LoginNewState extends State<LoginNew> {
     } on FirebaseAuthException catch (e) {
       developer.log("AĞ REDDEDİLDİ: Giriş başarısız!", error: e);
       _siberUyariVer("ERİŞİM REDDEDİLDİ", "KİMLİK (DNA) VEYA ŞİFRE UYUMSUZ!");
+
+      // 🚨 KARARGAH KURALI: SALDIRI DENEMESİNİ KARA KUTUYA YAZ! (İz Sürme Aktif)
+      try {
+        await FirebaseFirestore.instance.collection('sistem_loglari').add({
+          'islem_turu': 'YETKİSİZ_GİRİŞ_DENEMESİ',
+          'islem_detayi': 'SİBER İHLAL GİRİŞİMİ: $gaziId kimliği ile Karargaha yetkisiz sızma denendi! (Hata: ${e.code})',
+          'tarih': FieldValue.serverTimestamp(),
+        });
+      } catch (logError) {
+        developer.log("SİBER HATA: İhlal loglanamadı!", error: logError);
+      }
+
     } finally {
       if (mounted) setState(() => _sistemMesgulMu = false);
     }
