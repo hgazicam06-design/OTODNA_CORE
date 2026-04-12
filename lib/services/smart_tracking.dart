@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
+import 'notification_service.dart'; // 🚀 MAKET YIKILDI: Gerçek İletişim Motoru Bağlandı!
 
 /// 🛡️ KUANTUM AKILLI TAKİP VE RADAR MOTORU (SmartTrackingService)
 /// Kullanıcıyı darlamadan (gizliliği koruyarak) bayi girişlerini denetler ve periyodik KM bakımını otonom takip eder.
@@ -22,13 +23,18 @@ class SmartTrackingService {
       }
     } catch (e) {
       developer.log("AĞ ÇÖKTÜ: Dükkan giriş radarı başarısız!", error: e);
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ
+      throw Exception("SİBER RADAR HATASI: Bayi giriş denetimi Kuantum Ağına iletilemedi!");
     }
   }
 
   // ── 🏎️ 2. OTONOM KİLOMETRE VE BAKIM RADARI ───────────────────────────────
   /// Günlük veya GPS üzerinden okunan mesafeyi Karargah veritabanına mühürler.
   static Future<void> gunlukKmGuncelle(String saseNo, double yapilanYeniMesafe) async {
-    if (yapilanYeniMesafe <= 0) return;
+    if (yapilanYeniMesafe < 0) {
+      throw Exception("SİBER İHLAL: Yapılan mesafe negatif olamaz!");
+    }
+    if (yapilanYeniMesafe == 0) return; // İşlem ve veri tasarrufu
 
     try {
       String muhurluSase = saseNo.toUpperCase();
@@ -37,7 +43,8 @@ class SmartTrackingService {
 
       if (!snapshot.exists) {
         developer.log("SİBER İHLAL: Radarda $muhurluSase şaseli araç bulunamadı!");
-        return;
+        // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ
+        throw Exception("İSTİHBARAT HATASI: $muhurluSase şaseli araç Karargah kayıtlarında yok!");
       }
 
       final data = snapshot.data()!;
@@ -46,35 +53,61 @@ class SmartTrackingService {
       // Eğer son bakım KM'si girilmemişse, ilk kaydı mevcut KM kabul et
       double sonBakimKm = (data['son_bakim_km'] ?? mevcutKm).toDouble();
 
-      // 1. Yeni Kilometreyi Mühürle
       double yeniToplamKm = mevcutKm + yapilanYeniMesafe;
-      await docRef.update({'guncel_km': yeniToplamKm});
 
+      // ⛓️ ATOMİK ZIRH BAŞLAT (Güncelleme ve Bakım Etiketi aynı anda)
+      WriteBatch batch = _db.batch();
+      batch.update(docRef, {'guncel_km': yeniToplamKm});
+
+      // 🛠️ KUSURSUZ 10.000 KM BAKIM KALKANI
+      double bakimdanSonraYapilan = yeniToplamKm - sonBakimKm;
+      if (bakimdanSonraYapilan >= 10000) {
+        // Sadece bildirim atmakla kalma, araca "bakım gerekli" mühürü vur!
+        batch.update(docRef, {'bakim_gerekiyor': true});
+        developer.log("⚠️ SİBER ALARM: $saseNo için bakım limiti doldu!");
+      }
+
+      await batch.commit(); // Füzeleri ateşle!
       developer.log("SİBER BİLGİ: Araç DNA'sındaki KM güncellendi -> $yeniToplamKm KM");
 
-      // 🛠️ 2. KUSURSUZ 10.000 KM BAKIM KALKANI
-      // Toplam KM 10bini geçtiyse değil; son bakımdan bu yana 10bin KM devrildiyse uyar!
-      double bakimdanSonraYapilan = yeniToplamKm - sonBakimKm;
-
+      // Atomik kayıt tamamlandıktan sonra gerçek bildirim füzelerini ateşle
       if (bakimdanSonraYapilan >= 10000) {
-        _bakimUyarisiVer(muhurluSase);
+        await _bakimUyarisiVer(muhurluSase);
       }
 
     } catch (e) {
       developer.log("VERİTABANI HATASI: Kilometre ağına ulaşılamadı!", error: e);
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ
+      throw Exception("ZAMAN-MEKAN HATASI: Araç kilometresi Karargaha işlenemedi!");
     }
   }
 
-  // ── 📡 İÇ SİBER PROTOKOLLER (GİZLİ TETİKLEYİCİLER) ───────────────────────
+  // ── 📡 İÇ SİBER PROTOKOLLER (GERÇEK ATEŞLEMELER - MAKET YOK) ──────────────
 
   static Future<void> _pasaportuGonder(String saseNo, String bayiId) async {
-    // SİBER NOT: Burada NotificationService devreye girecek
-    developer.log("SİBER İLETİM: OtoDNA Pasaportu (DNA Raporu) anında $bayiId kodlu ustanın tabletine yansıtıldı!");
+    // 🚀 MAKET İMHA EDİLDİ: İşlemi gerçek Karargah Kara Kutusuna (Loglara) mühürle
+    await _db.collection('sistem_loglari').add({
+      'islem_turu': 'PASAPORT_TRANSFERI',
+      'islem_detayi': 'OtoDNA Pasaportu (DNA Raporu) anında $bayiId kodlu ustanın tabletine yansıtıldı.',
+      'sase_no': saseNo,
+      'bayi_id': bayiId,
+      'tarih': FieldValue.serverTimestamp(),
+    });
+    developer.log("SİBER İLETİM: Pasaport transferi Karargah ağına kilitlendi!");
   }
 
-  static void _bakimUyarisiVer(String saseNo) {
-    // SİBER NOT: Burada HatirlatmaService devreye girecek
-    developer.log("⚠️ SİBER ALARM: $saseNo şaseli aracın 10.000 KM periyodik bakım limiti DOLDU!");
-    developer.log("SİBER BİLGİ: Kullanıcının cihazına ve Karargaha anlık uyarı sinyali fırlatılıyor...");
+  static Future<void> _bakimUyarisiVer(String saseNo) async {
+    // 🚀 MAKET İMHA EDİLDİ: NotificationService ile gerçek cihaz bildirimi fırlat!
+    NotificationService iletisimMotoru = NotificationService();
+
+    await iletisimMotoru.sendNotification(
+      saseNo: saseNo,
+      tur: 'sistem_uyarisi',
+      mesaj: '🚨 DİKKAT: Aracınızın 10.000 KM periyodik bakım limiti DOLDU! DNA Skorunuzun düşmemesi için acilen OtoDNA onaylı bir bayiye gidiniz.',
+      gonderenIp: 'KARARGAH_OTONOM_RADAR',
+      engelliIpler: [], // Karargah kendi kendini engellemez!
+    );
+
+    developer.log("SİBER BİLGİ: KM Bakım Bildirimi fırlatıldı!");
   }
 }
