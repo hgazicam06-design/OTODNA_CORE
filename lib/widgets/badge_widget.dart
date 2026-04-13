@@ -6,15 +6,21 @@ class BadgeWidget extends StatelessWidget {
   final double rating;
   final bool isBlacklisted;
 
-  BadgeWidget({required this.rating, this.isBlacklisted = false});
+  // super.key ve const eklendi, performans artırıldı
+  const BadgeWidget({
+    super.key,
+    required this.rating,
+    this.isBlacklisted = false,
+  });
 
   @override
   Widget build(BuildContext context) {
+    // 1. Öncelikli Kontrol: Kara Liste (Blacklist) Zırhı
     if (isBlacklisted) {
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         color: Colors.black,
-        child: Row(
+        child: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.star, color: Colors.white, size: 16),
@@ -25,7 +31,7 @@ class BadgeWidget extends StatelessWidget {
       );
     }
 
-    // Yıldız sayısına göre renk ve isim belirleme
+    // 2. Yıldız sayısına göre Kuantum Renk ve Unvan belirleme
     Color badgeColor;
     String badgeText;
 
@@ -39,16 +45,17 @@ class BadgeWidget extends StatelessWidget {
       badgeColor = Colors.orangeAccent; // Bronz
       badgeText = "BRONZ ESNAF";
     } else {
-      return SizedBox.shrink(); // 2 yıldız ve altı (boş rozet)
+      // 2.9 ve altı için UI'da yer kaplamayan hayalet bileşen
+      return const SizedBox.shrink();
     }
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: badgeColor,
         borderRadius: BorderRadius.circular(4),
       ),
-      child: Text(badgeText, style: TextStyle(color: Colors.white, fontSize: 12)),
+      child: Text(badgeText, style: const TextStyle(color: Colors.white, fontSize: 12)),
     );
   }
 }

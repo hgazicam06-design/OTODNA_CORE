@@ -1,4 +1,3 @@
-// lib/screens/bayi_sos_panel.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -34,6 +33,7 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
       await launchUrl(launchUri);
     } else {
       developer.log("AĞ ÇÖKTÜ: Arama modülü başlatılamadı.");
+      _siberUyariGoster("ARAMA BAŞARISIZ", "Telefon modülü tetiklenemedi.", _kanKirmizi);
     }
   }
 
@@ -44,33 +44,51 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
       await launchUrl(googleMapsUrl, mode: LaunchMode.externalApplication);
     } else {
       developer.log("HARİTA ÇÖKTÜ: Navigasyon açılamadı.");
+      _siberUyariGoster("NAVİGASYON HATASI", "Harita modülü başlatılamadı.", _kanKirmizi);
     }
   }
 
-  // ── 🚀 KARARGAH YOL YARDIM MÜHRÜ ──
+  // ── 🚀 KARARGAH YOL YARDIM MÜHRÜ (ATOMİK ZIRH GİYDİRİLDİ) ──
   Future<void> _yolYardimFirlat(String saseNo) async {
     setState(() => _mudahaleEdiliyor = true);
     developer.log("🚀 SİBER MÜDAHALE: Yol yardım ekibi bölgeye yönlendiriliyor...");
 
     try {
-      // 1. Sinyali Güncelle (Müdahale Edildi)
-      await _db.collection('sos_sinyalleri').doc(widget.sinyalId).update({
+      // ⛓️ ATOMİK ZIRH: WriteBatch Başlatıldı (İşlemi Yarıda Bırakma!)
+      WriteBatch batch = _db.batch();
+
+      // 1. Sinyali Güncelle (Müdahale Edildi Olarak Mühürle)
+      DocumentReference sinyalRef = _db.collection('sos_alarmlari').doc(widget.sinyalId); // 'sos_sinyalleri' yerine radara uygun düzeltildi
+      batch.update(sinyalRef, {
         'durum': 'MUDAHALE_EDILDI',
         'mudahale_eden_bayi': widget.bayiId,
         'mudahale_tarihi': FieldValue.serverTimestamp(),
       });
 
-      // 2. Karargah Finans ve Servis Havuzuna İş Emri (Yol Yardım Talebi)
-      // SİBER NOT: Gerçekte burada bir ödeme/hizmet bedeli yansıtılır.
-      await _db.collection('ariza_kayitlari').add({
+      // 2. Karargah Servis Havuzuna İş Emri Aç (Yol Yardım Talebi)
+      DocumentReference arizaRef = _db.collection('ariza_kayitlari').doc();
+      batch.set(arizaRef, {
+        'ariza_id': arizaRef.id,
         'sase_no': saseNo,
         'bayi_id': widget.bayiId,
         'durum': 'YOL_YARDIMI_YOLDA',
+        'islem_turu': 'ACIL_SOS_MUDAHALESI',
         'olusturulma_tarihi': FieldValue.serverTimestamp(),
-        'not': 'S.O.S Sinyali üzerine yol yardım ekibi sevk edildi.'
+        'not': 'SİBER BİLGİ: S.O.S Sinyali üzerine bölgeye yol yardım ekibi sevk edildi.'
       });
 
-      developer.log("✅ SİBER ONAY: Müdahale Karargaha şifrelendi.");
+      // 3. Kara Kutuya (Sistem Logları) Fişi Kes (Kayıt Dışılığı Engelle!)
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'SOS_MUDAHALESI',
+        'islem_detayi': 'SİBER HAREKAT: ${widget.bayiId} ID\'li Bayi, $saseNo şaseli aracın S.O.S sinyaline başarıyla müdahale etti ve yol yardım sevk etti.',
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      // FÜZELERİ ATEŞLE!
+      await batch.commit();
+
+      developer.log("✅ SİBER ONAY: Müdahale atomik olarak Karargaha şifrelendi.");
       _siberUyariGoster("EKİP SEVK EDİLDİ!", "Yol yardım müdahaleniz Karargaha mühürlendi.", _kuantumCyan);
 
       // Ekranda kalmaya gerek yok, radar ekranına dön
@@ -78,7 +96,7 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
 
     } catch (e) {
       developer.log("AĞ ÇÖKTÜ!", error: e);
-      _siberUyariGoster("BAĞLANTI HATASI", "Müdahale kaydedilemedi.", _kanKirmizi);
+      _siberUyariGoster("BAĞLANTI HATASI", "Müdahale Karargaha iletilemedi! Lütfen tekrar deneyin.", _kanKirmizi);
     } finally {
       if (mounted) setState(() => _mudahaleEdiliyor = false);
     }
@@ -86,6 +104,7 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
 
   // ── 🚨 ARAYÜZ YARDIMCILARI ──
   void _siberUyariGoster(String baslik, String mesaj, Color renk) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: _matGrey,
@@ -117,14 +136,14 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
       ),
       body: FutureBuilder<DocumentSnapshot>(
         // Sinyal verilerini Firebase'den canlı çek
-        future: _db.collection('sos_sinyalleri').doc(widget.sinyalId).get(),
+        future: _db.collection('sos_alarmlari').doc(widget.sinyalId).get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator(color: _kanKirmizi));
           }
 
           if (!snapshot.hasData || !snapshot.data!.exists) {
-            return const Center(child: Text("SİNYAL KAYIP VEYA İPTAL EDİLMİŞ.", style: TextStyle(color: _kanKirmizi)));
+            return const Center(child: Text("SİNYAL KAYIP VEYA İPTAL EDİLMİŞ.", style: TextStyle(color: _kanKirmizi, fontWeight: FontWeight.bold, letterSpacing: 1.5)));
           }
 
           var sinyalVerisi = snapshot.data!.data() as Map<String, dynamic>;

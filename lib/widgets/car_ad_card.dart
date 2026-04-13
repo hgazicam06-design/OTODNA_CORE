@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 /// 🛡️ KUANTUM İLAN VİTRİN KARTI (SiberIlanKarti)
 /// Araç ilanlarını Kuantum Turkuazı ve OLED Siyahı ile sergiler, DNA skorunu vurgular.
 class SiberIlanKarti extends StatelessWidget {
-  // SİBER NOT: Karargah standartlarına göre veriyi doğrudan Firebase 'araclar' koleksiyonundan
-  // dönen Map verisi (veya dinamik model) olarak alıyoruz.
   final Map<String, dynamic> ilanVerisi;
   final VoidCallback? onTap;
 
-  const SiberIlanKarti({super.key, required this.ilanVerisi, this.onTap});
+  const SiberIlanKarti({
+    super.key,
+    required this.ilanVerisi,
+    this.onTap,
+  });
 
   // ── 🎨 KARARGAH TASARIM DOKTRİNİ ──
   static const Color _matGrey = Color(0xFF111111);
@@ -17,12 +19,12 @@ class SiberIlanKarti extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 📡 Veritabanı İstihbarat Değişkenleri
+    // 📡 Veritabanı İstihbarat Değişkenleri (Zırhlı Null Kontrolü)
     String markaModel = ilanVerisi['marka_model']?.toString().toUpperCase() ?? "BİLİNMEYEN ARAÇ";
     String fiyat = ilanVerisi['fiyat']?.toString() ?? "0";
     bool guvenliKapora = ilanVerisi['guvenli_kapora'] ?? false;
-    String resimUrl = ilanVerisi['resim_url'] ?? "";
-    int dnaSkoru = ilanVerisi['dna_skoru'] ?? 0;
+    String resimUrl = ilanVerisi['resim_url']?.toString() ?? "";
+    int dnaSkoru = int.tryParse(ilanVerisi['dna_skoru']?.toString() ?? '0') ?? 0;
 
     // ⚖️ DNA Skoruna göre zırh rengini belirleme motoru
     Color dnaRengi = dnaSkoru >= 80
@@ -128,7 +130,7 @@ class SiberIlanKarti extends StatelessWidget {
                         children: [
                           Icon(Icons.verified_user_outlined, size: 14, color: _kuantumCyan),
                           SizedBox(width: 6),
-                          Text("SİBER GÜVENLİ KAPORA", style: TextStyle(color: _kuantumCyan, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                          Text("SİBER GÜVENLİ KAPORA", style: const TextStyle(color: _kuantumCyan, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
                         ],
                       ),
                     ),

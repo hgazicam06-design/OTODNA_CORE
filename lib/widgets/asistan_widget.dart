@@ -1,9 +1,12 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // 🚀 SİBER LOGLAMA İÇİN EKLENDİ
+import 'package:firebase_auth/firebase_auth.dart'; // 🚀 KİMLİK TESPİTİ İÇİN EKLENDİ
+import 'dart:developer' as developer;
 import '../services/asistan_service.dart';
 
-/// Uygulamanın herhangi bir ekranına eklenebilen yüzen AI asistan baloncuğu.
-/// Kullanım: Stack içine AsistanWidget(ekran: 'ana_sayfa') ekle.
+/// 🛡️ KUANTUM SİBER ASİSTAN (Yüzen AI Balonu)
+/// Uygulamanın her ekranına eklenebilen, Karargah bağlantılı AI asistanı.
 class AsistanWidget extends StatefulWidget {
   final String ekran;
   final AsistanService asistan;
@@ -18,12 +21,12 @@ class AsistanWidget extends StatefulWidget {
   State<AsistanWidget> createState() => _AsistanWidgetState();
 }
 
-class _AsistanWidgetState extends State<AsistanWidget>
-    with SingleTickerProviderStateMixin {
-  static const _cyan = Color(0xFF03f0c8);
-  static const _gold = Color(0xFFFF9C1A);
-  static const _dark = Color(0xFF0A0A0F);
-  static const _card = Color(0xFF111118);
+class _AsistanWidgetState extends State<AsistanWidget> with SingleTickerProviderStateMixin {
+  // 🎨 SİBER RENK PALETİ (Karargah Standartları)
+  static const _cyan = Color(0xFF00FFC2); // Kuantum Turkuazı
+  static const _dark = Color(0xFF0A0A0F); // OLED Siyah
+  static const _card = Color(0xFF111118); // Siber Cam Arka Plan
+  static const _alertRed = Color(0xFFFF4D4D); // İhlal Kırmızısı
 
   bool _acik = false;
   bool _yukleniyor = false;
@@ -44,8 +47,7 @@ class _AsistanWidgetState extends State<AsistanWidget>
       vsync: this,
       duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
-    _pulseAnim = Tween(begin: 0.9, end: 1.1).animate(
-        CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOut));
+    _pulseAnim = Tween(begin: 0.9, end: 1.1).animate(CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOut));
 
     _karsilamaHazirla();
   }
@@ -59,8 +61,12 @@ class _AsistanWidgetState extends State<AsistanWidget>
   }
 
   Future<void> _karsilamaHazirla() async {
-    final mesaj = await widget.asistan.karsilamaGonder(widget.ekran);
-    if (mounted) setState(() => _karsilama = mesaj);
+    try {
+      final mesaj = await widget.asistan.karsilamaGonder(widget.ekran);
+      if (mounted) setState(() => _karsilama = mesaj);
+    } catch (e) {
+      developer.log("SİBER UYARI: Asistan karşılama mesajı çekilemedi.", error: e);
+    }
   }
 
   void _toggle() {
@@ -74,6 +80,7 @@ class _AsistanWidgetState extends State<AsistanWidget>
     }
   }
 
+  // 🚀 AI SORGULAMA VE SİBER LOGLAMA MOTORU (Sessiz Çöküş Engellendi!)
   Future<void> _gonder() async {
     final soru = _mesajCtrl.text.trim();
     if (soru.isEmpty) return;
@@ -85,14 +92,47 @@ class _AsistanWidgetState extends State<AsistanWidget>
     });
     _asagiKaydir();
 
-    final cevap = await widget.asistan.sor(soru);
+    try {
+      // 1. Asistandan Cevabı Çek
+      final cevap = await widget.asistan.sor(soru);
 
-    if (mounted) {
-      setState(() {
-        _mesajlar.add(AsistanMesaj(metin: cevap.metin, kullanici: false));
-        _yukleniyor = false;
+      if (mounted) {
+        setState(() {
+          _mesajlar.add(AsistanMesaj(metin: cevap.metin, kullanici: false));
+          _yukleniyor = false;
+        });
+        _asagiKaydir();
+      }
+
+      // 2. ⛓️ ATOMİK ZIRH: Asistanla Konuşulanları Karargah Radarına Logla!
+      _sorguyuKarargahaLogla(soru);
+
+    } catch (e) {
+      // 🚨 SİBER KALKAN: İnternet koparsa asistan kilitlenmez, uyarı verir!
+      developer.log("AĞ ÇÖKTÜ: Asistan zekası yanıt veremiyor!", error: e);
+      if (mounted) {
+        setState(() {
+          _mesajlar.add(AsistanMesaj(metin: "⚠️ SİBER BAĞLANTI HATASI: Kuantum Ağına şu an erişilemiyor. Lütfen Karargah bağlantınızı kontrol edin.", kullanici: false));
+          _yukleniyor = false;
+        });
+        _asagiKaydir();
+      }
+    }
+  }
+
+  // 📡 İÇ PROTOKOL: KULLANICI EĞİLİMLERİNİ İZLEME MOTORU
+  Future<void> _sorguyuKarargahaLogla(String soru) async {
+    try {
+      String userId = FirebaseAuth.instance.currentUser?.uid ?? "ANONİM_KULLANICI";
+
+      await FirebaseFirestore.instance.collection('sistem_loglari').add({
+        'islem_turu': 'YAPAY_ZEKA_SORGUSU',
+        'islem_detayi': 'SİBER BİLGİ: $userId ID\'li kullanıcı "${widget.ekran}" ekranında Asistana şu soruyu sordu: "$soru"',
+        'kullanici_id': userId,
+        'tarih': FieldValue.serverTimestamp(),
       });
-      _asagiKaydir();
+    } catch (logError) {
+      developer.log("SİBER UYARI: Asistan sorgusu Karargaha mühürlenemedi!", error: logError);
     }
   }
 
@@ -108,7 +148,7 @@ class _AsistanWidgetState extends State<AsistanWidget>
     });
   }
 
-  // ── BUILD ─────────────────────────────────────────────────────────────────
+  // ── BUILD (UI) ────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -127,237 +167,206 @@ class _AsistanWidgetState extends State<AsistanWidget>
   }
 
   Widget _buildBalonButon() => GestureDetector(
-        onTap: _toggle,
-        child: AnimatedBuilder(
-          animation: _pulseAnim,
-          builder: (_, __) => Transform.scale(
-            scale: _acik ? 1.0 : _pulseAnim.value,
-            child: Container(
-              width: 58,
-              height: 58,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [_cyan, _cyan.withValues(alpha: 0.7)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                      color: _cyan.withValues(alpha: 0.4),
-                      blurRadius: 16,
-                      spreadRadius: 2),
-                ],
-              ),
-              child: Icon(
-                _acik ? Icons.close_rounded : Icons.smart_toy_rounded,
-                color: Colors.black,
-                size: 26,
-              ),
+    onTap: _toggle,
+    child: AnimatedBuilder(
+      animation: _pulseAnim,
+      builder: (_, __) => Transform.scale(
+        scale: _acik ? 1.0 : _pulseAnim.value,
+        child: Container(
+          width: 58,
+          height: 58,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [_cyan, _cyan.withOpacity(0.7)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
+            boxShadow: [BoxShadow(color: _cyan.withOpacity(0.4), blurRadius: 16, spreadRadius: 2)],
+          ),
+          child: Icon(
+            _acik ? Icons.close_rounded : Icons.smart_toy_rounded,
+            color: Colors.black,
+            size: 26,
           ),
         ),
-      );
+      ),
+    ),
+  );
 
   Widget _buildPanel() => Container(
-        width: 300,
-        height: 400,
-        decoration: BoxDecoration(
-          color: _card,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: _cyan.withValues(alpha: 0.3)),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black.withValues(alpha: 0.5),
-                blurRadius: 24,
-                spreadRadius: 4),
-          ],
-        ),
-        child: Column(children: [
+    width: MediaQuery.of(context).size.width * 0.85 > 320 ? 320 : MediaQuery.of(context).size.width * 0.85,
+    height: 420,
+    decoration: BoxDecoration(
+      color: _card,
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: _cyan.withOpacity(0.3)),
+      boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.8), blurRadius: 24, spreadRadius: 4)],
+    ),
+    child: Column(
+        children: [
           _buildPanelBaslik(),
           Expanded(child: _buildMesajlar()),
           _buildGirisAlan(),
-        ]),
-      );
+        ]
+    ),
+  );
 
   Widget _buildPanelBaslik() => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+    decoration: BoxDecoration(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      gradient: LinearGradient(
+        colors: [_cyan.withOpacity(0.15), _dark],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    ),
+    child: Row(children: [
+      Container(
+        width: 32, height: 32,
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-          gradient: LinearGradient(
-            colors: [_cyan.withValues(alpha: 0.15), _dark],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          shape: BoxShape.circle,
+          color: _cyan.withOpacity(0.2),
+          border: Border.all(color: _cyan.withOpacity(0.5)),
         ),
-        child: Row(children: [
-          Container(
-            width: 32,
-            height: 32,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: _cyan.withValues(alpha: 0.2),
-              border: Border.all(color: _cyan.withValues(alpha: 0.5)),
+        child: const Icon(Icons.smart_toy_rounded, color: _cyan, size: 18),
+      ),
+      const SizedBox(width: 10),
+      Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('OtoDNA AI Asistan', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
+            Row(
+                children: [
+                  Container(width: 6, height: 6, decoration: const BoxDecoration(shape: BoxShape.circle, color: _cyan)),
+                  const SizedBox(width: 4),
+                  Text('Kuantum Ağına Bağlı', style: TextStyle(color: _cyan.withOpacity(0.8), fontSize: 9, fontWeight: FontWeight.bold)),
+                ]
             ),
-            child: const Icon(Icons.smart_toy_rounded, color: _cyan, size: 18),
-          ),
-          const SizedBox(width: 8),
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text('OtoDNA Asistan',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13)),
-            Row(children: [
-              Container(
-                  width: 6,
-                  height: 6,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: _cyan)),
-              const SizedBox(width: 4),
-              Text('Çevrimiçi',
-                  style: TextStyle(
-                      color: _cyan.withValues(alpha: 0.8), fontSize: 10)),
-            ]),
-          ]),
-          const Spacer(),
-          GestureDetector(
-            onTap: () {
-              widget.asistan.sifirla();
-              setState(() { _mesajlar.clear(); _karsilamaGosterildi = false; });
-            },
-            child: Icon(Icons.refresh_rounded,
-                color: Colors.white.withValues(alpha: 0.4), size: 18),
-          ),
-        ]),
-      );
+          ]
+      ),
+      const Spacer(),
+      GestureDetector(
+        onTap: () {
+          widget.asistan.sifirla();
+          setState(() { _mesajlar.clear(); _karsilamaGosterildi = false; });
+          developer.log("SİBER BİLGİ: Asistan hafızası sıfırlandı.");
+        },
+        child: Icon(Icons.refresh_rounded, color: Colors.white.withOpacity(0.4), size: 20),
+      ),
+    ]),
+  );
 
   Widget _buildMesajlar() => ListView.builder(
-        controller: _scrollCtrl,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        itemCount: _mesajlar.length + (_yukleniyor ? 1 : 0),
-        itemBuilder: (_, i) {
-          if (i == _mesajlar.length) return _buildYukleniyor();
-          final m = _mesajlar[i];
-          return _buildMesajBalonu(m);
-        },
-      );
+    controller: _scrollCtrl,
+    physics: const BouncingScrollPhysics(),
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+    itemCount: _mesajlar.length + (_yukleniyor ? 1 : 0),
+    itemBuilder: (_, i) {
+      if (i == _mesajlar.length) return _buildYukleniyor();
+      return _buildMesajBalonu(_mesajlar[i]);
+    },
+  );
 
-  Widget _buildMesajBalonu(AsistanMesaj m) => Align(
-        alignment: m.kullanici ? Alignment.centerRight : Alignment.centerLeft,
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 230),
-          margin: const EdgeInsets.only(bottom: 8),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14).copyWith(
-              bottomRight: m.kullanici ? const Radius.circular(4) : null,
-              bottomLeft: !m.kullanici ? const Radius.circular(4) : null,
-            ),
-            color: m.kullanici
-                ? _cyan.withValues(alpha: 0.15)
-                : const Color(0xFF1A1A25),
-            border: Border.all(
-                color: m.kullanici
-                    ? _cyan.withValues(alpha: 0.3)
-                    : const Color(0xFF2A2A3A)),
+  Widget _buildMesajBalonu(AsistanMesaj m) {
+    bool isErrorMsg = m.metin.contains("SİBER BAĞLANTI HATASI");
+    Color borderColor = m.kullanici ? _cyan.withOpacity(0.3) : (isErrorMsg ? _alertRed.withOpacity(0.5) : const Color(0xFF2A2A3A));
+    Color bgColor = m.kullanici ? _cyan.withOpacity(0.15) : (isErrorMsg ? _alertRed.withOpacity(0.1) : const Color(0xFF1A1A25));
+
+    return Align(
+      alignment: m.kullanici ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 240),
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14).copyWith(
+            bottomRight: m.kullanici ? const Radius.circular(4) : null,
+            bottomLeft: !m.kullanici ? const Radius.circular(4) : null,
           ),
-          child: m.kullanici
-              ? Text(m.metin,
-                  style: const TextStyle(color: Colors.white, fontSize: 12))
-              : MarkdownBody(
-                  data: m.metin,
-                  styleSheet: MarkdownStyleSheet(
-                    p: const TextStyle(color: Colors.white, fontSize: 12, height: 1.4),
-                    strong: const TextStyle(
-                        color: _cyan, fontWeight: FontWeight.w700, fontSize: 12),
-                    listBullet: TextStyle(
-                        color: _cyan.withValues(alpha: 0.8), fontSize: 12),
-                  ),
-                ),
+          color: bgColor,
+          border: Border.all(color: borderColor),
         ),
-      );
+        child: m.kullanici
+            ? Text(m.metin, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600))
+            : MarkdownBody(
+          data: m.metin,
+          styleSheet: MarkdownStyleSheet(
+            p: TextStyle(color: isErrorMsg ? _alertRed : Colors.white, fontSize: 12, height: 1.5),
+            strong: const TextStyle(color: _cyan, fontWeight: FontWeight.w900, fontSize: 12),
+            listBullet: TextStyle(color: _cyan.withOpacity(0.8), fontSize: 12),
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildYukleniyor() => Align(
-        alignment: Alignment.centerLeft,
-        child: Container(
-          margin: const EdgeInsets.only(bottom: 8),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            color: const Color(0xFF1A1A25),
-            border: Border.all(color: const Color(0xFF2A2A3A)),
-          ),
-          child: Row(mainAxisSize: MainAxisSize.min, children: [
-            _nokta(0), const SizedBox(width: 4),
-            _nokta(1), const SizedBox(width: 4),
-            _nokta(2),
-          ]),
-        ),
-      );
+    alignment: Alignment.centerLeft,
+    child: Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        color: const Color(0xFF1A1A25),
+        border: Border.all(color: const Color(0xFF2A2A3A)),
+      ),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        _nokta(0), const SizedBox(width: 4), _nokta(1), const SizedBox(width: 4), _nokta(2),
+      ]),
+    ),
+  );
 
   Widget _nokta(int i) => TweenAnimationBuilder<double>(
-        tween: Tween(begin: 0.3, end: 1.0),
-        duration: Duration(milliseconds: 400 + i * 150),
-        curve: Curves.easeInOut,
-        builder: (_, v, __) => Opacity(
-          opacity: v,
-          child: Container(
-            width: 6, height: 6,
-            decoration: const BoxDecoration(
-                shape: BoxShape.circle, color: _cyan),
-          ),
-        ),
-      );
+    tween: Tween(begin: 0.3, end: 1.0),
+    duration: Duration(milliseconds: 400 + i * 150),
+    curve: Curves.easeInOut,
+    builder: (_, v, __) => Opacity(
+      opacity: v,
+      child: Container(width: 6, height: 6, decoration: const BoxDecoration(shape: BoxShape.circle, color: _cyan)),
+    ),
+  );
 
   Widget _buildGirisAlan() => Container(
-        padding: const EdgeInsets.fromLTRB(10, 6, 10, 10),
-        decoration: const BoxDecoration(
-          border: Border(
-              top: BorderSide(color: Color(0xFF1E1E2E))),
+    padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+    decoration: const BoxDecoration(
+      border: Border(top: BorderSide(color: Color(0xFF1E1E2E))),
+    ),
+    child: Row(children: [
+      Expanded(
+        child: TextField(
+          controller: _mesajCtrl,
+          style: const TextStyle(color: Colors.white, fontSize: 13),
+          maxLines: null, // Dinamik yükseklik için
+          keyboardType: TextInputType.multiline,
+          textInputAction: TextInputAction.send,
+          onSubmitted: (_) => _gonder(),
+          decoration: InputDecoration(
+            hintText: 'Karargaha bir şey sor...',
+            hintStyle: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 12),
+            filled: true,
+            fillColor: const Color(0xFF0E0E18),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF1E1E2E))),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF1E1E2E))),
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: _cyan.withOpacity(0.5))),
+          ),
         ),
-        child: Row(children: [
-          Expanded(
-            child: TextField(
-              controller: _mesajCtrl,
-              style: const TextStyle(color: Colors.white, fontSize: 12),
-              maxLines: 1,
-              onSubmitted: (_) => _gonder(),
-              decoration: InputDecoration(
-                hintText: 'Nasıl yardımcı olabilirim?',
-                hintStyle: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.3), fontSize: 12),
-                filled: true,
-                fillColor: const Color(0xFF0E0E18),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color(0xFF1E1E2E))),
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color(0xFF1E1E2E))),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(
-                        color: _cyan.withValues(alpha: 0.5))),
-              ),
-            ),
+      ),
+      const SizedBox(width: 10),
+      GestureDetector(
+        onTap: _yukleniyor ? null : _gonder,
+        child: Container(
+          width: 42, height: 42,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: _yukleniyor ? Colors.grey.withOpacity(0.1) : _cyan.withOpacity(0.15),
+            border: Border.all(color: _yukleniyor ? Colors.transparent : _cyan.withOpacity(0.4)),
           ),
-          const SizedBox(width: 8),
-          GestureDetector(
-            onTap: _gonder,
-            child: Container(
-              width: 36, height: 36,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _cyan.withValues(alpha: 0.15),
-                border: Border.all(color: _cyan.withValues(alpha: 0.4)),
-              ),
-              child: const Icon(Icons.send_rounded, color: _cyan, size: 18),
-            ),
-          ),
-        ]),
-      );
+          child: Icon(Icons.send_rounded, color: _yukleniyor ? Colors.white30 : _cyan, size: 20),
+        ),
+      ),
+    ]),
+  );
 }
-
