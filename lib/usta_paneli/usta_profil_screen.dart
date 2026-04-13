@@ -1,23 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
 /// 🛡️ KUANTUM USTA & BAYİ PROFİL TERMİNALİ (UstaProfilScreen)
-/// Ustanın DNA Skorunu, Etik Sözleşmesini ve 5 Kademeli Rozet Sistemini OLED Ekranda gösterir.
+/// Kuantum Ağından (Firebase) ustanın DNA Skorunu, Etik Sözleşmesini ve Rozet Sistemini canlı çeker.
 class UstaProfilScreen extends StatelessWidget {
-  final String firmaAdi;
-  final int rozetYildizi; // 5: Altın, 4: Gümüş, 3: Bronz, 2: Standart, 1: Blacklist
-  final int yesilTikSayisi;
-  final int kirmiziCarpiSayisi;
-  final String lokasyon;
+  final String bayiId; // SİBER RADAR: Dışarıdan hedeflenen ustanın ID'si
 
-  const UstaProfilScreen({
-    super.key,
-    this.firmaAdi = "Gazi Auto & Kuantum Garaj",
-    this.rozetYildizi = 5,
-    this.yesilTikSayisi = 1240,
-    this.kirmiziCarpiSayisi = 45,
-    this.lokasyon = "İskitler MİA, Ankara", // Karargah istihbaratı
-  });
+  const UstaProfilScreen({super.key, required this.bayiId});
 
   // ── 🎨 KARARGAH TASARIM DOKTRİNİ (RENKLER) ──
   static const Color _kuantumTurkuaz = Color(0xFF00FFC2);
@@ -26,66 +16,98 @@ class UstaProfilScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isBlacklisted = rozetYildizi <= 1;
+    return FutureBuilder<DocumentSnapshot>(
+      future: FirebaseFirestore.instance.collection('bayiler').doc(bayiId).get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(backgroundColor: _oledSiyah, body: Center(child: CircularProgressIndicator(color: _kuantumTurkuaz)));
+        }
 
+        if (!snapshot.hasData || !snapshot.data!.exists) {
+          return _buildSiberHataEkrani("SİBER İHLAL: HEDEF BAYİ AĞDA BULUNAMADI!");
+        }
+
+        var bayiVerisi = snapshot.data!.data() as Map<String, dynamic>;
+
+        String firmaAdi = bayiVerisi['firma_adi'] ?? "Adsız Bayi";
+        int rozetYildizi = bayiVerisi['rozet_yildizi'] ?? 2; // Varsayılan Standart
+        int yesilTikSayisi = bayiVerisi['yesil_tik'] ?? 0;
+        int kirmiziCarpiSayisi = bayiVerisi['kirmizi_x'] ?? 0;
+        String lokasyon = bayiVerisi['lokasyon'] ?? "Konum Bilgisi Yok";
+        List<dynamic> uzmanliklar = bayiVerisi['uzmanlik_alanlari'] ?? [];
+
+        bool isBlacklisted = rozetYildizi <= 1;
+
+        return Scaffold(
+          backgroundColor: _oledSiyah,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            iconTheme: IconThemeData(color: isBlacklisted ? Colors.redAccent : _kuantumTurkuaz),
+            actions: [
+              IconButton(
+                  icon: Icon(Icons.share_outlined, color: isBlacklisted ? Colors.redAccent : _kuantumTurkuaz),
+                  onPressed: () {
+                    developer.log("SİBER SİNYAL: $firmaAdi profili için paylaşım komutu tetiklendi.");
+                  }
+              ),
+            ],
+          ),
+          extendBodyBehindAppBar: true,
+          body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                _buildSiberKapak(firmaAdi, lokasyon, rozetYildizi, isBlacklisted),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildIstatistikPanosu(yesilTikSayisi, kirmiziCarpiSayisi, isBlacklisted),
+                      const SizedBox(height: 30),
+
+                      if(uzmanliklar.isNotEmpty)
+                        _buildUzmanlikAlanlari(uzmanliklar, isBlacklisted),
+
+                      const SizedBox(height: 30),
+
+                      _buildOtoDnaEtikSozlesmesi(isBlacklisted),
+                      const SizedBox(height: 40),
+
+                      _buildAksiyonButonlari(isBlacklisted),
+                      const SizedBox(height: 50),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // ─── 0. 🚨 SİBER HATA EKRANI ─────────────────────────────────────────────
+  Widget _buildSiberHataEkrani(String mesaj) {
     return Scaffold(
       backgroundColor: _oledSiyah,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: IconThemeData(color: isBlacklisted ? Colors.redAccent : _kuantumTurkuaz),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.share_outlined, color: isBlacklisted ? Colors.redAccent : _kuantumTurkuaz),
-              onPressed: () {
-                developer.log("SİBER SİNYAL: Profil paylaşım komutu tetiklendi.");
-              }
-          ),
-        ],
-      ),
-      extendBodyBehindAppBar: true,
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            _buildSiberKapak(isBlacklisted),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildIstatistikPanosu(isBlacklisted),
-                  const SizedBox(height: 30),
-
-                  _buildUzmanlikAlanlari(isBlacklisted),
-                  const SizedBox(height: 30),
-
-                  _buildOtoDnaEtikSozlesmesi(isBlacklisted),
-                  const SizedBox(height: 40),
-
-                  _buildAksiyonButonlari(isBlacklisted),
-                  const SizedBox(height: 50),
-                ],
-              ),
-            )
-          ],
-        ),
+      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
+      body: Center(
+        child: Text(mesaj, style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, letterSpacing: 2)),
       ),
     );
   }
 
   // ─── 1. 🛡️ SİBER KAPAK VE ROZET SİSTEMİ ──────────────────────────────────
-  Widget _buildSiberKapak(bool isBlacklisted) {
+  Widget _buildSiberKapak(String firmaAdi, String lokasyon, int rozetYildizi, bool isBlacklisted) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(20, 100, 20, 30),
       decoration: BoxDecoration(
         color: _matGriKart,
         border: Border(
-            bottom: BorderSide(
-                color: isBlacklisted ? Colors.redAccent : _kuantumTurkuaz.withOpacity(0.5),
-                width: 2
-            )
+            bottom: BorderSide(color: isBlacklisted ? Colors.redAccent : _kuantumTurkuaz.withOpacity(0.5), width: 2)
         ),
       ),
       child: Column(
@@ -100,8 +122,7 @@ class UstaProfilScreen extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   color: isBlacklisted ? Colors.redAccent.withOpacity(0.3) : _kuantumTurkuaz.withOpacity(0.2),
-                  blurRadius: 25,
-                  spreadRadius: 2,
+                  blurRadius: 25, spreadRadius: 2,
                 )
               ],
             ),
@@ -110,33 +131,26 @@ class UstaProfilScreen extends StatelessWidget {
               backgroundColor: _matGriKart,
               child: Icon(
                   isBlacklisted ? Icons.block : Icons.precision_manufacturing_outlined,
-                  size: 50,
-                  color: isBlacklisted ? Colors.redAccent : _kuantumTurkuaz
+                  size: 50, color: isBlacklisted ? Colors.redAccent : _kuantumTurkuaz
               ),
             ),
           ),
           const SizedBox(height: 20),
 
-          Text(
-              firmaAdi.toUpperCase(),
+          Text(firmaAdi.toUpperCase(),
               textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: isBlacklisted ? Colors.redAccent : Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 2
-              )
+              style: TextStyle(color: isBlacklisted ? Colors.redAccent : Colors.white, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2)
           ),
           const SizedBox(height: 12),
 
           // 🏆 DİNAMİK ROZET MOTORU
-          _buildRozetMotoru(),
+          _buildRozetMotoru(rozetYildizi),
 
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.location_on_outlined, color: Colors.white54, size: 16),
+              const Icon(Icons.location_on_outlined, color: Colors.white54, size: 16),
               const SizedBox(width: 6),
               Text(lokasyon, style: const TextStyle(color: Colors.white54, fontSize: 12, letterSpacing: 1)),
             ],
@@ -146,7 +160,7 @@ class UstaProfilScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRozetMotoru() {
+  Widget _buildRozetMotoru(int rozetYildizi) {
     IconData ikon;
     Color renk;
     String unvan;
@@ -186,26 +200,16 @@ class UstaProfilScreen extends StatelessWidget {
     );
   }
 
-  // ─── 2. 📊 YEŞİL TIK VE KIRMIZI ÇARPI (DNA SKORU) ───────────────────────
-  Widget _buildIstatistikPanosu(bool isBlacklisted) {
+  // ─── 2. 📊 YEŞİL TIK VE KIRMIZI ÇARPI (CANLI DNA SKORU) ──────────────────
+  Widget _buildIstatistikPanosu(int yesilTik, int kirmiziCarpi, bool isBlacklisted) {
     return Row(
       children: [
         Expanded(
-          child: _buildIstatistikKarti(
-              Icons.check_circle_outline,
-              yesilTikSayisi.toString(),
-              "MÜHÜRLÜ İŞLEM (✅)",
-              isBlacklisted ? Colors.white30 : _kuantumTurkuaz
-          ),
+          child: _buildIstatistikKarti(Icons.check_circle_outline, yesilTik.toString(), "MÜHÜRLÜ İŞLEM (✅)", isBlacklisted ? Colors.white30 : _kuantumTurkuaz),
         ),
         const SizedBox(width: 16),
         Expanded(
-          child: _buildIstatistikKarti(
-              Icons.cancel_outlined,
-              kirmiziCarpiSayisi.toString(),
-              "KUSUR TESPİTİ (❌)",
-              Colors.redAccent
-          ),
+          child: _buildIstatistikKarti(Icons.cancel_outlined, kirmiziCarpi.toString(), "KUSUR TESPİTİ (❌)", Colors.redAccent),
         ),
       ],
     );
@@ -231,8 +235,8 @@ class UstaProfilScreen extends StatelessWidget {
     );
   }
 
-  // ─── 3. ⚙️ UZMANLIK VE BRANŞLAR (NOKTA ATIŞI) ───────────────────────────
-  Widget _buildUzmanlikAlanlari(bool isBlacklisted) {
+  // ─── 3. ⚙️ UZMANLIK VE BRANŞLAR (CANLI FİLTRE) ───────────────────────────
+  Widget _buildUzmanlikAlanlari(List<dynamic> uzmanliklar, bool isBlacklisted) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -243,12 +247,7 @@ class UstaProfilScreen extends StatelessWidget {
         const SizedBox(height: 16),
         Wrap(
           spacing: 10, runSpacing: 10,
-          children: [
-            _buildCip("BEYİN (ECU) UZMANI", isBlacklisted),
-            _buildCip("OTO ELEKTRİK & ELEKTRONİK", isBlacklisted),
-            _buildCip("SADECE VAG GRUBU", isBlacklisted),
-            _buildCip("HİBRİT / EV BATARYA", isBlacklisted),
-          ],
+          children: uzmanliklar.map((u) => _buildCip(u.toString(), isBlacklisted)).toList(),
         ),
       ],
     );
@@ -306,10 +305,7 @@ class UstaProfilScreen extends StatelessWidget {
             style: ElevatedButton.styleFrom(
                 backgroundColor: _matGriKart,
                 padding: const EdgeInsets.symmetric(vertical: 18),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    side: const BorderSide(color: Colors.white24)
-                )
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: const BorderSide(color: Colors.white24))
             ),
             icon: const Icon(Icons.directions_outlined, color: Colors.white),
             label: const Text("YOL TARİFİ", style: TextStyle(color: Colors.white, letterSpacing: 1, fontWeight: FontWeight.bold)),

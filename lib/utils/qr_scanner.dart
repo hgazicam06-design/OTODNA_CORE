@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:developer' as developer;
 
 /// 👁️ OTODNA SİBER GÖZ (QR Tarayıcı)
-/// Aracın DNA'sını saniyeler içinde çözen ve sisteme bağlayan terminal.
+/// Aracın DNA'sını saniyeler içinde çözen, Karargaha loglayan ve sisteme bağlayan terminal.
 class QrScannerScreen extends StatefulWidget {
   const QrScannerScreen({super.key});
 
@@ -16,8 +19,17 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
   static const Color _primaryCyan = Color(0xFF00FFC2);
   static const Color _cyberBlack = Color(0xFF0A0A0B);
 
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final User? _currentUser = FirebaseAuth.instance.currentUser;
+
   bool _isScanned = false;
   MobileScannerController controller = MobileScannerController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +38,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text("SİBER GÖZ AKTİF", style: TextStyle(color: _primaryCyan, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+        title: const Text("SİBER GÖZ AKTİF", style: TextStyle(color: _primaryCyan, fontWeight: FontWeight.w900, letterSpacing: 2)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: _primaryCyan),
           onPressed: () => context.pop(),
@@ -43,7 +55,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
                 for (final barcode in barcodes) {
                   final String? code = barcode.rawValue;
                   if (code != null) {
-                    _isScanned = true;
+                    setState(() => _isScanned = true);
                     _qrKodunuIsle(code);
                   }
                 }
@@ -51,8 +63,8 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
             },
           ),
 
-          // 🏗️ SİBER KATMAN (Overlay)
-          _buildScannerOverlay(),
+          // 🏗️ SİBER KATMAN (Gerçek Kuantum Hedefleyici)
+          _buildKuantumHedefleyici(),
 
           // 🔦 KONTROLLER
           Positioned(
@@ -72,56 +84,50 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
     );
   }
 
-  // 🛡️ SİBER KATMAN TASARIMI
-  Widget _buildScannerOverlay() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.5),
+  // 🛡️ SİBER HEDEFLEYİCİ MASKESİ (ColorFiltered ile Kusursuz Görüş)
+  Widget _buildKuantumHedefleyici() {
+    return ColorFiltered(
+      colorFilter: ColorFilter.mode(
+        Colors.black.withOpacity(0.8),
+        BlendMode.srcOut,
       ),
-      child: Center(
-        child: Container(
-          width: 250,
-          height: 250,
-          decoration: BoxDecoration(
-            border: Border.all(color: _primaryCyan, width: 2),
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(color: _primaryCyan.withOpacity(0.2), blurRadius: 20, spreadRadius: 5)
-            ],
+      child: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.transparent,
+            ),
+            child: Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: 250,
+                height: 250,
+                decoration: BoxDecoration(
+                  color: Colors.black, // Bu kısım srcOut blend mode ile şeffaf (delik) olacak
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ),
           ),
-          child: Stack(
-            children: [
-              // Radar Animasyonu Etkisi (Simüle)
-              const Center(child: Icon(Icons.qr_code_2, color: Colors.white10, size: 150)),
-              _buildCorner(0, 0), // Sol Üst
-              _buildCorner(null, 0), // Sağ Üst
-              _buildCorner(0, null), // Sol Alt
-              _buildCorner(null, null), // Sağ Alt
-            ],
+          // Neon Çerçeve ve Radar İkonu
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              width: 250,
+              height: 250,
+              decoration: BoxDecoration(
+                border: Border.all(color: _primaryCyan, width: 2),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(color: _primaryCyan.withOpacity(0.2), blurRadius: 20, spreadRadius: 5)
+                ],
+              ),
+              child: _isScanned
+                  ? const Center(child: CircularProgressIndicator(color: _primaryCyan))
+                  : const Center(child: Icon(Icons.qr_code_scanner, color: Colors.white24, size: 100)),
+            ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCorner(double? left, double? top) {
-    return Positioned(
-      left: left,
-      top: top,
-      right: left == null ? 0 : null,
-      bottom: top == null ? 0 : null,
-      child: Container(
-        width: 30,
-        height: 30,
-        decoration: BoxDecoration(
-          color: _primaryCyan,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(left == 0 && top == 0 ? 10 : 0),
-            topRight: Radius.circular(left == null && top == 0 ? 10 : 0),
-            bottomLeft: Radius.circular(left == 0 && top == null ? 10 : 0),
-            bottomRight: Radius.circular(left == null && top == null ? 10 : 0),
-          ),
-        ),
+        ],
       ),
     );
   }
@@ -132,37 +138,74 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(color: Colors.white10, shape: BoxShape.circle, border: Border.all(color: _primaryCyan.withOpacity(0.3))),
-            child: Icon(icon, color: _primaryCyan),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+                color: const Color(0xFF111111),
+                shape: BoxShape.circle,
+                border: Border.all(color: _primaryCyan.withOpacity(0.5), width: 1.5),
+                boxShadow: [BoxShadow(color: _primaryCyan.withOpacity(0.1), blurRadius: 10)]
+            ),
+            child: Icon(icon, color: _primaryCyan, size: 24),
           ),
           const SizedBox(height: 8),
-          Text(label, style: const TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.bold)),
+          Text(label, style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
         ],
       ),
     );
   }
 
-  // 🚀 QR VERİ İŞLEME MERKEZİ
-  void _qrKodunuIsle(String code) {
-    // 🛡️ Siber Kontrol: Kod bir OtoDNA kimliği mi yoksa dış link mi?
+  // 🚀 QR VERİ İŞLEME VE KARARGAH İSTİHBARAT MERKEZİ
+  Future<void> _qrKodunuIsle(String code) async {
+    developer.log("SİBER RADAR: QR Kod Algılandı -> $code");
+
+    // 🛡️ Siber Kontrol: Kod bir OtoDNA kimliği mi?
     if (code.startsWith("OTODNA-")) {
       String raporId = code.replaceFirst("OTODNA-", "");
       _siberBildirim("ERİŞİM ONAYLANDI: DNA Kaydı Çekiliyor...");
-      // Doğrudan Servis Detayına ışınla
-      context.push('/service-detail/$raporId');
+
+      // ⛓️ Karargaha Başarılı Taramayı Mühürle
+      await _taramaIstihbaratiniLogla(code, true);
+
+      // Doğrudan Servis Detayına (DNA Raporuna) ışınla
+      if(mounted) context.push('/service-detail/$raporId');
     } else {
       _siberBildirim("GEÇERSİZ KOD: OtoDNA Mührü Bulunamadı!", isError: true);
+
+      // ⛓️ Karargaha Sahte Kod Denemesini (İhlali) Mühürle
+      await _taramaIstihbaratiniLogla(code, false);
+
       Future.delayed(const Duration(seconds: 2), () {
-        setState(() => _isScanned = false);
+        if(mounted) setState(() => _isScanned = false);
       });
     }
   }
 
+  // 📡 SİBER İÇ PROTOKOL: İSTİHBARATI KARA KUTUYA YAZ
+  Future<void> _taramaIstihbaratiniLogla(String taramaVerisi, bool gecerliMi) async {
+    try {
+      String tarayanId = _currentUser?.uid ?? "ANONİM_TARAYICI";
+
+      await _db.collection('sistem_loglari').add({
+        'islem_turu': gecerliMi ? 'QR_BASARILI_TARAMA' : 'QR_GECERSIZ_TARAMA_DENEMESİ',
+        'islem_detayi': gecerliMi
+            ? 'SİBER BİLGİ: $tarayanId kimliği ile "$taramaVerisi" DNA raporu başarıyla tarandı.'
+            : 'SİBER İHLAL: $tarayanId kimliği geçersiz bir QR kodu ($taramaVerisi) taramaya çalıştı!',
+        'kullanici_id': tarayanId,
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      developer.log("SİBER İSTİHBARAT: Tarama işlemi Karargahın Kara Kutusuna işlendi.");
+    } catch (e) {
+      developer.log("AĞ ÇÖKTÜ: İstihbarat loglanamadı!", error: e);
+    }
+  }
+
   void _siberBildirim(String mesaj, {bool isError = false}) {
+    if(!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+      content: Text(mesaj, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1.2)),
       backgroundColor: isError ? Colors.redAccent : _primaryCyan,
+      behavior: SnackBarBehavior.floating,
     ));
   }
 }

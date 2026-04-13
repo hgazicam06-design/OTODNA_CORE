@@ -15,10 +15,13 @@ class UserVipPanel {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF000000), // OLED Siyah zırh
-        border: Border(
-          top: BorderSide(color: const Color(0xFF00FFC2).withOpacity(0.3), width: 1),
-        ),
+          color: const Color(0xFF000000), // OLED Siyah zırh
+          border: Border(
+            top: BorderSide(color: const Color(0xFF00FFC2).withOpacity(0.4), width: 1.5), // Siber Çizgi
+          ),
+          boxShadow: [
+            BoxShadow(color: const Color(0xFF00FFC2).withOpacity(0.05), blurRadius: 15, spreadRadius: 1, offset: const Offset(0, -5))
+          ] // 🌫️ Gizli Kuantum Yansıması
       ),
       child: BottomNavigationBar(
         backgroundColor: const Color(0xFF000000), // Tam OLED Siyahı
@@ -32,14 +35,14 @@ class UserVipPanel {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_outlined), activeIcon: Icon(Icons.home), label: "MERKEZ"),
           BottomNavigationBarItem(icon: Icon(Icons.directions_car_outlined), activeIcon: Icon(Icons.directions_car), label: "GALERİ"),
-          BottomNavigationBarItem(icon: Icon(Icons.settings_input_component_outlined), activeIcon: Icon(Icons.settings_input_component), label: "MARKET"),
+          BottomNavigationBarItem(icon: Icon(Icons.storefront_outlined), activeIcon: Icon(Icons.storefront), label: "MARKET"),
           BottomNavigationBarItem(icon: Icon(Icons.person_outline), activeIcon: Icon(Icons.person), label: "PROFİL"),
         ],
       ),
     );
   }
 
-  // ── 💳 VIP HIZLI SATIN ALMA VE SİBER FİNANS MOTORU ──────────────────────
+  // ── 💳 VIP HIZLI SATIN ALMA VE ATOMİK SİBER FİNANS MOTORU ────────────────
   /// Müşteriden ödemeyi çeker, %12 Karargah payını keser ve veritabanına mühürler.
   static Future<void> hizliOdeme({
     required String kullaniciId,
@@ -57,8 +60,13 @@ class UserVipPanel {
       double gaziPayi = fiyat * 0.12;
       double bayiPayi = fiyat - gaziPayi;
 
-      // 🚀 Kuantum Ağ Mührü (Finansal Havuz ve Satın Alım Logu)
-      var islemKaydi = {
+      // ⛓️ ATOMİK ZIRH: WriteBatch Başlatıldı (Parayı Havada Bırakma!)
+      WriteBatch batch = _db.batch();
+
+      // 1. Kuantum Ağ Mührü (Finansal Havuz)
+      DocumentReference finansRef = _db.collection('finans_havuzu').doc();
+      batch.set(finansRef, {
+        'islem_id': finansRef.id,
         'kullanici_id': kullaniciId,
         'urun_id': urunId,
         'toplam_tutar': fiyat,
@@ -67,16 +75,26 @@ class UserVipPanel {
         'islem_turu': 'VIP_HIZLI_ODEME',
         'tarih': FieldValue.serverTimestamp(),
         'durum': 'ONAYLANDI_LOJISTIK_BEKLIYOR'
-      };
+      });
 
-      await _db.collection('finans_havuzu').add(islemKaydi);
+      // 2. Kara Kutuya (Sistem Logları) Fişi Kes (Kayıt Dışılığı Engelle!)
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'VIP_SATIS',
+        'islem_detayi': 'SİBER FİNANS: $kullaniciId ID\'li VIP kullanıcı $urunId ürününü satın aldı. Karargah Payı (₺$gaziPayi) kasaya kilitlendi.',
+        'tarih': FieldValue.serverTimestamp(),
+      });
 
-      developer.log("✅ FİNANSAL MÜHÜR: İşlem başarılı! Karargah Payı: ₺$gaziPayi, Bayi: ₺$bayiPayi.");
+      // Füzeleri Ateşle!
+      await batch.commit();
+
+      developer.log("✅ FİNANSAL MÜHÜR: Atomik işlem başarılı! Karargah Payı: ₺$gaziPayi, Bayi: ₺$bayiPayi.");
       developer.log("📦 LOJİSTİK: Kargo aşamasına geçiş için sinyal Karargaha ulaştı.");
 
     } catch (e) {
       developer.log("AĞ ÇÖKTÜ: Hızlı ödeme ve finansal ayrışma başarısız!", error: e);
-      throw Exception("SİSTEMSEL HATA: Ödeme işlemi mühürlenemedi.");
+      // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: UI'a Kırmızı Alarm Fırlat!
+      throw Exception("SİBER FİNANS HATASI: Ödeme işlemi Karargah kasasına kilitlenemedi. Ağ bağlantınızı kontrol edin!");
     }
   }
 }
