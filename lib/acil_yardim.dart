@@ -1,3 +1,4 @@
+// lib/widgets/acil_yardim.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
 /// 🛡️ KUANTUM S.O.S VE ACİL MÜDAHALE MOTORU (SiberSosButonu)
-/// 5 saniye basılı tutulduğunda asılsız ihbar kalkanını aşar ve sinyali doğrudan Karargah ağına fırlatır.
+/// 5 saniye basılı tutulduğunda asılsız ihbar kalkanını aşar ve sinyali ATOMİK olarak Karargah ağına fırlatır.
 class SiberSosButonu extends StatefulWidget {
   final String kullaniciId;
   final String saseNo;
@@ -74,10 +75,13 @@ class _SiberSosButonuState extends State<SiberSosButonu> with SingleTickerProvid
     developer.log("🚀 SİNYAL FIRLATILDI: Kuantum ağına S.O.S mühürleniyor!");
 
     try {
-      // ⚖️ KARARGAH S.O.S PROTOKOLÜ:
-      // 1. QR'ı veren bayiye, 2. En yakın bayiye, 3. Admine eşzamanlı gider.
-      // 30 dk içinde müdahale edilmezse admin arar. Asılsızsa ceza (Sarı üye) uygulanır.
-      await _db.collection('sos_sinyalleri').add({
+      // ⛓️ ATOMİK ZIRH: S.O.S ve Sistem Logu Aynı Anda Kilitlenir!
+      WriteBatch batch = _db.batch();
+
+      // 1. Sinyali S.O.S Havuzuna Gönder
+      DocumentReference sosRef = _db.collection('sos_sinyalleri').doc();
+      batch.set(sosRef, {
+        'sinyal_id': sosRef.id,
         'kullanici_id': widget.kullaniciId,
         'sase_no': widget.saseNo,
         'hedef_bayi_1': widget.qrOlusturanBayiId,
@@ -89,14 +93,39 @@ class _SiberSosButonuState extends State<SiberSosButonu> with SingleTickerProvid
         'asisiz_ihbar_mi': false,
       });
 
-      developer.log("✅ S.O.S BAŞARILI: Karargah, ilk bayi ve en yakın bayi uyarıldı!");
-    } catch (e) {
-      developer.log("AĞ ÇÖKTÜ: S.O.S Sinyali iletilemedi!", error: e);
-      // Sinyal gitmezse butonu sıfırla ki tekrar basabilsin
-      setState(() {
-        _isSent = false;
-        _progress = 0.0;
+      // 2. Kara Kutuya (Sistem Logları) Kesin Kayıt Düş
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'ACIL_SOS_FIRLATILDI',
+        'islem_detayi': 'SİBER ALARM: ${widget.kullaniciId} tarafından ${widget.saseNo} şaseli araç için acil durum sinyali tetiklendi.',
+        'tarih': FieldValue.serverTimestamp(),
       });
+
+      // Füzeleri ateşle!
+      await batch.commit();
+      developer.log("✅ S.O.S BAŞARILI: Karargah, bayiler ve sistem logları atomik olarak uyarıldı!");
+
+    } catch (e) {
+      developer.log("🚨 AĞ ÇÖKTÜ: S.O.S Sinyali iletilemedi!", error: e);
+      // Sinyal gitmezse butonu sıfırla ki tekrar basabilsin
+      if (mounted) {
+        setState(() {
+          _isSent = false;
+          _progress = 0.0;
+        });
+
+        // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: Kullanıcıya Kırmızı Alarm Ver
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.redAccent,
+              content: Text(
+                  "SİNYAL GÖNDERİLEMEDİ! İNTERNET BAĞLANTINIZI KONTROL EDİP TEKRAR DENEYİN.",
+                  style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1, color: Colors.white)
+              ),
+              duration: Duration(seconds: 4),
+            )
+        );
+      }
     }
   }
 

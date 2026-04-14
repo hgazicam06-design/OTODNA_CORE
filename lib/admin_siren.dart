@@ -2,10 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Siber Titreşim (Haptic) için eklendi
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:developer' as developer;
 
 /// 🛡️ KUANTUM KARARGAH KIRMIZI ALARM MODÜLÜ (AdminSirenEkrani)
-/// S.O.S sinyali alındığında Karargah ekranlarını kırmızıya boyayan ve müdahaleyi veritabanına mühürleyen sistem.
+/// S.O.S sinyali alındığında Karargah ekranlarını kırmızıya boyayan ve müdahaleyi ATOMİK olarak veritabanına mühürleyen sistem.
 class AdminSirenEkrani extends StatefulWidget {
   final String sinyalId;
   final String bolgeBilgisi;
@@ -25,6 +26,7 @@ class AdminSirenEkrani extends StatefulWidget {
 class _AdminSirenEkraniState extends State<AdminSirenEkrani> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   bool _mudahaleEdiliyor = false;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -44,29 +46,58 @@ class _AdminSirenEkraniState extends State<AdminSirenEkrani> with SingleTickerPr
     super.dispose();
   }
 
-  // ── 🛡️ MÜDAHALE PROTOKOLÜ (FIREBASE BAĞLANTISI) ──
+  // ── 🛡️ MÜDAHALE PROTOKOLÜ (ATOMİK FIREBASE BAĞLANTISI) ──
   Future<void> _kriziSonlandirVeMudahaleEt() async {
     setState(() => _mudahaleEdiliyor = true);
     HapticFeedback.vibrate(); // Butona basılınca siber onay titreşimi
     developer.log("SİBER BİLGİ: Kriz müdahale protokolü başlatıldı, Karargaha bağlanılıyor...");
 
     try {
-      // S.O.S Sinyalini Karargah veritabanında "MÜDAHALE_EDİLDİ" olarak mühürle
-      await FirebaseFirestore.instance.collection('sos_sinyalleri').doc(widget.sinyalId).update({
+      // ⛓️ ATOMİK ZIRH: Sinyal Kapatma ve Loglama Aynı Anda Kilitlenir!
+      WriteBatch batch = _db.batch();
+
+      // 1. S.O.S Sinyalini "MÜDAHALE_EDİLDİ" olarak mühürle
+      DocumentReference sosRef = _db.collection('sos_sinyalleri').doc(widget.sinyalId);
+      batch.update(sosRef, {
         'durum': 'MUDAHALE_EDILDI',
-        'mudahale_eden_admin': 'KARARGAH_MERKEZ',
+        'mudahale_eden_admin': FirebaseAuth.instance.currentUser?.uid ?? 'KARARGAH_MERKEZ',
         'mudahale_zaman_damgasi': FieldValue.serverTimestamp(),
       });
 
-      developer.log("✅ SİBER ONAY: Kriz yönetimi başarılı. Sinyal kapatıldı ve loglara şifrelendi.");
+      // 2. Kara Kutuya (Sistem Logları) Kesin Kayıt Düş
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'SOS_SIREN_SUSTURULDU',
+        'islem_detayi': 'SİBER HAREKAT: ${widget.saseNo} şaseli araç için Karargahta çalan kırmızı alarm durduruldu ve olaya müdahale edildi.',
+        'sinyal_id': widget.sinyalId,
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      // Füzeleri ateşle!
+      await batch.commit();
+      developer.log("✅ SİBER ONAY: Kriz yönetimi başarılı. Sinyal kapatıldı ve loglara atomik olarak şifrelendi.");
 
       // Animasyonu durdur ve ekranı kapat
       _controller.stop();
       if (mounted) Navigator.pop(context);
 
     } catch (e) {
-      developer.log("AĞ ÇÖKTÜ: Sinyal kapatılamadı, internet bağlantısını kontrol edin!", error: e);
-      if (mounted) setState(() => _mudahaleEdiliyor = false);
+      developer.log("🚨 AĞ ÇÖKTÜ: Sinyal kapatılamadı!", error: e);
+      if (mounted) {
+        setState(() => _mudahaleEdiliyor = false);
+
+        // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: Admine Kırmızı Alarm Ver
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.redAccent,
+              content: Text(
+                  "SİBER İHLAL: Sinyal Kapatılamadı! İnternet bağlantınızı kontrol edin.",
+                  style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1, color: Colors.white)
+              ),
+              duration: Duration(seconds: 4),
+            )
+        );
+      }
     }
   }
 
@@ -162,7 +193,7 @@ class _AdminSirenEkraniState extends State<AdminSirenEkrani> with SingleTickerPr
     );
   }
 
-  // ── 🔧 ARAYÜZ YARDIMCISI: İSTİHBARAT SATIRI (KOPAN KISIM TAMAMLANDI) ──
+  // ── 🔧 ARAYÜZ YARDIMCISI: İSTİHBARAT SATIRI ──
   Widget _buildBilgiSatiri(IconData ikon, String baslik, String deger) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

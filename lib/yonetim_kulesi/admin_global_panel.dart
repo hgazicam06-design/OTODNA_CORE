@@ -1,5 +1,7 @@
+// lib/screens/admin/admin_global_panel.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer' as developer;
 
 // 🔥 SİBER KÖPRÜLER - YENİ YOL HİYERARŞİSİNE GÖRE AYARLANDI
 import '../../core/siber_tema.dart';
@@ -14,23 +16,70 @@ class AdminGlobalPanel extends StatefulWidget {
 
 class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  bool _isProcessing = false; // Çift tıklama kalkanı
 
   // Siber Renk Paleti - Merkezi Temadan Çekiliyor
   final Color _primaryCyan = SiberTema.kuantumCyan;
   final Color _cyberBlack = SiberTema.oledBlack;
   final Color _surfaceColor = SiberTema.matGrey.withOpacity(0.2);
 
-  // 🌍 YENİ DİSTRİBÜTÖR AĞI OLUŞTURMA
+  // 🌍 YENİ DİSTRİBÜTÖR AĞI OLUŞTURMA (ATOMİK ZIRHLI)
   Future<void> _yeniUlkeAgaEkle() async {
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text(
-              "YENİ DİSTRİBÜTÖR AĞI OLUŞTURULUYOR... 🌍",
-              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')
-          ),
-          backgroundColor: _primaryCyan,
-        )
-    );
+    setState(() => _isProcessing = true);
+    developer.log("🌍 SİBER AĞ: Yeni Ülke İskeleti Oluşturma Protokolü Başlatıldı...");
+
+    try {
+      // ⛓️ ATOMİK ZIRH: İşlemleri Birbirine Kilitle
+      WriteBatch batch = _db.batch();
+
+      // 1. Yeni Ülke İskeletini Firebase'e Mühürle (Örnek: TR Merkez Üs)
+      DocumentReference ulkeRef = _db.collection('global_aglari').doc('TR');
+      batch.set(ulkeRef, {
+        'kod': 'TR',
+        'ulke': 'TÜRKİYE (MERKEZ)',
+        'detay': '81 İl / 7 Bölge Kuantum Ağı',
+        'durum': 'AKTİF',
+        'oncelik': 100, // Sıralama için
+        'olusturulma_tarihi': FieldValue.serverTimestamp(),
+      });
+
+      // 2. Kara Kutuya (Sistem Logları) Fişi Kes
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'KURESEL_AG_GENISLEMESI',
+        'islem_detayi': 'SİBER HAREKAT: TR (TÜRKİYE) Merkez Kuantum Ağı iskeleti veritabanına mühürlendi.',
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      // Füzeleri ateşle!
+      await batch.commit();
+      developer.log("✅ ONAY: Küresel Ağ genişlemesi Karargaha ATOMİK olarak işlendi.");
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: _cyberBlack,
+              shape: RoundedRectangleBorder(side: BorderSide(color: _primaryCyan, width: 1.5)),
+              content: Text(
+                  "✅ AĞ BAĞLANTISI KURULDU: TÜRKİYE (TR)",
+                  style: TextStyle(color: _primaryCyan, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')
+              ),
+            )
+        );
+      }
+    } catch (e) {
+      developer.log("🚨 AĞ ÇÖKTÜ: Küresel iskelet oluşturulamadı!", error: e);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.redAccent,
+              content: const Text("SİBER İHLAL: Bağlantı kurulamadı!", style: TextStyle(fontWeight: FontWeight.bold)),
+            )
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isProcessing = false);
+    }
   }
 
   @override
@@ -115,13 +164,19 @@ class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: _primaryCyan));
 
+          // 🚀 MAKETLER YIKILDI: Gerçek boş durum kontrolü
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              children: [
-                _buildUlkeKarti("TR", "TÜRKİYE (MERKEZ)", "81 İl / 7 Bölge Kuantum Ağı", "AKTİF", _primaryCyan),
-                _buildUlkeKarti("AZ", "AZERBAYCAN (BAKÜ)", "Siber Görüşmeler Devam Ediyor", "PASİF", Colors.blueAccent),
-              ],
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.satellite_alt_outlined, color: Colors.white24, size: 48),
+                  const SizedBox(height: 16),
+                  const Text("UYDU SİNYALİ YOK", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                  const SizedBox(height: 8),
+                  Text("Henüz küresel bir ağ oluşturulmadı.", style: TextStyle(color: _primaryCyan.withOpacity(0.5), fontSize: 10)),
+                ],
+              ),
             );
           }
 
@@ -132,10 +187,10 @@ class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
               var veri = snapshot.data!.docs[index].data() as Map<String, dynamic>;
               return _buildUlkeKarti(
                   veri['kod'] ?? 'XX',
-                  veri['ulke'] ?? 'Bilinmeyen',
-                  veri['detay'] ?? '',
+                  veri['ulke'] ?? 'BİLİNMEYEN ÜLKE',
+                  veri['detay'] ?? 'Detay yok',
                   veri['durum'] ?? 'PASİF',
-                  _primaryCyan
+                  veri['durum'] == 'AKTİF' ? _primaryCyan : Colors.blueAccent
               );
             },
           );
@@ -153,9 +208,11 @@ class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
           height: 60,
           child: ElevatedButton.icon(
             style: SiberTema.kuantumButonStili(outlined: true),
-            onPressed: _yeniUlkeAgaEkle,
-            icon: const Icon(Icons.add_location_alt_outlined, size: 20),
-            label: const Text("YENİ ÜLKE / BÖLGE İSKELETİ OLUŞTUR", style: TextStyle(fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+            onPressed: _isProcessing ? null : _yeniUlkeAgaEkle,
+            icon: _isProcessing
+                ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: SiberTema.oledBlack))
+                : const Icon(Icons.add_location_alt_outlined, size: 20),
+            label: Text(_isProcessing ? "MÜHÜRLENİYOR..." : "YENİ ÜLKE / BÖLGE İSKELETİ OLUŞTUR", style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
           ),
         ),
       ),
