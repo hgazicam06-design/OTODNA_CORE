@@ -11,7 +11,7 @@ import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
 /// 🛡️ KUANTUM TEKNİK DENETİM VE LASTİK OTELİ MASASI (ArizaKaydiDetay)
-/// Aracın kritik noktalarını inceler, kanıtsız onaya izin vermez. Lastik depolama (Otel) modülü entegredir.
+/// Aracın kritik noktalarını inceler, kanıtsız onaya izin vermez. Lastik depolama (Otel) modülü ATOMİK olarak entegredir.
 class ArizaKaydiDetay extends StatefulWidget {
   final String saseNo;
   final String ustaId;
@@ -104,7 +104,7 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
     developer.log("✅ ONAY: $parca Karargah standartlarından geçti.");
   }
 
-  // ── ❌ KIRMIZI X (RİSK) VE OTONOM RAPORLAMA MOTORU ──
+  // ── ❌ KIRMIZI X (RİSK) VE OTONOM RAPORLAMA MOTORU (ATOMİK ZIRHLI) ──
   Future<void> _kirmiziXMudurle(int index) async {
     HapticFeedback.heavyImpact();
     String parca = _denetimModulleri[index]['parca'];
@@ -113,12 +113,17 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
     setState(() => _denetimModulleri[index]['durum'] = "RISKLI");
     developer.log("❌ RET: $parca kusurlu bulundu.");
 
-    // Karargah Kuralı: Kritik bir parça (Şase, Fren) ise Admin'i ayağa kaldır!
+    // Karargah Kuralı: Kritik bir parça (Şase, Fren) ise Admin'i ayağa kaldır ve atomik olarak mühürle!
     if (isKritik) {
-      developer.log("🚨 KRİTİK İHLAL TESPİTİ: $parca trafiğe çıkış için riskli! Acil rapor fırlatılıyor...");
+      developer.log("🚨 KRİTİK İHLAL TESPİTİ: $parca trafiğe çıkış için riskli! Acil rapor atomik olarak fırlatılıyor...");
 
       try {
-        await _db.collection('acil_raporlar').add({
+        WriteBatch batch = _db.batch();
+
+        // 1. Acil Raporu Oluştur
+        DocumentReference acilRef = _db.collection('acil_raporlar').doc();
+        batch.set(acilRef, {
+          'rapor_id': acilRef.id,
           'sase_no': widget.saseNo,
           'usta_id': widget.ustaId,
           'hatali_parca': parca,
@@ -127,18 +132,29 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
           'okundu_mu': false
         });
 
+        // 2. Kara Kutuya (Sistem Loglarına) Acil Durumu Kaydet
+        DocumentReference logRef = _db.collection('sistem_loglari').doc();
+        batch.set(logRef, {
+          'islem_turu': 'KIRMIZI_ALARM_FIRLATILDI',
+          'islem_detayi': 'SİBER ALARM: ${widget.saseNo} şaseli aracın $parca modülünde KRİTİK KUSUR bulundu. Araç trafiğe çıkamaz!',
+          'tarih': FieldValue.serverTimestamp(),
+        });
+
+        await batch.commit(); // Füzeleri ateşle!
+
         _siberUyariGoster(
             "KIRMIZI ALARM FIRLATILDI!",
-            "$parca kusuru Karargah (Admin) paneline anlık olarak iletildi.",
+            "$parca kusuru Karargah (Admin) paneline anlık olarak iletildi ve loglandı.",
             SiberTema.kanKirmizi
         );
       } catch (e) {
-        developer.log("AĞ ÇÖKTÜ: Kırmızı alarm iletilemedi!", error: e);
+        developer.log("🚨 AĞ ÇÖKTÜ: Kırmızı alarm atomik olarak iletilemedi!", error: e);
+        _siberUyariGoster("BAĞLANTI HATASI", "Alarm merkeze iletilemedi, lütfen bağlantınızı kontrol edin.", SiberTema.kanKirmizi);
       }
     }
   }
 
-  // ── 🛡️ TÜM RAPORU KARARGAHA MÜHÜRLE ──
+  // ── 🛡️ TÜM RAPORU KARARGAHA MÜHÜRLE (ATOMİK ZIRHLI) ──
   Future<void> _tumRaporuKapat() async {
     HapticFeedback.vibrate();
     bool eksikVarMi = _denetimModulleri.any((modul) => modul['durum'] == "BEKLIYOR");
@@ -153,6 +169,7 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
     developer.log("🚀 MÜHÜRLEME BAŞLADI: Rapor Karargaha iletiliyor...");
 
     try {
+      // ⛓️ ATOMİK ZIRH: Rapor, Lastik Oteli ve Sistem Logu aynı anda kilitlenir!
       WriteBatch batch = _db.batch();
 
       // 1. İşlem: Ekspertiz Raporunu Mühürle
@@ -170,6 +187,7 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
       if (lastikModulu['otel_kaydi_var'] == true) {
         DocumentReference otelRef = _db.collection('lastik_oteli').doc();
         batch.set(otelRef, {
+          'otel_id': otelRef.id,
           'sase_no': widget.saseNo,
           'usta_id': widget.ustaId,
           'lastik_tipi': lastikModulu['lastik_tipi'],
@@ -180,14 +198,25 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
         developer.log("🛞 SİBER OTEL: Lastik kaydı başarıyla oluşturuldu.");
       }
 
+      // 3. İşlem: Kara Kutuya (Sistem Logları) Ekspertizin Bittiğini Kaydet
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'EKSPERTIZ_RAPORU_KAPATILDI',
+        'islem_detayi': 'SİBER ONAY: ${widget.saseNo} şaseli aracın teknik denetimi ${widget.ustaId} tarafından tamamlandı ve mühürlendi.',
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
       await batch.commit();
 
-      _siberUyariGoster("SİBER MÜHÜR BASILDI!", "Ekspertiz raporu Karargaha başarıyla şifrelendi.", SiberTema.kuantumCyan);
-      if (mounted) Navigator.pop(context);
+      developer.log("✅ ONAY: Ekspertiz raporu ve loglar Karargaha atomik olarak mühürlendi.");
+      if (mounted) {
+        _siberUyariGoster("SİBER MÜHÜR BASILDI!", "Ekspertiz raporu Karargaha başarıyla şifrelendi.", SiberTema.kuantumCyan);
+        Navigator.pop(context);
+      }
 
     } catch (e) {
-      developer.log("AĞ ÇÖKTÜ!", error: e);
-      _siberUyariGoster("HATA", "Veriler mühürlenemedi.", SiberTema.kanKirmizi);
+      developer.log("🚨 AĞ ÇÖKTÜ!", error: e);
+      if (mounted) _siberUyariGoster("HATA", "Veriler Karargaha mühürlenemedi.", SiberTema.kanKirmizi);
     } finally {
       if (mounted) setState(() => _islemSuruyor = false);
     }
