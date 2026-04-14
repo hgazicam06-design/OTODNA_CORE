@@ -11,7 +11,6 @@ class SiberBayiRozeti extends StatelessWidget {
   // ── 🎨 KARARGAH TASARIM DOKTRİNİ ──
   static const Color _oledBlack = Color(0xFF000000);
   static const Color _matGrey = Color(0xFF111111);
-  static const Color _kuantumCyan = Color(0xFF00FFC2);
 
   @override
   Widget build(BuildContext context) {
@@ -55,31 +54,29 @@ class SiberBayiRozeti extends StatelessWidget {
   }
 
   // ── 🔧 ARAYÜZ YARDIMCISI (SİBER ÇERÇEVE ÜRETİCİ) ──
-  Widget _buildSiberRozet(IconData ikon, Color renk, String rütbe) {
-  // Sadece Gold ve Silver rozetlerde parlama (Glow) efekti aktiftir
-  bool isPremium = rating >= 4;
+  Widget _buildSiberRozet(IconData ikon, Color renk, String rutbe) {
+    // Sadece Gold ve Silver rozetlerde parlama (Glow) efekti aktiftir
+    bool isPremium = rating >= 4;
 
-  return Container(
-  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-  decoration: BoxDecoration(
-  color: _oledBlack,
-  borderRadius: BorderRadius.circular(8),
-  border: Border.all(color: renk.withOpacity(0.5), width: 1.5),
-  boxShadow: isPremium
-  ? [BoxShadow(color: renk.withOpacity(0.2), blurRadius: 10)]
-      : [],
-  ),
-  child: Row(
-  mainAxisSize: MainAxisSize.min,
-  children: [
-  Icon(ikon, color: renk, size: 16),
-  const SizedBox(width: 6),
-  Text(
-  rütbe,
-  style: TextStyle(color: renk, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1.5),
-  ),
-  ],
-  ),
-  );
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: _oledBlack,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: renk.withOpacity(0.5), width: 1.5),
+        boxShadow: isPremium ? [BoxShadow(color: renk.withOpacity(0.2), blurRadius: 10)] : [],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(ikon, color: renk, size: 16),
+          const SizedBox(width: 6),
+          Text(
+            rutbe,
+            style: TextStyle(color: renk, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1.5),
+          ),
+        ],
+      ),
+    );
   }
 }

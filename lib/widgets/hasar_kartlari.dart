@@ -22,15 +22,18 @@ class SiberHasarKarti extends StatelessWidget {
     Color durumRengi;
     String formatliDurum = hasarDurumu.trim().toUpperCase();
 
-    // ⚖️ YAPAY ZEKA RENK MOTORU
+    // ⚖️ OTONOM SİBER RENK MOTORU (Kelime Avcısı)
     if (formatliDurum.contains('DEĞİŞEN') || formatliDurum.contains('DEGISEN')) {
       durumRengi = Colors.redAccent; // Ağır Kusur - Kan Kırmızı
+      formatliDurum = "DEĞİŞEN";
     } else if (formatliDurum.contains('LOKAL')) {
       durumRengi = Colors.yellowAccent; // Hafif Kusur - Neon Sarı
+      formatliDurum = "LOKAL BOYA";
     } else if (formatliDurum.contains('BOYA')) {
       durumRengi = Colors.orangeAccent; // Orta Kusur - Neon Turuncu
+      formatliDurum = "BOYALI";
     } else {
-      durumRengi = _kuantumCyan; // Orijinal - Kuantum Turkuazı
+      durumRengi = _kuantumCyan; // Kusursuz - Kuantum Turkuazı
       formatliDurum = "ORİJİNAL";
     }
 

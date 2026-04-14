@@ -6,12 +6,17 @@ import 'dart:developer' as developer;
 /// Parçanın durumunu (Kontrol/Değişim) şeffafça alır, Kuantum temasıyla parlar ve veriyi ana motora fırlatır.
 class SiberCifteMuhur extends StatefulWidget {
   final String baslik;
+  final bool initialKontrol; // Dışarıdan gelen başlangıç durumu
+  final bool initialDegisim; // Dışarıdan gelen başlangıç durumu
+
   // Seçim değiştiğinde ana sayfaya (örn: Firebase'e yazacak olan metoda) veriyi yollar
   final Function(bool kontrolEdildi, bool degisti) onDegisim;
 
   const SiberCifteMuhur({
     super.key,
     required this.baslik,
+    this.initialKontrol = false,
+    this.initialDegisim = false,
     required this.onDegisim,
   });
 
@@ -20,18 +25,38 @@ class SiberCifteMuhur extends StatefulWidget {
 }
 
 class _SiberCifteMuhurState extends State<SiberCifteMuhur> {
-  bool _kontrolEdildi = false;
-  bool _degisti = false;
+  late bool _kontrolEdildi;
+  late bool _degisti;
 
   // ── 🎨 KARARGAH TASARIM DOKTRİNİ ──
   static const Color _matGrey = Color(0xFF111111);
   static const Color _kuantumCyan = Color(0xFF00FFC2);
   static const Color _uyariOrange = Colors.orangeAccent;
 
+  @override
+  void initState() {
+    super.initState();
+    // Karargah hafızasından gelen eski verileri yükle
+    _kontrolEdildi = widget.initialKontrol;
+    _degisti = widget.initialDegisim;
+  }
+
+  // Dışarıdan veri güncellendiğinde senkronize ol
+  @override
+  void didUpdateWidget(covariant SiberCifteMuhur oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialKontrol != widget.initialKontrol ||
+        oldWidget.initialDegisim != widget.initialDegisim) {
+      _kontrolEdildi = widget.initialKontrol;
+      _degisti = widget.initialDegisim;
+    }
+  }
+
   // ── ⚙️ OTONOM ONAY MANTIĞI ──
   void _durumGuncelle({bool? kontrol, bool? degisim}) {
     setState(() {
       if (kontrol != null) _kontrolEdildi = kontrol;
+
       if (degisim != null) {
         _degisti = degisim;
         // ZIRH: Eğer parça "Değişti" işaretlenirse, otonom olarak "Kontrol" de edilmiştir!
@@ -42,7 +67,7 @@ class _SiberCifteMuhurState extends State<SiberCifteMuhur> {
       }
     });
 
-    // Değişikliği ana Karargah paneline fırlat
+    // Değişikliği ana Karargah paneline (WriteBatch için) fırlat
     widget.onDegisim(_kontrolEdildi, _degisti);
   }
 
