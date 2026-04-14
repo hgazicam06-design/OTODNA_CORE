@@ -1,3 +1,4 @@
+// lib/screens/ariza_kaydi.dart
 import 'dart:io';
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
@@ -77,22 +78,32 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
       TaskSnapshot snapshot = await _storage.ref().child(dosyaYolu).putFile(_kanitMedya!);
       String gercekKanitUrl = await snapshot.ref.getDownloadURL();
 
-      // 3. ATOMİK VERİTABANI MÜHRÜ (WriteBatch)
+      // 3. ATOMİK VERİTABANI MÜHRÜ VE KARA KUTU (WriteBatch)
       WriteBatch batch = _db.batch();
-      DocumentReference raporRef = _db.collection('ekspertiz_raporlari').doc();
 
+      // A. Ekspertiz Raporunu Mühürle
+      DocumentReference raporRef = _db.collection('ekspertiz_raporlari').doc();
       batch.set(raporRef, {
+        'rapor_id': raporRef.id,
         'sase_no': widget.saseNo,
         'modul_kodu': widget.modulKodu,
         'usta_id': widget.ustaId,
         'durum': 'ONAYLANDI_YESIL_TIK',
-        'kanit_url': gercekKanitUrl, // 🔥 Sahte link silindi, gerçek link eklendi
+        'kanit_url': gercekKanitUrl,
         'zaman_damgasi': FieldValue.serverTimestamp(),
+      });
+
+      // B. Kara Kutuya (Sistem Logları) İşle
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'EKSPERTIZ_MUHURLENDI',
+        'islem_detayi': 'SİBER ONAY: ${widget.ustaId} ID\'li usta, ${widget.saseNo} şaseli aracın ${widget.modulKodu} parçasına görsel kanıtlı onay verdi.',
+        'tarih': FieldValue.serverTimestamp(),
       });
 
       await batch.commit(); // Füzeyi ateşle!
 
-      developer.log("✅ SİBER MÜHÜR BASILDI: İşlem Karargah ağında şifrelendi.");
+      developer.log("✅ SİBER MÜHÜR BASILDI: İşlem Karargah ağında atomik olarak şifrelendi.");
 
       if (!mounted) return;
       _siberUyariGoster("SİBER MÜHÜR BASILDI!", "Kayıt başarıyla Karargaha işlendi.", SiberTema.kuantumCyan);
@@ -101,16 +112,17 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
       Navigator.pop(context);
 
     } catch (e) {
-      developer.log("AĞ ÇÖKTÜ: Mühürleme işlemi başarısız!", error: e);
-      if (!mounted) return;
-      _siberUyariGoster("BAĞLANTI HATASI", "Mühür Karargaha iletilemedi.", SiberTema.kanKirmizi);
-    } finally {
-      if (mounted) setState(() => _islemSuruyor = false);
+      developer.log("🚨 AĞ ÇÖKTÜ: Mühürleme işlemi başarısız!", error: e);
+      if (mounted) {
+        setState(() => _islemSuruyor = false);
+        _siberUyariGoster("BAĞLANTI HATASI", "Mühür Karargaha iletilemedi! İnternetinizi kontrol edin.", SiberTema.kanKirmizi);
+      }
     }
   }
 
   // ── 🚨 ARAYÜZ YARDIMCILARI ──
   void _siberUyariGoster(String baslik, String mesaj, Color renk) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: SiberTema.matGrey,
@@ -123,9 +135,9 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: SiberTema.siberFont)),
+            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontFamily: SiberTema.siberFont)),
+            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
           ],
         ),
       ),
@@ -139,7 +151,7 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
       child: Scaffold(
         backgroundColor: Colors.transparent, // Arka plan Zırhtan geliyor
         appBar: AppBar(
-          title: const Text('KANIT YÜKLEME MERKEZİ', style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 15, fontFamily: SiberTema.siberFont)),
+          title: const Text('KANIT YÜKLEME MERKEZİ', style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 15)),
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
@@ -169,15 +181,15 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("DENETİM MODÜLÜ", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontFamily: SiberTema.siberFont, fontWeight: FontWeight.bold)),
+                      const Text("DENETİM MODÜLÜ", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 6),
-                      Text(widget.modulKodu.replaceAll('_', ' '), style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: SiberTema.siberFont)),
+                      Text(widget.modulKodu.replaceAll('_', ' '), style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900)),
                       const SizedBox(height: 12),
                       Row(
                         children: [
                           const Icon(Icons.pin_drop, color: SiberTema.altinSari, size: 16),
                           const SizedBox(width: 8),
-                          Text("ŞASE: ${widget.saseNo}", style: const TextStyle(color: SiberTema.altinSari, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: SiberTema.siberFont)),
+                          Text("ŞASE: ${widget.saseNo}", style: const TextStyle(color: SiberTema.altinSari, fontSize: 12, fontWeight: FontWeight.bold)),
                         ],
                       )
                     ],
@@ -208,9 +220,9 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
                         children: [
                           const Icon(Icons.add_a_photo_rounded, color: SiberTema.kanKirmizi, size: 60, shadows: [Shadow(color: SiberTema.kanKirmizi, blurRadius: 15)]),
                           const SizedBox(height: 16),
-                          const Text("ZORUNLU KANIT GEREKİYOR", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: SiberTema.siberFont)),
+                          const Text("ZORUNLU KANIT GEREKİYOR", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                           const SizedBox(height: 8),
-                          Text("Kamerayı Açmak İçin Dokun", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontFamily: SiberTema.siberFont)),
+                          Text("Kamerayı Açmak İçin Dokun", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12)),
                         ],
                       )
                           : Stack(
@@ -241,7 +253,7 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
                         : const Icon(Icons.check_circle_outline, color: SiberTema.oledBlack, size: 28),
                     label: Text(
                         _islemSuruyor ? "AĞA YÜKLENİYOR..." : "YEŞİL TIK (MÜHÜRLE)",
-                        style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 15, fontFamily: SiberTema.siberFont, color: SiberTema.oledBlack)
+                        style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 15, color: SiberTema.oledBlack)
                     ),
                     style: SiberTema.kuantumButonStili(), // 🔥 3D Kuantum Zırhı
                     onPressed: _islemSuruyor ? null : _yesilTikOnayi,
