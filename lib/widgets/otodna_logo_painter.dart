@@ -61,7 +61,7 @@ class _SiberLogoPainter extends CustomPainter {
 
     _drawSiberGear(canvas, cx, cy, gr);
     _drawHolographicCore(canvas, cx, cy, gr * 0.62);
-    _drawSiberCar(canvas, cx, cy, gr * 0.38);
+    _drawSiberCar(canvas, cx, cy, gr * 0.38); // Araba boyutu uyarlandı
     _drawKuantumBranches(canvas, cx, cy, gr);
   }
 
