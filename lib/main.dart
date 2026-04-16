@@ -1,22 +1,36 @@
+// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart'; // 🛰️ KUANTUM VERİ AĞI
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/services.dart';
 
+// 🚀 KARARGAH BİLEŞENLERİ
 import 'core/siber_tema.dart';
-import 'core/app_router.dart'; // 🚀 Kuantum Rota Merkezi Eklendi
+import 'core/app_router.dart';
 import 'auth/otodna_auth_gate.dart';
-import 'firebase_options.dart'; // 🔥 FİREBASE YAPILANDIRMASI
+import 'firebase_options.dart';
 
 void main() async {
   // 🛡️ SİBER ÇEKİRDEK BAŞLATILIYOR
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 🚀 FIREBASE KUANTUM MOTORUNU ATEŞLE
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // 📡 EKRAN DİSİPLİNİ: Dikey mod kilidi
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
-  // Riverpod ProviderScope ile tüm uygulamayı siber ağa bağlıyoruz
+  // 🔥 FIREBASE KUANTUM MOTORUNU ATEŞLE
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    debugPrint("✅ SİBER ONAY: Firebase Kuantum Ağına bağlantı sağlandı.");
+  } catch (e) {
+    debugPrint("🚨 BAĞLANTI İHLALİ: Firebase başlatılamadı -> $e");
+  }
+
+  // ProviderScope ile tüm uygulamayı siber ağa bağlıyoruz
   runApp(
     const ProviderScope(
       child: OtoDNA(),
@@ -38,29 +52,10 @@ class OtoDNA extends StatelessWidget {
       onGenerateRoute: KuantumRota.atesle,
 
       // 🎨 SİBER TEMA ENJEKSİYONU (OLED ve Kuantum Renkleri)
-      theme: ThemeData(
-        useMaterial3: true, // 🛠️ Yeni nesil siber arayüz motoru
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: SiberTema.oledBlack,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: SiberTema.kuantumCyan,
-          brightness: Brightness.dark,
-          surface: SiberTema.matGrey,
-          primary: SiberTema.kuantumCyan,
-        ),
-        fontFamily: 'Avenir', // Kurumsal Karargah Fontu
+      theme: SiberTema.kuantumTemasi(), // Merkezi tema motorundan çekilir
 
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-        ),
-      ),
-
-      // 🛡️ SİBER KAPI (ROUTER TARAFINDAN YÖNETİLİYOR, '/' ROTASI)
-      home: const OtoDnaAuthGate(),
+      // 🛡️ SİBER KAPI (ROUTER TARAFINDAN YÖNETİLİYOR)
+      // initialRoute '/' üzerinden AuthGate tetiklenir.
     );
   }
 }

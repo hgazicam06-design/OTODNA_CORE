@@ -1,0 +1,345 @@
+// lib/bayi/siber_gelismis_urun_ekleme.dart
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:developer' as developer;
+
+// 🚀 KARARGAH ZIRHLARI
+import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart';
+
+/// 🛡️ KUANTUM DETAYLI ÜRÜN GİRİŞ TERMİNALİ
+/// Çoklu galeri, varyant, etiket ve teknik detaylarla donatılmış atomik stok motoru.
+class SiberGelismisUrunEkleme extends StatefulWidget {
+  const SiberGelismisUrunEkleme({super.key});
+
+  @override
+  State<SiberGelismisUrunEkleme> createState() => _SiberGelismisUrunEklemeState();
+}
+
+class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
+  final _formKey = GlobalKey<FormState>();
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  final String _bayiId = FirebaseAuth.instance.currentUser?.uid ?? "BILINMEYEN_BAYI";
+
+  // ── 📸 ÇOKLU MEDYA GALERİSİ ──
+  final List<File> _secilenGorseller = [];
+
+  // ── 📦 BÖLÜM 1: KİMLİK VE VİTRİN ──
+  final TextEditingController _urunAdiCtrl = TextEditingController();
+  final TextEditingController _kategoriCtrl = TextEditingController();
+  final TextEditingController _markaCtrl = TextEditingController();
+  final TextEditingController _stokKoduCtrl = TextEditingController(); // Barkod/OEM
+
+  // ── 📝 BÖLÜM 2: DETAY VE ROZETLER ──
+  final TextEditingController _aciklamaCtrl = TextEditingController();
+  final TextEditingController _etiketlerCtrl = TextEditingController(); // Virgülle ayrılmış
+  bool _rozetGaranti = true;
+  bool _rozetOrijinal = true;
+  bool _rozetKurulumAliciyaAit = true;
+
+  // ── 💰 BÖLÜM 3: FİNANS VE %12 DNA'SI ──
+  final TextEditingController _gelisFiyatiCtrl = TextEditingController();
+  final TextEditingController _kdvOraniCtrl = TextEditingController(text: "20");
+  final TextEditingController _karMarjiCtrl = TextEditingController();
+
+  // Otonom Veriler
+  double _kdvliGelis = 0.0;
+  double _bayiNetHedefi = 0.0;
+  double _otodnaPayi = 0.0;
+  double _musteriVitrinFiyati = 0.0;
+  bool _islemSuruyor = false;
+
+  // ── 📸 GALERİ YÖNETİMİ ──
+  Future<void> _gorselEkle() async {
+    try {
+      final picker = ImagePicker();
+      final List<XFile> secilenler = await picker.pickMultiImage(imageQuality: 70);
+      if (secilenler.isNotEmpty) {
+        setState(() {
+          _secilenGorseller.addAll(secilenler.map((x) => File(x.path)));
+        });
+      }
+    } catch (e) {
+      developer.log("SİBER KAMERA HATASI", error: e);
+    }
+  }
+
+  // ── ⚙️ KUANTUM FİNANS HESAPLAYICI ──
+  void _siberHesaplamayiTetikle() {
+    double gelis = double.tryParse(_gelisFiyatiCtrl.text) ?? 0.0;
+    double kdv = double.tryParse(_kdvOraniCtrl.text) ?? 20.0;
+    double marj = double.tryParse(_karMarjiCtrl.text) ?? 0.0;
+
+    setState(() {
+      _kdvliGelis = gelis * (1 + (kdv / 100));
+      _bayiNetHedefi = _kdvliGelis * (1 + (marj / 100));
+
+      // ⚖️ KARARGAH KESİNTİSİ
+      double kesintiOrani = (_bayiId == "MURAT_PLAZA") ? 0.30 : 0.12;
+      double carpan = 1.0 - kesintiOrani;
+
+      _musteriVitrinFiyati = _bayiNetHedefi / carpan;
+      _otodnaPayi = _musteriVitrinFiyati * kesintiOrani;
+    });
+  }
+
+  // ── 🚀 ATOMİK MÜHÜRLEME (STORAGE + WRITEBATCH) ──
+  Future<void> _urunuMarketeFirlat() async {
+    if (!_formKey.currentState!.validate() || _secilenGorseller.isEmpty) {
+      _siberUyariGoster("KANIT VEYA VERİ EKSİK", "En az 1 görsel yüklemeli ve zorunlu alanları doldurmalısınız.", SiberTema.kanKirmizi);
+      return;
+    }
+
+    setState(() => _islemSuruyor = true);
+    HapticFeedback.heavyImpact();
+    developer.log("🚀 SİBER MÜHÜRLEME BAŞLADI...");
+
+    try {
+      // 1. GÖRSELLERİ BULUTA YÜKLE (Karargah Storage)
+      List<String> gorselLinkleri = [];
+      for (var dosya in _secilenGorseller) {
+        String yol = 'market_gorselleri/$_bayiId/${DateTime.now().millisecondsSinceEpoch}_${_secilenGorseller.indexOf(dosya)}.jpg';
+        TaskSnapshot snap = await _storage.ref().child(yol).putFile(dosya);
+        gorselLinkleri.add(await snap.ref.getDownloadURL());
+      }
+
+      // 2. ATOMİK ZIRH (WriteBatch)
+      WriteBatch batch = _db.batch();
+      DocumentReference urunRef = _db.collection('market_urunleri').doc();
+
+      List<String> etiketListesi = _etiketlerCtrl.text.split(',').map((e) => e.trim().toUpperCase()).toList();
+
+      batch.set(urunRef, {
+        'urun_id': urunRef.id,
+        'bayi_id': _bayiId,
+        'galeri': gorselLinkleri,
+        'kimlik': {
+          'urun_adi': _urunAdiCtrl.text.trim().toUpperCase(),
+          'kategori': _kategoriCtrl.text.trim().toUpperCase(),
+          'marka': _markaCtrl.text.trim().toUpperCase(),
+          'stok_kodu': _stokKoduCtrl.text.trim().toUpperCase(),
+        },
+        'rozetler': {
+          'garanti_2yil': _rozetGaranti,
+          'orijinal_urun': _rozetOrijinal,
+          'kurulum_aliciya_ait': _rozetKurulumAliciyaAit,
+        },
+        'detaylar': {
+          'aciklama': _aciklamaCtrl.text.trim(),
+          'etiketler': etiketListesi,
+        },
+        'finans': {
+          'net_gelis': double.tryParse(_gelisFiyatiCtrl.text) ?? 0,
+          'kdv_orani': double.tryParse(_kdvOraniCtrl.text) ?? 20,
+          'kar_marji': double.tryParse(_karMarjiCtrl.text) ?? 0,
+          'otodna_kesintisi': _otodnaPayi,
+          'bayi_net_hakedis': _bayiNetHedefi,
+          'kdv_dahil_vitrin_fiyati': _musteriVitrinFiyati,
+        },
+        'olusturulma_tarihi': FieldValue.serverTimestamp(),
+        'aktif_mi': true,
+      });
+
+      // 3. KARA KUTU LOGU
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'DETAYLI_URUN_YAYINLANDI',
+        'islem_detayi': 'SİBER TİCARET: $_bayiId, ${_urunAdiCtrl.text} ürününü ${gorselLinkleri.length} görselle markete mühürledi. Vitrin: ₺${_musteriVitrinFiyati.toStringAsFixed(2)}',
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
+
+      if (mounted) {
+        _siberUyariGoster("SİBER MÜHÜR BASILDI", "Ürün galeri ve finans detaylarıyla Kuantum Ağına işlendi.", SiberTema.kuantumCyan);
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      developer.log("AĞ ÇÖKTÜ", error: e);
+      if (mounted) _siberUyariGoster("HATA", "İşlem mühürlenemedi.", SiberTema.kanKirmizi);
+    } finally {
+      if (mounted) setState(() => _islemSuruyor = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: const Text("DETAYLI ÜRÜN & GALERİ MERKEZİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5)),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+        ),
+        body: Form(
+          key: _formKey,
+          child: ListView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(20),
+            children: [
+              // ── 📸 GALERİ BÖLÜMÜ ──
+              _buildBolumBasligi("MEDYA VE GÖRSEL KANITLAR", Icons.photo_library),
+              const SizedBox(height: 12),
+              _buildGaleri(),
+              const SizedBox(height: 24),
+
+              // ── 📦 KİMLİK BÖLÜMÜ ──
+              _buildBolumBasligi("KİMLİK VE KATEGORİ", Icons.fingerprint),
+              const SizedBox(height: 12),
+              _buildSiberInput(controller: _urunAdiCtrl, hint: "Ürün Adı (Örn: 190 NM Kepenk Motoru)", isRequired: true),
+              Row(
+                children: [
+                  Expanded(child: _buildSiberInput(controller: _markaCtrl, hint: "Marka")),
+                  const SizedBox(width: 12),
+                  Expanded(child: _buildSiberInput(controller: _kategoriCtrl, hint: "Kategori")),
+                ],
+              ),
+              _buildSiberInput(controller: _stokKoduCtrl, hint: "Stok Kodu / Barkod"),
+              const SizedBox(height: 24),
+
+              // ── 📝 DETAYLAR VE ROZETLER ──
+              _buildBolumBasligi("TEKNİK DETAYLAR VE GÜVENCELER", Icons.description),
+              const SizedBox(height: 12),
+              _buildSiberInput(controller: _aciklamaCtrl, hint: "Ürün Özellikleri (Çok Satırlı)", maxLines: 4),
+              _buildSiberInput(controller: _etiketlerCtrl, hint: "Arama Etiketleri (Örn: tüp motor, kepenk)"),
+              const SizedBox(height: 12),
+              _buildSiberRozet("2 Yıl Garanti Kalkanı", _rozetGaranti, (v) => setState(() => _rozetGaranti = v)),
+              _buildSiberRozet("%100 Orijinal Ürün Mührü", _rozetOrijinal, (v) => setState(() => _rozetOrijinal = v)),
+              _buildSiberRozet("Kurulum Alıcıya Aittir", _rozetKurulumAliciyaAit, (v) => setState(() => _rozetKurulumAliciyaAit = v)),
+              const SizedBox(height: 24),
+
+              // ── 💰 FİNANS BÖLÜMÜ ──
+              _buildBolumBasligi("SİBER FİNANS VE %12 KESİNTİ", Icons.account_balance_wallet),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(child: _buildSiberInput(controller: _gelisFiyatiCtrl, hint: "Net Geliş (₺)", isNumber: true, onChanged: (v) => _siberHesaplamayiTetikle())),
+                  const SizedBox(width: 12),
+                  Expanded(child: _buildSiberInput(controller: _kdvOraniCtrl, hint: "KDV (%)", isNumber: true, onChanged: (v) => _siberHesaplamayiTetikle())),
+                ],
+              ),
+              _buildSiberInput(controller: _karMarjiCtrl, hint: "Hedef Kâr Marjı (%)", isNumber: true, isRequired: true, onChanged: (v) => _siberHesaplamayiTetikle()),
+              const SizedBox(height: 20),
+
+              // 🛡️ OTONOM FİNANS TABLOSU
+              if (_musteriVitrinFiyati > 0) _buildFinansPanosu(),
+
+              const SizedBox(height: 40),
+
+              // 🚀 MÜHÜRLE BUTONU
+              SizedBox(
+                height: 60,
+                child: _islemSuruyor
+                    ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                    : ElevatedButton.icon(
+                  style: SiberTema.kuantumButonStili(),
+                  icon: const Icon(Icons.security, color: Colors.black),
+                  label: const Text("GALERİ VE FİYATLA MÜHÜRLE", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                  onPressed: _urunuMarketeFirlat,
+                ),
+              ),
+              const SizedBox(height: 40),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ── 🔧 YARDIMCI BİLEŞENLER ──
+  Widget _buildGaleri() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          child: Row(
+            children: [
+              GestureDetector(
+                onTap: _gorselEkle,
+                child: Container(
+                  width: 100, height: 100,
+                  decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.kuantumCyan, width: 1.5, style: BorderStyle.solid)),
+                  child: const Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.add_a_photo, color: SiberTema.kuantumCyan), SizedBox(height: 8), Text("FOTO EKLE", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold))]),
+                ),
+              ),
+              const SizedBox(width: 12),
+              ..._secilenGorseller.map((dosya) => Container(
+                width: 100, height: 100, margin: const EdgeInsets.only(right: 12),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white24), image: DecorationImage(image: FileImage(dosya), fit: BoxFit.cover)),
+                child: Align(alignment: Alignment.topRight, child: IconButton(icon: const Icon(Icons.cancel, color: SiberTema.kanKirmizi), onPressed: () => setState(() => _secilenGorseller.remove(dosya)))),
+              )),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFinansPanosu() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: SiberTema.siberCamZirh(renk: Colors.black),
+      child: Column(
+        children: [
+          _bilgiSatiri("KDV'Lİ MALİYET:", "₺${_kdvliGelis.toStringAsFixed(2)}", Colors.white54),
+          const SizedBox(height: 8),
+          _bilgiSatiri("BAYİ NET KAZANCI:", "₺${_bayiNetHedefi.toStringAsFixed(2)}", SiberTema.altinSari),
+          const SizedBox(height: 8),
+          _bilgiSatiri("OTODNA %12 KESİNTİSİ:", "- ₺${_otodnaPayi.toStringAsFixed(2)}", SiberTema.kanKirmizi),
+          const Divider(color: Colors.white24, height: 24),
+          _bilgiSatiri("KDV DAHİL MÜŞTERİ FİYATI:", "₺${_musteriVitrinFiyati.toStringAsFixed(2)}", SiberTema.kuantumCyan, isBold: true, isLarge: true),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBolumBasligi(String baslik, IconData ikon) {
+    return Row(children: [Icon(ikon, color: SiberTema.kuantumCyan, size: 18), const SizedBox(width: 8), Text(baslik, style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2))]);
+  }
+
+  Widget _buildSiberInput({required TextEditingController controller, required String hint, bool isNumber = false, bool isRequired = false, int maxLines = 1, Function(String)? onChanged}) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.5), borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.white12)),
+      child: TextFormField(
+        controller: controller, maxLines: maxLines,
+        keyboardType: isNumber ? const TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
+        style: const TextStyle(color: Colors.white, fontSize: 13),
+        onChanged: onChanged,
+        validator: isRequired ? (v) => v == null || v.isEmpty ? "Zorunlu" : null : null,
+        decoration: InputDecoration(hintText: hint, hintStyle: const TextStyle(color: Colors.white30, fontSize: 11), border: InputBorder.none, contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14)),
+      ),
+    );
+  }
+
+  Widget _buildSiberRozet(String baslik, bool deger, Function(bool) onChanged) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(8), border: Border.all(color: deger ? SiberTema.kuantumCyan.withOpacity(0.5) : Colors.white10)),
+      child: SwitchListTile(
+        title: Text(baslik, style: TextStyle(color: deger ? Colors.white : Colors.white54, fontSize: 11, fontWeight: FontWeight.bold)),
+        value: deger, activeColor: SiberTema.kuantumCyan, onChanged: onChanged,
+      ),
+    );
+  }
+
+  Widget _bilgiSatiri(String baslik, String deger, Color renk, {bool isBold = false, bool isLarge = false}) {
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(baslik, style: TextStyle(color: Colors.white54, fontSize: isLarge ? 12 : 10, fontWeight: isBold ? FontWeight.bold : FontWeight.normal)), Text(deger, style: TextStyle(color: renk, fontSize: isLarge ? 20 : 14, fontWeight: FontWeight.w900, fontFamily: 'monospace'))]);
+  }
+
+  void _siberUyariGoster(String baslik, String mesaj, Color renk) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: SiberTema.matGrey, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)), content: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)), const SizedBox(height: 4), Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12))])));
+  }
+}
