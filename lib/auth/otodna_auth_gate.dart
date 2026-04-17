@@ -1,3 +1,4 @@
+// lib/auth/otodna_auth_gate.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,6 +13,7 @@ import '../admin/super_admin_screen.dart'; // Super Admin modülüne yönlendiri
 import '../screens/usta_panel_screen.dart'; // Bayi/Usta Paneline yönlendirildi
 import '../screens/siber_kokpit_screen.dart'; // Standart Kullanıcı Kokpitine yönlendirildi
 
+/// 🛡️ KUANTUM GİRİŞ KAPISI VE RÜTBE YÖNLENDİRİCİSİ
 class OtoDnaAuthGate extends StatelessWidget {
   const OtoDnaAuthGate({super.key});
 
@@ -33,29 +35,27 @@ class OtoDnaAuthGate extends StatelessWidget {
 
           final User currentUser = authSnapshot.data!;
 
-          return FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance.collection('kullanicilar').doc(currentUser.uid).get(),
+          // 🛡️ SİBER RADAR: Canlı izliyoruz ama KİMSEYİ DIŞARI ATMIYORUZ!
+          // Rütbe düşse de, karalisteye alınsa da uygulamayı kullanmaya devam ederler.
+          return StreamBuilder<DocumentSnapshot>(
+            stream: FirebaseFirestore.instance.collection('kullanicilar').doc(currentUser.uid).snapshots(),
             builder: (context, userSnapshot) {
               if (userSnapshot.connectionState == ConnectionState.waiting) {
                 return const _KuantumYuklemeEkrani(mesaj: "KARARGAH YETKİLERİ DOĞRULANIYOR...");
               }
 
-              // Kullanıcı Firebase Auth'ta var ama Firestore'da kaydı yoksa
+              // Kullanıcı Firebase Auth'ta var ama Firestore'da kaydı yoksa (Yeni kayıt vb.)
               if (userSnapshot.hasError || !userSnapshot.hasData || !userSnapshot.data!.exists) {
-                return _buildSiberHataEkrani("SİCİL BULUNAMADI - AĞDAN ÇIK");
+                return const _KuantumYuklemeEkrani(mesaj: "SİCİL OLUŞTURULUYOR...");
               }
 
               var userData = userSnapshot.data!.data() as Map<String, dynamic>;
 
-              String role = (userData['rol'] ?? "USER").toString().toUpperCase();
-              bool isBlacklisted = userData['is_blacklisted'] ?? userData['kara_liste'] ?? false;
+              // Rol veya Rutbe değişkenlerini destekler (Geriye dönük uyumluluk)
+              String role = (userData['rol'] ?? userData['rutbe'] ?? "USER").toString().toUpperCase();
 
-              if (isBlacklisted) {
-                return _buildSiberHataEkrani("KARALİSTE (BLACK STAR): ZORUNLU ÇIKIŞ YAP");
-              }
-
-              // 🧠 KUANTUM YÖNLENDİRME MERKEZİ
-              if (role == "ADMIN" || role == "BOLGE_KOMUTANI" || role == "SUPER_ADMIN") {
+              // 🧠 KUANTUM YÖNLENDİRME MERKEZİ (Özgür Kullanım Protokolü)
+              if (role == "ADMIN" || role == "BOLGE_KOMUTANI" || role == "SUPER_ADMIN" || role == "BASKAN") {
                 return const SuperAdminScreen();
               } else if (role == "BAYI" || role == "USTA") {
                 return const UstaPanelScreen();
@@ -65,25 +65,6 @@ class OtoDnaAuthGate extends StatelessWidget {
             },
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildSiberHataEkrani(String butonMetni) {
-    return Scaffold(
-      backgroundColor: SiberTema.oledBlack,
-      body: Center(
-        child: ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: SiberTema.kanKirmizi,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          ),
-          onPressed: () => FirebaseAuth.instance.signOut(),
-          icon: const Icon(Icons.warning_amber_rounded),
-          label: Text(butonMetni, style: const TextStyle(fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
-        ),
       ),
     );
   }

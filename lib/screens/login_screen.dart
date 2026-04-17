@@ -1,11 +1,15 @@
+// lib/screens/login_screen.dart
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'home_screen.dart'; // Karargah ana ekranı
-import 'register_screen.dart'; // Kayıt protokolü
-import 'dart:ui'; // Siber-cam efekti için gerekli
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 
-/// 🦅 OTODNA SİBER GİRİŞ KALKANI - V2
-/// [2026-03-28] GÜNCELLEME: Firebase Gerçek Zamanlı Kimlik Doğrulama ve Glassmorphism
+// 🚀 KARARGAH ZIRHLARI VE TEMA
+import '../core/siber_tema.dart';
+
+/// 🦅 OTODNA SİBER GİRİŞ KALKANI - V3 (TEK EKRANDA GİRİŞ VE KAYIT)
+/// [2026-04-18] GÜNCELLEME: Firebase Atomik Kayıt ve Giriş birleştirildi.
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -15,61 +19,94 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   // 🌑 KURUMSAL ZIRH: TRUE BLACK & KUANTUM TURKUAZI
-  static const Color bgColor = Color(0xFF000000); // Dipsiz Siyah
-  static const Color primaryCyan = Color(0xFF00FFC2); // Kuantum Turkuazı
+  static const Color bgColor = Color(0xFF000000);
+  static const Color primaryCyan = Color(0xFF00FFC2);
   static const Color dangerColor = Colors.redAccent;
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _sifreController = TextEditingController();
 
   bool _isProcessing = false;
-  bool _sifreGizli = true; // Siber Göz (Şifre Görünürlüğü)
-  bool _isKullaniciGirisi = true; // Segmented Control Durumu
+  bool _sifreGizli = true;
+  bool _isKullaniciGirisi = true; // Segmented Control (UI için)
+  bool _isLoginMode = true; // TRUE: Giriş Yap, FALSE: Kayıt Ol
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _sifreController.dispose();
     super.dispose();
   }
 
-  // 🚀 FİREBASE SİBER GİRİŞ MOTORU
-  Future<void> _girisYap() async {
+  // 🚀 FİREBASE SİBER GİRİŞ VE KAYIT MOTORU (BİRLEŞTİRİLMİŞ)
+  Future<void> _kapiyiZorla() async {
+    final name = _nameController.text.trim();
     final email = _emailController.text.trim();
     final sifre = _sifreController.text.trim();
 
-    if (email.isEmpty || sifre.isEmpty) {
-      _uyariGoster("SİBER İHLAL: GİRİŞ BİLGİLERİ EKSİK!", isError: true);
+    if (email.isEmpty || sifre.isEmpty || (!_isLoginMode && name.isEmpty)) {
+      HapticFeedback.heavyImpact();
+      _uyariGoster("SİBER İHLAL: LÜTFEN TÜM ALANLARI DOLDURUN!", isError: true);
+      return;
+    }
+
+    if (!_isLoginMode && sifre.length < 6) {
+      _uyariGoster("GÜVENLİK İHLALİ: ŞİFRE EN AZ 6 KARAKTER OLMALI!", isError: true);
       return;
     }
 
     setState(() => _isProcessing = true);
+    HapticFeedback.lightImpact();
 
     try {
-      // Kuantum Ağına Bağlantı Kuruluyor
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: sifre,
-      );
+      if (_isLoginMode) {
+        // 🟢 GİRİŞ YAP PROTOKOLÜ
+        await _auth.signInWithEmailAndPassword(email: email, password: sifre);
+        // NOT: Başarılı olursa otoDnaAuthGate otomatik içeri çeker, Navigator'a gerek yok.
+      } else {
+        // 🔵 YENİ KAYIT PROTOKOLÜ (ATOMİK ZIRHLI)
+        UserCredential cred = await _auth.createUserWithEmailAndPassword(email: email, password: sifre);
 
-      if (!mounted) return;
-      _uyariGoster("KİMLİK DOĞRULANDI: MERKEZ KARARGAHA GİRİLİYOR... 🦅");
+        if (cred.user != null) {
+          // 🛡️ WRITEBATCH: Karargah sicili tek füzede ateşlenir!
+          WriteBatch batch = _db.batch();
 
-      // Başarılı Giriş: Ana Karargaha Yönlendir
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
+          DocumentReference userRef = _db.collection('kullanicilar').doc(cred.user!.uid);
+          batch.set(userRef, {
+            'uid': cred.user!.uid,
+            'ad_soyad': name,
+            'email': email,
+            'rol': 'USER', // Varsayılan rütbe
+            'kuantum_puan': 100,
+            'kara_liste': false,
+            'kayit_tarihi': FieldValue.serverTimestamp(),
+          });
 
+          DocumentReference logRef = _db.collection('sistem_loglari').doc();
+          batch.set(logRef, {
+            'islem_turu': 'YENI_ASKER_KAYDI',
+            'islem_detayi': 'SİBER AĞ: $name ($email) Karargaha katıldı.',
+            'tarih': FieldValue.serverTimestamp(),
+          });
+
+          await batch.commit();
+          _uyariGoster("OTODNA AĞINA HOŞ GELDİNİZ! SİCİLİNİZ OLUŞTURULDU.");
+        }
+      }
     } on FirebaseAuthException catch (e) {
-      if (!mounted) return;
       String hataMesaji = "AĞ ERİŞİMİ REDDEDİLDİ.";
       if (e.code == 'user-not-found' || e.code == 'wrong-password' || e.code == 'invalid-credential') {
         hataMesaji = "GEÇERSİZ KİMLİK VEYA ŞİFRE!";
+      } else if (e.code == 'email-already-in-use') {
+        hataMesaji = "BU KİMLİK ZATEN KARARGAHTA KAYITLI!";
       }
       _uyariGoster(hataMesaji, isError: true);
     } catch (e) {
-      if (!mounted) return;
       _uyariGoster("SİSTEM HATASI: Bağlantı koptu.", isError: true);
     } finally {
       if (mounted) setState(() => _isProcessing = false);
@@ -85,6 +122,14 @@ class _LoginScreenState extends State<LoginScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
+  }
+
+  void _modDegistir() {
+    setState(() {
+      _isLoginMode = !_isLoginMode;
+      _nameController.clear();
+      _sifreController.clear();
+    });
   }
 
   @override
@@ -111,8 +156,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         // --- SİBER CAM PANEL ---
                         _buildGlassCard(),
                         const SizedBox(height: 32),
-                        // --- KAYIT OL BAĞLANTISI ---
-                        _buildRegisterLink(),
+                        // --- KAYIT OL / GİRİŞ YAP GEÇİŞ BAĞLANTISI ---
+                        _buildModeToggleLink(),
                       ],
                     ),
                   ),
@@ -120,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
 
-            // --- ALT KOMUTA MERKEZİ (QR VE ANALİZLER) ---
+            // --- ALT KOMUTA MERKEZİ (Görsel Kabuk) ---
             _buildBottomNav(),
           ],
         ),
@@ -137,8 +182,8 @@ class _LoginScreenState extends State<LoginScreen> {
           const Icon(Icons.notifications_none, color: primaryCyan, size: 28),
           const Column(
             children: [
-              Text("OtoDNA", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-              Text("Siber Karargah", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w500, letterSpacing: 2)),
+              Text("OtoDNA", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+              Text("Siber Karargah", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w500, letterSpacing: 2, fontFamily: 'Avenir')),
             ],
           ),
           Icon(Icons.security, color: primaryCyan.withOpacity(0.5), size: 28),
@@ -161,11 +206,23 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           child: Column(
             children: [
-              // Segmented Control (Kullanıcı / Bayi)
-              _buildSegmentedControl(),
+              // Segmented Control (Kullanıcı / Bayi - Sadece görsel uyum için)
+              if (_isLoginMode) _buildSegmentedControl(),
+              if (_isLoginMode) const SizedBox(height: 32),
+
+              Text(
+                  _isLoginMode ? "HOŞ GELDİNİZ\nKOMUTAN GAZİ" : "AĞA KATIL\nYENİ YETKİLİ PROTOKOLÜ",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')
+              ),
               const SizedBox(height: 32),
-              const Text("HOŞ GELDİNİZ\nKOMUTAN GAZİ", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1)),
-              const SizedBox(height: 32),
+
+              // Kayıt Modundaysa İsim Alanı Eklenir
+              if (!_isLoginMode) ...[
+                _buildSiberTextField(controller: _nameController, icon: Icons.badge_outlined, hint: "AD SOYAD / FİRMA ADI"),
+                const SizedBox(height: 16),
+              ],
+
               _buildSiberTextField(controller: _emailController, icon: Icons.alternate_email, hint: "AĞ ADRESİ (E-POSTA)"),
               const SizedBox(height: 16),
               _buildSiberTextField(
@@ -208,7 +265,7 @@ class _LoginScreenState extends State<LoginScreen> {
             borderRadius: BorderRadius.circular(22),
           ),
           alignment: Alignment.center,
-          child: Text(title, style: TextStyle(color: isActive ? Colors.black : Colors.white38, fontSize: 12, fontWeight: FontWeight.w900)),
+          child: Text(title, style: TextStyle(color: isActive ? Colors.black : Colors.white38, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
         ),
       ),
     );
@@ -225,22 +282,22 @@ class _LoginScreenState extends State<LoginScreen> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: primaryCyan, width: 2)),
           elevation: 0,
         ),
-        onPressed: _isProcessing ? null : _girisYap,
+        onPressed: _isProcessing ? null : _kapiyiZorla,
         child: _isProcessing
             ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: primaryCyan, strokeWidth: 2))
-            : const Text("AĞI AKTİFLEŞTİR", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2)),
+            : Text(_isLoginMode ? "AĞI AKTİFLEŞTİR" : "PROTOKOLÜ TAMAMLA", style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
       ),
     );
   }
 
-  Widget _buildRegisterLink() {
+  Widget _buildModeToggleLink() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Henüz kayıtlı değil misin? ", style: TextStyle(color: Colors.white38, fontSize: 12)),
+        Text(_isLoginMode ? "Henüz kayıtlı değil misin? " : "Zaten yetkili misin? ", style: const TextStyle(color: Colors.white38, fontSize: 12, fontFamily: 'Avenir')),
         GestureDetector(
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen())),
-          child: const Text("YENİ KAYIT AÇ", style: TextStyle(color: primaryCyan, fontSize: 12, fontWeight: FontWeight.w900)),
+          onTap: _isProcessing ? null : _modDegistir,
+          child: Text(_isLoginMode ? "YENİ KAYIT AÇ" : "GİRİŞ YAP", style: const TextStyle(color: primaryCyan, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
         ),
       ],
     );
@@ -279,7 +336,7 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         Icon(icon, color: Colors.white24, size: 24),
         const SizedBox(height: 4),
-        Text(label, style: const TextStyle(color: Colors.white24, fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(label, style: const TextStyle(color: Colors.white24, fontSize: 8, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
       ],
     );
   }
@@ -290,12 +347,12 @@ class _LoginScreenState extends State<LoginScreen> {
       child: TextField(
         controller: controller,
         obscureText: isPassword && sifreGizli,
-        style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+        style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: primaryCyan.withOpacity(0.5), size: 20),
           suffixIcon: isPassword ? IconButton(icon: Icon(sifreGizli ? Icons.visibility_off : Icons.visibility, color: primaryCyan, size: 20), onPressed: onVisibilityToggle) : null,
           hintText: hint,
-          hintStyle: TextStyle(color: Colors.white12, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
+          hintStyle: const TextStyle(color: Colors.white12, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
           focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: primaryCyan, width: 1.5)),
