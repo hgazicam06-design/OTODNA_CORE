@@ -7,11 +7,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
-// 🚀 EKRANLAR
+// 🚀 EKRANLAR (YENİ KARARGAH MİMARİSİNE GÖRE ONARILDI - KIRMIZI ÇİZGİLER YOK EDİLDİ)
 import '../screens/login_screen.dart';
-import '../admin/super_admin_screen.dart'; // Super Admin modülüne yönlendirildi
-import '../screens/usta_panel_screen.dart'; // Bayi/Usta Paneline yönlendirildi
-import '../screens/siber_kokpit_screen.dart'; // Standart Kullanıcı Kokpitine yönlendirildi
+import '../screens/super_admin_screen.dart'; // YOL DÜZELTİLDİ (admin/ klasörü kaldırıldı)
+import '../screens/usta_panel_screen.dart'; // YOL DÜZELTİLDİ (bayi/ klasörü kaldırıldı)
+import '../screens/siber_kokpit_screen.dart'; // YOL DÜZELTİLDİ (kullanici/ klasörü kaldırıldı)
 
 /// 🛡️ KUANTUM GİRİŞ KAPISI VE RÜTBE YÖNLENDİRİCİSİ
 class OtoDnaAuthGate extends StatelessWidget {

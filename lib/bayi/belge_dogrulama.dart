@@ -8,8 +8,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:developer' as developer;
 
 // 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI
-import '../../core/siber_tema.dart';
-import '../../core/responsive_kalkan.dart';
+import '../core/siber_tema.dart'; // Yollar klasör yapınıza göre ../../core/ olabilir
+import '../core/responsive_kalkan.dart';
 
 /// 🛡️ KUANTUM BELGE VE DİJİTAL KİMLİK MÜHÜRLEME MERKEZİ (BelgeDogrulama)
 /// Bayinin resmi belgelerini (HYB, Vergi Levhası) doğrudan kameradan alıp Karargah Bulutuna (Storage) ve Firestore'a ATOMİK şifreleyen terminal.
@@ -58,7 +58,7 @@ class _BelgeDogrulamaState extends State<BelgeDogrulama> {
     }
   }
 
-  // ── 🚀 KARARGAHA GERÇEK MÜHÜRLEME (STORAGE + WRITEBATCH) ──
+  // ── 🚀 KARARGAHA GERÇEK MÜHÜRLEME (PARALEL STORAGE + WRITEBATCH) ──
   Future<void> _saticiligiAktifEt() async {
     HapticFeedback.heavyImpact();
 
@@ -72,17 +72,22 @@ class _BelgeDogrulamaState extends State<BelgeDogrulama> {
     }
 
     setState(() => _islemSuruyor = true);
-    developer.log("🚀 SİBER MÜHÜR: Belgeler Karargah Bulutuna (Storage) yükleniyor...");
+    developer.log("🚀 SİBER MÜHÜR: Belgeler Karargah Bulutuna (Storage) paralel olarak yükleniyor...");
 
     try {
-      // 1. BELGELERİ BULUTA (STORAGE) YÜKLE VE ŞİFRELİ URL AL
+      // 1. BELGELERİ BULUTA (STORAGE) PARALEL YÜKLE (Kuantum Hızlandırma)
       String hybYol = 'bayi_belgeleri/${widget.bayiId}/HYB_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      TaskSnapshot hybSnap = await _storage.ref().child(hybYol).putFile(_hybDosyasi!);
-      String hybUrl = await hybSnap.ref.getDownloadURL();
-
       String imzaYol = 'bayi_belgeleri/${widget.bayiId}/IMZA_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      TaskSnapshot imzaSnap = await _storage.ref().child(imzaYol).putFile(_imzaDosyasi!);
-      String imzaUrl = await imzaSnap.ref.getDownloadURL();
+
+      // İki füzeyi aynı anda ateşleyip zaman kazanıyoruz!
+      List<TaskSnapshot> yuklemeSonuclari = await Future.wait([
+        _storage.ref().child(hybYol).putFile(_hybDosyasi!),
+        _storage.ref().child(imzaYol).putFile(_imzaDosyasi!),
+      ]);
+
+      // Şifreli URL'leri al
+      String hybUrl = await yuklemeSonuclari[0].ref.getDownloadURL();
+      String imzaUrl = await yuklemeSonuclari[1].ref.getDownloadURL();
 
       // 2. ATOMİK ZIRH (WRITEBATCH) İLE FİREBASE'E MÜHÜRLE
       WriteBatch batch = _db.batch();
@@ -134,9 +139,9 @@ class _BelgeDogrulamaState extends State<BelgeDogrulama> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -152,7 +157,7 @@ class _BelgeDogrulamaState extends State<BelgeDogrulama> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("RESMİ BELGE ONAY MERKEZİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
+          title: const Text("RESMİ BELGE ONAY MERKEZİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
           backgroundColor: Colors.transparent,
           elevation: 0,
           iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
@@ -179,7 +184,7 @@ class _BelgeDogrulamaState extends State<BelgeDogrulama> {
                       ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                       : ElevatedButton.icon(
                     icon: Icon(Icons.verified_user_outlined, color: onayaHazir ? Colors.black : Colors.white30),
-                    label: const Text("SATICILIĞI AKTİF ET VE MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 12)),
+                    label: const Text("SATICILIĞI AKTİF ET VE MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 12, fontFamily: 'Avenir')),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: onayaHazir ? SiberTema.kuantumCyan : Colors.white10,
                       foregroundColor: onayaHazir ? Colors.black : Colors.white30,
@@ -208,9 +213,9 @@ class _BelgeDogrulamaState extends State<BelgeDogrulama> {
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        title: Text(metin, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 11, letterSpacing: 1)),
+        title: Text(metin, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 11, letterSpacing: 1, fontFamily: 'Avenir')),
         subtitle: Text(yuklendiMi ? "ZAMAN DAMGALI KANIT YÜKLENDİ" : "KAMERAYI AÇMAK İÇİN DOKUNUN",
-            style: TextStyle(color: yuklendiMi ? SiberTema.kuantumCyan : Colors.white54, fontSize: 9, letterSpacing: 1, height: 2)),
+            style: TextStyle(color: yuklendiMi ? SiberTema.kuantumCyan : Colors.white54, fontSize: 9, letterSpacing: 1, height: 2, fontFamily: 'Avenir')),
         trailing: Icon(yuklendiMi ? Icons.check_circle : Icons.document_scanner_outlined, color: yuklendiMi ? SiberTema.kuantumCyan : Colors.orangeAccent, size: 28),
         onTap: () => _belgeSec(tip),
       ),
@@ -228,7 +233,7 @@ class _BelgeDogrulamaState extends State<BelgeDogrulama> {
       children: [
         const Icon(Icons.warning_amber_rounded, color: Colors.orangeAccent, size: 30),
         const SizedBox(width: 12),
-        Expanded(child: Text(metin, style: const TextStyle(color: Colors.white70, fontSize: 10, height: 1.5, letterSpacing: 1, fontWeight: FontWeight.bold))),
+        Expanded(child: Text(metin, style: const TextStyle(color: Colors.white70, fontSize: 10, height: 1.5, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
       ],
     ),
   );

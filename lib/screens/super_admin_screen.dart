@@ -1,11 +1,14 @@
+// lib/screens/super_admin_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:ui';
+import 'dart:developer' as developer;
 
 // 🚀 KARARGAH ZIRHLARI
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
+/// 🦅 OTODNA YÜKSEK KONSEY TERMİNALİ (Super Admin)
 class SuperAdminScreen extends StatefulWidget {
   const SuperAdminScreen({super.key});
 
@@ -14,13 +17,9 @@ class SuperAdminScreen extends StatefulWidget {
 }
 
 class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProviderStateMixin {
-  // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET
-  static const Color bgColor = Color(0xFF000000);
+  // 🌑 TESLA MİMARİSİ PALETİ
   static const Color surfaceColor = Color(0xFF111111);
-  static const Color primaryCyan = Color(0xFF00FFC2);
   static const Color adminPurple = Colors.purpleAccent;
-  static const Color dangerColor = Colors.redAccent;
-  static const Color warningColor = Colors.orangeAccent;
 
   late TabController _tabController;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -38,15 +37,26 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
   }
 
   // =========================================================================
-  // 🔓 ATOMİK MÜHÜR KIRMA: FİREBASE GÜNCELLEME MOTORU
+  // 🔓 ATOMİK MÜHÜR KIRMA: FİREBASE GÜNCELLEME MOTORU (WRITEBATCH)
   // =========================================================================
   Future<void> _muhruKir(String islemId) async {
     try {
-      await _db.collection('islem_kayitlari').doc(islemId).update({
+      developer.log("SİBER ONAY: $islemId için Mühür Kırma Protokolü başlatıldı.");
+      WriteBatch batch = _db.batch();
+
+      batch.update(_db.collection('islem_kayitlari').doc(islemId), {
         'muhur_durumu': 'KIRILDI',
         'duzenleme_yetkisi': true,
         'admin_onay_tarihi': FieldValue.serverTimestamp(),
       });
+
+      batch.set(_db.collection('sistem_loglari').doc(), {
+        'islem_turu': 'MUHUR_KIRMA_ONAYI',
+        'islem_detayi': 'YÜKSEK KONSEY: $islemId numaralı işlemin mührü kırıldı.',
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
 
       if (!mounted) return;
       Navigator.pop(context);
@@ -59,8 +69,8 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
   void _siberMesajGoster(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.black, letterSpacing: 1)),
-        backgroundColor: isError ? dangerColor : primaryCyan,
+        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.black, letterSpacing: 1, fontFamily: 'Avenir')),
+        backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -73,25 +83,25 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          backgroundColor: bgColor,
+          backgroundColor: Colors.transparent,
           elevation: 0,
           title: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.admin_panel_settings, color: primaryCyan, size: 24),
+              Icon(Icons.admin_panel_settings, color: SiberTema.kuantumCyan, size: 24),
               SizedBox(width: 12),
-              Text('ANKARA MERKEZ KARARGAH', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2)),
+              Text('ANKARA MERKEZ KARARGAH', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
             ],
           ),
           centerTitle: true,
-          iconTheme: const IconThemeData(color: primaryCyan),
+          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
           bottom: TabBar(
             controller: _tabController,
-            indicatorColor: primaryCyan,
-            labelColor: primaryCyan,
+            indicatorColor: SiberTema.kuantumCyan,
+            labelColor: SiberTema.kuantumCyan,
             unselectedLabelColor: Colors.white38,
             isScrollable: true,
-            labelStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
+            labelStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
             tabs: const [
               Tab(icon: Icon(Icons.account_balance), text: "KASA & FİNANS"),
               Tab(icon: Icon(Icons.gavel), text: "MÜHÜR & İTİRAZ"),
@@ -123,7 +133,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
     return StreamBuilder<DocumentSnapshot>(
       stream: _db.collection('sistem_istatistikleri').doc('finansal_ozet').snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: primaryCyan));
+        if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
 
         var data = snapshot.data?.data() as Map<String, dynamic>? ?? {
           'toplam_hacim': 0.0,
@@ -137,25 +147,25 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
           children: [
             Container(
               padding: const EdgeInsets.all(32),
-              decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: primaryCyan.withOpacity(0.3))),
+              decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3))),
               child: Column(
                 children: [
-                  const Text("OTODNA KÜRESEL SİSTEM HACMİ", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                  const Text("OTODNA KÜRESEL SİSTEM HACMİ", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                   const SizedBox(height: 12),
-                  Text("₺ ${data['toplam_hacim']}", style: const TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                  Text("₺ ${data['toplam_hacim']}", style: const TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                 ],
               ),
             ),
             const SizedBox(height: 24),
             Row(
               children: [
-                Expanded(child: _buildFinansKarti("BAYİ KOMİSYON\nHAVUZU (%12)", "₺ ${data['bayi_komisyonu']}", primaryCyan, Icons.pie_chart)),
+                Expanded(child: _buildFinansKarti("BAYİ KOMİSYON\nHAVUZU (%12)", "₺ ${data['bayi_komisyonu']}", SiberTema.kuantumCyan, Icons.pie_chart)),
                 const SizedBox(width: 16),
                 Expanded(child: _buildFinansKarti("MURAT PLAZA\nGİZLİ SATIŞ KÂRI (%30)", "₺ ${data['murat_plaza_kari']}", adminPurple, Icons.store)),
               ],
             ),
             const SizedBox(height: 48),
-            const Text("SON OTONOM İŞLEMLER", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+            const Text("SON OTONOM İŞLEMLER", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
             const SizedBox(height: 16),
             _buildCanliIslemListesi(),
           ],
@@ -172,7 +182,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
         return Column(
           children: snapshot.data!.docs.map((doc) {
             var islem = doc.data() as Map<String, dynamic>;
-            return _buildIslemSatiri(islem['baslik'] ?? 'İŞLEM', islem['detay'] ?? 'DETAY', "₺${islem['tutar']}", islem['tip'] == 'MURAT' ? adminPurple : primaryCyan);
+            return _buildIslemSatiri(islem['baslik'] ?? 'İŞLEM', islem['detay'] ?? 'DETAY', "₺${islem['tutar']}", islem['tip'] == 'MURAT' ? adminPurple : SiberTema.kuantumCyan);
           }).toList(),
         );
       },
@@ -207,9 +217,9 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("İPTAL TALEBİ: $id", style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                          Text("İPTAL TALEBİ: $id", style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                           const SizedBox(height: 6),
-                          const Text("İkili Onay Sağlandı: Müşteri & Firma", style: TextStyle(color: adminPurple, fontSize: 10, fontWeight: FontWeight.bold))
+                          const Text("İkili Onay Sağlandı: Müşteri & Firma", style: TextStyle(color: adminPurple, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))
                         ],
                       ),
                     ),
@@ -229,7 +239,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
     return StreamBuilder<QuerySnapshot>(
       stream: _db.collection('acil_durum_sinyalleri').orderBy('zaman_damgasi', descending: true).snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: dangerColor));
+        if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: SiberTema.kanKirmizi));
         return ListView(
           padding: const EdgeInsets.all(24),
           children: [
@@ -237,7 +247,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
             const SizedBox(height: 32),
             ...snapshot.data!.docs.map((doc) {
               var sos = doc.data() as Map<String, dynamic>;
-              return _buildSosSatiri(sos['plaka'] ?? 'PLAKA YOK', sos['bolge'] ?? 'KONUM ALINIYOR', sos['durum'] ?? 'BEKLİYOR', dangerColor);
+              return _buildSosSatiri(sos['plaka'] ?? 'PLAKA YOK', sos['bolge'] ?? 'KONUM ALINIYOR', sos['durum'] ?? 'BEKLİYOR', SiberTema.kanKirmizi);
             }).toList(),
           ],
         );
@@ -250,11 +260,11 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
     return StreamBuilder<QuerySnapshot>(
       stream: _db.collection('bayiler').where('is_blacklisted', isEqualTo: true).snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: dangerColor));
+        if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: SiberTema.kanKirmizi));
         return ListView(
           padding: const EdgeInsets.all(24),
           children: [
-            const Text("SİBER İHLAL YAPAN FİRMALAR", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+            const Text("SİBER İHLAL YAPAN FİRMALAR", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
             const SizedBox(height: 16),
             ...snapshot.data!.docs.map((doc) {
               var firma = doc.data() as Map<String, dynamic>;
@@ -271,17 +281,17 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
   Widget _buildRadarVizuel() {
     return Container(
       height: 220,
-      decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: dangerColor.withOpacity(0.5))),
+      decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.5))),
       child: Stack(
         children: [
-          Center(child: Icon(Icons.radar, color: dangerColor.withOpacity(0.1), size: 120)),
+          Center(child: Icon(Icons.radar, color: SiberTema.kanKirmizi.withOpacity(0.1), size: 120)),
           const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.satellite_alt, color: dangerColor, size: 40),
+                Icon(Icons.satellite_alt, color: SiberTema.kanKirmizi, size: 40),
                 SizedBox(height: 12),
-                Text("TÜRKİYE S.O.S AĞI AKTİF", style: TextStyle(color: dangerColor, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 3))
+                Text("TÜRKİYE S.O.S AĞI AKTİF", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir'))
               ],
             ),
           ),
@@ -299,9 +309,9 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
         children: [
           Icon(ikon, color: renk, size: 28),
           const SizedBox(height: 16),
-          Text(tutar, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1)),
+          Text(tutar, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
           const SizedBox(height: 8),
-          Text(baslik, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 9, fontWeight: FontWeight.bold, height: 1.5, letterSpacing: 1)),
+          Text(baslik, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 9, fontWeight: FontWeight.bold, height: 1.5, letterSpacing: 1, fontFamily: 'Avenir')),
         ],
       ),
     );
@@ -319,13 +329,13 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(islem, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1.5)),
+                Text(islem, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1.5, fontFamily: 'Avenir')),
                 const SizedBox(height: 4),
-                Text(detay, style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.bold))
+                Text(detay, style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))
               ],
             ),
           ),
-          Text(kazanc, style: TextStyle(color: renk, fontWeight: FontWeight.w900, fontSize: 12)),
+          Text(kazanc, style: TextStyle(color: renk, fontWeight: FontWeight.w900, fontSize: 12, fontFamily: 'Avenir')),
         ],
       ),
     );
@@ -344,15 +354,15 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(plaka, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900)),
-                Text(konum, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 9, fontWeight: FontWeight.bold))
+                Text(plaka, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                Text(konum, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))
               ],
             ),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(color: renk.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-            child: Text(durum, style: TextStyle(color: renk, fontSize: 8, fontWeight: FontWeight.w900)),
+            child: Text(durum, style: TextStyle(color: renk, fontSize: 8, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           ),
         ],
       ),
@@ -363,31 +373,31 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: dangerColor.withOpacity(0.5))),
+      decoration: BoxDecoration(color: SiberTema.oledBlack, borderRadius: BorderRadius.circular(20), border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.5))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: Text(firma, style: const TextStyle(color: dangerColor, fontWeight: FontWeight.w900, fontSize: 12))),
-              const Icon(Icons.block, color: dangerColor, size: 20)
+              Expanded(child: Text(firma, style: const TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, fontSize: 12, fontFamily: 'Avenir'))),
+              const Icon(Icons.block, color: SiberTema.kanKirmizi, size: 20)
             ],
           ),
           const SizedBox(height: 8),
-          Text(konum, style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.bold)),
+          Text(konum, style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           const Divider(color: Colors.white12, height: 24),
-          Text("SİBER İHLAL: $sebep", style: const TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.bold)),
+          Text("SİBER İHLAL: $sebep", style: const TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              TextButton(onPressed: () {}, child: const Text("UYARI SİNYALİ", style: TextStyle(color: warningColor, fontSize: 10, fontWeight: FontWeight.w900))),
+              TextButton(onPressed: () {}, child: const Text("UYARI SİNYALİ", style: TextStyle(color: Colors.orangeAccent, fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir'))),
               const SizedBox(width: 12),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: dangerColor, foregroundColor: Colors.black, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kanKirmizi, foregroundColor: Colors.black, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
                 onPressed: () {},
-                child: const Text("MEN ET", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900)),
+                child: const Text("MEN ET", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
               ),
             ],
           )
@@ -403,7 +413,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
         children: [
           const Icon(Icons.shield_outlined, color: Colors.white12, size: 64),
           const SizedBox(height: 16),
-          Text(mesaj, style: const TextStyle(color: Colors.white12, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          Text(mesaj, style: const TextStyle(color: Colors.white12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
         ],
       ),
     );
@@ -421,9 +431,9 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("ADMİN YETKİSİ: MÜHÜR KIRMA", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900)),
+            const Text("ADMİN YETKİSİ: MÜHÜR KIRMA", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             const SizedBox(height: 24),
-            Text("İTİRAZ SEBEBİ: ${itiraz['sebep']}", style: const TextStyle(color: Colors.white70, fontSize: 11)),
+            Text("İTİRAZ SEBEBİ: ${itiraz['sebep']}", style: const TextStyle(color: Colors.white70, fontSize: 11, fontFamily: 'Avenir')),
             const SizedBox(height: 32),
             SizedBox(
               width: double.infinity,
@@ -431,7 +441,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: adminPurple),
                 onPressed: () => _muhurKir(islemId),
-                child: const Text("MÜHRÜ KIR VE ONAYLA", style: TextStyle(fontWeight: FontWeight.w900)),
+                child: const Text("MÜHRÜ KIR VE ONAYLA", style: TextStyle(fontWeight: FontWeight.w900, color: Colors.black, fontFamily: 'Avenir')),
               ),
             )
           ],

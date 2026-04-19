@@ -125,7 +125,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
   void _siberUyariVer(String mesaj, bool isError) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: SiberTema.siberFont)),
+        content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -142,7 +142,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("DİJİTAL GARANTİ MÜHÜRLEME", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: SiberTema.siberFont)),
+          title: const Text("DİJİTAL GARANTİ MÜHÜRLEME", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
           centerTitle: true,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(1),
@@ -160,7 +160,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
                 children: [
                   _build7DNeonIkon(Icons.verified_user, SiberTema.kuantumCyan),
                   const SizedBox(width: 16),
-                  const Text("SİSTEM ONAYI: İşlem Tamamlandı", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: SiberTema.siberFont)),
+                  const Text("SİSTEM ONAYI: İşlem Tamamlandı", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                 ],
               ),
               const SizedBox(height: 24),
@@ -171,25 +171,25 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
               const SizedBox(height: 40),
 
               // 3. MÜHÜRLENECEK SÜRE GİRİŞİ (7D İç Gölgeli Ekran)
-              const Text("GARANTİ SÜRESİNİ ONAYLAYIN (VEYA DÜZENLEYİN)", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 10, fontFamily: SiberTema.siberFont)),
+              const Text("GARANTİ SÜRESİNİ ONAYLAYIN (VEYA DÜZENLEYİN)", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 10, fontFamily: 'Avenir')),
               const SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(
                     color: SiberTema.oledBlack, // Derin Siyah Ekran Hissi
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 1.5),
-                    // İçeri göçük (Inner Shadow) hissiyatı veren siber gölge
+                    // SİBER DÜZELTME: inset: true kaldırıldı, hata yok edildi!
                     boxShadow: [
-                      BoxShadow(color: Colors.black.withOpacity(0.9), blurRadius: 10, inset: true),
+                      BoxShadow(color: Colors.black.withOpacity(0.9), blurRadius: 10),
                       BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 15, spreadRadius: 2), // Dış Neon Kalkanı
                     ]
                 ),
                 child: TextField(
                   controller: _garantiController,
-                  style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: SiberTema.siberFont),
+                  style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
                   decoration: InputDecoration(
                     hintText: "Örn: 12 Ay / 20.000 KM",
-                    hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 16, fontFamily: SiberTema.siberFont),
+                    hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 16, fontFamily: 'Avenir'),
                     prefixIcon: const Icon(Icons.shield, color: SiberTema.kuantumCyan, size: 28),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
@@ -211,7 +211,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
                       : const Icon(Icons.fingerprint, size: 28, color: SiberTema.oledBlack),
                   label: Text(
                       _isSaving ? "AĞA YAZILIYOR..." : "GARANTİYİ MÜHÜRLE VE TESLİM ET",
-                      style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5, fontFamily: SiberTema.siberFont, color: SiberTema.oledBlack)
+                      style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5, fontFamily: 'Avenir', color: SiberTema.oledBlack)
                   ),
                 ),
               ),
@@ -263,33 +263,34 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
             children: [
               _build7DNeonIkon(Icons.memory, _aiOrange), // AI Çekirdeği
               const SizedBox(width: 12),
-              const Text("KUANTUM A.I. TELEMETRİ ANALİZİ", style: TextStyle(color: _aiOrange, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 11, fontFamily: SiberTema.siberFont)),
+              const Text("KUANTUM A.I. TELEMETRİ ANALİZİ", style: TextStyle(color: _aiOrange, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 11, fontFamily: 'Avenir')),
             ],
           ),
           const SizedBox(height: 16),
           Text(
             "Araç kullanıcısının geçmiş arazi şartları (Asfalt/Zorlu Arazi) ve kullanım alışkanlıkları incelenmiştir. Sistem, riski minimize etmek için aşağıdaki süreyi önermektedir.",
-            style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12, height: 1.5, fontFamily: SiberTema.siberFont),
+            style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12, height: 1.5, fontFamily: 'Avenir'),
           ),
           const SizedBox(height: 20),
 
-          // 📟 AI Sonuç Ekranı (İçeri Göçük CRT Ekran Hissi)
+          // 📟 AI Sonuç Ekranı
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             decoration: BoxDecoration(
                 color: const Color(0xFF1A0A00), // Koyu Turuncu-Siyah CRT Ekran
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: _aiOrange.withOpacity(0.4), width: 1.5),
+                // SİBER DÜZELTME: inset: true kaldırıldı!
                 boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(0.9), blurRadius: 8, inset: true), // İç Derinlik
+                  BoxShadow(color: Colors.black.withOpacity(0.9), blurRadius: 8),
                   BoxShadow(color: _aiOrange.withOpacity(0.1), blurRadius: 10, spreadRadius: 1) // Hafif Parlama
                 ]
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Önerilen Güvenli Süre:", style: TextStyle(color: Colors.white70, fontSize: 12, fontFamily: SiberTema.siberFont, fontWeight: FontWeight.bold)),
-                Text(_aiOnerisi, style: const TextStyle(color: _aiOrange, fontWeight: FontWeight.w900, fontSize: 15, fontFamily: SiberTema.siberFont, shadows: [Shadow(color: _aiOrange, blurRadius: 8)])),
+                const Text("Önerilen Güvenli Süre:", style: TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
+                Text(_aiOnerisi, style: const TextStyle(color: _aiOrange, fontWeight: FontWeight.w900, fontSize: 15, fontFamily: 'Avenir', shadows: [Shadow(color: _aiOrange, blurRadius: 8)])),
               ],
             ),
           )

@@ -1,3 +1,4 @@
+// lib/core/siber_tema.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,6 +9,11 @@ class SiberTema {
   static const Color neonPurple = Color(0xFF9D00FF);
   static const Color siberGold = Color(0xFFFFD700);
   static const Color kritikRed = Color(0xFFFF003C);
+
+  // 🚨 EKLENEN EKSİK RENKLER (Kırmızı çizgileri engeller)
+  static const Color kanKirmizi = Color(0xFFFF4D4D);
+  static const Color matGrey = Color(0xFF111111);
+  static const Color altinSari = Color(0xFFFFD700);
 
   // 🏗️ 7D SİBER CAM EFEKTİ (GLASSMORPHISM)
   static BoxDecoration siberCamZirh({Color? renk}) {
@@ -37,4 +43,13 @@ class SiberTema {
     fontWeight: FontWeight.w900,
     letterSpacing: 2,
   );
+
+  // 📡 STANDART FONT SİSTEMİ (Eğer app genelinde ThemeData kullanıyorsan)
+  static ThemeData kuantumTemasi() {
+    return ThemeData(
+      scaffoldBackgroundColor: oledBlack,
+      primaryColor: kuantumCyan,
+      fontFamily: 'Avenir', // Yada GoogleFonts.montserrat().fontFamily
+    );
+  }
 }

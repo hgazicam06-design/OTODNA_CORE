@@ -47,6 +47,7 @@ Hemen Kaydolun: https://otodna.com/davet
 
     try {
       // 1. Cihazın Gerçek Paylaşım Ekranını Aç (WhatsApp, SMS, vs.)
+      // 🛡️ SİBER DÜZELTME: Sürüm uyuşmazlığı yapmayan Evrensel Paylaşım Kodu!
       await Share.share(_davetMetni, subject: 'OtoDNA Karargah Daveti');
 
       // 2. ATOMİK MÜHÜRLEME DEVREDE (WriteBatch)
@@ -71,10 +72,10 @@ Hemen Kaydolun: https://otodna.com/davet
       await batch.commit(); // Tüm füzeleri ateşle!
 
       HapticFeedback.vibrate(); // Başarı titreşimi
-      developer.log("✅ ONAY: Davetiye fırlatıldı ve Karargaha mühürlendi.");
+      developer.log("✅ ONAY: Davetiye paylaşım motoru tetiklendi ve Karargaha mühürlendi.");
 
       if (mounted) {
-        _siberUyariGoster("DAVET FIRLATILDI!", "Kuantum Ağı genişliyor. Operasyon loglara işlendi.", SiberTema.kuantumCyan);
+        _siberUyariGoster("DAVET PROTOKOLÜ AKTİF!", "Kuantum Ağı genişliyor. Operasyon loglara işlendi.", SiberTema.kuantumCyan);
       }
 
     } catch (e) {
@@ -100,9 +101,9 @@ Hemen Kaydolun: https://otodna.com/davet
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -116,7 +117,7 @@ Hemen Kaydolun: https://otodna.com/davet
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("KARARGAH DAVET SİSTEMİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14)),
+          title: const Text("KARARGAH DAVET SİSTEMİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
           backgroundColor: Colors.transparent,
           elevation: 0,
           iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
@@ -131,7 +132,7 @@ Hemen Kaydolun: https://otodna.com/davet
                 const SizedBox(height: 30),
 
                 // 📜 DAVET METNİ ÖNİZLEMESİ (Cam Efektli Kutu)
-                const Text("GÖNDERİLECEK ŞİFRELİ METİN:", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold)),
+                const Text("GÖNDERİLECEK ŞİFRELİ METİN:", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                 const SizedBox(height: 12),
                 Expanded(
                   child: Container(
@@ -149,7 +150,7 @@ Hemen Kaydolun: https://otodna.com/davet
                       physics: BouncingScrollPhysics(),
                       child: Text(
                         _davetMetni,
-                        style: TextStyle(color: Colors.white, fontSize: 13, height: 1.6, letterSpacing: 0.5),
+                        style: TextStyle(color: Colors.white, fontSize: 13, height: 1.6, letterSpacing: 0.5, fontFamily: 'Avenir'),
                       ),
                     ),
                   ),
@@ -165,7 +166,7 @@ Hemen Kaydolun: https://otodna.com/davet
                       ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                       : ElevatedButton.icon(
                     icon: const Icon(Icons.send_to_mobile, color: Colors.black, size: 24),
-                    label: const Text("DAVETİYEYİ FIRLAT", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14)),
+                    label: const Text("DAVETİYEYİ FIRLAT", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
                     style: SiberTema.kuantumButonStili(),
                     onPressed: _davetiyeFirlat,
                   ),
@@ -189,7 +190,7 @@ Hemen Kaydolun: https://otodna.com/davet
       children: [
         const Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 30),
         const SizedBox(width: 12),
-        Expanded(child: Text(metin, style: const TextStyle(color: Colors.white70, fontSize: 11, height: 1.5, letterSpacing: 1, fontWeight: FontWeight.bold))),
+        Expanded(child: Text(metin, style: const TextStyle(color: Colors.white70, fontSize: 11, height: 1.5, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
       ],
     ),
   );

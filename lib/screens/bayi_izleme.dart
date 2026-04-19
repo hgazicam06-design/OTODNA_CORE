@@ -5,8 +5,8 @@ import 'dart:math' as math;
 import 'dart:developer' as developer;
 
 // 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI
-import '../../core/siber_tema.dart';
-import '../../core/responsive_kalkan.dart';
+import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart';
 
 /// 🛡️ KUANTUM BAYİ YÖNETİM PANELİ VE SİBER RADAR (BayiDashboard)
 /// Firebase'i canlı dinler, saha sakinse radar çizer, S.O.S düşerse kırmızı alarma geçer.
@@ -26,7 +26,7 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
   @override
   void initState() {
     super.initState();
-    // 📡 Sürekli Dönen Siber Radar Animasyonu
+    // 📡 Sürekli Dönen Siber Radar Animasyonu (Zırhlandı: Memory Leak Engellendi)
     _radarController = AnimationController(vsync: this, duration: const Duration(seconds: 4))..repeat();
   }
 
@@ -43,7 +43,7 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("KUANTUM BAYİ TERMİNALİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13)),
+          title: const Text("KUANTUM BAYİ TERMİNALİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13, fontFamily: 'Avenir')),
           backgroundColor: Colors.transparent,
           elevation: 0,
           iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
@@ -87,7 +87,7 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
                 physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 children: [
-                  const Text("SİBER İSTİHBARAT ÖZETİ", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
+                  const Text("SİBER İSTİHBARAT ÖZETİ", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                   const SizedBox(height: 12),
 
                   _buildCanliIstatistikKarti(
@@ -144,7 +144,7 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
           },
         ),
         const SizedBox(height: 16),
-        const Text("RADAR TEMİZ. YAKINDA S.O.S SİNYALİ YOK.", style: TextStyle(color: SiberTema.kuantumCyan, letterSpacing: 1, fontSize: 10, fontWeight: FontWeight.bold)),
+        const Text("RADAR TEMİZ. YAKINDA S.O.S SİNYALİ YOK.", style: TextStyle(color: SiberTema.kuantumCyan, letterSpacing: 1, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
       ],
     );
   }
@@ -159,12 +159,12 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
           child: const Icon(Icons.warning_amber_rounded, color: SiberTema.kanKirmizi, size: 50),
         ),
         const SizedBox(height: 16),
-        Text("🚨 $sinyalSayisi AKTİF S.O.S SİNYALİ 🚨", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2)),
+        Text("🚨 $sinyalSayisi AKTİF S.O.S SİNYALİ 🚨", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
         const SizedBox(height: 8),
         ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kanKirmizi, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
           onPressed: () => developer.log("SİBER BİLGİ: S.O.S Müdahale ekranına yönlendiriliyor..."),
-          child: const Text("MÜDAHALE ET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+          child: const Text("MÜDAHALE ET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
         )
       ],
     );
@@ -182,11 +182,11 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
           child: ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             leading: Icon(ikon, color: renk, size: 32),
-            title: Text(baslik, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 11)),
+            title: Text(baslik, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 11, fontFamily: 'Avenir')),
             trailing: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(color: renk.withOpacity(0.1), shape: BoxShape.circle),
-              child: Text(adet, style: TextStyle(color: renk, fontWeight: FontWeight.w900, fontSize: 16)),
+              child: Text(adet, style: TextStyle(color: renk, fontWeight: FontWeight.w900, fontSize: 16, fontFamily: 'Avenir')),
             ),
           ),
         );

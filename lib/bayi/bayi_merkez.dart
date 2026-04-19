@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
-// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI (lib/bayi/ klasörüne göre ayarlandı)
+// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
@@ -96,9 +96,9 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -112,7 +112,7 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("BAYİ YÖNETİM PANELİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14)),
+          title: const Text("BAYİ YÖNETİM PANELİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
           backgroundColor: Colors.transparent,
           elevation: 0,
           iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
@@ -122,7 +122,7 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
             indicatorWeight: 3,
             labelColor: SiberTema.kuantumCyan,
             unselectedLabelColor: Colors.white30,
-            labelStyle: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 11),
+            labelStyle: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 11, fontFamily: 'Avenir'),
             tabs: const [
               Tab(icon: Icon(Icons.shopping_cart_outlined), text: "SEPETİM"),
               Tab(icon: Icon(Icons.inventory_2_outlined), text: "SİPARİŞLER"),
@@ -150,9 +150,9 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
         children: [
           Icon(Icons.shopping_cart_checkout, color: SiberTema.kuantumCyan.withOpacity(0.3), size: 80),
           const SizedBox(height: 16),
-          const Text("SİBER SEPET BOŞ", style: TextStyle(color: Colors.white54, letterSpacing: 2, fontWeight: FontWeight.w900)),
+          const Text("SİBER SEPET BOŞ", style: TextStyle(color: Colors.white54, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           const SizedBox(height: 8),
-          const Text("Firmalar arası B2B tedarik ağı buraya düşer.", style: TextStyle(color: Colors.white30, fontSize: 11)),
+          const Text("Firmalar arası B2B tedarik ağı buraya düşer.", style: TextStyle(color: Colors.white30, fontSize: 11, fontFamily: 'Avenir')),
         ],
       ),
     );
@@ -167,6 +167,7 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
           return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
         }
 
+        // 🛡️ DÜZELTME: Veri Yoksa Güvenli Boş Ekran Döndür
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return Center(
             child: Column(
@@ -174,12 +175,13 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
               children: [
                 const Icon(Icons.inventory_2_outlined, color: Colors.white12, size: 80),
                 const SizedBox(height: 16),
-                const Text("SİPARİŞ BULUNAMADI", style: TextStyle(color: Colors.white54, letterSpacing: 2, fontWeight: FontWeight.w900)),
+                const Text("SİPARİŞ BULUNAMADI", style: TextStyle(color: Colors.white54, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
               ],
             ),
           );
         }
 
+        // Veri Varsa ListView Döndür
         return ListView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.all(16),
@@ -214,14 +216,14 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
           decoration: BoxDecoration(color: renk.withOpacity(0.1), shape: BoxShape.circle),
           child: Icon(Icons.directions_car_outlined, color: renk, size: 24),
         ),
-        title: Text(plaka, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1)),
+        title: Text(plaka, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 4),
-            Text(urun, style: const TextStyle(color: Colors.white54, fontSize: 11)),
+            Text(urun, style: const TextStyle(color: Colors.white54, fontSize: 11, fontFamily: 'Avenir')),
             const SizedBox(height: 4),
-            Text("DURUM: $durum", style: TextStyle(color: renk, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+            Text("DURUM: $durum", style: TextStyle(color: renk, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
           ],
         ),
         trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white30, size: 16),
@@ -289,7 +291,7 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
                 ),
                 child: Column(
                   children: [
-                    const Text("NET ÇEKİLEBİLİR BAKİYE", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold)),
+                    const Text("NET ÇEKİLEBİLİR BAKİYE", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                     const SizedBox(height: 8),
                     Text("₺${netKasa.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 32, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
                   ],
@@ -304,7 +306,7 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
                 height: 60,
                 child: ElevatedButton.icon(
                   icon: const Icon(Icons.account_balance_outlined, color: Colors.black),
-                  label: const Text("HAKEDİŞİ BANKAYA AKTAR", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
+                  label: const Text("HAKEDİŞİ BANKAYA AKTAR", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
                   style: SiberTema.kuantumButonStili(),
                   onPressed: () => _hakedisTalebiOlustur(netKasa),
                 ),
@@ -323,7 +325,7 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(child: Text(baslik, style: const TextStyle(color: Colors.white70, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold))),
+          Expanded(child: Text(baslik, style: const TextStyle(color: Colors.white70, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
           Text("${isNegative ? '-' : ''}₺${tutar.toStringAsFixed(2)}", style: TextStyle(color: renk, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
         ],
       ),

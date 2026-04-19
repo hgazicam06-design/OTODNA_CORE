@@ -1,3 +1,4 @@
+// lib/screens/ekspertiz_kokpiti_screen.dart
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
@@ -5,9 +6,9 @@ import 'package:flutter/material.dart';
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
-// ⚙️ ARKA PLAN MOTORLARI (Senin yazdığın gerçek servisler)
-import '../services/muayene_ekrani.dart'; // EkspertizServisi'nin bulunduğu dosyan
-import '../commerce/eco_system_gate.dart'; // OtoDnaEcoSystem'in bulunduğu dosyan
+// ⚙️ ARKA PLAN MOTORLARI
+import '../services/muayene_ekrani.dart';
+import '../commerce/eco_system_gate.dart';
 
 class EkspertizKokpitiScreen extends StatefulWidget {
   final String aracId;
@@ -69,10 +70,10 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
         }
 
         bool isSafe = detay['durum'] == 'saglam';
-        String fotoUrl = detay['fotoUrl'] ?? (isSafe ? 'GEREK_YOK' : ''); // Arızalıysa foto URL olmak zorunda
+        String fotoUrl = detay['fotoUrl'] ?? (isSafe ? 'GEREK_YOK' : '');
 
-        // 🚀 SENİN YAZDIĞIN MOTORU ATEŞLİYORUZ
-        Map<String, dynamic> sonuc = await _ekspertizServisi.kontrolNoktasiGuncelle(
+        // 🚀 1. DÜZELTME: Senin motorun bir şey dönmüyor (void), Hata varsa throw fırlatıyor.
+        await _ekspertizServisi.kontrolNoktasiGuncelle(
           aracId: widget.aracId,
           bayiId: widget.bayiId,
           parcaAdi: parcaAdi,
@@ -81,20 +82,16 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
           fotoUrl: fotoUrl,
         );
 
-        if (!sonuc['basarili']) {
-          _siberUyariVer(sonuc['mesaj'], true);
-          setState(() => _isSaving = false);
-          return;
-        }
-
         // Eğer parça arızalıysa, Karargah Ticaret Motorunu (%12 Pay) anında tetikle!
         if (!isSafe) {
           kritikHataVarMi = true;
+          // 🚀 2. DÜZELTME: Senin Ticaret motorun benden "bayiId" istiyordu, eklendi!
           await _ecoSystem.parcaOner(
             plakaID: widget.aracId,
             sorunluParca: parcaAdi,
-            parcaSatisFiyati: 4500.00, // Örnek serbest piyasa fiyatı (Vitrindeki)
-            saticiBayiAdi: "Murat Plaza", // Yedek parçalar bu isimle listelenir
+            parcaSatisFiyati: 4500.00,
+            saticiBayiAdi: "Murat Plaza",
+            bayiId: widget.bayiId,
           );
         }
       }
@@ -111,18 +108,21 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
       Navigator.pop(context);
 
     } catch (e) {
+      // Motorlarından fırlatılan "SİBER İHLAL" Exception'ları buraya düşecek!
       if (!mounted) return;
-      _siberUyariVer("SİBER AĞ HATASI: Mühürleme Başarısız! $e", true);
+      String hataMesaji = e.toString().replaceAll("Exception: ", "");
+      _siberUyariVer(hataMesaji, true);
     } finally {
       if (mounted) setState(() => _isSaving = false);
     }
   }
 
   void _siberUyariVer(String mesaj, bool isError) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir', fontSize: 12)),
-        backgroundColor: isError ? const Color(0xFFFF0040) : const Color(0xFF00FFC2).withOpacity(0.8),
+        content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir', fontSize: 12)),
+        backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -137,30 +137,28 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: Color(0xFF00FFC2)), onPressed: () => Navigator.pop(context)),
+          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
           title: const Text("DİJİTAL REFERANS PROTOKOLÜ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
           centerTitle: true,
         ),
         body: Column(
           children: [
-            // İnce, Şık Bilgi Bandı
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
               decoration: const BoxDecoration(
                 border: Border(bottom: BorderSide(color: Colors.white12, width: 1)),
-                color: Color(0xFF0A0A0C),
+                color: SiberTema.matGrey,
               ),
               child: const Row(
                 children: [
-                  Icon(Icons.radar, color: Color(0xFFFFB300), size: 16),
+                  Icon(Icons.radar, color: SiberTema.altinSari, size: 16),
                   SizedBox(width: 8),
-                  Text("ARAÇ DNA TARAMASI DEVAM EDİYOR...", style: TextStyle(color: Color(0xFFFFB300), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                  Text("ARAÇ DNA TARAMASI DEVAM EDİYOR...", style: TextStyle(color: SiberTema.altinSari, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                 ],
               ),
             ),
 
-            // Kompakt Liste Alanı
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
@@ -174,11 +172,10 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
               ),
             ),
 
-            // Alt Kayıt Paneli
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: const Color(0xFF0A0A0C),
+                color: SiberTema.matGrey,
                 border: const Border(top: BorderSide(color: Colors.white12, width: 1)),
                 boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.8), blurRadius: 20, offset: const Offset(0, -10))],
               ),
@@ -187,7 +184,7 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
                 height: 50,
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00FFC2),
+                    backgroundColor: SiberTema.kuantumCyan,
                     foregroundColor: Colors.black,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
@@ -208,7 +205,6 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
     );
   }
 
-  // 💎 TESLA STANDARTLARINDA SADE VE ŞIK SATIR
   Widget _buildKompaktSatir(String parcaAdi, Map<String, dynamic> detay) {
     bool isSaglam = detay['durum'] == 'saglam';
     bool isArizali = detay['durum'] == 'arizali';
@@ -218,10 +214,10 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: const Color(0xFF141518), // Fırçalanmış koyu titanyum hissi
+        color: SiberTema.matGrey.withOpacity(0.8),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: isSaglam ? const Color(0xFF00FFC2).withOpacity(0.3) : isArizali ? const Color(0xFFFF0040).withOpacity(0.3) : Colors.white.withOpacity(0.05),
+          color: isSaglam ? SiberTema.kuantumCyan.withOpacity(0.3) : isArizali ? SiberTema.kanKirmizi.withOpacity(0.3) : Colors.white.withOpacity(0.05),
           width: 1,
         ),
       ),
@@ -246,13 +242,13 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
                 margin: const EdgeInsets.only(right: 12),
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: fotoYuklendi ? const Color(0xFF00FFC2).withOpacity(0.1) : const Color(0xFFFFB300).withOpacity(0.1),
+                  color: fotoYuklendi ? SiberTema.kuantumCyan.withOpacity(0.1) : SiberTema.altinSari.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: fotoYuklendi ? const Color(0xFF00FFC2) : const Color(0xFFFFB300)),
+                  border: Border.all(color: fotoYuklendi ? SiberTema.kuantumCyan : SiberTema.altinSari),
                 ),
                 child: Icon(
                   fotoYuklendi ? Icons.check_circle : Icons.camera_alt,
-                  color: fotoYuklendi ? const Color(0xFF00FFC2) : const Color(0xFFFFB300),
+                  color: fotoYuklendi ? SiberTema.kuantumCyan : SiberTema.altinSari,
                   size: 18,
                 ),
               ),
@@ -270,11 +266,11 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
             child: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: isSaglam ? const Color(0xFF00FFC2).withOpacity(0.15) : Colors.transparent,
+                color: isSaglam ? SiberTema.kuantumCyan.withOpacity(0.15) : Colors.transparent,
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: isSaglam ? const Color(0xFF00FFC2) : Colors.white12),
+                border: Border.all(color: isSaglam ? SiberTema.kuantumCyan : Colors.white12),
               ),
-              child: Icon(Icons.check, color: isSaglam ? const Color(0xFF00FFC2) : Colors.white30, size: 20),
+              child: Icon(Icons.check, color: isSaglam ? SiberTema.kuantumCyan : Colors.white30, size: 20),
             ),
           ),
           const SizedBox(width: 8),
@@ -289,11 +285,11 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
             child: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: isArizali ? const Color(0xFFFF0040).withOpacity(0.15) : Colors.transparent,
+                color: isArizali ? SiberTema.kanKirmizi.withOpacity(0.15) : Colors.transparent,
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: isArizali ? const Color(0xFFFF0040) : Colors.white12),
+                border: Border.all(color: isArizali ? SiberTema.kanKirmizi : Colors.white12),
               ),
-              child: Icon(Icons.close, color: isArizali ? const Color(0xFFFF0040) : Colors.white30, size: 20),
+              child: Icon(Icons.close, color: isArizali ? SiberTema.kanKirmizi : Colors.white30, size: 20),
             ),
           ),
         ],

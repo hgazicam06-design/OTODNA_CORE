@@ -7,9 +7,9 @@ import 'package:flutter/services.dart';
 
 // 🚀 KARARGAH ZIRHLARI VE TEMA
 import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart'; // EKLENDİ: Web/Tablet Kalkanı
 
-/// 🦅 OTODNA SİBER GİRİŞ KALKANI - V3 (TEK EKRANDA GİRİŞ VE KAYIT)
-/// [2026-04-18] GÜNCELLEME: Firebase Atomik Kayıt ve Giriş birleştirildi.
+/// 🦅 OTODNA SİBER GİRİŞ KALKANI - V4 (MERKEZİ TEMA UYARLAMASI)
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -18,11 +18,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // 🌑 KURUMSAL ZIRH: TRUE BLACK & KUANTUM TURKUAZI
-  static const Color bgColor = Color(0xFF000000);
-  static const Color primaryCyan = Color(0xFF00FFC2);
-  static const Color dangerColor = Colors.redAccent;
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -43,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  // 🚀 FİREBASE SİBER GİRİŞ VE KAYIT MOTORU (BİRLEŞTİRİLMİŞ)
+  // 🚀 FİREBASE SİBER GİRİŞ VE KAYIT MOTORU (ATOMİK ZIRHLI)
   Future<void> _kapiyiZorla() async {
     final name = _nameController.text.trim();
     final email = _emailController.text.trim();
@@ -56,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     if (!_isLoginMode && sifre.length < 6) {
+      HapticFeedback.heavyImpact();
       _uyariGoster("GÜVENLİK İHLALİ: ŞİFRE EN AZ 6 KARAKTER OLMALI!", isError: true);
       return;
     }
@@ -67,13 +63,18 @@ class _LoginScreenState extends State<LoginScreen> {
       if (_isLoginMode) {
         // 🟢 GİRİŞ YAP PROTOKOLÜ
         await _auth.signInWithEmailAndPassword(email: email, password: sifre);
-        // NOT: Başarılı olursa otoDnaAuthGate otomatik içeri çeker, Navigator'a gerek yok.
+
+        // GİRİŞ LOGLAMASI (Kara Kutu)
+        await _db.collection('sistem_loglari').add({
+          'islem_turu': 'SİSTEM_GİRİŞİ',
+          'islem_detayi': 'SİBER ONAY: $email yetkilisi Karargaha giriş yaptı.',
+          'tarih': FieldValue.serverTimestamp(),
+        });
       } else {
-        // 🔵 YENİ KAYIT PROTOKOLÜ (ATOMİK ZIRHLI)
+        // 🔵 YENİ KAYIT PROTOKOLÜ (ATOMİK ZIRHLI WRITEBATCH)
         UserCredential cred = await _auth.createUserWithEmailAndPassword(email: email, password: sifre);
 
         if (cred.user != null) {
-          // 🛡️ WRITEBATCH: Karargah sicili tek füzede ateşlenir!
           WriteBatch batch = _db.batch();
 
           DocumentReference userRef = _db.collection('kullanicilar').doc(cred.user!.uid);
@@ -99,6 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       }
     } on FirebaseAuthException catch (e) {
+      HapticFeedback.heavyImpact();
       String hataMesaji = "AĞ ERİŞİMİ REDDEDİLDİ.";
       if (e.code == 'user-not-found' || e.code == 'wrong-password' || e.code == 'invalid-credential') {
         hataMesaji = "GEÇERSİZ KİMLİK VEYA ŞİFRE!";
@@ -116,8 +118,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void _uyariGoster(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0.5, color: Colors.black, fontSize: 11)),
-        backgroundColor: isError ? dangerColor : primaryCyan,
+        content: Text(mesaj, style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0.5, color: SiberTema.oledBlack, fontSize: 11, fontFamily: 'Avenir')),
+        backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
@@ -134,40 +136,44 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: bgColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            // --- ÜST KOMUTA MERKEZİ ---
-            _buildHeader(),
+    // 🛡️ KALKAN DEVREYE ALINDI
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent, // Arka plan Kalkan'dan besleniyor
+        body: SafeArea(
+          child: Column(
+            children: [
+              // --- ÜST KOMUTA MERKEZİ ---
+              _buildHeader(),
 
-            Expanded(
-              child: Center(
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.all(24.0),
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 400),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // --- SİBER CAM PANEL ---
-                        _buildGlassCard(),
-                        const SizedBox(height: 32),
-                        // --- KAYIT OL / GİRİŞ YAP GEÇİŞ BAĞLANTISI ---
-                        _buildModeToggleLink(),
-                      ],
+              Expanded(
+                child: Center(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.all(24.0),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 400),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // --- SİBER CAM PANEL ---
+                          _buildGlassCard(),
+                          const SizedBox(height: 32),
+                          // --- KAYIT OL / GİRİŞ YAP GEÇİŞ BAĞLANTISI ---
+                          _buildModeToggleLink(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
 
-            // --- ALT KOMUTA MERKEZİ (Görsel Kabuk) ---
-            _buildBottomNav(),
-          ],
+              // --- ALT KOMUTA MERKEZİ (Görsel Kabuk) ---
+              _buildBottomNav(),
+            ],
+          ),
         ),
       ),
     );
@@ -179,14 +185,14 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Icon(Icons.notifications_none, color: primaryCyan, size: 28),
+          const Icon(Icons.notifications_none, color: SiberTema.kuantumCyan, size: 28),
           const Column(
             children: [
               Text("OtoDNA", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
               Text("Siber Karargah", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w500, letterSpacing: 2, fontFamily: 'Avenir')),
             ],
           ),
-          Icon(Icons.security, color: primaryCyan.withOpacity(0.5), size: 28),
+          Icon(Icons.security, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 28),
         ],
       ),
     );
@@ -206,7 +212,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           child: Column(
             children: [
-              // Segmented Control (Kullanıcı / Bayi - Sadece görsel uyum için)
               if (_isLoginMode) _buildSegmentedControl(),
               if (_isLoginMode) const SizedBox(height: 32),
 
@@ -217,7 +222,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 32),
 
-              // Kayıt Modundaysa İsim Alanı Eklenir
               if (!_isLoginMode) ...[
                 _buildSiberTextField(controller: _nameController, icon: Icons.badge_outlined, hint: "AD SOYAD / FİRMA ADI"),
                 const SizedBox(height: 16),
@@ -245,7 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildSegmentedControl() {
     return Container(
       height: 44,
-      decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(22), border: Border.all(color: Colors.white10)),
+      decoration: BoxDecoration(color: SiberTema.oledBlack, borderRadius: BorderRadius.circular(22), border: Border.all(color: Colors.white10)),
       child: Row(
         children: [
           _buildSegmentTab("Kullanıcı", _isKullaniciGirisi, () => setState(() => _isKullaniciGirisi = true)),
@@ -261,11 +265,11 @@ class _LoginScreenState extends State<LoginScreen> {
         onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
-            color: isActive ? primaryCyan : Colors.transparent,
+            color: isActive ? SiberTema.kuantumCyan : Colors.transparent,
             borderRadius: BorderRadius.circular(22),
           ),
           alignment: Alignment.center,
-          child: Text(title, style: TextStyle(color: isActive ? Colors.black : Colors.white38, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+          child: Text(title, style: TextStyle(color: isActive ? SiberTema.oledBlack : Colors.white38, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
         ),
       ),
     );
@@ -278,13 +282,13 @@ class _LoginScreenState extends State<LoginScreen> {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
-          foregroundColor: primaryCyan,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: primaryCyan, width: 2)),
+          foregroundColor: SiberTema.kuantumCyan,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: SiberTema.kuantumCyan, width: 2)),
           elevation: 0,
         ),
         onPressed: _isProcessing ? null : _kapiyiZorla,
         child: _isProcessing
-            ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: primaryCyan, strokeWidth: 2))
+            ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2))
             : Text(_isLoginMode ? "AĞI AKTİFLEŞTİR" : "PROTOKOLÜ TAMAMLA", style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
       ),
     );
@@ -297,7 +301,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Text(_isLoginMode ? "Henüz kayıtlı değil misin? " : "Zaten yetkili misin? ", style: const TextStyle(color: Colors.white38, fontSize: 12, fontFamily: 'Avenir')),
         GestureDetector(
           onTap: _isProcessing ? null : _modDegistir,
-          child: Text(_isLoginMode ? "YENİ KAYIT AÇ" : "GİRİŞ YAP", style: const TextStyle(color: primaryCyan, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+          child: Text(_isLoginMode ? "YENİ KAYIT AÇ" : "GİRİŞ YAP", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
         ),
       ],
     );
@@ -316,12 +320,12 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.black,
+              color: SiberTema.oledBlack,
               shape: BoxShape.circle,
-              border: Border.all(color: primaryCyan, width: 2),
-              boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.2), blurRadius: 15)],
+              border: Border.all(color: SiberTema.kuantumCyan, width: 2),
+              boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.2), blurRadius: 15)],
             ),
-            child: const Icon(Icons.qr_code_scanner, color: primaryCyan, size: 28),
+            child: const Icon(Icons.qr_code_scanner, color: SiberTema.kuantumCyan, size: 28),
           ),
           _buildNavIcon(Icons.settings_input_component, "Servis"),
           _buildNavIcon(Icons.admin_panel_settings_outlined, "Kontrol"),
@@ -343,19 +347,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildSiberTextField({required TextEditingController controller, required IconData icon, required String hint, bool isPassword = false, bool sifreGizli = false, VoidCallback? onVisibilityToggle}) {
     return Container(
-      decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white10)),
+      decoration: BoxDecoration(color: SiberTema.oledBlack, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white10)),
       child: TextField(
         controller: controller,
         obscureText: isPassword && sifreGizli,
         style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
         decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: primaryCyan.withOpacity(0.5), size: 20),
-          suffixIcon: isPassword ? IconButton(icon: Icon(sifreGizli ? Icons.visibility_off : Icons.visibility, color: primaryCyan, size: 20), onPressed: onVisibilityToggle) : null,
+          prefixIcon: Icon(icon, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 20),
+          suffixIcon: isPassword ? IconButton(icon: Icon(sifreGizli ? Icons.visibility_off : Icons.visibility, color: SiberTema.kuantumCyan, size: 20), onPressed: onVisibilityToggle) : null,
           hintText: hint,
           hintStyle: const TextStyle(color: Colors.white12, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
-          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: primaryCyan, width: 1.5)),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 1.5)),
         ),
       ),
     );

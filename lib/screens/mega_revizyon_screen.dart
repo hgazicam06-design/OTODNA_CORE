@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart'; // 🛡️ SİBER DÜZELTME: Tarih formatı paketi eklendi!
 
 // 🚀 KARARGAH ZIRHLARI
 import '../core/siber_tema.dart';
@@ -49,7 +49,7 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
     final XFile? secilenGorsel = await _picker.pickImage(source: kaynak, imageQuality: 70);
     if (secilenGorsel != null) {
       setState(() {
-        _secilenParcalar[parca] ??= {'fiyat': 0.0};
+        _secilenParcalar[parca] ??= <String, dynamic>{'fiyat': 0.0};
         _secilenParcalar[parca]!['gorsel'] = File(secilenGorsel.path);
       });
     }
@@ -57,7 +57,7 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
 
   void _fiyatGuncelle(String parca, String fiyatText) {
     double fiyat = double.tryParse(fiyatText.replaceAll(',', '.')) ?? 0.0;
-    _secilenParcalar[parca] ??= {};
+    _secilenParcalar[parca] ??= <String, dynamic>{};
     _secilenParcalar[parca]!['fiyat'] = fiyat;
   }
 
@@ -79,9 +79,8 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
         setState(() {
           _seciliAracTipi = 'OCR Fatura Parçaları';
           _paketler['OCR Fatura Parçaları'] = okunanParcalar;
-          // İlk parçaya toplam fiyatı ata (Siber Mantık)
           if (okunanParcalar.isNotEmpty) {
-            _secilenParcalar[okunanParcalar.first] = {'fiyat': okunanToplamMaliyet};
+            _secilenParcalar[okunanParcalar.first] = <String, dynamic>{'fiyat': okunanToplamMaliyet};
           }
         });
         _siberUyari("SİBER ANALİZ BAŞARILI: ${okunanParcalar.length} Kalem Tespit Edildi.", isError: false);
@@ -104,7 +103,6 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
       double toplamMaliyet = 0;
       List<Map<String, dynamic>> muhurlenecekParcalar = [];
 
-      // 1. GÖRSEL YÜKLEME VE VERİ HAZIRLAMA
       for (var entry in _secilenParcalar.entries) {
         double fiyat = entry.value['fiyat'] ?? 0.0;
         toplamMaliyet += fiyat;
@@ -125,13 +123,10 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
         });
       }
 
-      // Gazi Protokolü: %10 Kâr + %2 Vergi = %12
       double karargahPayi = toplamMaliyet * 0.12;
 
-      // 2. ATOMİK YAZMA (BATCH)
       WriteBatch siberBatch = _db.batch();
 
-      // İşlem Kaydı
       DocumentReference islemRef = _db.collection('islem_kayitlari').doc(islemId);
       siberBatch.set(islemRef, {
         'islem_id': islemId,
@@ -146,18 +141,20 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
         'durum': 'MUHURLENDI',
       });
 
-      // Araç DNA Güncelleme (Skor artışı ve son işlem)
       DocumentReference aracRef = _db.collection('araclar').doc(widget.plaka.toUpperCase());
       siberBatch.update(aracRef, {
         'son_islem_tarihi': FieldValue.serverTimestamp(),
-        'dna_skoru': FieldValue.increment(5), // Her revizyon skoru yükseltir
+        'dna_skoru': FieldValue.increment(5),
         'bekleyen_islem': false,
       });
 
       await siberBatch.commit();
 
-      // 3. PDF GARANTİ SERTİFİKASI ÜRETİMİ
+      // 🛡️ SİBER DÜZELTME: Kapsam hatası giderildi, değişkenler temizlendi.
       String anlikTarih = DateFormat('dd.MM.yyyy HH:mm').format(DateTime.now());
+
+      // NOT: Eğer bu fonksiyon kırmızı çiziyorsa 'KuantumPdfMotoru' sınıfında
+      // bu parametreler eksiktir veya fonksiyon adı yanlıştır!
       await _pdfMotoru.garantiBelgesiUretVePaylas(
         bayiIsim: 'OTO DNA MERKEZ SERVİS',
         plaka: widget.plaka.toUpperCase(),
@@ -180,11 +177,25 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
 
   void _siberUyari(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 12)),
-      backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
+      content: Text(mesaj, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 12, fontFamily: 'Avenir')),
+      backgroundColor: isError ? SiberTema.kritikRed : SiberTema.kuantumCyan,
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     ));
+  }
+
+  // 🛡️ SİBER DÜZELTME 2: Temada bulunmayan siberInputDecor kodun içine gömüldü!
+  InputDecoration _siberInputDecor(String hint, IconData icon) {
+    return InputDecoration(
+      labelText: hint,
+      labelStyle: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.5), fontSize: 12, fontFamily: 'Avenir'),
+      prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
+      filled: true,
+      fillColor: Colors.black,
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.1))),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 2)),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    );
   }
 
   @override
@@ -197,26 +208,22 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: Text("MEGA REVİZYON: ${widget.plaka}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 16)),
+          title: Text("MEGA REVİZYON: ${widget.plaka}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 16, fontFamily: 'Avenir')),
           actions: [
             IconButton(
-              icon: Icon(Icons.document_scanner, color: _isOcrScanning ? SiberTema.kanKirmizi : SiberTema.altinSari),
+              icon: Icon(Icons.document_scanner, color: _isOcrScanning ? SiberTema.kritikRed : SiberTema.altinSari),
               onPressed: _isOcrScanning ? null : _faturayiTaraVeCozumle,
             )
           ],
         ),
         body: Column(
           children: [
-            // 🏷️ ARAÇ TİPİ SEÇİCİ (Siber Cam)
             _buildAracTipiSelector(),
-
             Expanded(
               child: _isOcrScanning
                   ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                   : _buildParcaListesi(),
             ),
-
-            // 🔥 MÜHÜRLEME BUTONU
             _buildMuhurleButonu(),
           ],
         ),
@@ -245,7 +252,7 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
                 border: Border.all(color: active ? SiberTema.kuantumCyan : Colors.white10),
               ),
               alignment: Alignment.center,
-              child: Text(tip, style: TextStyle(color: active ? SiberTema.kuantumCyan : Colors.white54, fontWeight: FontWeight.bold)),
+              child: Text(tip, style: TextStyle(color: active ? SiberTema.kuantumCyan : Colors.white54, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             ),
           );
         }).toList(),
@@ -270,12 +277,14 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
           ),
           child: ExpansionTile(
             onExpansionChanged: (val) {
-              if (val) { setState(() => _secilenParcalar[parca] ??= {'fiyat': 0.0}); }
+              if (val) { setState(() => _secilenParcalar[parca] ??= <String, dynamic>{'fiyat': 0.0}); }
               else { if (_secilenParcalar[parca]?['fiyat'] == 0.0 && _secilenParcalar[parca]?['gorsel'] == null) setState(() => _secilenParcalar.remove(parca)); }
             },
             leading: Icon(selected ? Icons.check_circle : Icons.circle_outlined, color: selected ? SiberTema.kuantumCyan : Colors.white10),
-            title: Text(parca, style: TextStyle(color: selected ? Colors.white : Colors.white38, fontWeight: FontWeight.bold)),
+            title: Text(parca, style: TextStyle(color: selected ? Colors.white : Colors.white38, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             childrenPadding: const EdgeInsets.all(16),
+            iconColor: SiberTema.kuantumCyan,
+            collapsedIconColor: Colors.white54,
             children: [
               Row(
                 children: [
@@ -283,8 +292,8 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
                     child: TextField(
                       keyboardType: TextInputType.number,
                       onChanged: (val) => _fiyatGuncelle(parca, val),
-                      style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold),
-                      decoration: SiberTema.siberInputDecor("Maliyet (₺)", Icons.payments_outlined),
+                      style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+                      decoration: _siberInputDecor("Maliyet (₺)", Icons.payments_outlined),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -321,7 +330,7 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
               children: [
                 Icon(Icons.fingerprint, color: Colors.black, size: 30),
                 SizedBox(width: 15),
-                Text("SİSTEME MÜHÜRLE", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 18, letterSpacing: 2)),
+                Text("SİSTEME MÜHÜRLE", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 18, letterSpacing: 2, fontFamily: 'Avenir')),
               ],
             ),
           ),

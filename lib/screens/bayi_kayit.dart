@@ -1,12 +1,12 @@
 // lib/screens/bayi_kayit.dart
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart'; // HapticFeedback için gerekli zırh
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
 // 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI
-import '../../core/siber_tema.dart';
-import '../../core/responsive_kalkan.dart';
+import '../core/siber_tema.dart';
+import '../core/responsive_kalkan.dart';
 
 /// 🛡️ KUANTUM BAYİ KAYIT VE SİBER İMECE SÖZLEŞMESİ (BayiKayitFormu)
 /// Ustaların uzmanlık alanlarını seçtiği ve adli yaptırımlı sözleşmeyi onaylayıp Karargaha ATOMİK mühürlediği terminal.
@@ -34,6 +34,27 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
 
   bool _sozlesmeOnay = false;
   bool _islemSuruyor = false;
+
+  // ── 🚨 ARAYÜZ YARDIMCILARI ──
+  void _siberUyariGoster(String baslik, String mesaj, Color renk) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: SiberTema.matGrey,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+            const SizedBox(height: 4),
+            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir')),
+          ],
+        ),
+      ),
+    );
+  }
 
   // ── 🚀 FİREBASE ATOMİK MÜHÜRLEME PROTOKOLÜ ──
   Future<void> _kayitTamamla() async {
@@ -96,27 +117,6 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
     }
   }
 
-  // ── 🚨 ARAYÜZ YARDIMCILARI ──
-  void _siberUyariGoster(String baslik, String mesaj, Color renk) {
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: SiberTema.matGrey,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
@@ -124,7 +124,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("BAYİ KAYIT & SÖZLEŞME", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14)),
+          title: const Text("BAYİ KAYIT & SÖZLEŞME", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
           backgroundColor: Colors.transparent,
           elevation: 0,
           iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
@@ -134,7 +134,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
           padding: const EdgeInsets.all(20),
           children: [
             // 1. UZMANLIK SEÇİMİ
-            const Text("ATÖLYE UZMANLIK ALANLARINIZI SEÇİN", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900)),
+            const Text("ATÖLYE UZMANLIK ALANLARINIZI SEÇİN", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             const SizedBox(height: 12),
             Container(
               decoration: BoxDecoration(
@@ -145,7 +145,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
               child: Column(
                 children: _uzmanliklar.keys.map((String key) {
                   return CheckboxListTile(
-                    title: Text(key, style: TextStyle(color: _uzmanliklar[key]! ? SiberTema.kuantumCyan : Colors.white, fontSize: 12, letterSpacing: 1, fontWeight: FontWeight.bold)),
+                    title: Text(key, style: TextStyle(color: _uzmanliklar[key]! ? SiberTema.kuantumCyan : Colors.white, fontSize: 12, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                     value: _uzmanliklar[key],
                     activeColor: SiberTema.kuantumCyan,
                     checkColor: Colors.black,
@@ -162,7 +162,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
             const SizedBox(height: 30),
 
             // 2. OTODNA SİBER İMECE SÖZLEŞMESİ
-            const Text("YASAL PROTOKOL", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900)),
+            const Text("YASAL PROTOKOL", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             const SizedBox(height: 8),
             Container(
               height: 180,
@@ -180,7 +180,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                       "2. Havuz borcu ödenmez veya Karargah kuralları ihlal edilirse sistemden süresiz men ve adli yaptırım uygulanır.\n\n"
                       "3. Yetkinlik dışı (yanlış) uzmanlık beyanı, Usta DNA Puanını doğrudan düşürür ve 'Kara Liste' algoritmasını tetikler.\n\n"
                       "4. Bu sözleşme IP adresi ve cihaz kimliği ile dijital olarak mühürlenir.",
-                  style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.6, letterSpacing: 0.5),
+                  style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.6, letterSpacing: 0.5, fontFamily: 'Avenir'),
                 ),
               ),
             ),
@@ -197,7 +197,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
               child: SwitchListTile(
                 title: Text(
                   "SÖZLEŞME ŞARTLARINI VE ADLİ YAPTIRIMLARI KABUL EDİYORUM.",
-                  style: TextStyle(color: _sozlesmeOnay ? SiberTema.kuantumCyan : Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1, height: 1.5),
+                  style: TextStyle(color: _sozlesmeOnay ? SiberTema.kuantumCyan : Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1, height: 1.5, fontFamily: 'Avenir'),
                 ),
                 value: _sozlesmeOnay,
                 activeColor: SiberTema.kuantumCyan,
@@ -220,7 +220,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                   ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                   : ElevatedButton.icon(
                 icon: const Icon(Icons.security, color: Colors.black, size: 24),
-                label: const Text("SİSTEME KAYDOL VE MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                label: const Text("SİSTEME KAYDOL VE MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _sozlesmeOnay ? SiberTema.kuantumCyan : Colors.white10,
                   foregroundColor: _sozlesmeOnay ? Colors.black : Colors.white30,

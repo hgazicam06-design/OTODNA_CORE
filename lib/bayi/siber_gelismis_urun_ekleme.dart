@@ -72,9 +72,10 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
 
   // ── ⚙️ KUANTUM FİNANS HESAPLAYICI ──
   void _siberHesaplamayiTetikle() {
-    double gelis = double.tryParse(_gelisFiyatiCtrl.text) ?? 0.0;
-    double kdv = double.tryParse(_kdvOraniCtrl.text) ?? 20.0;
-    double marj = double.tryParse(_karMarjiCtrl.text) ?? 0.0;
+    // 🛡️ SİBER DÜZELTME: Virgülü noktaya çevirerek küsuratlı girmeyi garanti altına aldık
+    double gelis = double.tryParse(_gelisFiyatiCtrl.text.replaceAll(',', '.')) ?? 0.0;
+    double kdv = double.tryParse(_kdvOraniCtrl.text.replaceAll(',', '.')) ?? 20.0;
+    double marj = double.tryParse(_karMarjiCtrl.text.replaceAll(',', '.')) ?? 0.0;
 
     setState(() {
       _kdvliGelis = gelis * (1 + (kdv / 100));
@@ -103,10 +104,12 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
     try {
       // 1. GÖRSELLERİ BULUTA YÜKLE (Karargah Storage)
       List<String> gorselLinkleri = [];
-      for (var dosya in _secilenGorseller) {
-        String yol = 'market_gorselleri/$_bayiId/${DateTime.now().millisecondsSinceEpoch}_${_secilenGorseller.indexOf(dosya)}.jpg';
+      for (int i = 0; i < _secilenGorseller.length; i++) {
+        File dosya = _secilenGorseller[i];
+        String yol = 'market_gorselleri/$_bayiId/${DateTime.now().millisecondsSinceEpoch}_$i.jpg';
         TaskSnapshot snap = await _storage.ref().child(yol).putFile(dosya);
-        gorselLinkleri.add(await snap.ref.getDownloadURL());
+        String url = await snap.ref.getDownloadURL();
+        gorselLinkleri.add(url);
       }
 
       // 2. ATOMİK ZIRH (WriteBatch)
@@ -135,12 +138,13 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
           'etiketler': etiketListesi,
         },
         'finans': {
-          'net_gelis': double.tryParse(_gelisFiyatiCtrl.text) ?? 0,
-          'kdv_orani': double.tryParse(_kdvOraniCtrl.text) ?? 20,
-          'kar_marji': double.tryParse(_karMarjiCtrl.text) ?? 0,
-          'otodna_kesintisi': _otodnaPayi,
-          'bayi_net_hakedis': _bayiNetHedefi,
-          'kdv_dahil_vitrin_fiyati': _musteriVitrinFiyati,
+          // 🛡️ SİBER DÜZELTME: Güvenli Tür Dönüşümleri (Safe Parsing)
+          'net_gelis': double.tryParse(_gelisFiyatiCtrl.text.replaceAll(',', '.')) ?? 0.0,
+          'kdv_orani': double.tryParse(_kdvOraniCtrl.text.replaceAll(',', '.')) ?? 20.0,
+          'kar_marji': double.tryParse(_karMarjiCtrl.text.replaceAll(',', '.')) ?? 0.0,
+          'otodna_kesintisi': double.tryParse(_otodnaPayi.toStringAsFixed(2)) ?? 0.0,
+          'bayi_net_hakedis': double.tryParse(_bayiNetHedefi.toStringAsFixed(2)) ?? 0.0,
+          'kdv_dahil_vitrin_fiyati': double.tryParse(_musteriVitrinFiyati.toStringAsFixed(2)) ?? 0.0,
         },
         'olusturulma_tarihi': FieldValue.serverTimestamp(),
         'aktif_mi': true,
@@ -175,7 +179,7 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("DETAYLI ÜRÜN & GALERİ MERKEZİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5)),
+          title: const Text("DETAYLI ÜRÜN & GALERİ MERKEZİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5, fontFamily: 'Avenir')),
           backgroundColor: Colors.transparent,
           elevation: 0,
           iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
@@ -243,7 +247,7 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
                     : ElevatedButton.icon(
                   style: SiberTema.kuantumButonStili(),
                   icon: const Icon(Icons.security, color: Colors.black),
-                  label: const Text("GALERİ VE FİYATLA MÜHÜRLE", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                  label: const Text("GALERİ VE FİYATLA MÜHÜRLE", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                   onPressed: _urunuMarketeFirlat,
                 ),
               ),
@@ -270,7 +274,7 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
                 child: Container(
                   width: 100, height: 100,
                   decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.kuantumCyan, width: 1.5, style: BorderStyle.solid)),
-                  child: const Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.add_a_photo, color: SiberTema.kuantumCyan), SizedBox(height: 8), Text("FOTO EKLE", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold))]),
+                  child: const Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.add_a_photo, color: SiberTema.kuantumCyan), SizedBox(height: 8), Text("FOTO EKLE", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))]),
                 ),
               ),
               const SizedBox(width: 12),
@@ -305,7 +309,7 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
   }
 
   Widget _buildBolumBasligi(String baslik, IconData ikon) {
-    return Row(children: [Icon(ikon, color: SiberTema.kuantumCyan, size: 18), const SizedBox(width: 8), Text(baslik, style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2))]);
+    return Row(children: [Icon(ikon, color: SiberTema.kuantumCyan, size: 18), const SizedBox(width: 8), Text(baslik, style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))]);
   }
 
   Widget _buildSiberInput({required TextEditingController controller, required String hint, bool isNumber = false, bool isRequired = false, int maxLines = 1, Function(String)? onChanged}) {
@@ -315,10 +319,10 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
       child: TextFormField(
         controller: controller, maxLines: maxLines,
         keyboardType: isNumber ? const TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
-        style: const TextStyle(color: Colors.white, fontSize: 13),
+        style: const TextStyle(color: Colors.white, fontSize: 13, fontFamily: 'Avenir'),
         onChanged: onChanged,
         validator: isRequired ? (v) => v == null || v.isEmpty ? "Zorunlu" : null : null,
-        decoration: InputDecoration(hintText: hint, hintStyle: const TextStyle(color: Colors.white30, fontSize: 11), border: InputBorder.none, contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14)),
+        decoration: InputDecoration(hintText: hint, hintStyle: const TextStyle(color: Colors.white30, fontSize: 11, fontFamily: 'Avenir'), border: InputBorder.none, contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14)),
       ),
     );
   }
@@ -328,18 +332,18 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(8), border: Border.all(color: deger ? SiberTema.kuantumCyan.withOpacity(0.5) : Colors.white10)),
       child: SwitchListTile(
-        title: Text(baslik, style: TextStyle(color: deger ? Colors.white : Colors.white54, fontSize: 11, fontWeight: FontWeight.bold)),
+        title: Text(baslik, style: TextStyle(color: deger ? Colors.white : Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         value: deger, activeColor: SiberTema.kuantumCyan, onChanged: onChanged,
       ),
     );
   }
 
   Widget _bilgiSatiri(String baslik, String deger, Color renk, {bool isBold = false, bool isLarge = false}) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(baslik, style: TextStyle(color: Colors.white54, fontSize: isLarge ? 12 : 10, fontWeight: isBold ? FontWeight.bold : FontWeight.normal)), Text(deger, style: TextStyle(color: renk, fontSize: isLarge ? 20 : 14, fontWeight: FontWeight.w900, fontFamily: 'monospace'))]);
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(baslik, style: TextStyle(color: Colors.white54, fontSize: isLarge ? 12 : 10, fontWeight: isBold ? FontWeight.bold : FontWeight.normal, fontFamily: 'Avenir')), Text(deger, style: TextStyle(color: renk, fontSize: isLarge ? 20 : 14, fontWeight: FontWeight.w900, fontFamily: 'monospace'))]);
   }
 
   void _siberUyariGoster(String baslik, String mesaj, Color renk) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: SiberTema.matGrey, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)), content: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)), const SizedBox(height: 4), Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12))])));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: SiberTema.matGrey, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)), content: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')), const SizedBox(height: 4), Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir'))])));
   }
 }

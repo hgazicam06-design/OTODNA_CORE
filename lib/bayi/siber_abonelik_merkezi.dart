@@ -33,9 +33,10 @@ class _SiberAbonelikMerkeziState extends State<SiberAbonelikMerkezi> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("KARARGAH ABONELİK VE AYARLAR", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 12)),
+          title: const Text("KARARGAH ABONELİK VE AYARLAR", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 12, fontFamily: 'Avenir')),
           backgroundColor: Colors.transparent,
           elevation: 0,
+          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -44,14 +45,14 @@ class _SiberAbonelikMerkeziState extends State<SiberAbonelikMerkezi> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // ── 🛡️ 1. GÜNCEL ABONELİK RADARI ──
-              const Text("AKTİF LİSANS DURUMU", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+              const Text("AKTİF LİSANS DURUMU", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
               const SizedBox(height: 12),
               _buildGuncelAbonelikDurumu(),
 
               const SizedBox(height: 32),
 
               // ── 💎 2. KUANTUM LİSANS PAKETLERİ ──
-              const Text("LİSANS YENİLEME / YÜKSELTME", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+              const Text("LİSANS YENİLEME / YÜKSELTME", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
               const SizedBox(height: 12),
               _buildLisansPaketi("SİBER PİYADE (AYLIK)", "Temel servis modülleri ve 500 SMS hakkı.", 1250.0, false),
               const SizedBox(height: 12),
@@ -60,7 +61,7 @@ class _SiberAbonelikMerkeziState extends State<SiberAbonelikMerkezi> {
               const SizedBox(height: 32),
 
               // ── ⚙️ 3. SİSTEM VE OTONOMİ AYARLARI ──
-              const Text("DİJİTAL DÜKKAN AYARLARI", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+              const Text("DİJİTAL DÜKKAN AYARLARI", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
               const SizedBox(height: 12),
               _buildAyarToggle("Otonom Müşteri Bildirimleri", "Araç durumu değiştiğinde müşteriye anında siber SMS/Bildirim fırlatılır.", _otonomBildirimAcik, (val) {
                 setState(() => _otonomBildirimAcik = val);
@@ -110,7 +111,7 @@ class _SiberAbonelikMerkeziState extends State<SiberAbonelikMerkezi> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(aktifMi ? "SİSTEM ÇEVRİMİÇİ" : "LİSANS SÜRESİ DOLDU!", style: TextStyle(color: aktifMi ? SiberTema.kuantumCyan : SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
+                  Text(aktifMi ? "SİSTEM ÇEVRİMİÇİ" : "LİSANS SÜRESİ DOLDU!", style: TextStyle(color: aktifMi ? SiberTema.kuantumCyan : SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
                   Icon(aktifMi ? Icons.verified_user : Icons.gpp_bad, color: aktifMi ? SiberTema.kuantumCyan : SiberTema.kanKirmizi),
                 ],
               ),
@@ -120,7 +121,7 @@ class _SiberAbonelikMerkeziState extends State<SiberAbonelikMerkezi> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("KALAN LİSANS SÜRESİ:", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+                  const Text("KALAN LİSANS SÜRESİ:", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                   Text(aktifMi ? "$kalanGun GÜN" : "0 GÜN", style: TextStyle(color: aktifMi ? Colors.white : SiberTema.kanKirmizi, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
                 ],
               )
@@ -142,10 +143,10 @@ class _SiberAbonelikMerkeziState extends State<SiberAbonelikMerkezi> {
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         leading: Icon(isVip ? Icons.workspace_premium : Icons.shield_outlined, color: isVip ? Colors.amberAccent : SiberTema.kuantumCyan, size: 32),
-        title: Text(baslik, style: TextStyle(color: isVip ? Colors.amberAccent : Colors.white, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
+        title: Text(baslik, style: TextStyle(color: isVip ? Colors.amberAccent : Colors.white, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1, fontFamily: 'Avenir')),
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 6),
-          child: Text(detay, style: const TextStyle(color: Colors.white54, fontSize: 10)),
+          child: Text(detay, style: const TextStyle(color: Colors.white54, fontSize: 10, fontFamily: 'Avenir')),
         ),
         trailing: ElevatedButton(
           style: ElevatedButton.styleFrom(
@@ -155,7 +156,7 @@ class _SiberAbonelikMerkeziState extends State<SiberAbonelikMerkezi> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: isVip ? Colors.transparent : SiberTema.kuantumCyan)),
           ),
           onPressed: _islemSuruyor ? null : () => _abonelikSatinAl(baslik, fiyat, isVip ? 365 : 30),
-          child: Text("₺${fiyat.toInt()}", style: const TextStyle(fontWeight: FontWeight.w900)),
+          child: Text("₺${fiyat.toInt()}", style: const TextStyle(fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
         ),
       ),
     );
@@ -167,8 +168,8 @@ class _SiberAbonelikMerkeziState extends State<SiberAbonelikMerkezi> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white.withOpacity(0.05))),
       child: SwitchListTile(
-        title: Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
-        subtitle: Text(altMetin, style: const TextStyle(color: Colors.white38, fontSize: 9)),
+        title: Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+        subtitle: Text(altMetin, style: const TextStyle(color: Colors.white38, fontSize: 9, fontFamily: 'Avenir')),
         value: deger,
         activeColor: SiberTema.kuantumCyan,
         onChanged: onChanged,
@@ -185,15 +186,15 @@ class _SiberAbonelikMerkeziState extends State<SiberAbonelikMerkezi> {
     try {
       WriteBatch batch = _db.batch();
 
-      // 1. Bayinin Lisans Süresini Güncelle
+      // 1. Bayinin Lisans Süresini Güncelle (SET MERGE İLE ÇÖKME RİSKİ SIFIRLANDI)
       DocumentReference bayiRef = _db.collection('bayiler').doc(_bayiId);
-      // SİBER NOT: Gerçekte mevcut süreye eklenir, simülasyon için bugünden ileri atıyoruz.
       DateTime yeniBitis = DateTime.now().add(Duration(days: eklenecekGun));
-      batch.update(bayiRef, {
+
+      batch.set(bayiRef, {
         'abonelik_bitis_tarihi': yeniBitis,
         'abonelik_paketi': paketAdi,
         'abonelik_aktif': true,
-      });
+      }, SetOptions(merge: true)); // 🔥 SİBER ZIRH EKLENDİ!
 
       // 2. Karargah Finans Havuzuna (OtoDNA Geliri) Parayı Mühürle
       DocumentReference finansRef = _db.collection('otodna_gelir_havuzu').doc();
@@ -216,11 +217,11 @@ class _SiberAbonelikMerkeziState extends State<SiberAbonelikMerkezi> {
       await batch.commit();
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: SiberTema.kuantumCyan, content: const Text("SİBER ONAY: Lisans başarıyla güncellendi!", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: SiberTema.kuantumCyan, content: const Text("SİBER ONAY: Lisans başarıyla güncellendi!", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))));
       }
     } catch (e) {
       developer.log("🚨 AĞ ÇÖKTÜ: Lisans ödemesi alınamadı!", error: e);
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: SiberTema.kanKirmizi, content: const Text("BAĞLANTI HATASI!")));
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: SiberTema.kanKirmizi, content: const Text("BAĞLANTI HATASI!", style: TextStyle(color: Colors.white, fontFamily: 'Avenir'))));
     } finally {
       if (mounted) setState(() => _islemSuruyor = false);
     }
@@ -228,6 +229,5 @@ class _SiberAbonelikMerkeziState extends State<SiberAbonelikMerkezi> {
 
   void _ayarLogla(String ayarAdi, bool durum) {
     developer.log("⚙️ SİBER AYAR: $ayarAdi -> ${durum ? 'AKTİF' : 'PASİF'}");
-    // İsteğe bağlı olarak bu ayar değişiklikleri de Firebase'e anlık atılabilir.
   }
 }

@@ -26,12 +26,14 @@ class _CiroRaporPaneliState extends State<CiroRaporPaneli> {
     HapticFeedback.heavyImpact();
     developer.log("SİBER RAPOR: ${widget.bayiId} için PDF muhasebe dökümü Karargahtan talep edildi.");
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: SiberTema.kuantumCyan,
-        content: const Text("SİBER ONAY: Mühürlü PDF raporu hazırlanıyor...", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, letterSpacing: 1)),
-      ),
-    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: SiberTema.kuantumCyan,
+          content: const Text("SİBER ONAY: Mühürlü PDF raporu hazırlanıyor...", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+        ),
+      );
+    }
   }
 
   @override
@@ -41,7 +43,7 @@ class _CiroRaporPaneliState extends State<CiroRaporPaneli> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("GÜNLÜK FİNANSAL RAPOR", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13)),
+          title: const Text("GÜNLÜK FİNANSAL RAPOR", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13, fontFamily: 'Avenir')),
           backgroundColor: Colors.transparent,
           elevation: 0,
           iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
@@ -107,7 +109,7 @@ class _CiroRaporPaneliState extends State<CiroRaporPaneli> {
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       icon: const Icon(Icons.download_rounded, color: Colors.black, size: 24),
-                      label: const Text("SİBER RAPORU (PDF) İNDİR", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
+                      label: const Text("SİBER RAPORU (PDF) İNDİR", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
                       style: SiberTema.kuantumButonStili(),
                       onPressed: _raporIndir,
                     ),
@@ -133,7 +135,7 @@ class _CiroRaporPaneliState extends State<CiroRaporPaneli> {
       ),
       child: Column(
         children: [
-          const Text("TOPLAM BRÜT GÜNLÜK CİRO", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
+          const Text("TOPLAM BRÜT GÜNLÜK CİRO", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           const SizedBox(height: 12),
           Text("₺${miktar.toStringAsFixed(2)}", style: const TextStyle(color: Colors.white, fontSize: 36, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
         ],
@@ -149,7 +151,7 @@ class _CiroRaporPaneliState extends State<CiroRaporPaneli> {
         children: [
           Icon(ikon, color: Colors.white54, size: 24),
           const SizedBox(width: 16),
-          Expanded(child: Text(baslik, style: const TextStyle(color: Colors.white70, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold))),
+          Expanded(child: Text(baslik, style: const TextStyle(color: Colors.white70, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
           Text(deger, style: TextStyle(color: degerRengi, fontSize: isLarge ? 20 : 16, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
         ],
       ),
@@ -167,7 +169,7 @@ class _CiroRaporPaneliState extends State<CiroRaporPaneli> {
           Expanded(
               child: Text(
                   "SİBER ONAY: Bugün 1 İmece işlemine destek oldunuz. Karargah DNA Skorunuza +100 Puan eklendi.",
-                  style: TextStyle(color: Colors.white70, fontSize: 10, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold)
+                  style: TextStyle(color: Colors.white70, fontSize: 10, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')
               )
           ),
         ],
