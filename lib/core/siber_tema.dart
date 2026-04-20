@@ -15,12 +15,25 @@ class SiberTema {
   static const Color matGrey = Color(0xFF111111);
   static const Color altinSari = Color(0xFFFFD700);
 
-  // 🏗️ 7D SİBER CAM EFEKTİ (GLASSMORPHISM)
+  // ── 🛡️ ESKİ KODLARIN ÇÖKMESİNİ ENGELLEYEN KÖPRÜLER (ZAFİYET KAPATICILAR) ──
+  // responsive_kalkan.dart "decoration" beklediği için bunu BoxDecoration yaptık!
+  static BoxDecoration get siberArkaPlan => const BoxDecoration(color: oledBlack);
+
+  // 🏗️ 7D SİBER CAM EFEKTİ (GLASSMORPHISM) - Sadece Dekorasyon İsteyenler İçin
   static BoxDecoration siberCamZirh({Color? renk}) {
     return BoxDecoration(
       color: (renk ?? Colors.white).withOpacity(0.05),
       borderRadius: BorderRadius.circular(20),
       border: Border.all(color: Colors.white.withOpacity(0.1), width: 1.5),
+    );
+  }
+
+  // 🛡️ ESKİ EKRANLAR İÇİN WIDGET KÖPRÜSÜ (Child ve Padding hatalarını kökünden çözer!)
+  static Widget siberCamKalkan({Widget? child, EdgeInsetsGeometry? padding, Color? renk}) {
+    return Container(
+      padding: padding ?? const EdgeInsets.all(16),
+      decoration: siberCamZirh(renk: renk),
+      child: child,
     );
   }
 
@@ -36,20 +49,34 @@ class SiberTema {
     );
   }
 
-  // 📡 SİBER METİN STİLLERİ
-  static TextStyle kuantumBaslik = GoogleFonts.orbitron(
+  // 📡 SİBER METİN STİLLERİ (Hata vermemesi için Getter yapıldı)
+  static TextStyle get kuantumBaslik => GoogleFonts.orbitron(
     color: kuantumCyan,
     fontSize: 22,
     fontWeight: FontWeight.w900,
     letterSpacing: 2,
   );
 
-  // 📡 STANDART FONT SİSTEMİ (Eğer app genelinde ThemeData kullanıyorsan)
+  // 📡 STANDART FONT SİSTEMİ
   static ThemeData kuantumTemasi() {
     return ThemeData(
       scaffoldBackgroundColor: oledBlack,
       primaryColor: kuantumCyan,
-      fontFamily: 'Avenir', // Yada GoogleFonts.montserrat().fontFamily
+      fontFamily: 'Avenir',
+    );
+  }
+
+  // 🛡️ SİBER INPUT DECORATOR (Diğer dosyalardaki altı kırmızı çizen siberInputDecor hatasını çözer)
+  static InputDecoration siberInputDecor(String hint, IconData icon) {
+    return InputDecoration(
+      labelText: hint,
+      labelStyle: TextStyle(color: kuantumCyan.withOpacity(0.5), fontSize: 12, fontFamily: 'Avenir'),
+      prefixIcon: Icon(icon, color: kuantumCyan, size: 20),
+      filled: true,
+      fillColor: Colors.black,
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.1))),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: kuantumCyan, width: 2)),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     );
   }
 }

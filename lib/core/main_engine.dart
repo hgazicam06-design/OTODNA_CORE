@@ -12,15 +12,24 @@ class SiberAnaMotor {
     developer.log("🚀 SİBER MOTOR: Amiral Gemisi tam gaz ileri! Kalkanlar aktif ediliyor...");
 
     try {
-      // ZIRH 1: Açık şifre yerine Karargah Rütbe Kontrolü (Firebase Auth)
+      // ZIRH 1: Açık şifre yerine Kuantum Rütbe Kontrolü (Firebase Auth)
       DocumentSnapshot adminDoc = await _db.collection('kullanicilar').doc(karargahUid).get();
 
-      if (adminDoc.exists && (adminDoc['kulup_rolu'] == 'Baskan' || adminDoc['kulup_rolu'] == 'Yardimci')) {
-        developer.log("✅ YETKİ ONAYLANDI: Başkanlık Karargah komutları devrede.");
-        _finansTakibiniAktifEt();
-        _sosRadariniAc();
+      if (adminDoc.exists) {
+        var data = adminDoc.data() as Map<String, dynamic>;
+
+        // otodna_auth_gate.dart ile %100 Uyumlu Rütbe Algoritması
+        String role = (data['rol'] ?? data['rutbe'] ?? "USER").toString().toUpperCase();
+
+        if (role == "ADMIN" || role == "BOLGE_KOMUTANI" || role == "SUPER_ADMIN" || role == "BASKAN") {
+          developer.log("✅ YETKİ ONAYLANDI: [$role] Rütbesiyle Karargah komutları devrede.");
+          _finansTakibiniAktifEt();
+          _sosRadariniAc();
+        } else {
+          developer.log("🚨 SİBER İHLAL: Yetkisiz motor ateşleme girişimi! Rütbe yetersiz: $role");
+        }
       } else {
-        developer.log("🚨 SİBER İHLAL: Yetkisiz motor ateşleme girişimi Kuantum Ağı tarafından engellendi!");
+        developer.log("🚨 SİBER İHLAL: Kullanıcı sicili Kuantum Ağında bulunamadı!");
       }
     } catch (e) {
       developer.log("🚨 AĞ ÇÖKTÜ: Motor ateşleme arızası!", error: e);
@@ -29,12 +38,13 @@ class SiberAnaMotor {
 
   // ── 💰 FİNANSAL RADAR (YENİ DOKTRİN) ──
   static void _finansTakibiniAktifEt() {
-    developer.log("💰 SİBER FİNANS: Karargah gelir radarı aktif. (%12 Standart, %30 Murat Plaza İzleniyor)");
+    // Eski imtiyazlar silindi, MUTLAK KURAL mühürlendi!
+    developer.log("💰 SİBER FİNANS: Karargah gelir radarı aktif. (İSTİSNASIZ %12 MUTLAK KESİNTİ)");
 
     // Kuantum Veritabanı: Finans havuzundaki hareketliliği canlı olarak dinler
     _db.collection('finans_havuzu').snapshots().listen((snapshot) {
       if (snapshot.docs.isNotEmpty) {
-        developer.log("💎 FİNANS AKIŞI: Kasada otonom hareketlilik tespit edildi. İşçilik dışı komisyonlar hesaplanıyor...");
+        developer.log("💎 FİNANS AKIŞI: Kasada otonom hareketlilik tespit edildi. Mutlak %12 Karargah Payı mühürleniyor...");
       }
     });
   }

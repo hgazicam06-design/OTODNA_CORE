@@ -7,8 +7,7 @@ import 'package:flutter/services.dart';
 // 🚀 KARARGAH BİLEŞENLERİ
 import 'core/siber_tema.dart';
 import 'core/app_router.dart';
-import 'auth/otodna_auth_gate.dart';
-import 'firebase_options.dart';
+import 'firebase_options.dart'; // Bu dosyanın Firebase CLI ile oluşturulmuş olması gerekir
 
 void main() async {
   // 🛡️ SİBER ÇEKİRDEK BAŞLATILIYOR
@@ -52,10 +51,7 @@ class OtoDNA extends StatelessWidget {
       onGenerateRoute: KuantumRota.atesle,
 
       // 🎨 SİBER TEMA ENJEKSİYONU (OLED ve Kuantum Renkleri)
-      theme: SiberTema.kuantumTemasi(), // Merkezi tema motorundan çekilir
-
-      // 🛡️ SİBER KAPI (ROUTER TARAFINDAN YÖNETİLİYOR)
-      // initialRoute '/' üzerinden AuthGate tetiklenir.
+      theme: SiberTema.kuantumTemasi(),
     );
   }
 }

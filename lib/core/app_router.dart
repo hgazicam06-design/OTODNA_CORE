@@ -1,34 +1,30 @@
+// lib/core/app_router.dart
 import 'package:flutter/material.dart';
 
 // 🔥 SİBER TERMİNALLERİN KÖPRÜLERİ
 import '../auth/otodna_auth_gate.dart';
 import '../screens/login_screen.dart';
-import '../screens/auth/siber_kayit_screen.dart';
-import '../screens/auth/siber_sms_screen.dart';
-import '../screens/auth/sifre_sifirla_screen.dart';
-import '../screens/auth/two_factor_auth_screen.dart';
 import '../screens/siber_kokpit_screen.dart';
 import '../screens/arac_kayit_screen.dart';
 import '../screens/siber_market_vitrini.dart';
 import '../screens/siber_sepet_ekrani.dart';
-import '../screens/siber_sos_merkezi.dart';
 import '../screens/sos_protokolu_screen.dart';
 import '../screens/usta_arama_screen.dart';
 import '../screens/usta_panel_screen.dart';
-import '../admin/super_admin_screen.dart';
+import '../screens/super_admin_screen.dart';
 import '../screens/support_screen.dart';
+import '../screens/dil_secim_terminali.dart'; // ✅ YENİ EKLENDİ
 
-// 🚀 SONRADAN İNŞA EDİLEN SİBER MODÜLLER (YENİ EKLENDİ)
+// 🚀 SONRADAN İNŞA EDİLEN SİBER MODÜLLER
 import '../screens/wallet_screen.dart';
 import '../screens/yedek_parca_ilan_ver_screen.dart';
 import '../screens/sohbet_listesi_screen.dart';
 import '../screens/sohbet_ekrani.dart';
 import '../screens/siber_goz_terminali.dart';
 import '../screens/surus_asistani_screen.dart';
-import '../screens/torpido_ekleme_screen.dart';
 import '../screens/sorgu_sonuc_sayfasi.dart';
-import '../screens/yedek_parca_vitrini.dart'; // 🛡️ YENİ EKLENDİ
-import '../screens/yorum_yap_screen.dart'; // 🛡️ YENİ EKLENDİ
+import '../screens/yedek_parca_vitrini.dart';
+import '../screens/yorum_yap_screen.dart';
 
 class KuantumRota {
   static Route<dynamic> atesle(RouteSettings settings) {
@@ -41,14 +37,8 @@ class KuantumRota {
         return MaterialPageRoute(builder: (_) => const OtoDnaAuthGate());
       case '/login':
         return MaterialPageRoute(builder: (_) => const LoginScreen());
-      case '/kayit':
-        return MaterialPageRoute(builder: (_) => const SiberKayitScreen());
-      case '/sms_dogrulama':
-        return MaterialPageRoute(builder: (_) => const SiberSmsScreen());
-      case '/sifre_sifirla':
-        return MaterialPageRoute(builder: (_) => const SifreSifirlaScreen());
-      case '/2fa':
-        return MaterialPageRoute(builder: (_) => const TwoFactorAuthScreen());
+      case '/dil_secimi': // ✅ SİBER DİL KÖPRÜSÜ AKTİF EDİLDİ
+        return MaterialPageRoute(builder: (_) => const DilSecimTerminali());
 
     // ── ANA KOKPİTLER VE PANELLER ──
       case '/kokpit':
@@ -77,14 +67,6 @@ class KuantumRota {
             plaka: args['plaka'] ?? 'PLAKA YOK',
           ),
         );
-      case '/torpido_ekleme':
-        return MaterialPageRoute(
-          builder: (_) => TorpidoEklemeScreen(
-            kullaniciId: args['kullaniciId'] ?? 'BILINMEYEN_KULLANICI',
-            aracId: args['aracId'] ?? 'BILINMEYEN_ARAC',
-            plaka: args['plaka'] ?? 'PLAKA YOK',
-          ),
-        );
 
     // ── TİCARET VE FİNANS AĞI ──
       case '/market':
@@ -95,7 +77,7 @@ class KuantumRota {
         return MaterialPageRoute(builder: (_) => const YedekParcaIlanVerScreen());
       case '/cuzdan':
         return MaterialPageRoute(builder: (_) => const WalletScreen());
-      case '/yedek_parca_vitrini': // 🛡️ YENİ KÖPRÜ
+      case '/yedek_parca_vitrini':
         return MaterialPageRoute(
           builder: (_) => YedekParcaVitriniScreen(
             aracId: args['aracId'] ?? 'BILINMEYEN_ARAC',
@@ -116,7 +98,7 @@ class KuantumRota {
         return MaterialPageRoute(builder: (_) => const UstaAramaScreen());
       case '/destek':
         return MaterialPageRoute(builder: (_) => const SupportScreen());
-      case '/yorum_yap': // 🛡️ YENİ KÖPRÜ
+      case '/yorum_yap':
         return MaterialPageRoute(
           builder: (_) => YorumYapScreen(
             firmaId: args['firmaId'] ?? 'FİRMA_001',
@@ -127,7 +109,6 @@ class KuantumRota {
 
     // ── ACİL DURUM VE S.O.S PROTOKOLLERİ ──
       case '/sos_merkezi':
-      // En gelişmiş, 5 Saniye Radarlı SOS Protokolüne bağlandı!
         return MaterialPageRoute(builder: (_) => const SosProtokoluScreen());
 
     // ── SİBER İHLAL (BİLİNMEYEN ROTA) KALKANI ──
@@ -138,7 +119,12 @@ class KuantumRota {
             body: Center(
               child: Text(
                 "SİBER İHLAL: ROTA BULUNAMADI (${settings.name})",
-                style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 2),
+                style: const TextStyle(
+                  color: Colors.redAccent,
+                  fontWeight: FontWeight.w900,
+                  fontFamily: 'Avenir',
+                  letterSpacing: 2,
+                ),
               ),
             ),
           ),

@@ -1,3 +1,4 @@
+// lib/screens/yedek_parca_vitrini.dart
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,12 +35,9 @@ class _YedekParcaVitriniScreenState extends State<YedekParcaVitriniScreen> {
       final db = FirebaseFirestore.instance;
       WriteBatch batch = db.batch();
 
-      // 1. Karargah Finans Algoritması: %10 Kâr + %2 Vergi = %12 Mutlak Pay
+      // 1. MUTLAK KARARGAH KURALI: İSTİSNASIZ %12 PAY (Kâr + Vergi)
       double karargahPayi = fiyat * 0.12;
-
-      // Murat Plaza Kuralı: Bayi Murat Plaza ise %30 hakediş marjı (İç mantıkta saklı)
-      // Genel Bayi Hakedişi: Satış Fiyatı - Karargah Payı
-      double bayiHakedis = fiyat - karargahPayi;
+      double bayiHakedis = fiyat - karargahPayi; // Kalan tutar satıcının net hakedişidir
 
       // 2. Siparişin durumunu "Mühürlendi" olarak güncelle
       DocumentReference siparisRef = db.collection('parca_teklifleri').doc(siparisId);
@@ -70,7 +68,7 @@ class _YedekParcaVitriniScreenState extends State<YedekParcaVitriniScreen> {
         'tarih': FieldValue.serverTimestamp(),
       });
 
-      await batch.commit(); // Kuantum Ağına ateşle!
+      await batch.commit(); // Füzeleri Kuantum Ağına ateşle!
 
       if (!mounted) return;
       _siberUyariVer("SİPARİŞ MÜHÜRLENDİ: Tedarik Süreci Başladı!", false);
@@ -86,8 +84,8 @@ class _YedekParcaVitriniScreenState extends State<YedekParcaVitriniScreen> {
   void _siberUyariVer(String mesaj, bool isError) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir', fontSize: 12)),
-        backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
+        content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir', fontSize: 11)),
+        backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan.withOpacity(0.9),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
@@ -103,30 +101,39 @@ class _YedekParcaVitriniScreenState extends State<YedekParcaVitriniScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.shield, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("AKILLI KÂR EKOSİSTEMİ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
+          leading: IconButton(icon: const Icon(Icons.radar, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          title: const Text("AKILLI KÂR EKOSİSTEMİ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13, fontFamily: 'Avenir')),
           centerTitle: true,
         ),
         body: Column(
           children: [
-            // 🛡️ SİBER GÜVENCE BANDI
+            // 🛡️ HUD SİBER GÜVENCE BANDI (Holografik Tarz)
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
               decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.2), width: 1)),
-                color: SiberTema.oledBlack.withOpacity(0.8),
+                gradient: LinearGradient(
+                  colors: [SiberTema.kuantumCyan.withOpacity(0.2), SiberTema.oledBlack.withOpacity(0.9)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                border: Border(bottom: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 1)),
               ),
               child: const Row(
                 children: [
-                  Icon(Icons.verified_user_outlined, color: SiberTema.kuantumCyan, size: 14),
+                  Icon(Icons.shield_outlined, color: SiberTema.kuantumCyan, size: 16),
                   SizedBox(width: 10),
-                  Expanded(child: Text("TÜM SİPARİŞLER %12 KARARGAH GÜVENCESİ ALTINDADIR", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.2, fontFamily: 'Avenir'))),
+                  Expanded(
+                      child: Text(
+                          "SİSTEMDEKİ TÜM TİCARİ İŞLEMLER %12 KARARGAH KESİNTİSİ İLE GÜVENCE ALTINDADIR",
+                          style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.2, fontFamily: 'Avenir')
+                      )
+                  ),
                 ],
               ),
             ),
 
-            // Canlı Sipariş Radarı
+            // 📡 CANLI SİPARİŞ RADARI
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
@@ -136,27 +143,23 @@ class _YedekParcaVitriniScreenState extends State<YedekParcaVitriniScreen> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2));
+                    return const Center(
+                        child: SizedBox(
+                          width: 40, height: 40,
+                          child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2),
+                        )
+                    );
                   }
 
                   final siparisler = snapshot.data?.docs ?? [];
 
                   if (siparisler.isEmpty) {
-                    return const Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.radar, color: Colors.white10, size: 64),
-                          SizedBox(height: 16),
-                          Text("RADAR TEMİZ: BEKLEYEN TEKLİF YOK", style: TextStyle(color: Colors.white24, fontWeight: FontWeight.bold, letterSpacing: 2, fontSize: 10, fontFamily: 'Avenir')),
-                        ],
-                      ),
-                    );
+                    return _buildBosRadarEkran();
                   }
 
                   return ListView.builder(
                     physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(20),
                     itemCount: siparisler.length,
                     itemBuilder: (context, index) {
                       var data = siparisler[index].data() as Map<String, dynamic>;
@@ -173,60 +176,120 @@ class _YedekParcaVitriniScreenState extends State<YedekParcaVitriniScreen> {
     );
   }
 
+  // 🎯 BOŞ RADAR TASARIMI (Ultra Profesyonel)
+  Widget _buildBosRadarEkran() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(30),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.2), width: 2),
+              boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 30, spreadRadius: 10)],
+            ),
+            child: Icon(Icons.radar, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 60),
+          ),
+          const SizedBox(height: 24),
+          const Text("SİBER AĞ TEMİZ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 3, fontSize: 14, fontFamily: 'Avenir')),
+          const SizedBox(height: 8),
+          const Text("Bu araca ait bekleyen bir tedarik teklifi bulunmuyor.", style: TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 10, fontFamily: 'Avenir')),
+        ],
+      ),
+    );
+  }
+
+  // 💳 ULTRA PROFESYONEL HUD TİCARET KARTI
   Widget _buildSiberTicaretKarti(String siparisId, Map<String, dynamic> data) {
     String parca = data['parca_adi'] ?? 'Bilinmeyen Parça';
     String bayi = data['sunan_bayi'] ?? 'İsimsiz Tedarikçi';
     String bayiId = data['bayi_id'] ?? 'UNKNOWN';
     double fiyat = (data['fiyat'] ?? 0).toDouble();
-    bool isMuratPlaza = bayi.contains("Murat Plaza");
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
-        color: SiberTema.matGrey.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: isMuratPlaza ? SiberTema.kuantumCyan.withOpacity(0.3) : Colors.white10),
+        color: SiberTema.matGrey.withOpacity(0.6), // Koyu Titanyum Zemin
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5), // Neon Çerçeve
+        boxShadow: [
+          BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 15, spreadRadius: 2), // Siber Parlama
+        ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), // Cam Efekti
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // 1. SATICI VE BİLGİ BANTLARI
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(bayi.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-                    if (isMuratPlaza)
-                      const Icon(Icons.stars, color: SiberTema.kuantumCyan, size: 18),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(4), border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5))),
+                      child: const Text("ONAYLI TEDARİKÇİ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                    ),
+                    Text("ID: ${siparisId.substring(0, 6).toUpperCase()}", style: const TextStyle(color: Colors.white24, fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Courier')),
                   ],
                 ),
-                const SizedBox(height: 15),
-                const Text("ÖNERİLEN PARÇA", style: TextStyle(color: Colors.white30, fontSize: 10, letterSpacing: 1, fontFamily: 'Avenir')),
-                Text(parca, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
+
+                // 2. SATICI İSMİ (Şeffaf)
+                Text(bayi.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  child: Divider(color: Colors.white10, height: 1, thickness: 1),
+                ),
+
+                // 3. PARÇA BİLGİSİ
+                const Text("HEDEF PARÇA", style: TextStyle(color: Colors.white30, fontSize: 9, letterSpacing: 2, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                Text(parca, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+
+                const SizedBox(height: 24),
+
+                // 4. FİYAT VE MÜHÜRLE BUTONU
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("MÜHÜR BEDELİ", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-                        Text("₺${fiyat.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 22, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                        Text("MÜHÜR BEDELİ", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.7), fontSize: 9, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1.5)),
+                        const SizedBox(height: 4),
+                        Text("₺${fiyat.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900, fontFamily: 'Courier', shadows: [Shadow(color: SiberTema.kuantumCyan, blurRadius: 10)])),
                       ],
                     ),
-                    ElevatedButton(
-                      style: SiberTema.kuantumButonStili(),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: SiberTema.kuantumCyan,
+                        foregroundColor: SiberTema.oledBlack,
+                        elevation: 10,
+                        shadowColor: SiberTema.kuantumCyan.withOpacity(0.5),
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
                       onPressed: _isProcessing ? null : () => _siparisiOnaylaVeMuhurle(
                           siparisId: siparisId,
                           parca: parca,
                           fiyat: fiyat,
                           bayiId: bayiId
                       ),
-                      child: const Text("SİPARİŞİ MÜHÜRLE", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontSize: 11, fontFamily: 'Avenir')),
+                      icon: _isProcessing
+                          ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
+                          : const Icon(Icons.fingerprint, size: 18),
+                      label: Text(
+                          _isProcessing ? "MÜHÜRLENİYOR..." : "MÜHÜRLE",
+                          style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 11, fontFamily: 'Avenir', letterSpacing: 1.5)
+                      ),
                     ),
                   ],
                 ),

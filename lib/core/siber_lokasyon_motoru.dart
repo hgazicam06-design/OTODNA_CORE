@@ -1,9 +1,11 @@
 // lib/core/siber_lokasyon_motoru.dart
 import 'package:flutter/material.dart';
-import 'siber_tema.dart'; // 🔥 SİBER TEMA ENTEGRE EDİLDİ
+
+// 🚨 EĞER BU SATIR KIRMIZI ÇİZERSE, BUNU SİLİP ŞUNU YAZ: import '../core/siber_tema.dart';
+import 'siber_tema.dart';
 
 class SiberLokasyonMotoru extends StatefulWidget {
-  final Function(String ulke, String sehir, String bolge) onLokasyonSecildi;
+  final void Function(String ulke, String sehir, String bolge) onLokasyonSecildi;
 
   const SiberLokasyonMotoru({super.key, required this.onLokasyonSecildi});
 
@@ -12,21 +14,14 @@ class SiberLokasyonMotoru extends StatefulWidget {
 }
 
 class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
-  // 🌍 KÜRESEL İSTİHBARAT VERİLERİ (81 İl ve 7 Bölge Mühürlendi!)
+  // 🌍 KÜRESEL İSTİHBARAT VERİLERİ
   final Map<String, String> _turkiyeSehirleri = {
-    // 📍 Marmara Bölgesi (11 İl)
     "İstanbul": "Marmara Bölgesi", "Edirne": "Marmara Bölgesi", "Kırklareli": "Marmara Bölgesi", "Tekirdağ": "Marmara Bölgesi", "Çanakkale": "Marmara Bölgesi", "Kocaeli": "Marmara Bölgesi", "Yalova": "Marmara Bölgesi", "Sakarya": "Marmara Bölgesi", "Bilecik": "Marmara Bölgesi", "Bursa": "Marmara Bölgesi", "Balıkesir": "Marmara Bölgesi",
-    // 📍 Ege Bölgesi (8 İl)
     "İzmir": "Ege Bölgesi", "Manisa": "Ege Bölgesi", "Aydın": "Ege Bölgesi", "Denizli": "Ege Bölgesi", "Muğla": "Ege Bölgesi", "Afyonkarahisar": "Ege Bölgesi", "Kütahya": "Ege Bölgesi", "Uşak": "Ege Bölgesi",
-    // 📍 Akdeniz Bölgesi (8 İl)
     "Antalya": "Akdeniz Bölgesi", "Burdur": "Akdeniz Bölgesi", "Isparta": "Akdeniz Bölgesi", "Mersin": "Akdeniz Bölgesi", "Adana": "Akdeniz Bölgesi", "Hatay": "Akdeniz Bölgesi", "Osmaniye": "Akdeniz Bölgesi", "Kahramanmaraş": "Akdeniz Bölgesi",
-    // 📍 İç Anadolu Bölgesi (13 İl)
     "Ankara": "İç Anadolu Bölgesi", "Konya": "İç Anadolu Bölgesi", "Eskişehir": "İç Anadolu Bölgesi", "Kırıkkale": "İç Anadolu Bölgesi", "Kırşehir": "İç Anadolu Bölgesi", "Yozgat": "İç Anadolu Bölgesi", "Nevşehir": "İç Anadolu Bölgesi", "Niğde": "İç Anadolu Bölgesi", "Kayseri": "İç Anadolu Bölgesi", "Aksaray": "İç Anadolu Bölgesi", "Karaman": "İç Anadolu Bölgesi", "Sivas": "İç Anadolu Bölgesi", "Çankırı": "İç Anadolu Bölgesi",
-    // 📍 Karadeniz Bölgesi (18 İl)
     "Bolu": "Karadeniz Bölgesi", "Düzce": "Karadeniz Bölgesi", "Zonguldak": "Karadeniz Bölgesi", "Karabük": "Karadeniz Bölgesi", "Bartın": "Karadeniz Bölgesi", "Kastamonu": "Karadeniz Bölgesi", "Sinop": "Karadeniz Bölgesi", "Çorum": "Karadeniz Bölgesi", "Amasya": "Karadeniz Bölgesi", "Samsun": "Karadeniz Bölgesi", "Tokat": "Karadeniz Bölgesi", "Ordu": "Karadeniz Bölgesi", "Giresun": "Karadeniz Bölgesi", "Trabzon": "Karadeniz Bölgesi", "Gümüşhane": "Karadeniz Bölgesi", "Rize": "Karadeniz Bölgesi", "Bayburt": "Karadeniz Bölgesi", "Artvin": "Karadeniz Bölgesi",
-    // 📍 Doğu Anadolu Bölgesi (14 İl)
     "Erzurum": "Doğu Anadolu Bölgesi", "Erzincan": "Doğu Anadolu Bölgesi", "Kars": "Doğu Anadolu Bölgesi", "Tunceli": "Doğu Anadolu Bölgesi", "Bingöl": "Doğu Anadolu Bölgesi", "Elazığ": "Doğu Anadolu Bölgesi", "Malatya": "Doğu Anadolu Bölgesi", "Muş": "Doğu Anadolu Bölgesi", "Bitlis": "Doğu Anadolu Bölgesi", "Ağrı": "Doğu Anadolu Bölgesi", "Iğdır": "Doğu Anadolu Bölgesi", "Van": "Doğu Anadolu Bölgesi", "Hakkari": "Doğu Anadolu Bölgesi", "Şırnak": "Doğu Anadolu Bölgesi", "Ardahan": "Doğu Anadolu Bölgesi",
-    // 📍 Güneydoğu Anadolu Bölgesi (9 İl)
     "Gaziantep": "Güneydoğu Anadolu Bölgesi", "Kilis": "Güneydoğu Anadolu Bölgesi", "Adıyaman": "Güneydoğu Anadolu Bölgesi", "Şanlıurfa": "Güneydoğu Anadolu Bölgesi", "Diyarbakır": "Güneydoğu Anadolu Bölgesi", "Mardin": "Güneydoğu Anadolu Bölgesi", "Batman": "Güneydoğu Anadolu Bölgesi", "Siirt": "Güneydoğu Anadolu Bölgesi"
   };
 
@@ -63,6 +58,7 @@ class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
           ),
           boxShadow: [
             BoxShadow(color: Colors.black.withOpacity(0.9), blurRadius: 15, offset: const Offset(0, 10)),
+            // 🔥 'const' İhlali Yaratabilecek Siber Zafiyet Kaldırıldı
             BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 30, spreadRadius: -5),
           ]
       ),
@@ -71,9 +67,9 @@ class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
         children: [
           Row(
             children: [
-              Icon(Icons.satellite_alt, color: SiberTema.kuantumCyan.withOpacity(0.8), size: 24, shadows: [Shadow(color: SiberTema.kuantumCyan.withOpacity(0.5), blurRadius: 10)]),
+              Icon(Icons.radar, color: SiberTema.kuantumCyan.withOpacity(0.8), size: 24, shadows: [Shadow(color: SiberTema.kuantumCyan.withOpacity(0.5), blurRadius: 10)]),
               const SizedBox(width: 12),
-              const Text("KÜRESEL LOKASYON RADARI", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: SiberTema.siberFont)),
+              const Text("KÜRESEL LOKASYON RADARI", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
             ],
           ),
           const Padding(
@@ -88,11 +84,11 @@ class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
                 color: SiberTema.oledBlack,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.white.withOpacity(0.05)),
-                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.8), blurRadius: 8, inset: true)]
+                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.8), blurRadius: 8)]
             ),
             child: Row(
               children: [
-                _buildUlkeToggle("Türkiye", Icons.star_and_crescent),
+                _buildUlkeToggle("Türkiye", Icons.star_border),
                 _buildUlkeToggle("Almanya", Icons.euro_symbol),
               ],
             ),
@@ -100,7 +96,7 @@ class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
           const SizedBox(height: 24),
 
           // 2. ŞEHİR / EYALET SEÇİM DROPDOWN
-          const Text("OPERASYON BÖLGESİ / ŞEHİR", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: SiberTema.siberFont)),
+          const Text("OPERASYON BÖLGESİ / ŞEHİR", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
           const SizedBox(height: 8),
 
           Container(
@@ -108,24 +104,27 @@ class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
                 color: SiberTema.oledBlack,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.white.withOpacity(0.05)),
-                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.6), blurRadius: 5, inset: true)]
+                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.6), blurRadius: 5)]
             ),
             child: DropdownButtonFormField<String>(
               value: _seciliYer,
               dropdownColor: SiberTema.matGrey,
-              icon: const Icon(Icons.radar, color: SiberTema.kuantumCyan),
-              style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: SiberTema.siberFont),
+              icon: const Icon(Icons.location_on, color: SiberTema.kuantumCyan),
+              style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
               ),
-              hint: Text("BİR LOKASYON SEÇİN...", style: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: SiberTema.siberFont)),
-              items: siraliSehirler.map((String yer) {
+              hint: Text("BİR LOKASYON SEÇİN...", style: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+
+              // 🔥 TİP UYUŞMAZLIĞINA KARŞI KATİ MÜHÜR EKLENDİ
+              items: siraliSehirler.map<DropdownMenuItem<String>>((String yer) {
                 return DropdownMenuItem<String>(
                   value: yer,
                   child: Text(yer.toUpperCase(), style: const TextStyle(letterSpacing: 1)),
                 );
               }).toList(),
+
               onChanged: (yeniYer) {
                 setState(() { _seciliYer = yeniYer; });
                 if (yeniYer != null) {
@@ -136,31 +135,32 @@ class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
           ),
 
           // 3. SEÇİLEN BÖLGE İSTİHBARATI
-          if (_seciliYer != null) ...[
-            const SizedBox(height: 16),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                  color: SiberTema.kuantumCyan.withOpacity(0.05),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3)),
-                  boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 15)]
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.my_location, color: SiberTema.kuantumCyan, size: 16),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      "BAĞLI DİSTRİBÜTÖRLÜK: ${aktifListe[_seciliYer]?.toUpperCase()}",
-                      style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: SiberTema.siberFont),
+          if (_seciliYer != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                    color: SiberTema.kuantumCyan.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3)),
+                    boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 15)]
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.my_location, color: SiberTema.kuantumCyan, size: 16),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        "BAĞLI DİSTRİBÜTÖRLÜK: ${aktifListe[_seciliYer]?.toUpperCase()}",
+                        style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            )
-          ]
+            ),
         ],
       ),
     );
@@ -191,11 +191,12 @@ class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, color: isSelected ? SiberTema.kuantumCyan : Colors.white38, size: 16, shadows: isSelected ? [const Shadow(color: SiberTema.kuantumCyan, blurRadius: 10)] : []),
+              // 🔥 GÖLGE CONST İHLALİ KALDIRILDI
+              Icon(icon, color: isSelected ? SiberTema.kuantumCyan : Colors.white38, size: 16, shadows: isSelected ? [Shadow(color: SiberTema.kuantumCyan, blurRadius: 10)] : []),
               const SizedBox(width: 8),
               Text(
                 ulkeAdi.toUpperCase(),
-                style: TextStyle(color: isSelected ? SiberTema.kuantumCyan : Colors.white38, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: SiberTema.siberFont),
+                style: TextStyle(color: isSelected ? SiberTema.kuantumCyan : Colors.white38, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
               ),
             ],
           ),

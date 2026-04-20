@@ -1,8 +1,10 @@
+// lib/core/otodna_mega_protocol.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:developer' as developer;
 
 /// 🦅 OTODNA MEGA PROTOKOLÜ - V7 (SİBER KARARGAH ANA SİSTEMİ)
-/// [2026-04-12] GÜNCELLEME: Garanti Sertifikası ve Kuantum Mühürleme Entegrasyonu.
+/// [2026-04-21] GÜNCELLEME: Atomik Loglama, 30 Dk. S.O.S Kuralı ve Mutlak %12 Finans Entegrasyonu.
 class OtodnaMegaProtocol {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
   static final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -23,6 +25,10 @@ class OtodnaMegaProtocol {
     // Seri No Oluştur (Benzersiz Siber Kimlik)
     final String sertifikaId = "DNA-${DateTime.now().millisecondsSinceEpoch}-${plaka.toUpperCase()}";
 
+    // 🔥 %12 MUTLAK KESİNTİ ALGORİTMASI
+    double kesintiTutar = tutar * karargahPayi;
+    double bayiHakedis = tutar - kesintiTutar;
+
     // ATOMİK İŞLEM (WriteBatch): Ya hep ya hiç!
     WriteBatch batch = _db.batch();
 
@@ -35,6 +41,8 @@ class OtodnaMegaProtocol {
       'tarih': FieldValue.serverTimestamp(),
       'garanti_suresi': garantiSuresi,
       'tutar': tutar,
+      'karargah_payi': kesintiTutar,
+      'bayi_hakedis': bayiHakedis,
       'operator_id': operatorId,
       'durum': 'AKTİF',
       'guvenlik_mühürü': 'VERIFIED_BY_OTODNA',
@@ -47,14 +55,24 @@ class OtodnaMegaProtocol {
       'dna_skoru': FieldValue.increment(5), // Her mühürlü işlem skoru artırır
     });
 
-    await batch.commit();
-    print("🚀 SİBER MÜHÜR BASILDI: $sertifikaId");
+    // 3. 🕵️‍♂️ Karargah Kara Kutusuna Siber Log
+    DocumentReference logRef = _db.collection('sistem_loglari').doc();
+    batch.set(logRef, {
+      'islem_turu': 'GARANTI_MUHURU',
+      'islem_detayi': '$plaka araca $islem sertifikası basıldı. Sertifika: $sertifikaId. Karargah Payı: ₺$kesintiTutar',
+      'operator_id': operatorId,
+      'tarih': FieldValue.serverTimestamp(),
+    });
+
+    await batch.commit(); // Füzeleri ateşle!
+    developer.log("🚀 SİBER MÜHÜR BASILDI: $sertifikaId (Finans ve Log entegre edildi)");
   }
 
   /// 📍 AKILLI BÖLGE BULUCU (81 İl - 7 Bölge Protokolü)
   static String bolgeTespitEt(String sehir) {
-    const Marmara = ["İSTANBUL", "BURSA", "KOCAELİ", "EDİRNE"]; // Liste genişletilebilir
-    const IcAnadolu = ["ANKARA", "KONYA", "KAYSERİ", "ESKİŞEHİR"];
+    // SİBER NOT: Kapsam genişletildi. İleride KureselHaritaSistemi ile doğrudan birleştirilebilir.
+    const Marmara = ["İSTANBUL", "BURSA", "KOCAELİ", "EDİRNE", "SAKARYA", "TEKİRDAĞ", "ÇANAKKALE", "YALOVA", "BİLECİK", "KIRKLARELİ"];
+    const IcAnadolu = ["ANKARA", "KONYA", "KAYSERİ", "ESKİŞEHİR", "SİVAS", "KIRIKKALE", "AKSARAY", "KARAMAN", "KIRŞEHİR", "NİĞDE", "NEVŞEHİR", "YOZGAT", "ÇANKIRI"];
 
     String target = sehir.toUpperCase();
     if (Marmara.contains(target)) return "MARMARA BÖLGESİ";
@@ -63,15 +81,34 @@ class OtodnaMegaProtocol {
     return "DİĞER BÖLGE";
   }
 
-  /// 🚨 ACİL DURUM (SOS) PROTOKOLÜ
-  static Future<void> tetikleSOS(GeoPoint konum) async {
-    final user = _auth.currentUser;
-    await _db.collection('sos_ihbarlari').add({
-      'user_id': user?.uid,
+  /// 🚨 ACİL DURUM (SOS) PROTOKOLÜ: 5 Saniye Kuralı ve 30 Dakika Geri Sayım Radarı
+  static Future<void> tetikleSOS({required GeoPoint konum, required String plaka}) async {
+    final String? userId = _auth.currentUser?.uid;
+    if (userId == null) throw Exception("SİBER İHLAL: Kimliksiz SOS Sinyali Engellendi!");
+
+    WriteBatch batch = _db.batch();
+
+    // 1. İmece Alarmları (Acil Durum Havuzu)
+    DocumentReference sosRef = _db.collection('imece_alarmlari').doc();
+    batch.set(sosRef, {
+      'user_id': userId,
+      'plaka': plaka,
       'konum': konum,
       'zaman_damgasi': FieldValue.serverTimestamp(),
-      'durum': 'KRİTİK',
-      'mudahale_bekleniyor': true,
+      'durum': 'ACIL_MUDEHALE_BEKLIYOR',
+      'mudahale_siniri_dakika': 30, // 🔥 30 Dakika Karargah SLA Kuralı
+      'sari_kirmizi_kart_riski': true, // Asılsız ihbar denetim bayrağı
     });
+
+    // 2. Kara Kutuya S.O.S İhbarı Düş
+    DocumentReference logRef = _db.collection('sistem_loglari').doc();
+    batch.set(logRef, {
+      'islem_turu': 'SOS_SINYALI',
+      'islem_detayi': 'KRİTİK UYARI: $userId kullanıcısı $plaka aracı için SOS tetikledi. 30 dakikalık geri sayım başladı.',
+      'tarih': FieldValue.serverTimestamp(),
+    });
+
+    await batch.commit(); // Kırmızı Alarmları Kuantum Ağına İşle!
+    developer.log("🚨 SOS SİNYALİ ATEŞLENDİ! Karargah radarları 30 dakika geri sayıma başladı.");
   }
 }

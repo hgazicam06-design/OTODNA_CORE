@@ -7,11 +7,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
-// 🚀 EKRANLAR (YENİ KARARGAH MİMARİSİNE GÖRE ONARILDI - KIRMIZI ÇİZGİLER YOK EDİLDİ)
+// 🚀 EKRANLAR (YENİ KARARGAH MİMARİSİNE GÖRE)
 import '../screens/login_screen.dart';
-import '../screens/super_admin_screen.dart'; // YOL DÜZELTİLDİ (admin/ klasörü kaldırıldı)
-import '../screens/usta_panel_screen.dart'; // YOL DÜZELTİLDİ (bayi/ klasörü kaldırıldı)
-import '../screens/siber_kokpit_screen.dart'; // YOL DÜZELTİLDİ (kullanici/ klasörü kaldırıldı)
+import '../screens/super_admin_screen.dart';
+import '../screens/usta_panel_screen.dart';
+import '../screens/siber_kokpit_screen.dart';
 
 /// 🛡️ KUANTUM GİRİŞ KAPISI VE RÜTBE YÖNLENDİRİCİSİ
 class OtoDnaAuthGate extends StatelessWidget {
@@ -36,7 +36,6 @@ class OtoDnaAuthGate extends StatelessWidget {
           final User currentUser = authSnapshot.data!;
 
           // 🛡️ SİBER RADAR: Canlı izliyoruz ama KİMSEYİ DIŞARI ATMIYORUZ!
-          // Rütbe düşse de, karalisteye alınsa da uygulamayı kullanmaya devam ederler.
           return StreamBuilder<DocumentSnapshot>(
             stream: FirebaseFirestore.instance.collection('kullanicilar').doc(currentUser.uid).snapshots(),
             builder: (context, userSnapshot) {

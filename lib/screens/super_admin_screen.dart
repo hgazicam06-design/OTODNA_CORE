@@ -39,7 +39,8 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
   // =========================================================================
   // 🔓 ATOMİK MÜHÜR KIRMA: FİREBASE GÜNCELLEME MOTORU (WRITEBATCH)
   // =========================================================================
-  Future<void> _muhruKir(String islemId) async {
+  // 🛡️ SİBER DÜZELTME: Metot adı _muhurKir olarak butonla eşitlendi!
+  Future<void> _muhurKir(String islemId) async {
     try {
       developer.log("SİBER ONAY: $islemId için Mühür Kırma Protokolü başlatıldı.");
       WriteBatch batch = _db.batch();
