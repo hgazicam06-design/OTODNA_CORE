@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// 🔥 SİBER KÖPRÜLER (Karargah Rotaları)
-import 'yedek_parca_ilan_ver_screen.dart';
-import 'ilan_ver_arac_secim_screen.dart';
-import '../../core/siber_tema.dart';
+// 🔥 SİBER KÖPRÜLER (Klasör yolu '../' olarak düzeltildi)
+import '../core/siber_tema.dart';
+
+// ⚠️ SİBER UYARI: Bu ekranları henüz İNŞA ETMEDİĞİMİZ için şimdilik kapalı tutuyoruz!
+// İlan verme modüllerini kodladığımızda bu yorum satırlarını (slash'leri) kaldıracağız.
+// import 'yedek_parca_ilan_ver_screen.dart';
+// import 'ilan_ver_arac_secim_screen.dart';
 
 class OtoMarketScreen extends StatefulWidget {
   const OtoMarketScreen({super.key});
@@ -79,7 +82,7 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
   }
 
   // =======================================================================
-  // 💎 TESLA MİMARİSİ: ŞIK ÖDEME (HAVUZ) PANELİ (GERÇEK %12 KURALI)
+  // 💎 TESLA MİMARİSİ: ŞIK ÖDEME (HAVUZ) PANELİ
   // =======================================================================
   void _havuzOdemesiBaslat(String ilanId, double safFiyat, String saticiId, String saticiIsim, int saticiPuani) {
     if (saticiPuani <= 1) {
@@ -144,11 +147,9 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
     try {
       WriteBatch batch = _db.batch();
 
-      // İlanı satıldı yap (Kuantum durum güncellemesi)
       DocumentReference ilanRef = _db.collection('ilanlar').doc(ilanId);
       batch.update(ilanRef, {'durum': 'Satıldı', 'alici_id': _aktifKullaniciId});
 
-      // Havuza aktar (Ticaret Havuzu kaydı)
       DocumentReference havuzRef = _db.collection('ticaret_havuzu').doc();
       batch.set(havuzRef, {
         'ilan_id': ilanId,
@@ -157,7 +158,7 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
         'odenen_tutar': fiyat,
         'durum': 'Kargoda/Bekliyor',
         'islem_tarihi': FieldValue.serverTimestamp(),
-        'vitrin_etiketi': "Murat Plaza", // Global Finans Kuralı
+        'vitrin_etiketi': saticiIsim, // SATICI KİMSE HAVUZA ONUN ADI YAZILIR
       });
 
       await batch.commit();
@@ -236,7 +237,7 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
     );
   }
 
-  // ─── 1. SEKME: CANLI OTO MARKET (SERBEST PİYASA) ───
+  // ─── 1. SEKME: CANLI OTO MARKET ───
   Widget _buildOtoMarketSekmesi() {
     return Column(
       children: [
@@ -280,7 +281,7 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
                     ilanId: ilanId,
                     baslik: veri['baslik'] ?? "Bilinmeyen Parça",
                     saticiId: veri['satici_id'] ?? "",
-                    satici: "Murat Plaza", // Vitrin kuralı
+                    satici: veri['vitrin_etiketi'] ?? veri['asil_satici_adi'] ?? "Bilinmeyen Satıcı",
                     saticiPuani: 5,
                     fiyatDouble: fiyatDouble,
                     resimUrl: veri['resim_url'] ?? "https://via.placeholder.com/150/000000/00FFC2?text=OtoDNA",
@@ -483,9 +484,19 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
             children: [
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text("SİBER İLAN TERMİNALİ", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')), IconButton(icon: const Icon(Icons.close, color: Colors.white54), onPressed: () => Navigator.pop(ctx))]),
               const SizedBox(height: 24),
-              _buildIlanSecenekKarti("Yedek Parça & Aksesuar", "Bireysel ve kurumsal serbest piyasa ilanı oluşturun.", Icons.settings_outlined, primaryCyan, () { Navigator.pop(ctx); Navigator.push(context, MaterialPageRoute(builder: (context) => const YedekParcaIlanVerScreen())); }),
+              _buildIlanSecenekKarti("Yedek Parça & Aksesuar", "Bireysel ve kurumsal serbest piyasa ilanı oluşturun.", Icons.settings_outlined, primaryCyan, () {
+                Navigator.pop(ctx);
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("SİBER BİLGİ: Parça İlan Ekranı İnşa Ediliyor...")));
+                // İNŞA EDİLDİĞİNDE AÇILACAK:
+                // Navigator.push(context, MaterialPageRoute(builder: (context) => const YedekParcaIlanVerScreen()));
+              }),
               const SizedBox(height: 16),
-              _buildIlanSecenekKarti("Otomobil & Taşıt (Galeri)", "OtoDNA kalkanlı araçlarınızı siber ağa mühürleyin.", Colors.amber, () { Navigator.pop(ctx); Navigator.push(context, MaterialPageRoute(builder: (context) => const IlanVerAracSecimScreen())); }),
+              _buildIlanSecenekKarti("Otomobil & Taşıt (Galeri)", "OtoDNA kalkanlı araçlarınızı siber ağa mühürleyin.", Colors.amber, () {
+                Navigator.pop(ctx);
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("SİBER BİLGİ: Araç İlan Ekranı İnşa Ediliyor...")));
+                // İNŞA EDİLDİĞİNDE AÇILACAK:
+                // Navigator.push(context, MaterialPageRoute(builder: (context) => const IlanVerAracSecimScreen()));
+              }),
               const SizedBox(height: 32),
             ],
           ),

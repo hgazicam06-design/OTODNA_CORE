@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-/// 🦅 SİBER USTA KONSEYİ (Lonca Meclisi)
-/// Esnaflar arası teknik yardımlaşma, parça ticareti ve gizli iletişim protokolü.
+// 🚀 KARARGAH ZIRHLARI VE KÖPRÜLER
+import '../../core/siber_tema.dart';
+// import '../../core/siber_yetki_kalkani.dart'; // Yetki kalkanını daha önce yazmıştık, aktif edebilirsin.
+
+/// 🦅 SİBER USTA KONSEYİ VE LONCA MATRİSİ (V4 - Çok Katmanlı Ağ)
+/// Tüm otomotiv sektörünün (Mekanik, Elektrik, Kaporta, Fan Club) branşlara ayrıldığı devasa Kuantum Forumu.
 class UstaKonseyiScreen extends StatefulWidget {
   final String aktifKullaniciId;
   final String aktifKullaniciAdi;
@@ -22,11 +26,19 @@ class UstaKonseyiScreen extends StatefulWidget {
 class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final TextEditingController _gonderiController = TextEditingController();
+  final TextEditingController _baslikController = TextEditingController();
 
-  // 🎨 Siber Renk Paleti (Kuantum Standartları)
-  static const _neonGreen = Color(0xFF00FFCC);
-  static const _cyberBlack = Color(0xFF0D0D0D);
-  static const _cyberCard = Color(0xFF1E1E2E);
+  // 🌍 KUANTUM BRANŞLARI (Alt-Loncalar)
+  final List<String> _loncaKategorileri = [
+    "Tüm Karargah",
+    "Oto Mekanik & Motor",
+    "Oto Elektrik & Beyin",
+    "Kaporta & Boya",
+    "Tornacı & İşleme",
+    "Performans & Tuning",
+    "Sivil Fan Club (Kullanıcılar)"
+  ];
+  String _seciliKategori = "Tüm Karargah";
 
   String _seciliGonderiTipi = "Arıza Danışma";
   final List<String> _gonderiTipleri = ["Arıza Danışma", "Kritik Arıza (Video)", "Parça Aranıyor", "Genel Bilgi"];
@@ -34,24 +46,25 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
   @override
   Widget build(BuildContext context) {
     bool isBaskan = widget.kullaniciRolUnvan.contains("BAŞKAN") || widget.kullaniciRolUnvan == "ADMIN";
+    // Sivil Fan Club dışındaki odalara sivillerin konu açmasını engelleme kalkanı
     bool isEsnaf = widget.kullaniciRolUnvan != "USER" && widget.kullaniciRolUnvan != "Kullanıcı";
 
     return Scaffold(
-      backgroundColor: _cyberBlack,
+      backgroundColor: SiberTema.oledBlack,
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
         title: const Row(
           children: [
-            Icon(Icons.handyman, color: _neonGreen),
+            Icon(Icons.hub_outlined, color: SiberTema.kuantumCyan),
             SizedBox(width: 10),
-            Text('Siber Usta Konseyi', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
+            Text('Siber Lonca Ağı', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1, fontFamily: 'Avenir')),
           ],
         ),
         actions: [
           if (isBaskan)
             IconButton(
-              icon: const Icon(Icons.admin_panel_settings, color: Colors.amber),
+              icon: const Icon(Icons.admin_panel_settings, color: SiberTema.siberGold),
               onPressed: () => _baskanlikPaneliniAc(),
               tooltip: "Başkanlık Paneli",
             )
@@ -60,15 +73,62 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
       body: Column(
         children: [
           _buildYapayZekaUyarisi(),
+          _buildKategoriRadari(), // 🚀 Yeni Yatay Branş Seçici
+          const Divider(color: Colors.white10, height: 1),
           Expanded(child: _buildCanliAkis(isBaskan, isEsnaf)),
         ],
       ),
-      floatingActionButton: isEsnaf ? FloatingActionButton.extended(
-        backgroundColor: _neonGreen,
+      // 🛡️ SİBER YETKİ: Kullanıcılar da form açabilir ama sadece Fan Club'da veya yetkisi varsa!
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: SiberTema.kuantumCyan,
         icon: const Icon(Icons.add_comment, color: Colors.black),
-        label: const Text("Konseye Yaz", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-        onPressed: () => _yeniGonderiDialog(),
-      ) : null,
+        label: const Text("SİBER KONU AÇ", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+        onPressed: () => _yeniGonderiDialog(isEsnaf),
+      ),
+    );
+  }
+
+  // ─── 1. KATEGORİ (BRANŞ) RADARI ───
+  Widget _buildKategoriRadari() {
+    return Container(
+      height: 60,
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: _loncaKategorileri.length,
+        itemBuilder: (context, index) {
+          String kategori = _loncaKategorileri[index];
+          bool isSelected = _seciliKategori == kategori;
+
+          return GestureDetector(
+            onTap: () => setState(() => _seciliKategori = kategori),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              margin: const EdgeInsets.only(right: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: isSelected ? SiberTema.kuantumCyan.withOpacity(0.15) : SiberTema.matGrey,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: isSelected ? SiberTema.kuantumCyan : Colors.white10, width: isSelected ? 1.5 : 1),
+              ),
+              child: Center(
+                child: Text(
+                  kategori.toUpperCase(),
+                  style: TextStyle(
+                      color: isSelected ? SiberTema.kuantumCyan : Colors.white54,
+                      fontSize: 10,
+                      fontWeight: isSelected ? FontWeight.w900 : FontWeight.bold,
+                      letterSpacing: 1,
+                      fontFamily: 'Avenir'
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -76,38 +136,46 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(8),
-      color: Colors.amber.withOpacity(0.1),
+      color: SiberTema.siberGold.withOpacity(0.1),
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.memory, color: Colors.amber, size: 16),
+          Icon(Icons.memory, color: SiberTema.siberGold, size: 16),
           SizedBox(width: 8),
-          Text("OtoDNA Kuantum AI, B2B Ticaret ve Kuralları Denetler.", style: TextStyle(color: Colors.amber, fontSize: 11, fontWeight: FontWeight.bold)),
+          Text("OtoDNA Kuantum AI, Branş İçi Ticareti ve İhlalleri Denetler.", style: TextStyle(color: SiberTema.siberGold, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 0.5)),
         ],
       ),
     );
   }
 
+  // ─── 2. CANLI AKIŞ (KATEGORİYE GÖRE FİLTRELİ) ───
   Widget _buildCanliAkis(bool isBaskan, bool isEsnaf) {
+    // Kategoriye göre Kuantum Filtreleme
+    Query query = _db.collection('usta_konseyi').orderBy('tarih', descending: true);
+    if (_seciliKategori != "Tüm Karargah") {
+      query = _db.collection('usta_konseyi').where('kategori', isEqualTo: _seciliKategori).orderBy('tarih', descending: true);
+    }
+
     return StreamBuilder<QuerySnapshot>(
-      stream: _db.collection('usta_konseyi').orderBy('tarih', descending: true).snapshots(),
+      stream: query.snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator(color: _neonGreen));
+          return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
         }
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text("Konseyde henüz bir hareket yok.", style: TextStyle(color: Colors.white54)));
+          return Center(child: Text("Bu Kuantum Odasında henüz veri yok.", style: TextStyle(color: Colors.white.withOpacity(0.3), fontWeight: FontWeight.bold, fontFamily: 'Avenir')));
         }
 
         var gonderiler = snapshot.data!.docs.where((doc) {
           var veri = doc.data() as Map<String, dynamic>;
           bool herkeseAcik = veri['herkese_ac_ik'] ?? true;
+          // Sivil Kullanıcı isEsnaf == false'dur. Eğer gönderi sadece Lonca'ya (esnafa) özgüyse sivil bunu göremez.
           if (!isEsnaf && !herkeseAcik) return false;
           return true;
         }).toList();
 
         return ListView.builder(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(16),
           physics: const BouncingScrollPhysics(),
           itemCount: gonderiler.length,
           itemBuilder: (context, index) {
@@ -122,35 +190,56 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
 
   Widget _buildGonderiKarti(Map<String, dynamic> veri, String docId, bool isBaskan) {
     String tip = veri['tip'] ?? 'Genel';
+    String baslik = veri['baslik'] ?? 'Konu Başlığı';
+    String kategori = veri['kategori'] ?? 'Genel';
     bool herkeseAcik = veri['herkese_ac_ik'] ?? true;
     Color tipRengi = _getTipRengi(tip);
     IconData tipIkoni = _getTipIkoni(tip);
 
-    return Card(
-      color: _cyberCard,
+    return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: Colors.white12)),
+      decoration: BoxDecoration(
+        color: SiberTema.matGrey,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // ÜST BİLGİ: Kategori ve Kimlik
             Row(
               children: [
-                CircleAvatar(backgroundColor: tipRengi.withOpacity(0.2), child: Icon(tipIkoni, color: tipRengi)),
-                const SizedBox(width: 10),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(6)),
+                  child: Text(kategori, style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 9, fontWeight: FontWeight.w900)),
+                ),
+                const Spacer(),
+                Icon(herkeseAcik ? Icons.public : Icons.lock, color: Colors.white24, size: 12),
+                const SizedBox(width: 4),
+                Text(herkeseAcik ? "Açık Ağ" : "Gizli Lonca", style: const TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold)),
+              ],
+            ),
+            const SizedBox(height: 16),
+            // İÇERİK BAŞLIĞI
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(backgroundColor: tipRengi.withOpacity(0.2), radius: 20, child: Icon(tipIkoni, color: tipRengi, size: 20)),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(veri['yazar_adi'] ?? 'Gizli Usta', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                      const SizedBox(height: 4),
                       Row(
                         children: [
-                          Text(veri['yazar_rol'] ?? 'Üye', style: TextStyle(color: tipRengi, fontSize: 11)),
-                          const SizedBox(width: 8),
-                          Icon(herkeseAcik ? Icons.public : Icons.lock, color: Colors.grey, size: 12),
-                          const SizedBox(width: 4),
-                          Text(herkeseAcik ? "Herkese Açık" : "Sadece Lonca", style: const TextStyle(color: Colors.grey, fontSize: 10)),
+                          Text(veri['yazar_adi'] ?? 'Gizli Sürücü', style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold)),
+                          const SizedBox(width: 6),
+                          Text("• ${veri['yazar_rol']}", style: TextStyle(color: tipRengi, fontSize: 10, fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ],
@@ -158,21 +247,24 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
                 ),
                 if (isBaskan || veri['yazar_id'] == widget.aktifKullaniciId)
                   IconButton(
-                    icon: const Icon(Icons.delete_sweep, color: Colors.redAccent, size: 20),
+                    icon: const Icon(Icons.delete_sweep, color: SiberTema.kanKirmizi, size: 20),
                     onPressed: () => _gonderiyiSil(docId),
                   )
               ],
             ),
-            const SizedBox(height: 12),
-            Text(veri['icerik'] ?? '', style: const TextStyle(color: Colors.white70, fontSize: 14)),
             const SizedBox(height: 16),
+            Text(veri['icerik'] ?? '', style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.5, fontFamily: 'Avenir')),
+            const SizedBox(height: 20),
+
+            // TİCARET VEYA YANIT BUTONU
             if (tip == "Parça Aranıyor" && veri['yazar_id'] != widget.aktifKullaniciId)
               SizedBox(
                 width: double.infinity,
+                height: 48,
                 child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(backgroundColor: _neonGreen, foregroundColor: Colors.black),
-                  icon: const Icon(Icons.handshake),
-                  label: const Text("Bende Var! Ticaret Başlat", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                  style: SiberTema.kuantumButonStili(),
+                  icon: const Icon(Icons.handshake, color: Colors.black, size: 18),
+                  label: const Text("BENDE VAR! TİCARET HAVUZUNU AÇ", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1)),
                   onPressed: () => _siberTicaretBaslat(veri['yazar_id']),
                 ),
               ),
@@ -182,58 +274,88 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
     );
   }
 
-  void _yeniGonderiDialog() {
-    bool localHerkeseAcik = false;
+  // ─── 3. SİBER KONU AÇMA PANELİ ───
+  void _yeniGonderiDialog(bool isEsnaf) {
+    bool localHerkeseAcik = true;
+    String localKategori = _seciliKategori == "Tüm Karargah" ? _loncaKategorileri[1] : _seciliKategori; // Varsayılan kategori
+
     showModalBottomSheet(
       context: context,
-      backgroundColor: _cyberCard,
+      backgroundColor: SiberTema.matGrey,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(32))),
       builder: (ctx) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setModalState) {
               return Padding(
-                padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom, left: 20, right: 20, top: 20),
+                padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom, left: 24, right: 24, top: 32),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Lonca'ya Seslen", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 16),
-                    DropdownButtonFormField<String>(
-                      value: _seciliGonderiTipi,
-                      dropdownColor: _cyberBlack,
-                      style: const TextStyle(color: _neonGreen),
-                      items: _gonderiTipleri.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-                      onChanged: (val) => setModalState(() => _seciliGonderiTipi = val!),
-                      decoration: _siberInputDecoration("Gönderi Tipi"),
+                    const Text("YENİ SİBER BAŞLIK OLUŞTUR", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                    const SizedBox(height: 24),
+
+                    // BRANŞ (KATEGORİ) SEÇİMİ
+                    _buildDropdownContainer(
+                        hint: "Branş (Oda) Seçin",
+                        value: localKategori,
+                        items: _loncaKategorileri.where((k) => k != "Tüm Karargah").toList(),
+                        onChanged: (val) {
+                          // Siviller sadece Fan Club'a yazabilir kalkanı!
+                          if (!isEsnaf && val != "Sivil Fan Club (Kullanıcılar)") {
+                            _siberHata("SİBER İHLAL: Sivil kullanıcılar sadece 'Fan Club' odasında konu açabilir!");
+                            return;
+                          }
+                          setModalState(() => localKategori = val!);
+                        }
+                    ),
+
+                    // GÖNDERİ TİPİ
+                    _buildDropdownContainer(
+                        hint: "Gönderi Tipi",
+                        value: _seciliGonderiTipi,
+                        items: _gonderiTipleri,
+                        onChanged: (val) => setModalState(() => _seciliGonderiTipi = val!)
+                    ),
+
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: _baslikController,
+                      style: const TextStyle(color: Colors.white, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
+                      decoration: SiberTema.siberInputDecor("Konu Başlığı", Icons.title),
                     ),
                     const SizedBox(height: 16),
                     TextField(
                       controller: _gonderiController,
                       maxLines: 4,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: _siberInputDecoration("Arıza detayı veya parça kodu..."),
+                      style: const TextStyle(color: Colors.white, fontFamily: 'Avenir'),
+                      decoration: SiberTema.siberInputDecor("Açıklama, arıza detayı veya oem kodu...", Icons.description),
                     ),
                     const SizedBox(height: 16),
-                    Container(
-                      decoration: BoxDecoration(color: Colors.black45, borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.white12)),
-                      child: SwitchListTile(
-                        activeColor: _neonGreen,
-                        title: const Text("Kullanıcılar Görebilir", style: TextStyle(color: Colors.white, fontSize: 14)),
-                        value: localHerkeseAcik,
-                        onChanged: (val) => setModalState(() => localHerkeseAcik = val),
+
+                    if (isEsnaf) // Siviller gizlilik ayarıyla oynayamaz
+                      Container(
+                        decoration: BoxDecoration(color: Colors.black45, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                        child: SwitchListTile(
+                          activeColor: SiberTema.kuantumCyan,
+                          title: const Text("Sivil Kullanıcılar da Görebilir", style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                          value: localHerkeseAcik,
+                          onChanged: (val) => setModalState(() => localHerkeseAcik = val),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 24),
                     SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: _neonGreen, padding: const EdgeInsets.symmetric(vertical: 14)),
-                        onPressed: () => _yapayZekaIleDenetleVeGonder(ctx, localHerkeseAcik),
-                        child: const Text("Kuantum Ağına Gönder", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                      height: 56,
+                      child: ElevatedButton.icon(
+                        style: SiberTema.kuantumButonStili(),
+                        onPressed: () => _yapayZekaIleDenetleVeGonder(ctx, localHerkeseAcik, localKategori),
+                        icon: const Icon(Icons.satellite_alt, color: Colors.black),
+                        label: const Text("AĞA YAYINLA", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 32),
                   ],
                 ),
               );
@@ -243,40 +365,74 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
     );
   }
 
-  InputDecoration _siberInputDecoration(String label) {
-    return InputDecoration(
-      labelText: label,
-      labelStyle: const TextStyle(color: Colors.grey, fontSize: 12),
-      enabledBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.white24), borderRadius: BorderRadius.circular(10)),
-      focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: _neonGreen), borderRadius: BorderRadius.circular(10)),
+  // YARDIMCI DROPDOWN METODU
+  Widget _buildDropdownContainer({required String hint, required String? value, required List<String> items, required void Function(String?)? onChanged}) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      decoration: BoxDecoration(color: SiberTema.oledBlack, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          isExpanded: true, dropdownColor: SiberTema.matGrey,
+          icon: const Icon(Icons.arrow_drop_down, color: SiberTema.kuantumCyan),
+          value: value,
+          items: items.map((e) => DropdownMenuItem(value: e, child: Text(e, style: const TextStyle(color: Colors.white, fontSize: 13, fontFamily: 'Avenir')))).toList(),
+          onChanged: onChanged,
+        ),
+      ),
     );
   }
 
-  Future<void> _yapayZekaIleDenetleVeGonder(BuildContext ctx, bool herkeseAcik) async {
+  // ─── 4. KUANTUM DENETİM VE MÜHÜRLEME (ATOMİK) ───
+  Future<void> _yapayZekaIleDenetleVeGonder(BuildContext ctx, bool herkeseAcik, String kategori) async {
     String metin = _gonderiController.text.trim();
-    if (metin.isEmpty) return;
+    String baslik = _baslikController.text.trim();
+    if (metin.isEmpty || baslik.isEmpty) return;
 
+    // AI KURAL İHLALİ: IBAN VEYA TELEFON KORUMASI
     if (metin.contains(RegExp(r'[0-9]{10}')) || metin.toLowerCase().contains("iban")) {
       Navigator.pop(ctx);
-      _siberHata("🚨 AI ENGELİ: B2B Ticaret Kasası üzerinden yapılmalıdır! (IBAN/Tel yasak).");
+      _siberHata("🚨 AI ENGELİ: B2B Ticaret Karargah Havuzu üzerinden yapılmalıdır! (Açıktan iletişim yasak).");
       return;
     }
 
-    await _db.collection('usta_konseyi').add({
-      'yazar_id': widget.aktifKullaniciId,
-      'yazar_adi': widget.aktifKullaniciAdi,
-      'yazar_rol': widget.kullaniciRolUnvan,
-      'tip': _seciliGonderiTipi,
-      'icerik': metin,
-      'herkese_ac_ik': herkeseAcik,
-      'tarih': FieldValue.serverTimestamp(),
-    });
-    _gonderiController.clear();
-    Navigator.pop(ctx);
+    try {
+      WriteBatch batch = _db.batch();
+
+      DocumentReference yeniGonderiRef = _db.collection('usta_konseyi').doc();
+      batch.set(yeniGonderiRef, {
+        'yazar_id': widget.aktifKullaniciId,
+        'yazar_adi': widget.aktifKullaniciAdi,
+        'yazar_rol': widget.kullaniciRolUnvan,
+        'baslik': baslik,
+        'kategori': kategori,
+        'tip': _seciliGonderiTipi,
+        'icerik': metin,
+        'herkese_ac_ik': herkeseAcik,
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'FORUM_BASLIK_ACILDI',
+        'yazar_id': widget.aktifKullaniciId,
+        'islem_detayi': '[$kategori] odasında "$baslik" isimli Kuantum Başlığı açıldı.',
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
+
+      _gonderiController.clear();
+      _baslikController.clear();
+      if (mounted) Navigator.pop(ctx);
+
+    } catch (e) {
+      _siberHata("🚨 AĞ ÇÖKTÜ: Gönderi mühürlenemedi!");
+    }
   }
 
   void _siberTicaretBaslat(String saticiId) {
-    _siberHata("TİCARET MOTORU YÜKLENİYOR: Güvenli Sohbet Kanalı Açılıyor...");
+    _siberHata("TİCARET MOTORU YÜKLENİYOR: Kasa Güvenceli Kanal Açılıyor...");
   }
 
   Future<void> _gonderiyiSil(String docId) async {
@@ -284,24 +440,24 @@ class _UstaKonseyiScreenState extends State<UstaKonseyiScreen> {
   }
 
   void _baskanlikPaneliniAc() {
-    _siberHata("🛡️ BAŞKANLIK MODU AKTİF");
+    _siberHata("🛡️ BAŞKANLIK MODU AKTİF: Siber Sansür ve Engelleme Yetkisi Verildi.");
   }
 
   void _siberHata(String mesaj) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.bold)), backgroundColor: _neonGreen));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mesaj, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), backgroundColor: SiberTema.kuantumCyan));
   }
 
   Color _getTipRengi(String tip) {
-    if (tip == "Kritik Arıza (Video)") return Colors.redAccent;
-    if (tip == "Parça Aranıyor") return Colors.amber;
-    if (tip == "Arıza Danışma") return Colors.blueAccent;
+    if (tip == "Kritik Arıza (Video)") return SiberTema.kanKirmizi;
+    if (tip == "Parça Aranıyor") return SiberTema.siberGold;
+    if (tip == "Arıza Danışma") return SiberTema.kuantumCyan;
     return Colors.grey;
   }
 
   IconData _getTipIkoni(String tip) {
     if (tip == "Kritik Arıza (Video)") return Icons.video_camera_back;
     if (tip == "Parça Aranıyor") return Icons.search;
-    if (tip == "Arıza Danışma") return Icons.help_outline;
+    if (tip == "Arıza Danışma") return Icons.memory;
     return Icons.forum;
   }
 }

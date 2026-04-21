@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 /// 🏢 OTODNA BAYİ HAREKAT MERKEZİ (Dashboard)
-/// Bayi Puanı, Karargah Payı (%12/%30) ve SOS Radarı Entegre Edildi.
+/// Bayi Puanı, Karargah Payı (%12 Sabit) ve SOS Radarı Entegre Edildi.
 class DealerDashboard extends StatefulWidget {
   const DealerDashboard({super.key});
 
@@ -45,7 +45,6 @@ class _DealerDashboardState extends State<DealerDashboard> {
             builder: (context, snapshot) {
               String firmaAdi = "Firma Yükleniyor...";
               if (snapshot.hasData && snapshot.data!.exists) {
-                // Murat Plaza ismi özel kâr marjı için burada kontrol edilir
                 firmaAdi = (snapshot.data!.data() as Map<String, dynamic>)['ad'] ?? "İsimsiz Bayi";
               }
               return Row(
@@ -130,31 +129,28 @@ class _DealerDashboardState extends State<DealerDashboard> {
               ),
               const SizedBox(height: 24),
 
-              // 3. FİNANSAL VERİ MERKEZİ (%12 ve %30 Pay Hesaplayıcı)
+              // 3. FİNANSAL VERİ MERKEZİ (%12 Sabit Pay Hesaplayıcı)
               _buildSectionTitle('FİNANSAL ANALİZ', Icons.payments_outlined, primaryCyan),
               const SizedBox(height: 12),
               StreamBuilder<DocumentSnapshot>(
                 stream: _db.collection('kullanicilar').doc(_currentUser!.uid).snapshots(),
                 builder: (context, snapshot) {
                   double aylikCiro = 0.0;
-                  String firmaAdi = "";
 
                   if (snapshot.hasData && snapshot.data!.exists) {
                     var data = snapshot.data!.data() as Map<String, dynamic>;
                     aylikCiro = (data['aylik_ciro'] ?? 0).toDouble();
-                    firmaAdi = (data['ad'] ?? "").toUpperCase();
                   }
 
-                  // ⚖️ STRATEJİK HESAPLAMA: Murat Plaza %30, Diğer Bayiler %12
-                  double komisyonOrani = firmaAdi.contains("MURAT PLAZA") ? 0.30 : 0.12;
-                  double platformPayi = aylikCiro * komisyonOrani;
+                  // ⚖️ YENİ EŞİTLİK KURALI: Herkese sabit %12 Karargah Kesintisi
+                  double platformPayi = aylikCiro * 0.12;
                   double bayiNetKazanc = aylikCiro - platformPayi;
 
                   return Row(
                     children: [
                       Expanded(child: _buildFinanceCard('Bayi Net Kâr', '₺${bayiNetKazanc.toStringAsFixed(0)}', Colors.greenAccent)),
                       const SizedBox(width: 16),
-                      Expanded(child: _buildFinanceCard('Karargah Payı', '₺${platformPayi.toStringAsFixed(0)}', Colors.orangeAccent)),
+                      Expanded(child: _buildFinanceCard('Karargah Payı (%12)', '₺${platformPayi.toStringAsFixed(0)}', Colors.orangeAccent)),
                     ],
                   );
                 },
@@ -174,7 +170,7 @@ class _DealerDashboardState extends State<DealerDashboard> {
                         var urun = doc.data() as Map<String, dynamic>;
                         return _buildProductTile(
                             urun['urun_adi'] ?? 'Ürün',
-                            "Stok: ${urun['stok'] ?? 0} | Murat Plaza Etiketli",
+                            "Stok: ${urun['stok'] ?? 0} | ${urun['vitrin_etiketi'] ?? 'OtoDNA'}", // Kendi dükkanının adını çeker
                             "₺${urun['satis_fiyati'] ?? 0}"
                         );
                       }).toList(),

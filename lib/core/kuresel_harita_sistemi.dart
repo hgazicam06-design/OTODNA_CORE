@@ -1,81 +1,158 @@
 // lib/core/kuresel_harita_sistemi.dart
 
-/// 🗺️ OTODNA KÜRESEL COĞRAFİ VERİ VE KONUM PROTOKOLÜ
+/// 🗺️ OTODNA KÜRESEL COĞRAFİ VERİ VE KONUM PROTOKOLÜ (V4 - ZIRHLI)
+/// 4 Kademeli (Ülke -> Bölge/Eyalet -> Şehir -> İlçe) İstihbarat Motoru.
 /// Ankara/Türkiye merkez üssü üzerinden tüm dünya operasyonlarını yönetir.
 class KureselHaritaSistemi {
   // 🇹🇷 KARARGAH MERKEZ ÜSSÜ (HQ)
   static const String globalMerkezUlkemiz = "Türkiye";
   static const String globalMerkezSehir = "Ankara";
 
-  // 🌍 AKTİF OPERASYON SAHALARI (Ülke İskeleti)
-  static const List<String> aktifUlkeler = [
-    "Türkiye",
-    "Almanya",
-    "Azerbaycan",
-    "Hollanda",
-    "Katar",
-    "Birleşik Arap Emirlikleri"
-  ];
-
   // ---------------------------------------------------------
-  // 🇹🇷 TÜRKİYE ALTYAPISI (7 STRATEJİK BÖLGE VE 81 İL)
+  // 🧠 KÜRESEL KUANTUM MATRİSİ (4 KADEMELİ VERİ AĞI)
   // ---------------------------------------------------------
-  static const List<String> turkiyeBolgeleri = [
-    "İç Anadolu Bölgesi", "Marmara Bölgesi", "Ege Bölgesi",
-    "Akdeniz Bölgesi", "Karadeniz Bölgesi", "Doğu Anadolu Bölgesi", "Güneydoğu Anadolu Bölgesi"
-  ];
-
-  static const Map<String, List<String>> turkiyeIlleri = {
-    "İç Anadolu Bölgesi": ["Ankara", "Konya", "Kayseri", "Eskişehir", "Sivas", "Kırıkkale", "Aksaray", "Karaman", "Kırşehir", "Niğde", "Nevşehir", "Yozgat", "Çankırı"],
-    "Marmara Bölgesi": ["İstanbul", "Bursa", "Kocaeli", "Balıkesir", "Sakarya", "Tekirdağ", "Çanakkale", "Edirne", "Kırklareli", "Yalova", "Bilecik"],
-    "Ege Bölgesi": ["İzmir", "Manisa", "Aydın", "Denizli", "Muğla", "Afyonkarahisar", "Kütahya", "Uşak"],
-    "Akdeniz Bölgesi": ["Antalya", "Adana", "Mersin", "Hatay", "Kahramanmaraş", "Osmaniye", "Isparta", "Burdur"],
-    "Karadeniz Bölgesi": ["Samsun", "Trabzon", "Ordu", "Giresun", "Zonguldak", "Tokat", "Çorum", "Amasya", "Kastamonu", "Rize", "Artvin", "Sinop", "Bartın", "Karabük", "Düzce", "Bolu", "Gümüşhane", "Bayburt"],
-    "Doğu Anadolu Bölgesi": ["Erzurum", "Malatya", "Van", "Elazığ", "Erzincan", "Kars", "Ağrı", "Muş", "Bitlis", "Bingöl", "Hakkari", "Iğdır", "Ardahan", "Tunceli"],
-    "Güneydoğu Anadolu Bölgesi": ["Gaziantep", "Şanlıurfa", "Diyarbakır", "Batman", "Adıyaman", "Mardin", "Şırnak", "Siirt", "Kilis"]
-  };
-
-  // ---------------------------------------------------------
-  // ✈️ GLOBAL OPERASYON BÖLGELERİ (Yurt Dışı Şehirleri)
-  // ---------------------------------------------------------
-  static const Map<String, List<String>> dunyaSehirleri = {
-    "Almanya": ["Berlin", "Münih", "Frankfurt", "Köln", "Hamburg", "Stuttgart", "Düsseldorf"],
-    "Azerbaycan": ["Bakü", "Gence", "Sumgayıt", "Şeki", "Lankaran"],
-    "Hollanda": ["Amsterdam", "Rotterdam", "Lahey", "Utrecht", "Eindhoven"],
-    "Katar": ["Doha", "El Vakra", "El Havr", "Duhan"],
-    "Birleşik Arap Emirlikleri": ["Dubai", "Abu Dabi", "Şarika", "Acman"]
-  };
-
-  // ---------------------------------------------------------
-  // 🧠 KUANTUM AKILLI FİLTRELEME MOTORU (UI Entegrasyonu)
-  // ---------------------------------------------------------
-  static List<String> sehirleriGetir(String seciliUlke, {String? seciliBolge}) {
-    if (seciliUlke == "Türkiye") {
-      if (seciliBolge != null && turkiyeIlleri.containsKey(seciliBolge)) {
-        return turkiyeIlleri[seciliBolge]!;
+  static const Map<String, Map<String, Map<String, List<String>>>> _kureselMatris = {
+    "Türkiye": {
+      "İç Anadolu Bölgesi": {
+        "Ankara": ["Akyurt", "Altındağ", "Çankaya", "Keçiören", "Yenimahalle", "Mamak", "Sincan", "Etimesgut", "Gölbaşı"],
+        "Konya": ["Karatay", "Meram", "Selçuklu", "Akşehir", "Ereğli"],
+        "Kayseri": ["Kocasinan", "Melikgazi", "Talas", "Develi"],
+        "Eskişehir": ["Odunpazarı", "Tepebaşı"],
+        // SİBER NOT: Diğer İç Anadolu illeri...
+      },
+      "Marmara Bölgesi": {
+        "İstanbul": ["Kadıköy", "Beşiktaş", "Şişli", "Bakırköy", "Üsküdar", "Maltepe", "Pendik", "Esenyurt"],
+        "Bursa": ["Nilüfer", "Osmangazi", "Yıldırım", "Gemlik"],
+        "Kocaeli": ["İzmit", "Gebze", "Gölcük"],
+        // SİBER NOT: Diğer Marmara illeri...
+      },
+      "Ege Bölgesi": {
+        "İzmir": ["Bornova", "Karşıyaka", "Konak", "Buca", "Çeşme", "Karabağlar"],
+        "Manisa": ["Yunusemre", "Şehzadeler", "Akhisar", "Salihli"],
+        // SİBER NOT: Diğer Ege illeri...
+      },
+      // SİBER NOT: Akdeniz, Karadeniz, Doğu ve G.Doğu Anadolu bölgeleri buraya eklenecek.
+    },
+    "Almanya": {
+      "Bavyera Eyaleti": {
+        "Münih": ["Altstadt", "Schwabing", "Maxvorstadt"],
+        "Nürnberg": ["Mitte", "Süd", "Nord"]
+      },
+      "Kuzey Ren-Vestfalya": {
+        "Köln": ["Innenstadt", "Rodenkirchen"],
+        "Düsseldorf": ["Stadtbezirk 1", "Stadtbezirk 2"]
+      },
+      "Hessen": {
+        "Frankfurt": ["Innenstadt", "Sachsenhausen", "Westend"]
       }
-      return turkiyeIlleri.values.expand((iller) => iller).toList();
-    } else {
-      return dunyaSehirleri[seciliUlke] ?? [];
+    },
+    "Azerbaycan": {
+      "Abşeron-Hızı Bölgesi": {
+        "Bakü": ["Binagadi", "Karadağ", "Nizami", "Sabail"],
+        "Sumgayıt": ["Merkez"]
+      },
+      "Gence-Daşkesen Bölgesi": {
+        "Gence": ["Nizami", "Kepez"]
+      }
+    },
+    "Hollanda": {
+      "Kuzey Hollanda": {
+        "Amsterdam": ["Centrum", "Noord", "Zuid", "Oost"]
+      },
+      "Güney Hollanda": {
+        "Rotterdam": ["Centrum", "Delfshaven", "Kralingen"],
+        "Lahey": ["Centrum", "Scheveningen"]
+      }
+    },
+    "Katar": {
+      "Doha Belediyesi": {
+        "Doha": ["Al Dafna", "West Bay", "The Pearl"]
+      },
+      "El Vakra Belediyesi": {
+        "El Vakra": ["Merkez"]
+      }
+    },
+    "Birleşik Arap Emirlikleri": {
+      "Dubai Emirliği": {
+        "Dubai": ["Downtown", "Deira", "Jumeirah", "Marina"]
+      },
+      "Abu Dabi Emirliği": {
+        "Abu Dabi": ["Corniche", "Yas Island", "Saadiyat"]
+      }
     }
+  };
+
+  // ---------------------------------------------------------
+  // 🚀 İSTİHBARAT ÇEKİCİLERİ (GÜVENLİ VE ZIRHLI GET METOTLARI)
+  // ---------------------------------------------------------
+
+  /// 1. AKTİF ÜLKELERİ GETİRİR
+  static List<String> ulkeleriGetir() {
+    return List.from(_kureselMatris.keys.toList()..sort());
+  }
+
+  /// 2. SEÇİLEN ÜLKENİN BÖLGE/EYALETLERİNİ GETİRİR
+  static List<String> bolgeleriGetir(String ulke) {
+    if (_kureselMatris.containsKey(ulke)) {
+      return List.from(_kureselMatris[ulke]!.keys.toList()..sort());
+    }
+    return ["Bölge Bulunamadı"];
+  }
+
+  /// 3. SEÇİLEN BÖLGENİN ŞEHİRLERİNİ GETİRİR
+  static List<String> sehirleriGetir(String ulke, String bolge) {
+    if (_kureselMatris.containsKey(ulke) && _kureselMatris[ulke]!.containsKey(bolge)) {
+      return List.from(_kureselMatris[ulke]![bolge]!.keys.toList()..sort());
+    }
+    return ["Şehir Bulunamadı"];
+  }
+
+  /// 4. SEÇİLEN ŞEHRİN İLÇELERİNİ GETİRİR
+  static List<String> ilceleriGetir(String ulke, String bolge, String sehir) {
+    if (_kureselMatris.containsKey(ulke) &&
+        _kureselMatris[ulke]!.containsKey(bolge) &&
+        _kureselMatris[ulke]![bolge]!.containsKey(sehir)) {
+      return List.from(_kureselMatris[ulke]![bolge]![sehir]!..sort());
+    }
+    return ["Merkez"];
   }
 
   // ---------------------------------------------------------
-  // 🔥 FİREBASE KONUM MÜHÜRLEYİCİ
+  // 🎯 TERS İSTİHBARAT RADARI
+  // ---------------------------------------------------------
+  static String hangiBolgede(String ulke, String sehir) {
+    if (!_kureselMatris.containsKey(ulke)) return "TANIMSIZ_ÜLKE";
+
+    var bolgeler = _kureselMatris[ulke]!;
+    for (var bolgeAdi in bolgeler.keys) {
+      if (bolgeler[bolgeAdi]!.keys.contains(sehir)) {
+        return bolgeAdi;
+      }
+    }
+    return "TANIMSIZ_BÖLGE";
+  }
+
+  // ---------------------------------------------------------
+  // 🔥 FİREBASE KONUM MÜHÜRLEYİCİ (ATOMİK PAKET)
   // ---------------------------------------------------------
   static Map<String, dynamic> firebaseKonumPaketi({
     required String ulke,
     String? bolge,
-    required String sehir
+    required String sehir,
+    String? ilce, // Yeni 4. Kademe Eklendi!
   }) {
+    // Bölge girilmediyse otonom olarak bul
+    String kesinBolge = bolge ?? hangiBolgede(ulke, sehir);
+
     return {
       "ulke": ulke,
-      "bolge": ulke == "Türkiye" ? (bolge ?? "Bölge Belirtilmedi") : "Yurt Dışı",
+      "bolge": kesinBolge,
       "sehir": sehir,
+      "ilce": ilce ?? "Merkez",
       "merkez_durumu": (ulke == globalMerkezUlkemiz && sehir == globalMerkezSehir)
           ? "KARARGAH (HQ)"
           : "DIŞ BİRİM",
-      "kayit_tarihi": DateTime.now().toIso8601String(),
+      "koordinat_guncelleme_tarihi": DateTime.now().toIso8601String(),
     };
   }
 }

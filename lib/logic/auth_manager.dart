@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// 🔥 SİBER KÖPRÜLER - YÖNETİM KULESİ BAĞLANTISI
-import '../screens/yonetim_kulesi/admin_global_panel.dart';
+// 🔥 SİBER KÖPRÜLER - YÖNETİM KULESİ BAĞLANTISI AKTİF EDİLDİ!
+import '../yonetim_kulesi/admin_global_panel.dart';
 import '../core/siber_tema.dart';
 
 class AuthManager {
@@ -72,18 +72,18 @@ class AuthManager {
 
           // Siber Karargah Giriş Efekti
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text(
+            const SnackBar(
+              content: Text(
                   "Siber Komutan Gazi, Karargaha Hoş Geldiniz! 🦅",
                   style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Avenir')
               ),
               backgroundColor: SiberTema.kuantumCyan,
-              duration: const Duration(seconds: 3),
+              duration: Duration(seconds: 3),
               behavior: SnackBarBehavior.floating,
             ),
           );
 
-          // 🚀 YÖNLENDİRME FÜZESİ: YÖNETİM KULESİNE NAKİL
+          // 🚀 YÖNLENDİRME FÜZESİ ATEŞLENDİ: YÖNETİM KULESİNE NAKİL
           Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const AdminGlobalPanel())

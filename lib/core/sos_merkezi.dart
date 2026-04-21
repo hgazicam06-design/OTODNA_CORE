@@ -26,23 +26,24 @@ class SiberSosMerkezi {
       // 🛡️ ATOMİK ZIRH: İşlemi ve Logu aynı anda kilitler!
       WriteBatch batch = _db.batch();
 
-      DocumentReference operasyonRef = _db.collection('sos_operasyonlari').doc();
+      // 🔥 SİBER SENKRONİZASYON: mega_protocol ile uyumlu olması için ortak koleksiyon ('imece_alarmlari')
+      DocumentReference operasyonRef = _db.collection('imece_alarmlari').doc();
       String operasyonId = operasyonRef.id;
 
       batch.set(operasyonRef, {
         'kullanici_id': kullaniciId,
         'sase_no': saseNo,
         'asil_bayi_id': asilBayiId,
-        'konum_enlem': anlikEnlem,
-        'konum_boylam': anlikBoylam,
+        'konum': GeoPoint(anlikEnlem, anlikBoylam), // Kuantum Harita Standartı
         'durum': 'QR_BAYI_MUDEHALE_BEKLIYOR', // İlk aşama
         'baslangic_zaman_damgasi': FieldValue.serverTimestamp(),
+        'sari_kirmizi_kart_riski': true, // Asılsız ihbar denetim bayrağı
       });
 
       DocumentReference logRef = _db.collection('sistem_loglari').doc();
       batch.set(logRef, {
         'islem_turu': 'YENI_SOS_TETIKLENDI',
-        'islem_detayi': 'SİBER KRİZ: ${kullaniciId} kullanıcısı KIZIL KOD ateşledi. Süreç başladı.',
+        'islem_detayi': 'SİBER KRİZ: $kullaniciId kullanıcısı $saseNo şasesi için KIZIL KOD ateşledi.',
         'tarih': FieldValue.serverTimestamp(),
       });
 
@@ -53,7 +54,7 @@ class SiberSosMerkezi {
         if (!_isCozuldu) {
           developer.log("⚠️ 15. DAKİKA: Asıl bayi müdahale etmedi! En yakın bayi radarına aktarılıyor.");
 
-          await _db.collection('sos_operasyonlari').doc(operasyonId).update({
+          await _db.collection('imece_alarmlari').doc(operasyonId).update({
             'durum': 'EN_YAKIN_BAYI_MUDEHALE_BEKLIYOR',
             '15dk_asimi': true,
           });
@@ -65,7 +66,7 @@ class SiberSosMerkezi {
         if (!_isCozuldu) {
           developer.log("🚨 KRİTİK İHLAL: 30 Dakikadır cevap yok! Sistem doğrudan Merkez Karargaha (Gazi'ye) devrediliyor.");
 
-          await _db.collection('sos_operasyonlari').doc(operasyonId).update({
+          await _db.collection('imece_alarmlari').doc(operasyonId).update({
             'durum': 'KARARGAH_MUDEHALESI_GEREKLI',
             '30dk_asimi': true,
           });
@@ -88,11 +89,27 @@ class SiberSosMerkezi {
     developer.log("✅ KARARGAH ONAYI: Yardım ulaştı. Tüm zamanlayıcılar ve alarmlar kapatıldı.");
 
     try {
-      await _db.collection('sos_operasyonlari').doc(operasyonId).update({
+      // 🛡️ ATOMİK ZIRH EKLENDİ: Çözüm işlemi de havada kalamaz!
+      WriteBatch batch = _db.batch();
+
+      DocumentReference operasyonRef = _db.collection('imece_alarmlari').doc(operasyonId);
+      batch.update(operasyonRef, {
         'durum': 'COZULDU',
         'cozen_bayi_id': cozenBayiId,
         'cozum_zaman_damgasi': FieldValue.serverTimestamp(),
+        'sari_kirmizi_kart_riski': false, // Yardım ulaştı, asılsız ihbar cezasını kaldır!
       });
+
+      // Kara Kutuya S.O.S'in çözüldüğünü logla
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'SOS_COZULDU',
+        'islem_detayi': 'S.O.S Operasyonu ($operasyonId) $cozenBayiId ID\'li bayi tarafından başarıyla çözüldü.',
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
+
     } catch (e) {
       developer.log("🚨 AĞ ÇÖKTÜ: Çözüm mührü vurulamadı!", error: e);
     }

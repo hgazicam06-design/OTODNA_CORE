@@ -11,7 +11,7 @@ class SiberTakipRadari {
   // ── 📅 1. KUANTUM ARA-MUAYENE (TAKVİM VE KM) PLANLAYICI ──
   /// Aracın mevcut KM'sine ve yaşına bakarak sıradaki ara-muayene hedefini Karargaha kazır.
   static Future<void> siberMuayenePlanla({
-    required String aracSaseNo, // Plaka yerine eşsiz Şase No kullanmak daha güvenlidir
+    required String aracSaseNo,
     required int mevcutKm,
     required int aracYasi
   }) async {
@@ -29,7 +29,11 @@ class SiberTakipRadari {
         hedefKm = mevcutKm + 5000;
       }
 
-      await _db.collection('arac_bakimlari').add({
+      // 🔥 ATOMİK ZIRH: Planı oluştur ve Karargah Kara Kutusuna anında raporla!
+      WriteBatch batch = _db.batch();
+
+      DocumentReference bakimRef = _db.collection('arac_bakimlari').doc();
+      batch.set(bakimRef, {
         "sase_no": aracSaseNo,
         "baslangic_km": mevcutKm,
         "hedef_km": hedefKm,
@@ -38,8 +42,17 @@ class SiberTakipRadari {
         "olusturulma_zaman_damgasi": FieldValue.serverTimestamp(),
       });
 
-      developer.log("✅ HEDEF KİLİTLENDİ: Ara-Muayene planı Matrix'e yazıldı.");
-      // SİBER NOT: Burada "Firebase Messaging" ile anlık Push Bildirim (Zamanlanmış) servisi tetiklenecek.
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        "islem_turu": "MUAYENE_PLANLANDI",
+        "sase_no": aracSaseNo,
+        "islem_detayi": "Ara-Muayene kilitlendi: Hedef $hedefKm KM veya ${gelecekKontrolTarihi.toLocal().toString().split(' ')[0]}",
+        "tarih": FieldValue.serverTimestamp(),
+        "otonom_kayit": true,
+      });
+
+      await batch.commit();
+      developer.log("✅ HEDEF KİLİTLENDİ: Ara-Muayene planı ve loglar Matrix'e yazıldı.");
 
     } catch (e) {
       developer.log("🚨 AĞ ÇÖKTÜ: Muayene planlanamadı!", error: e);
@@ -55,7 +68,9 @@ class SiberTakipRadari {
     developer.log("🧬 DNA ANALİZİ: $aracSaseNo şaseli aracın referans puanı hesaplanıyor...");
 
     try {
-      DocumentReference aracRef = _db.collection('arac_kimlikleri').doc(aracSaseNo);
+      // 🛡️ SİBER DÜZELTME: Karargah standartlarına uyum için 'araclar' koleksiyonu.
+      DocumentReference aracRef = _db.collection('araclar').doc(aracSaseNo);
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
 
       // Çakışmaları önleyen ACID Kuantum İşlemi (Transaction)
       await _db.runTransaction((transaction) async {
@@ -69,29 +84,42 @@ class SiberTakipRadari {
         int mevcutSkor = (data['dna_skoru'] ?? 50).toInt();
         int yeniSkor = mevcutSkor;
         String yeniDurum = data['muayene_durumu'] ?? "BİLİNMİYOR";
+        String detayMesaji = "";
 
         if (zamanindaGeldiMi) {
           // 🟢 Araç zamanında geldiyse: DNA Puanını artır ve Vitrin Mührünü parlat
           yeniSkor += 5;
           if (yeniSkor > 100) yeniSkor = 100; // Zırh Kuralı: Sınır 100'ü geçemez
           yeniDurum = "🟢 OTODNA ONAYLIDIR / REFERANSLIDIR";
-          developer.log("✅ ONAY: Araç zamanında geldi. DNA Puanı +5 arttı. Yeni Puan: $yeniSkor");
+          detayMesaji = "BAŞARILI: Araç bakıma zamanında geldi. DNA Puanı arttı (+5).";
         } else {
           // 🔴 Araç bakımı aksattıysa: Puanı düşür ve Referansı askıya al
           yeniSkor -= 10; // Ceza motoru daha sert çalışır!
           if (yeniSkor < 0) yeniSkor = 0; // Zırh Kuralı: Sınır 0'ın altına düşemez
           yeniDurum = "🔴 REFERANS BEKLİYOR / GECİKMELİ";
-          developer.log("⚠️ İHLAL: Araç bakımı aksattı! DNA Puanı -10 düştü. Yeni Puan: $yeniSkor");
+          detayMesaji = "İHLAL: Bakım gecikti! Araç DNA Puanı düştü (-10). Mühür askıya alındı.";
         }
 
-        // Matriks'i yepyeni Kuantum Skoruyla Güncelle
+        // 1. Matriks'i yepyeni Kuantum Skoruyla Güncelle
         transaction.update(aracRef, {
           "dna_skoru": yeniSkor,
           "muayene_durumu": yeniDurum,
           "son_muayene_zaman_damgasi": FieldValue.serverTimestamp(),
         });
+
+        // 2. Kuantum Loglama (Transaction içinde mühürlenir)
+        transaction.set(logRef, {
+          "islem_turu": "DNA_SKOR_GUNCELLEMESI",
+          "sase_no": aracSaseNo,
+          "islem_detayi": detayMesaji,
+          "eski_skor": mevcutSkor,
+          "yeni_skor": yeniSkor,
+          "tarih": FieldValue.serverTimestamp(),
+          "otonom_kayit": true,
+        });
       });
 
+      developer.log("✅ MÜHÜR VURULDU: DNA Skoru güncellendi ve Kara Kutuya kaydedildi.");
     } catch (e) {
       developer.log("🚨 AĞ ÇÖKTÜ: DNA Puanı güncellenemedi!", error: e);
     }
