@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:developer' as developer;
 
+import 'kuresel_harita_sistemi.dart';
+
 /// 🦅 OTODNA MEGA PROTOKOLÜ - V7 (SİBER KARARGAH ANA SİSTEMİ)
 /// [2026-04-21] GÜNCELLEME: Atomik Loglama, 30 Dk. S.O.S Kuralı ve Mutlak %12 Finans Entegrasyonu.
 class OtodnaMegaProtocol {
@@ -68,17 +70,11 @@ class OtodnaMegaProtocol {
     developer.log("🚀 SİBER MÜHÜR BASILDI: $sertifikaId (Finans ve Log entegre edildi)");
   }
 
-  /// 📍 AKILLI BÖLGE BULUCU (81 İl - 7 Bölge Protokolü)
+  /// 📍 AKILLI BÖLGE BULUCU (Kuantum Harita Entegrasyonu)
   static String bolgeTespitEt(String sehir) {
-    // SİBER NOT: Kapsam genişletildi. İleride KureselHaritaSistemi ile doğrudan birleştirilebilir.
-    const Marmara = ["İSTANBUL", "BURSA", "KOCAELİ", "EDİRNE", "SAKARYA", "TEKİRDAĞ", "ÇANAKKALE", "YALOVA", "BİLECİK", "KIRKLARELİ"];
-    const IcAnadolu = ["ANKARA", "KONYA", "KAYSERİ", "ESKİŞEHİR", "SİVAS", "KIRIKKALE", "AKSARAY", "KARAMAN", "KIRŞEHİR", "NİĞDE", "NEVŞEHİR", "YOZGAT", "ÇANKIRI"];
-
-    String target = sehir.toUpperCase();
-    if (Marmara.contains(target)) return "MARMARA BÖLGESİ";
-    if (IcAnadolu.contains(target)) return "İÇ ANADOLU BÖLGESİ";
-
-    return "DİĞER BÖLGE";
+    // SİBER GÜNCELLEME: Artık KureselHaritaSistemi motoruna doğrudan bağlandı.
+    // 4 Kademeli Kuantum İstihbaratını kullanarak nokta atışı bölge tespiti yapar.
+    return KureselHaritaSistemi.hangiBolgede(KureselHaritaSistemi.globalMerkezUlkemiz, sehir);
   }
 
   /// 🚨 ACİL DURUM (SOS) PROTOKOLÜ: 5 Saniye Kuralı ve 30 Dakika Geri Sayım Radarı

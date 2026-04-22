@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
+import '../google_hub_service.dart';
 
 /// 🛡️ KUANTUM DIŞ VERİ VE ENTEGRASYON SERVİSİ (DisVeriServisi)
 /// Tramer, Global VIN Hub ve Karargah (OtoDNA) mühürlerini tek potada birleştiren Kuantum İstihbarat Süzgeci.
@@ -38,18 +39,16 @@ class DisVeriServisi {
 
       // ── 🌍 2. ADIM: TRAMER VE GLOBAL VIN HUB (DIŞ AĞLAR) ──
       // SİBER NOT: Gerçek dış API modülleri eklendiğinde bu bloklardaki zırhlar aktif edilecek.
-      /*
       try {
         developer.log("SİBER RADAR: SBM/Tramer ağları taranıyor...");
-        tramerVerisi = await SbmApi.getHasarGecmisi(siberSase);
+        // tramerVerisi = await SbmApi.getHasarGecmisi(siberSase); // SBM entegrasyonu gelene kadar kapalı
 
         developer.log("SİBER RADAR: Global VIN Hub taranıyor...");
-        teknikVeri = await GoogleDataHub.getVehicleSpecs(siberSase);
+        teknikVeri = await GoogleHubService.getVehicleSpecs(siberSase);
       } catch (e) {
         // 🛡️ SİBER KALKAN: Dış ağ kopsa bile uygulama ÇÖKMEZ! Sadece log atar, OtoDNA verisiyle yola devam eder.
         developer.log("DIŞ AĞ KOPTU: Tramer veya VIN Hub yanıt vermiyor!", error: e);
       }
-      */
 
       developer.log("SİBER ONAY: ✅ $siberSase için Kuantum Tam Sorgu Raporu hazırlandı!");
 

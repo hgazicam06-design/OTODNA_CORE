@@ -7,7 +7,11 @@ class Dukkan {
   final String ad;
   final String sehir;
   final String bolge;
-  final String hizmetKategorisi;
+  
+  // 🎯 SİBER UZMANLIK AĞI (ÇOKLU ETİKET MOTORU)
+  final List<String> verilenHizmetler; // Örn: ['Şanzıman', 'Petek Temizliği']
+  final List<String> hizmetAracTipleri; // Örn: ['Otomobil', 'Kamyon']
+  final List<String> uzmanMarkaGruplari; // Örn: ['Alman Grubu', 'Japon Grubu']
 
   // 🚀 OTODNA KUANTUM GÜVENLİK VE ABONELİK ÖZELLİKLERİ
   final double puan;
@@ -28,7 +32,9 @@ class Dukkan {
     required this.ad,
     required this.sehir,
     required this.bolge,
-    this.hizmetKategorisi = "Genel Servis",
+    this.verilenHizmetler = const ["Genel Servis"],
+    this.hizmetAracTipleri = const [],
+    this.uzmanMarkaGruplari = const [],
     this.puan = 5.0,
     this.onayliMi = false,
     this.aktifMi = true,
@@ -69,7 +75,9 @@ class Dukkan {
       'ad': ad,
       'sehir': sehir,
       'bolge': bolge,
-      'hizmet_kategorisi': hizmetKategorisi,
+      'verilen_hizmetler': verilenHizmetler,
+      'hizmet_arac_tipleri': hizmetAracTipleri,
+      'uzman_marka_gruplari': uzmanMarkaGruplari,
       'puan': puan,
       'onayli_mi': onayliMi,
       'aktif_mi': aktifMi,
@@ -90,7 +98,9 @@ class Dukkan {
       ad: data['ad'] ?? 'İSİMSİZ İŞLETME',
       sehir: data['sehir'] ?? 'BELİRTİLMEDİ',
       bolge: data['bolge'] ?? 'BELİRTİLMEDİ',
-      hizmetKategorisi: data['hizmet_kategorisi'] ?? 'Genel Servis',
+      verilenHizmetler: List<String>.from(data['verilen_hizmetler'] ?? ["Genel Servis"]),
+      hizmetAracTipleri: List<String>.from(data['hizmet_arac_tipleri'] ?? []),
+      uzmanMarkaGruplari: List<String>.from(data['uzman_marka_gruplari'] ?? []),
       puan: (data['puan'] ?? 5.0).toDouble(),
       onayliMi: data['onayli_mi'] ?? false,
       aktifMi: data['aktif_mi'] ?? false,

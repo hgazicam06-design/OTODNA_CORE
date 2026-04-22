@@ -1,14 +1,12 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// 🔥 SİBER KÖPRÜLER (Klasör yolu '../' olarak düzeltildi)
+// 🔥 SİBER KÖPRÜLER
 import '../core/siber_tema.dart';
-
-// ⚠️ SİBER UYARI: Bu ekranları henüz İNŞA ETMEDİĞİMİZ için şimdilik kapalı tutuyoruz!
-// İlan verme modüllerini kodladığımızda bu yorum satırlarını (slash'leri) kaldıracağız.
-// import 'yedek_parca_ilan_ver_screen.dart';
-// import 'ilan_ver_arac_secim_screen.dart';
+import 'urun_detay_screen.dart'; // TRENDYOL FORMATLI DETAY EKRANI KÖPRÜSÜ
+import 'urun_giris_terminali.dart'; // 🚀 TEDARİK TERMİNALİ KÖPRÜSÜ
 
 class OtoMarketScreen extends StatefulWidget {
   const OtoMarketScreen({super.key});
@@ -22,10 +20,8 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET
-  static const Color bgColor = SiberTema.oledBlack;
-  static const Color surfaceColor = Color(0xFF111111);
   static const Color primaryCyan = SiberTema.kuantumCyan;
+  static const Color siberGold = SiberTema.siberGold;
 
   String _aramaMetni = "";
   late String _aktifKullaniciId;
@@ -44,14 +40,14 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
   }
 
   // =======================================================================
-  // 💎 MİNİMALİST ROZET ALGORİTMASI (Altın, Gümüş, Bronz ve Kara Liste)
+  // 💎 MİNİMALİST ROZET ALGORİTMASI
   // =======================================================================
   Widget _buildSaticiRozeti(int puan, String saticiAdi) {
     Color rozetRengi;
     IconData ikon = Icons.star_rounded;
     String rozetMetni;
 
-    if (puan >= 5) { rozetRengi = Colors.amber; rozetMetni = "Premium Onaylı"; }
+    if (puan >= 5) { rozetRengi = siberGold; rozetMetni = "Premium Onaylı"; }
     else if (puan == 4) { rozetRengi = Colors.grey[300]!; rozetMetni = "Güvenilir"; }
     else if (puan == 3) { rozetRengi = Colors.brown[300]!; rozetMetni = "Standart"; }
     else if (puan == 2) {
@@ -60,9 +56,9 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
     else {
       return Row(
         children: [
-          Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: Colors.redAccent.withOpacity(0.1), border: Border.all(color: Colors.redAccent.withOpacity(0.5)), borderRadius: BorderRadius.circular(6)), child: const Row(children: [Icon(Icons.gpp_bad_outlined, color: Colors.redAccent, size: 12), SizedBox(width: 4), Text("KARA LİSTE", style: TextStyle(color: Colors.redAccent, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1))])),
+          Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: SiberTema.kanKirmizi.withOpacity(0.1), border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.5)), borderRadius: BorderRadius.circular(6)), child: const Row(children: [Icon(Icons.gpp_bad_outlined, color: SiberTema.kanKirmizi, size: 12), SizedBox(width: 4), Text("KARA LİSTE", style: const TextStyle(color: SiberTema.kanKirmizi, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1))])),
           const SizedBox(width: 8),
-          Expanded(child: Text(saticiAdi, style: TextStyle(color: Colors.redAccent.withOpacity(0.5), fontSize: 11, decoration: TextDecoration.lineThrough, fontFamily: 'Avenir'), overflow: TextOverflow.ellipsis)),
+          Expanded(child: Text(saticiAdi, style: TextStyle(color: SiberTema.kanKirmizi.withOpacity(0.5), fontSize: 11, decoration: TextDecoration.lineThrough, fontFamily: 'Avenir'), overflow: TextOverflow.ellipsis)),
         ],
       );
     }
@@ -82,145 +78,32 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
   }
 
   // =======================================================================
-  // 💎 TESLA MİMARİSİ: ŞIK ÖDEME (HAVUZ) PANELİ
-  // =======================================================================
-  void _havuzOdemesiBaslat(String ilanId, double safFiyat, String saticiId, String saticiIsim, int saticiPuani) {
-    if (saticiPuani <= 1) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('AĞ UYARISI: Bu satıcı Kara Liste\'dedir. İşlem bloke edildi!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: Colors.redAccent));
-      return;
-    }
-
-    showModalBottomSheet(
-      context: context, isScrollControlled: true, backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(32),
-        decoration: BoxDecoration(
-          color: surfaceColor,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-          border: Border.all(color: primaryCyan.withOpacity(0.3), width: 1.5),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(10)))),
-            const SizedBox(height: 32),
-            Row(children: [const Icon(Icons.security_outlined, color: primaryCyan, size: 28), const SizedBox(width: 12), const Text("KUANTUM HAVUZ SİSTEMİ", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'))]),
-            const SizedBox(height: 16),
-            const Text("Ödemeniz hemen satıcıya aktarılmaz. Ürün size ulaşıp onay verene kadar Siber Kasa'da mühürlü kalır.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.5, fontFamily: 'Avenir')),
-            const SizedBox(height: 32),
-
-            Container(
-              padding: const EdgeInsets.all(24), decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withOpacity(0.05))),
-              child: Column(
-                children: [
-                  _fiyatSatiri("Satın Alınacak Ürün Bedeli:", "${safFiyat.toStringAsFixed(2)} ₺", Colors.white),
-                  const SizedBox(height: 16),
-                  const Text("Siber Kasa Payı (%12) satıcının hakedişinden otonom olarak kesilecektir. Alıcı ek komisyon ödemez.", style: TextStyle(color: Colors.white38, fontSize: 10, height: 1.5, fontFamily: 'Avenir')),
-                  const Padding(padding: EdgeInsets.symmetric(vertical: 20), child: Divider(color: Colors.white12)),
-                  _fiyatSatiri("KASADAN ÇEKİLECEK TUTAR", "${safFiyat.toStringAsFixed(2)} ₺", primaryCyan, isBold: true, isLarge: true),
-                ],
-              ),
-            ),
-            const SizedBox(height: 40),
-
-            SizedBox(
-              width: double.infinity, height: 56,
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(backgroundColor: primaryCyan, foregroundColor: Colors.black, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
-                onPressed: () {
-                  Navigator.pop(context);
-                  _odemeMuhru(ilanId, safFiyat, saticiId, saticiIsim);
-                },
-                icon: const Icon(Icons.lock_outline, size: 20),
-                label: const Text("BAKİYEYİ HAVUZA AKTAR", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1, fontFamily: 'Avenir')),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  // 🚀 KUANTUM FIRLATMASI: BATCH WRITE İLE HAVUZU MÜHÜRLE
-  Future<void> _odemeMuhru(String ilanId, double fiyat, String saticiId, String saticiIsim) async {
-    try {
-      WriteBatch batch = _db.batch();
-
-      DocumentReference ilanRef = _db.collection('ilanlar').doc(ilanId);
-      batch.update(ilanRef, {'durum': 'Satıldı', 'alici_id': _aktifKullaniciId});
-
-      DocumentReference havuzRef = _db.collection('ticaret_havuzu').doc();
-      batch.set(havuzRef, {
-        'ilan_id': ilanId,
-        'alici_id': _aktifKullaniciId,
-        'satici_id': saticiId,
-        'odenen_tutar': fiyat,
-        'durum': 'Kargoda/Bekliyor',
-        'islem_tarihi': FieldValue.serverTimestamp(),
-        'vitrin_etiketi': saticiIsim, // SATICI KİMSE HAVUZA ONUN ADI YAZILIR
-      });
-
-      await batch.commit();
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('SİBER ONAY: Bakiye kilitlendi, satıcıya bilgi verildi! 🚀', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan));
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('AĞ HATASI: İşlem Başarısız!'), backgroundColor: Colors.redAccent));
-    }
-  }
-
-  Widget _fiyatSatiri(String baslik, String deger, Color renk, {bool isBold = false, bool isLarge = false}) {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(child: Text(baslik, style: TextStyle(color: isLarge ? Colors.white54 : renk, fontSize: isLarge ? 11 : 12, fontWeight: isBold ? FontWeight.bold : FontWeight.normal, letterSpacing: isLarge ? 1 : 0, fontFamily: 'Avenir'))),
-          Text(deger, style: TextStyle(color: renk, fontSize: isLarge ? 20 : 13, fontWeight: isBold ? FontWeight.w900 : FontWeight.bold, fontFamily: 'Avenir'))
-        ]
-    );
-  }
-
-  // =======================================================================
-  // 💎 ANA İSKELET
+  // 💎 ANA İSKELET (GLASSMORPHISM)
   // =======================================================================
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent, elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text('S İ B E R   P A Z A R', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 4, fontFamily: 'Avenir')),
-        centerTitle: true,
-      ),
-      body: Column(
+      backgroundColor: Colors.black,
+      body: Stack(
         children: [
-          // MİNİMALİST SEKMELER
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            child: Container(
-              height: 48,
-              decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withOpacity(0.05))),
-              child: TabBar(
-                controller: _tabController,
-                indicator: BoxDecoration(color: primaryCyan, borderRadius: BorderRadius.circular(24)),
-                labelColor: Colors.black,
-                unselectedLabelColor: Colors.white38,
-                indicatorSize: TabBarIndicatorSize.tab,
-                dividerColor: Colors.transparent,
-                labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11, letterSpacing: 0.5, fontFamily: 'Avenir'),
-                tabs: const [Tab(text: "Parça Pazarı"), Tab(text: "Oto Galeri")],
-              ),
-            ),
-          ),
-
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              physics: const BouncingScrollPhysics(),
+          // 1. KUANTUM ARKA PLAN
+          Positioned.fill(child: Container(decoration: SiberTema.siberArkaPlan)),
+          
+          SafeArea(
+            child: Column(
               children: [
-                _buildOtoMarketSekmesi(),
-                _buildOtoGaleriSekmesi(),
+                _buildSiberAppBar(),
+                _buildSiberTabBar(),
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    physics: const BouncingScrollPhysics(),
+                    children: [
+                      _buildOtoMarketSekmesi(),
+                      _buildOtoGaleriSekmesi(),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -237,6 +120,58 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
     );
   }
 
+  Widget _buildSiberAppBar() {
+    return ClipRRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.4),
+            border: const Border(bottom: BorderSide(color: Colors.white10)),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: const Icon(Icons.arrow_back_ios_new, color: primaryCyan, size: 20),
+              ),
+              const Text('S İ B E R   P A Z A R', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 4, fontFamily: 'Avenir')),
+              const Icon(Icons.shopping_cart_outlined, color: primaryCyan, size: 22),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSiberTabBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Container(
+            height: 48,
+            decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white10)),
+            child: TabBar(
+              controller: _tabController,
+              indicator: BoxDecoration(color: primaryCyan, borderRadius: BorderRadius.circular(24)),
+              labelColor: Colors.black,
+              unselectedLabelColor: Colors.white38,
+              indicatorSize: TabBarIndicatorSize.tab,
+              dividerColor: Colors.transparent,
+              labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 0.5, fontFamily: 'Avenir'),
+              tabs: const [Tab(text: "Parça Pazarı"), Tab(text: "Oto Galeri")],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   // ─── 1. SEKME: CANLI OTO MARKET ───
   Widget _buildOtoMarketSekmesi() {
     return Column(
@@ -247,16 +182,15 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
             children: [
               _buildAiAramaKutusu(),
               const SizedBox(height: 16),
-              Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: primaryCyan.withOpacity(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: primaryCyan.withOpacity(0.2))), child: Row(children: [Icon(Icons.shield_outlined, color: primaryCyan, size: 20), const SizedBox(width: 12), const Expanded(child: Text("Bireysel ve Kurumsal tüm satıcılar OtoDNA güvencesindedir.", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, height: 1.4, fontFamily: 'Avenir')))]))
+              Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: primaryCyan.withOpacity(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: primaryCyan.withOpacity(0.2))), child: const Row(children: [Icon(Icons.shield_outlined, color: primaryCyan, size: 20), SizedBox(width: 12), Expanded(child: Text("Bireysel ve Kurumsal tüm satıcılar OtoDNA güvencesindedir.", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, height: 1.4, fontFamily: 'Avenir')))]))
             ],
           ),
         ),
         Expanded(
           child: StreamBuilder<QuerySnapshot>(
             stream: _db.collection('ilanlar')
-                .where('durum', isEqualTo: 'Aktif')
                 .where('kategori', isNotEqualTo: 'Araç Satış')
-                .orderBy('tarih', descending: true)
+                .orderBy('kategori')
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: primaryCyan));
@@ -264,7 +198,7 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
 
               var urunler = snapshot.data!.docs.where((doc) {
                 var veri = doc.data() as Map<String, dynamic>;
-                String ad = (veri['baslik'] ?? "").toString().toLowerCase();
+                String ad = (veri['ilan_ad'] ?? "").toString().toLowerCase();
                 return ad.contains(_aramaMetni.toLowerCase());
               }).toList();
 
@@ -279,12 +213,12 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
 
                   return _buildParcaKarti(
                     ilanId: ilanId,
-                    baslik: veri['baslik'] ?? "Bilinmeyen Parça",
-                    saticiId: veri['satici_id'] ?? "",
-                    satici: veri['vitrin_etiketi'] ?? veri['asil_satici_adi'] ?? "Bilinmeyen Satıcı",
+                    veri: veri, // Trendyol ekranına tüm veriyi atacağız
+                    baslik: veri['ilan_ad'] ?? "Bilinmeyen Parça",
+                    satici: veri['vitrin_etiketi'] ?? "Bilinmeyen Satıcı",
                     saticiPuani: 5,
                     fiyatDouble: fiyatDouble,
-                    resimUrl: veri['resim_url'] ?? "https://via.placeholder.com/150/000000/00FFC2?text=OtoDNA",
+                    resimUrl: veri['resim_url'] ?? "https://via.placeholder.com/300x300/000000/00FFC2?text=OtoDNA",
                   );
                 },
               );
@@ -301,7 +235,7 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-          child: Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.amber.withOpacity(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.amber.withOpacity(0.2))), child: const Row(children: [Icon(Icons.diamond_outlined, color: Colors.amber, size: 20), SizedBox(width: 12), Expanded(child: Text("OtoDNA Onaylı (VIP) Araçlar Kuantum algoritmasıyla üstte gösterilir.", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, height: 1.4, fontFamily: 'Avenir')))])),
+          child: Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: siberGold.withOpacity(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: siberGold.withOpacity(0.2))), child: const Row(children: [Icon(Icons.diamond_outlined, color: siberGold, size: 20), SizedBox(width: 12), Expanded(child: Text("OtoDNA Onaylı (VIP) Araçlar Kuantum algoritmasıyla üstte gösterilir.", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, height: 1.4, fontFamily: 'Avenir')))])),
         ),
         Expanded(
           child: StreamBuilder<QuerySnapshot>(
@@ -339,104 +273,92 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
 
   // ─── YARDIMCI GÖRSEL BİLEŞENLER ───
   Widget _buildAiAramaKutusu() {
-    return Container(
-      decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withOpacity(0.05))),
-      child: TextField(
-        onChanged: (deger) => setState(() => _aramaMetni = deger),
-        style: const TextStyle(color: Colors.white, fontSize: 14, fontFamily: 'Avenir'),
-        decoration: InputDecoration(
-          hintText: "OEM Kodu, Şase veya Parça Ara...",
-          hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 13, fontFamily: 'Avenir'),
-          prefixIcon: const Icon(Icons.search, color: Colors.white38, size: 20),
-          suffixIcon: IconButton(icon: const Icon(Icons.document_scanner_outlined, color: primaryCyan, size: 20), onPressed: () {}),
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 16),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Container(
+          decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white10)),
+          child: TextField(
+            onChanged: (deger) => setState(() => _aramaMetni = deger),
+            style: const TextStyle(color: Colors.white, fontSize: 14, fontFamily: 'Avenir'),
+            decoration: InputDecoration(
+              hintText: "OEM Kodu, Şase veya Parça Ara...",
+              hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 13, fontFamily: 'Avenir'),
+              prefixIcon: const Icon(Icons.search, color: Colors.white38, size: 20),
+              suffixIcon: IconButton(icon: const Icon(Icons.document_scanner_outlined, color: primaryCyan, size: 20), onPressed: () {}),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 16),
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildParcaKarti({required String ilanId, required String baslik, required String saticiId, required String satici, required int saticiPuani, required double fiyatDouble, required String resimUrl}) {
+  // 🔥 YENİ NESİL ÜRÜN KARTI (TRENDYOL ÜRÜN DETAYINA GİDER)
+  Widget _buildParcaKarti({required String ilanId, required Map<String, dynamic> veri, required String baslik, required String satici, required int saticiPuani, required double fiyatDouble, required String resimUrl}) {
     bool isKaraListe = saticiPuani <= 1;
 
-    return Opacity(
-      opacity: isKaraListe ? 0.4 : 1.0,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 24),
-        decoration: BoxDecoration(
-          color: surfaceColor,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: isKaraListe ? Colors.redAccent.withOpacity(0.3) : Colors.white.withOpacity(0.05)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 180, width: double.infinity,
-              decoration: BoxDecoration(color: bgColor, borderRadius: const BorderRadius.vertical(top: Radius.circular(24)), image: DecorationImage(image: NetworkImage(resimUrl), fit: BoxFit.cover)),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(baslik, style: TextStyle(color: isKaraListe ? Colors.redAccent : Colors.white, fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: -0.5, decoration: isKaraListe ? TextDecoration.lineThrough : TextDecoration.none, fontFamily: 'Avenir')),
-                  const SizedBox(height: 16),
-                  Text("₺${fiyatDouble.toStringAsFixed(2)}", style: TextStyle(color: isKaraListe ? Colors.redAccent.withOpacity(0.5) : primaryCyan, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -1, fontFamily: 'Avenir')),
-                  const SizedBox(height: 20),
-                  _buildSaticiRozeti(saticiPuani, satici),
-                  const Padding(padding: EdgeInsets.symmetric(vertical: 24), child: Divider(color: Colors.white12)),
-                  Row(
-                    children: [
-                      if (!isKaraListe)
-                        Expanded(
-                          flex: 2,
-                          child: ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(backgroundColor: primaryCyan, foregroundColor: Colors.black, elevation: 0, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-                            onPressed: () => _havuzOdemesiBaslat(ilanId, fiyatDouble, saticiId, satici, saticiPuani),
-                            icon: const Icon(Icons.shield_outlined, size: 18),
-                            label: const Text("GÜVENLİ AL", style: TextStyle(fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-                          ),
-                        )
-                      else
-                        Expanded(
-                          flex: 2,
-                          child: Container(padding: const EdgeInsets.symmetric(vertical: 16), decoration: BoxDecoration(color: Colors.redAccent.withOpacity(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.redAccent.withOpacity(0.3))), child: const Center(child: Text("HAVUZ GÜVENCESİ YOK", style: TextStyle(color: Colors.redAccent, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')))),
-                        ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        flex: 1,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(backgroundColor: bgColor, elevation: 0, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: Colors.white.withOpacity(0.1)))),
-                          onPressed: () { if (!isKaraListe) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Uçtan Uca Şifreli Mesaj Kanalı Açılıyor...'))); },
-                          child: const Icon(Icons.chat_bubble_outline, color: Colors.white, size: 20),
-                        ),
-                      )
-                    ],
-                  )
-                ],
+    return GestureDetector(
+      onTap: () {
+        if (!isKaraListe) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => UrunDetayScreen(ilanId: ilanId, urunVerisi: veri)));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('AĞ UYARISI: Bu satıcı Kara Liste\'dedir.', style: TextStyle(color: Colors.white)), backgroundColor: SiberTema.kanKirmizi));
+        }
+      },
+      child: Opacity(
+        opacity: isKaraListe ? 0.4 : 1.0,
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 24),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.6),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: isKaraListe ? SiberTema.kanKirmizi.withOpacity(0.3) : Colors.white10),
+            boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.02), blurRadius: 20)],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 180, width: double.infinity,
+                decoration: BoxDecoration(color: Colors.black, borderRadius: const BorderRadius.vertical(top: Radius.circular(24)), image: DecorationImage(image: NetworkImage(resimUrl), fit: BoxFit.cover)),
               ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(baslik, style: TextStyle(color: isKaraListe ? SiberTema.kanKirmizi : Colors.white, fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: -0.5, decoration: isKaraListe ? TextDecoration.lineThrough : TextDecoration.none, fontFamily: 'Avenir')),
+                    const SizedBox(height: 16),
+                    Text("₺${fiyatDouble.toStringAsFixed(2)}", style: TextStyle(color: isKaraListe ? SiberTema.kanKirmizi.withOpacity(0.5) : primaryCyan, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -1, fontFamily: 'Avenir')),
+                    const SizedBox(height: 20),
+                    _buildSaticiRozeti(saticiPuani, satici),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildAracIlanKarti({required String aracAdi, required String detay, required String fiyat, required double dnaSkoru, required String resimUrl, required bool isOtoDnaOnayli}) {
-    Color dnaRengi = dnaSkoru >= 80 ? primaryCyan : (dnaSkoru >= 50 ? Colors.orangeAccent : Colors.redAccent);
+    Color dnaRengi = dnaSkoru >= 80 ? primaryCyan : (dnaSkoru >= 50 ? siberGold : SiberTema.kanKirmizi);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 24),
-      decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(32), border: Border.all(color: isOtoDnaOnayli ? primaryCyan.withOpacity(0.5) : Colors.white.withOpacity(0.05)), boxShadow: isOtoDnaOnayli ? [BoxShadow(color: primaryCyan.withOpacity(0.05), blurRadius: 30)] : []),
+      decoration: BoxDecoration(color: Colors.black.withOpacity(0.6), borderRadius: BorderRadius.circular(32), border: Border.all(color: isOtoDnaOnayli ? primaryCyan.withOpacity(0.5) : Colors.white10), boxShadow: isOtoDnaOnayli ? [BoxShadow(color: primaryCyan.withOpacity(0.05), blurRadius: 30)] : []),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
             children: [
-              Container(height: 200, decoration: BoxDecoration(color: bgColor, borderRadius: const BorderRadius.vertical(top: Radius.circular(32)), image: DecorationImage(image: NetworkImage(resimUrl), fit: BoxFit.cover))),
+              Container(height: 200, decoration: BoxDecoration(color: Colors.black, borderRadius: const BorderRadius.vertical(top: Radius.circular(32)), image: DecorationImage(image: NetworkImage(resimUrl), fit: BoxFit.cover))),
               if (isOtoDnaOnayli)
-                Positioned(top: 16, left: 16, child: Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8), decoration: BoxDecoration(color: bgColor.withOpacity(0.9), borderRadius: BorderRadius.circular(12), border: Border.all(color: primaryCyan.withOpacity(0.5))), child: const Row(children: [Icon(Icons.qr_code_scanner_outlined, color: primaryCyan, size: 16), SizedBox(width: 8), Text("OtoDNA ONAYLI", style: TextStyle(color: primaryCyan, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'))]))),
+                Positioned(top: 16, left: 16, child: Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8), decoration: BoxDecoration(color: Colors.black.withOpacity(0.9), borderRadius: BorderRadius.circular(12), border: Border.all(color: primaryCyan.withOpacity(0.5))), child: const Row(children: [Icon(Icons.qr_code_scanner_outlined, color: primaryCyan, size: 16), SizedBox(width: 8), Text("OtoDNA ONAYLI", style: TextStyle(color: primaryCyan, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'))]))),
             ],
           ),
           Padding(
@@ -474,7 +396,7 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
 
   void _siberIlanVerDialog() {
     showModalBottomSheet(
-      context: context, backgroundColor: surfaceColor, isScrollControlled: true, shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(32))),
+      context: context, backgroundColor: Colors.black.withOpacity(0.9), isScrollControlled: true, shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(32))),
       builder: (ctx) {
         return Padding(
           padding: const EdgeInsets.all(32.0),
@@ -486,16 +408,12 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
               const SizedBox(height: 24),
               _buildIlanSecenekKarti("Yedek Parça & Aksesuar", "Bireysel ve kurumsal serbest piyasa ilanı oluşturun.", Icons.settings_outlined, primaryCyan, () {
                 Navigator.pop(ctx);
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("SİBER BİLGİ: Parça İlan Ekranı İnşa Ediliyor...")));
-                // İNŞA EDİLDİĞİNDE AÇILACAK:
-                // Navigator.push(context, MaterialPageRoute(builder: (context) => const YedekParcaIlanVerScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const UrunGirisTerminali()));
               }),
               const SizedBox(height: 16),
-              _buildIlanSecenekKarti("Otomobil & Taşıt (Galeri)", "OtoDNA kalkanlı araçlarınızı siber ağa mühürleyin.", Colors.amber, () {
+              _buildIlanSecenekKarti("Otomobil & Taşıt (Galeri)", "OtoDNA kalkanlı araçlarınızı siber ağa mühürleyin.", siberGold, () {
                 Navigator.pop(ctx);
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("SİBER BİLGİ: Araç İlan Ekranı İnşa Ediliyor...")));
-                // İNŞA EDİLDİĞİNDE AÇILACAK:
-                // Navigator.push(context, MaterialPageRoute(builder: (context) => const IlanVerAracSecimScreen()));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("SİBER BİLGİ: Araç İlan Ekranı Açılıyor...")));
               }),
               const SizedBox(height: 32),
             ],
@@ -510,7 +428,7 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: renk.withOpacity(0.3))),
+        decoration: BoxDecoration(color: Colors.white.withOpacity(0.02), borderRadius: BorderRadius.circular(24), border: Border.all(color: renk.withOpacity(0.3))),
         child: Row(
           children: [
             Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: renk.withOpacity(0.1), shape: BoxShape.circle), child: Icon(ikon, color: renk, size: 24)),
@@ -522,4 +440,4 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
       ),
     );
   }
-}
+}fi

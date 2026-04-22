@@ -29,7 +29,7 @@ class SiberSuistimalKontrol {
       int garantiAyLimiti = islemVerisi['garanti_ay_limiti'] ?? 12;
 
       // 2. Aracın Güncel Verisini ve Yıpranma Matrisini Çek
-      DocumentSnapshot aracDoc = await _db.collection('araclar').doc(saseNo).get();
+      DocumentSnapshot aracDoc = await _db.collection('vehicles').doc(saseNo).get();
       var aracVerisi = aracDoc.data() as Map<String, dynamic>;
       int guncelKm = aracVerisi['guncel_km'] ?? islemKm;
 

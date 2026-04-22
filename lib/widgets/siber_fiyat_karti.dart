@@ -6,20 +6,16 @@ import '../core/siber_tema.dart';
 /// Bu bileşen, ağdaki her işlemin finansal DNA'sını kullanıcıya ve bayiye şeffafça sunar.
 class SiberFiyatKarti extends StatelessWidget {
   final double satisFiyati;
-  final bool isMuratPlaza; // Murat Plaza için %30 kuralı kontrolü
-
   const SiberFiyatKarti({
     super.key,
     required this.satisFiyati,
-    this.isMuratPlaza = false,
   });
 
   @override
   Widget build(BuildContext context) {
     // 🛡️ SİBER FİNANS PROTOKOLÜ
-    // Karargah Payı: %12 (%10 Kar + %2 Vergi)
-    // Murat Plaza (Özel): %30
-    final double komisyonOrani = isMuratPlaza ? 0.30 : 0.12;
+    // Evrensel Karargah Payı: %12 (%10 Kar + %2 Vergi)
+    const double komisyonOrani = 0.12;
     final double hizmetBedeli = satisFiyati * komisyonOrani;
     final double esnafaKalan = satisFiyati - hizmetBedeli;
 
@@ -49,9 +45,9 @@ class SiberFiyatKarti extends StatelessWidget {
             children: [
               const Icon(Icons.account_balance_wallet_outlined, color: SiberTema.kuantumCyan, size: 20),
               const SizedBox(width: 12),
-              Text(
-                isMuratPlaza ? "MURAT PLAZA ÖZEL PROTOKOLÜ" : "SİBER FİYATLANDIRMA PROTOKOLÜ",
-                style: const TextStyle(
+              const Text(
+                "SİBER FİYATLANDIRMA PROTOKOLÜ",
+                style: TextStyle(
                     color: Colors.white54,
                     fontSize: 11,
                     fontWeight: FontWeight.w900,
@@ -81,9 +77,9 @@ class SiberFiyatKarti extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(
-                      isMuratPlaza ? "PLAZA KOMİSYONU " : "SİBER AĞ KESİNTİSİ ",
-                      style: const TextStyle(color: Colors.redAccent, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)
+                  const Text(
+                      "SİBER AĞ KESİNTİSİ ",
+                      style: TextStyle(color: Colors.redAccent, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),

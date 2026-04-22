@@ -111,3 +111,46 @@ class SmartTrackingService {
     developer.log("SİBER BİLGİ: KM Bakım Bildirimi fırlatıldı!");
   }
 }
+
+// ── 🧠 3. KUANTUM KM TAHMİN VE KESTİRİMCİ BAKIM MOTORU ──────────────────────
+/// Bu motor, "değişen" değil "kontrol edilen" parçaların, kullanıcının aylık ortalama KM'sine 
+/// göre tam olarak ne zaman tükeneceğini hesaplar. OtoDNA reklam/sponsorluk panoları bu veriyi kullanır.
+class KuantumKmTahminMotoru {
+  /// Bir aracın aylık ortalama kaç KM yaptığını hesaplar. (Örn: 2 ayda 3000 KM = Aylık 1500 KM)
+  static double aylikOrtalamaKmHesapla(int sonKm, DateTime sonKmTarihi, int oncekiKm, DateTime oncekiKmTarihi) {
+    int kmFarki = sonKm - oncekiKm;
+    if (kmFarki <= 0) return 1000.0; // Veri yoksa standart Kuantum varsayımı (Ayda 1000 KM)
+
+    int gunFarki = sonKmTarihi.difference(oncekiKmTarihi).inDays;
+    if (gunFarki <= 0) return 1000.0;
+
+    double gunlukOrtalama = kmFarki / gunFarki;
+    return gunlukOrtalama * 30.0; // Aylık ortalama
+  }
+
+  /// KONTROL EDİLEN parçanın tahmini tükeniş tarihini hesaplar.
+  /// Örn: Fren balatası 20.000 KM dayanır, usta baktığında %50 ömrü kalmış (10.000 KM).
+  /// Araç ayda 1.000 KM yapıyorsa, 10 ay sonra bitecek demektir.
+  static DateTime parcaTukenmeTarihiHesapla({
+    required double kalanKmOmru,
+    required double aylikOrtalamaKm,
+    required DateTime kontrolTarihi,
+  }) {
+    if (aylikOrtalamaKm <= 0) aylikOrtalamaKm = 1000.0; // Hata koruması
+    double kacAyKaldi = kalanKmOmru / aylikOrtalamaKm;
+    int kacGunKaldi = (kacAyKaldi * 30).toInt();
+
+    return kontrolTarihi.add(Duration(days: kacGunKaldi));
+  }
+
+  /// Parçanın ne kadar kritik durumda olduğunu (% olarak) döndürür. (Reklam tetikleyici)
+  /// 0 = Bitmiş, 100 = Sıfır Parça
+  static double kritiklikSeviyesiHesapla(int mevcutKm, int kontrolEdildigiKm, int tahminiToplamOmurKm) {
+    int yapilanKm = mevcutKm - kontrolEdildigiKm;
+    int kalanKm = tahminiToplamOmurKm - yapilanKm;
+
+    if (kalanKm <= 0) return 0.0;
+    
+    return (kalanKm / tahminiToplamOmurKm) * 100.0;
+  }
+}

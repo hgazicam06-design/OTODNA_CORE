@@ -8,6 +8,9 @@ import 'dart:developer' as developer;
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
+// ⚙️ EKOSİSTEM MOTORU
+import '../commerce/eco_system_gate.dart';
+
 class SiberBakimFormu extends StatefulWidget {
   final String saseNo;
   final String plaka;
@@ -140,17 +143,38 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
             ),
           ),
         )),
-        const SizedBox(height: 8),
-        OutlinedButton.icon(
-          onPressed: _parcaEkleDialog,
-          style: OutlinedButton.styleFrom(
-            foregroundColor: SiberTema.kuantumCyan,
-            side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5)),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-          ),
-          icon: const Icon(Icons.add_circle_outline, size: 18),
-          label: const Text("YEDEK PARÇA EKLE", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, fontFamily: 'Avenir', letterSpacing: 1)),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: _parcaEkleDialog,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: SiberTema.kuantumCyan,
+                  side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                icon: const Icon(Icons.add_circle_outline, size: 18),
+                label: const Text("PARÇA EKLE", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, fontFamily: 'Avenir', letterSpacing: 1)),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: _parcaTeklifiDialog,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: SiberTema.altinSari.withOpacity(0.2),
+                  foregroundColor: SiberTema.altinSari,
+                  side: BorderSide(color: SiberTema.altinSari.withOpacity(0.5)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                icon: const Icon(Icons.send_outlined, size: 18),
+                label: const Text("TEKLİF GÖNDER", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, fontFamily: 'Avenir', letterSpacing: 1)),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -218,6 +242,8 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
 
   // 🚀 ATOMİK SERVİS KAYDI (WRITEBATCH)
   Future<void> _servisKaydiMuhurle(double vitrinToplam, double pay, double vitrinParca) async {
+    if (_isProcessing) return; // 🔒 DOUBLE SPEND KORUMASI (Siber Kilit)
+    
     if (_eklenenParcalar.isEmpty && _iscilikUcreti <= 0) {
       _siberUyariGoster("SİBER İHLAL: Parça veya İşçilik girmeden mühür vurulamaz!", true);
       return;
@@ -253,14 +279,14 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
       });
 
       // Araç DNA Skorunu Güncelle
-      DocumentReference aracRef = _db.collection('araclar').doc(widget.plaka.toUpperCase());
-      batch.update(aracRef, {
+      DocumentReference aracRef = _db.collection('araclar').doc(widget.saseNo.toUpperCase());
+      batch.set(aracRef, {
         'dna_skoru': FieldValue.increment(2), // Düzenli bakım DNA skorunu artırır
         'son_bakim_tarihi': FieldValue.serverTimestamp(),
-      });
+      }, SetOptions(merge: true)); // 🔥 SET MERGE ZIRHI (Diğer veriler ezilmez)
 
       // Gelir Havuzuna At
-      DocumentReference finansRef = _db.collection('finans_havuzu').doc();
+      DocumentReference finansRef = _db.collection('otodna_gelir_havuzu').doc(); // finans_havuzu yerine standart otodna_gelir_havuzu
       batch.set(finansRef, {
         'bayi_id': _bayiId,
         'plaka': widget.plaka,
@@ -375,6 +401,101 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
                           }
                         },
                         child: const Text("EKLE", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // 🛡️ EKOSİSTEM: PARÇA TEKLİFİ GÖNDERME DİYALOĞU
+  void _parcaTeklifiDialog() {
+    final TextEditingController adCtrl = TextEditingController();
+    final TextEditingController fiyatCtrl = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            decoration: SiberTema.siberCamZirh(renk: SiberTema.matGrey),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.handshake_outlined, color: SiberTema.altinSari, size: 40),
+                const SizedBox(height: 16),
+                const Text("ARAÇ SAHİBİNE TEKLİF SUN", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'Avenir', letterSpacing: 1)),
+                const SizedBox(height: 8),
+                const Text("Parça fiyatına %12 Karargah Payı yansıtılarak araç sahibine iletilecektir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 11)),
+                const SizedBox(height: 24),
+
+                TextField(
+                  controller: adCtrl,
+                  style: const TextStyle(color: Colors.white, fontFamily: 'Avenir'),
+                  decoration: InputDecoration(
+                    labelText: "Önerilen Parça",
+                    labelStyle: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontFamily: 'Avenir'),
+                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.1))),
+                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.altinSari)),
+                    filled: true,
+                    fillColor: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                TextField(
+                  controller: fiyatCtrl,
+                  keyboardType: TextInputType.number,
+                  style: const TextStyle(color: SiberTema.altinSari, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
+                  decoration: InputDecoration(
+                    labelText: "Satış Fiyatı (₺)",
+                    labelStyle: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontFamily: 'Avenir'),
+                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.1))),
+                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.altinSari)),
+                    filled: true,
+                    fillColor: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 32),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text("İPTAL", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                      ),
+                    ),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: SiberTema.altinSari,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        ),
+                        onPressed: () async {
+                          if (adCtrl.text.trim().isNotEmpty && fiyatCtrl.text.trim().isNotEmpty) {
+                            double f = double.tryParse(fiyatCtrl.text.replaceAll(',', '.')) ?? 0.0;
+                            Navigator.pop(context); // Dialog kapat
+                            
+                            // Ekosistem Motorunu Tetikle
+                            await OtoDnaEcoSystem().parcaOner(
+                              plakaID: widget.saseNo, // Şase üzerinden bağlanıyor
+                              sorunluParca: adCtrl.text.trim().toUpperCase(),
+                              parcaSatisFiyati: f,
+                              saticiBayiAdi: _bayiId, // Normalde Auth displayName çekilir
+                            );
+                            
+                            if (mounted) _siberUyariGoster("SİBER TİCARET: Teklif Mühürlendi!", false);
+                          }
+                        },
+                        child: const Text("GÖNDER", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                       ),
                     )
                   ],

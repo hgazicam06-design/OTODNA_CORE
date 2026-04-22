@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // 🔥 SİBER KÖPRÜLER VE TEMA
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
+import '../core/otodna_hizmet_kutuphanesi.dart';
+import '../core/siber_lokasyon_motoru.dart';
 
 class UstaAramaScreen extends StatefulWidget {
   const UstaAramaScreen({super.key});
@@ -15,6 +17,15 @@ class UstaAramaScreen extends StatefulWidget {
 
 class _UstaAramaScreenState extends State<UstaAramaScreen> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  
+  // 🎯 FİLTRELEME DURUMLARI
+  String _secilenKategori = "TÜMÜ";
+  String _secilenDetayFiltre = "TÜMÜ"; // Tümü, Premium, Ekonomik, En Yakın
+  
+  // 🌍 LOKASYON DURUMLARI (Otonom Başlangıç)
+  String _seciliUlke = "Türkiye";
+  String _seciliSehir = "ANKARA";
+  String _seciliBolge = "İç Anadolu Bölgesi";
 
   void _siberUyariGoster(String mesaj, {bool isError = false}) {
     if (!mounted) return;
@@ -24,6 +35,36 @@ class _UstaAramaScreenState extends State<UstaAramaScreen> {
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
       ),
+    );
+  }
+
+  // 🌍 LOKASYON DEĞİŞTİRME TERMİNALİ (BottomSheet)
+  void _lokasyonTerminaliniAc() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.7,
+          decoration: BoxDecoration(
+            color: SiberTema.oledBlack,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+            border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 2),
+          ),
+          child: SiberLokasyonMotoru(
+            onLokasyonSecildi: (ulke, sehir, bolge) {
+              setState(() {
+                _seciliUlke = ulke;
+                _seciliSehir = sehir;
+                _seciliBolge = bolge;
+              });
+              Navigator.pop(context);
+              _siberUyariGoster("RADAR YENİDEN HEDEFLENDİ: $sehir / $bolge", isError: false);
+            },
+          ),
+        );
+      }
     );
   }
 
@@ -82,24 +123,58 @@ class _UstaAramaScreenState extends State<UstaAramaScreen> {
                               children: [
                                 Text("AKTİF TARAMA BÖLGESİ", style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                                 SizedBox(height: 4),
-                                Text("İÇ ANADOLU / ANKARA", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                                Text("$_seciliBolge / $_seciliSehir", style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                               ],
                             ),
                           ),
                           TextButton(
-                            onPressed: () => _siberUyariGoster("BÖLGE DEĞİŞTİRME TERMİNALİ BAŞLATILIYOR..."),
-                            child: const Text("DEĞİŞTİR", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                            onPressed: _lokasyonTerminaliniAc,
+                            child: const Text("GENİŞLET", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                           )
                         ],
                       ),
                     ),
 
                     // =================================================================
-                    // 2. FİREBASE USTA VE FİRMA LİSTESİ (Canlı Veri Ağı)
+                    // 2. SİBER KATEGORİ FİLTRESİ
+                    // =================================================================
+                    SizedBox(
+                      height: 50,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        children: [
+                          _buildKategoriCipi("TÜMÜ"),
+                          ...SiberHizmetKutuphanesi.anaKategorileriGetir().map((kategori) => _buildKategoriCipi(kategori)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
+                    // =================================================================
+                    // 3. DETAYLI KUANTUM FİLTRELER (Premium, Ekonomik)
+                    // =================================================================
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Row(
+                        children: [
+                          _buildDetayFiltreCipi("TÜMÜ", Icons.all_inclusive),
+                          _buildDetayFiltreCipi("PREMIUM (5 YILDIZ)", Icons.star),
+                          _buildDetayFiltreCipi("EKONOMİK", Icons.savings),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // =================================================================
+                    // 4. FİREBASE USTA VE FİRMA LİSTESİ (Canlı Veri Ağı)
                     // =================================================================
                     Expanded(
                       child: StreamBuilder<QuerySnapshot>(
-                        stream: _db.collection('firmalar').orderBy('puan', descending: true).snapshots(),
+                        stream: _secilenKategori == "TÜMÜ" 
+                            ? _db.collection('firmalar').where('sehir', isEqualTo: _seciliSehir).orderBy('puan', descending: true).snapshots()
+                            : _db.collection('firmalar').where('sehir', isEqualTo: _seciliSehir).where('uzmanlik_kategorileri', arrayContains: _secilenKategori).orderBy('puan', descending: true).snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
                             return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
@@ -119,18 +194,32 @@ class _UstaAramaScreenState extends State<UstaAramaScreen> {
                             );
                           }
 
+                          // 🚨 DETAYLI FİLTRELEME (İSTEMCİ TARAFLI SÜZME)
+                          var dokumanlar = snapshot.data!.docs;
+                          if (_secilenDetayFiltre == "PREMIUM (5 YILDIZ)") {
+                            dokumanlar = dokumanlar.where((d) => (d.data() as Map)['puan'] >= 4.5).toList();
+                          } else if (_secilenDetayFiltre == "EKONOMİK") {
+                            // Ekonomik ustalar, f/p oranı yüksek veya fiyat politikası uygun ustalar
+                            // Şimdilik puanı 3 ile 4.5 arası olan "Standart/Ekonomik" ustalar
+                            dokumanlar = dokumanlar.where((d) => (d.data() as Map)['puan'] >= 3.0 && (d.data() as Map)['puan'] < 4.5).toList();
+                          }
+
+                          if (dokumanlar.isEmpty) {
+                            return const Center(child: Text("BU BÖLGEDE UYGUN USTA BULUNAMADI", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold, fontFamily: 'Avenir')));
+                          }
+
                           // GERÇEK VERİTABANI DÖNGÜSÜ
                           return ListView.builder(
                             physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 24),
-                            itemCount: snapshot.data!.docs.length,
+                            itemCount: dokumanlar.length,
                             itemBuilder: (context, index) {
-                              var data = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                              var data = dokumanlar[index].data() as Map<String, dynamic>;
                               return _buildSiberUstaKarti(
                                 data['isim'] ?? 'BİLİNMEYEN FİRMA',
-                                data['bolge'] ?? 'BİLİNMEYEN KONUM',
+                                data['sehir'] ?? 'BİLİNMEYEN KONUM',
                                 (data['puan'] ?? 0.0).toDouble(),
-                                "${data['mesafe'] ?? '0'} KM",
+                                "${data['mesafe'] ?? '0.0'} KM", // Mesafe şimdilik GPS otonomisi öncesi gösterim
                               );
                             },
                           );
@@ -142,6 +231,64 @@ class _UstaAramaScreenState extends State<UstaAramaScreen> {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  // 💎 YARDIMCI BİLEŞEN: KATEGORİ ÇİPİ
+  Widget _buildKategoriCipi(String kategori) {
+    bool isSelected = _secilenKategori == kategori;
+    return GestureDetector(
+      onTap: () {
+        setState(() => _secilenKategori = kategori);
+      },
+      child: Container(
+        margin: const EdgeInsets.only(right: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? SiberTema.kuantumCyan.withOpacity(0.2) : SiberTema.matGrey.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: isSelected ? SiberTema.kuantumCyan : Colors.white12, width: 1.5),
+        ),
+        child: Center(
+          child: Text(
+            kategori.toUpperCase(),
+            style: TextStyle(
+              color: isSelected ? SiberTema.kuantumCyan : Colors.white54,
+              fontSize: 10,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1,
+              fontFamily: 'Avenir'
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 💎 YARDIMCI BİLEŞEN: DETAY FİLTRE ÇİPİ (Premium, Ekonomik)
+  Widget _buildDetayFiltreCipi(String baslik, IconData ikon) {
+    bool isSelected = _secilenDetayFiltre == baslik;
+    return GestureDetector(
+      onTap: () => setState(() => _secilenDetayFiltre = baslik),
+      child: Container(
+        margin: const EdgeInsets.only(right: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: isSelected ? SiberTema.kuantumCyan.withOpacity(0.2) : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: isSelected ? SiberTema.kuantumCyan : Colors.white12),
+        ),
+        child: Row(
+          children: [
+            Icon(ikon, color: isSelected ? SiberTema.kuantumCyan : Colors.white54, size: 12),
+            const SizedBox(width: 4),
+            Text(
+              baslik,
+              style: TextStyle(color: isSelected ? SiberTema.kuantumCyan : Colors.white54, fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+            ),
+          ],
         ),
       ),
     );
@@ -192,27 +339,59 @@ class _UstaAramaScreenState extends State<UstaAramaScreen> {
               ),
               const SizedBox(height: 20),
 
-              // RANDEVU AL BUTONU (Kara listede buton kilitlenir)
-              SizedBox(
-                width: double.infinity,
-                height: 40,
-                child: ElevatedButton.icon(
-                  onPressed: isKaraListe ? null : () {
-                    _siberUyariGoster("$isim İÇİN SİBER RANDEVU PROTOKOLÜ BAŞLATILIYOR...");
-                    // Navigator.pushNamed(context, '/randevu_onay');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isKaraListe ? SiberTema.kanKirmizi.withOpacity(0.1) : SiberTema.kuantumCyan.withOpacity(0.1),
-                    foregroundColor: isKaraListe ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: isKaraListe ? SiberTema.kanKirmizi.withOpacity(0.3) : SiberTema.kuantumCyan.withOpacity(0.5))),
+              // =====================================================
+              // İKİLİ ETKİLEŞİM KALKANI: TEKLİF İSTE & RANDEVU AL
+              // =====================================================
+              Row(
+                children: [
+                  // 1. GİZLİ TEKLİF BUTONU (Mali Sorumluluk Kalkanı)
+                  Expanded(
+                    flex: 3,
+                    child: SizedBox(
+                      height: 40,
+                      child: ElevatedButton.icon(
+                        onPressed: isKaraListe ? null : () {
+                          _siberUyariGoster("$isim FİRMASINDAN GİZLİ TEKLİF İSTENİYOR...");
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isKaraListe ? SiberTema.kanKirmizi.withOpacity(0.1) : SiberTema.siberGold.withOpacity(0.1),
+                          foregroundColor: isKaraListe ? SiberTema.kanKirmizi : SiberTema.siberGold,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: isKaraListe ? SiberTema.kanKirmizi.withOpacity(0.3) : SiberTema.siberGold.withOpacity(0.5))),
+                        ),
+                        icon: Icon(isKaraListe ? Icons.block : Icons.request_quote, size: 16),
+                        label: Text(
+                          isKaraListe ? "MEN EDİLDİ" : "TEKLİF İSTE",
+                          style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
+                        ),
+                      ),
+                    ),
                   ),
-                  icon: Icon(isKaraListe ? Icons.block : Icons.handshake, size: 16),
-                  label: Text(
-                    isKaraListe ? "SİSTEMDEN MEN EDİLDİ" : "RANDEVU MÜHRÜ VUR",
-                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir'),
+                  const SizedBox(width: 12),
+                  // 2. RANDEVU AL BUTONU
+                  Expanded(
+                    flex: 3,
+                    child: SizedBox(
+                      height: 40,
+                      child: ElevatedButton.icon(
+                        onPressed: isKaraListe ? null : () {
+                          _siberUyariGoster("$isim İÇİN RANDEVU PROTOKOLÜ BAŞLATILIYOR...");
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isKaraListe ? SiberTema.kanKirmizi.withOpacity(0.1) : SiberTema.kuantumCyan.withOpacity(0.1),
+                          foregroundColor: isKaraListe ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: isKaraListe ? SiberTema.kanKirmizi.withOpacity(0.3) : SiberTema.kuantumCyan.withOpacity(0.5))),
+                        ),
+                        icon: Icon(isKaraListe ? Icons.block : Icons.calendar_month, size: 16),
+                        label: Text(
+                          isKaraListe ? "MEN EDİLDİ" : "RANDEVU AL",
+                          style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               )
             ],
           ),

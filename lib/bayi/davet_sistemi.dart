@@ -24,7 +24,7 @@ class _DavetSistemiPaneliState extends State<DavetSistemiPaneli> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   bool _islemSuruyor = false;
 
-  static const String _davetMetni = """
+  String get _davetMetni => """
 🛡️ OTODNA DİJİTAL REFERANS PROTOKOLÜNE DAVETLİSİNİZ!
 
 Değerli Sektör Paydaşı;
@@ -36,7 +36,7 @@ Servislerden sürücü kurslarına, rent a carlardan beyincilere kadar tüm sekt
 ✅ Global Market ile Her Yerdesiniz.
 
 Sektörün geleceğine beraber imza atalım.
-Hemen Kaydolun: https://otodna.com/davet
+Hemen Kaydolun: https://otodna.com/davet?ref=\${widget.gonderenId}
 """;
 
   // ── 🚀 FİREBASE VE GERÇEK PAYLAŞIM MOTORU (ATOMİK ZIRHLI) ──

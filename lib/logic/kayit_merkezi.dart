@@ -1,52 +1,99 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
+/// 🦅 OTODNA KAYIT VE İSTİHBARAT MERKEZİ (Siber Kalkan)
+/// Tüm yeni kayıtların (Kullanıcı, Usta, Distribütör) Karargaha giriş yaptığı ana terminaldir.
+/// Davetiye sistemiyle (B2B) veya doğrudan (B2C) kayıt olunabilir.
 class KayitMerkezi {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // ---------------------------------------------------------
-  // 📦 10'LU PAKET KAYIT (KUANTUM BATCH WRITE) MOTORU
-  // ---------------------------------------------------------
-  Future<void> onluPaketKaydet(List<Map<String, dynamic>> urunler) async {
-    if (urunler.isEmpty) return;
-
-    WriteBatch batch = _db.batch();
-    CollectionReference urunlerRef = _db.collection('yedek_parcalar');
-
+  /// Yeni bir Bireysel veya Kurumsal (Davetiye Kodlu) kayıt oluşturur.
+  static Future<UserCredential?> siberKayitOlustur({
+    required String email,
+    required String password,
+    required String adSoyad,
+    String? davetKodu, // Eğer doluysa, yetki seviyesini değiştirir
+  }) async {
     try {
-      for (var urun in urunler) {
-        double orijinalAlisFiyati = (urun['fiyat'] ?? 0).toDouble();
-        String gercekSaticiAdi = urun['bayi'] ?? "Bilinmeyen Tedarikçi";
-        String gercekSaticiId = urun['bayi_id'] ?? "ID_YOK";
+      // 1. Firebase Auth Kalkanından Geçiş (Email/Şifre)
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
-        // 🔥 YENİ KURAL: KİM OLDUĞU FARK ETMEZ, SABİT %12 KARARGAH PAYI!
-        double komutanGaziPayi = orijinalAlisFiyati * 0.12; // %10 Kâr + %2 Vergi
-        double bayiHakedis = orijinalAlisFiyati * 0.88;
+      String uid = userCredential.user!.uid;
+      String yetkiSeviyesi = 'kullanici'; // Varsayılan Sivil Yetki
+      String? bagliOlduguDistributorId;
 
-        DocumentReference yeniUrunRef = urunlerRef.doc();
+      // 2. DAVET KODU İSTİHBARATI (B2B Modülü)
+      if (davetKodu != null && davetKodu.trim().isNotEmpty) {
+        // Davetiye kodunu Karargahta tara
+        QuerySnapshot davetSorgusu = await _db
+            .collection('davetiyeler')
+            .where('kod', isEqualTo: davetKodu.trim())
+            .where('kullanildi_mi', isEqualTo: false)
+            .get();
 
-        // 🔓 ŞEFFAFLIK PROTOKOLÜ: Herkes kendi ismiyle vitrine çıkar!
-        Map<String, dynamic> muhurluVeri = {
-          'urun_ad': urun['ad'],
-          'kategori': urun['kategori'] ?? 'Genel',
-          'asil_satici_id': gercekSaticiId,
-          'asil_satici_adi': gercekSaticiAdi,
-          'satici_goster': true, // ARTIK SATICI GİZLEMEK YOK!
-          'vitrin_etiketi': gercekSaticiAdi, // Herkesin kendi dükkan ismi!
-          'orijinal_fiyat': orijinalAlisFiyati,
-          'gazi_komisyon': komutanGaziPayi,
-          'bayi_hakedis': bayiHakedis,
-          'kayit_tarihi': FieldValue.serverTimestamp(),
-          'durum': 'Onaylı/Satışta',
-        };
+        if (davetSorgusu.docs.isNotEmpty) {
+          // Davetiye Geçerli!
+          DocumentSnapshot davetDoc = davetSorgusu.docs.first;
+          yetkiSeviyesi = davetDoc['yetki_turu'] ?? 'bayi'; // 'bayi', 'usta', vb.
+          bagliOlduguDistributorId = davetDoc['olusturan_uid'];
 
-        batch.set(yeniUrunRef, muhurluVeri);
+          // 2.1 Davetiyeyi "Kullanıldı" olarak mühürle (Atomik)
+          await _db.collection('davetiyeler').doc(davetDoc.id).update({
+            'kullanildi_mi': true,
+            'kullanan_uid': uid,
+            'kullanma_tarihi': FieldValue.serverTimestamp(),
+          });
+
+          debugPrint("🚀 B2B DAVET BAŞARILI: $yetkiSeviyesi olarak atandı.");
+        } else {
+          // Hatalı davet kodu siber girişimi!
+          throw Exception("GEÇERSİZ DAVET KODU: Karargah bu kodu reddetti!");
+        }
       }
 
-      // 🚀 TÜM FÜZELERİ AYNI ANDA ATEŞLE
-      await batch.commit();
+      // 3. KULLANICI DNA'SINI VERİTABANINA YAZ (Siber Profil)
+      await _db.collection('users').doc(uid).set({
+        'uid': uid,
+        'email': email,
+        'ad_soyad': adSoyad,
+        'yetki': yetkiSeviyesi,
+        'bagli_distributor_id': bagliOlduguDistributorId,
+        'siber_genetik_skor': 100, // Karargah Başlangıç Güven Skoru
+        'kayit_tarihi': FieldValue.serverTimestamp(),
+        'bakiye': 0.0,
+      });
 
+      debugPrint("🛡️ KAYIT MERKEZİ: SİBER KİMLİK OLUŞTURULDU -> [$email] Yetki: $yetkiSeviyesi");
+      
+      return userCredential;
+      
+    } on FirebaseAuthException catch (e) {
+      debugPrint("FIREBASE AUTH HATASI: ${e.code}");
+      String hataMesaji = "Siber Kayıt Reddedildi: Bilinmeyen Hata";
+      
+      if (e.code == 'weak-password') hataMesaji = "Siber Şifre Zayıf: En az 6 karakter kullanın.";
+      else if (e.code == 'email-already-in-use') hataMesaji = "İstihbarat Çakışması: Bu e-posta zaten kullanımda.";
+      else if (e.code == 'invalid-email') hataMesaji = "Geçersiz İstihbarat: E-posta formatı hatalı.";
+      
+      throw Exception(hataMesaji);
     } catch (e) {
-      throw Exception("SİBER HATA: Kayıt motoru devre dışı kaldı. Detay: $e");
+      debugPrint("SİSTEM ÇÖKTÜ: $e");
+      throw Exception(e.toString());
+    }
+  }
+
+  /// Mevcut kullanıcılar için Şifre Sıfırlama İstihbaratı gönderir.
+  static Future<void> sifreSifirlamaGonder(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      debugPrint("📧 SİBER POSTA: Şifre sıfırlama kalkanı $email adresine fırlatıldı.");
+    } catch (e) {
+      throw Exception("Şifre sıfırlama bağlantısı gönderilemedi.");
     }
   }
 }

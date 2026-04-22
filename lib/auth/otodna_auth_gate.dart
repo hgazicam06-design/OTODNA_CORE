@@ -1,54 +1,78 @@
 // lib/auth/otodna_auth_gate.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 // 🚀 SİBER KÖPRÜLER VE TEMA
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
+import '../core/providers/siber_kimlik_provider.dart';
+import '../core/main_engine.dart';
 
 // 🚀 EKRANLAR (YENİ KARARGAH MİMARİSİNE GÖRE)
 import '../screens/login_screen.dart';
 import '../screens/super_admin_screen.dart';
 import '../screens/usta_panel_screen.dart';
 import '../screens/siber_kokpit_screen.dart';
+import '../bayi/bayi_merkez.dart';
+import '../bayi/belge_dogrulama.dart';
 
-/// 🛡️ KUANTUM GİRİŞ KAPISI VE RÜTBE YÖNLENDİRİCİSİ
-class OtoDnaAuthGate extends StatelessWidget {
+/// 🛡️ KUANTUM GİRİŞ KAPISI VE RÜTBE YÖNLENDİRİCİSİ (RIVERPOD DESTEKLİ)
+class OtoDnaAuthGate extends ConsumerWidget {
   const OtoDnaAuthGate({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // 📡 1. FİREBASE KİMLİK RADARINI DİNLE
+    final authState = ref.watch(authDurumProvider);
+
     return ResponsiveKalkan(
       isOledBackground: true,
-      child: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, authSnapshot) {
-          if (authSnapshot.connectionState == ConnectionState.waiting) {
-            return const _KuantumYuklemeEkrani(mesaj: "SİBER PROTOKOLLER TARANIYOR...");
-          }
-
+      child: authState.when(
+        loading: () => const _KuantumYuklemeEkrani(mesaj: "SİBER PROTOKOLLER TARANIYOR..."),
+        error: (error, stack) => _KuantumYuklemeEkrani(mesaj: "SİBER İHLAL: $error"),
+        data: (user) {
           // Eğer kullanıcı hiç giriş yapmamışsa Zırhlı LoginScreen'e fırlat!
-          if (!authSnapshot.hasData || authSnapshot.data == null) {
+          if (user == null) {
             return const LoginScreen();
           }
 
-          final User currentUser = authSnapshot.data!;
+          // 🛡️ 2. KARARGAH SİCİL MOTORUNU DİNLE
+          final sicilState = ref.watch(siberSicilProvider);
 
-          // 🛡️ SİBER RADAR: Canlı izliyoruz ama KİMSEYİ DIŞARI ATMIYORUZ!
-          return StreamBuilder<DocumentSnapshot>(
-            stream: FirebaseFirestore.instance.collection('kullanicilar').doc(currentUser.uid).snapshots(),
-            builder: (context, userSnapshot) {
-              if (userSnapshot.connectionState == ConnectionState.waiting) {
-                return const _KuantumYuklemeEkrani(mesaj: "KARARGAH YETKİLERİ DOĞRULANIYOR...");
+          return sicilState.when(
+            loading: () => const _KuantumYuklemeEkrani(mesaj: "KARARGAH YETKİLERİ DOĞRULANIYOR..."),
+            error: (error, stack) => _KuantumYuklemeEkrani(mesaj: "SİCİL HATASI: $error"),
+            data: (userData) {
+              if (userData == null) {
+                return const _KuantumYuklemeEkrani(mesaj: "SİCİL OLUŞTURULUYOR VEYA EKSİK...");
               }
 
-              // Kullanıcı Firebase Auth'ta var ama Firestore'da kaydı yoksa (Yeni kayıt vb.)
-              if (userSnapshot.hasError || !userSnapshot.hasData || !userSnapshot.data!.exists) {
-                return const _KuantumYuklemeEkrani(mesaj: "SİCİL OLUŞTURULUYOR...");
+              // 🛡️ BLACK STAR PROTOKOLÜ: Kullanıcı Karalistede mi?
+              bool isBlacklisted = userData['is_blacklisted'] ?? false;
+              if (isBlacklisted) {
+                return const _KaraListeEkrani();
               }
 
-              var userData = userSnapshot.data!.data() as Map<String, dynamic>;
+              // 📡 FCM TOKEN MÜHÜRLEME (Kullanıcı giriş yaptığında token güncellenir)
+              WidgetsBinding.instance.addPostFrameCallback((_) async {
+                try {
+                  String? token = await FirebaseMessaging.instance.getToken();
+                  if (token != null && userData['fcmToken'] != token) {
+                    await FirebaseFirestore.instance.collection('kullanicilar').doc(user.uid).update({'fcmToken': token});
+                  }
+
+                  // 🚀 MOTOR ATEŞLEME (SADECE ADMİNLER İÇİN)
+                  String userRole = (userData['rol'] ?? userData['rutbe'] ?? "USER").toString().toUpperCase();
+                  if (userRole == "ADMIN" || userRole == "BOLGE_KOMUTANI" || userRole == "SUPER_ADMIN" || userRole == "BASKAN") {
+                    SiberAnaMotor.sistemiBaslat(user.uid);
+                  }
+                } catch (e) {
+                  // İzin verilmediyse sessizce geç
+                }
+              });
 
               // Rol veya Rutbe değişkenlerini destekler (Geriye dönük uyumluluk)
               String role = (userData['rol'] ?? userData['rutbe'] ?? "USER").toString().toUpperCase();
@@ -56,7 +80,15 @@ class OtoDnaAuthGate extends StatelessWidget {
               // 🧠 KUANTUM YÖNLENDİRME MERKEZİ (Özgür Kullanım Protokolü)
               if (role == "ADMIN" || role == "BOLGE_KOMUTANI" || role == "SUPER_ADMIN" || role == "BASKAN") {
                 return const SuperAdminScreen();
-              } else if (role == "BAYI" || role == "USTA") {
+              } else if (role == "BAYI") {
+                // 🛡️ SİBER ZIRH: Bayi belgelerini Karargaha mühürledi mi?
+                bool belgelerYuklendi = userData['belgeler_yuklendi'] ?? false;
+                if (!belgelerYuklendi) {
+                  return BelgeDogrulama(bayiId: user.uid);
+                } else {
+                  return BayiMerkezi(bayiId: user.uid);
+                }
+              } else if (role == "USTA") {
                 return const UstaPanelScreen();
               } else {
                 return const SiberKokpitScreen();
@@ -124,3 +156,61 @@ class _KuantumYuklemeEkrani extends StatelessWidget {
     );
   }
 }
+
+// -------------------------------------------------------------
+// 🚨 BLACK STAR PROTOKOLÜ (KARALİSTE / SİBER ENGEL)
+// -------------------------------------------------------------
+class _KaraListeEkrani extends StatelessWidget {
+  const _KaraListeEkrani();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: SiberTema.oledBlack,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(32),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: SiberTema.kanKirmizi, width: 2),
+                  boxShadow: [BoxShadow(color: SiberTema.kanKirmizi.withOpacity(0.2), blurRadius: 40, spreadRadius: 10)],
+                ),
+                child: const Icon(Icons.block, size: 70, color: SiberTema.kanKirmizi),
+              ),
+              const SizedBox(height: 40),
+              const Text(
+                'SİSTEM ERİŞİMİ REDDEDİLDİ',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: SiberTema.kanKirmizi, fontFamily: 'Avenir', letterSpacing: 2.0),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Siber Sicilinizde tespit edilen ihlaller nedeniyle Kuantum Ağına erişiminiz kalıcı olarak engellenmiştir. (BLACK STAR MÜHRÜ)',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white70, fontFamily: 'Avenir', height: 1.5),
+              ),
+              const SizedBox(height: 40),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: SiberTema.kanKirmizi.withOpacity(0.1),
+                  foregroundColor: SiberTema.kanKirmizi,
+                  side: const BorderSide(color: SiberTema.kanKirmizi),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                onPressed: () => FirebaseAuth.instance.signOut(),
+                icon: const Icon(Icons.power_settings_new),
+                label: const Text("BAĞLANTIYI KES", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

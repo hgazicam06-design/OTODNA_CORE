@@ -8,6 +8,8 @@ import 'dart:developer' as developer;
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
+import 'admin/siber_bayi_rozet_yonetimi_screen.dart';
+
 /// 🦅 OTODNA YÜKSEK KONSEY TERMİNALİ (Super Admin)
 class SuperAdminScreen extends StatefulWidget {
   const SuperAdminScreen({super.key});
@@ -139,7 +141,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
         var data = snapshot.data?.data() as Map<String, dynamic>? ?? {
           'toplam_hacim': 0.0,
           'bayi_komisyonu': 0.0,
-          'murat_plaza_kari': 0.0
+          'sistem_komisyonu': 0.0
         };
 
         return ListView(
@@ -160,9 +162,9 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
             const SizedBox(height: 24),
             Row(
               children: [
-                Expanded(child: _buildFinansKarti("BAYİ KOMİSYON\nHAVUZU (%12)", "₺ ${data['bayi_komisyonu']}", SiberTema.kuantumCyan, Icons.pie_chart)),
+                Expanded(child: _buildFinansKarti("TÜM BAYİLERİN\nNET KAZANCI", "₺ ${data['bayi_komisyonu']}", SiberTema.kuantumCyan, Icons.account_balance_wallet)),
                 const SizedBox(width: 16),
-                Expanded(child: _buildFinansKarti("MURAT PLAZA\nGİZLİ SATIŞ KÂRI (%30)", "₺ ${data['murat_plaza_kari']}", adminPurple, Icons.store)),
+                Expanded(child: _buildFinansKarti("SİSTEM KOMİSYONU\nKARARGAH PAYI (%12)", "₺ ${data['sistem_komisyonu']}", SiberTema.altinSari, Icons.account_balance)),
               ],
             ),
             const SizedBox(height: 48),
@@ -183,7 +185,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
         return Column(
           children: snapshot.data!.docs.map((doc) {
             var islem = doc.data() as Map<String, dynamic>;
-            return _buildIslemSatiri(islem['baslik'] ?? 'İŞLEM', islem['detay'] ?? 'DETAY', "₺${islem['tutar']}", islem['tip'] == 'MURAT' ? adminPurple : SiberTema.kuantumCyan);
+            return _buildIslemSatiri(islem['baslik'] ?? 'İŞLEM', islem['detay'] ?? 'DETAY', "₺${islem['tutar']}", SiberTema.kuantumCyan);
           }).toList(),
         );
       },
@@ -265,7 +267,25 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
         return ListView(
           padding: const EdgeInsets.all(24),
           children: [
-            const Text("SİBER İHLAL YAPAN FİRMALAR", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+            // 🛡️ SİBER BAYİ ROZET YÖNETİMİ BUTONU
+            SizedBox(
+              width: double.infinity,
+              height: 60,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: SiberTema.kuantumCyan.withOpacity(0.1),
+                  foregroundColor: SiberTema.kuantumCyan,
+                  side: const BorderSide(color: SiberTema.kuantumCyan, width: 2),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                ),
+                icon: const Icon(Icons.workspace_premium),
+                label: const Text("TÜM BAYİLERİN ROZET VE YILDIZ YÖNETİMİ", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SiberBayiRozetYonetimiScreen())),
+              ),
+            ),
+            const SizedBox(height: 40),
+
+            const Text("SİBER İHLAL YAPAN FİRMALAR (BLACKLIST)", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
             const SizedBox(height: 16),
             ...snapshot.data!.docs.map((doc) {
               var firma = doc.data() as Map<String, dynamic>;

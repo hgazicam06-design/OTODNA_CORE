@@ -14,6 +14,8 @@ import '../screens/usta_panel_screen.dart';
 import '../screens/super_admin_screen.dart';
 import '../screens/support_screen.dart';
 import '../screens/dil_secim_terminali.dart'; // ✅ YENİ EKLENDİ
+import '../bayi/bayi_merkez.dart';
+import '../bayi/belge_dogrulama.dart';
 
 // 🚀 SONRADAN İNŞA EDİLEN SİBER MODÜLLER
 import '../screens/wallet_screen.dart';
@@ -47,6 +49,14 @@ class KuantumRota {
         return MaterialPageRoute(builder: (_) => const SuperAdminScreen());
       case '/usta_paneli':
         return MaterialPageRoute(builder: (_) => const UstaPanelScreen());
+      case '/bayi_merkez':
+        return MaterialPageRoute(
+          builder: (_) => BayiMerkezi(bayiId: args['bayiId'] ?? ''),
+        );
+      case '/belge_dogrulama':
+        return MaterialPageRoute(
+          builder: (_) => BelgeDogrulama(bayiId: args['bayiId'] ?? ''),
+        );
 
     // ── ARAÇ VE BİLGİ MERKEZLERİ ──
       case '/arac_kayit':

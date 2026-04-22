@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 // 🔥 SİBER KÖPRÜLER
 import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 import '../../core/providers/siber_kimlik_provider.dart';
+import '../../services/ai_istihbarat_koprusu.dart';
 
 class AddProductScreen extends ConsumerStatefulWidget {
   const AddProductScreen({super.key});
@@ -31,22 +33,36 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
   // 🧠 YAPAY ZEKA GÖRÜNTÜ İŞLEME (Siber Analiz)
   Future<void> _yapayZekaIleTani() async {
-    _showCyberLoading("AI Parçayı Analiz Ediyor...");
-    await Future.delayed(const Duration(seconds: 2));
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+    if (image == null) return;
+
+    _showCyberLoading("Siber Göz (AI) Parçayı Analiz Ediyor...");
+
+    final result = await AIIstihbaratKoprusu.parcayiTani(image);
+
     if (!mounted) return;
     Navigator.pop(context);
 
-    setState(() {
-      _urunAdController.text = "V Kayışı Gergisi";
-      _oemKoduController.text = "FIAT-55268018";
-      _secilenMarka = "FIAT Egea";
-    });
+    if (result != null) {
+      setState(() {
+        _urunAdController.text = result["parca_adi"] ?? "";
+        _oemKoduController.text = result["oem"] ?? "";
+        _secilenMarka = result["marka"] ?? "Bilinmiyor";
+      });
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Kuantum Analizi Tamamlandı: FIAT Egea Parçası Tespit Edildi! 🦅",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-      backgroundColor: _primaryCyan,
-    ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text("Kuantum Analizi Tamamlandı: Yapay Zeka Tespiti Başarılı! 🦅",
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+        backgroundColor: _primaryCyan,
+      ));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("AI Radarı Arızası: Parça Tanımlanamadı!",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+        backgroundColor: Colors.redAccent,
+      ));
+    }
   }
 
   // 📸 RUHSAT DNA TARAMA
@@ -109,8 +125,8 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       final double hamFiyat = double.tryParse(_fiyatController.text) ?? 0.0;
       final String dukkanAd = sicil['dukkan_adi'] ?? "Bilinmeyen Bayi";
 
-      // 💰 MURAT PLAZA ÖZEL KAR MARJI KONTROLÜ
-      final double komisyonOrani = dukkanAd == "Murat Plaza" ? 0.30 : 0.12;
+      // 💰 EVRENSEL KARARGAH KESİNTİSİ
+      const double komisyonOrani = 0.12;
       final double gaziPayi = hamFiyat * komisyonOrani;
 
       await _db.collection('yedek_parcalar').add({

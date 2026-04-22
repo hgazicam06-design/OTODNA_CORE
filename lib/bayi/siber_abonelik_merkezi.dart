@@ -27,6 +27,23 @@ class _SiberAbonelikMerkeziState extends State<SiberAbonelikMerkezi> {
   bool _aiReklamOptimizasyonu = true;
 
   @override
+  void initState() {
+    super.initState();
+    _siberAyarlariGetir();
+  }
+
+  Future<void> _siberAyarlariGetir() async {
+    var snap = await _db.collection('bayiler').doc(_bayiId).get();
+    if (snap.exists && mounted) {
+      var data = snap.data() as Map<String, dynamic>;
+      setState(() {
+        _otonomBildirimAcik = data['otonom_sms_aktif'] ?? true;
+        _aiReklamOptimizasyonu = data['ai_reklam_aktif'] ?? true;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
       isOledBackground: true,
@@ -65,11 +82,13 @@ class _SiberAbonelikMerkeziState extends State<SiberAbonelikMerkezi> {
               const SizedBox(height: 12),
               _buildAyarToggle("Otonom Müşteri Bildirimleri", "Araç durumu değiştiğinde müşteriye anında siber SMS/Bildirim fırlatılır.", _otonomBildirimAcik, (val) {
                 setState(() => _otonomBildirimAcik = val);
+                _db.collection('bayiler').doc(_bayiId).set({'otonom_sms_aktif': val}, SetOptions(merge: true));
                 _ayarLogla("Otonom Bildirim", val);
               }),
               const SizedBox(height: 8),
               _buildAyarToggle("Yapay Zeka Reklam Hedeflemesi", "Bakım verilerine göre sistem müşterilere otonom parça reklamı çıkartır.", _aiReklamOptimizasyonu, (val) {
                 setState(() => _aiReklamOptimizasyonu = val);
+                _db.collection('bayiler').doc(_bayiId).set({'ai_reklam_aktif': val}, SetOptions(merge: true));
                 _ayarLogla("AI Reklam Hedefleme", val);
               }),
             ],
@@ -180,15 +199,31 @@ class _SiberAbonelikMerkeziState extends State<SiberAbonelikMerkezi> {
 
   // ── 🛡️ ATOMİK LİSANS SATIN ALMA (WRITEBATCH & LOG) ──
   Future<void> _abonelikSatinAl(String paketAdi, double tutar, int eklenecekGun) async {
+    if (_islemSuruyor) return; // 🔒 DOUBLE SPEND ZIRHI
     setState(() => _islemSuruyor = true);
     developer.log("SİBER FİNANS: $paketAdi için Kuantum ödeme köprüsü açılıyor...");
 
     try {
       WriteBatch batch = _db.batch();
 
-      // 1. Bayinin Lisans Süresini Güncelle (SET MERGE İLE ÇÖKME RİSKİ SIFIRLANDI)
+      // 1. Bayinin Lisans Süresini Güncelle (SÜRE KAYBI AÇIĞI KAPATILDI)
       DocumentReference bayiRef = _db.collection('bayiler').doc(_bayiId);
-      DateTime yeniBitis = DateTime.now().add(Duration(days: eklenecekGun));
+      DocumentSnapshot bayiSnap = await bayiRef.get();
+      
+      DateTime simdikiZaman = DateTime.now();
+      DateTime yeniBitis = simdikiZaman.add(Duration(days: eklenecekGun));
+
+      if (bayiSnap.exists) {
+        var veri = bayiSnap.data() as Map<String, dynamic>;
+        Timestamp? mevcutBitis = veri['abonelik_bitis_tarihi'];
+        if (mevcutBitis != null) {
+          DateTime mevcutBitisTarihi = mevcutBitis.toDate();
+          if (mevcutBitisTarihi.isAfter(simdikiZaman)) {
+            // Bayinin içerideki hakkı yanmasın diye mevcut sürenin üstüne ekle!
+            yeniBitis = mevcutBitisTarihi.add(Duration(days: eklenecekGun));
+          }
+        }
+      }
 
       batch.set(bayiRef, {
         'abonelik_bitis_tarihi': yeniBitis,

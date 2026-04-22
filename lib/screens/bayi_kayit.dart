@@ -7,6 +7,7 @@ import 'dart:developer' as developer;
 // 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
+import '../core/otodna_hizmet_kutuphanesi.dart';
 
 /// 🛡️ KUANTUM BAYİ KAYIT VE SİBER İMECE SÖZLEŞMESİ (BayiKayitFormu)
 /// Ustaların uzmanlık alanlarını seçtiği ve adli yaptırımlı sözleşmeyi onaylayıp Karargaha ATOMİK mühürlediği terminal.
@@ -23,14 +24,16 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // ── SİBER İSTİHBARAT DEĞİŞKENLERİ ──
-  final Map<String, bool> _uzmanliklar = {
-    "MOTOR MEKANİK": false,
-    "ŞASE VE KAPORTA": false,
-    "OTO ELEKTRİK & BEYİN (ECU)": false,
-    "ROT BALANS & ALT TAKIM": false,
-    "EGZOZ EMİSYON & DPF": false,
-    "HİBRİT / EV BATARYA": false,
-  };
+  final Map<String, bool> _uzmanliklar = {};
+
+  @override
+  void initState() {
+    super.initState();
+    // Karargah kütüphanesindeki tüm branşları otonom olarak yükle
+    for (String hizmet in SiberHizmetKutuphanesi.tumHizmetleriGetir()) {
+      _uzmanliklar[hizmet] = false;
+    }
+  }
 
   bool _sozlesmeOnay = false;
   bool _islemSuruyor = false;
@@ -77,6 +80,16 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
           .map((entry) => entry.key)
           .toList();
 
+      // Hangi ana kategorilere ait olduklarını bul (Filtreleme için)
+      List<String> secilenKategoriler = [];
+      for (String brans in secilenUzmanliklar) {
+        SiberHizmetKutuphanesi.masterListe.forEach((kategori, branslar) {
+          if (branslar.contains(brans) && !secilenKategoriler.contains(kategori)) {
+            secilenKategoriler.add(kategori);
+          }
+        });
+      }
+
       // ⛓️ ATOMİK ZIRH DEVREDE (WriteBatch)
       WriteBatch batch = _db.batch();
 
@@ -85,6 +98,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
       batch.set(basvuruRef, {
         'usta_id': widget.ustaId,
         'uzmanlik_alanlari': secilenUzmanliklar,
+        'uzmanlik_kategorileri': secilenKategoriler,
         'sozlesme_onay': true,
         'onay_tarihi': FieldValue.serverTimestamp(),
         'basvuru_durumu': 'ONAY_BEKLIYOR',
@@ -115,6 +129,68 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
     } finally {
       if (mounted) setState(() => _islemSuruyor = false);
     }
+  }
+
+  // ── 🚀 YENİ BRANŞ TALEP MOTORU ──
+  void _yeniBransTalepEt() {
+    TextEditingController talepCtrl = TextEditingController();
+    
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: SiberTema.matGrey,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: SiberTema.kuantumCyan, width: 1.5)),
+          title: const Text("YENİ UZMANLIK TALEBİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontFamily: 'Avenir', fontSize: 14)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("Kütüphanede bulunmayan branşınızı Karargah onayına gönderin. Onaylandıktan sonra profilinize işlenecektir.", style: TextStyle(color: Colors.white70, fontSize: 11, fontFamily: 'Avenir')),
+              const SizedBox(height: 16),
+              TextField(
+                controller: talepCtrl,
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                decoration: InputDecoration(
+                  hintText: "Örn: Klasik Otomobil Restorasyonu",
+                  hintStyle: const TextStyle(color: Colors.white38, fontSize: 11),
+                  filled: true,
+                  fillColor: Colors.black26,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("İPTAL", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold)),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                String talep = talepCtrl.text.trim();
+                if (talep.isNotEmpty) {
+                  Navigator.pop(context); // Dialog kapat
+                  
+                  try {
+                    await _db.collection('talep_edilen_branslar').add({
+                      'usta_id': widget.ustaId,
+                      'brans_adi': talep,
+                      'tarih': FieldValue.serverTimestamp(),
+                      'durum': 'ONAY_BEKLIYOR'
+                    });
+                    _siberUyariGoster("KARARGAHA İLETİLDİ", "'$talep' uzmanlığı inceleme havuzuna gönderildi.", SiberTema.kuantumCyan);
+                  } catch (e) {
+                    _siberUyariGoster("SİBER İHLAL", "Talep gönderilemedi.", SiberTema.kanKirmizi);
+                  }
+                }
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, foregroundColor: Colors.black),
+              child: const Text("KARARGAHA GÖNDER", style: TextStyle(fontWeight: FontWeight.w900)),
+            )
+          ],
+        );
+      }
+    );
   }
 
   @override
@@ -156,6 +232,23 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                     },
                   );
                 }).toList(),
+              ),
+            ),
+            
+            const SizedBox(height: 12),
+            
+            // ── 🚀 YENİ BRANŞ EKLEME BUTONU ──
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton.icon(
+                onPressed: _yeniBransTalepEt,
+                icon: const Icon(Icons.add_circle_outline, color: SiberTema.kuantumCyan, size: 16),
+                label: const Text("LİSTEDE YOK MU? YENİ EKLE", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                style: TextButton.styleFrom(
+                  backgroundColor: SiberTema.kuantumCyan.withOpacity(0.1),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5))),
+                ),
               ),
             ),
 

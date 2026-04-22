@@ -6,9 +6,12 @@ import 'dart:developer' as developer;
 /// Karargahın arka plan dinleme, finans ve 30 Dakikalık S.O.S kalkanlarını otonom yönetir.
 class SiberAnaMotor {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
+  static bool _motorAktif = false;
 
   // ── 🚀 AMİRAL GEMİSİ ATEŞLEME SİSTEMİ ──
   static Future<void> sistemiBaslat(String karargahUid) async {
+    if (_motorAktif) return;
+
     developer.log("🚀 SİBER MOTOR: Amiral Gemisi tam gaz ileri! Kalkanlar aktif ediliyor...");
 
     try {
@@ -23,6 +26,7 @@ class SiberAnaMotor {
 
         if (role == "ADMIN" || role == "BOLGE_KOMUTANI" || role == "SUPER_ADMIN" || role == "BASKAN") {
           developer.log("✅ YETKİ ONAYLANDI: [$role] Rütbesiyle Karargah komutları devrede.");
+          _motorAktif = true; // Sadece rütbe onaylandığında motoru mühürle
           _finansTakibiniAktifEt();
           _sosRadariniAc();
         } else {

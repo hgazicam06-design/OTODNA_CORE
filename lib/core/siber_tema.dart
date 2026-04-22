@@ -17,7 +17,18 @@ class SiberTema {
 
   // ── 🛡️ ESKİ KODLARIN ÇÖKMESİNİ ENGELLEYEN KÖPRÜLER (ZAFİYET KAPATICILAR) ──
   // responsive_kalkan.dart "decoration" beklediği için bunu BoxDecoration yaptık!
-  static BoxDecoration get siberArkaPlan => const BoxDecoration(color: oledBlack);
+  // 🔥 STRATEJİK GÜNCELLEME: 3D Derinlik Gradienti eklendi!
+  static BoxDecoration get siberArkaPlan => BoxDecoration(
+    gradient: RadialGradient(
+      center: const Alignment(0.0, -0.4), // Hafif yukarıdan vuran Siber Işık
+      radius: 1.2,
+      colors: [
+        const Color(0xFF101820), // Merkezde hafif metalik siber boşluk
+        oledBlack, // Köşelerde mutlak OLED siyahı
+      ],
+      stops: const [0.0, 1.0],
+    ),
+  );
 
   // 🏗️ 7D SİBER CAM EFEKTİ (GLASSMORPHISM) - Sadece Dekorasyon İsteyenler İçin
   static BoxDecoration siberCamZirh({Color? renk}) {

@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import '../kullanici/siber_profil_screen.dart'; // SİBER PROFİL KÖPRÜSÜ
+import '../kullanici/siber_dna_radar_screen.dart'; // SİBER ARAÇ RADARI
+import '../market/siber_ikinci_el_market.dart'; // İKİNCİ EL MARKET VİTRİNİ
+import '../../models/ad_campaign_model.dart';
+import '../../widgets/siber_hedefli_reklam_panosu.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('O T O D N A', style: TextStyle(color: accentColor, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 6)),
         centerTitle: true,
         actions: [
-          IconButton(icon: const Icon(Icons.person_outline, color: accentColor), onPressed: () => _testTiklama("Profil")),
+          IconButton(icon: const Icon(Icons.person_outline, color: accentColor), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SiberProfilScreen()))),
         ],
       ),
       body: SafeArea(
@@ -79,7 +84,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 32),
+              SiberHedefliReklamPanosu(
+                kampanya: OtoDNACampaign(
+                  id: "cmp_test_001",
+                  sirketAd: "Kuantum Yedek Parça A.Ş.",
+                  kampanyaBaslik: "10.000 KM Bakım Seti - %15 İndirim (Sizin Aracınıza Özel)",
+                  gorselUrl: "https://via.placeholder.com/600x200/000000/FFD700?text=BAKIM+SETI",
+                  hedefLink: "https://otodna.com/kampanyalar/bakim-seti",
+                  tiklanmaSayisi: 1240,
+                  aktifMi: true,
+                ),
+              ),
+              const SizedBox(height: 32),
 
               const Text("Ağ Modülleri", style: TextStyle(color: textMuted, fontSize: 13, fontWeight: FontWeight.w600)),
               const SizedBox(height: 16),
@@ -130,7 +147,15 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedFontSize: 11,
         unselectedFontSize: 11,
         currentIndex: _seciliSekme,
-        onTap: (index) => setState(() => _seciliSekme = index),
+        onTap: (index) {
+          if (index == 1) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const SiberDnaRadarScreen()));
+          } else if (index == 3) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const SiberProfilScreen()));
+          } else {
+            setState(() => _seciliSekme = index);
+          }
+        },
         items: const [
           BottomNavigationBarItem(icon: Padding(padding: EdgeInsets.only(bottom: 6), child: Icon(Icons.home_filled)), label: "Ana Sayfa"),
           BottomNavigationBarItem(icon: Padding(padding: EdgeInsets.only(bottom: 6), child: Icon(Icons.directions_car_outlined)), label: "Araçlarım"),
@@ -143,7 +168,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildTeslaCard(String baslik, IconData ikon) {
     return InkWell(
-      onTap: () => _testTiklama(baslik),
+      onTap: () {
+        if (baslik == "İkinci El Market") {
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const SiberIkinciElMarket()));
+        } else {
+          _testTiklama(baslik);
+        }
+      },
       borderRadius: BorderRadius.circular(16),
       child: Container(
         padding: const EdgeInsets.all(16),

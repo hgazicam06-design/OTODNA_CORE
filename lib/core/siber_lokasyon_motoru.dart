@@ -1,8 +1,8 @@
 // lib/core/siber_lokasyon_motoru.dart
 import 'package:flutter/material.dart';
 
-// 🚨 EĞER BU SATIR KIRMIZI ÇİZERSE, BUNU SİLİP ŞUNU YAZ: import '../core/siber_tema.dart';
 import 'siber_tema.dart';
+import 'kuresel_harita_sistemi.dart';
 
 class SiberLokasyonMotoru extends StatefulWidget {
   final void Function(String ulke, String sehir, String bolge) onLokasyonSecildi;
@@ -14,32 +14,12 @@ class SiberLokasyonMotoru extends StatefulWidget {
 }
 
 class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
-  // 🌍 KÜRESEL İSTİHBARAT VERİLERİ
-  final Map<String, String> _turkiyeSehirleri = {
-    "İstanbul": "Marmara Bölgesi", "Edirne": "Marmara Bölgesi", "Kırklareli": "Marmara Bölgesi", "Tekirdağ": "Marmara Bölgesi", "Çanakkale": "Marmara Bölgesi", "Kocaeli": "Marmara Bölgesi", "Yalova": "Marmara Bölgesi", "Sakarya": "Marmara Bölgesi", "Bilecik": "Marmara Bölgesi", "Bursa": "Marmara Bölgesi", "Balıkesir": "Marmara Bölgesi",
-    "İzmir": "Ege Bölgesi", "Manisa": "Ege Bölgesi", "Aydın": "Ege Bölgesi", "Denizli": "Ege Bölgesi", "Muğla": "Ege Bölgesi", "Afyonkarahisar": "Ege Bölgesi", "Kütahya": "Ege Bölgesi", "Uşak": "Ege Bölgesi",
-    "Antalya": "Akdeniz Bölgesi", "Burdur": "Akdeniz Bölgesi", "Isparta": "Akdeniz Bölgesi", "Mersin": "Akdeniz Bölgesi", "Adana": "Akdeniz Bölgesi", "Hatay": "Akdeniz Bölgesi", "Osmaniye": "Akdeniz Bölgesi", "Kahramanmaraş": "Akdeniz Bölgesi",
-    "Ankara": "İç Anadolu Bölgesi", "Konya": "İç Anadolu Bölgesi", "Eskişehir": "İç Anadolu Bölgesi", "Kırıkkale": "İç Anadolu Bölgesi", "Kırşehir": "İç Anadolu Bölgesi", "Yozgat": "İç Anadolu Bölgesi", "Nevşehir": "İç Anadolu Bölgesi", "Niğde": "İç Anadolu Bölgesi", "Kayseri": "İç Anadolu Bölgesi", "Aksaray": "İç Anadolu Bölgesi", "Karaman": "İç Anadolu Bölgesi", "Sivas": "İç Anadolu Bölgesi", "Çankırı": "İç Anadolu Bölgesi",
-    "Bolu": "Karadeniz Bölgesi", "Düzce": "Karadeniz Bölgesi", "Zonguldak": "Karadeniz Bölgesi", "Karabük": "Karadeniz Bölgesi", "Bartın": "Karadeniz Bölgesi", "Kastamonu": "Karadeniz Bölgesi", "Sinop": "Karadeniz Bölgesi", "Çorum": "Karadeniz Bölgesi", "Amasya": "Karadeniz Bölgesi", "Samsun": "Karadeniz Bölgesi", "Tokat": "Karadeniz Bölgesi", "Ordu": "Karadeniz Bölgesi", "Giresun": "Karadeniz Bölgesi", "Trabzon": "Karadeniz Bölgesi", "Gümüşhane": "Karadeniz Bölgesi", "Rize": "Karadeniz Bölgesi", "Bayburt": "Karadeniz Bölgesi", "Artvin": "Karadeniz Bölgesi",
-    "Erzurum": "Doğu Anadolu Bölgesi", "Erzincan": "Doğu Anadolu Bölgesi", "Kars": "Doğu Anadolu Bölgesi", "Tunceli": "Doğu Anadolu Bölgesi", "Bingöl": "Doğu Anadolu Bölgesi", "Elazığ": "Doğu Anadolu Bölgesi", "Malatya": "Doğu Anadolu Bölgesi", "Muş": "Doğu Anadolu Bölgesi", "Bitlis": "Doğu Anadolu Bölgesi", "Ağrı": "Doğu Anadolu Bölgesi", "Iğdır": "Doğu Anadolu Bölgesi", "Van": "Doğu Anadolu Bölgesi", "Hakkari": "Doğu Anadolu Bölgesi", "Şırnak": "Doğu Anadolu Bölgesi", "Ardahan": "Doğu Anadolu Bölgesi",
-    "Gaziantep": "Güneydoğu Anadolu Bölgesi", "Kilis": "Güneydoğu Anadolu Bölgesi", "Adıyaman": "Güneydoğu Anadolu Bölgesi", "Şanlıurfa": "Güneydoğu Anadolu Bölgesi", "Diyarbakır": "Güneydoğu Anadolu Bölgesi", "Mardin": "Güneydoğu Anadolu Bölgesi", "Batman": "Güneydoğu Anadolu Bölgesi", "Siirt": "Güneydoğu Anadolu Bölgesi"
-  };
-
-  final Map<String, String> _almanyaEyaletleri = {
-    "Berlin": "Kuzeydoğu Almanya",
-    "Münih": "Güney Almanya",
-    "Frankfurt": "Orta Almanya",
-    "Hamburg": "Kuzey Almanya",
-    "Köln": "Batı Almanya",
-  };
-
-  String _seciliUlke = "Türkiye";
+  String _seciliUlke = KureselHaritaSistemi.globalMerkezUlkemiz;
   String? _seciliYer;
 
   @override
   Widget build(BuildContext context) {
-    Map<String, String> aktifListe = _seciliUlke == "Türkiye" ? _turkiyeSehirleri : _almanyaEyaletleri;
-    var siraliSehirler = aktifListe.keys.toList()..sort();
+    List<String> siraliSehirler = KureselHaritaSistemi.tumSehirleriGetir(_seciliUlke);
 
     return Container(
       padding: const EdgeInsets.all(24),
@@ -77,7 +57,7 @@ class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
             child: Divider(color: Colors.white12, thickness: 1.5),
           ),
 
-          // 1. ÜLKE SEÇİM SİBER BUTONLARI
+          // 1. ÜLKE SEÇİM SİBER BUTONLARI (Dinamik Kaydırılabilir Liste)
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
@@ -86,11 +66,14 @@ class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
                 border: Border.all(color: Colors.white.withOpacity(0.05)),
                 boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.8), blurRadius: 8)]
             ),
-            child: Row(
-              children: [
-                _buildUlkeToggle("Türkiye", Icons.star_border),
-                _buildUlkeToggle("Almanya", Icons.euro_symbol),
-              ],
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              child: Row(
+                children: KureselHaritaSistemi.ulkeleriGetir().map((ulke) {
+                  return _buildUlkeToggle(ulke, ulke == "Türkiye" ? Icons.star_border : Icons.public);
+                }).toList(),
+              ),
             ),
           ),
           const SizedBox(height: 24),
@@ -128,7 +111,8 @@ class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
               onChanged: (yeniYer) {
                 setState(() { _seciliYer = yeniYer; });
                 if (yeniYer != null) {
-                  widget.onLokasyonSecildi(_seciliUlke, yeniYer, aktifListe[yeniYer]!);
+                  String otonomBolge = KureselHaritaSistemi.hangiBolgede(_seciliUlke, yeniYer);
+                  widget.onLokasyonSecildi(_seciliUlke, yeniYer, otonomBolge);
                 }
               },
             ),
@@ -153,7 +137,7 @@ class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        "BAĞLI DİSTRİBÜTÖRLÜK: ${aktifListe[_seciliYer]?.toUpperCase()}",
+                        "BAĞLI DİSTRİBÜTÖRLÜK: ${KureselHaritaSistemi.hangiBolgede(_seciliUlke, _seciliYer!).toUpperCase()}",
                         style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
                       ),
                     ),
@@ -168,8 +152,7 @@ class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
 
   Widget _buildUlkeToggle(String ulkeAdi, IconData icon) {
     bool isSelected = _seciliUlke == ulkeAdi;
-    return Expanded(
-      child: GestureDetector(
+    return GestureDetector(
         onTap: () {
           if (!isSelected) {
             setState(() {
@@ -180,7 +163,8 @@ class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          margin: const EdgeInsets.only(right: 8),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           decoration: BoxDecoration(
             gradient: isSelected ? const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Color(0xFF1E2026), Color(0xFF0F1014)]) : null,
             color: isSelected ? null : Colors.transparent,

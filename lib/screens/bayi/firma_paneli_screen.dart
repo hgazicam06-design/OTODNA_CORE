@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 // 🚀 KARARGAH ZIRHLARI VE TERMİNALLERE BAĞLANTI
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
+import '../core/siber_yetki_kalkani.dart';
 import '../screens/urun_ekleme_formu.dart';
 
 // Kendi dosyalarına göre burayı yönetebilirsin
@@ -272,8 +273,12 @@ class _FirmaPaneliScreenState extends State<FirmaPaneliScreen> with SingleTicker
                     }),
                     const SizedBox(height: 16),
 
-                    // Yeni İlan Ekleme Butonu (Menüyü Açar)
-                    _buildGeniIslemButonu("Yeni İlan / Ürün Ekle", "Araç, OEM Parça veya Aksesuar ekleyin.", Icons.add_circle_outline, Colors.white, SiberTema.matGrey, () => _ilanEklemeMenusu(_currentUser!.uid, firmaAdi)),
+                    // Yeni İlan Ekleme Butonu (Menüyü Açar) - KALKANLA KORUNUYOR
+                    SiberYetkiKalkani(
+                      islemTuru: SiberYetki.ilanVer,
+                      isButtonMode: true,
+                      child: _buildGeniIslemButonu("Yeni İlan / Ürün Ekle", "Araç, OEM Parça veya Aksesuar ekleyin.", Icons.add_circle_outline, Colors.white, SiberTema.matGrey, () => _ilanEklemeMenusu(_currentUser!.uid, firmaAdi)),
+                    ),
                     const SizedBox(height: 16),
 
                     // B2B ve Ekspertiz (Grid)

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'arac_kayit_screen.dart';
 import 'siber_goz_tarayici_screen.dart';
 import 'ev_batarya_muhur_terminali.dart';
+import 'siber_arac_devral_screen.dart';
 
 class AracEkleHubScreen extends StatelessWidget {
   const AracEkleHubScreen({super.key});
@@ -122,17 +123,26 @@ class AracEkleHubScreen extends StatelessWidget {
                         const SizedBox(height: 32),
 
                         // =================================================================
-                        // ARAÇ KAYIT BÖLÜMÜ
+                        // ARAÇ KAYIT VE MÜLKİYET BÖLÜMÜ
                         // =================================================================
-                        _buildKategoriBaslik("YENİ KAYIT & SİCİL İŞLEMLERİ"),
+                        _buildKategoriBaslik("KAYIT & DEVRALMA İŞLEMLERİ"),
                         const SizedBox(height: 16),
                         _buildTeknolojiIslemKarti(
                           context: context,
-                          baslik: "Araç Sicili / İlan Oluştur",
+                          baslik: "Sıfır Araç / Sicil Oluştur",
                           altBaslik: "Sisteme yeni bir aracın genetiğini işleyin.",
                           ikon: Icons.add_to_photos_outlined,
                           vurguRengi: primaryCyan,
                           hedefEkran: const AracKayitScreen(),
+                        ),
+                        const SizedBox(height: 12),
+                        _buildTeknolojiIslemKarti(
+                          context: context,
+                          baslik: "İkinci El Araç Devral",
+                          altBaslik: "Eski sahibinden alınan Kuantum Kod ile aracı üzerinize alın.",
+                          ikon: Icons.handshake_outlined,
+                          vurguRengi: const Color(0xFFF59E0B), // Altın Sarısı / Amber
+                          hedefEkran: const SiberAracDevralScreen(),
                         ),
 
                         const SizedBox(height: 32),

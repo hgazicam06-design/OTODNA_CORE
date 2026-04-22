@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../bayi/siber_servis_kabul_paneli.dart';
 
 class UstaPaneliScreen extends StatefulWidget {
   const UstaPaneliScreen({super.key});
@@ -256,6 +257,40 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // KOZMİK ODA BUTONU
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const SiberServisKabulPaneli()));
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF00FFC2).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: const Color(0xFF00FFC2).withOpacity(0.5)),
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.radar, color: Color(0xFF00FFC2), size: 28),
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("KOZMİK ODA İSTİHBARATI", style: TextStyle(color: Color(0xFF00FFC2), fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                            SizedBox(height: 4),
+                            Text("Araçların kronik sorunlarını ve fabrika verilerini anında tarayın.", style: TextStyle(color: Colors.white54, fontSize: 10)),
+                          ],
+                        ),
+                      ),
+                      Icon(Icons.arrow_forward_ios, color: Color(0xFF00FFC2), size: 16)
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+
               const Text("SİBER HUB SORGULAMA", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
               const SizedBox(height: 12),
               Row(

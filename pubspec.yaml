@@ -36,6 +36,7 @@ dependencies:
   geolocator: ^13.0.0
   url_launcher: ^6.3.1
   permission_handler: ^11.3.1
+  connectivity_plus: ^6.0.3
   http: ^1.2.2
 
   # 🎙️ SESLİ KOMUT VE ERİŞİLEBİLİRLİK
@@ -45,7 +46,7 @@ dependencies:
   # 📂 SİBER MÜHÜRLÜ RAPORLAMA (PDF & PAYLAŞIM)
   pdf: ^3.11.1
   open_file: ^3.3.2
-  share_plus: ^10.1.2
+  share_plus: ^12.0.2
   file_picker: ^8.1.2
   path: ^1.9.0
 
@@ -55,6 +56,8 @@ dependencies:
   audioplayers: ^6.1.0
   google_fonts: ^6.2.1
   go_router: ^17.2.2
+  path_provider: ^2.1.5
+  seo: ^0.0.10
 
 dev_dependencies:
   flutter_test:

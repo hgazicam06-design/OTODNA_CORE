@@ -9,12 +9,13 @@ import 'siber_tema.dart';
 /// 🛡️ KUANTUM YETKİ VE KISITLAMA MATRİSİ
 /// Hangi eylemlerin kilitlenebilir olduğunu belirler.
 enum SiberYetki {
-  aracEkle,      // 🟢 Her zaman serbest (Aracını eklesin)
-  alisverisYap,  // 🟢 Her zaman serbest (Karargaha para kazandırsın)
-  randevuAl,     // 🔴 Kara listedeyse YASAK!
+  aracEkle,      // 🟢 Her zaman serbest (Aracını eklesin, Garajı kullansın)
+  alisverisYap,  // 🟢 Her zaman serbest (Teklif istesin, parça alsın)
+  randevuAl,     // 🟢 Her zaman serbest (Ama usta adamın kısıtlı olduğunu görecek)
   yorumYap,      // 🔴 Kara listedeyse YASAK!
-  ilanVer,       // 🔴 Kara listedeyse YASAK! (Otogaleri gibi araç satamaz)
-  vitrinAc       // 🔴 Kara listedeyse YASAK!
+  forumKatil,    // 🔴 Kara listedeyse YASAK! (Sohbete/Foruma giremez)
+  ilanVer,       // 🔴 Kara listedeyse YASAK! (Satılık Araç veya Parça ekleyemez)
+  vitrinAc       // 🔴 Kara listedeyse YASAK! (Bayi paneli kullanamaz)
 }
 
 /// 🛡️ HAYALET MODU (GHOST MODE) KALKANI
@@ -45,8 +46,8 @@ class SiberYetkiKalkani extends ConsumerWidget {
     // 3. Karargah Kararı: Bu işlem kısıtlı bir kullanıcıya yasak mı?
     bool islemYasakliMi = false;
     if (isKisitli) {
-      if (islemTuru == SiberYetki.randevuAl ||
-          islemTuru == SiberYetki.yorumYap ||
+      if (islemTuru == SiberYetki.yorumYap ||
+          islemTuru == SiberYetki.forumKatil ||
           islemTuru == SiberYetki.ilanVer ||
           islemTuru == SiberYetki.vitrinAc) {
         islemYasakliMi = true; // Sesi kesildi, kilit vuruldu!

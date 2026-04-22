@@ -1,90 +1,130 @@
-// lib/services/eco_system_gate.dart
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:developer' as developer;
+import 'package:firebase_auth/firebase_auth.dart';
+import '../screens/home/home_screen.dart';
+import '../screens/home/usta_paneli.dart';
+import '../bayi/distributor_terminali.dart';
+import '../screens/super_admin_screen.dart';
+import '../core/siber_tema.dart';
 
-/// 🛡️ OTODNA TİCARET VE EKOSİSTEM KAPISI
-/// Bu motor, parça önerilerini ve ilan yönetimini Mutlak Karargah Kurallarıyla yönetir.
-class OtoDnaEcoSystem {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+/// 🦅 OTODNA EKO-SİSTEM GEÇİDİ (Ecosystem Gate)
+/// Kullanıcı giriş yaptığında Firestore'dan yetki seviyesine bakar 
+/// ve Kuantum Yönlendirmesini (Router) gerçekleştirir.
+class EcoSystemGate extends StatefulWidget {
+  const EcoSystemGate({super.key});
 
-  // ⚙️ TİCARET MOTORU: İSTİSNASIZ %12 MUTLAK KARARGAH KESİNTİSİ
-  Future<void> parcaOner({
-    required String plakaID,
-    required String sorunluParca,
-    required double parcaSatisFiyati,
-    required String saticiBayiAdi,
-  }) async {
+  @override
+  State<EcoSystemGate> createState() => _EcoSystemGateState();
+}
+
+class _EcoSystemGateState extends State<EcoSystemGate> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _yetkiDogrulaVeYonlendir();
+  }
+
+  Future<void> _yetkiDogrulaVeYonlendir() async {
+    User? user = _auth.currentUser;
+    
+    // Eğer kullanıcı yoksa (Olamaz ama güvenlik kalkanı)
+    if (user == null) {
+      if (mounted) Navigator.pushReplacementNamed(context, '/login');
+      return;
+    }
+
     try {
-      // 💰 Finansal Algoritma: İSTİSNASIZ %10 Kâr + %2 Vergi = %12 Karargah Payı
-      double karargahPayi = parcaSatisFiyati * 0.12;
-      double bayiHakedis = parcaSatisFiyati - karargahPayi;
+      // SİBER İSTİHBARAT: Kullanıcı DNA'sını (Profilini) Getir
+      DocumentSnapshot userDoc = await _db.collection('users').doc(user.uid).get();
+      
+      String yetki = 'kullanici'; // Varsayılan: Standart Araç Sahibi
+      
+      if (userDoc.exists) {
+        final data = userDoc.data() as Map<String, dynamic>?;
+        yetki = data?['yetki'] ?? 'kullanici';
+      } else {
+        // Yeni kayıt olmuş kullanıcılar için varsayılan profili veritabanına mühürle
+        await _db.collection('users').doc(user.uid).set({
+          'email': user.email,
+          'yetki': 'kullanici',
+          'kayit_tarihi': FieldValue.serverTimestamp(),
+          'siber_genetik_skor': 100, // Başlangıç skoru
+        });
+      }
 
-      // 🚀 FİREBASE'E GERÇEK KAYIT (WriteBatch Mührü)
-      WriteBatch batch = _firestore.batch();
+      if (!mounted) return;
 
-      DocumentReference teklifRef = _firestore.collection('parca_teklifleri').doc();
-      batch.set(teklifRef, {
-        'plaka_id': plakaID,
-        'parca_adi': sorunluParca,
-        'fiyat': parcaSatisFiyati,
-        'sunan_bayi': saticiBayiAdi, // 🔥 ŞEFFAFLIK KURALI: Herkes kendi adıyla çıkar!
-        'karargah_payi': karargahPayi,
-        'bayi_hakedis': bayiHakedis,
-        'tarih': FieldValue.serverTimestamp(),
-        'durum': 'BEKLEMEDE',
-      });
-
-      // 🕵️‍♂️ Kara Kutuya Log Mühürle
-      DocumentReference logRef = _firestore.collection('sistem_loglari').doc();
-      batch.set(logRef, {
-        'islem_turu': 'PARCA_TEKLIFI',
-        'islem_detayi': '$plakaID plakalı araca $saticiBayiAdi tarafından $sorunluParca teklifi verildi. Karargah Payı: ₺$karargahPayi',
-        'tarih': FieldValue.serverTimestamp(),
-      });
-
-      await batch.commit();
-      developer.log("SİBER TİCARET: Parça teklifi, %12 kesinti ve kendi adıyla ilan kuralıyla atomik olarak mühürlendi.");
+      // 🚪 KUANTUM GEÇİTLERİ
+      switch (yetki) {
+        case 'usta':
+        case 'bayi':
+          // Ustalara ve Bayilere Özel Kokpit
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const UstaPaneli()));
+          break;
+        case 'distributor':
+        case 'toptanci':
+          // V.I.P B2B Terminali
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const DistributorTerminali()));
+          break;
+        case 'admin':
+          // Karargah Komutanı
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const SuperAdminScreen()));
+          break;
+        case 'kullanici':
+        default:
+          // Standart Araç Sahibi Ana Ekranı
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+          break;
+      }
     } catch (e) {
-      developer.log("TİCARİ İHLAL: Parça önerilemedi -> $e");
-      await _firestore.collection('sistem_loglari').add({
-        'islem_turu': 'HATA',
-        'islem_detayi': 'PARÇA ÖNERİ HATASI: $plakaID - $e',
-        'tarih': FieldValue.serverTimestamp(),
-      });
+      debugPrint("SİBER HATA: Eko-Sistem Geçidi Çöktü! Hata: $e");
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ağ Hatası: Karargaha ulaşılamıyor.", style: TextStyle(color: Colors.black)), backgroundColor: SiberTema.kanKirmizi));
+        // Güvenli Limana Dön
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+      }
     }
   }
 
-  // 2. DİJİTAL REFERANS PROTOKOLÜ (OtoDNA Mührü)
-  Future<void> ilanaKoy(String plakaID) async {
-    try {
-      DocumentSnapshot aracDoc = await _firestore.collection('araclar').doc(plakaID).get();
-
-      if (aracDoc.exists) {
-        var data = aracDoc.data() as Map<String, dynamic>;
-        int dnaSkoru = data['dna_skoru'] ?? 0;
-
-        // 🔥 Skor 80 altındaysa ilan pasif kalır, üstündeyse Mühürlenir!
-        WriteBatch batch = _firestore.batch();
-
-        batch.update(_firestore.collection('araclar').doc(plakaID), {
-          'otodna_onayli': dnaSkoru >= 80,
-          'ilan_durumu': 'Yayında',
-          'son_muhur_tarihi': FieldValue.serverTimestamp(),
-        });
-
-        // Log mühürleme
-        DocumentReference logRef = _firestore.collection('sistem_loglari').doc();
-        batch.set(logRef, {
-          'islem_turu': 'ILAN_YAYINLAMA',
-          'islem_detayi': '$plakaID plakalı araç ilana çıktı. DNA Onayı: ${dnaSkoru >= 80}',
-          'tarih': FieldValue.serverTimestamp(),
-        });
-
-        await batch.commit();
-        developer.log("SİBER MÜHÜR: Araç ilanı ve DNA doğrulaması mühürlendi.");
-      }
-    } catch (e) {
-      developer.log("İLAN İHLALİ: Araç ilana koyulamadı -> $e");
-    }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: SiberTema.kuantumCyan.withOpacity(0.1),
+                shape: BoxShape.circle,
+                border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 2),
+                boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.2), blurRadius: 40)],
+              ),
+              child: const Icon(Icons.fingerprint, color: SiberTema.kuantumCyan, size: 48),
+            ),
+            const SizedBox(height: 32),
+            const Text(
+              "E K O - S İ S T E M   G E Ç İ D İ",
+              style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 4, fontFamily: 'Avenir'),
+            ),
+            const SizedBox(height: 16),
+            const SizedBox(
+              width: 150,
+              child: LinearProgressIndicator(color: SiberTema.kuantumCyan, backgroundColor: Colors.white10),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              "Kimlik Doğrulanıyor ve Kuantum Ağına Bağlanılıyor...",
+              style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 1, fontFamily: 'Avenir'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

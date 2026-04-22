@@ -1,6 +1,9 @@
 // lib/screens/arac_detay_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../services/arac_devir_servisi.dart';
+import '../../commerce/eco_system_gate.dart';
 
 // 🚀 KARARGAH ZIRHLARI
 import '../core/siber_tema.dart';
@@ -214,6 +217,48 @@ class AracDetayScreen extends StatelessWidget {
                       children: donanimlar.map((d) => _DonanimChip(text: d.toString())).toList(),
                     ),
                     const SizedBox(height: 40),
+
+                    // =================================================================
+                    // 7. ARAÇ MÜLKİYET DEVRİ VE TİCARET
+                    // =================================================================
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                            height: 60,
+                            child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: SiberTema.kanKirmizi.withOpacity(0.1),
+                                foregroundColor: SiberTema.kanKirmizi,
+                                side: const BorderSide(color: SiberTema.kanKirmizi, width: 2),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                              ),
+                              icon: const Icon(Icons.send_to_mobile, size: 18),
+                              label: const Text("MÜLKİYETİ DEVRET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.0, fontFamily: 'Avenir', fontSize: 11)),
+                              onPressed: () => _devirKodunuUretVeGoster(context, saseNo),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: SizedBox(
+                            height: 60,
+                            child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: SiberTema.kuantumCyan.withOpacity(0.1),
+                                foregroundColor: SiberTema.kuantumCyan,
+                                side: const BorderSide(color: SiberTema.kuantumCyan, width: 2),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                              ),
+                              icon: const Icon(Icons.campaign_outlined, size: 18),
+                              label: const Text("İLAN YAYINLA", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.0, fontFamily: 'Avenir', fontSize: 11)),
+                              onPressed: () => _siberIlanYayinla(context, saseNo, dnaSkoru),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 40),
                   ],
                 ),
               ),
@@ -266,6 +311,95 @@ class AracDetayScreen extends StatelessWidget {
         Text(deger.toUpperCase(), style: TextStyle(color: degerRengi, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 0.5)),
       ],
     );
+  }
+
+  // ── 🚀 MÜLKİYET DEVRİ MOTORU ──
+  Future<void> _devirKodunuUretVeGoster(BuildContext context, String saseNo) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)),
+    );
+
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) throw Exception("SİBER HATA: Oturum bulunamadı.");
+
+      String kod = await AracDevirServisi().devirKoduUret(saseNo, user.uid);
+      
+      if (!context.mounted) return;
+      Navigator.pop(context); // Yüklemeyi kapat
+
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: SiberTema.oledBlack,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 2)),
+          title: const Row(
+            children: [
+              Icon(Icons.vpn_key_outlined, color: SiberTema.kuantumCyan),
+              SizedBox(width: 8),
+              Text("DEVİR MÜHRÜ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1)),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("Alıcı vatandaşa bu Kuantum Kodunu verin. Yeni plakayı girerek aracı üzerine alabilir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5)),
+              const SizedBox(height: 24),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.kuantumCyan)),
+                child: Text(kod, style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: 5, fontFamily: 'monospace')),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("ANLADIM, KAPAT", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold)),
+            )
+          ],
+        ),
+      );
+
+    } catch (e) {
+      if (!context.mounted) return;
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: SiberTema.kanKirmizi, content: Text(e.toString(), style: const TextStyle(fontWeight: FontWeight.bold))));
+    }
+  }
+  // ── 🚀 TİCARET MOTORU: İLAN YAYINLAMA ──
+  Future<void> _siberIlanYayinla(BuildContext context, String saseNo, int skor) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)),
+    );
+
+    try {
+      await OtoDnaEcoSystem().ilanaKoy(saseNo); // Şaseyi gönderiyoruz (veya PlakaID)
+
+      if (!context.mounted) return;
+      Navigator.pop(context); // Yüklemeyi kapat
+
+      bool onayli = skor >= 80;
+      String mesaj = onayli 
+          ? "Aracınız OtoDNA Onaylı (Skor: $skor) olarak prestijli bir şekilde ilana çıkmıştır." 
+          : "Şeffaflık İlkesi Gereği: Aracınız OtoDNA onayı olmadan (Skor: $skor) şeffaf bir şekilde ilana çıkmıştır.";
+      Color renk = onayli ? SiberTema.kuantumCyan : SiberTema.altinSari;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+          backgroundColor: renk.withOpacity(0.8),
+        ),
+      );
+    } catch (e) {
+      if (!context.mounted) return;
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ağ Hatası! İlan yayınlanamadı.", style: TextStyle(fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kanKirmizi));
+    }
   }
 }
 

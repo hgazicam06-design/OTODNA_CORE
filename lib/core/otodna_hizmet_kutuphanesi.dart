@@ -7,6 +7,20 @@ class SiberHizmetKutuphanesi {
 
   // ── 🧠 KARARGAH MASTER LİSTESİ (DEĞİŞTİRİLEMEZ ANA VERİ) ──
   static const Map<String, List<String>> masterListe = {
+    "Sanayi İşleme & İmalat": [
+      "Torna & Freze (CNC)",
+      "Motor Kapak Taşlama",
+      "Özel Parça Üretimi",
+      "Krank Taşlama & Dengeleme",
+      "Piston & Gömlek Çakma"
+    ],
+    "Yedek Parça & Tedarik": [
+      "Sıfır Orijinal / Yan Sanayi Parça",
+      "Çıkma Parça & Geri Dönüşüm",
+      "Oto Hurda & Parçalanmış Araç",
+      "Yağ & Filtre & Sarf Malzeme",
+      "Madeni Yağ Distribütörü"
+    ],
     "Mekanik & Motor": [
       "Genel Mekanik Bakım",
       "Motor Revizyon (Rektefiye)",
@@ -14,18 +28,20 @@ class SiberHizmetKutuphanesi {
       "Turbo Revizyon & Onarım",
       "Pompa & Enjektör Servisi",
       "Radyatör & Isı Sistemleri",
-      "Torna & Kapak Taşlama"
+      "Egzoz & Emisyon & DPF Temizliği"
     ],
     "Şase & Alt Takım": [
       "Şase Düzeltme & Doğrultma",
-      "Makas Tamiri & Değişimi",
+      "Makasçı & Ağır Vasıta Süspansiyon",
       "Rot-Balans & Jant Düzeltme",
-      "Amortisör & Süspansiyon Sistemleri",
-      "Diferansiyel Onarım"
+      "Amortisör & Helezon Tamiri",
+      "Diferansiyel Onarım",
+      "Lastik & Jant Satış / Tamir"
     ],
     "Elektrik & Yazılım": [
       "Oto Elektrik Genel",
       "Beyin (ECU) Tamiri & Yazılım",
+      "Chip Tuning & Performans",
       "Akü & Marş & Şarj Sistemleri",
       "Dijital Gösterge & Multimedya",
       "Kilit & Alarm & Sunroof Tamiri",
@@ -40,21 +56,21 @@ class SiberHizmetKutuphanesi {
       "Pasta Cila & Seramik Kaplama",
       "Oto Kuaför & Detaylı Temizlik"
     ],
-    "Lojistik & Ticari": [
+    "Özel Araçlar & Lojistik": [
       "Kurtarıcı & 7/24 Yol Yardım",
       "Rent a Car (Araç Kiralama)",
-      "Sürücü Kursu & Eğitim",
       "Ağır Vasıta (Kamyon/Tır) Servisi",
-      "İş Makinesi Onarım & Hidrolik"
+      "Motosiklet Tamir & Bakım",
+      "İş Makinesi Onarım & Hidrolik",
+      "Ekspertiz & Oto Test Merkezi"
     ],
-    "Özel Sistemler & Yeni Nesil": [
-      "Ekspertiz & Oto Test Merkezi",
-      "Elektrikli Araç (EV) & Hibrit Servisi",
+    "Yeni Nesil (Kuantum) Sistemler": [
+      "Elektrikli Araç (EV) Servisi",
       "EV Batarya Onarım & Değişim", // Yeni Nesil Karargah Hedefi
-      "LPG & Doğalgaz Dönüşüm",
-      "Egzoz & Emisyon & DPF Temizliği",
-      "Klima & İklimlendirme",
-      "Modifiye, Off-Road & Aksesuar Montaj"
+      "Hibrit (Hybrid) Sistem Onarımı",
+      "LPG & Doğalgaz Dönüşüm Merkezi",
+      "Klima & İklimlendirme Uzmanı",
+      "Off-Road & 4x4 Modifiye"
     ]
   };
 

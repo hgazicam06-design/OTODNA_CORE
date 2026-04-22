@@ -66,9 +66,13 @@ class AuthManager {
         // Kuantum Ağında yetki kontrolü
         DocumentSnapshot userDoc = await _db.collection('kullanicilar').doc(kullaniciId).get();
 
-        if (userDoc.exists && userDoc.get('rol') == 'ADMIN') {
+        if (userDoc.exists) {
+          var data = userDoc.data() as Map<String, dynamic>;
+          String rol = data['rol'] ?? 'USER';
 
-          if (!context.mounted) return;
+          if (rol == 'ADMIN' || rol == 'BAŞKAN') {
+
+            if (!context.mounted) return;
 
           // Siber Karargah Giriş Efekti
           ScaffoldMessenger.of(context).showSnackBar(

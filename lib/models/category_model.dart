@@ -5,9 +5,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 /// Bu model, servislerin kategorize edilmesini ve arayüzde dinamik renk/ikon ile sunulmasını sağlar.
 class ServiceCategory {
   final String? id; // Firebase Document ID
-  final String title;
+  final String title; // Örn: "Ağır Vasıta Şanzıman", "Elektrik & Elektronik"
   final String iconName; // Veritabanında "build", "electric_bolt" vb. tutulur
-  final String hexColor; // Veritabanında "#00FFCC" (Kuantum Turkuazı) vb. tutulur
+  final String hexColor; // Veritabanında "#00FFCC" vb. tutulur
+  
+  // 🎯 UZMANLIK VE FİLTRASYON (YENİ SİBER EKLENTİLER)
+  final List<String> uyumluAracTipleri; // Örn: ['Otomobil', 'SUV'], ['Kamyon', 'Tır']
+  final String hizmetTuru; // Örn: 'Mekanik', 'Kaporta', 'Yazılım', 'Oto Kuaför'
+
   final bool aktifMi;    // Admin panelinden pasifize edilebilirlik
   final int siralama;    // Ekranda gösterim önceliği
 
@@ -16,6 +21,8 @@ class ServiceCategory {
     required this.title,
     required this.iconName,
     required this.hexColor,
+    this.uyumluAracTipleri = const [],
+    this.hizmetTuru = 'Genel',
     this.aktifMi = true,
     this.siralama = 0,
   });
@@ -26,6 +33,8 @@ class ServiceCategory {
       'title': title,
       'icon_name': iconName,
       'hex_color': hexColor,
+      'uyumlu_arac_tipleri': uyumluAracTipleri,
+      'hizmet_turu': hizmetTuru,
       'aktif_mi': aktifMi,
       'siralama': siralama,
       'olusturulma_tarihi': FieldValue.serverTimestamp(),
@@ -40,7 +49,9 @@ class ServiceCategory {
       id: doc.id,
       title: data['title'] ?? 'BİLİNMEYEN BRANŞ',
       iconName: data['icon_name'] ?? 'category',
-      hexColor: data['hex_color'] ?? '#00FFC2', // Varsayılan Kuantum Turkuazı
+      hexColor: data['hex_color'] ?? '#00FFC2',
+      uyumluAracTipleri: List<String>.from(data['uyumlu_arac_tipleri'] ?? []),
+      hizmetTuru: data['hizmet_turu'] ?? 'Genel',
       aktifMi: data['aktif_mi'] ?? true,
       siralama: (data['siralama'] ?? 99).toInt(),
     );

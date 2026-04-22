@@ -68,8 +68,8 @@ class SiberTakipRadari {
     developer.log("🧬 DNA ANALİZİ: $aracSaseNo şaseli aracın referans puanı hesaplanıyor...");
 
     try {
-      // 🛡️ SİBER DÜZELTME: Karargah standartlarına uyum için 'araclar' koleksiyonu.
-      DocumentReference aracRef = _db.collection('araclar').doc(aracSaseNo);
+      // 🛡️ SİBER DÜZELTME: Karargah standartlarına uyum için 'vehicles' koleksiyonu.
+      DocumentReference aracRef = _db.collection('vehicles').doc(aracSaseNo);
       DocumentReference logRef = _db.collection('sistem_loglari').doc();
 
       // Çakışmaları önleyen ACID Kuantum İşlemi (Transaction)

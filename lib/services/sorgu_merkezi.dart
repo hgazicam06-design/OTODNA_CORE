@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
-// import 'package:otodna/core/api_clients.dart'; // SİBER NOT: Gerçek API bağlandığında burası açılacak
+import 'google_hub_service.dart';
 
 /// 🛡️ KUANTUM DERİN TARAMA VE İSTİHBARAT MERKEZİ (SorguMerkezi)
 /// Şase numarasını alır, önce Karargah (OtoDNA) veritabanını, sonra Küresel (Hub) ağları tarayarak birleştirir.
@@ -41,10 +41,11 @@ class SorguMerkezi {
     try {
       developer.log("SİBER İSTİHBARAT: Dış kaynaklar (Global Hub) taranıyor...");
 
-      // 🚀 MAKET İMHA EDİLDİ: Future.delayed gibi sahte bekletmeler Karargahta yasaktır!
-      // SİBER NOT: Gerçek HubService bağlandığında alttaki satır açılacak ve otonom akış devam edecek.
-      // hubVerisi = await HubService.fetchGlobalData(siberSase);
-
+      // Dış Ağı Çağır!
+      var hubSonuc = await GoogleHubService.fetchGlobalData(siberSase);
+      if (hubSonuc != null) {
+        hubVerisi = hubSonuc;
+      }
     } catch (e) {
       // 🛡️ DIŞ AĞ ÇÖKSE BİLE UYGULAMA ÇÖKMEZ! Dış veri opsiyoneldir, yerel veriyle devam edilir.
       developer.log("AĞ HATASI: Küresel Hub bağlantısı koptu! Sistem yerli veriyle devam ediyor.", error: e);

@@ -8,6 +8,8 @@ import 'dart:developer' as developer;
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
+import '../widgets/premium_rozet_widget.dart';
+
 /// 🛡️ KUANTUM BAYİ YÖNETİM PANELİ (BayiMerkezi)
 /// Bayinin kasasındaki parayı (Sıfır İşçilik Kesintisi ve Dinamik Karargah Payıyla) CANLI hesaplayan gerçek terminal.
 class BayiMerkezi extends StatefulWidget {
@@ -22,6 +24,7 @@ class BayiMerkezi extends StatefulWidget {
 class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStateMixin {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   late TabController _tabController;
+  bool _islemSuruyor = false; // 🔒 DOUBLE SPEND KORUMASI
 
   @override
   void initState() {
@@ -42,6 +45,8 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
 
   // ── 🚀 PARA ÇEKME (HAKEDİŞ TALEBİ) ATOMİK MOTORU ──
   Future<void> _hakedisTalebiOlustur(double cekilebilirBakiye) async {
+    if (_islemSuruyor) return; // 🔒 SPAM ENGELİ
+    
     HapticFeedback.heavyImpact();
 
     if (cekilebilirBakiye <= 0) {
@@ -49,6 +54,7 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
       return;
     }
 
+    setState(() => _islemSuruyor = true);
     developer.log("🚀 FİNANSAL TALEP: $cekilebilirBakiye TL için Karargaha para çekme talebi fırlatıldı.");
 
     try {
@@ -81,6 +87,8 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
     } catch (e) {
       developer.log("AĞ ÇÖKTÜ: Para çekme talebi başarısız!", error: e);
       if (mounted) _siberUyariGoster("AĞ HATASI", "Talep Karargaha iletilemedi.", SiberTema.kanKirmizi);
+    } finally {
+      if (mounted) setState(() => _islemSuruyor = false);
     }
   }
 
@@ -130,12 +138,60 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
             ],
           ),
         ),
-        body: TabBarView(
-          controller: _tabController,
+        body: Column(
           children: [
-            _buildSepetSekmesi(),
-            _buildCanliSiparisSekmesi(),
-            _buildCanliKasaSekmesi(),
+            // 🛡️ SİBER BAYİ ROZETİ (CANLI)
+            StreamBuilder<DocumentSnapshot>(
+              stream: _db.collection('bayiler').doc(widget.bayiId).snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData || !snapshot.data!.exists) return const SizedBox.shrink();
+                var bayi = snapshot.data!.data() as Map<String, dynamic>;
+                String rozet = bayi['rozet'] ?? "Boş";
+                int yildiz = (bayi['yildiz_sayisi'] ?? 2).toInt();
+
+                return Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    border: Border(bottom: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1)),
+                  ),
+                  child: Row(
+                    children: [
+                      PremiumRozet(rozetTipi: rozet, boyut: 28),
+                      const SizedBox(width: 16),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("SİSTEM DURUMU: ${rozet.toUpperCase()}", style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900)),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: List.generate(5, (starIdx) {
+                              return Icon(
+                                starIdx < yildiz ? Icons.star : Icons.star_border,
+                                color: starIdx < yildiz ? SiberTema.altinSari : Colors.white24,
+                                size: 14,
+                              );
+                            }),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
+            
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildSepetSekmesi(),
+                  _buildCanliSiparisSekmesi(),
+                  _buildCanliKasaSekmesi(),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -257,8 +313,8 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
           }
         }
 
-        // ⚖️ YENİ TİCARET DOKTRİNİ: Sadece B2B Parça Satışından Kesinti!
-        double kesintiOrani = (widget.bayiId == "MURAT_PLAZA") ? 0.30 : 0.12;
+        // ⚖️ EVRENSEL TİCARET DOKTRİNİ: Tüm bayiler için B2B Parça Satışından %12 Kesinti!
+        const double kesintiOrani = 0.12;
         double otodnaKesintisi = toplamParcaSatisi * kesintiOrani;
 
         // Net Kasa = (Tüm İşçilik) + (Parça Satışı - Kesinti) + Bekleyenler
@@ -304,7 +360,9 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
               SizedBox(
                 width: double.infinity,
                 height: 60,
-                child: ElevatedButton.icon(
+                child: _islemSuruyor
+                    ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                    : ElevatedButton.icon(
                   icon: const Icon(Icons.account_balance_outlined, color: Colors.black),
                   label: const Text("HAKEDİŞİ BANKAYA AKTAR", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
                   style: SiberTema.kuantumButonStili(),

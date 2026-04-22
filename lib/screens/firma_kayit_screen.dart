@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../core/kuresel_harita_sistemi.dart';
 
 /// 🦅 OTODNA ESNAF KAYIT TERMİNALİ - V5 (ŞEFFAF KİMLİK PROTOKOLÜ)
 /// [2026-03-28] GÜNCELLEME: Murat Plaza imtiyazı silindi. Herkes kendi adıyla mühürlenir.
@@ -23,13 +24,13 @@ class _FirmaKayitScreenState extends State<FirmaKayitScreen> {
   final TextEditingController _vergiNoCtrl = TextEditingController();
   final TextEditingController _yetkiliCtrl = TextEditingController();
 
+  final String _secilenUlke = KureselHaritaSistemi.globalMerkezUlkemiz; // Arka planda Türkiye olarak mühürlenir
   String? _secilenSehir;
+  String? _secilenIlce;
+
   bool _isProcessing = false;
   bool _isUploading = false;
   bool _belgeYuklendi = false;
-
-  // 🚀 GERÇEK VERİTABANI İÇİN ŞEHİR LİSTESİ (81 İL İSKELETİ)
-  final List<String> sehirler = ["ANKARA", "İSTANBUL", "İZMİR", "ANTALYA", "BURSA", "ADANA", "KONYA"];
 
   // 🚀 SİBER BELGE YÜKLEME MOTORU (Firebase Storage Hazırlığı)
   Future<void> _belgeYukle() async {
@@ -56,8 +57,8 @@ class _FirmaKayitScreenState extends State<FirmaKayitScreen> {
   Future<void> _kaydiTamamla() async {
     if (!_formKey.currentState!.validate()) return;
 
-    if (_secilenSehir == null) {
-      _hataGoster("SİBER İHLAL: HİZMET VERİLECEK İL SEÇİLMEDİ!");
+    if (_secilenIlce == null) {
+      _hataGoster("SİBER İHLAL: HİZMET VERİLECEK KONUM (İLÇE) SEÇİLMEDİ!");
       return;
     }
 
@@ -69,24 +70,37 @@ class _FirmaKayitScreenState extends State<FirmaKayitScreen> {
     setState(() => _isProcessing = true);
 
     try {
+      // Arka planda siber istihbarat motoru ile bölgeyi tespit et
+      String otonomBolge = KureselHaritaSistemi.hangiBolgede(_secilenUlke, _secilenSehir!);
+
+      // Konum paketini Karargah standartlarına göre derle
+      Map<String, dynamic> konumPaketi = KureselHaritaSistemi.firebaseKonumPaketi(
+        ulke: _secilenUlke,
+        bolge: otonomBolge,
+        sehir: _secilenSehir!,
+        ilce: _secilenIlce,
+      );
+
       // 🛡️ SİBER MÜHÜR: Doğrudan 'bayiler' koleksiyonuna şeffaf kayıt
-      await FirebaseFirestore.instance.collection('bayiler').add({
+      Map<String, dynamic> bayiData = {
         "dealer_name": _firmaAdiCtrl.text.trim().toUpperCase(),
         "tax_number": _vergiNoCtrl.text.trim(),
         "yetkili": _yetkiliCtrl.text.trim().toUpperCase(),
-        "city": _secilenSehir,
-        "region": "Bölge Belirleniyor", // Koordinat servisinden gelecek
         "rozet": "Bronz",
         "aktif_mi": false, // Karargah onayı bekliyor
         "belgeler_tam_mi": true,
 
         // 💰 MUTLAK GAZİ PROTOKOLÜ: %12 (%10 Kâr + %2 Vergi)
-        // Murat Plaza dahil istisnasız tüm ağ için standart kilit.
         "komisyon_orani": 0.12,
 
         "kayit_tarihi": FieldValue.serverTimestamp(),
         "durum": "ANKARA MERKEZ ONAYI BEKLİYOR",
-      });
+      };
+      
+      // Konum verisini atomik olarak birleştir
+      bayiData.addAll(konumPaketi);
+
+      await FirebaseFirestore.instance.collection('bayiler').add(bayiData);
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -152,7 +166,17 @@ class _FirmaKayitScreenState extends State<FirmaKayitScreen> {
                   _buildSiberTextField(_vergiNoCtrl, "VERGİ NUMARASI / TC KİMLİK", Icons.account_balance_outlined, isNumber: true),
                   const SizedBox(height: 16),
 
-                  _buildSiberDropdown(),
+                  _buildSiberDropdown("ŞEHİR / İL", KureselHaritaSistemi.tumSehirleriGetir(_secilenUlke), _secilenSehir, (val) {
+                    setState(() {
+                      _secilenSehir = val;
+                      _secilenIlce = null;
+                    });
+                  }),
+                  const SizedBox(height: 16),
+                  if (_secilenSehir != null)
+                    _buildSiberDropdown("İLÇE / MERKEZ", KureselHaritaSistemi.ilceleriGetir(_secilenUlke, KureselHaritaSistemi.hangiBolgede(_secilenUlke, _secilenSehir!), _secilenSehir!), _secilenIlce, (val) {
+                      setState(() => _secilenIlce = val);
+                    }),
 
                   const SizedBox(height: 32),
                   _buildBelgeYuklemeKarti(),
@@ -204,22 +228,27 @@ class _FirmaKayitScreenState extends State<FirmaKayitScreen> {
     );
   }
 
-  Widget _buildSiberDropdown() {
+  Widget _buildSiberDropdown(String hint, List<String> items, String? currentValue, Function(String?) onChanged) {
+    // Eğer currentValue items içinde yoksa null yap (Eyalet değiştiğinde şehrin sıfırlanması için güvenlik)
+    if (currentValue != null && !items.contains(currentValue)) {
+      currentValue = null;
+    }
+
     return DropdownButtonFormField<String>(
-      value: _secilenSehir,
+      value: currentValue,
       icon: const Icon(Icons.expand_more, color: primaryCyan),
       dropdownColor: surfaceColor,
       style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
-        hintText: "HİZMET VERİLECEK İL",
+        hintText: hint,
         hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.bold),
         prefixIcon: const Icon(Icons.map_outlined, color: Colors.white38, size: 20),
         filled: true,
         fillColor: surfaceColor,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
       ),
-      items: sehirler.map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
-      onChanged: (val) => setState(() => _secilenSehir = val),
+      items: items.map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
+      onChanged: onChanged,
     );
   }
 

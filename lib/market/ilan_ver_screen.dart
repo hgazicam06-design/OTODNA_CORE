@@ -1,10 +1,11 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/dukkan_model.dart'; // Esnaf modelimizi içeri alıyoruz
+import '../models/dukkan_model.dart';
 import '../../core/siber_tema.dart';
 
 class IlanVerScreen extends StatefulWidget {
-  final Dukkan aktifDukkan; // Giriş yapan firmanın tüm bilgileri (Rozet, VIP durumu vb.)
+  final Dukkan aktifDukkan;
 
   const IlanVerScreen({super.key, required this.aktifDukkan});
 
@@ -13,15 +14,14 @@ class IlanVerScreen extends StatefulWidget {
 }
 
 class _IlanVerScreenState extends State<IlanVerScreen> {
-  // Siber Renk Paleti (SiberTema entegrasyonu)
   static const _neonGreen = SiberTema.kuantumCyan;
-  static const _cyberBlack = SiberTema.oledBlack;
-  static const _cyberCard = Color(0xFF1E1E2E);
+  static const _siberGold = SiberTema.siberGold;
 
-  // Form Kontrolcüleri
   final TextEditingController _adController = TextEditingController();
   final TextEditingController _fiyatController = TextEditingController();
   final TextEditingController _aciklamaController = TextEditingController();
+
+  bool _isProcessing = false;
 
   @override
   void dispose() {
@@ -33,233 +33,315 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // 🧠 KUANTUM LİMİT KONTROLÜ (dukkan_model.dart'tan geliyor)
     bool limitDolduMu = !widget.aktifDukkan.yeniIlanEklenebilirMi;
     bool vipMi = widget.aktifDukkan.isVip;
 
     return Scaffold(
-      backgroundColor: _cyberBlack,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        elevation: 0,
-        title: const Row(
-          children: [
-            Icon(Icons.add_shopping_cart, color: _neonGreen),
-            SizedBox(width: 10),
-            Text('Siber Oto Market - İlan Ver',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Avenir')),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 👤 KULLANICI / FİRMA BİLGİ BANDI
-            _buildFirmaBilgiBandi(),
-            const SizedBox(height: 20),
-
-            // 🌟 VIP TOPLU YÜKLEME BUTONU
-            if (vipMi) ...[
-              _buildVipTopluYuklemeAlani(),
-              const SizedBox(height: 20),
-              const Center(child: Text("--- VEYA TEK TEK EKLE ---",
-                  style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
-              const SizedBox(height: 20),
-            ],
-
-            // 🚨 LİMİT KONTROLÜ VE FORM
-            if (limitDolduMu)
-              _buildLimitDoluUyarisi()
-            else
-              _buildStandartIlanFormu(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // ─── 👤 FİRMA ROZET VE LİMİT GÖSTERGESİ ───
-  Widget _buildFirmaBilgiBandi() {
-    int maxLimit = widget.aktifDukkan.maxIlanSiniri;
-    String limitMetni = maxLimit == -1 ? "Sınırsız (VIP)" : "${widget.aktifDukkan.kullanilanIlanSayisi} / $maxLimit";
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: _cyberCard,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: widget.aktifDukkan.isVip ? Colors.amber : Colors.white12),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      backgroundColor: Colors.black,
+      body: Stack(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(widget.aktifDukkan.ad,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Avenir')),
-              const SizedBox(height: 4),
-              Row(
-                children: [
-                  Icon(widget.aktifDukkan.isVip ? Icons.stars : Icons.storefront,
-                      color: widget.aktifDukkan.isVip ? Colors.amber : Colors.grey, size: 16),
-                  const SizedBox(width: 4),
-                  Text("Rozet: ${widget.aktifDukkan.rozet}",
-                      style: const TextStyle(color: Colors.grey, fontSize: 12, fontFamily: 'Avenir')),
-                ],
-              ),
-            ],
+          // 1. KUANTUM ARKA PLAN
+          Positioned.fill(
+            child: Container(decoration: SiberTema.siberArkaPlan),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              const Text("Kullanım", style: TextStyle(color: Colors.grey, fontSize: 10, fontFamily: 'Avenir')),
-              Text(limitMetni,
-                  style: const TextStyle(color: _neonGreen, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Avenir')),
-            ],
-          )
+          
+          // 2. ANA İSKELET
+          SafeArea(
+            child: Column(
+              children: [
+                _buildSiberAppBar(),
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildFirmaBilgiBandi(maxLimit: widget.aktifDukkan.maxIlanSiniri),
+                        const SizedBox(height: 24),
+                        
+                        if (vipMi) ...[
+                          _buildVipTopluYuklemeAlani(),
+                          const SizedBox(height: 24),
+                        ],
+                        
+                        if (limitDolduMu)
+                          _buildLimitDoluUyarisi()
+                        else
+                          _buildStandartIlanFormu(),
+                          
+                        const SizedBox(height: 40),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  // ─── 🌟 VIP TOPLU YÜKLEME MOTORU ───
+  // ─── ŞIK CAM APP BAR ───
+  Widget _buildSiberAppBar() {
+    return ClipRRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.4),
+            border: const Border(bottom: BorderSide(color: Colors.white10)),
+          ),
+          child: Row(
+            children: [
+              GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: const Icon(Icons.arrow_back_ios_new, color: _neonGreen, size: 20),
+              ),
+              const SizedBox(width: 16),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(color: _neonGreen.withOpacity(0.1), shape: BoxShape.circle),
+                child: const Icon(Icons.add_shopping_cart, color: _neonGreen, size: 18),
+              ),
+              const SizedBox(width: 12),
+              const Text("Siber Oto Market", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ─── ROZET & LİMİT EKRANI (GLASSMORPHISM) ───
+  Widget _buildFirmaBilgiBandi({required int maxLimit}) {
+    String limitMetni = maxLimit == -1 ? "Sınırsız (VIP)" : "${widget.aktifDukkan.kullanilanIlanSayisi} / $maxLimit";
+    bool isVip = widget.aktifDukkan.isVip;
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: isVip ? _siberGold.withOpacity(0.5) : Colors.white10),
+            boxShadow: isVip ? [BoxShadow(color: _siberGold.withOpacity(0.1), blurRadius: 15)] : [],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.aktifDukkan.ad.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 0.5, fontFamily: 'Avenir')),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      Icon(isVip ? Icons.stars : Icons.storefront, color: isVip ? _siberGold : Colors.white54, size: 14),
+                      const SizedBox(width: 6),
+                      Text("Ağ Rozeti: ${widget.aktifDukkan.rozet}", style: TextStyle(color: isVip ? _siberGold : Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                    ],
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const Text("Aktif İlan", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                  Text(limitMetni, style: const TextStyle(color: _neonGreen, fontWeight: FontWeight.w900, fontSize: 16, fontFamily: 'Avenir')),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ─── VIP TOPLU YÜKLEME (ELİT GÖRÜNÜM) ───
   Widget _buildVipTopluYuklemeAlani() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [Colors.amber.withOpacity(0.1), Colors.black]),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.amber.withOpacity(0.5)),
+        color: Colors.black.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: _siberGold.withOpacity(0.3)),
+        boxShadow: [BoxShadow(color: _siberGold.withOpacity(0.05), blurRadius: 20, spreadRadius: 2)],
       ),
       child: Column(
         children: [
-          const Icon(Icons.auto_awesome, color: Colors.amber, size: 32),
-          const SizedBox(height: 10),
-          const Text("VIP TOPLU İLAN YÜKLEME",
-              style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Avenir')),
-          const SizedBox(height: 5),
-          const Text("PDF veya Excel listenizi seçin, Kuantum AI saniyeler içinde binlerce ilanınızı vitrine dizsin.",
-              textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir')),
-          const SizedBox(height: 15),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.amber,
-              foregroundColor: Colors.black,
-              minimumSize: const Size(double.infinity, 45),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(color: _siberGold.withOpacity(0.1), shape: BoxShape.circle),
+            child: const Icon(Icons.auto_awesome, color: _siberGold, size: 28),
+          ),
+          const SizedBox(height: 16),
+          const Text("VIP TOPLU KİTLE YÜKLEME", style: TextStyle(color: _siberGold, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5, fontFamily: 'Avenir')),
+          const SizedBox(height: 8),
+          const Text("Excel / PDF ağını bağlayın. Kuantum AI binlerce ilanı tek tuşla vitrine dizsin.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4, fontFamily: 'Avenir')),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _siberGold.withOpacity(0.1),
+                foregroundColor: _siberGold,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: _siberGold.withOpacity(0.5))),
+                elevation: 0,
+              ),
+              icon: const Icon(Icons.file_upload, size: 18),
+              label: const Text("Katalog Ağına Bağlan", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, fontFamily: 'Avenir')),
+              onPressed: () => _uyariGoster("VIP Kuantum Tarayıcı Başlatılıyor...", isGold: true),
             ),
-            icon: const Icon(Icons.file_upload),
-            label: const Text("Katalog Dosyası Seç (.pdf / .xlsx)", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text("VIP Kuantum Tarayıcı Başlatılıyor..."), backgroundColor: Colors.amber));
-            },
           )
         ],
       ),
     );
   }
 
-  // ─── 🚨 LİMİT DOLU UYARISI ───
+  // ─── LİMİT DOLU (KAN KIRMIZISI UYARI) ───
   Widget _buildLimitDoluUyarisi() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.redAccent.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.redAccent.withOpacity(0.5)),
+        color: Colors.black.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.5)),
+        boxShadow: [BoxShadow(color: SiberTema.kanKirmizi.withOpacity(0.1), blurRadius: 20)],
       ),
       child: Column(
         children: [
-          const Icon(Icons.block, color: Colors.redAccent, size: 40),
-          const SizedBox(height: 10),
-          const Text("İLAN LİMİTİNİZ DOLDU!",
-              style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 18, fontFamily: 'Avenir')),
-          const SizedBox(height: 10),
+          const Icon(Icons.block, color: SiberTema.kanKirmizi, size: 40),
+          const SizedBox(height: 16),
+          const Text("SİBER LİMİT DOLDU", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1, fontFamily: 'Avenir')),
+          const SizedBox(height: 8),
           Text(
-            "Mevcut paketiniz ile en fazla ${widget.aktifDukkan.maxIlanSiniri} ürün sergileyebilirsiniz. Kuantum Ağı'nın devasa müşteri kitlesine daha fazla ürün sunmak için rozetinizi yükseltin.",
+            "Mevcut paketinizle Kuantum Ağına daha fazla ilan basamazsınız. Daha fazla müşteriye ulaşmak için yetki rozetinizi yükseltin.",
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white70, fontSize: 14, fontFamily: 'Avenir'),
+            style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12, height: 1.4, fontFamily: 'Avenir'),
           ),
-          const SizedBox(height: 20),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: _neonGreen,
-              foregroundColor: Colors.black,
-              minimumSize: const Size(double.infinity, 50),
+          const SizedBox(height: 24),
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: SiberTema.kanKirmizi,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              icon: const Icon(Icons.rocket_launch, size: 18),
+              label: const Text("ROZET YÜKSELT (VIP GEÇİŞ)", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
+              onPressed: () => _uyariGoster("Siber Kasaya Bağlanılıyor..."),
             ),
-            icon: const Icon(Icons.rocket_launch),
-            label: const Text("PAKETİ YÜKSELT (GOLD / VIP)",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Avenir')),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text("Siber Kasaya Yönlendiriliyor..."), backgroundColor: _neonGreen));
-            },
           )
         ],
       ),
     );
   }
 
-  // ─── 📝 STANDART TEKLİ İLAN FORMU ───
+  // ─── TEKLİ İLAN FORMU (GLASSMORPHISM) ───
   Widget _buildStandartIlanFormu() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text("Yeni İlan Bilgileri",
-            style: TextStyle(color: _neonGreen, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Avenir')),
-        const SizedBox(height: 16),
-        _buildTextField("Parça / Araç Adı", Icons.title, _adController),
-        const SizedBox(height: 12),
-        _buildTextField("Fiyat (TL)", Icons.attach_money, _fiyatController, isNumber: true),
-        const SizedBox(height: 12),
-        _buildTextField("Açıklama", Icons.description, _aciklamaController, maxLines: 3),
-        const SizedBox(height: 20),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: _neonGreen,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            ),
-            onPressed: _ilanYayinla,
-            child: const Text("KUANTUM AĞINDA YAYINLA",
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Avenir')),
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.4),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.add_box_outlined, color: _neonGreen, size: 18),
+              const SizedBox(width: 8),
+              const Text("MANUEL İLAN GİRİŞİ", style: TextStyle(color: _neonGreen, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5, fontFamily: 'Avenir')),
+            ],
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTextField(String label, IconData icon, TextEditingController controller, {bool isNumber = false, int maxLines = 1}) {
-    return TextField(
-      controller: controller,
-      keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-      maxLines: maxLines,
-      style: const TextStyle(color: Colors.white, fontFamily: 'Avenir'),
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-        prefixIcon: Icon(icon, color: _neonGreen),
-        filled: true,
-        fillColor: _cyberCard,
-        enabledBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.white12), borderRadius: BorderRadius.circular(10)),
-        focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: _neonGreen), borderRadius: BorderRadius.circular(10)),
+          const SizedBox(height: 24),
+          _buildSiberTextField("Parça / Araç Adı", Icons.title, _adController),
+          const SizedBox(height: 16),
+          _buildSiberTextField("Fiyat (TL)", Icons.attach_money, _fiyatController, isNumber: true),
+          const SizedBox(height: 16),
+          _buildSiberTextField("Açıklama / Detaylar", Icons.description_outlined, _aciklamaController, maxLines: 4),
+          const SizedBox(height: 32),
+          SizedBox(
+            width: double.infinity,
+            height: 56,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _neonGreen,
+                foregroundColor: Colors.black,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                elevation: 10,
+                shadowColor: _neonGreen.withOpacity(0.3),
+              ),
+              onPressed: _isProcessing ? null : _ilanYayinla,
+              child: _isProcessing
+                  ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 3))
+                  : const Text("AĞA YAYINLA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5, fontFamily: 'Avenir')),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  // 🚀 GERÇEK FİREBASE KAYIT MOTORU
+  Widget _buildSiberTextField(String hint, IconData icon, TextEditingController controller, {bool isNumber = false, int maxLines = 1}) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.05),
+            border: Border.all(color: Colors.white12),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: TextField(
+            controller: controller,
+            keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+            maxLines: maxLines,
+            style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+            decoration: InputDecoration(
+              prefixIcon: Padding(
+                padding: EdgeInsets.only(bottom: maxLines > 1 ? (maxLines * 10.0) : 0),
+                child: Icon(icon, color: _neonGreen.withOpacity(0.7), size: 18),
+              ),
+              hintText: hint,
+              hintStyle: const TextStyle(color: Colors.white38, fontSize: 12, fontFamily: 'Avenir'),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _uyariGoster(String mesaj, {bool isGold = false}) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(mesaj, style: TextStyle(color: isGold ? Colors.black : SiberTema.oledBlack, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+      backgroundColor: isGold ? _siberGold : _neonGreen,
+    ));
+  }
+
   Future<void> _ilanYayinla() async {
     if (_adController.text.isEmpty || _fiyatController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Eksik veri girişi!")));
+      _uyariGoster("SİBER İHLAL: Lütfen Zorunlu Alanları Doldurun!", isGold: true);
       return;
     }
+
+    setState(() => _isProcessing = true);
 
     try {
       await FirebaseFirestore.instance.collection('ilanlar').add({
@@ -268,19 +350,17 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
         'fiyat': double.tryParse(_fiyatController.text) ?? 0,
         'aciklama': _aciklamaController.text,
         'kayit_tarihi': FieldValue.serverTimestamp(),
-        'vitrin_etiketi': "Murat Plaza", // Global kural
+        'vitrin_etiketi': widget.aktifDukkan.ad,
       });
 
-      // Dükkanın kullanılan ilan sayısını artır (Yerelde ve veritabanında senkronize olmalı)
-      // Bu işlem dukkan_model veya bir servis üzerinden yapılmalıdır.
-
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("İlan Kuantum Ağına Eklendi!"), backgroundColor: _neonGreen));
+        _uyariGoster("İlan Kuantum Ağına Mühürlendi!");
         Navigator.pop(context);
       }
     } catch (e) {
-      debugPrint("Kayıt Hatası: $e");
+      _uyariGoster("AĞ HATASI: İlan yayınlanamadı!", isGold: true);
+    } finally {
+      if (mounted) setState(() => _isProcessing = false);
     }
   }
 }

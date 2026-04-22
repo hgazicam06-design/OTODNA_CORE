@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../../services/google_hub_service.dart';
 class GaleriAracEkleHubScreen extends StatefulWidget {
   const GaleriAracEkleHubScreen({super.key});
 
@@ -23,37 +23,8 @@ class _GaleriAracEkleHubScreenState extends State<GaleriAracEkleHubScreen> {
   // 🧠 SİBER ŞASE (VIN) ÇÖZÜCÜ MOTOR (Backend API Simülasyonu)
   // İleride burası OtoDNA sunucusuna bağlanıp gerçek fabrikadan veri çekecek!
   // =========================================================================
-  final Map<String, Map<String, String>> _siberHubVeritabanim = {
-    "WDD205": {
-      "Marka/Model": "Mercedes-Benz C200d",
-      "Paket": "AMG Line",
-      "Yıl": "2023",
-      "Motor Gücü": "163 HP (+20 HP EQ Boost)",
-      "Motor Hacmi": "1992 cc",
-      "Şanzıman": "9G-TRONIC",
-      "Renk": "Obsidyen Siyahı",
-    },
-    "5YJ3": {
-      "Marka/Model": "Tesla Model 3",
-      "Paket": "Long Range AWD",
-      "Yıl": "2024",
-      "Motor Gücü": "498 HP (Çift Motor)",
-      "Motor Hacmi": "Elektrikli (EV)",
-      "Şanzıman": "Tek İleri Redüktör",
-      "Renk": "İnci Beyazı",
-    },
-    "VF1": {
-      "Marka/Model": "Renault Megane",
-      "Paket": "Icon",
-      "Yıl": "2022",
-      "Motor Gücü": "140 HP",
-      "Motor Hacmi": "1332 cc",
-      "Şanzıman": "EDC (Çift Kavrama)",
-      "Renk": "Gümüş Gri",
-    }
-  };
-
-  void _hubSorgusuBaslat() {
+  
+  void _hubSorgusuBaslat() async {
     String girilenSase = _saseController.text.trim().replaceAll(" ", "").toUpperCase();
 
     if (girilenSase.length < 5) {
@@ -64,32 +35,26 @@ class _GaleriAracEkleHubScreenState extends State<GaleriAracEkleHubScreen> {
     FocusScope.of(context).unfocus(); // Klavyeyi kapat
     setState(() { _hubSorgulaniyor = true; _aracBulundu = false; });
 
-    // Terminal Komutu Gecikmesi (API'ye istek atıyormuşuz gibi 2 saniye bekler)
-    Future.delayed(const Duration(milliseconds: 2000), () {
+    // GİRİLEN ŞASEYİ MERKEZİ HUB'DAN ARA
+    var hubRaporu = await GoogleHubService.fetchGlobalData(girilenSase);
 
-      // GİRİLEN ŞASEYİ VERİTABANINDA ARA (Algoritma)
-      Map<String, String>? bulunanArac;
-
-      _siberHubVeritabanim.forEach((saseKodu, aracVerisi) {
-        if (girilenSase.startsWith(saseKodu)) {
-          bulunanArac = aracVerisi;
-        }
-      });
-
-      if (bulunanArac != null) {
-        // ARAÇ BULUNDUYSA EKRANA DÜŞÜR!
+    if (hubRaporu != null && hubRaporu.containsKey("detaylar")) {
+      // ARAÇ BULUNDUYSA EKRANA DÜŞÜR!
+      if (mounted) {
         setState(() {
           _hubSorgulaniyor = false;
           _aracBulundu = true;
-          _hubVerileri = bulunanArac!;
+          _hubVerileri = Map<String, String>.from(hubRaporu["detaylar"]);
         });
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Terminal: Fabrika verileri eşleşti.", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: Color(0xFF00FFC2)));
-      } else {
-        // ARAÇ BULUNAMADIYSA
+      }
+    } else {
+      // ARAÇ BULUNAMADIYSA
+      if (mounted) {
         setState(() => _hubSorgulaniyor = false);
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Siber Ağ Hatası: Bu şase numarasına ait fabrika verisi bulunamadı.", style: TextStyle(color: Colors.white)), backgroundColor: Colors.redAccent));
       }
-    });
+    }
   }
 
   void _ilaniYayinla() {

@@ -117,6 +117,16 @@ class KureselHaritaSistemi {
     return ["Merkez"];
   }
 
+  /// 5. SEÇİLEN ÜLKENİN TÜM ŞEHİRLERİNİ (BÖLGE GÖZETMEKSİZİN) GETİRİR
+  static List<String> tumSehirleriGetir(String ulke) {
+    if (!_kureselMatris.containsKey(ulke)) return ["Şehir Bulunamadı"];
+    List<String> tumSehirler = [];
+    for (var bolge in _kureselMatris[ulke]!.values) {
+      tumSehirler.addAll(bolge.keys);
+    }
+    return tumSehirler..sort();
+  }
+
   // ---------------------------------------------------------
   // 🎯 TERS İSTİHBARAT RADARI
   // ---------------------------------------------------------

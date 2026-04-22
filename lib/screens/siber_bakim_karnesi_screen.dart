@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../models/ad_campaign_model.dart';
+import '../widgets/siber_hedefli_reklam_panosu.dart';
 
 class SiberBakimKarnesiScreen extends StatefulWidget {
   final String plaka;
@@ -99,6 +101,25 @@ class _SiberBakimKarnesiScreenState extends State<SiberBakimKarnesiScreen> {
                     ),
                   ),
                 ),
+
+                // =================================================================
+                // 1.5 SİBER HEDEFLİ REKLAM (KESTİRİMCİ BAKIM UYARISI)
+                // =================================================================
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: SiberHedefliReklamPanosu(
+                    kampanya: OtoDNACampaign(
+                      id: "cmp_brakes_001",
+                      sirketAd: "Bosch Fren Sistemleri",
+                      kampanyaBaslik: "Aracınızın Fren Balata Ömrü %15 Kaldı! Hemen Yeni Set Sipariş Verin",
+                      gorselUrl: "https://via.placeholder.com/600x200/000000/00FFC2?text=FREN+BALATASI",
+                      hedefLink: "https://otodna.com/parca/fren",
+                      tiklanmaSayisi: 85,
+                      aktifMi: true,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
 
                 // =================================================================
                 // 2. GELECEK BAKIM RADARI (Yapay Zeka Tahmini)
