@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // HapticFeedback için gerekli zırh
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import 'dart:developer' as developer;
 
 // 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI
@@ -22,9 +24,50 @@ class BayiKayitFormu extends StatefulWidget {
 
 class _BayiKayitFormuState extends State<BayiKayitFormu> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final ImagePicker _picker = ImagePicker();
 
   // ── SİBER İSTİHBARAT DEĞİŞKENLERİ ──
   final Map<String, bool> _uzmanliklar = {};
+  
+  // ── FİRMA EVRAK VE İLETİŞİM AĞI ──
+  File? _vergiLevhasi;
+  File? _profilFoto;
+  final TextEditingController _isTelefonuCtrl = TextEditingController();
+  final TextEditingController _cepTelefonuCtrl = TextEditingController();
+  final TextEditingController _whatsappCtrl = TextEditingController();
+  
+  // ── RESMİ FİRMA BİLGİLERİ (KYB / KVKK) ──
+  final TextEditingController _firmaUnvaniCtrl = TextEditingController();
+  final TextEditingController _vergiDairesiCtrl = TextEditingController();
+  final TextEditingController _vergiNoCtrl = TextEditingController();
+
+  Future<void> _resimSec(bool isProfil) async {
+    try {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
+      if (image != null) {
+        setState(() {
+          if (isProfil) {
+            _profilFoto = File(image.path);
+          } else {
+            _vergiLevhasi = File(image.path);
+          }
+        });
+      }
+    } catch (e) {
+      _siberUyariGoster("SİBER HATA", "Resim tarayıcı açılamadı: $e", SiberTema.kanKirmizi);
+    }
+  }
+
+  @override
+  void dispose() {
+    _isTelefonuCtrl.dispose();
+    _cepTelefonuCtrl.dispose();
+    _whatsappCtrl.dispose();
+    _firmaUnvaniCtrl.dispose();
+    _vergiDairesiCtrl.dispose();
+    _vergiNoCtrl.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -59,6 +102,23 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
     );
   }
 
+  Widget _buildSiberTextField(String hint, IconData icon, TextEditingController controller, {TextInputType type = TextInputType.text}) {
+    return TextField(
+      controller: controller,
+      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      keyboardType: type,
+      decoration: InputDecoration(
+        prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
+        hintText: hint,
+        hintStyle: const TextStyle(color: Colors.white38, fontSize: 12),
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.05),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white12)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
+      ),
+    );
+  }
+
   // ── 🚀 FİREBASE ATOMİK MÜHÜRLEME PROTOKOLÜ ──
   Future<void> _kayitTamamla() async {
     HapticFeedback.lightImpact();
@@ -80,12 +140,18 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
           .map((entry) => entry.key)
           .toList();
 
-      // Hangi ana kategorilere ait olduklarını bul (Filtreleme için)
+      // Hangi ana kategorilere ait olduklarını bul ve Etiketleri Üret
       List<String> secilenKategoriler = [];
+      Set<String> siberEtiketler = {}; // Arama motoru için optimize edilmiş etiketler
+
       for (String brans in secilenUzmanliklar) {
         SiberHizmetKutuphanesi.masterListe.forEach((kategori, branslar) {
-          if (branslar.contains(brans) && !secilenKategoriler.contains(kategori)) {
-            secilenKategoriler.add(kategori);
+          if (branslar.contains(brans)) {
+            if (!secilenKategoriler.contains(kategori)) {
+              secilenKategoriler.add(kategori);
+            }
+            // 🚀 Otomatik Kuantum Etiketleme Motoru Devrede
+            siberEtiketler.addAll(SiberHizmetKutuphanesi.etiketUret(kategori, brans));
           }
         });
       }
@@ -97,8 +163,22 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
       DocumentReference basvuruRef = _db.collection('bayi_basvurulari').doc(widget.ustaId);
       batch.set(basvuruRef, {
         'usta_id': widget.ustaId,
+        'firma_unvani': _firmaUnvaniCtrl.text.trim(),
+        'vergi_dairesi': _vergiDairesiCtrl.text.trim(),
+        'vergi_no': _vergiNoCtrl.text.trim(),
         'uzmanlik_alanlari': secilenUzmanliklar,
         'uzmanlik_kategorileri': secilenKategoriler,
+        'siber_etiketler': siberEtiketler.toList(), // Müşteri Aramaları İçin
+        'iletisim_agi': {
+          'is_telefonu': _isTelefonuCtrl.text.trim(),
+          'cep_telefonu': _cepTelefonuCtrl.text.trim(),
+          'whatsapp': _whatsappCtrl.text.trim(),
+        },
+        'evraklar': {
+          'vergi_levhasi_yuklendi': _vergiLevhasi != null,
+          'profil_foto_yuklendi': _profilFoto != null,
+          // TODO: (Kapalı Kasa / Private Bucket) Firebase Storage upload motoru burada entegre edilecek
+        },
         'sozlesme_onay': true,
         'onay_tarihi': FieldValue.serverTimestamp(),
         'basvuru_durumu': 'ONAY_BEKLIYOR',
@@ -209,31 +289,164 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.all(20),
           children: [
-            // 1. UZMANLIK SEÇİMİ
+            // ── FİRMA PROFİLİ VE RESMİ EVRAKLAR (KAPALI KASA SİSTEMİ) ──
+            const Text("RESMİ FİRMA BİLGİLERİ", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+            const SizedBox(height: 12),
+            _buildSiberTextField("Firma Tam Ünvanı", Icons.business, _firmaUnvaniCtrl),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(child: _buildSiberTextField("Vergi Dairesi", Icons.account_balance, _vergiDairesiCtrl)),
+                const SizedBox(width: 12),
+                Expanded(child: _buildSiberTextField("VKN / TCKN", Icons.numbers, _vergiNoCtrl, type: TextInputType.number)),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                // Profil Fotoğrafı
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => _resimSec(true),
+                    child: Container(
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: _profilFoto != null ? SiberTema.kuantumCyan : Colors.white24, width: 1.5),
+                        image: _profilFoto != null ? DecorationImage(image: FileImage(_profilFoto!), fit: BoxFit.cover) : null,
+                      ),
+                      child: _profilFoto == null 
+                          ? const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.person_add_alt_1, color: SiberTema.kuantumCyan, size: 30),
+                                SizedBox(height: 8),
+                                Text("Yetkili Profil Foto", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+                              ],
+                            )
+                          : null,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                // Vergi Levhası
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => _resimSec(false),
+                    child: Container(
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: _vergiLevhasi != null ? SiberTema.kuantumCyan : Colors.white24, width: 1.5),
+                        image: _vergiLevhasi != null ? DecorationImage(image: FileImage(_vergiLevhasi!), fit: BoxFit.cover) : null,
+                      ),
+                      child: _vergiLevhasi == null 
+                          ? const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.document_scanner, color: SiberTema.kuantumCyan, size: 30),
+                                SizedBox(height: 8),
+                                Text("Vergi Levhası (Gizli)", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+                              ],
+                            )
+                          : null,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+
+            // ── İLETİŞİM AĞI (TEXT FIELDS) ──
+            const Text("SİBER İLETİŞİM AĞI", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+            const SizedBox(height: 12),
+            _buildSiberTextField("İş Yeri Telefonu", Icons.phone, _isTelefonuCtrl, type: TextInputType.phone),
+            const SizedBox(height: 12),
+            _buildSiberTextField("Cep Telefonu", Icons.smartphone, _cepTelefonuCtrl, type: TextInputType.phone),
+            const SizedBox(height: 12),
+            _buildSiberTextField("WhatsApp Numarası", Icons.chat, _whatsappCtrl, type: TextInputType.phone),
+            const SizedBox(height: 30),
+
+            // 1. UZMANLIK SEÇİMİ (PİNTEREST USULÜ KARTLAR VE SİBER ÇİPLER)
             const Text("ATÖLYE UZMANLIK ALANLARINIZI SEÇİN", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             const SizedBox(height: 12),
-            Container(
-              decoration: BoxDecoration(
-                color: SiberTema.matGrey.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.white12),
-              ),
-              child: Column(
-                children: _uzmanliklar.keys.map((String key) {
-                  return CheckboxListTile(
-                    title: Text(key, style: TextStyle(color: _uzmanliklar[key]! ? SiberTema.kuantumCyan : Colors.white, fontSize: 12, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-                    value: _uzmanliklar[key],
-                    activeColor: SiberTema.kuantumCyan,
-                    checkColor: Colors.black,
-                    side: const BorderSide(color: Colors.white30),
-                    onChanged: (bool? val) {
-                      HapticFeedback.selectionClick();
-                      setState(() => _uzmanliklar[key] = val!);
-                    },
-                  );
-                }).toList(),
-              ),
-            ),
+            
+            ...SiberHizmetKutuphanesi.masterListe.entries.map((entry) {
+              String kategori = entry.key;
+              List<String> branslar = entry.value;
+              
+              return Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.03), // Siber Cam Efekti (Glassmorphism taban)
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.white12, width: 1),
+                  boxShadow: [
+                    BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 10, spreadRadius: 1)
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Kategori Başlığı
+                    Row(
+                      children: [
+                        const Icon(Icons.auto_awesome_mosaic_rounded, color: SiberTema.kuantumCyan, size: 18),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            kategori,
+                            style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.2, fontFamily: 'Avenir'),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      child: Divider(color: Colors.white10, thickness: 1),
+                    ),
+                    // Çipler (FilterChip)
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: branslar.map((brans) {
+                        bool seciliMi = _uzmanliklar[brans] ?? false;
+                        return FilterChip(
+                          label: Text(
+                            brans,
+                            style: TextStyle(
+                              color: seciliMi ? Colors.black : Colors.white70,
+                              fontSize: 11,
+                              fontWeight: seciliMi ? FontWeight.w900 : FontWeight.w600,
+                              fontFamily: 'Avenir'
+                            ),
+                          ),
+                          selected: seciliMi,
+                          selectedColor: SiberTema.kuantumCyan,
+                          backgroundColor: Colors.white.withOpacity(0.05),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(
+                              color: seciliMi ? SiberTema.kuantumCyan : Colors.white24,
+                              width: 1
+                            )
+                          ),
+                          checkmarkColor: Colors.black,
+                          showCheckmark: false, // Sade Pinterest tasarımı için tiki gizliyoruz, rengi yeter
+                          onSelected: (bool val) {
+                            HapticFeedback.selectionClick();
+                            setState(() => _uzmanliklar[brans] = val);
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              );
+            }),
             
             const SizedBox(height: 12),
             
@@ -254,7 +467,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
 
             const SizedBox(height: 30),
 
-            // 2. OTODNA SİBER İMECE SÖZLEŞMESİ
+            // 2. OTODNA SİBER İMECE VE KVKK SÖZLEŞMESİ
             const Text("YASAL PROTOKOL", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             const SizedBox(height: 8),
             Container(
@@ -268,11 +481,12 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
               child: const SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Text(
-                  "OTODNA SİBER İMECE SÖZLEŞMESİ:\n\n"
+                  "OTODNA SİBER İMECE VE KVKK SÖZLEŞMESİ:\n\n"
                       "1. Hatalı işlemlerden ve yanlış ekspertiz beyanlarından doğan Müşteri zararları 'İmece Havuzu' üzerinden mahsuplaşılır.\n\n"
-                      "2. Havuz borcu ödenmez veya Karargah kuralları ihlal edilirse sistemden süresiz men ve adli yaptırım uygulanır.\n\n"
-                      "3. Yetkinlik dışı (yanlış) uzmanlık beyanı, Usta DNA Puanını doğrudan düşürür ve 'Kara Liste' algoritmasını tetikler.\n\n"
-                      "4. Bu sözleşme IP adresi ve cihaz kimliği ile dijital olarak mühürlenir.",
+                      "2. Yüklenen resmi evraklar (Vergi Levhası vb.) KVKK kapsamında şifrelenerek 'Kapalı Kasa' (Private Vault) sisteminde saklanır. Müşteriler ve diğer kullanıcılar tarafından ASLA görülemez.\n\n"
+                      "3. Havuz borcu ödenmez veya Karargah kuralları ihlal edilirse sistemden süresiz men ve adli yaptırım uygulanır.\n\n"
+                      "4. Yetkinlik dışı (yanlış) uzmanlık beyanı, Usta DNA Puanını doğrudan düşürür ve 'Kara Liste' algoritmasını tetikler.\n\n"
+                      "5. Bu sözleşme IP adresi ve cihaz kimliği ile dijital olarak mühürlenir.",
                   style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.6, letterSpacing: 0.5, fontFamily: 'Avenir'),
                 ),
               ),

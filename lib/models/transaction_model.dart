@@ -8,6 +8,13 @@ class TransactionRecord {
   final String firmAdi;
   final String islemTipi; // Örn: "Yedek Parça Satışı", "Randevu Bedeli", "VIP Abonelik"
 
+  // 🕸️ KUANTUM İSTİHBARAT AĞI (4 KATMANLI ADLİ KONUM)
+  // Bu finansal işlem nerede gerçekleşti? Finansal ısı haritası için zorunlu.
+  final String countryId;
+  final String regionId;
+  final String cityId;
+  final String districtId;
+
   // 💰 FİNANSAL BÖLÜNME (MUHASEBE MÜHRÜ)
   final double toplamTutar; // Müşterinin ödediği brüt miktar
   final double otodnaPayi; // Bizim payımız (%12 Standart veya %30 Murat Plaza / Sabit Bedel)
@@ -21,6 +28,10 @@ class TransactionRecord {
     required this.firmId,
     required this.firmAdi,
     required this.islemTipi,
+    required this.countryId,
+    required this.regionId,
+    required this.cityId,
+    required this.districtId,
     required this.toplamTutar,
     required this.otodnaPayi,
     required this.esnafHakedisi,
@@ -35,6 +46,10 @@ class TransactionRecord {
       'firm_id': firmId,
       'firm_adi': firmAdi,
       'islem_tipi': islemTipi,
+      'country_id': countryId,
+      'region_id': regionId,
+      'city_id': cityId,
+      'district_id': districtId,
       'toplam_tutar': toplamTutar,
       'otodna_payi': otodnaPayi,
       'esnaf_hakedisi': esnafHakedisi,
@@ -53,6 +68,10 @@ class TransactionRecord {
       firmId: data['firm_id'] ?? '',
       firmAdi: data['firm_adi'] ?? 'Gizli Firma',
       islemTipi: data['islem_tipi'] ?? 'Bilinmeyen İşlem',
+      countryId: data['country_id'] ?? 'TR',
+      regionId: data['region_id'] ?? '',
+      cityId: data['city_id'] ?? '',
+      districtId: data['district_id'] ?? '',
       toplamTutar: (data['toplam_tutar'] ?? 0).toDouble(),
       otodnaPayi: (data['otodna_payi'] ?? 0).toDouble(),
       esnafHakedisi: (data['esnaf_hakedisi'] ?? 0).toDouble(),

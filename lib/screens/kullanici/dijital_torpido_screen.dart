@@ -148,26 +148,95 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
 
             var aracVerisi = snapshot.data!.data() as Map<String, dynamic>;
             List<dynamic> yuklenenBelgeler = aracVerisi['torpido_belgeleri'] ?? [];
+            List<dynamic> garantiBelgeleri = aracVerisi['garanti_belgeleri'] ?? [];
 
-            return ListView.builder(
+            return ListView(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              itemCount: _zorunluEvraklar.length + 1, // +1 Başlık için
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.lock_outline, color: Colors.white38, size: 16),
-                        const SizedBox(width: 8),
-                        Expanded(child: Text("Tüm evraklarınız AES-256 Kuantum Şifreleme ile kilitlenmiştir.", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 11, letterSpacing: 0.5, fontWeight: FontWeight.bold))),
-                      ],
-                    ),
-                  );
-                }
+              children: [
+                // 1. ZIRH UYARISI
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 24),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.lock_outline, color: Colors.white38, size: 16),
+                      const SizedBox(width: 8),
+                      Expanded(child: Text("Tüm evraklarınız AES-256 Kuantum Şifreleme ile kilitlenmiştir.", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 11, letterSpacing: 0.5, fontWeight: FontWeight.bold))),
+                    ],
+                  ),
+                ),
 
-                var evrakSablonu = _zorunluEvraklar[index - 1];
+                // 2. OTODNA GARANTİ MÜHÜRLERİ (YENİ EKLENTİ)
+                if (garantiBelgeleri.isNotEmpty) ...[
+                  const Text("🛡️ OTODNA GARANTİLİ PARÇALAR", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                  const SizedBox(height: 12),
+                  ...garantiBelgeleri.map((garanti) {
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: SiberTema.kuantumCyan.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 1.5),
+                        boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 10)],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(garanti['parca_adi'].toString().toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900)),
+                              const Icon(Icons.verified, color: SiberTema.kuantumCyan, size: 20),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              const Icon(Icons.business, color: Colors.white54, size: 14),
+                              const SizedBox(width: 6),
+                              Text(garanti['firma_unvani'], style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              const Icon(Icons.qr_code, color: Colors.white54, size: 14),
+                              const SizedBox(width: 6),
+                              Text("OEM: ${garanti['oem_kodu']}", style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          const Divider(color: Colors.white24, height: 1),
+                          const SizedBox(height: 12),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text("OTODNA DİJİTAL MÜHRÜ AKTİF", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                              OutlinedButton(
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Garanti Sertifikası PDF Olarak İndiriliyor..."), backgroundColor: SiberTema.kuantumCyan));
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  side: const BorderSide(color: SiberTema.kuantumCyan),
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                                  minimumSize: const Size(0, 30)
+                                ),
+                                child: const Text("SERTİFİKA", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold)),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+                  }),
+                  const SizedBox(height: 24),
+                ],
+
+                // 3. ZORUNLU EVRAKLAR
+                const Text("ZORUNLU ARAÇ EVRAKLARI", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                const SizedBox(height: 12),
+                ..._zorunluEvraklar.map((evrakSablonu) {
 
                 // Belge Firebase'de var mı diye kontrol et
                 var bulunanBelge = yuklenenBelgeler.cast<Map<String,dynamic>>().firstWhere(
@@ -249,8 +318,8 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                       )
                     ],
                   ),
-                );
-              },
+                });
+              ],
             );
           },
         ),

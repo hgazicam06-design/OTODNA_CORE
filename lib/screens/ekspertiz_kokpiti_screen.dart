@@ -1,23 +1,35 @@
-// lib/screens/ekspertiz_kokpiti_screen.dart
-import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // 🔥 SİBER KÖPRÜLER VE TEMA
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
-// ⚙️ ARKA PLAN MOTORLARI
-import '../services/muayene_ekrani.dart';
-import '../commerce/eco_system_gate.dart';
+// ⚙️ MODELLER
+import '../models/report_model.dart';
 
+/// 🧬 DİJİTAL REFERANS VE EKSPERTİZ KOKPİTİ
+/// Kuantum Konum ve Ticari Algoritmalarla donatılmış SaaS Ekspertiz Merkezi
 class EkspertizKokpitiScreen extends StatefulWidget {
   final String aracId;
-  final String bayiId;
+  final String saseNo;
+  final String bayiAdi;
+  
+  // 🕸️ KUANTUM İSTİHBARAT AĞI BİLGİLERİ (Ustanın Profilinden Gelecek)
+  final String countryId;
+  final String regionId;
+  final String cityId;
+  final String districtId;
 
   const EkspertizKokpitiScreen({
     super.key,
     required this.aracId,
-    required this.bayiId,
+    required this.saseNo,
+    required this.bayiAdi,
+    required this.countryId,
+    required this.regionId,
+    required this.cityId,
+    required this.districtId,
   });
 
   @override
@@ -25,10 +37,6 @@ class EkspertizKokpitiScreen extends StatefulWidget {
 }
 
 class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
-  // Arka plan Kuantum Motorlarını Çağır
-  final EkspertizServisi _ekspertizServisi = EkspertizServisi();
-  final OtoDnaEcoSystem _ecoSystem = OtoDnaEcoSystem();
-
   // Karargahın Kontrol Edeceği Kritik Parçalar
   final Map<String, Map<String, dynamic>> _kontrolListesi = {
     'Motor Bloğu & Pistonlar': {'durum': 'bekliyor', 'fotoUrl': null},
@@ -40,78 +48,87 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
   };
 
   bool _isSaving = false;
+  final TextEditingController _ekspertizUcretiCtrl = TextEditingController(text: "5000");
 
-  // --- 📸 FİREBASE: SİMÜLE EDİLMİŞ FOTOĞRAF YÜKLEME ---
+  double get _ekspertizUcreti => double.tryParse(_ekspertizUcretiCtrl.text) ?? 0.0;
+  double get _komisyonOrani => widget.bayiAdi.trim().toLowerCase() == "murat plaza" ? 0.30 : 0.12;
+  double get _gaziPayi => _ekspertizUcreti * _komisyonOrani;
+  double get _bayiHakedisi => _ekspertizUcreti - _gaziPayi;
+
+  int get _hesaplananMotorSkoru {
+    int saglamSayisi = _kontrolListesi.values.where((d) => d['durum'] == 'saglam').length;
+    int toplam = _kontrolListesi.length;
+    if (toplam == 0) return 0;
+    return ((saglamSayisi / toplam) * 100).toInt();
+  }
+
+  // --- 📸 SİBER KAMERA ---
   Future<void> _fotografYukleSimulasyonu(String parcaAdi) async {
     _siberUyariVer("Kamera Açılıyor... Hasar tespit ediliyor.", false);
-    await Future.delayed(const Duration(seconds: 1)); // Gerçek kamera gecikmesi simülasyonu
+    HapticFeedback.lightImpact();
+    await Future.delayed(const Duration(seconds: 1)); 
     setState(() {
       _kontrolListesi[parcaAdi]!['fotoUrl'] = 'https://siberkarargah.com/kanit/hasar_${DateTime.now().millisecondsSinceEpoch}.jpg';
     });
-    _siberUyariVer("KANIT ONAYLANDI: Hasar fotoğrafı ağa mühürlendi.", false);
+    _siberUyariVer("KANIT ONAYLANDI: Fotoğraf ağa mühürlendi.", false);
   }
 
-  // --- 🔴 FİREBASE: GERÇEK MÜHÜRLEME PROTOKOLÜ ---
+  // --- 🔴 FİREBASE: OTO DNA REPORT MÜHÜRLEME ---
   Future<void> _ekspertiziKuantumAgaMuhurle() async {
     setState(() => _isSaving = true);
+    HapticFeedback.heavyImpact();
 
     try {
       bool kritikHataVarMi = false;
+      Map<String, dynamic> kaportaDurumu = {};
 
-      // Tüm listeyi tara ve senin EkspertizServisi motoruna yolla
       for (var entry in _kontrolListesi.entries) {
         String parcaAdi = entry.key;
         Map<String, dynamic> detay = entry.value;
 
         if (detay['durum'] == 'bekliyor') {
-          _siberUyariVer("EKSİK KONTROL: Lütfen tüm parçaları test edin.", true);
+          _siberUyariVer("EKSİK KONTROL: Lütfen tüm donanımları test edin.", true);
           setState(() => _isSaving = false);
           return;
         }
 
-        bool isSafe = detay['durum'] == 'saglam';
-        String fotoUrl = detay['fotoUrl'] ?? (isSafe ? 'GEREK_YOK' : '');
+        bool isArizali = detay['durum'] == 'arizali';
+        if (isArizali) kritikHataVarMi = true;
 
-        // 🚀 1. DÜZELTME: Senin motorun bir şey dönmüyor (void), Hata varsa throw fırlatıyor.
-        await _ekspertizServisi.kontrolNoktasiGuncelle(
-          aracId: widget.aracId,
-          bayiId: widget.bayiId,
-          parcaAdi: parcaAdi,
-          isSafe: isSafe,
-          detay: isSafe ? "Sorunsuz" : "Ağır Hasar Tespit Edildi",
-          fotoUrl: fotoUrl,
-        );
-
-        // Eğer parça arızalıysa, Karargah Ticaret Motorunu (%12 Pay) anında tetikle!
-        if (!isSafe) {
-          kritikHataVarMi = true;
-          // 🚀 2. DÜZELTME: Senin Ticaret motorun benden "bayiId" istiyordu, eklendi!
-          await _ecoSystem.parcaOner(
-            plakaID: widget.aracId,
-            sorunluParca: parcaAdi,
-            parcaSatisFiyati: 4500.00,
-            saticiBayiAdi: "Murat Plaza",
-            bayiId: widget.bayiId,
-          );
-        }
+        kaportaDurumu[parcaAdi] = isArizali ? "Ağır Hasarlı/Değişmiş" : "Orijinal";
       }
 
-      // Tüm kontroller bittiyse ve araç sağlamsa Dijital Referans Mührünü Vur
+      // Modelin Oluşturulması
+      OtoDNAReport rapor = OtoDNAReport(
+        raporNo: "OTODNA-${DateTime.now().millisecondsSinceEpoch.toString().substring(5)}",
+        saseNo: widget.saseNo,
+        bayiAdi: widget.bayiAdi,
+        countryId: widget.countryId,
+        regionId: widget.regionId,
+        cityId: widget.cityId,
+        districtId: widget.districtId,
+        motorPerformans: _hesaplananMotorSkoru,
+        kaportaDurumu: kaportaDurumu,
+        kritikHataVarMi: kritikHataVarMi,
+        ekspertizUcreti: _ekspertizUcreti,
+        komisyonOrani: _komisyonOrani,
+      );
+
+      // TODO: Firebase'e Yazma İşlemi (rapor.toMap())
+      await Future.delayed(const Duration(seconds: 2)); // DB Simülasyonu
+
       if (!kritikHataVarMi) {
-        await _ecoSystem.ilanaKoy(widget.aracId);
         _siberUyariVer("DİJİTAL REFERANS (DNA) OLUŞTURULDU VE MÜHÜRLENDİ! 🦅", false);
       } else {
-        _siberUyariVer("🚨 ARAÇ TRAFİĞE KAPATILDI! Yedek parça siparişi geçildi.", true);
+        _siberUyariVer("🚨 RİSKLİ ARAÇ! Rapor Kuantum İstihbaratına Raporlandı.", true);
       }
 
       if (!mounted) return;
       Navigator.pop(context);
 
     } catch (e) {
-      // Motorlarından fırlatılan "SİBER İHLAL" Exception'ları buraya düşecek!
       if (!mounted) return;
-      String hataMesaji = e.toString().replaceAll("Exception: ", "");
-      _siberUyariVer(hataMesaji, true);
+      _siberUyariVer("SİSTEM ÇÖKTÜ: ${e.toString()}", true);
     } finally {
       if (mounted) setState(() => _isSaving = false);
     }
@@ -135,14 +152,15 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.black.withOpacity(0.8),
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("DİJİTAL REFERANS PROTOKOLÜ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
+          title: const Text("🧬 DNA EKSPERTİZ TERMINALİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13, fontFamily: 'Avenir')),
           centerTitle: true,
         ),
         body: Column(
           children: [
+            // SİBER İSTİHBARAT RADAR BAŞLIĞI
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
@@ -150,15 +168,20 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
                 border: Border(bottom: BorderSide(color: Colors.white12, width: 1)),
                 color: SiberTema.matGrey,
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.radar, color: SiberTema.altinSari, size: 16),
-                  SizedBox(width: 8),
-                  Text("ARAÇ DNA TARAMASI DEVAM EDİYOR...", style: TextStyle(color: SiberTema.altinSari, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                  const Icon(Icons.location_on, color: SiberTema.kanKirmizi, size: 16),
+                  const SizedBox(width: 8),
+                  Text("Adli Konum: ${widget.cityId} / ${widget.districtId}", style: const TextStyle(color: SiberTema.kanKirmizi, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                  const Spacer(),
+                  const Icon(Icons.memory, color: SiberTema.kuantumCyan, size: 16),
+                  const SizedBox(width: 8),
+                  Text("%$_hesaplananMotorSkoru", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.w900)),
                 ],
               ),
             ),
 
+            // KONTROL LİSTESİ
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
@@ -172,13 +195,55 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
               ),
             ),
 
+            // 💰 KUANTUM FİNANS BİLANÇOSU (ŞEFFAF KOMİSYON)
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                border: const Border(top: BorderSide(color: SiberTema.sariAltin, width: 2)),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const Expanded(child: Text("Ekspertiz Ücreti (TL):", style: TextStyle(color: Colors.white54, fontSize: 12))),
+                      SizedBox(
+                        width: 100,
+                        child: TextField(
+                          controller: _ekspertizUcretiCtrl,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.right,
+                          style: const TextStyle(color: SiberTema.sariAltin, fontWeight: FontWeight.bold),
+                          onChanged: (val) => setState(() {}),
+                          decoration: const InputDecoration(isDense: true, enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white24))),
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("OtoDNA Payı (Gazi Kasası):", style: TextStyle(color: Colors.white54, fontSize: 12)),
+                      Text("-${_gaziPayi.toStringAsFixed(2)} ₺", style: const TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: Divider(color: Colors.white24, height: 1)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("ESNAF NET HAKEDİŞİ:", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.bold)),
+                      Text("${_bayiHakedisi.toStringAsFixed(2)} ₺", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 18, fontWeight: FontWeight.w900)),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            // ONAY BUTONU
             Container(
               padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: SiberTema.matGrey,
-                border: const Border(top: BorderSide(color: Colors.white12, width: 1)),
-                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.8), blurRadius: 20, offset: const Offset(0, -10))],
-              ),
+              color: SiberTema.matGrey,
               child: SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -189,13 +254,8 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
                   onPressed: _isSaving ? null : _ekspertiziKuantumAgaMuhurle,
-                  icon: _isSaving
-                      ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
-                      : const Icon(Icons.fingerprint, size: 20),
-                  label: Text(
-                      _isSaving ? "MÜHÜRLENİYOR..." : "DNA RAPORUNU AĞA İŞLE",
-                      style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5, fontFamily: 'Avenir')
-                  ),
+                  icon: _isSaving ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2)) : const Icon(Icons.fingerprint, size: 20),
+                  label: Text(_isSaving ? "MÜHÜRLENİYOR..." : "DNA RAPORUNU AĞA İŞLE", style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5, fontFamily: 'Avenir')),
                 ),
               ),
             ),
@@ -223,17 +283,7 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
       ),
       child: Row(
         children: [
-          Expanded(
-            child: Text(
-              parcaAdi,
-              style: TextStyle(
-                color: Colors.white.withOpacity(0.9),
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Avenir',
-              ),
-            ),
-          ),
+          Expanded(child: Text(parcaAdi, style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 13, fontWeight: FontWeight.w600))),
 
           if (isArizali) ...[
             GestureDetector(
@@ -246,16 +296,12 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(color: fotoYuklendi ? SiberTema.kuantumCyan : SiberTema.altinSari),
                 ),
-                child: Icon(
-                  fotoYuklendi ? Icons.check_circle : Icons.camera_alt,
-                  color: fotoYuklendi ? SiberTema.kuantumCyan : SiberTema.altinSari,
-                  size: 18,
-                ),
+                child: Icon(fotoYuklendi ? Icons.check_circle : Icons.camera_alt, color: fotoYuklendi ? SiberTema.kuantumCyan : SiberTema.altinSari, size: 18),
               ),
             ),
           ],
 
-          // Yeşil Tık (✅) Butonu
+          // Yeşil Tık
           GestureDetector(
             onTap: () {
               setState(() {
@@ -275,13 +321,9 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
           ),
           const SizedBox(width: 8),
 
-          // Kırmızı X (❌) Butonu
+          // Kırmızı X
           GestureDetector(
-            onTap: () {
-              setState(() {
-                _kontrolListesi[parcaAdi]!['durum'] = 'arizali';
-              });
-            },
+            onTap: () => setState(() => _kontrolListesi[parcaAdi]!['durum'] = 'arizali'),
             child: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(

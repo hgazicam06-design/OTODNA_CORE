@@ -124,4 +124,104 @@ class SiberTakipRadari {
       developer.log("🚨 AĞ ÇÖKTÜ: DNA Puanı güncellenemedi!", error: e);
     }
   }
+
+  // ── 👁️ 3. SİBER GÖZ: OTO ELEKTRONİK VE DİJİTAL SİSTEMLER TARAMASI ──
+  /// ECU, Ateşleme, Aydınlatma, Güvenlik ve Şarj sistemlerini tarar.
+  /// Hata varsa aracı "RİSKLİ" kategorisine alır ve dijital mühür kurallarını denetler.
+  static Future<void> siberGozElektronikTaramasi({
+    required String aracSaseNo,
+    required String ustaUid,
+    required List<String> hataKodlari, // Örn: ['P0300', 'U0100'] (Boşsa sorun yok)
+    required bool obdRaporuYuklendi,
+    required bool multimetreVerisiGirildi,
+    required bool sensorGrafikAnaliziYapildi,
+  }) async {
+    developer.log("👁️ SİBER GÖZ AKTİF: $aracSaseNo şaseli aracın elektronik sinir ağı taranıyor...");
+
+    try {
+      // 🛡️ Dijital İmza Kuralı Denetimi (Zırhlı Kontrol)
+      // Elektronik sistemlerde "Hata Yok" demek yetmez, kanıtlanmalıdır.
+      if (!obdRaporuYuklendi || !multimetreVerisiGirildi || !sensorGrafikAnaliziYapildi) {
+        throw Exception("SİBER İHLAL: Dijital İmza Kuralı (OBD/Multimetre/Grafik) eksik! Elektronik mühür vurulamaz.");
+      }
+
+      DocumentReference aracRef = _db.collection('vehicles').doc(aracSaseNo);
+      DocumentReference elektronikLogRef = _db.collection('elektronik_taramalar').doc();
+      DocumentReference sistemLogRef = _db.collection('sistem_loglari').doc();
+
+      // Çakışmaları önleyen ACID Kuantum İşlemi (Transaction)
+      await _db.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(aracRef);
+
+        if (!snapshot.exists) {
+          throw Exception("SİBER İHLAL: Araç Karargah veri tabanında bulunamadı!");
+        }
+
+        bool sistemTemiz = hataKodlari.isEmpty;
+        String yeniDurum;
+        String islemDetayi;
+
+        if (sistemTemiz) {
+          yeniDurum = "🟢 ELEKTRONİK SİSTEM KUSURSUZ";
+          islemDetayi = "Siber Göz Taraması Başarılı: ECU, Ateşleme, Optik, Güvenlik ve Şarj sistemlerinde hata bulunamadı.";
+        } else {
+          yeniDurum = "🔴 RİSKLİ (ELEKTRONİK ARIZA)";
+          islemDetayi = "KRİTİK UYARI: Elektronik sistemlerde hata tespit edildi! Hata Kodları: ${hataKodlari.join(', ')}";
+          
+          // Araç riskli ise Kuantum Motoru gereği DNA Puanı sert etkilenir (-15 Puan)
+          var data = snapshot.data() as Map<String, dynamic>;
+          int mevcutSkor = (data['dna_skoru'] ?? 50).toInt();
+          int yeniSkor = mevcutSkor - 15;
+          if (yeniSkor < 0) yeniSkor = 0;
+          
+          transaction.update(aracRef, {
+            "dna_skoru": yeniSkor,
+          });
+        }
+
+        // 1. Ana Araç Durumunu Güncelle (Sinir Ağı Durumu)
+        transaction.update(aracRef, {
+          "elektronik_durum": yeniDurum,
+          "son_elektronik_tarama_tarihi": FieldValue.serverTimestamp(),
+          "riskli_mi": !sistemTemiz,
+        });
+
+        // 2. Detaylı Elektronik Tarama Raporu (Siber Göz Dökümü)
+        transaction.set(elektronikLogRef, {
+          "sase_no": aracSaseNo,
+          "usta_uid": ustaUid,
+          "hata_kodlari": hataKodlari,
+          "sistem_temiz_mi": sistemTemiz,
+          "dijital_imzalar": {
+            "obd_raporu": obdRaporuYuklendi,
+            "multimetre_verisi": multimetreVerisiGirildi,
+            "sensor_grafik": sensorGrafikAnaliziYapildi,
+          },
+          "tarama_kapsami": [
+            "ECU ve Kontrol Üniteleri (Beyin, SRS, Kalibrasyon)",
+            "Ateşleme ve Yakıt Yönetimi (Bobin, Enjektör, Sensörler)",
+            "Aydınlatma ve Optik Sistemler (LED/Xenon, Cluster)",
+            "Güvenlik ve Konfor (ABS/ESP, İmmobilizer, Kameralar)",
+            "Şarj ve Marş Sistemleri (Alternatör, BMS)"
+          ],
+          "tarih": FieldValue.serverTimestamp(),
+        });
+
+        // 3. Karargah Kara Kutusuna Yaz (Sistem Logu)
+        transaction.set(sistemLogRef, {
+          "islem_turu": "ELEKTRONIK_TARAMA",
+          "sase_no": aracSaseNo,
+          "islem_detayi": islemDetayi,
+          "usta_uid": ustaUid,
+          "tarih": FieldValue.serverTimestamp(),
+          "otonom_kayit": false,
+        });
+      });
+
+      developer.log("⚡ SİBER GÖZ TARAMASI TAMAMLANDI: Veriler buluta mühürlendi.");
+    } catch (e) {
+      developer.log("🚨 ELEKTRONİK AĞ ÇÖKTÜ: Siber Göz taraması kaydedilemedi!", error: e);
+      rethrow; // UI'da Kırmızı Alarmla ustaya göstermek için hatayı fırlat
+    }
+  }
 }

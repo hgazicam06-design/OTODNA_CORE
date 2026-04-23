@@ -51,6 +51,13 @@ class OtoDNA_Wallet {
   final String? id; // Firebase Document ID (Dükkan ID ile eşleşir)
   final String dukkanId;
 
+  // 🕸️ KUANTUM İSTİHBARAT AĞI (4 KATMANLI ADLİ KONUM)
+  // Bu cüzdan/esnaf nerede faaliyet gösteriyor? Finansal bölge analizleri için zorunlu.
+  final String countryId;
+  final String regionId;
+  final String cityId;
+  final String districtId;
+
   // 💰 BİLANÇO VE MUHASEBE (Siber Zırhlı)
   final double toplamBakiye;    // Sisteme giren brüt para
   final double netKarPayi;      // Bizim %10'luk net kısmımız
@@ -62,6 +69,10 @@ class OtoDNA_Wallet {
   OtoDNA_Wallet({
     this.id,
     required this.dukkanId,
+    required this.countryId,
+    required this.regionId,
+    required this.cityId,
+    required this.districtId,
     this.toplamBakiye = 0.0,
     this.netKarPayi = 0.0,
     this.vergiPayi = 0.0,
@@ -76,6 +87,10 @@ class OtoDNA_Wallet {
   Map<String, dynamic> toMap() {
     return {
       'dukkan_id': dukkanId,
+      'country_id': countryId,
+      'region_id': regionId,
+      'city_id': cityId,
+      'district_id': districtId,
       'toplam_bakiye': toplamBakiye,
       'net_kar_payi': netKarPayi,
       'vergi_payi': vergiPayi,
@@ -93,6 +108,10 @@ class OtoDNA_Wallet {
     return OtoDNA_Wallet(
       id: doc.id,
       dukkanId: data['dukkan_id'] ?? '',
+      countryId: data['country_id'] ?? 'TR',
+      regionId: data['region_id'] ?? '',
+      cityId: data['city_id'] ?? '',
+      districtId: data['district_id'] ?? '',
       toplamBakiye: (data['toplam_bakiye'] ?? 0).toDouble(),
       netKarPayi: (data['net_kar_payi'] ?? 0).toDouble(),
       vergiPayi: (data['vergi_payi'] ?? 0).toDouble(),

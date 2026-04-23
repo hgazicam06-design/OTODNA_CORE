@@ -11,6 +11,13 @@ class OtoDNAReport {
   final String saseNo;
   final String bayiAdi; // Murat Plaza veya diğer esnaflar
 
+  // 🕸️ KUANTUM İSTİHBARAT AĞI (4 KATMANLI ADLİ KONUM)
+  // Bu ekspertiz nerede yapıldı? Sigorta kaza istihbaratını beslemek için kritik.
+  final String countryId;
+  final String regionId;
+  final String cityId;
+  final String districtId;
+
   // ⚙️ TEKNİK VERİLER
   final int motorPerformans; // Yüzdelik (Örn: 85)
   final Map<String, dynamic> kaportaDurumu; // {'Kaput': 'Orijinal', 'Sağ Çamurluk': 'Boyalı'}
@@ -27,6 +34,10 @@ class OtoDNAReport {
     required this.raporNo,
     required this.saseNo,
     required this.bayiAdi,
+    required this.countryId,
+    required this.regionId,
+    required this.cityId,
+    required this.districtId,
     required this.motorPerformans,
     required this.kaportaDurumu,
     this.kritikHataVarMi = false,
@@ -44,6 +55,10 @@ class OtoDNAReport {
       'rapor_no': raporNo,
       'sase_no': saseNo.toUpperCase(),
       'bayi_adi': bayiAdi,
+      'country_id': countryId,
+      'region_id': regionId,
+      'city_id': cityId,
+      'district_id': districtId,
       'motor_performans': motorPerformans,
       'kaporta_durumu': kaportaDurumu,
       'kritik_hata_var_mi': kritikHataVarMi,
@@ -63,6 +78,10 @@ class OtoDNAReport {
       raporNo: data['rapor_no'] ?? 'OTODNA-XXXX',
       saseNo: data['sase_no'] ?? 'Bilinmiyor',
       bayiAdi: data['bayi_adi'] ?? 'Belirtilmedi',
+      countryId: data['country_id'] ?? '',
+      regionId: data['region_id'] ?? '',
+      cityId: data['city_id'] ?? '',
+      districtId: data['district_id'] ?? '',
       motorPerformans: (data['motor_performans'] ?? 0).toInt(),
       kaportaDurumu: Map<String, dynamic>.from(data['kaporta_durumu'] ?? {}),
       kritikHataVarMi: data['kritik_hata_var_mi'] ?? false,

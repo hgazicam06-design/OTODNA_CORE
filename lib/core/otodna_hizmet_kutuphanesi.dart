@@ -7,70 +7,69 @@ class SiberHizmetKutuphanesi {
 
   // ── 🧠 KARARGAH MASTER LİSTESİ (DEĞİŞTİRİLEMEZ ANA VERİ) ──
   static const Map<String, List<String>> masterListe = {
-    "Sanayi İşleme & İmalat": [
-      "Torna & Freze (CNC)",
-      "Motor Kapak Taşlama",
-      "Özel Parça Üretimi",
-      "Krank Taşlama & Dengeleme",
-      "Piston & Gömlek Çakma"
+    "OTO MEKANİK & REVİZYON": [
+      "Periyodik Bakım",
+      "Motor Rektefiye",
+      "Şanzıman Tamiri (Manuel)",
+      "Otomatik Şanzıman Tamiri",
+      "Direksiyon Kutusu Tamiri",
+      "Şaft & Diferansiyel Tamiri",
+      "Torsiyon Tamiri",
+      "Kapakçı İşlemleri",
+      "Tornacı İşlemleri"
     ],
-    "Yedek Parça & Tedarik": [
-      "Sıfır Orijinal / Yan Sanayi Parça",
-      "Çıkma Parça & Geri Dönüşüm",
-      "Oto Hurda & Parçalanmış Araç",
-      "Yağ & Filtre & Sarf Malzeme",
-      "Madeni Yağ Distribütörü"
+    "OTO ELEKTRİK & ELEKTRONİK": [
+      "Genel Oto Elektrik",
+      "ECU (Beyin) Tamiri",
+      "Sigorta Kutusu Tamiri",
+      "Far Ayarı & Restorasyonu",
+      "Akü Satış & Servis",
+      "Alarm Sistemleri",
+      "Park Sensörü Montajı",
+      "Multimedya & Ses Sistemleri",
+      "Gizli Özellik Açma",
+      "Yazılım Güncelleme (Chiptuning/Remap)"
     ],
-    "Mekanik & Motor": [
-      "Genel Mekanik Bakım",
-      "Motor Revizyon (Rektefiye)",
-      "Şanzıman Tamiri (Otomatik/Manuel)",
-      "Turbo Revizyon & Onarım",
-      "Pompa & Enjektör Servisi",
-      "Radyatör & Isı Sistemleri",
-      "Egzoz & Emisyon & DPF Temizliği"
+    "İKLİMLENDİRME": [
+      "Klima Gaz Dolumu",
+      "Klima Kompresör Tamiri",
+      "Kalorifer Petek Temizliği (Makinalı)",
+      "Klima Dezenfeksiyonu"
     ],
-    "Şase & Alt Takım": [
-      "Şase Düzeltme & Doğrultma",
-      "Makasçı & Ağır Vasıta Süspansiyon",
-      "Rot-Balans & Jant Düzeltme",
-      "Amortisör & Helezon Tamiri",
-      "Diferansiyel Onarım",
-      "Lastik & Jant Satış / Tamir"
+    "KAPORTA, BOYA & ESTETİK": [
+      "Fırın Boya",
+      "Mikron (Lokal) Boya",
+      "Boyasız Göçük Düzeltme (PDR)",
+      "Şasi Düzeltme (Şaseci)",
+      "Ziftleme & Alt Koruma",
+      "Araç Kaplama (PPF/Folyolama)",
+      "Karlık & Body Kit (Karlıkçı)"
     ],
-    "Elektrik & Yazılım": [
-      "Oto Elektrik Genel",
-      "Beyin (ECU) Tamiri & Yazılım",
-      "Chip Tuning & Performans",
-      "Akü & Marş & Şarj Sistemleri",
-      "Dijital Gösterge & Multimedya",
-      "Kilit & Alarm & Sunroof Tamiri",
-      "Otonom Sürüş & Radar Kalibrasyonu" // Yeni Nesil Kalkan
+    "GÜVENLİK & KİLİT": [
+      "İmmobilizer Çözümleri",
+      "Anahtar Kodlama & Yedekleme",
+      "Oto Kilit Tamiri",
+      "Cam Tamiri & Değişimi"
     ],
-    "Kaporta & Estetik": [
-      "Kaporta Onarım & Şase İskelet",
-      "Fırın Boya & Renk Mikseri",
-      "PDR (Boyasız Göçük Düzeltme)",
-      "Oto Cam Değişimi & Film",
-      "Döşeme & Tavan & İç Restorasyon",
-      "Pasta Cila & Seramik Kaplama",
-      "Oto Kuaför & Detaylı Temizlik"
+    "EGZOZ & EMİSYON": [
+      "Egzoz Tamiri & Manifold",
+      "Partikül Filtresi (DPF) Temizliği",
+      "Katalizör Değişimi",
+      "Egzoz Emisyon Ölçüm İstasyonu"
     ],
-    "Özel Araçlar & Lojistik": [
-      "Kurtarıcı & 7/24 Yol Yardım",
-      "Rent a Car (Araç Kiralama)",
-      "Ağır Vasıta (Kamyon/Tır) Servisi",
-      "Motosiklet Tamir & Bakım",
-      "İş Makinesi Onarım & Hidrolik",
-      "Ekspertiz & Oto Test Merkezi"
+    "LASTİK & ALT TAKIM": [
+      "Rot Ayarı",
+      "Balans Ayarı",
+      "Lastik Tamiri & Değişimi",
+      "Jant Düzeltme & Boyama",
+      "Fren Testi & Tamiri"
     ],
-    "Yeni Nesil (Kuantum) Sistemler": [
-      "Elektrikli Araç (EV) Servisi",
-      "EV Batarya Onarım & Değişim", // Yeni Nesil Karargah Hedefi
-      "Hibrit (Hybrid) Sistem Onarımı",
-      "LPG & Doğalgaz Dönüşüm Merkezi",
-      "Klima & İklimlendirme Uzmanı",
-      "Off-Road & 4x4 Modifiye"
+    "KURUMSAL & LOJİSTİK": [
+      "Oto Ekspertiz",
+      "Yol Yardım & Çekici",
+      "Ahtapot Çekici (Özel Tahliye)",
+      "Rent A Car (Oto Kiralama)",
+      "Sigorta & Kasko Aracılık"
     ]
   };
 
@@ -99,5 +98,44 @@ class SiberHizmetKutuphanesi {
   /// Karargah UI tasarımları için sadece ana kategorilerin isimlerini fırlatır.
   static List<String> anaKategorileriGetir() {
     return masterListe.keys.toList();
+  }
+
+  // ── 🏷️ SİBER ETİKET (TAG) ÜRETİCİ MOTOR ──
+  /// Seçilen kategori ve branştan Firestore aramaları için optimize edilmiş etiketler üretir.
+  /// Örn: "İKLİMLENDİRME" ve "Klima Gaz Dolumu" -> ["iklimlendirme", "klima_gaz_dolumu"]
+  static List<String> etiketUret(String kategori, String brans) {
+    List<String> etiketler = [];
+    
+    String turkceKarakterTemizle(String metin) {
+      return metin.toLowerCase()
+          .replaceAll('ı', 'i')
+          .replaceAll('ğ', 'g')
+          .replaceAll('ü', 'u')
+          .replaceAll('ş', 's')
+          .replaceAll('ö', 'o')
+          .replaceAll('ç', 'c')
+          .replaceAll(' & ', '_')
+          .replaceAll(',', '')
+          .replaceAll(RegExp(r'[()/]'), '')
+          .trim()
+          .replaceAll(RegExp(r'\s+'), '_')
+          .replaceAll('__', '_');
+    }
+
+    String formatliKategori = turkceKarakterTemizle(kategori);
+    String formatliBrans = turkceKarakterTemizle(brans);
+
+    if (!etiketler.contains(formatliKategori)) etiketler.add(formatliKategori);
+    if (!etiketler.contains(formatliBrans)) etiketler.add(formatliBrans);
+
+    // Kuantum Parçalama: Eğer branş "klima_gaz_dolumu" ise sadece "klima" yı da ekle
+    List<String> kelimeler = formatliBrans.split('_');
+    for (String kelime in kelimeler) {
+      if (kelime.length > 2 && !etiketler.contains(kelime)) {
+        etiketler.add(kelime);
+      }
+    }
+
+    return etiketler;
   }
 }
