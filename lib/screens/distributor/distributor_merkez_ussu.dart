@@ -27,8 +27,9 @@ class _DistributorMerkezUssuState extends State<DistributorMerkezUssu> {
     }
 
     return ResponsiveKalkan(
+      isOledBackground: true,
       child: Scaffold(
-        backgroundColor: Colors.black, // Titanyum / OLED Siyah Karışımı
+        backgroundColor: Colors.transparent, // Zırh üzerinden aydınlatılacak
         appBar: AppBar(
           backgroundColor: Colors.transparent, elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.altinSari, size: 18), onPressed: () => Navigator.pop(context)),

@@ -3,6 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
+
 class MuayeneOnayEkrani extends ConsumerStatefulWidget {
   final String plakaID;
   final Map<String, int> islenenKontrolListesi; // 0: Bekliyor, 1: ✅, 2: ❌
@@ -20,9 +24,9 @@ class MuayeneOnayEkrani extends ConsumerStatefulWidget {
 }
 
 class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with SingleTickerProviderStateMixin {
-  final Color bgColor = const Color(0xFF0F172A);
-  final Color primaryCyan = const Color(0xFF00FFC2);
-  final Color surfaceColor = Colors.white.withOpacity(0.05);
+  final Color bgColor = SiberTema.oledBlack;
+  final Color primaryCyan = SiberTema.kuantumCyan;
+  final Color surfaceColor = SiberTema.matGrey;
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -61,8 +65,8 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
   void _showSnackBar(String msg, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(msg, style: TextStyle(color: isError ? Colors.white : Colors.black, fontWeight: FontWeight.bold)),
-      backgroundColor: isError ? Colors.redAccent : const Color(0xFF00FFC2),
+      content: Text(msg, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.bold)),
+      backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
     ));
   }
 
@@ -105,7 +109,7 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
       WriteBatch batch = _db.batch();
 
       // 1. İşlem: Aracın DNA Skorunu ve Son Bakımını Güncelle
-      DocumentReference aracRef = _db.collection('araclar').doc(widget.plakaID);
+      DocumentReference aracRef = _db.collection('vehicles').doc(widget.plakaID);
       batch.update(aracRef, {
         'dna_skoru': widget.yeniDnaSkoru,
         'son_ekspertiz_tarihi': FieldValue.serverTimestamp(),
@@ -113,12 +117,23 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
       });
 
       // 2. İşlem: Resmi Ekspertiz/Muayene Raporunu Kuantum Ağına Mühürle
-      DocumentReference raporRef = _db.collection('raporlar').doc();
+      DocumentReference raporRef = _db.collection('service_records').doc();
       batch.set(raporRef, {
         'plaka': widget.plakaID,
         'usta_id': ustaId,
         'kontrol_listesi': widget.islenenKontrolListesi, // 0, 1, 2 formatında saf veri
         'yeni_dna_skoru': widget.yeniDnaSkoru,
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      // 3. İşlem: Siber İstihbarat Logu
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'MUAYENE_ONAY_MUHURU',
+        'seviye': 'BİLGİ',
+        'islem_detayi': 'SİBER MUAYENE: ${widget.plakaID} plakalı araç için yeni DNA skoru (${widget.yeniDnaSkoru}) mühürlendi.',
+        'vaka_id': widget.plakaID,
+        'kullanici_id': ustaId,
         'tarih': FieldValue.serverTimestamp(),
       });
 
@@ -143,8 +158,10 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: bgColor,
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -274,6 +291,7 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
             ),
           ],
         ),
+      ),
       ),
     );
   }

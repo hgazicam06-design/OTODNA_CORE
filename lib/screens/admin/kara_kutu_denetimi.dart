@@ -52,12 +52,13 @@ class KaraKutuServisi {
       if (adminSifre != gercekSifre) {
         // 🚨 SİBER İHLAL: Yetkisiz erişim denemesi anında füzeyi ateşler ve loglara yazar! (Atomik olarak)
         WriteBatch ihlalBatch = _db.batch();
-        DocumentReference ihlalLogRef = _db.collection('sistem_loglari').doc();
+        DocumentReference ihlalLogRef = _db.collection('siber_istihbarat_loglari').doc();
 
         ihlalBatch.set(ihlalLogRef, {
-          'islem_turu': 'sos', // Kırmızı Alarm (Admin Panelinde yanar)
+          'islem_turu': 'GÜVENLİK',
+          'seviye': 'KRİTİK',
           'islem_detayi': 'SİBER İHLAL: Kara Kutu verilerine YETKİSİZ ERİŞİM denemesi! Araç ID: $hedefAracId',
-          'bayi_isim': 'YETKİSİZ TERMİNAL (ID: $adminId)',
+          'kullanici_id': adminId,
           'tarih': FieldValue.serverTimestamp(),
         });
 
@@ -73,12 +74,13 @@ class KaraKutuServisi {
 
       // 3. İnceleme Başlatıldığını Amiral Gemisine (Loglara) Kaydet (Atomik)
       WriteBatch basariBatch = _db.batch();
-      DocumentReference basariLogRef = _db.collection('sistem_loglari').doc();
+      DocumentReference basariLogRef = _db.collection('siber_istihbarat_loglari').doc();
 
       basariBatch.set(basariLogRef, {
-        'islem_turu': 'basarili',
+        'islem_turu': 'KARA_KUTU',
+        'seviye': 'BİLGİ',
         'islem_detayi': 'DERİN İNCELEME: $hedefAracId plakalı aracın Kara Kutu verileri Karargaha açıldı.',
-        'bayi_isim': 'AMİRAL GEMİSİ',
+        'hedef_id': hedefAracId,
         'tarih': FieldValue.serverTimestamp(),
       });
 

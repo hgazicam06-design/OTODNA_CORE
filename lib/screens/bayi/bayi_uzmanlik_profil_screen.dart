@@ -70,8 +70,11 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
     setState(() => _isLoading = true);
 
     try {
-      // Doğrudan kullanıcının belgesine uzmanlık radarlarını ekliyoruz
-      await _db.collection('kullanicilar').doc(_currentUser!.uid).update({
+      WriteBatch batch = _db.batch();
+
+      // 1. Doğrudan kullanıcının belgesine uzmanlık radarlarını ekliyoruz
+      DocumentReference userRef = _db.collection('kullanicilar').doc(_currentUser!.uid);
+      batch.update(userRef, {
         'uzmanlik_ana_kategori': _secilenAnaKategori,
         'uzmanlik_alt_dallari': _secilenAltUzmanliklar,
         'hizmet_verilen_markalar': _secilenMarkalar,
@@ -79,6 +82,18 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
         'profil_tamamlandi_mi': true, // Arama motorunda görünür kılan şalter
         'guncellenme_tarihi': FieldValue.serverTimestamp(),
       });
+
+      // 2. Siber Radara Bildir
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'kategori': 'BAYİ_RÜTBESİ',
+        'seviye': 'BİLGİ',
+        'mesaj': 'UZMANLIK GÜNCELLEMESİ: Bir bayi uzmanlık profilini güncelledi. Ana Branş: $_secilenAnaKategori',
+        'hedef_id': _currentUser!.uid,
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
 
       _showSnackBar("Siber Uzmanlık Profiliniz Kuantum Ağına Mühürlendi! 🛡️");
 

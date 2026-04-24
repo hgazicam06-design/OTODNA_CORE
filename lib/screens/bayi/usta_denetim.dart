@@ -7,8 +7,8 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'dart:developer' as developer;
 
 // 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI (2 Kat Yukarı)
-import '../../../../core/siber_tema.dart';
-import '../../../../core/responsive_kalkan.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
 
 /// 🛡️ KUANTUM USTA ASİSTANI VE DENETİM MERKEZİ
 /// Müşterinin talebini Karargahtan (Firebase) çeker, ustaya sesli okur ve ustanın komutuyla listeyi düzenleyip atomik mühürler.
@@ -164,6 +164,17 @@ class _SiberUstaDenetimSayfasiState extends State<SiberUstaDenetimSayfasi> {
         'usta_id': widget.ustaId,
         'islem_durumu': 'MUDUHALEYE_BASLANDI',
         'zaman_damgasi': FieldValue.serverTimestamp(),
+      });
+
+      // 3. İstihbarat Kara Kutusuna Mühürle
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'USTA_DENETIM_ONAYI',
+        'seviye': 'BİLGİ',
+        'islem_detayi': 'SİBER DENETİM: ${widget.ustaAdi} (Usta ID: ${widget.ustaId}), "${widget.talepId}" numaralı müşteri talebini onaylayıp müdahaleye başladı. Yapılacaklar: ${_yapilacaklar.join(", ")}',
+        'vaka_id': widget.talepId,
+        'kullanici_id': widget.ustaId,
+        'tarih': FieldValue.serverTimestamp(),
       });
 
       await batch.commit(); // Füzeleri ateşle!

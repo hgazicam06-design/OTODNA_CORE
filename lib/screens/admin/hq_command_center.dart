@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // 🔥 SİBER KÖPRÜLER (Mutlak Rota ile Zırhlandı - Bağlantı Asla Kopmaz!)
-import 'package:otodna/screens/admin/master_gate.dart'; // Not: Eğer master_gate auth klasöründeyse CTRL+. ile yolunu teyit et Komutan!
+import 'package:otodna/screens/admin/master_gate.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
 
 class HqCommandCenterScreen extends StatefulWidget {
   const HqCommandCenterScreen({super.key});
@@ -16,10 +18,10 @@ class HqCommandCenterScreen extends StatefulWidget {
 class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with SingleTickerProviderStateMixin {
   late AnimationController _pulseController;
 
-  static const _darkSpace = Color(0xFF060F0F); // Derin Karargah Siyahı
-  static const _cyan = Color(0xFF00FFC2); // Kuantum Turkuazı
-  static const _neonBlue = Color(0xFF2979FF); // Siber Mavi
-  static const _alertRed = Color(0xFFFF2A2A); // Kırmızı Alarm
+  static const _darkSpace = SiberTema.oledBlack; // Derin Karargah Siyahı
+  static const _cyan = SiberTema.kuantumCyan; // Kuantum Turkuazı
+  static const _neonBlue = SiberTema.kuantumCyan; // Siber Mavi'yi de Turkuaz'a sabitle
+  static const _alertRed = SiberTema.kanKirmizi; // Kırmızı Alarm
 
   // Oturum açan komutanın ismini Auth'dan alıyoruz (Gerçek sistem)
   final String _adminIsmi = FirebaseAuth.instance.currentUser?.displayName ?? "Gazi Komutan";
@@ -44,10 +46,12 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: _darkSpace,
-      appBar: AppBar(
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
         backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
         elevation: 0,
         leading: const Icon(Icons.shield, color: _cyan),
         title: const Text("ADMİN KARARGAHI", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 16)),
@@ -96,24 +100,28 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
           ),
         ),
       ),
+      ),
     );
   }
 
   // --- 🔴 FİREBASE CANLI VERİ MOTORLARI ---
 
   Widget _buildCanliFinansKarti() {
-    return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance.collection('sistem_verileri').doc('finans').snapshots(),
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('finansal_islemler').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) return _buildKuantumLoader(_cyan);
 
         double toplamHacim = 0.0;
-        if (snapshot.hasData && snapshot.data!.exists) {
-          toplamHacim = ((snapshot.data!.data() as Map<String, dynamic>)['toplam_ciro'] ?? 0).toDouble();
+        double gaziPayi = 0.0;
+        
+        if (snapshot.hasData) {
+          for (var doc in snapshot.data!.docs) {
+            var data = doc.data() as Map<String, dynamic>;
+            toplamHacim += (data['brut_tutar'] ?? 0).toDouble();
+            gaziPayi += (data['gazi_payi_12'] ?? ((data['brut_tutar'] ?? 0) * 0.12)).toDouble();
+          }
         }
-
-        // 💰 SİBER FİNANS KURALI: Sadece ve sadece %12 (Net %10 + Vergi %2)
-        double gaziPayi = toplamHacim * 0.12;
 
         return _buildCamEfektliKutu(
           borderColor: _cyan.withOpacity(0.5),
@@ -150,8 +158,8 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
 
   Widget _buildCanliAracAgi() {
     return StreamBuilder<QuerySnapshot>(
-      // Yalnızca en son eklenen veya güncellenen 5 aracı radarda gösterir (Performans için)
-      stream: FirebaseFirestore.instance.collection('araclar').orderBy('kayit_tarihi', descending: true).limit(5).snapshots(),
+      // Yalnızca en son eklenen 5 aracı radarda gösterir
+      stream: FirebaseFirestore.instance.collection('vehicles').limit(5).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) return _buildKuantumLoader(_neonBlue);
         if (snapshot.hasError) return _buildSiberUyari("Radar Bağlantı Hatası: ${snapshot.error}", _alertRed);
@@ -162,9 +170,12 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
         return Column(
           children: araclar.map((doc) {
             var data = doc.data() as Map<String, dynamic>;
-            String plaka = doc.id.toUpperCase();
-            String sahip = data['sahibi'] ?? 'Bilinmeyen Sahip';
-            String durum = data['durum'] ?? 'Siber Onaylı';
+            String plaka = data['plaka']?.toString().toUpperCase() ?? doc.id.toUpperCase();
+            String adi = data['sahibiAdi'] ?? '';
+            String soyadi = data['sahibiSoyadi'] ?? '';
+            String sahip = "$adi $soyadi".trim();
+            if (sahip.isEmpty) sahip = 'Bilinmeyen Sahip';
+            String durum = 'Siber Onaylı';
 
             return Padding(
               padding: const EdgeInsets.only(bottom: 12),
@@ -214,9 +225,9 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
         ),
         const SizedBox(width: 16),
         Expanded(
-          // FİREBASE: Aktif SOS Sayacı
+          // FİREBASE: Aktif SOS Sayacı (İstihbarat)
           child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('sos_cagrilari').where('durum', isEqualTo: 'aktif').snapshots(),
+            stream: FirebaseFirestore.instance.collection('siber_istihbarat_loglari').where('kategori', isEqualTo: 'SOS').snapshots(),
             builder: (context, snapshot) {
               int sosSayisi = snapshot.hasData ? snapshot.data!.docs.length : 0;
               Color sosRengi = sosSayisi > 0 ? _alertRed : Colors.greenAccent;

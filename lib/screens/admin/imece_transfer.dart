@@ -7,6 +7,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:otodna/core/siber_tema.dart';
 import 'package:otodna/core/responsive_kalkan.dart';
 
+enum KararTipi { INCELEME, MUSTERI_HATASI, PARCA_GARANTI, ARABULUCU }
+
 class ImeceAdaletPaneli extends StatefulWidget {
   const ImeceAdaletPaneli({super.key});
 
@@ -17,8 +19,8 @@ class ImeceAdaletPaneli extends StatefulWidget {
 class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
   bool _isProcessing = false;
 
-  // --- 🔴 FİREBASE: KUANTUM ADALET MOTORU (PARA TRANSFERİ) ---
-  Future<void> _kuantumHukmuVer(String belgeId, Map<String, dynamic> vakaData, bool onaylandiMi) async {
+  // --- 🔴 FİREBASE: SİBER MAHKEME VE HAKEM MOTORU ---
+  Future<void> _kuantumHukmuVer(String belgeId, Map<String, dynamic> vakaData, KararTipi karar, {double onaylananTutar = 0}) async {
     setState(() => _isProcessing = true);
 
     try {
@@ -26,59 +28,87 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
       WriteBatch batch = db.batch();
 
       DocumentReference vakaRef = db.collection('imece_talepleri').doc(belgeId);
+      String hataliBayiId = vakaData['hatali_bayi_id'] ?? 'BILINMEYEN';
+      String onaranBayiId = vakaData['onaran_bayi_id'] ?? 'BILINMEYEN';
+      
+      String islemMesaji = "";
 
-      if (onaylandiMi) {
-        double tutar = (vakaData['tazminat_tutari'] ?? 0).toDouble();
-        String hataliBayiId = vakaData['hatali_bayi_id'];
-        String onaranBayiId = vakaData['onaran_bayi_id'];
+      switch (karar) {
+        case KararTipi.INCELEME:
+          batch.update(vakaRef, {
+            'durum': 'İNCELEMEDE - EKSPERTİZ BEKLENİYOR',
+            'karar_tarihi': FieldValue.serverTimestamp(),
+          });
+          islemMesaji = "İMECE DİVANI: Dosya ekspertiz ve kanıt incelemesine alındı.";
+          break;
 
-        // 🔥 SİBER KURAL: Adalet Divanında bile Karargah hakkını alır! (%12 Evrensel Kesinti)
-        double gaziPayi = tutar * 0.12;
-        double onaranBayiHakedis = tutar - gaziPayi;
+        case KararTipi.MUSTERI_HATASI:
+          batch.update(vakaRef, {
+            'durum': 'REDDEDİLDİ - KULLANICI HATASI',
+            'karar_tarihi': FieldValue.serverTimestamp(),
+          });
+          islemMesaji = "İMECE DİVANI: Kullanıcı hatası tespit edildi. Usta muaf tutuldu.";
+          break;
 
-        // 1. Hatalı Bayinin Hakedişinden TAM TUTARI Kes (Ceza)
-        DocumentReference hataliBayiRef = db.collection('kullanicilar').doc(hataliBayiId);
-        batch.update(hataliBayiRef, {'toplam_hakedis': FieldValue.increment(-tutar)});
+        case KararTipi.PARCA_GARANTI:
+          batch.update(vakaRef, {
+            'durum': 'YÖNLENDİRİLDİ - PARÇA GARANTİSİ',
+            'karar_tarihi': FieldValue.serverTimestamp(),
+          });
+          islemMesaji = "İMECE DİVANI: Parça kaynaklı hata. Tedarikçi/Garanti sürecine aktarıldı.";
+          break;
 
-        // 2. Onaran Bayinin Hakedişine NET TUTARI Ekle (Ödül)
-        DocumentReference onaranBayiRef = db.collection('kullanicilar').doc(onaranBayiId);
-        batch.update(onaranBayiRef, {'toplam_hakedis': FieldValue.increment(onaranBayiHakedis)});
+        case KararTipi.ARABULUCU:
+          // ⚖️ HAKEM KARARI: Adminin belirlediği tutar üzerinden işlem yapılır
+          double gaziPayi = onaylananTutar * 0.12;
+          double onaranBayiHakedis = onaylananTutar - gaziPayi;
 
-        // 3. Karargah Kasasına %12 Payı Ekle!
-        DocumentReference sistemFinansRef = db.collection('sistem_verileri').doc('finans');
-        batch.set(sistemFinansRef, {
-          'toplam_gazi_payi': FieldValue.increment(gaziPayi),
-          'toplam_ciro': FieldValue.increment(tutar), // İmece hacmini de ciroya yansıt
-        }, SetOptions(merge: true));
+          // 1. Hatalı Bayiden Kesinti
+          DocumentReference hataliBayiRef = db.collection('kullanicilar').doc(hataliBayiId);
+          batch.update(hataliBayiRef, {'toplam_hakedis': FieldValue.increment(-onaylananTutar)});
 
-        // 4. Vaka Durumunu Onaylandı Yap
-        batch.update(vakaRef, {
-          'durum': 'ONAYLANDI - TRANSFER EDİLDİ',
-          'karar_tarihi': FieldValue.serverTimestamp(),
-        });
+          // 2. Onaran Bayiye Ödül
+          DocumentReference onaranBayiRef = db.collection('kullanicilar').doc(onaranBayiId);
+          batch.update(onaranBayiRef, {'toplam_hakedis': FieldValue.increment(onaranBayiHakedis)});
 
-        // 5. Sistem Loglarına (Kara Kutu) İşle
-        DocumentReference logRef = db.collection('sistem_loglari').doc();
-        batch.set(logRef, {
-          'islem_turu': 'basarili',
-          'islem_detayi': 'İMECE ADALETİ: ₺$tutar ceza kesildi. ₺$onaranBayiHakedis onaran bayiye, ₺$gaziPayi Karargah kasasına aktarıldı.',
-          'bayi_isim': 'ADALET DİVANI',
-          'tarih': FieldValue.serverTimestamp(),
-        });
+          // 3. Karargah Finans Merkezine Yatırım
+          DocumentReference finansRef = db.collection('finansal_islemler').doc();
+          batch.set(finansRef, {
+            'islem_tipi': 'IMECE_CEZASI',
+            'brut_tutar': onaylananTutar,
+            'gazi_payi_12': gaziPayi,
+            'hatali_bayi_id': hataliBayiId,
+            'onaran_bayi_id': onaranBayiId,
+            'vaka_id': belgeId,
+            'tarih': FieldValue.serverTimestamp(),
+          });
 
-      } else {
-        // Reddedilirse sadece durumu güncelle
-        batch.update(vakaRef, {
-          'durum': 'REDDEDİLDİ - İNCELEME',
-          'karar_tarihi': FieldValue.serverTimestamp(),
-        });
+          // 4. Vaka Güncellemesi
+          batch.update(vakaRef, {
+            'durum': 'ONAYLANDI - ARABULUCU TRANSFERİ',
+            'onaylanan_tutar': onaylananTutar,
+            'karar_tarihi': FieldValue.serverTimestamp(),
+          });
+
+          islemMesaji = "İMECE ARABULUCU: Karargah kararıyla ₺$onaylananTutar transferine hükmedildi.";
+          break;
       }
+
+      // 5. Matrix İstihbarat Logu
+      DocumentReference logRef = db.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'İMECE_DİVANI',
+        'seviye': karar == KararTipi.ARABULUCU ? 'KRİTİK' : 'BİLGİ',
+        'islem_detayi': islemMesaji,
+        'vaka_id': belgeId,
+        'tarih': FieldValue.serverTimestamp(),
+      });
 
       // Tetiği Çek (Atomik İşlem)
       await batch.commit();
 
       if (!mounted) return;
-      _siberUyari(onaylandiMi ? "MÜHÜR BASILDI: Para Transferi Gerçekleşti! ⚖️" : "VAKA REDDEDİLDİ: İncelemeye Alındı.", onaylandiMi ? SiberTema.kuantumCyan : SiberTema.kanKirmizi);
+      _siberUyari("ADALET MÜHRÜ BASILDI: İşlem Başarılı!", SiberTema.kuantumCyan);
 
     } catch (e) {
       if (!mounted) return;
@@ -86,6 +116,71 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
     } finally {
       if (mounted) setState(() => _isProcessing = false);
     }
+  }
+
+  void _arabulucuDiyaloguAc(String belgeId, Map<String, dynamic> vakaData) {
+    double talepEdilen = (vakaData['tazminat_tutari'] ?? 0).toDouble();
+    TextEditingController tutarController = TextEditingController(text: talepEdilen.toStringAsFixed(0));
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.black,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: SiberTema.altinSari.withOpacity(0.5))),
+          title: const Row(
+            children: [
+              Icon(Icons.balance, color: SiberTema.altinSari),
+              SizedBox(width: 10),
+              Text("SİBER HAKEM KARARI", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16)),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Talep Edilen: ₺\${talepEdilen.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 16),
+              const Text("Adil Görülen Onarım Bedelini Giriniz:", style: TextStyle(color: Colors.white70, fontSize: 12)),
+              const SizedBox(height: 8),
+              TextField(
+                controller: tutarController,
+                keyboardType: TextInputType.number,
+                style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900),
+                decoration: InputDecoration(
+                  prefixText: "₺ ",
+                  prefixStyle: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.05),
+                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.3))),
+                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.altinSari)),
+                ),
+              ),
+              const SizedBox(height: 12),
+              const Text("Sisteme girilen bu tutar üzerinden %12 Karargah payı kesilecek ve para transferi anında gerçekleşecektir.", style: TextStyle(color: Colors.white38, fontSize: 10, fontStyle: FontStyle.italic)),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("İPTAL", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold)),
+            ),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(backgroundColor: SiberTema.altinSari, foregroundColor: Colors.black),
+              onPressed: () {
+                double girilenTutar = double.tryParse(tutarController.text) ?? 0.0;
+                if (girilenTutar > 0) {
+                  Navigator.pop(context);
+                  _kuantumHukmuVer(belgeId, vakaData, KararTipi.ARABULUCU, onaylananTutar: girilenTutar);
+                }
+              },
+              icon: const Icon(Icons.gavel, size: 16),
+              label: const Text("MÜHRÜ VUR & AKTAR", style: TextStyle(fontWeight: FontWeight.w900)),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _siberUyari(String mesaj, Color renk) {
@@ -107,7 +202,7 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.gavel, color: SiberTema.altinSari), onPressed: () => Navigator.pop(context)),
-          title: const Text("İMECE TRANSFER & ADALET DİVANI", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 14)),
+          title: const Text("SİBER MAHKEME & HAKEM DİVANI", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 14)),
           centerTitle: true,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(2),
@@ -136,7 +231,7 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
       stream: FirebaseFirestore.instance.collection('imece_talepleri').where('durum', isEqualTo: 'BEKLEMEDE').orderBy('talep_tarihi', descending: false).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) return _buildKuantumLoader("VAKALAR TARANIYOR...");
-        if (snapshot.hasError) return Center(child: Text("Siber Ağ Hatası: ${snapshot.error}", style: const TextStyle(color: SiberTema.kanKirmizi)));
+        if (snapshot.hasError) return Center(child: Text("Siber Ağ Hatası: \${snapshot.error}", style: const TextStyle(color: SiberTema.kanKirmizi)));
 
         final docs = snapshot.data?.docs ?? [];
         if (docs.isEmpty) {
@@ -146,7 +241,7 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
               children: [
                 Icon(Icons.balance, color: Colors.white.withOpacity(0.2), size: 60),
                 const SizedBox(height: 16),
-                Text("DİVAN TEMİZ. Bekleyen İmece Talebi Yok.", style: TextStyle(color: Colors.white.withOpacity(0.5), fontWeight: FontWeight.bold, letterSpacing: 1)),
+                Text("DİVAN TEMİZ. Bekleyen Dava Yok.", style: TextStyle(color: Colors.white.withOpacity(0.5), fontWeight: FontWeight.bold, letterSpacing: 1)),
               ],
             ),
           );
@@ -188,8 +283,8 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text("TAZMİNAT TUTARI", style: TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                      Text("₺${tutar.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kanKirmizi, fontSize: 22, fontWeight: FontWeight.w900)),
+                      const Text("TALEP EDİLEN BEDEL", style: TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                      Text("₺\${tutar.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kanKirmizi, fontSize: 22, fontWeight: FontWeight.w900)),
                     ],
                   ),
                   const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: Colors.white12)),
@@ -221,26 +316,56 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
 
             const Padding(padding: EdgeInsets.symmetric(vertical: 20), child: Divider(color: Colors.white12)),
 
-            // 3. ADMİN KARAR MERKEZİ
-            const Center(child: Text("SİBER KOMUTAN MÜHRÜ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2))),
+            // 3. ADMİN KARAR MERKEZİ (4'LÜ HAKEM SİSTEMİ)
+            const Center(child: Text("HAKEM KARARI & SİBER MÜHÜR", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2))),
             const SizedBox(height: 16),
+            
             Row(
               children: [
                 Expanded(
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), side: const BorderSide(color: Colors.white38), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-                    onPressed: () => _kuantumHukmuVer(belgeId, vakaData, false),
-                    child: const Text("REDDET", style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                  child: _buildHakemButonu(
+                    "EKSPERTİZ İSTE", 
+                    Icons.search, 
+                    Colors.orangeAccent, 
+                    () => _kuantumHukmuVer(belgeId, vakaData, KararTipi.INCELEME)
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 8),
                 Expanded(
-                  flex: 2,
+                  child: _buildHakemButonu(
+                    "MÜŞTERİ HATASI", 
+                    Icons.person_off, 
+                    SiberTema.kanKirmizi, 
+                    () => _kuantumHukmuVer(belgeId, vakaData, KararTipi.MUSTERI_HATASI)
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildHakemButonu(
+                    "PARÇA GARANTİSİ", 
+                    Icons.handyman, 
+                    SiberTema.kuantumCyan, 
+                    () => _kuantumHukmuVer(belgeId, vakaData, KararTipi.PARCA_GARANTI)
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
                   child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(backgroundColor: SiberTema.altinSari, foregroundColor: SiberTema.oledBlack, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), elevation: 10, shadowColor: SiberTema.altinSari.withOpacity(0.5)),
-                    onPressed: () => _kuantumHukmuVer(belgeId, vakaData, true),
-                    icon: const Icon(Icons.gavel, size: 20),
-                    label: const Text("ONAYLA & TRANSFER ET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: SiberTema.altinSari, 
+                      foregroundColor: SiberTema.oledBlack, 
+                      padding: const EdgeInsets.symmetric(vertical: 14), 
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), 
+                      elevation: 10, 
+                      shadowColor: SiberTema.altinSari.withOpacity(0.5)
+                    ),
+                    onPressed: () => _arabulucuDiyaloguAc(belgeId, vakaData),
+                    icon: const Icon(Icons.balance, size: 18),
+                    label: const Text("ARABULUCU (HAKEM)", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11)),
                   ),
                 ),
               ],
@@ -248,6 +373,20 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildHakemButonu(String baslik, IconData ikon, Color renk, VoidCallback onTapped) {
+    return OutlinedButton.icon(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: renk,
+        padding: const EdgeInsets.symmetric(vertical: 14), 
+        side: BorderSide(color: renk.withOpacity(0.5)), 
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+      ),
+      onPressed: onTapped,
+      icon: Icon(ikon, size: 16),
+      label: Text(baslik, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 10)),
     );
   }
 

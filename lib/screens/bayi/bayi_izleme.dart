@@ -163,7 +163,20 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
         const SizedBox(height: 8),
         ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kanKirmizi, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-          onPressed: () => developer.log("SİBER BİLGİ: S.O.S Müdahale ekranına yönlendiriliyor..."),
+          onPressed: () {
+            developer.log("SİBER BİLGİ: S.O.S Müdahale ekranına yönlendiriliyor...");
+            
+            // 📡 SİBER RADARA BİLDİR (Bayi Müdahalesi)
+            FirebaseFirestore.instance.collection('siber_istihbarat_loglari').add({
+              'kategori': 'GÜVENLİK',
+              'seviye': 'BİLGİ',
+              'mesaj': 'S.O.S MÜDAHALESİ: Bayi acil durum sinyaline müdahale başlattı.',
+              'hedef_id': 'SOS_MÜDAHALE',
+              'tarih': FieldValue.serverTimestamp(),
+            });
+            
+            // TODO: Müdahale sayfasına Navigator ile geçiş
+          },
           child: const Text("MÜDAHALE ET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
         )
       ],

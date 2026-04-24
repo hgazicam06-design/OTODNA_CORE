@@ -3,15 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // 🚀 KARARGAH ZIRHLARI
+import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
-// SiberTema içindeki yasaklı renkleri eziyoruz.
-// Sadece True Black, Kuantum Turkuazı, Neon Mor ve Kan Kırmızı kullanacağız.
-
-const Color bgDark = Color(0xFF000000); // True Black (Dipsiz Siyah)
-const Color glassBg = Color(0x0AFFFFFF); // Şeffaf Cam
-const Color renkIstihbarat = Color(0xFF00FFC2); // Kuantum Turkuazı (Onay)
-const Color renkKritik = Colors.redAccent; // Kan Kırmızı (Red)
-const Color renkOperasyon = Color(0xFFD500F9); // Neon Mor
+import '../../services/siber_istihbarat_log_motoru.dart'; // 👁️ HER ŞEYİ GÖREN GÖZ (İSTİHBARAT)
 
 class AdminOnayHavuzuScreen extends StatefulWidget {
   const AdminOnayHavuzuScreen({super.key});
@@ -36,17 +30,16 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
       final bayiRef = _db.collection('bayiler').doc(bayiId);
       batch.update(bayiRef, {'uzmanlik_alani': onerilenIslem});
 
-      // 3. Karargah Radarı için Loglara yaz
-      final logRef = _db.collection('sistem_loglari').doc();
-      batch.set(logRef, {
-        'bayi_isim': firmaAdi,
-        'islem_detayi': 'ÖZEL İŞLEM ONAYLANDI: $onerilenIslem',
-        'islem_turu': 'basarili',
-        'tarih': FieldValue.serverTimestamp(),
-      });
-
       // 🚀 Füze Ateşlendi!
       await batch.commit();
+
+      // 3. Karargah İstihbarat Ağına (Matrix'e) Sinyal Gönder
+      SiberIstihbaratLogMotoru.logBayi(
+        'BAYİ İŞLEMİ ONAYLANDI', 
+        'Yetki onaylandı: $onerilenIslem', 
+        bayiId, 
+        firmaAdi
+      );
 
       if (mounted) _siberUyariVer("SİBER ONAY: İşlem bayinin vitrinine mühürlendi!", isError: false);
     } catch (e) {
@@ -63,16 +56,15 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
       final talepRef = _db.collection('onay_bekleyen_islemler').doc(docId);
       batch.update(talepRef, {'durum': 'reddedildi'});
 
-      // 2. Karargah Radarı için Loglara yaz
-      final logRef = _db.collection('sistem_loglari').doc();
-      batch.set(logRef, {
-        'bayi_isim': firmaAdi,
-        'islem_detayi': 'REDDEDİLDİ: Yetkisiz işlem talebi ($onerilenIslem).',
-        'islem_turu': 'hata',
-        'tarih': FieldValue.serverTimestamp(),
-      });
-
       await batch.commit();
+
+      // 2. Karargah İstihbarat Ağına (Matrix'e) Kırmızı Sinyal Gönder
+      SiberIstihbaratLogMotoru.logGuvenlik(
+        'YETKİSİZ BAYİ TALEBİ REDDEDİLDİ', 
+        'Karantinaya alındı: $onerilenIslem', 
+        docId, 
+        firmaAdi
+      );
 
       if (mounted) _siberUyariVer("TALEP REDDEDİLDİ: Karantina başarıyla sağlandı.", isError: true);
     } catch (e) {
@@ -84,7 +76,7 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : Colors.black, fontWeight: FontWeight.bold, letterSpacing: 1)),
-        backgroundColor: isError ? renkKritik : renkIstihbarat,
+        backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
@@ -96,11 +88,11 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
     return ResponsiveKalkan(
       isOledBackground: true,
       child: Scaffold(
-        backgroundColor: bgDark,
+        backgroundColor: SiberTema.oledBlack,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.security, color: renkIstihbarat), onPressed: () => Navigator.pop(context)),
+          leading: IconButton(icon: const Icon(Icons.security, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
           title: const Text("SİBER ONAY HAVUZU", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2)),
           centerTitle: true,
           bottom: PreferredSize(
@@ -112,10 +104,10 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
           stream: _db.collection('onay_bekleyen_islemler').where('durum', isEqualTo: 'bekliyor').orderBy('tarih', descending: false).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator(color: renkIstihbarat, strokeWidth: 2.5));
+              return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2.5));
             }
             if (snapshot.hasError) {
-              return const Center(child: Text("Radar Bağlantısı Koptu!", style: TextStyle(color: renkKritik, fontWeight: FontWeight.bold)));
+              return const Center(child: Text("Radar Bağlantısı Koptu!", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)));
             }
 
             final docs = snapshot.data?.docs ?? [];
@@ -129,7 +121,7 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(40),
                       decoration: BoxDecoration(
-                        color: glassBg,
+                        color: SiberTema.matGrey.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(24),
                         border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
                       ),
@@ -137,7 +129,7 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.verified_user_outlined, size: 56, color: renkIstihbarat.withOpacity(0.3)),
+                          Icon(Icons.verified_user_outlined, size: 56, color: SiberTema.kuantumCyan.withOpacity(0.3)),
                           const SizedBox(height: 20),
                           Text("KARANTİNA HAVUZU TEMİZ", style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 12, letterSpacing: 2, fontWeight: FontWeight.w700)),
                         ],
@@ -167,7 +159,7 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
                       filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: glassBg,
+                          color: SiberTema.matGrey.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(color: Colors.white.withOpacity(0.1), width: 1.5),
                         ),
@@ -183,11 +175,11 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
                                   Container(
                                     padding: const EdgeInsets.all(12),
                                     decoration: BoxDecoration(
-                                      color: glassBg,
+                                      color: SiberTema.matGrey.withOpacity(0.1),
                                       shape: BoxShape.circle,
-                                      border: Border.all(color: renkOperasyon.withOpacity(0.3), width: 1.5),
+                                      border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
                                     ),
-                                    child: const Icon(Icons.storefront_outlined, color: renkOperasyon, size: 24),
+                                    child: const Icon(Icons.storefront_outlined, color: SiberTema.kuantumCyan, size: 24),
                                   ),
                                   const SizedBox(width: 16),
                                   Expanded(
@@ -209,14 +201,14 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
                                 width: double.infinity,
                                 padding: const EdgeInsets.all(20),
                                 decoration: BoxDecoration(
-                                  color: bgDark.withOpacity(0.5),
+                                  color: SiberTema.oledBlack.withOpacity(0.5),
                                   borderRadius: BorderRadius.circular(16),
                                   border: Border.all(color: Colors.white.withOpacity(0.05), width: 1),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("TALEP EDİLEN İŞLEM", style: TextStyle(color: renkIstihbarat.withOpacity(0.7), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                                    Text("TALEP EDİLEN İŞLEM", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.7), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
                                     const SizedBox(height: 12),
                                     Text(onerilenIslem, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600)),
                                   ],
@@ -232,10 +224,10 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
                                     child: ElevatedButton.icon(
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.transparent,
-                                        foregroundColor: renkKritik,
+                                        foregroundColor: SiberTema.kanKirmizi,
                                         elevation: 0,
                                         padding: const EdgeInsets.symmetric(vertical: 16),
-                                        side: BorderSide(color: renkKritik.withOpacity(0.5), width: 1.5),
+                                        side: BorderSide(color: SiberTema.kanKirmizi.withOpacity(0.5), width: 1.5),
                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                       ),
                                       onPressed: () => _talebiReddet(docId, firmaAdi, onerilenIslem),
@@ -248,11 +240,11 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
                                   Expanded(
                                     child: ElevatedButton.icon(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: renkIstihbarat.withOpacity(0.1),
-                                        foregroundColor: renkIstihbarat,
+                                        backgroundColor: SiberTema.kuantumCyan.withOpacity(0.1),
+                                        foregroundColor: SiberTema.kuantumCyan,
                                         elevation: 0,
                                         padding: const EdgeInsets.symmetric(vertical: 16),
-                                        side: const BorderSide(color: renkIstihbarat, width: 1.5),
+                                        side: const BorderSide(color: SiberTema.kuantumCyan, width: 1.5),
                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                       ),
                                       onPressed: () => _talebiOnayla(docId, bayiId, firmaAdi, onerilenIslem),

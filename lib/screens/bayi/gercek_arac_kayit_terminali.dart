@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 // 🚨 DİKKAT: Modellerinin import yolları. Kırmızı çizerse Ctrl + . ile düzelt!
 import '../../models/arac_model.dart';
 import '../../models/car_ad_model.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
 
 class GercekAracKayitTerminali extends StatefulWidget {
   const GercekAracKayitTerminali({super.key});
@@ -174,7 +176,7 @@ class _GercekAracKayitTerminaliState extends State<GercekAracKayitTerminali> {
       // 4. BATCH İŞLEMİ (Atomik Kayıt)
       WriteBatch batch = firestore.batch();
 
-      DocumentReference aracRef = firestore.collection('araclar').doc(plakaID);
+      DocumentReference aracRef = firestore.collection('vehicles').doc(plakaID);
       DocumentReference ilanRef = firestore.collection('ilanlar').doc(ilanID);
       DocumentReference userRef = firestore.collection('kullanicilar').doc(currentUid);
 
@@ -201,6 +203,17 @@ class _GercekAracKayitTerminaliState extends State<GercekAracKayitTerminali> {
           'kullanilan_ilan_sayisi': FieldValue.increment(1)
         });
       }
+
+      // 5. SİBER İSTİHBARAT RADARINA BİLDİR
+      DocumentReference logRef = firestore.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'YENI_ARAC_KAYDI_VE_ILAN',
+        'seviye': 'BİLGİ',
+        'islem_detayi': 'YENİ ARAÇ & İLAN: $plakaID plakalı araç ve ilanı sisteme mühürlendi. (Fiyat: ₺${girilenFiyat.toStringAsFixed(2)})',
+        'vaka_id': plakaID,
+        'kullanici_id': currentUid,
+        'tarih': FieldValue.serverTimestamp(),
+      });
 
       // Kuantum Ateşlemesi!
       await batch.commit();
@@ -233,17 +246,19 @@ class _GercekAracKayitTerminaliState extends State<GercekAracKayitTerminali> {
 
   @override
   Widget build(BuildContext context) {
-    const primaryCyan = Color(0xFF00FFC2);
-    const bgColor = Color(0xFF0F172A);
+    const primaryCyan = SiberTema.kuantumCyan;
+    const bgColor = SiberTema.oledBlack;
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        backgroundColor: bgColor, elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan), onPressed: () => Navigator.pop(context)),
-        title: const Text("Kuantum Kayıt Terminali", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
-        centerTitle: true,
-      ),
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent, elevation: 0,
+          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan), onPressed: () => Navigator.pop(context)),
+          title: const Text("Kuantum Kayıt Terminali", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+          centerTitle: true,
+        ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(24.0),
@@ -298,6 +313,7 @@ class _GercekAracKayitTerminaliState extends State<GercekAracKayitTerminali> {
             const SizedBox(height: 40),
           ],
         ),
+      ),
       ),
     );
   }

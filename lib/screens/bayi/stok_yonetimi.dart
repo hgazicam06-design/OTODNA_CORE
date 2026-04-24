@@ -6,8 +6,8 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'dart:developer' as developer;
 
 // 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI (2 Kat Yukarı)
-import '../../../../core/siber_tema.dart';
-import '../../../../core/responsive_kalkan.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
 
 /// 🛡️ KUANTUM STOK VE ENVANTER RADARI (SiberStokPaneli)
 /// Bayinin envanterini canlı izler, kritik seviyeleri uyarır ve barkodla otonom satış yapar.
@@ -248,10 +248,27 @@ class _SiberStokTarayiciEkraniState extends State<_SiberStokTarayiciEkrani> {
 
       // 2. Ürünün adetini 1 eksilt (Otonom düşüm - Atomik)
       // 🛡️ ZIRH: Aynı anda okutulsa bile eksiye düşmez
-      await _db.collection('bayi_stoklari').doc(urunDoc.id).update({
+      WriteBatch batch = _db.batch();
+
+      DocumentReference urunRef = _db.collection('bayi_stoklari').doc(urunDoc.id);
+      batch.update(urunRef, {
         'adet': FieldValue.increment(-1),
         'son_satis_tarihi': FieldValue.serverTimestamp(),
       });
+
+      // 3. İstihbarat Kara Kutusuna Mühürle
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'STOK_DUSUM_MUHURU',
+        'seviye': 'BİLGİ',
+        'islem_detayi': 'SİBER BARKOD: Bayi (${widget.bayiId}), "$okunanBarkod" barkodlu ürünü stoktan düştü.',
+        'bayi_id': widget.bayiId,
+        'vaka_id': okunanBarkod,
+        'urun_id': urunDoc.id,
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
 
       HapticFeedback.vibrate();
       developer.log("✅ İŞLEM ONAYLANDI: Ürün stoktan başarıyla düşüldü.");

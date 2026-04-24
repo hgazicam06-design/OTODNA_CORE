@@ -5,8 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
 // 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI (2 Kat Yukarı)
-import '../../../../core/siber_tema.dart';
-import '../../../../core/responsive_kalkan.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
 
 /// 🛡️ KUANTUM DİJİTAL ONAY VE FİNANS MOTORU
 /// Ustanın zaman damgalı/sesli onayını mühürler ve Karargahın şaşmaz %12 kesintisini otonom hesaplar.
@@ -73,6 +73,16 @@ class _SiberOnayVeHesapEkraniState extends State<SiberOnayVeHesapEkrani> {
           'bekleyen_hakedis': FieldValue.increment(finans['Bayi_Hakedis']!),
           'son_islem_tarihi': FieldValue.serverTimestamp(),
         }, SetOptions(merge: true));
+
+        // 3. Siber İstihbarat Kara Kutusuna Finansal Raporu Mühürle
+        DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+        transaction.set(logRef, {
+          'islem_turu': 'FINANSAL_ONAY',
+          'islem_detayi': 'SİBER FİNANS: İşlem (${widget.islemId}) mühürlendi. Toplam: ₺${finans['Satis_Fiyati']} | Karargah Payı: ₺${finans['Karargah_Payi']} | Bayi Net: ₺${finans['Bayi_Hakedis']}',
+          'islem_id': widget.islemId,
+          'bayi_id': widget.bayiId,
+          'tarih': FieldValue.serverTimestamp(),
+        });
       });
 
       HapticFeedback.vibrate();

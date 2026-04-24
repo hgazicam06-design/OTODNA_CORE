@@ -35,11 +35,28 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
 
   // 🚀 SİNYAL MÜDAHALE MOTORU
   Future<void> _sinyalDurumGuncelle(String docId, String yeniDurum, bool asilsizMi) async {
-    try {
-      await FirebaseFirestore.instance.collection('sos_sinyalleri').doc(docId).update({
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+
+      // 1. Sinyali Güncelle
+      DocumentReference sinyalRef = FirebaseFirestore.instance.collection('sos_sinyalleri').doc(docId);
+      batch.update(sinyalRef, {
         'durum': yeniDurum,
         'asilsiz_ihbar_mi': asilsizMi,
       });
+
+      // 2. Siber İstihbarata Mühürle
+      DocumentReference logRef = FirebaseFirestore.instance.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'kategori': 'GÜVENLİK',
+        'seviye': asilsizMi ? 'KRİTİK' : 'BİLGİ',
+        'mesaj': asilsizMi 
+            ? 'ASILSIZ SİNYAL: Bayi bir S.O.S sinyalini asılsız olarak işaretledi ve reddetti!'
+            : 'MÜDAHALE BAŞLADI: Bayi S.O.S acil durum operasyonu için saha ekibi yönlendirdi.',
+        'hedef_id': docId,
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

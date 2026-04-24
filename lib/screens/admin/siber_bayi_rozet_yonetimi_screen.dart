@@ -64,7 +64,22 @@ class SiberBayiRozetYonetimiScreen extends StatelessWidget {
                     Navigator.pop(context); // Dialogu kapat
                     try {
                       await BayiEkosistemi().bayiPuaniGuncelle(bayiId, secilenYildiz);
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Bayi mühürlendi!"), backgroundColor: SiberTema.kuantumCyan));
+                      
+                      // 📡 SİBER İSTİHBARAT: Rütbe Değişimi Logu
+                      String seviye = secilenYildiz <= 1 ? 'KRİTİK' : 'BİLGİ';
+                      String mesaj = secilenYildiz <= 1 
+                        ? 'KARA LİSTE: $bayiAd isimli bayi sistemden izole edildi (1 Yıldız).'
+                        : 'RÜTBE GÜNCELLEMESİ: $bayiAd isimli bayinin rütbesi $secilenYildiz yıldıza ayarlandı.';
+                        
+                      FirebaseFirestore.instance.collection('siber_istihbarat_loglari').add({
+                        'islem_turu': 'BAYİ_RÜTBESİ',
+                        'seviye': seviye,
+                        'islem_detayi': mesaj,
+                        'bayi_id': bayiId,
+                        'tarih': FieldValue.serverTimestamp(),
+                      });
+
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Bayi mühürlendi ve İstihbarata işlendi!"), backgroundColor: SiberTema.kuantumCyan));
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Güncelleme başarısız!"), backgroundColor: SiberTema.kanKirmizi));
                     }

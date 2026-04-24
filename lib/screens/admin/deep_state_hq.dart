@@ -120,19 +120,23 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
   // --- 🔴 FİREBASE MOTORLARI ---
 
   Widget _ustFinansalBant() {
-    return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance.collection('sistem_verileri').doc('finans').snapshots(),
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('finansal_islemler').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) return _buildKuantumLoader(SiberTema.kuantumCyan);
 
         double gunlukSatis = 0.0;
-        if (snapshot.hasData && snapshot.data!.exists) {
-          gunlukSatis = ((snapshot.data!.data() as Map<String, dynamic>)['gunluk_ciro'] ?? 0).toDouble();
-        }
+        double gaziNetPay = 0.0;
+        double devletVergi = 0.0;
 
-        // 💎 KOMUTAN GAZİ PROTOKOLÜ: %10 Kar + %2 Vergi = %12 Toplam Kesinti
-        double gaziNetPay = gunlukSatis * 0.10;
-        double devletVergi = gunlukSatis * 0.02;
+        if (snapshot.hasData) {
+          for (var doc in snapshot.data!.docs) {
+            var data = doc.data() as Map<String, dynamic>;
+            gunlukSatis += (data['brut_tutar'] ?? 0).toDouble();
+            gaziNetPay += (data['komutan_payi'] ?? ((data['brut_tutar'] ?? 0) * 0.10)).toDouble();
+            devletVergi += (data['vergi_payi'] ?? ((data['brut_tutar'] ?? 0) * 0.02)).toDouble();
+          }
+        }
 
         return Container(
           padding: const EdgeInsets.all(24),
@@ -140,7 +144,7 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _finansVeri("GÜNLÜK TOPLAM SATIŞ", "₺${gunlukSatis.toStringAsFixed(2)}", Colors.white),
+              _finansVeri("TOPLAM İŞLEM HACMİ", "₺${gunlukSatis.toStringAsFixed(2)}", Colors.white),
               Container(height: 60, width: 1, color: Colors.white24),
               _finansVeri("KOMUTAN NET PAY (%10)", "₺${gaziNetPay.toStringAsFixed(2)}", SiberTema.kuantumCyan),
               Container(height: 60, width: 1, color: Colors.white24),
@@ -154,7 +158,7 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
 
   Widget _teknikSistemSagligi() {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('sistem_loglari').where('islem_turu', isEqualTo: 'hata').limit(5).snapshots(),
+      stream: FirebaseFirestore.instance.collection('siber_istihbarat_loglari').where('kategori', isEqualTo: 'GÜVENLİK').limit(5).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) return _buildKuantumLoader(SiberTema.kanKirmizi);
 

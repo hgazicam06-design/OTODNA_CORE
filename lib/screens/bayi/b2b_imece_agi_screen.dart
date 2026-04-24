@@ -53,7 +53,10 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
       DocumentSnapshot bayiDoc = await _db.collection('kullanicilar').doc(_currentUser!.uid).get();
       String bayiAdi = bayiDoc.exists ? (bayiDoc.data() as Map<String, dynamic>)['firma_adi'] ?? "Bilinmeyen Bayi" : "Gizli Karargah";
 
-      await _db.collection('b2b_talepler').add({
+      WriteBatch batch = _db.batch();
+
+      DocumentReference talepRef = _db.collection('b2b_talepler').doc();
+      batch.set(talepRef, {
         'talep_eden_id': _currentUser!.uid,
         'talep_eden_firma': bayiAdi,
         'parca_adi': _parcaAdiController.text.trim().toUpperCase(),
@@ -63,6 +66,18 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
         'durum': 'AKTIF',
         'zaman_damgasi': FieldValue.serverTimestamp(),
       });
+
+      // 📡 SİBER İSTİHBARAT: YENİ TALEP MÜHRÜ
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'İMECE_DİVANI',
+        'seviye': _aciliyetDurumu == 'ACIL' ? 'KRİTİK' : 'BİLGİ',
+        'islem_detayi': 'B2B SİNYAL: $bayiAdi, ${_aracModeliController.text.trim().toUpperCase()} aracı için ${_parcaAdiController.text.trim().toUpperCase()} arıyor.',
+        'kullanici_id': _currentUser!.uid,
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
 
       _parcaAdiController.clear();
       _aracModeliController.clear();
@@ -156,16 +171,25 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
         'tamamlanma_zamani': FieldValue.serverTimestamp(),
       });
 
-      // 2. Karargah Finans Havuzuna %12'yi İşle
-      DocumentReference finansRef = _db.collection('finans_havuzu').doc();
+      // 2. Kuantum Finansal İşlemler Havuzuna %12'yi İşle
+      DocumentReference finansRef = _db.collection('finansal_islemler').doc();
       batch.set(finansRef, {
         'islem_tipi': 'B2B_TEDARIK',
+        'brut_tutar': fiyat,
+        'gazi_payi_12': karargahPayi,
         'talep_id': talepId,
         'satici_id': _currentUser!.uid,
-        'toplam_tutar': fiyat,
-        'karargah_kesintisi': karargahPayi, // %12 BURADA KESİLİR
-        'satici_net_hakedis': saticiHakedisi,
-        'zaman_damgasi': FieldValue.serverTimestamp(),
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      // 3. Siber İstihbarata Mühürle
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'İMECE_DİVANI',
+        'seviye': 'BİLGİ',
+        'islem_detayi': 'B2B TEDARİK: Bir bayi ₺${fiyat.toStringAsFixed(2)} değerindeki parçayı sağladı.',
+        'vaka_id': talepId,
+        'tarih': FieldValue.serverTimestamp(),
       });
 
       await batch.commit();

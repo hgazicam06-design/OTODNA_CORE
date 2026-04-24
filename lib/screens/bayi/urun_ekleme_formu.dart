@@ -5,8 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
 // 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI (2 Kat Yukarı)
-import '../../../../core/siber_tema.dart';
-import '../../../../core/responsive_kalkan.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
 
 /// 🛡️ KUANTUM ÜRÜN FIRLATMA MERKEZİ (SiberUrunEklemeFormu)
 /// Bayilerin kendi bayrakları ve adlarıyla markete otonom ürün yüklediği ekran.
@@ -81,6 +81,17 @@ class _SiberUrunEklemeFormuState extends State<SiberUrunEklemeFormu> {
           'kritik_seviye': 5,
           'fiyat': fiyat,
           'eklenme_tarihi': FieldValue.serverTimestamp(),
+        });
+
+        // 3. İstihbarat Kara Kutusuna Ekle
+        DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+        transaction.set(logRef, {
+          'islem_turu': 'YENI_URUN_VETRINI',
+          'seviye': 'BİLGİ',
+          'islem_detayi': 'SİBER MARKET: ${widget.bayiAdi} (${widget.bayiId}), "$urunKodu" barkodlu ürünü ₺$fiyat fiyatla Kuantum Markete fırlattı.',
+          'bayi_id': widget.bayiId,
+          'vaka_id': urunKodu,
+          'tarih': FieldValue.serverTimestamp(),
         });
       });
 

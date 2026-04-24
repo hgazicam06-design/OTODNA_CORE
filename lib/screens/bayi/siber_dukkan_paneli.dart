@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:developer' as developer;
 
 // 🚀 KARARGAH ZIRHLARI
-import '../../../core/siber_tema.dart';
-import '../../../core/responsive_kalkan.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
 
 /// 🛡️ KUANTUM DÜKKAN TERMİNALİ (SiberDukkanPaneli V2)
 /// Bayinin ürün eklerken kâr marjını yönettiği ve %12 OtoDNA kesintisini otonom hesaplayan komuta merkezi.
@@ -262,7 +262,7 @@ class _SiberDukkanPaneliState extends State<SiberDukkanPaneli> {
               });
 
               // Kara Kutu Logu
-              DocumentReference logRef = _db.collection('sistem_loglari').doc();
+              DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
               batch.set(logRef, {
                 'islem_turu': 'FINANSAL_STOK_GIRISI',
                 'islem_detayi': 'SİBER TİCARET: $_bayiId yeni ürün ekledi. Geliş: ₺$gelis, Marj: %$marjYuzde. Vitrin: ₺${vitrinFiyati.toStringAsFixed(2)} mühürlendi.',

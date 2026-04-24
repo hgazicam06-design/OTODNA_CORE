@@ -27,6 +27,19 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
 
   bool _isProcessing = false;
 
+  // 🛡️ KULLANIM SINIFLANDIRMASI (SIBER GÜMRÜK)
+  String _kullanimTuru = "Hususi"; // "Hususi", "Ticari"
+  String? _sahiplikYapisi;
+  String? _operasyonAlani;
+  
+  final List<String> _sahiplikYapiListesi = ["Şahıs Şirketi", "Kurumsal Şirket", "Kamu/Belediye"];
+  
+  final Map<String, List<String>> _operasyonKategorileri = {
+    "Yolcu Taşımacılığı": ["Taksi", "Okul Servisi", "Personel Servisi", "VIP / Turizm", "Şehirler Arası Otobüs"],
+    "Yük ve Lojistik Taşımacılığı": ["Şehir İçi Dağıtım", "Damperli/Hafriyat", "Uluslararası Nakliye (TIR)", "Frigofirik"],
+    "Özel Hizmet": ["Kiralık Araç (Rent A Car)", "Sürücü Kursu"],
+  };
+
   Future<void> _araciKarargahaMuhurle() async {
     if (_plakaController.text.trim().isEmpty || _saseController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -38,6 +51,10 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
     setState(() => _isProcessing = true);
 
     try {
+      if (_kullanimTuru == "Ticari" && (_sahiplikYapisi == null || _operasyonAlani == null)) {
+        throw Exception("Ticari araçlar için Sahiplik Yapısı ve Operasyon Alanı seçimi zorunludur!");
+      }
+
       User? currentUser = _auth.currentUser;
       if (currentUser == null) throw Exception("Siber Kimlik Doğrulanamadı!");
 
@@ -68,6 +85,9 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
         dnaSkoru: 100, // Fabrika Çıkış / Karargah Standart Skoru
         kritikHataVarMi: false,
         muayeneDurumu: "🟢 OTODNA ONAYLIDIR", // Başlangıç Referansı
+        kullanimTuru: _kullanimTuru,
+        sahiplikYapisi: _sahiplikYapisi,
+        operasyonAlani: _operasyonAlani,
       );
 
       // Kuantum Zırhlı Kayıt (Atomik)
@@ -123,6 +143,8 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
                       children: [
                         _buildHolografikBaslik(),
                         const SizedBox(height: 32),
+                        _buildKullanimAmaciKarti(),
+                        const SizedBox(height: 24),
                         _buildTerminalFormu(),
                       ],
                     ),
@@ -225,6 +247,114 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         ),
+      ),
+    );
+  }
+
+  Widget _buildKullanimAmaciKarti() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(24),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(color: Colors.white.withOpacity(0.02), borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white10)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("KULLANIM AMACI VE RİSK PROFİLİ", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
+              const SizedBox(height: 16),
+              // Ana Kullanım Türü Seçimi (Pinterest Stili)
+              Row(
+                children: [
+                  Expanded(child: _buildSiberSecimKarti("Hususi", Icons.person, _kullanimTuru == "Hususi", () {
+                    setState(() {
+                      _kullanimTuru = "Hususi";
+                      _sahiplikYapisi = null;
+                      _operasyonAlani = null;
+                    });
+                  })),
+                  const SizedBox(width: 12),
+                  Expanded(child: _buildSiberSecimKarti("Ticari", Icons.local_shipping, _kullanimTuru == "Ticari", () {
+                    setState(() {
+                      _kullanimTuru = "Ticari";
+                    });
+                  })),
+                ],
+              ),
+              
+              if (_kullanimTuru == "Ticari") ...[
+                const SizedBox(height: 24),
+                const Text("SAHİPLİK YAPISI", style: TextStyle(color: primaryCyan, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: _sahiplikYapiListesi.map((yapi) => _buildSiberChip(yapi, _sahiplikYapisi == yapi, () => setState(() => _sahiplikYapisi = yapi))).toList(),
+                ),
+                
+                const SizedBox(height: 24),
+                const Text("OPERASYON ALANI (RİSK GRUBU)", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                const SizedBox(height: 12),
+                
+                ..._operasyonKategorileri.entries.map((entry) => Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(entry.key.toUpperCase(), style: const TextStyle(color: Colors.white54, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: entry.value.map((alan) => _buildSiberChip(alan, _operasyonAlani == alan, () => setState(() => _operasyonAlani = alan))).toList(),
+                      ),
+                    ],
+                  ),
+                )).toList(),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSiberSecimKarti(String baslik, IconData ikon, bool secili, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        decoration: BoxDecoration(
+          color: secili ? primaryCyan.withOpacity(0.2) : Colors.black.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: secili ? primaryCyan : Colors.white10, width: secili ? 2 : 1),
+          boxShadow: secili ? [BoxShadow(color: primaryCyan.withOpacity(0.3), blurRadius: 15)] : [],
+        ),
+        child: Column(
+          children: [
+            Icon(ikon, color: secili ? primaryCyan : Colors.white54, size: 28),
+            const SizedBox(height: 8),
+            Text(baslik, style: TextStyle(color: secili ? Colors.white : Colors.white54, fontSize: 12, fontWeight: FontWeight.w900)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSiberChip(String etiket, bool secili, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: secili ? SiberTema.matGrey : Colors.black.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: secili ? primaryCyan : Colors.white10),
+        ),
+        child: Text(etiket, style: TextStyle(color: secili ? primaryCyan : Colors.white70, fontSize: 11, fontWeight: FontWeight.bold)),
       ),
     );
   }

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
 
 // Teklif satırlarını yöneten model
 class OfferItem {
@@ -32,6 +36,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   Map<String, dynamic>? _raporData;
   String _dealerName = "Bayi Yükleniyor...";
   bool _isLoading = true;
+  bool _isSending = false;
 
   @override
   void initState() {
@@ -96,14 +101,64 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     });
   }
 
+  // 🚀 FİREBASE ATOMİK TEKLİF MÜHÜRLEME MOTORU
+  Future<void> _teklifiMuhurleVeGonder() async {
+    if (_currentOffer.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Boş teklif gönderilemez!', style: TextStyle(color: Colors.white)), backgroundColor: SiberTema.kanKirmizi));
+      return;
+    }
+
+    setState(() => _isSending = true);
+
+    try {
+      String currentUserUid = FirebaseAuth.instance.currentUser?.uid ?? "BILINMEYEN_KULLANICI";
+      double totalAmount = _currentOffer.fold(0, (sum, item) => sum + item.unitPrice);
+      
+      WriteBatch batch = _db.batch();
+
+      // Rapor durumunu güncelle
+      DocumentReference raporRef = _db.collection('raporlar').doc(widget.raporId);
+      batch.update(raporRef, {
+        'teklif_durumu': 'MÜŞTERİYE_İLETİLDİ',
+        'teklif_tutari': totalAmount,
+        'teklif_tarihi': FieldValue.serverTimestamp()
+      });
+
+      // Siber İstihbarat Kutusuna Log At
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'MUSTERIYE_TEKLIF_ILETILDI',
+        'seviye': 'BİLGİ',
+        'islem_detayi': 'SİBER TEKLİF: $totalAmount TL tutarındaki teklif faturası müşteriye PDF / SMS ile iletildi. (Rapor ID: ${widget.raporId})',
+        'vaka_id': widget.raporId,
+        'kullanici_id': currentUserUid,
+        'tarih': FieldValue.serverTimestamp()
+      });
+
+      await batch.commit();
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Teklif Faturası (PDF) Mühürlendi ve İletildi! 📲', style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan));
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Mühürleme Hatası: $e', style: const TextStyle(color: Colors.white)), backgroundColor: SiberTema.kanKirmizi));
+      }
+    } finally {
+      if (mounted) setState(() => _isSending = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    const bgColor = Color(0xFF0F172A);
-    const primaryCyan = Color(0xFF00FFC2);
-    const cardColor = Color(0xFF1E293B);
+    const bgColor = SiberTema.oledBlack;
+    const primaryCyan = SiberTema.kuantumCyan;
+    const cardColor = SiberTema.matGrey;
 
-    return Scaffold(
-      backgroundColor: bgColor,
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(_dealerName.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
         backgroundColor: bgColor,
@@ -189,6 +244,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
             const SizedBox(height: 20),
           ],
         ),
+      ),
       ),
     );
   }
@@ -343,12 +399,10 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
         const SizedBox(width: 12),
         Expanded(
           child: ElevatedButton.icon(
-            icon: const Icon(Icons.picture_as_pdf, color: Colors.white),
-            label: const Text("PDF Teklif", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            icon: _isSending ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : const Icon(Icons.picture_as_pdf, color: Colors.white),
+            label: Text(_isSending ? "MÜHÜRLENİYOR..." : "PDF Teklif", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.orange[800], padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Teklif Faturası (PDF) Müşteriye SMS İle İletildi! 📲')));
-            },
+            onPressed: _isSending ? null : _teklifiMuhurleVeGonder,
           ),
         ),
       ],

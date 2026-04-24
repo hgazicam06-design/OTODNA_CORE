@@ -4,28 +4,33 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // 🚀 KARARGAH ZIRHLARI VE TEMASI
 import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
+import '../../services/siber_istihbarat_log_motoru.dart';
 
-class AnkaraMerkezAdmin extends StatefulWidget {
-  const AnkaraMerkezAdmin({super.key});
+class BayiBasvuruMerkeziScreen extends StatefulWidget {
+  const BayiBasvuruMerkeziScreen({super.key});
 
   @override
-  State<AnkaraMerkezAdmin> createState() => _AnkaraMerkezAdminState();
+  State<BayiBasvuruMerkeziScreen> createState() => _BayiBasvuruMerkeziScreenState();
 }
 
-class _AnkaraMerkezAdminState extends State<AnkaraMerkezAdmin> {
+class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // --- 📡 FİREBASE: CANLI CİRO VE KÂR MOTORU ---
-  // Ağdaki tüm tamamlanmış işlemlerden Gazi'nin %12'lik payını hesaplar
+  // Ağdaki finansal_islemler tablosundan Gazi'nin %12'lik payını hesaplar
   Stream<Map<String, double>> _siberFinansRadar() {
-    return _db.collection('tum_islemler').snapshots().map((snapshot) {
+    return _db.collection('finansal_islemler').snapshots().map((snapshot) {
       double toplamCiro = 0;
+      double komutanPayi = 0;
+      
       for (var doc in snapshot.docs) {
-        toplamCiro += (doc.data()['tutar'] ?? 0).toDouble();
+        var data = doc.data();
+        toplamCiro += (data['brut_tutar'] ?? 0).toDouble();
+        komutanPayi += (data['gazi_payi_12'] ?? 0).toDouble();
       }
       return {
         'ciro': toplamCiro,
-        'kar': toplamCiro * 0.12, // Kuantum Kesintisi: %10 + %2 Vergi
+        'kar': komutanPayi, 
       };
     });
   }
@@ -43,7 +48,7 @@ class _AnkaraMerkezAdminState extends State<AnkaraMerkezAdmin> {
             icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
             onPressed: () => Navigator.pop(context),
           ),
-          title: const Text('A N K A R A   M E R K E Z   K A R A R G A H',
+          title: const Text('B A Y İ   B A Ş V U R U   M E R K E Z İ',
               style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2)),
           centerTitle: true,
           actions: [
@@ -65,7 +70,7 @@ class _AnkaraMerkezAdminState extends State<AnkaraMerkezAdmin> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // =================================================================
-              // 1. CANLI CİRO VE %12 KÂR ÖZETİ
+              // 1. CANLI CİRO VE %12 KÂR ÖZETİ (FİNANSAL İŞLEMLERDEN)
               // =================================================================
               StreamBuilder<Map<String, double>>(
                   stream: _siberFinansRadar(),
@@ -74,11 +79,11 @@ class _AnkaraMerkezAdminState extends State<AnkaraMerkezAdmin> {
                     return Row(
                       children: [
                         Expanded(
-                            child: _buildAdminStat("TÜRKİYE CİRO AĞI", "₺${data['ciro']?.toStringAsFixed(0)}",
+                            child: _buildAdminStat("TÜRKİYE CİRO AĞI", "₺\${data['ciro']?.toStringAsFixed(0)}",
                                 Colors.white, Icons.account_balance_wallet_outlined)),
                         const SizedBox(width: 16),
                         Expanded(
-                            child: _buildAdminStat("SİBER KÂR (%12)", "₺${data['kar']?.toStringAsFixed(0)}",
+                            child: _buildAdminStat("SİBER KÂR (%12)", "₺\${data['kar']?.toStringAsFixed(0)}",
                                 SiberTema.kuantumCyan, Icons.diamond_outlined)),
                       ],
                     );
@@ -148,7 +153,7 @@ class _AnkaraMerkezAdminState extends State<AnkaraMerkezAdmin> {
           Icon(Icons.radar, color: Colors.white10, size: 50),
           SizedBox(height: 16),
           Text("RADAR TEMİZ", style: TextStyle(color: Colors.white24, fontWeight: FontWeight.w900, letterSpacing: 2)),
-          Text("Ağda bekleyen mühürleme sinyali yok.", style: TextStyle(color: Colors.white10, fontSize: 10)),
+          Text("Ağda bekleyen bayi başvuru sinyali yok.", style: TextStyle(color: Colors.white10, fontSize: 10)),
         ],
       ),
     );
@@ -218,7 +223,21 @@ class _AnkaraMerkezAdminState extends State<AnkaraMerkezAdmin> {
 
   Future<void> _muhurle(String docId, String isim) async {
     try {
-      await _db.collection('bayi_basvurulari').doc(docId).update({'durum': 'Onaylandi'});
+      WriteBatch batch = _db.batch();
+
+      DocumentReference basvuruRef = _db.collection('bayi_basvurulari').doc(docId);
+      batch.update(basvuruRef, {'durum': 'Onaylandi'});
+      
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'YENI_BAYI_ONAYI',
+        'islem_detayi': 'SİBER KOMUTAN: "$isim" yetkili bayi ağına eklendi.',
+        'bayi_id': docId,
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
+
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("$isim SİBER AĞA MÜHÜRLENDİ! 🦅"),

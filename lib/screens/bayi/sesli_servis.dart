@@ -7,8 +7,8 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'dart:developer' as developer;
 
 // 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI (2 Kat Yukarı)
-import '../../../../core/siber_tema.dart';
-import '../../../../core/responsive_kalkan.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
 
 /// 🛡️ KUANTUM SESLİ ONAY VE MÜHÜR MOTORU (SiberSesliOnayMerkezi)
 /// Ustanın sesli komutunu dinler, onaylarsa Karargaha (Firebase) zaman damgalı kripto mühür atar.
@@ -105,13 +105,28 @@ class _SiberSesliOnayMerkeziState extends State<SiberSesliOnayMerkezi> {
     developer.log("🚀 SİBER ONAY: Sesli komut doğrulandı. İşlem Karargaha mühürleniyor!");
 
     try {
-      await _db.collection('yapilan_islemler').doc(widget.islemId).set({
+      WriteBatch batch = _db.batch();
+
+      DocumentReference islemRef = _db.collection('yapilan_islemler').doc(widget.islemId);
+      batch.set(islemRef, {
         'sesli_onay_durumu': 'ONAYLANDI',
         'onaylayan_usta_id': widget.ustaId,
         'onaylayan_usta_adi': widget.ustaAdi,
         'okunan_sesli_komut': _ustaYaniti,
         'muhur_zaman_damgasi': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
+
+      // 3. Siber İstihbarat Logu
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'SESLI_ONAY_MUHURU',
+        'islem_detayi': 'SİBER SES: ${widget.ustaAdi} (ID: ${widget.ustaId}), İşlem (${widget.islemId}) için sesli onay verdi. Algılanan Komut: "$_ustaYaniti"',
+        'islem_id': widget.islemId,
+        'usta_id': widget.ustaId,
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
 
       await _flutterTts.speak("İşlem onaylandı ve mühürlendi.");
       HapticFeedback.vibrate();

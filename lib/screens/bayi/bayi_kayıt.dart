@@ -69,11 +69,14 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
         'basvuru_durumu': 'ONAY_BEKLIYOR',
       });
 
-      // 2. Kara Kutuya Log Düşer
-      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      // 2. Siber Radara Log Düşer
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
       batch.set(logRef, {
-        'islem_turu': 'YENI_BAYI_TALEBI',
-        'islem_detayi': 'SİBER İSTİHBARAT: Yeni usta (${widget.ustaId}) Siber İmece Sözleşmesini onaylayarak Karargaha katılım talebi fırlattı. Uzmanlık: ${secilenUzmanliklar.join(", ")}',
+        'islem_turu': 'BAYI_KAYIT_ONAY',
+        'seviye': 'BİLGİ',
+        'islem_detayi': 'YENİ BAYİ BAŞVURUSU: Siber İmece Sözleşmesi onaylandı. Uzmanlık: ${secilenUzmanliklar.join(", ")}',
+        'vaka_id': widget.ustaId,
+        'kullanici_id': widget.ustaId,
         'tarih': FieldValue.serverTimestamp(),
       });
 

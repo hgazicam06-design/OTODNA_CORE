@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // 🚨 KİMLİK MÜHRÜ İÇİN EKLENDİ
 
+// 🚀 KARARGAH ZIRHLARI VE TEMA
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
+
 class GercekEkspertizTerminali extends StatefulWidget {
   // Bu ekrana gelirken, hangi araca ekspertiz yapacağımızı bilmemiz lazım
   final String plakaID;
@@ -45,8 +49,8 @@ class _GercekEkspertizTerminaliState extends State<GercekEkspertizTerminali> {
       final firestore = FirebaseFirestore.instance;
       String ustaId = FirebaseAuth.instance.currentUser?.uid ?? "Bilinmeyen Usta";
 
-      // 1. Aracın mevcut durumunu Kuantum Radarından çek!
-      DocumentReference aracRef = firestore.collection('araclar').doc(widget.plakaID);
+      // 1. Aracın mevcut durumunu Kuantum Radarından çek! (vehicles)
+      DocumentReference aracRef = firestore.collection('vehicles').doc(widget.plakaID);
       DocumentSnapshot aracDoc = await aracRef.get();
 
       if (!aracDoc.exists) {
@@ -75,25 +79,39 @@ class _GercekEkspertizTerminaliState extends State<GercekEkspertizTerminali> {
         "dna_skoru": yeniDnaSkoru,
       });
 
-      // Resmi Ekspertiz Raporunu Kasaya İşle
-      DocumentReference raporRef = firestore.collection('ekspertiz_raporlari').doc();
+      // Resmi Ekspertiz Raporunu Kasaya İşle (service_records)
+      DocumentReference raporRef = firestore.collection('service_records').doc();
       batch.set(raporRef, {
-        "plaka": widget.plakaID,
-        "rapor_tipi": "Kaporta & Boya",
-        "kaporta_durumu": _kaportaDurumu,
+        "sase_no": widget.plakaID, // Sistemde plakaID şase olarak kullanılıyor olabilir
+        "islem_adi": "Kaporta & Boya Ekspertizi",
+        "durum": "TAMAMLANDI",
+        "kontrol_listesi": _kaportaDurumu,
         "tramer": double.tryParse(_tramerController.text.trim()) ?? 0.0,
         "usta_notu": _ekspertizNotuController.text.trim(),
         "kesilen_ceza_puani": cezaPuani,
+        "onceki_dna_skoru": mevcutDna,
         "yeni_dna_skoru": yeniDnaSkoru,
-        "ekspertizi_yapan_bayi": ustaId,
-        "tarih": FieldValue.serverTimestamp(),
+        "bayi_id": ustaId,
+        "olusturulma_zaman_damgasi": FieldValue.serverTimestamp(),
+      });
+
+      // 5. Siber İstihbarat Radarına Mühürle!
+      DocumentReference logRef = firestore.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'EKSPERTİZ',
+        'seviye': cezaPuani > 0 ? 'KRİTİK' : 'BİLGİ',
+        'islem_detayi': cezaPuani > 0 
+            ? 'RİSKLİ ARAÇ! ${widget.plakaID} aracı kaporta ekspertizinde kusurlu bulundu. (Ceza: $cezaPuani)'
+            : 'KUSURSUZ RAPOR: ${widget.plakaID} aracı kaporta ekspertizinden hatasız geçti.',
+        'vaka_id': widget.plakaID,
+        'tarih': FieldValue.serverTimestamp(),
       });
 
       // FÜZEYİ ATEŞLE
       await batch.commit();
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("OtoDNA: Dijital Ekspertiz Başarıyla Mühürlendi! 🦅", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: Color(0xFF00FFC2)));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("OtoDNA: Dijital Ekspertiz Başarıyla Mühürlendi! 🦅", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan));
       Navigator.pop(context); // İşlem bitince ekranı kapat
 
     } catch (e) {
@@ -119,7 +137,7 @@ class _GercekEkspertizTerminaliState extends State<GercekEkspertizTerminali> {
   void _durumDegistir(String parca) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E293B),
+      backgroundColor: SiberTema.matGrey,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (context) {
         return Container(
@@ -127,11 +145,11 @@ class _GercekEkspertizTerminaliState extends State<GercekEkspertizTerminali> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("$parca Durumu", style: const TextStyle(color: Color(0xFF00FFC2), fontSize: 18, fontWeight: FontWeight.bold)),
+              Text("$parca Durumu", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 16),
               ..._durumSecenekleri.map((durum) => ListTile(
                 title: Text(durum, style: TextStyle(color: durum == "Değişen" ? Colors.redAccent : (durum.contains("Boya") ? Colors.orangeAccent : Colors.white))),
-                trailing: _kaportaDurumu[parca] == durum ? const Icon(Icons.check_circle, color: Color(0xFF00FFC2)) : null,
+                trailing: _kaportaDurumu[parca] == durum ? const Icon(Icons.check_circle, color: SiberTema.kuantumCyan) : null,
                 onTap: () {
                   setState(() => _kaportaDurumu[parca] = durum);
                   Navigator.pop(context);
@@ -153,17 +171,16 @@ class _GercekEkspertizTerminaliState extends State<GercekEkspertizTerminali> {
 
   @override
   Widget build(BuildContext context) {
-    const primaryCyan = Color(0xFF00FFC2);
-    const bgColor = Color(0xFF0F172A);
-
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        backgroundColor: bgColor, elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan), onPressed: () => Navigator.pop(context)),
-        title: Text("${widget.plakaID} Ekspertiz Girişi", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
-        centerTitle: true,
-      ),
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent, elevation: 0,
+          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          title: Text("${widget.plakaID} Ekspertiz Girişi", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+          centerTitle: true,
+        ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(24.0),
@@ -171,7 +188,7 @@ class _GercekEkspertizTerminaliState extends State<GercekEkspertizTerminali> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // 1. TRAMER VE USTA NOTU
-            const Text("1. Tramer ve Genel Durum", style: TextStyle(color: primaryCyan, fontSize: 14, fontWeight: FontWeight.bold)),
+            const Text("1. Tramer ve Genel Durum", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
             _buildInput("Tramer Hasar Kaydı (₺)", _tramerController, isNumber: true, icon: Icons.money_off),
             _buildInput("Ekspertiz / Usta Notu (Örn: Şasede işlem yok, motor %90)", _ekspertizNotuController, isMultiLine: true, icon: Icons.handyman),
@@ -179,27 +196,24 @@ class _GercekEkspertizTerminaliState extends State<GercekEkspertizTerminali> {
             const Padding(padding: EdgeInsets.symmetric(vertical: 24), child: Divider(color: Colors.white12)),
 
             // 2. KAPORTA BOYA SEÇİMİ (DİNAMİK LİSTE)
-            const Text("2. Dijital Kaporta Analizi", style: TextStyle(color: primaryCyan, fontSize: 14, fontWeight: FontWeight.bold)),
+            const Text("2. Dijital Kaporta Analizi", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
 
-            ..._kaportaDurumu.keys.map((parca) {
-              String durum = _kaportaDurumu[parca]!;
-              Color durumRengi = durum == "Orijinal" ? Colors.green : (durum == "Değişen" ? Colors.redAccent : Colors.orangeAccent);
-
-              return Container(
-                margin: const EdgeInsets.only(bottom: 8),
-                decoration: BoxDecoration(color: const Color(0xFF1E293B), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
-                child: ListTile(
-                  title: Text(parca, style: const TextStyle(color: Colors.white70, fontSize: 14)),
-                  trailing: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(color: durumRengi.withOpacity(0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: durumRengi.withOpacity(0.5))),
-                    child: Text(durum, style: TextStyle(color: durumRengi, fontWeight: FontWeight.bold, fontSize: 12)),
-                  ),
-                  onTap: () => _durumDegistir(parca),
-                ),
-              );
-            }),
+            // GÖRSEL ARAÇ EKSPERTİZİ (SAHİBİNDEN STYLE)
+            _buildSahibindenKusbakisiArac(),
+            
+            const SizedBox(height: 16),
+            // RENK AÇIKLAMALARI (LEGEND)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildLegendItem(Colors.white, "Orijinal"),
+                const SizedBox(width: 16),
+                _buildLegendItem(Colors.amber, "Boyalı"),
+                const SizedBox(width: 16),
+                _buildLegendItem(Colors.redAccent, "Değişen"),
+              ],
+            ),
 
             const SizedBox(height: 32),
 
@@ -207,15 +221,16 @@ class _GercekEkspertizTerminaliState extends State<GercekEkspertizTerminali> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(backgroundColor: primaryCyan, padding: const EdgeInsets.symmetric(vertical: 20), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+                style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, padding: const EdgeInsets.symmetric(vertical: 20), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                 onPressed: _isSaving ? null : _ekspertiziKuantumAgaIsle,
-                icon: _isSaving ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: bgColor, strokeWidth: 2)) : const Icon(Icons.verified, color: bgColor),
-                label: Text(_isSaving ? "AĞA MÜHÜRLENİYOR..." : "EKSPERTİZİ ONAYLA VE KAYDET", style: const TextStyle(color: bgColor, fontWeight: FontWeight.bold, fontSize: 16)),
+                icon: _isSaving ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2)) : const Icon(Icons.verified, color: SiberTema.oledBlack),
+                label: Text(_isSaving ? "AĞA MÜHÜRLENİYOR..." : "EKSPERTİZİ ONAYLA VE KAYDET", style: const TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold, fontSize: 16)),
               ),
             ),
             const SizedBox(height: 40),
           ],
         ),
+      ),
       ),
     );
   }
@@ -224,19 +239,106 @@ class _GercekEkspertizTerminaliState extends State<GercekEkspertizTerminali> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(color: const Color(0xFF1E293B), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
+      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
       child: TextField(
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : (isMultiLine ? TextInputType.multiline : TextInputType.text),
         maxLines: isMultiLine ? 3 : 1,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
-            icon: Icon(icon, color: const Color(0xFF00FFC2), size: 20),
+            icon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
             hintText: hint,
             hintStyle: const TextStyle(color: Colors.white38, fontSize: 13),
             border: InputBorder.none
         ),
       ),
+    );
+  }
+
+  // YARDIMCI GÖRSEL WIDGET: Sahibinden Tarzı Kuşbakışı Araç
+  Widget _buildSahibindenKusbakisiArac() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
+      decoration: BoxDecoration(
+        color: SiberTema.matGrey,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white12),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // SOL KISIM
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildCarPart("Sol Ön Çamurluk", width: 85, height: 75),
+              _buildCarPart("Sol Ön Kapı", width: 85, height: 75),
+              _buildCarPart("Sol Arka Kapı", width: 85, height: 75),
+              _buildCarPart("Sol Arka Çamurluk", width: 85, height: 75),
+            ],
+          ),
+          const SizedBox(width: 8),
+          // ORTA KISIM
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildCarPart("Kaput", width: 100, height: 85),
+              _buildCarPart("Tavan", width: 100, height: 130), // Tavan daha uzun
+              _buildCarPart("Bagaj", width: 100, height: 85),
+            ],
+          ),
+          const SizedBox(width: 8),
+          // SAĞ KISIM
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildCarPart("Sağ Ön Çamurluk", width: 85, height: 75),
+              _buildCarPart("Sağ Ön Kapı", width: 85, height: 75),
+              _buildCarPart("Sağ Arka Kapı", width: 85, height: 75),
+              _buildCarPart("Sağ Arka Çamurluk", width: 85, height: 75),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // YARDIMCI GÖRSEL WIDGET: Araç Parçası Butonu
+  Widget _buildCarPart(String parca, {double width = 80, double height = 80}) {
+    String durum = _kaportaDurumu[parca] ?? "Orijinal";
+    Color durumRengi = durum == "Orijinal" ? Colors.white : (durum == "Değişen" ? Colors.redAccent : Colors.amber);
+
+    return GestureDetector(
+      onTap: () => _durumDegistir(parca),
+      child: Container(
+        width: width,
+        height: height,
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        decoration: BoxDecoration(
+          color: durumRengi.withOpacity(0.15),
+          border: Border.all(color: durumRengi, width: 2),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Center(
+          child: Text(
+            parca.replaceAll(" ", "\n"),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: durumRengi, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // YARDIMCI GÖRSEL WIDGET: Renk Açıklaması
+  Widget _buildLegendItem(Color color, String label) {
+    return Row(
+      children: [
+        Container(width: 14, height: 14, decoration: BoxDecoration(color: color, shape: BoxShape.circle, boxShadow: [BoxShadow(color: color.withOpacity(0.5), blurRadius: 4)])),
+        const SizedBox(width: 6),
+        Text(label, style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold)),
+      ],
     );
   }
 }

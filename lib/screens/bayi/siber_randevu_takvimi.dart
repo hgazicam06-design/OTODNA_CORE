@@ -52,7 +52,7 @@ class _SiberRandevuTakvimiState extends State<SiberRandevuTakvimi> {
         DocumentReference randevuRef = _db.collection('randevular').doc(docId);
         batch.delete(randevuRef);
 
-        DocumentReference logRef = _db.collection('sistem_loglari').doc();
+        DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
         batch.set(logRef, {
           'islem_turu': 'RANDEVU_IPTAL',
           'islem_detayi': 'SİBER TAKVİM: $_bayiId, $tarihFormatli $saat seansını boşa çıkardı.',
@@ -69,7 +69,7 @@ class _SiberRandevuTakvimiState extends State<SiberRandevuTakvimi> {
           'olusturma_zamani': FieldValue.serverTimestamp(),
         });
 
-        DocumentReference logRef = _db.collection('sistem_loglari').doc();
+        DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
         batch.set(logRef, {
           'islem_turu': 'RANDEVU_KILIT',
           'islem_detayi': 'SİBER TAKVİM: $_bayiId, $tarihFormatli $saat seansını manuel olarak mühürledi.',

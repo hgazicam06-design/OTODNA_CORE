@@ -6,6 +6,8 @@ import 'dart:developer' as developer;
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 import '../models/service_model.dart';
+import '../services/chronic_radar_service.dart';
+import '../models/chronic_issue_model.dart';
 
 /// 🛡️ KUANTUM TAHMİN VE BAKIM MOTORU
 /// Aracın KM artış hızını hesaplar, Triger tipini ayırır,
@@ -33,6 +35,9 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
   int _sonTrigerDegisimKm = 0;
 
   bool _isAnalizEdiliyor = true;
+  
+  List<ChronicIssueModel> _kronikArizalar = [];
+  final ChronicRadarService _chronicRadarService = ChronicRadarService();
 
   @override
   void initState() {
@@ -92,6 +97,16 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
       if (_son10kBakimKm == 0) _son10kBakimKm = _guncelKm - 9500; // Bakıma yaklaştığını farz et
       if (_son50kBakimKm == 0) _son50kBakimKm = _guncelKm - 48000;
       if (_sonTrigerDegisimKm == 0) _sonTrigerDegisimKm = _guncelKm - (_motorTipi == "KAYIŞ" ? 78000 : 145000);
+
+      // 3. ADIM: Araç Kronik Arıza İstihbaratı (Chronic Club Entegrasyonu)
+      String marka = "VW"; // Test/Mock için
+      String model = "Golf 7"; // Test/Mock için
+      if (aracDoc.exists) {
+        var data = aracDoc.data() as Map<String, dynamic>;
+        marka = data['marka'] ?? "VW";
+        model = data['model'] ?? "Golf 7";
+      }
+      _kronikArizalar = await _chronicRadarService.getChronicIssues(brand: marka, model: model);
 
     } catch (e) {
       developer.log("Radar Hatası: $e");
@@ -184,6 +199,14 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
 
             const SizedBox(height: 32),
 
+            // ── 🚨 KRONİK ARIZA RADARI (CHRONIC CLUB) ──
+            if (_kronikArizalar.isNotEmpty) ...[
+              const Text("KRONİK HATA RADARI (CHRONIC CLUB)", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+              const SizedBox(height: 12),
+              ..._kronikArizalar.map((issue) => _buildKronikArizaUyarisi(issue)).toList(),
+              const SizedBox(height: 32),
+            ],
+
             // ── 💰 OTODNA REKLAM VE TEDARİK AĞI (Para Kazanma Noktamız) ──
             if (kalanKm10k <= 2000) // Bakıma 2000 KM kala reklamı bas!
               _buildSponsorluUrunKarti("Castrol EDGE 5W-30 Tam Sentetik Motor Yağı", "1.250", "Periyodik bakım yaklaşıyor."),
@@ -225,6 +248,40 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
               Text("$_aylikOrtalamaKm KM / AY", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.w900)),
             ],
           ),
+        ],
+      ),
+    );
+  }
+
+  // ── 🚨 KRONİK ARIZA UYARISI ──
+  Widget _buildKronikArizaUyarisi(ChronicIssueModel issue) {
+    Color cardColor = issue.severity == 'red' ? SiberTema.kanKirmizi : Colors.amber;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: cardColor.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: cardColor.withOpacity(0.5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.warning_amber_rounded, color: cardColor, size: 20),
+              const SizedBox(width: 8),
+              Expanded(child: Text(issue.issueTitle.toUpperCase(), style: TextStyle(color: cardColor, fontSize: 13, fontWeight: FontWeight.bold))),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(issue.symptoms, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(4)),
+            child: Text("BİLİRKİŞİ ÇÖZÜMÜ: ${issue.remedy}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold)),
+          )
         ],
       ),
     );

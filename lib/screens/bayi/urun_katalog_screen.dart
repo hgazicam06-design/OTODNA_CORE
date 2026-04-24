@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
+
 class UrunKatalogScreen extends StatefulWidget {
   const UrunKatalogScreen({super.key});
 
@@ -36,8 +40,8 @@ class _UrunKatalogScreenState extends State<UrunKatalogScreen> with SingleTicker
   void _siberUyari(String mesaj, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : Colors.black, fontWeight: FontWeight.bold)),
-      backgroundColor: isError ? Colors.redAccent : const Color(0xFF00FFC2),
+      content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.bold)),
+      backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
     ));
   }
 
@@ -233,6 +237,17 @@ class _UrunKatalogScreenState extends State<UrunKatalogScreen> with SingleTicker
                                     batch.update(userRef, {'kullanilan_ilan_sayisi': FieldValue.increment(1)});
                                   }
 
+                                  // 3. İstihbarat Logu
+                                  DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+                                  batch.set(logRef, {
+                                    'islem_turu': isIkinciEl ? 'IKINCI_EL_ILAN_EKLEME' : 'SIFIR_ILAN_EKLEME',
+                                    'seviye': 'BİLGİ',
+                                    'islem_detayi': 'SİBER KATALOG: ${_currentUser!.uid} numaralı bayi, "${adCtrl.text.trim()}" isimli yeni bir ürünü vitrine ekledi.',
+                                    'bayi_id': _currentUser!.uid,
+                                    'vaka_id': parcaRef.id,
+                                    'tarih': FieldValue.serverTimestamp()
+                                  });
+
                                   await batch.commit();
 
                                   if (mounted) {
@@ -262,16 +277,18 @@ class _UrunKatalogScreenState extends State<UrunKatalogScreen> with SingleTicker
 
   @override
   Widget build(BuildContext context) {
-    const bgColor = Color(0xFF0F172A);
-    const primaryCyan = Color(0xFF00FFC2);
-    const cardColor = Color(0xFF1E293B);
+    const bgColor = SiberTema.oledBlack;
+    const primaryCyan = SiberTema.kuantumCyan;
+    const cardColor = SiberTema.matGrey;
 
-    if (_currentUser == null) return const Scaffold(backgroundColor: bgColor, body: Center(child: Text("Siber Kimlik Hatası!", style: TextStyle(color: Colors.redAccent))));
+    if (_currentUser == null) return const Scaffold(backgroundColor: bgColor, body: Center(child: Text("Siber Kimlik Hatası!", style: TextStyle(color: SiberTema.kanKirmizi))));
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        backgroundColor: bgColor, elevation: 0,
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent, elevation: 0,
         title: const Text('Katalog & Envanter', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         centerTitle: true, iconTheme: const IconThemeData(color: primaryCyan),
         bottom: TabBar(
@@ -372,6 +389,7 @@ class _UrunKatalogScreenState extends State<UrunKatalogScreen> with SingleTicker
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(baslik, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)), const SizedBox(height: 4), Text(altBaslik, style: const TextStyle(color: Colors.white54, fontSize: 11)), const SizedBox(height: 8), Text(fiyat, style: const TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold, fontSize: 16))])),
           IconButton(icon: const Icon(Icons.more_vert, color: Colors.white54), onPressed: () {})
         ],
+      ),
       ),
     );
   }

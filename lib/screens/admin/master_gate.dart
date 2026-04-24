@@ -2,6 +2,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // 🚀 KARARGAH ZIRHLARI VE HEDEF ROTA (Mutlak Rota ile Bağlandı!)
 import 'package:otodna/core/siber_tema.dart';
@@ -54,6 +55,15 @@ class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerPr
         password: _passwordController.text.trim(),
       );
 
+      // 📡 SİBER İSTİHBARAT: Başarılı Giriş Mührü
+      FirebaseFirestore.instance.collection('siber_istihbarat_loglari').add({
+        'islem_turu': 'GÜVENLİK',
+        'seviye': 'BİLGİ',
+        'islem_detayi': 'MASTER GATE AÇILDI: Yetkili Karargaha giriş yaptı. (${_emailController.text.trim()})',
+        'kullanici_id': FirebaseAuth.instance.currentUser?.uid ?? 'BILINMIYOR',
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
       if (!mounted) return;
       _siberUyari("SİBER AĞ ONAYLANDI. Karargaha Geçiliyor... 🦅", SiberTema.kuantumCyan);
 
@@ -67,6 +77,15 @@ class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerPr
       } else if (e.code == 'wrong-password' || e.code == 'invalid-credential') {
         hataMesaji = "ERİŞİM REDDEDİLDİ: Hatalı Kuantum Şifresi!";
       }
+
+      // 🚨 SİBER İSTİHBARAT: Brute Force Kırmızı Alarm
+      FirebaseFirestore.instance.collection('siber_istihbarat_loglari').add({
+        'islem_turu': 'GÜVENLİK',
+        'seviye': 'KRİTİK',
+        'islem_detayi': 'SİBER İHLAL DENEMESİ: Master Gate Zorlanıyor! Denenen Email: ${_emailController.text.trim()}',
+        'kullanici_id': 'YETKİSİZ_GİRİŞ',
+        'tarih': FieldValue.serverTimestamp(),
+      });
 
       if (!mounted) return;
       _siberUyari(hataMesaji, SiberTema.kanKirmizi);

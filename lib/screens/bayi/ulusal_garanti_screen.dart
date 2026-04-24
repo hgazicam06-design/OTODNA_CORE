@@ -3,6 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
+// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
+
 class UlusalGarantiScreen extends StatefulWidget {
   const UlusalGarantiScreen({super.key});
 
@@ -43,8 +47,8 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
   void _siberUyari(String mesaj, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : Colors.black, fontWeight: FontWeight.bold)),
-      backgroundColor: isError ? Colors.redAccent : const Color(0xFF00FFC2),
+      content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.bold)),
+      backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
     ));
   }
 
@@ -95,24 +99,48 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
                   Row(
                     children: [
                       Expanded(child: OutlinedButton.icon(
-                          style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.redAccent), padding: const EdgeInsets.symmetric(vertical: 16)),
+                          style: OutlinedButton.styleFrom(side: const BorderSide(color: SiberTema.kanKirmizi), padding: const EdgeInsets.symmetric(vertical: 16)),
                           onPressed: isProcessing ? null : () async {
                             setModalState(() => isProcessing = true);
-                            await _db.collection('garanti_talepleri').doc(talepId).update({'durum': 'Hakem Heyeti / Adli Süreç'});
+                            
+                            WriteBatch batch = _db.batch();
+                            batch.update(_db.collection('garanti_talepleri').doc(talepId), {'durum': 'Hakem Heyeti / Adli Süreç'});
+                            batch.set(_db.collection('siber_istihbarat_loglari').doc(), {
+                                'islem_turu': 'GARANTI_RED_ADLI_SUREC',
+                                'seviye': 'KRİTİK',
+                                'islem_detayi': 'SİBER GARANTİ: ${_currentUser!.uid} numaralı bayi, $talepId ID\'li talebi reddetti. Hakem Heyeti devrede.',
+                                'vaka_id': talepId,
+                                'kullanici_id': _currentUser!.uid,
+                                'tarih': FieldValue.serverTimestamp()
+                            });
+                            await batch.commit();
+
                             if (mounted) {
                               Navigator.pop(context);
                               _siberUyari('Talep Reddedildi. Adli Süreç ve Hakem Heyeti İçin Admine İletildi! ⚖️🚨', isError: true);
                             }
                           },
-                          icon: const Icon(Icons.balance, color: Colors.redAccent),
-                          label: const Text("Reddet (Adli Süreç)", style: TextStyle(color: Colors.redAccent, fontSize: 12, fontWeight: FontWeight.bold))
+                          icon: const Icon(Icons.balance, color: SiberTema.kanKirmizi),
+                          label: const Text("Reddet (Adli Süreç)", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 12, fontWeight: FontWeight.bold))
                       )),
                       const SizedBox(width: 12),
                       Expanded(child: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2), padding: const EdgeInsets.symmetric(vertical: 16)),
+                          style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, padding: const EdgeInsets.symmetric(vertical: 16)),
                           onPressed: isProcessing ? null : () async {
                             setModalState(() => isProcessing = true);
-                            await _db.collection('garanti_talepleri').doc(talepId).update({'durum': 'Uzlaşma Sağlandı - Ödenecek'});
+
+                            WriteBatch batch = _db.batch();
+                            batch.update(_db.collection('garanti_talepleri').doc(talepId), {'durum': 'Uzlaşma Sağlandı - Ödenecek'});
+                            batch.set(_db.collection('siber_istihbarat_loglari').doc(), {
+                                'islem_turu': 'GARANTI_ONAY_UZLASMA',
+                                'seviye': 'BİLGİ',
+                                'islem_detayi': 'SİBER GARANTİ: ${_currentUser!.uid} numaralı bayi, $talepId ID\'li talebi kabul etti ve uzlaşma sağladı.',
+                                'vaka_id': talepId,
+                                'kullanici_id': _currentUser!.uid,
+                                'tarih': FieldValue.serverTimestamp()
+                            });
+                            await batch.commit();
+
                             if (mounted) {
                               Navigator.pop(context);
                               _siberUyari('Uzlaşma Sağlandı! Tutar Karşı Firmaya Aktarılıyor. 🤝');
@@ -210,7 +238,9 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
                             }
                             setModalState(() => isSaving = true);
                             try {
-                              await _db.collection('garanti_talepleri').add({
+                              WriteBatch batch = _db.batch();
+                              DocumentReference talepRef = _db.collection('garanti_talepleri').doc();
+                              batch.set(talepRef, {
                                 'arac': plakaPlakaFormatla(plakaCtrl.text),
                                 'sorun': sorunCtrl.text.trim(),
                                 'sorun_ili': 'Kendi Bölgeniz', // İleride GPS'den çekilir
@@ -223,6 +253,18 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
                                 'kanit_raporu': 'Sistem üzerinden rapor yüklendi.',
                                 'tarih': FieldValue.serverTimestamp(),
                               });
+
+                              batch.set(_db.collection('siber_istihbarat_loglari').doc(), {
+                                'islem_turu': 'YENI_GARANTI_TALEBI',
+                                'seviye': 'UYARI',
+                                'islem_detayi': 'SİBER GARANTİ: $_benimFirmaAdim (${_currentUser!.uid}), $secilenHataliFirmaAdi ($secilenHataliFirmaId) firmasına ${tutarCtrl.text} TL B2B fatura talebinde bulundu.',
+                                'vaka_id': talepRef.id,
+                                'kullanici_id': _currentUser!.uid,
+                                'tarih': FieldValue.serverTimestamp(),
+                              });
+
+                              await batch.commit();
+
                               if (mounted) {
                                 Navigator.pop(context);
                                 _siberUyari('Talep Kuantum Ağına İletildi! Karşı Bayinin Onayı Bekleniyor. ⚖️');
@@ -250,16 +292,18 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
 
   @override
   Widget build(BuildContext context) {
-    const bgColor = Color(0xFF0F172A);
-    const primaryCyan = Color(0xFF00FFC2);
-    const cardColor = Color(0xFF1E293B);
+    const bgColor = SiberTema.oledBlack;
+    const primaryCyan = SiberTema.kuantumCyan;
+    const cardColor = SiberTema.matGrey;
 
     if (_currentUser == null) return const Scaffold(backgroundColor: bgColor, body: Center(child: Text("Kimlik Hatası!")));
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        backgroundColor: bgColor, elevation: 0,
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent, elevation: 0,
         title: const Text('Ulusal Garanti & İmece Ağı', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
         centerTitle: true, iconTheme: const IconThemeData(color: primaryCyan),
         bottom: TabBar(
@@ -381,6 +425,7 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
             ],
           ),
         ],
+      ),
       ),
     );
   }

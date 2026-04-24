@@ -45,13 +45,28 @@ class _FirmaUzmanlikSecimScreenState extends State<FirmaUzmanlikSecimScreen> {
         _secilenUzmanliklar.add(formatliUzmanlik);
       });
 
-      // Firebase'e "Yeni Buton Önerisi" Olarak Atıyoruz (Siber İstihbarat)
-      FirebaseFirestore.instance.collection('bekleyen_yeni_uzmanliklar').add({
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+
+      // 1. Firebase'e "Yeni Buton Önerisi" Olarak Atıyoruz
+      DocumentReference oneriRef = FirebaseFirestore.instance.collection('bekleyen_yeni_uzmanliklar').doc();
+      batch.set(oneriRef, {
         'uzmanlik_adi': formatliUzmanlik,
         'oneren_firma_id': widget.firmaId,
         'tarih': FieldValue.serverTimestamp(),
         'durum': 'Onay Bekliyor' // Sen Karargahtan onaylayıp genel listeye alacaksın
       });
+
+      // 2. Siber İstihbarata Mühürle
+      DocumentReference logRef = FirebaseFirestore.instance.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'kategori': 'SİSTEM',
+        'seviye': 'BİLGİ',
+        'mesaj': 'YENİ UZMANLIK ÖNERİSİ: Firma "$formatliUzmanlik" isimli yeni bir uzmanlık alanı talep etti.',
+        'hedef_id': widget.firmaId,
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      batch.commit();
     }
 
     _ozelUzmanlikCtrl.clear();
@@ -70,11 +85,26 @@ class _FirmaUzmanlikSecimScreenState extends State<FirmaUzmanlikSecimScreen> {
     setState(() => _isProcessing = true);
 
     try {
-      // Firmanın profilini güncelliyoruz
-      await FirebaseFirestore.instance.collection('bayi_basvurulari').doc(widget.firmaId).update({
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+
+      // 1. Firmanın profilini güncelliyoruz (kullanicilar tablosu)
+      DocumentReference bayiRef = FirebaseFirestore.instance.collection('kullanicilar').doc(widget.firmaId);
+      batch.update(bayiRef, {
         'uzmanlik_alanlari': _secilenUzmanliklar,
         'profil_tamamlandi_mi': true,
       });
+
+      // 2. Siber İstihbarata Mühürle
+      DocumentReference logRef = FirebaseFirestore.instance.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'kategori': 'BAYİ_RÜTBESİ',
+        'seviye': 'BİLGİ',
+        'mesaj': 'PROFİL ONAYLANDI: Firma uzmanlık alanlarını (${_secilenUzmanliklar.length} adet) seçti ve sistem profilini tamamladı.',
+        'hedef_id': widget.firmaId,
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("UZMANLIKLAR MÜHÜRLENDİ. SİSTEME GİRİŞ YAPILIYOR... 🦅", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan));

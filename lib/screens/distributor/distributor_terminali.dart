@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../core/siber_tema.dart'; // 🚀 SİBER KÖPRÜ
+import '../../../core/responsive_kalkan.dart';
 
 class DistributorTerminali extends StatefulWidget {
   const DistributorTerminali({super.key});
@@ -25,20 +26,16 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          // 1. KUANTUM ARKA PLAN
-          Positioned.fill(child: Container(decoration: SiberTema.siberArkaPlan)),
-
-          // 2. ANA İÇERİK
-          SafeArea(
-            child: Column(
-              children: [
-                _buildSiberAppBar(),
-                Expanded(
-                  child: SingleChildScrollView(
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
+          child: Column(
+            children: [
+              _buildSiberAppBar(),
+              Expanded(
+                child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     padding: const EdgeInsets.all(24),
                     child: Column(
@@ -60,7 +57,6 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
               ],
             ),
           ),
-        ],
       ),
     );
   }

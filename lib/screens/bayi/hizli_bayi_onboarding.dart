@@ -4,8 +4,9 @@ import 'package:flutter/services.dart';
 import 'dart:developer' as developer;
 
 // 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI (2 Kat Yukarı Çıkış)
-import '../../../../core/siber_tema.dart';
-import '../../../../core/responsive_kalkan.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
+import 'bayi_kayıt.dart';
 
 /// 🛡️ KUANTUM HIZLI BAYİ KARŞILAMA (SiberHizliBayiOnboarding)
 /// WhatsApp veya referans linkiyle gelen sektörel bayileri özel Kuantum mesajlarıyla karşılar.
@@ -58,7 +59,7 @@ class SiberHizliBayiOnboarding extends StatelessWidget {
     developer.log("🚀 SİBER GEÇİŞ: $sektorKodu için kayıt protokolü başlatıldı.");
 
     // SİBER NOT: Gerçek yönlendirme mühürü
-    // Navigator.push(context, MaterialPageRoute(builder: (_) => BayiKayitFormu(ustaId: 'YENI_KAYIT', sektor: sektorKodu)));
+    Navigator.push(context, MaterialPageRoute(builder: (_) => const BayiKayitFormu(ustaId: 'YENI_KAYIT')));
   }
 
   @override

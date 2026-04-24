@@ -3,6 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
+// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
+
 class KargoQrKilitScreen extends StatefulWidget {
   const KargoQrKilitScreen({super.key});
 
@@ -34,8 +38,8 @@ class _KargoQrKilitScreenState extends State<KargoQrKilitScreen> with TickerProv
   void _showSnackBar(String msg, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(msg, style: TextStyle(color: isError ? Colors.white : Colors.black, fontWeight: FontWeight.bold)),
-      backgroundColor: isError ? Colors.redAccent : const Color(0xFF00FFC2),
+      content: Text(msg, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.bold)),
+      backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
     ));
   }
 
@@ -53,13 +57,13 @@ class _KargoQrKilitScreenState extends State<KargoQrKilitScreen> with TickerProv
           builder: (context, setModalState) {
             return Container(
               padding: const EdgeInsets.all(24),
-              decoration: const BoxDecoration(color: Color(0xFF1E293B), borderRadius: BorderRadius.vertical(top: Radius.circular(24)), border: Border(top: BorderSide(color: Color(0xFF00FFC2), width: 2))),
+              decoration: const BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.vertical(top: Radius.circular(24)), border: Border(top: BorderSide(color: SiberTema.kuantumCyan, width: 2))),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Text("Kilitli Kargo QR Kodu Üretildi!", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  Text("Sipariş: $urunAdi\nSipariş No: $siparisId", textAlign: TextAlign.center, style: const TextStyle(color: Color(0xFF00FFC2), fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                  Text("Sipariş: $urunAdi\nSipariş No: $siparisId", textAlign: TextAlign.center, style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
                   const SizedBox(height: 24),
 
                   // SİBER QR KOD SİMÜLASYONU
@@ -68,7 +72,7 @@ class _KargoQrKilitScreenState extends State<KargoQrKilitScreen> with TickerProv
                       builder: (context, child) {
                         return Container(
                           padding: const EdgeInsets.all(24),
-                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: const Color(0xFF00FFC2).withOpacity(0.5 * _qrPulseController.value), blurRadius: 30, spreadRadius: 5)]),
+                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.5 * _qrPulseController.value), blurRadius: 30, spreadRadius: 5)]),
                           child: const Icon(Icons.qr_code_2, color: Colors.black, size: 150),
                         );
                       }
@@ -91,15 +95,30 @@ class _KargoQrKilitScreenState extends State<KargoQrKilitScreen> with TickerProv
                       const SizedBox(width: 12),
                       Expanded(
                           child: ElevatedButton.icon(
-                              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2), padding: const EdgeInsets.symmetric(vertical: 16)),
+                              style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, padding: const EdgeInsets.symmetric(vertical: 16)),
                               onPressed: isProcessing ? null : () async {
                                 setModalState(() => isProcessing = true);
                                 try {
-                                  // 🚀 FİREBASE GÜNCELLEMESİ: Durumu "Kargoda" Yap!
-                                  await _db.collection('siparisler').doc(siparisId).update({
+                                  // 🚀 FİREBASE GÜNCELLEMESİ: ATOMİK MÜHÜRLEME DEVREDE
+                                  WriteBatch batch = _db.batch();
+                                  
+                                  DocumentReference siparisRef = _db.collection('siparisler').doc(siparisId);
+                                  batch.update(siparisRef, {
                                     'durum': 'Kargoda',
                                     'kargoya_verilis_tarihi': FieldValue.serverTimestamp(),
                                   });
+
+                                  DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+                                  batch.set(logRef, {
+                                    'islem_turu': 'KARGO_QR_URETILDI',
+                                    'islem_detayi': 'SİBER KARGO: $urunAdi ($siparisId) için kargo QR kodu üretildi.',
+                                    'siparis_id': siparisId,
+                                    'urun_adi': urunAdi,
+                                    'satici_id': _currentUser!.uid,
+                                    'tarih': FieldValue.serverTimestamp(),
+                                  });
+
+                                  await batch.commit();
 
                                   if (mounted) {
                                     Navigator.pop(context);
@@ -142,18 +161,20 @@ class _KargoQrKilitScreenState extends State<KargoQrKilitScreen> with TickerProv
 
   @override
   Widget build(BuildContext context) {
-    const bgColor = Color(0xFF0F172A);
-    const primaryCyan = Color(0xFF00FFC2);
-    const cardColor = Color(0xFF1E293B);
+    const bgColor = SiberTema.oledBlack;
+    const primaryCyan = SiberTema.kuantumCyan;
+    const cardColor = SiberTema.matGrey;
 
     if (_currentUser == null) {
-      return const Scaffold(backgroundColor: bgColor, body: Center(child: Text("Siber Kimlik Bulunamadı!", style: TextStyle(color: Colors.redAccent))));
+      return const Scaffold(backgroundColor: bgColor, body: Center(child: Text("Siber Kimlik Bulunamadı!", style: TextStyle(color: SiberTema.kanKirmizi))));
     }
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        backgroundColor: bgColor, elevation: 0,
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent, elevation: 0,
         title: const Text('Kargo & Güvenli Havuz', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         centerTitle: true, iconTheme: const IconThemeData(color: primaryCyan),
         bottom: TabBar(
@@ -271,6 +292,7 @@ class _KargoQrKilitScreenState extends State<KargoQrKilitScreen> with TickerProv
               ],
             );
           }
+      ),
       ),
     );
   }

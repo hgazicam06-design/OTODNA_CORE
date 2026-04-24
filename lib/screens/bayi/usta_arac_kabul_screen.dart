@@ -5,6 +5,10 @@ import 'package:intl/intl.dart';
 // İŞLEM KAYIT EKRANINA BAĞLANTI (Önceden yazdığımız AI ekranı)
 import 'muayene_onay_ekrani.dart';
 
+// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
+
 class UstaAracKabulScreen extends StatefulWidget {
   final String saseVeyaPlaka;
   const UstaAracKabulScreen({super.key, required this.saseVeyaPlaka});
@@ -23,17 +27,17 @@ class _UstaAracKabulScreenState extends State<UstaAracKabulScreen> {
         backgroundColor: Colors.transparent,
         child: Container(
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(color: const Color(0xFF1E293B), borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0xFF00FFC2))),
+          decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.kuantumCyan)),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(children: [const Icon(Icons.verified_user, color: Color(0xFF00FFC2)), const SizedBox(width: 8), Expanded(child: Text("$firma - Zaman Damgalı Kanıt", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)))]),
+              Row(children: [const Icon(Icons.verified_user, color: SiberTema.kuantumCyan), const SizedBox(width: 8), Expanded(child: Text("$firma - Zaman Damgalı Kanıt", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)))]),
               const SizedBox(height: 16),
               Container(height: 200, width: double.infinity, decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(12)), child: const Center(child: Icon(Icons.play_circle_fill, color: Colors.white54, size: 64))),
               const SizedBox(height: 16),
               Text("İşlem: $islem", style: const TextStyle(color: Colors.white70, fontSize: 12)),
               const SizedBox(height: 16),
-              SizedBox(width: double.infinity, child: ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2)), onPressed: () => Navigator.pop(context), child: const Text("Kapat", style: TextStyle(color: Color(0xFF0F172A), fontWeight: FontWeight.bold)))),
+              SizedBox(width: double.infinity, child: ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context), child: const Text("Kapat", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)))),
             ],
           ),
         ),
@@ -54,17 +58,19 @@ class _UstaAracKabulScreenState extends State<UstaAracKabulScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const primaryCyan = Color(0xFF00FFC2);
-    const bgColor = Color(0xFF0F172A);
-    const cardColor = Color(0xFF1E293B);
+    const primaryCyan = SiberTema.kuantumCyan;
+    const bgColor = SiberTema.oledBlack;
+    const cardColor = SiberTema.matGrey;
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        backgroundColor: bgColor, elevation: 0,
-        title: const Text('OtoDNA Araç Sicili', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
-        centerTitle: true, iconTheme: const IconThemeData(color: primaryCyan),
-      ),
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent, elevation: 0,
+          title: const Text('OtoDNA Araç Sicili', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+          centerTitle: true, iconTheme: const IconThemeData(color: primaryCyan),
+        ),
       body: Column(
         children: [
           // =================================================================
@@ -238,6 +244,7 @@ class _UstaAracKabulScreenState extends State<UstaAracKabulScreen> {
             ),
           )
         ],
+      ),
       ),
     );
   }

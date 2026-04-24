@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
+
 /// 🏢 OTODNA BAYİ HAREKAT MERKEZİ (Dashboard)
 /// Bayi Puanı, Karargah Payı (%12 Sabit) ve SOS Radarı Entegre Edildi.
 class DealerDashboard extends StatefulWidget {
@@ -13,10 +17,10 @@ class DealerDashboard extends StatefulWidget {
 
 class _DealerDashboardState extends State<DealerDashboard> {
   // 🎨 Siber Renk Paleti (Karargah Standartları)
-  final Color bgColor = const Color(0xFF0F172A); // Derin Karargah Siyahı
-  final Color primaryCyan = const Color(0xFF00FFC2); // Kuantum Turkuazı
-  final Color surfaceColor = Colors.white.withOpacity(0.05);
-  final Color alertRed = Colors.redAccent;
+  final Color bgColor = SiberTema.oledBlack; // Derin Karargah Siyahı
+  final Color primaryCyan = SiberTema.kuantumCyan; // Kuantum Turkuazı
+  final Color surfaceColor = SiberTema.matGrey;
+  final Color alertRed = SiberTema.kanKirmizi;
   final Color goldColor = const Color(0xFFFFD700);
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -32,12 +36,14 @@ class _DealerDashboardState extends State<DealerDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    if (_currentUser == null) return Scaffold(backgroundColor: bgColor, body: const Center(child: Text("Siber Kimlik Hatası!", style: TextStyle(color: Colors.redAccent))));
+    if (_currentUser == null) return Scaffold(backgroundColor: bgColor, body: const Center(child: Text("Siber Kimlik Hatası!", style: TextStyle(color: SiberTema.kanKirmizi))));
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
         backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: false,
         title: StreamBuilder<DocumentSnapshot>(
@@ -120,6 +126,7 @@ class _DealerDashboardState extends State<DealerDashboard> {
 
                   var sosData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
                   return _buildSOSCard(
+                    sosId: snapshot.data!.docs.first.id,
                     plaka: sosData['plaka'] ?? 'BİLİNMİYOR',
                     mesafe: 'Yakınınızda',
                     zaman: 'ACİL MÜDAHALE!',
@@ -182,6 +189,7 @@ class _DealerDashboardState extends State<DealerDashboard> {
           ),
         ),
       ),
+      ),
     );
   }
 
@@ -217,7 +225,7 @@ class _DealerDashboardState extends State<DealerDashboard> {
     );
   }
 
-  Widget _buildSOSCard({required String plaka, required String mesafe, required String zaman, required bool isKritik}) {
+  Widget _buildSOSCard({required String sosId, required String plaka, required String mesafe, required String zaman, required bool isKritik}) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(color: alertRed.withOpacity(0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: alertRed.withOpacity(0.4))),
@@ -227,7 +235,28 @@ class _DealerDashboardState extends State<DealerDashboard> {
           const SizedBox(width: 16),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(plaka, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)), Text(mesafe, style: const TextStyle(color: Colors.white54, fontSize: 12))])),
           ElevatedButton(
-            onPressed: () => _siberUyari("Operasyon Başlatıldı!"),
+            onPressed: () async {
+              try {
+                WriteBatch batch = _db.batch();
+                DocumentReference sosRef = _db.collection('sos_alarmlari').doc(sosId);
+                batch.update(sosRef, {'durum': 'mudahale_edildi', 'mudahale_eden': _currentUser!.uid});
+                
+                DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+                batch.set(logRef, {
+                  'islem_turu': 'SOS_MUDAHALE',
+                  'seviye': 'KRİTİK',
+                  'islem_detayi': 'SOS MÜDAHALE: Bayi (${_currentUser!.uid}), "$plaka" plakalı aracın SOS sinyaline müdahale başlattı.',
+                  'vaka_id': sosId,
+                  'bayi_id': _currentUser!.uid,
+                  'tarih': FieldValue.serverTimestamp(),
+                });
+                
+                await batch.commit();
+                _siberUyari("SOS Operasyonu Karargaha İşlendi!");
+              } catch (e) {
+                _siberUyari("Müdahale Hatası: $e");
+              }
+            },
             style: ElevatedButton.styleFrom(backgroundColor: alertRed, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
             child: const Text('MÜDAHALE', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
           ),

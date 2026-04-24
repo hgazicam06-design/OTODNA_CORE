@@ -72,7 +72,7 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
       String plakaID = _plakaController.text.trim().replaceAll(" ", "").toUpperCase();
       WriteBatch batch = FirebaseFirestore.instance.batch();
 
-      DocumentReference aracRef = FirebaseFirestore.instance.collection('araclar').doc(plakaID);
+      DocumentReference aracRef = FirebaseFirestore.instance.collection('vehicles').doc(plakaID);
       batch.set(aracRef, {
         "plaka": plakaID,
         "marka": _markaController.text.trim(),
@@ -98,6 +98,16 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
           'kullanilan_ilan_sayisi': FieldValue.increment(1)
         });
       }
+
+      // 4. SİBER RADARA BİLDİR: Yeni Araç Sisteme Girdi
+      DocumentReference logRef = FirebaseFirestore.instance.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'kategori': 'BAYİ_RÜTBESİ',
+        'seviye': 'BİLGİ',
+        'mesaj': 'YENİ ARAÇ: ${_markaController.text.trim()} sisteme yüklendi. (Fiyat: ₺${_fiyatController.text.trim()})',
+        'hedef_id': plakaID,
+        'tarih': FieldValue.serverTimestamp(),
+      });
 
       // SİSTEME ATEŞLE
       await batch.commit();

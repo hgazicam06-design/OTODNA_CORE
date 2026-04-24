@@ -4,6 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
+// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
+
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -13,9 +17,9 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   // Renk Paletimiz
-  final Color bgColor = const Color(0xFF0F172A);
-  final Color primaryCyan = const Color(0xFF00FFC2);
-  final Color surfaceColor = Colors.white.withOpacity(0.05);
+  final Color bgColor = SiberTema.oledBlack;
+  final Color primaryCyan = SiberTema.kuantumCyan;
+  final Color surfaceColor = SiberTema.matGrey;
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final User? _currentUser = FirebaseAuth.instance.currentUser;
@@ -29,7 +33,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     setState(() => _isSosFiring = true);
 
     try {
-      await _db.collection('sos_alarmlari').add({
+      WriteBatch batch = _db.batch();
+
+      DocumentReference sosRef = _db.collection('sos_alarmlari').doc();
+      batch.set(sosRef, {
         'kullanici_id': _currentUser!.uid,
         'plaka': plaka, // Müşterinin garajındaki ilk aracın plakası
         'durum': 'bekliyor',
@@ -38,16 +45,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         'konum_ozeti': 'Sistem GPS Konumu Bekleniyor...',
       });
 
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'MUSTERI_SOS_SINYALI',
+        'seviye': 'KRİTİK',
+        'islem_detayi': 'SİBER ALARM: Müşteri (${_currentUser!.uid}), "$plaka" plakalı aracı için S.O.S ateşledi.',
+        'kullanici_id': _currentUser!.uid,
+        'vaka_id': plaka,
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
+
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: Colors.redAccent,
-          content: Text('S.O.S SİNYALİ ATEŞLENDİ! Bölgedeki tüm yetkili bayiler uyarıldı. Lütfen aracınızda bekleyin.', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-          duration: Duration(seconds: 5),
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: SiberTema.kanKirmizi,
+          content: const Text('S.O.S SİNYALİ ATEŞLENDİ! Bölgedeki tüm yetkili bayiler uyarıldı. Lütfen aracınızda bekleyin.', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          duration: const Duration(seconds: 5),
         ));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Ağ Hatası: Sinyal Gönderilemedi! ($e)'), backgroundColor: Colors.redAccent));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Ağ Hatası: Sinyal Gönderilemedi! ($e)'), backgroundColor: SiberTema.kanKirmizi));
       }
     } finally {
       if (mounted) setState(() => _isSosFiring = false);
@@ -56,12 +75,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_currentUser == null) return Scaffold(backgroundColor: bgColor, body: const Center(child: Text("Siber Kimlik Hatası!", style: TextStyle(color: Colors.redAccent))));
+    if (_currentUser == null) return Scaffold(backgroundColor: bgColor, body: Center(child: Text("Siber Kimlik Hatası!", style: TextStyle(color: SiberTema.kanKirmizi))));
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      // Fütüristik Alt Navigasyon Çubuğu
-      bottomNavigationBar: _buildBottomNav(),
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        // Fütüristik Alt Navigasyon Çubuğu
+        bottomNavigationBar: _buildBottomNav(),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -104,6 +125,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ],
           ),
         ),
+      ),
       ),
     );
   }

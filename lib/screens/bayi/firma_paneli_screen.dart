@@ -186,7 +186,7 @@ class _FirmaPaneliScreenState extends State<FirmaPaneliScreen> with SingleTicker
                     // 2. ACİL S.O.S RADARI (CANLI FİREBASE SORGUSU)
                     // =================================================================
                     StreamBuilder<QuerySnapshot>(
-                      stream: _db.collection('acil_durum_sinyalleri').where('durum', isEqualTo: 'KIRMIZI_KOD_BEKLIYOR').limit(1).snapshots(),
+                      stream: _db.collection('sos_sinyalleri').where('hedef_bayi_1', isEqualTo: _currentUser!.uid).where('durum', isEqualTo: 'YENI_SINYAL').limit(1).snapshots(),
                       builder: (context, sosSnapshot) {
                         if (!sosSnapshot.hasData || sosSnapshot.data!.docs.isEmpty) return const SizedBox.shrink();
 
@@ -218,7 +218,28 @@ class _FirmaPaneliScreenState extends State<FirmaPaneliScreen> with SingleTicker
                                     width: double.infinity, height: 48,
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kanKirmizi, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-                                      onPressed: () => _siberUyari("S.O.S Çağrısı Kabul Edildi. Navigasyon Başlatılıyor..."),
+                                      onPressed: () {
+                                        String sosId = sosSnapshot.data!.docs.first.id;
+                                        WriteBatch batch = _db.batch();
+                                        
+                                        // 1. Sinyali Güncelle
+                                        batch.update(_db.collection('sos_sinyalleri').doc(sosId), {
+                                          'durum': 'MÜDAHALE BAŞLADI',
+                                          'mudahale_eden_id': _currentUser!.uid,
+                                        });
+
+                                        // 2. Siber İstihbarat Logu
+                                        batch.set(_db.collection('siber_istihbarat_loglari').doc(), {
+                                          'kategori': 'GÜVENLİK',
+                                          'seviye': 'BİLGİ',
+                                          'mesaj': 'S.O.S KABUL EDİLDİ: Firma ($firmaAdi) acil durum çağrısına müdahale başlattı!',
+                                          'hedef_id': sosId,
+                                          'tarih': FieldValue.serverTimestamp(),
+                                        });
+                                        
+                                        batch.commit();
+                                        _siberUyari("S.O.S Çağrısı Kabul Edildi. Navigasyon Başlatılıyor...");
+                                      },
                                       child: const Text("MÜDAHALE ET", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1.5)),
                                     ),
                                   )

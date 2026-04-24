@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // 🚀 KARARGAH ZIRHLARI
 import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
+import '../../services/siber_istihbarat_log_motoru.dart'; // 👁️ İSTİHBARAT AĞI KÖPRÜSÜ
 
 class BayiItibarMerkeziScreen extends StatefulWidget {
   const BayiItibarMerkeziScreen({super.key});
@@ -37,15 +38,16 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
         'son_itibar_guncelleme': FieldValue.serverTimestamp(),
       });
 
-      // 2. İşlemi Sistem Loglarına Mühürle
-      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      // 2. Siber İstihbarat Radarına Mühürle (Matrix)
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
       batch.set(logRef, {
-        'islem_turu': isKaraListe ? 'KARALİSTE_IHLAL' : 'ITIBAR_GUNCELLEME',
-        'detay': '$firmaAdi itibarı $yeniPuan olarak güncellendi.',
+        'islem_turu': isKaraListe ? 'KARA_LISTE_IHLALI' : 'ITIBAR_GUNCELLEMESI',
+        'islem_detayi': isKaraListe ? 'SİBER KOMUTAN: "$firmaAdi" kara listeye alındı ve ağdan koparıldı. Skoru: $yeniPuan' : 'SİBER KOMUTAN: "$firmaAdi" güncel itibar skoru: $yeniPuan',
+        'bayi_id': bayiId,
         'tarih': FieldValue.serverTimestamp(),
-        'hedef_bayi': bayiId,
       });
 
+      // Füze ateşlendi
       await batch.commit();
 
       _siberUyariVer(

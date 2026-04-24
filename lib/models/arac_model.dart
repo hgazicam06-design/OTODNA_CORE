@@ -33,6 +33,11 @@ class AracModel {
   final bool saseOnaylandi;
   final String? fcmToken;
   final DateTime kayitTarihi;
+  
+  // 🛡️ OTODNA KULLANIM AMACI VE RİSK PROFİLİ
+  final String kullanimTuru; // "Hususi" veya "Ticari"
+  final String? sahiplikYapisi; // "Şahıs Şirketi", "Kurumsal Şirket", "Kamu/Belediye"
+  final String? operasyonAlani; // "Taksi", "Okul Servisi", vb.
 
   // 🚀 OTODNA KUANTUM ÖZEL DEĞERLERİ
   final int dnaSkoru; // 0-100 arası sağlık puanı
@@ -71,6 +76,9 @@ class AracModel {
     this.ilanDurumu = "Yayında Değil",
     this.fiyat = 0.0,
     this.resimUrl = "",
+    this.kullanimTuru = "Hususi",
+    this.sahiplikYapisi,
+    this.operasyonAlani,
   }) : kayitTarihi = kayitTarihi ?? DateTime.now();
 
   // 🔥 FİREBASE'E ATOMİK YAZMA MOTORU (SİBER MÜHÜR)
@@ -102,6 +110,9 @@ class AracModel {
     'ilan_durumu': ilanDurumu,
     'fiyat': fiyat,
     'resim_url': resimUrl,
+    'kullanim_turu': kullanimTuru,
+    'sahiplik_yapisi': sahiplikYapisi,
+    'operasyon_alani': operasyonAlani,
   };
 
   // 📥 FİREBASE'DEN ANALİTİK OKUMA MOTORU
@@ -134,5 +145,8 @@ class AracModel {
     ilanDurumu: m['ilan_durumu'] ?? "Yayında Değil",
     fiyat: (m['fiyat'] ?? 0).toDouble(),
     resimUrl: m['resim_url'] ?? "",
+    kullanimTuru: m['kullanim_turu'] ?? "Hususi",
+    sahiplikYapisi: m['sahiplik_yapisi'],
+    operasyonAlani: m['operasyon_alani'],
   );
 }

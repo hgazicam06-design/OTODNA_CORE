@@ -59,8 +59,8 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
     });
 
     try {
-      // ⚠️ DOĞRU TABLO: arac_kimlikleri
-      DocumentSnapshot doc = await _db.collection('arac_kimlikleri').doc(saseGirdisi).get();
+      // ⚠️ DOĞRU TABLO: vehicles (Kuantum Standart Tablosu)
+      DocumentSnapshot doc = await _db.collection('vehicles').doc(saseGirdisi).get();
 
       if (doc.exists) {
         setState(() {
@@ -171,17 +171,17 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
       // ATOMİK İŞLEM BAŞLIYOR (WriteBatch)
       WriteBatch batch = _db.batch();
 
-      // 1. İşlem: Aracın DNA Skorunu Güncelle (`arac_kimlikleri`)
-      DocumentReference aracRef = _db.collection('arac_kimlikleri').doc(saseID);
+      // 1. İşlem: Aracın DNA Skorunu Güncelle (`vehicles`)
+      DocumentReference aracRef = _db.collection('vehicles').doc(saseID);
       batch.update(aracRef, {
         'dna_skoru': yeniDnaSkoru,
         'muayene_durumu': yeniDurum,
         'son_muayene_zaman_damgasi': FieldValue.serverTimestamp(),
       });
 
-      // 2. İşlem: Ekspertiz Raporunu Kuantum Ağına Mühürle (`arac_bakimlari`)
+      // 2. İşlem: Ekspertiz Raporunu Kuantum Ağına Mühürle (`service_records`)
       String islemId = "EXP-${DateTime.now().millisecondsSinceEpoch}";
-      DocumentReference raporRef = _db.collection('arac_bakimlari').doc(islemId);
+      DocumentReference raporRef = _db.collection('service_records').doc(islemId);
       batch.set(raporRef, {
         'sase_no': saseID,
         'bayi_id': _currentUser!.uid,
@@ -191,6 +191,19 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
         'onceki_dna_skoru': mevcutDnaSkoru,
         'yeni_dna_skoru': yeniDnaSkoru,
         'olusturulma_zaman_damgasi': FieldValue.serverTimestamp(),
+      });
+
+      // 3. İşlem: Siber İstihbarat Radarına Mühürle!
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'BAYI_EKSPERTIZ_GIRIS',
+        'seviye': cezaPuani > 0 ? 'KRİTİK' : 'BİLGİ',
+        'islem_detayi': cezaPuani > 0 
+            ? 'RİSKLİ ARAÇ! $saseID şaseli araç ekspertizde kusurlu bulundu. (DNA Skoru $mevcutDnaSkoru -> $yeniDnaSkoru)'
+            : 'KUSURSUZ RAPOR: $saseID şaseli araç ekspertizden başarıyla geçti.',
+        'vaka_id': saseID,
+        'kullanici_id': _currentUser!.uid,
+        'tarih': FieldValue.serverTimestamp(),
       });
 
       // ZIRHLARI ATEŞLE!

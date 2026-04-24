@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
+
 // SİBER EKRANLAR (Bunları daha önce yazdık)
 // Kırmızı çizerse yollarını kendi projendeki klasörlere göre düzelt!
 // import '../screens/bayi/firma_paneli_screen.dart';
@@ -17,9 +20,9 @@ class WebMainLayout extends StatefulWidget {
 }
 
 class _WebMainLayoutState extends State<WebMainLayout> {
-  final Color bgColor = const Color(0xFF0F172A); // Koyu Lacivert Arka Plan
-  final Color sidebarColor = const Color(0xFF1E293B); // Menü Rengi
-  final Color primaryCyan = const Color(0xFF00FFC2); // OtoDNA Turkuazı
+  final Color bgColor = SiberTema.oledBlack;
+  final Color sidebarColor = SiberTema.matGrey;
+  final Color primaryCyan = SiberTema.kuantumCyan;
 
   late Widget _currentChild;
   int _selectedIndex = 0; // Hangi menünün aktif olduğunu takip eder
@@ -40,9 +43,11 @@ class _WebMainLayoutState extends State<WebMainLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: bgColor,
-      body: Row(
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Row(
         children: [
           // ==============================================================
           // SOL SABİT MENÜ (FÜTÜRİSTİK SİDEBAR)
@@ -127,6 +132,7 @@ class _WebMainLayoutState extends State<WebMainLayout> {
             ),
           ),
         ],
+      ),
       ),
     );
   }

@@ -94,6 +94,17 @@ class _UstaAkustikRadarScreenState extends State<UstaAkustikRadarScreen> {
                 'tarih': FieldValue.serverTimestamp(),
               });
 
+              // 3. İstihbarat Kara Kutusuna Mühürle
+              DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+              batch.set(logRef, {
+                'islem_turu': 'AKUSTIK_TESHIS_GONDERIMI',
+                'islem_detayi': 'SİBER KALFA: Usta (${widget.ustaId}), müşteri ($musteriId) için motor sesini dinleyip teşhisini iletti. Tahmini Fiyat: ${fiyatCtrl.text} ₺',
+                'usta_id': widget.ustaId,
+                'musteri_id': musteriId,
+                'analiz_id': analizId,
+                'tarih': FieldValue.serverTimestamp(),
+              });
+
               await batch.commit();
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Teşhis Karargaha mühürlendi!"), backgroundColor: SiberTema.kuantumCyan));
             },

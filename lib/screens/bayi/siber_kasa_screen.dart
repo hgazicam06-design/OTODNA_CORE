@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
+
 class SiberKasaScreen extends StatefulWidget {
   const SiberKasaScreen({super.key});
 
@@ -18,8 +22,8 @@ class _SiberKasaScreenState extends State<SiberKasaScreen> {
   void _siberUyari(String mesaj, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : Colors.black, fontWeight: FontWeight.bold)),
-      backgroundColor: isError ? Colors.redAccent : const Color(0xFF00FFC2),
+      content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.bold)),
+      backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
     ));
   }
 
@@ -64,8 +68,12 @@ class _SiberKasaScreenState extends State<SiberKasaScreen> {
                     setState(() => _isRequesting = true);
 
                     try {
+                      // ATOMİK FİNANSAL MÜHÜR (WriteBatch)
+                      WriteBatch batch = _db.batch();
+
                       // 1. Talebi İlet
-                      await _db.collection('para_cekme_talepleri').add({
+                      DocumentReference talepRef = _db.collection('para_cekme_talepleri').doc();
+                      batch.set(talepRef, {
                         'bayi_id': _currentUser!.uid,
                         'iban': ibanCtrl.text.trim(),
                         'tutar': cekilebilirBakiye,
@@ -74,9 +82,21 @@ class _SiberKasaScreenState extends State<SiberKasaScreen> {
                       });
 
                       // 2. Bakiyeyi Sıfırla (Kullanıcı Tablosundan)
-                      await _db.collection('kullanicilar').doc(_currentUser!.uid).update({
+                      DocumentReference kullaniciRef = _db.collection('kullanicilar').doc(_currentUser!.uid);
+                      batch.update(kullaniciRef, {
                         'bakiye': 0.0
                       });
+
+                      // 3. İstihbarat Logu
+                      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+                      batch.set(logRef, {
+                        'islem_turu': 'PARA_CEKME_TALEBI',
+                        'islem_detayi': 'SİBER KASA: Bayi (${_currentUser!.uid}), ₺$cekilebilirBakiye tutarında para çekme talebi oluşturdu. Hedef IBAN: ${ibanCtrl.text.trim()}',
+                        'bayi_id': _currentUser!.uid,
+                        'tarih': FieldValue.serverTimestamp(),
+                      });
+
+                      await batch.commit();
 
                       _siberUyari("Para Çekme Talebiniz Finans Merkezine İletildi! 💸");
                     } catch (e) {
@@ -97,16 +117,18 @@ class _SiberKasaScreenState extends State<SiberKasaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const bgColor = Color(0xFF0F172A);
-    const primaryCyan = Color(0xFF00FFC2);
-    const cardColor = Color(0xFF1E293B);
+    const bgColor = SiberTema.oledBlack;
+    const primaryCyan = SiberTema.kuantumCyan;
+    const cardColor = SiberTema.matGrey;
 
-    if (_currentUser == null) return const Scaffold(backgroundColor: bgColor, body: Center(child: Text("Kimlik Hatası!")));
+    if (_currentUser == null) return const Scaffold(backgroundColor: bgColor, body: Center(child: Text("Kimlik Hatası!", style: TextStyle(color: SiberTema.kanKirmizi))));
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        backgroundColor: bgColor, elevation: 0,
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent, elevation: 0,
         title: const Text('Siber Kasa & Finans', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         centerTitle: true, iconTheme: const IconThemeData(color: primaryCyan),
       ),
@@ -186,7 +208,7 @@ class _SiberKasaScreenState extends State<SiberKasaScreen> {
                                         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(isCompleted ? "Gönderildi" : "İnceleniyor", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)), const SizedBox(height: 4), Text("IBAN: ${talep['iban']?.toString().substring(0, 8)}...", style: const TextStyle(color: Colors.white54, fontSize: 11))]),
                                       ],
                                     ),
-                                    Text("-₺${talep['tutar']}", style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 15)),
+                                    Text("-₺${talep['tutar']}", style: const TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold, fontSize: 15)),
                                   ],
                                 ),
                               );
@@ -199,6 +221,7 @@ class _SiberKasaScreenState extends State<SiberKasaScreen> {
               ),
             );
           }
+      ),
       ),
     );
   }

@@ -27,8 +27,8 @@ class DukkanVitrinScreen extends StatelessWidget {
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18), onPressed: () => Navigator.pop(context)),
         ),
         body: StreamBuilder<DocumentSnapshot>(
-          // 📡 FİREBASE CANLI RADAR BAĞLANTISI
-          stream: FirebaseFirestore.instance.collection('bayiler').doc(bayiId).snapshots(),
+          // 📡 FİREBASE CANLI RADAR BAĞLANTISI (Kuantum Standart Tablo: kullanicilar)
+          stream: FirebaseFirestore.instance.collection('kullanicilar').doc(bayiId).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
@@ -127,9 +127,42 @@ class DukkanVitrinScreen extends StatelessWidget {
 
                   // ── İŞLEM BUTONLARI (KARA LİSTEDEYSE KİLİTLENİR VEYA UYARI VERİR) ──
                   if (!isKaraListe) ...[
-                    _buildSiberButon("RANDEVU AL", Icons.calendar_month, SiberTema.kuantumCyan, () {}),
+                    _buildSiberButon("RANDEVU AL", Icons.calendar_month, SiberTema.kuantumCyan, () {
+                      FirebaseFirestore.instance.collection('siber_istihbarat_loglari').add({
+                        'kategori': 'KULLANICI',
+                        'seviye': 'BİLGİ',
+                        'mesaj': 'YENİ RANDEVU TALEBİ: Bir müşteri $firmaAdi firmasından randevu talep etti.',
+                        'hedef_id': bayiId,
+                        'tarih': FieldValue.serverTimestamp(),
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Randevu talebi Karargaha ve bayiye iletildi!", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan));
+                    }),
                     const SizedBox(height: 16),
-                    _buildSiberButon("S.O.S YARDIM ÇAĞIR", Icons.sos, SiberTema.altinSari, () {}),
+                    _buildSiberButon("S.O.S YARDIM ÇAĞIR", Icons.sos, SiberTema.altinSari, () {
+                      WriteBatch batch = FirebaseFirestore.instance.batch();
+                      
+                      // 1. SOS Sinyalini Oluştur
+                      DocumentReference sosRef = FirebaseFirestore.instance.collection('sos_sinyalleri').doc();
+                      batch.set(sosRef, {
+                        'hedef_bayi_1': bayiId,
+                        'durum': 'YENI_SINYAL',
+                        'plaka': 'ACİL YARDIM',
+                        'sinyal_zamani': FieldValue.serverTimestamp(),
+                      });
+                      
+                      // 2. Siber İstihbarata Mühürle
+                      DocumentReference logRef = FirebaseFirestore.instance.collection('siber_istihbarat_loglari').doc();
+                      batch.set(logRef, {
+                        'kategori': 'GÜVENLİK',
+                        'seviye': 'KRİTİK',
+                        'mesaj': 'KIRMIZI KOD: Müşteri doğrudan $firmaAdi firmasına acil S.O.S çağrısı gönderdi!',
+                        'hedef_id': bayiId,
+                        'tarih': FieldValue.serverTimestamp(),
+                      });
+                      
+                      batch.commit();
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("S.O.S Sinyali Fırlatıldı! Ekip yola çıkıyor!", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kanKirmizi));
+                    }),
                   ] else ...[
                     // KARA LİSTE FİRMASINDA BUTONLAR PASİFTİR VEYA FARKLI ÇALIŞIR
                     Container(

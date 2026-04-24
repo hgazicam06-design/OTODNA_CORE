@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // 🚀 KARARGAH ZIRHLARINI İÇERİ AKTARIYORUZ
 import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
+import '../dashboard/siber_finans_merkezi_screen.dart'; // 💰 FİNANS MERKEZİ KÖPRÜSÜ
 
 class AdminDashUI extends StatelessWidget {
   const AdminDashUI({super.key});
@@ -79,42 +80,56 @@ class AdminDashUI extends StatelessWidget {
         double devletVergisi = toplamCiro * 0.02; // %2 Vergi
         double toplamKasaGirdisi = netKazanilanKar + devletVergisi; // %12 Toplam Hakediş
 
-        return Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            // 3D İçeri Çökük (Emboss) Kasa Hissi
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [SiberTema.oledBlack, SiberTema.matGrey.withOpacity(0.5)],
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const SiberFinansMerkeziScreen()));
+          },
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              // 3D İçeri Çökük (Emboss) Kasa Hissi
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [SiberTema.oledBlack, SiberTema.matGrey.withOpacity(0.5)],
+              ),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5), // Etkileşim belli olsun diye turkuaz border
+              boxShadow: [
+                BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 15, spreadRadius: -2, offset: const Offset(0, 5)),
+              ],
             ),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
-            boxShadow: [
-              BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 15, spreadRadius: -2, offset: const Offset(0, 5)),
-            ],
-          ),
-          child: Column(
-            children: [
-              Text("TOPLAM KASA GİRDİSİ (%12)", style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
-              const SizedBox(height: 12),
-              Text(
-                  "₺${toplamKasaGirdisi.toStringAsFixed(2)}",
-                  style: TextStyle(color: Colors.white.withOpacity(0.95), fontSize: 36, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir', shadows: const [Shadow(color: Colors.black, blurRadius: 10)])
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Divider(color: Colors.white.withOpacity(0.1), thickness: 1),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(child: _buildFinansDetay("Devlet Vergisi (%2)", "₺${devletVergisi.toStringAsFixed(2)}", SiberTema.kanKirmizi)),
-                  Container(width: 1, height: 40, color: Colors.white.withOpacity(0.1)),
-                  Expanded(child: _buildFinansDetay("Net Karargah Kârı (%10)", "₺${netKazanilanKar.toStringAsFixed(2)}", Colors.greenAccent)),
-                ],
-              )
-            ],
+            child: Column(
+              children: [
+                Text("TOPLAM KASA GİRDİSİ (%12)", style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
+                const SizedBox(height: 12),
+                Text(
+                    "₺${toplamKasaGirdisi.toStringAsFixed(2)}",
+                    style: TextStyle(color: Colors.white.withOpacity(0.95), fontSize: 36, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir', shadows: const [Shadow(color: Colors.black, blurRadius: 10)])
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Divider(color: Colors.white.withOpacity(0.1), thickness: 1),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(child: _buildFinansDetay("Devlet Vergisi (%2)", "₺${devletVergisi.toStringAsFixed(2)}", SiberTema.kanKirmizi)),
+                    Container(width: 1, height: 40, color: Colors.white.withOpacity(0.1)),
+                    Expanded(child: _buildFinansDetay("Net Karargah Kârı (%10)", "₺${netKazanilanKar.toStringAsFixed(2)}", Colors.greenAccent)),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("SİBER FİNANS KOKPİTİNE GİR", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                    SizedBox(width: 4),
+                    Icon(Icons.arrow_forward_ios, color: SiberTema.kuantumCyan, size: 10),
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -201,8 +216,21 @@ class AdminDashUI extends StatelessWidget {
                               side: BorderSide(color: alarmRengi, width: 1.5),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                             ),
-                            onPressed: () {
-                              FirebaseFirestore.instance.collection('sos_cagrilari').doc(doc.id).update({'durum': 'mudahale_ediliyor'});
+                            onPressed: () async {
+                              WriteBatch batch = FirebaseFirestore.instance.batch();
+                              
+                              DocumentReference sosRef = FirebaseFirestore.instance.collection('sos_cagrilari').doc(doc.id);
+                              batch.update(sosRef, {'durum': 'mudahale_ediliyor'});
+                              
+                              DocumentReference logRef = FirebaseFirestore.instance.collection('siber_istihbarat_loglari').doc();
+                              batch.set(logRef, {
+                                'islem_turu': 'SOS_MUDAHALE',
+                                'islem_detayi': 'SİBER KOMUTAN: "$musteri" sürücüsünün SOS alarmına müdahale edildi.',
+                                'kullanici_id': FirebaseAuth.instance.currentUser?.uid ?? 'BİLİNMEYEN',
+                                'tarih': FieldValue.serverTimestamp(),
+                              });
+                              
+                              await batch.commit();
                             },
                             child: const Text("MÜDAHALE", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11, fontFamily: 'Avenir', letterSpacing: 1)),
                           ),

@@ -5,8 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
 // 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI (2 Kat Yukarı)
-import '../../../../core/siber_tema.dart';
-import '../../../../core/responsive_kalkan.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
 
 /// 🛡️ KUANTUM HIZLI KAYIT FORMU (HizliKayitFormu)
 /// Davetle gelen firmaları (Beyinci, Kurtarıcı vb.) sisteme katar ve Karargaha ATOMİK mühürler.
@@ -88,10 +88,13 @@ class _HizliKayitFormuState extends State<HizliKayitFormu> {
       }, SetOptions(merge: true));
 
       // 2. Kara Kutuya Rapor Düşer
-      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
       batch.set(logRef, {
         'islem_turu': 'HIZLI_BAYI_KAYDI',
+        'seviye': 'BİLGİ',
         'islem_detayi': 'SİBER BÜYÜME: $firmaAdi firması (${secilenSektorler.join(", ")}) hızlı davet linkiyle Karargaha katılım sağladı.',
+        'vaka_id': widget.ustaId,
+        'kullanici_id': widget.ustaId,
         'tarih': FieldValue.serverTimestamp(),
       });
 

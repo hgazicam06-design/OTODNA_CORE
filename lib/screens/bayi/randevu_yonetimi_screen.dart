@@ -3,6 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
+// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
+
 class RandevuYonetimiScreen extends StatefulWidget {
   const RandevuYonetimiScreen({super.key});
 
@@ -30,18 +34,34 @@ class _RandevuYonetimiScreenState extends State<RandevuYonetimiScreen> with Sing
   void _siberUyari(String mesaj, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : Colors.black, fontWeight: FontWeight.bold)),
-      backgroundColor: isError ? Colors.redAccent : const Color(0xFF00FFC2),
+      content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.bold)),
+      backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
     ));
   }
 
-  // FİREBASE RANDEVU ONAYLAMA / İPTAL MOTORU
+  // FİREBASE RANDEVU ONAYLAMA / İPTAL MOTORU (ATOMİK MÜHÜR)
   Future<void> _randevuDurumGuncelle(String randevuId, String yeniDurum) async {
     try {
-      await _db.collection('randevular').doc(randevuId).update({
+      WriteBatch batch = _db.batch();
+
+      DocumentReference randevuRef = _db.collection('randevular').doc(randevuId);
+      batch.update(randevuRef, {
         'durum': yeniDurum,
         'guncellenme_tarihi': FieldValue.serverTimestamp(),
       });
+
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'RANDEVU_DURUM_GUNCELLEMESI',
+        'islem_detayi': 'SİBER RANDEVU: Randevu ($randevuId) durumu "$yeniDurum" olarak güncellendi.',
+        'randevu_id': randevuId,
+        'yeni_durum': yeniDurum,
+        'bayi_id': _currentUser?.uid,
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
+
       _siberUyari(yeniDurum == 'Onaylandı' ? 'Randevu Müşteriye Onaylandı! ✅' : 'Randevu İptal Edildi ❌', isError: yeniDurum != 'Onaylandı');
     } catch (e) {
       _siberUyari("Ağ Hatası: $e", isError: true);
@@ -50,16 +70,18 @@ class _RandevuYonetimiScreenState extends State<RandevuYonetimiScreen> with Sing
 
   @override
   Widget build(BuildContext context) {
-    const bgColor = Color(0xFF0F172A);
-    const primaryCyan = Color(0xFF00FFC2);
-    const cardColor = Color(0xFF1E293B);
+    const bgColor = SiberTema.oledBlack;
+    const primaryCyan = SiberTema.kuantumCyan;
+    const cardColor = SiberTema.matGrey;
 
-    if (_currentUser == null) return const Scaffold(backgroundColor: bgColor, body: Center(child: Text("Kimlik Hatası!")));
+    if (_currentUser == null) return const Scaffold(backgroundColor: bgColor, body: Center(child: Text("Kimlik Hatası!", style: TextStyle(color: SiberTema.kanKirmizi))));
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        backgroundColor: bgColor, elevation: 0,
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent, elevation: 0,
         title: const Text('Randevu & Takvim Radarı', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         centerTitle: true, iconTheme: const IconThemeData(color: primaryCyan),
         bottom: TabBar(
@@ -109,6 +131,7 @@ class _RandevuYonetimiScreenState extends State<RandevuYonetimiScreen> with Sing
             );
           }
       ),
+      ),
     );
   }
 
@@ -133,9 +156,9 @@ class _RandevuYonetimiScreenState extends State<RandevuYonetimiScreen> with Sing
             const SizedBox(height: 16),
             Row(
               children: [
-                Expanded(child: OutlinedButton(style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.redAccent), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))), onPressed: () => _randevuDurumGuncelle(id, 'İptal Edildi'), child: const Text("Reddet", style: TextStyle(color: Colors.redAccent)))),
+                Expanded(child: OutlinedButton(style: OutlinedButton.styleFrom(side: const BorderSide(color: SiberTema.kanKirmizi), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))), onPressed: () => _randevuDurumGuncelle(id, 'İptal Edildi'), child: const Text("Reddet", style: TextStyle(color: SiberTema.kanKirmizi)))),
                 const SizedBox(width: 12),
-                Expanded(child: ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: primaryCyan, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))), onPressed: () => _randevuDurumGuncelle(id, 'Onaylandı'), child: const Text("Onayla", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)))),
+                Expanded(child: ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: primaryCyan, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))), onPressed: () => _randevuDurumGuncelle(id, 'Onaylandı'), child: const Text("Onayla", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)))),
               ],
             )
           ]

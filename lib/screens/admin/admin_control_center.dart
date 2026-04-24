@@ -12,18 +12,21 @@ import 'admin_onay_havuzu_screen.dart';
 import '../../admin/admin_dash_ui.dart';
 import 'bayi_itibar_merkezi_screen.dart';
 import '../bayi_yonetim_merkezi_screen.dart';
-import '../../services/bolge_komuta_merkezi_screen.dart';
+import 'bolge_komuta_merkezi_screen.dart'; // 🌍 DOĞRU KÖPRÜ (Arayüz Bağlandı)
 import '../mega_revizyon_screen.dart';
 import '../bayi_paneli.dart';
 import '../kullanici_yonetim_screen.dart';
 import '../bayi_ekosistemi_screen.dart';
+import '../dashboard/siber_finans_merkezi_screen.dart'; // 💰 YENI SIBER FINANS KOKPITI KOPRUSU
+import 'siber_istihbarat_merkezi_screen.dart'; // 👁️ SIBER İSTİHBARAT KÖPRÜSÜ
+import 'bayi_basvuru_merkezi_screen.dart'; // 🏢 BAYİ BAŞVURU KÖPRÜSÜ
 
 // 🎨 SİNEMATIK VE TAKTİKSEL RENK KODLARI (TRUE BLACK & KUANTUM TURKUAZI ZIRHI)
-const Color renkIstihbarat = Color(0xFF00FFC2); // Kuantum Turkuazı (Ağ ve Finans)
-const Color renkOperasyon = Color(0xFFD500F9); // Neon Mor (Ayarlar ve Revizyon)
-const Color renkKritik = Colors.redAccent; // Kan Kırmızı (SOS)
-const Color bgDark = Color(0xFF000000); // True Black
-const Color glassBg = Color(0x0AFFFFFF); // Şeffaf Cam
+const Color renkIstihbarat = SiberTema.kuantumCyan; // Kuantum Turkuazı (Ağ ve Finans)
+const Color renkOperasyon = SiberTema.kuantumCyan; // Neon Mor yerine Turkuaz
+const Color renkKritik = SiberTema.kanKirmizi; // Kan Kırmızı (SOS)
+const Color bgDark = SiberTema.oledBlack; // True Black
+const Color glassBg = SiberTema.matGrey; // Şeffaf Cam
 
 class AdminControlCenter extends StatelessWidget {
   const AdminControlCenter({super.key});
@@ -85,6 +88,7 @@ class AdminControlCenter extends StatelessWidget {
                 // 📡 İSTİHBARAT VE AĞ (TURKUAZ)
                 _buildGlassModule(context, "BÖLGE RADARI", Icons.radar, renkIstihbarat, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BolgeKomutaMerkeziScreen()))),
                 _buildGlassModule(context, "BAYİ AĞI", Icons.storefront, renkIstihbarat, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BayiYonetimMerkeziScreen()))),
+                _buildGlassModule(context, "BAYİ BAŞVURULARI", Icons.domain_add, renkIstihbarat, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BayiBasvuruMerkeziScreen()))),
                 _buildGlassModule(context, "İTİBAR SİCİLİ", Icons.folder_special, renkIstihbarat, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BayiItibarMerkeziScreen()))),
                 _buildGlassModule(context, "KULLANICI YETKİ", Icons.fingerprint, renkIstihbarat, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const KullaniciYonetimScreen()))),
 
@@ -181,32 +185,46 @@ class AdminControlCenter extends StatelessWidget {
           // BURASI MUTLAK %12 HESAPLAMASIDIR (%10 kar + %2 vergi)
           siberKomutanPayi += (data['komutan_payi'] ?? 0).toDouble();
         }
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
-              decoration: BoxDecoration(
-                color: renkIstihbarat.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: renkIstihbarat.withOpacity(0.3), width: 1.5),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text("NET KARARGAH PAYI (%12)", style: TextStyle(color: renkIstihbarat, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                  const SizedBox(height: 16),
-                  Text(
-                      "₺ ${siberKomutanPayi.toStringAsFixed(2)}",
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 36,
-                          fontWeight: FontWeight.w900,
-                          shadows: [Shadow(color: renkIstihbarat, blurRadius: 20)]
-                      )
-                  ),
-                ],
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const SiberFinansMerkeziScreen()));
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+                decoration: BoxDecoration(
+                  color: renkIstihbarat.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: renkIstihbarat.withOpacity(0.3), width: 1.5),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text("NET KARARGAH PAYI (%12)", style: TextStyle(color: renkIstihbarat, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                    const SizedBox(height: 16),
+                    Text(
+                        "₺ ${siberKomutanPayi.toStringAsFixed(2)}",
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 36,
+                            fontWeight: FontWeight.w900,
+                            shadows: [Shadow(color: renkIstihbarat, blurRadius: 20)]
+                        )
+                    ),
+                    const SizedBox(height: 12),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("SİBER FİNANS MERKEZİ'NE GİRİŞ YAP", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                        SizedBox(width: 4),
+                        Icon(Icons.arrow_forward_ios, color: renkIstihbarat, size: 10),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -216,48 +234,69 @@ class AdminControlCenter extends StatelessWidget {
   }
 
   Widget _buildLiveCrtLogEkrani() {
-    return Container(
-      height: 200,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: glassBg,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.05), width: 1),
-      ),
-      child: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('sistem_loglari').orderBy('tarih', descending: true).limit(20).snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) return _buildKuantumLoader();
-          final docs = snapshot.data?.docs ?? [];
-          if (docs.isEmpty) return const Center(child: Text("> Radar Temiz...", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold)));
+    return Column(
+      children: [
+        Container(
+          height: 200,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: glassBg,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withOpacity(0.05), width: 1),
+          ),
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('siber_istihbarat_loglari').orderBy('tarih', descending: true).limit(20).snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) return _buildKuantumLoader();
+              final docs = snapshot.data?.docs ?? [];
+              if (docs.isEmpty) return const Center(child: Text("> Radar Temiz...", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold)));
 
-          return ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            itemCount: docs.length,
-            itemBuilder: (context, index) {
-              var data = docs[index].data() as Map<String, dynamic>;
-              String bayi = data['bayi_isim'] ?? 'SİSTEM';
-              String islem = data['islem_detayi'] ?? 'Bilinmeyen İşlem';
+              return ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: docs.length,
+                itemBuilder: (context, index) {
+                  var data = docs[index].data() as Map<String, dynamic>;
+                  String bayi = data['fail_adi'] ?? 'SİSTEM';
+                  String islem = data['islem_basligi'] ?? 'Bilinmeyen İşlem';
 
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("> ", style: TextStyle(color: renkIstihbarat, fontWeight: FontWeight.bold)),
-                    Expanded(
-                      child: Text(
-                          "[$bayi] : $islem",
-                          style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12, fontWeight: FontWeight.w500)
-                      ),
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text("> ", style: TextStyle(color: renkIstihbarat, fontWeight: FontWeight.bold)),
+                        Expanded(
+                          child: Text(
+                              "[$bayi] : $islem",
+                              style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12, fontWeight: FontWeight.w500)
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               );
             },
-          );
-        },
-      ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        SizedBox(
+          width: double.infinity,
+          height: 50,
+          child: ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const SiberIstihbaratMerkeziScreen()));
+            },
+            icon: const Icon(Icons.travel_explore, color: Colors.black),
+            label: const Text("TÜM İSTİHBARAT AĞINI AÇ", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: renkIstihbarat,
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -313,13 +352,26 @@ class _SistemAyarlariTerminaliState extends State<_SistemAyarlariTerminali> {
   Future<void> _ayarlariKaydet() async {
     setState(() => _isSaving = true);
     try {
-      await _db.collection('sistem_ayarlari').doc('genel_ayarlar').set({
+      WriteBatch batch = _db.batch();
+
+      DocumentReference ayarlarRef = _db.collection('sistem_ayarlari').doc('genel_ayarlar');
+      batch.set(ayarlarRef, {
         'hologram_aktif': _hologramAktif,
         'hologram_baslik': _hologramBaslikCtrl.text.trim(),
         'hologram_mesaj': _hologramMesajCtrl.text.trim(),
         'tema_rengi': 'Turkuaz', // Sabit Kuantum Turkuazı
         'guncellenme_tarihi': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
+
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'SISTEM_AYARLARI_GUNCELLEME',
+        'islem_detayi': 'SİBER KOMUTAN: Sistem ayarları güncellendi. Hologram Aktif: $_hologramAktif',
+        'kullanici_id': FirebaseAuth.instance.currentUser?.uid ?? 'BİLİNMEYEN',
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
 
       if (!mounted) return;
       _siberUyari("SİSTEM MÜHÜRLENDİ! Değişiklikler ağa yayıldı.", isError: false);
@@ -338,13 +390,26 @@ class _SistemAyarlariTerminaliState extends State<_SistemAyarlariTerminali> {
 
     setState(() => _isSendingSignal = true);
     try {
-      await _db.collection('siber_duyurular').add({
+      WriteBatch batch = _db.batch();
+
+      DocumentReference duyuruRef = _db.collection('siber_duyurular').doc();
+      batch.set(duyuruRef, {
         'baslik': _duyuruBaslikCtrl.text.trim(),
         'mesaj': _duyuruMesajCtrl.text.trim(),
         'hedef_kitle': _hedefKitle,
         'tarih': FieldValue.serverTimestamp(),
         'gonderen': 'SİBER KOMUTAN',
       });
+
+      DocumentReference logRef = _db.collection('siber_istihbarat_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'EVRENSEL_DUYURU_FIRLATMA',
+        'islem_detayi': 'SİBER KOMUTAN: "$_hedefKitle" kitlesine duyuru fırlatıldı: "${_duyuruBaslikCtrl.text.trim()}"',
+        'kullanici_id': FirebaseAuth.instance.currentUser?.uid ?? 'BİLİNMEYEN',
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
 
       _duyuruBaslikCtrl.clear();
       _duyuruMesajCtrl.clear();
