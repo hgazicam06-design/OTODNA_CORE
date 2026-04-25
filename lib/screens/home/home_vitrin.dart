@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../lojistik/otodna_cigir_screen.dart'; // MÜŞTERİ TAKSİ ÇAĞIRMA KÖPRÜSÜ
+
 class HomeVitrin extends StatefulWidget {
   const HomeVitrin({super.key});
 
@@ -147,9 +149,11 @@ class _HomeVitrinState extends State<HomeVitrin> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          _actionItem(Icons.local_taxi, "Taksi Çığır", primaryCyan, () {
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const OtoDnaCigirScreen()));
+          }),
           _actionItem(Icons.tire_repair, "Lastik", Colors.blueGrey, () => _siberUyari("Siber Lastik Radarı Açılıyor...")),
           _actionItem(Icons.battery_charging_full, "Akü & EV", primaryCyan, () => _siberUyari("Elektrik/Akü İstasyonları Aranıyor...")),
-          _actionItem(Icons.settings_input_component, "Jant/Mod", Colors.purpleAccent, () => _siberUyari("Modifiye ve Jant Merkezi Açılıyor...")),
           _actionItem(Icons.sell, "Hemen Sat", Colors.redAccent, () => _siberUyari("İkinci El İlan Platformuna Geçiş...")),
         ],
       ),

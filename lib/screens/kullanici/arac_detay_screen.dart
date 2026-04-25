@@ -1,4 +1,3 @@
-// lib/screens/arac_detay_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +7,7 @@ import '../../commerce/eco_system_gate.dart';
 // 🚀 KARARGAH ZIRHLARI
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
+import 'arac_deger_kaybi_screen.dart'; // HUKUK AĞI KÖPRÜSÜ
 
 class AracDetayScreen extends StatelessWidget {
   final Map<String, dynamic> aracVerisi;
@@ -35,6 +35,20 @@ class AracDetayScreen extends StatelessWidget {
     return ResponsiveKalkan(
       child: Scaffold(
         backgroundColor: Colors.transparent, // OLED Siyahı
+        
+        // ⚖️ SESSİZ HUKUK UYARICISI (Sadece hasar/kaza varsa görünür)
+        floatingActionButton: (dnaSkoru < 100 || (aracVerisi['tramerKazaSayisi'] ?? 0) > 0)
+            ? FloatingActionButton.extended(
+                heroTag: "hukuk_agi_btn",
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AracDegerKaybiScreen())),
+                backgroundColor: SiberTema.oledBlack,
+                elevation: 10,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 1.5)),
+                icon: const Icon(Icons.gavel, color: SiberTema.kuantumCyan, size: 20),
+                label: const Text("DEĞER KAYBI AL", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontSize: 10, letterSpacing: 1)),
+              )
+            : null,
+
         body: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [

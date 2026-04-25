@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
+import '../../services/siber_hukuk_motoru.dart';
 
 class AracDegerKaybiScreen extends StatefulWidget {
   const AracDegerKaybiScreen({super.key});
@@ -10,76 +13,133 @@ class AracDegerKaybiScreen extends StatefulWidget {
 class _AracDegerKaybiScreenState extends State<AracDegerKaybiScreen> {
   bool _hesaplaniyor = false;
   bool _sonucGoster = false;
+  double _hesaplananTutar = 0.0;
+  
+  final TextEditingController _smsController = TextEditingController();
+  final TextEditingController _kmController = TextEditingController();
+  final TextEditingController _kusurController = TextEditingController();
+  final TextEditingController _saseController = TextEditingController();
 
-  void _aiHesaplamaBaslat() {
+  final SiberHukukMotoru _hukukMotoru = SiberHukukMotoru();
+
+  void _aiHesaplamaBaslat() async {
+    if (_smsController.text.isEmpty || _kmController.text.isEmpty || _kusurController.text.isEmpty || _saseController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Lütfen SMS Metnini, Şase No, KM ve Kusur Oranını giriniz."), backgroundColor: Colors.redAccent));
+      return;
+    }
+
     setState(() { _hesaplaniyor = true; _sonucGoster = false; });
-    // Yapay Zeka Kuantum Hesaplama Simülasyonu (3 saniye)
-    Future.delayed(const Duration(seconds: 3), () {
-      setState(() { _hesaplaniyor = false; _sonucGoster = true; });
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Siber AI Analizi Tamamlandı! 🧠"), backgroundColor: Color(0xFF00FFC2)));
-    });
+    
+    int km = int.tryParse(_kmController.text.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
+    int kusur = int.tryParse(_kusurController.text.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
+
+    final sonuc = await _hukukMotoru.tramerAnaliziYap(
+      smsMetni: _smsController.text,
+      saseNo: _saseController.text,
+      kilometre: km,
+      kusurOrani: kusur,
+    );
+
+    if (!mounted) return;
+    setState(() => _hesaplaniyor = false);
+
+    if (sonuc['basarili'] == false) {
+      // Pert engeli veya diğer hatalar
+      bool isPert = sonuc['pertMi'] ?? false;
+      _hataGoster(sonuc['mesaj'], isPert);
+    } else {
+      // Başarılı Hesaplama
+      setState(() {
+        _hesaplananTutar = sonuc['tahminiTutar'];
+        _sonucGoster = true;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Kaza Analizi: ${sonuc['kazaSayisi']} Hasar Bulundu. Hesaplama Tamamlandı! 🧠"), backgroundColor: SiberTema.kuantumCyan, duration: const Duration(seconds: 4)));
+    }
+  }
+
+  void _hataGoster(String mesaj, bool isPert) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: SiberTema.oledBlack,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: isPert ? SiberTema.kanKirmizi : Colors.orangeAccent)),
+        title: Row(
+          children: [
+            Icon(isPert ? Icons.cancel : Icons.warning, color: isPert ? SiberTema.kanKirmizi : Colors.orangeAccent, size: 32),
+            const SizedBox(width: 12),
+            const Text("HUKUK MOTORU UYARISI", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+          ],
+        ),
+        content: Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("ANLADIM", style: TextStyle(color: Colors.white38)))
+        ],
+      )
+    );
+  }
+
+  void _avukataGonder() async {
+    bool basarili = await _hukukMotoru.avukataDosyaAc(_saseController.text, _hesaplananTutar, _smsController.text);
+    if (!mounted) return;
+    
+    if (basarili) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Dosyanız Kuantum Hukuk Ağına İletildi! Avukatlarımız sizinle iletişime geçecektir. ⚖️"), backgroundColor: SiberTema.kuantumCyan));
+      setState(() => _sonucGoster = false);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ağ Hatası. Dosya gönderilemedi."), backgroundColor: Colors.redAccent));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // 🌑 DİJİTAL KALE RENK PALETİ
-    const bgColor = Color(0xFF070B14); // Derin Uzay Siyahı
-    const primaryCyan = Color(0xFF00FFC2); // Kuantum Turkuazı
-    const panelColor = Color(0xFF121B2B); // Koyu Cam Rengi
-
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(color: bgColor.withOpacity(0.5), shape: BoxShape.circle),
-            child: const Icon(Icons.arrow_back_ios_new, color: primaryCyan, size: 20),
-          ),
-          onPressed: () => Navigator.pop(context),
+        appBar: AppBar(
+          backgroundColor: Colors.black.withOpacity(0.8),
+          elevation: 0,
+          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+          title: const Text("YAPAY ZEKA DEĞER KAYBI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2)),
+          centerTitle: true,
         ),
-        title: const Text("Yapay Zeka Değer Kaybı", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 1)),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 🌟 1. YENİ SEKME: HUKUK AĞI DURUM PANELİ
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: primaryCyan.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: primaryCyan.withOpacity(0.3)),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(color: primaryCyan.withOpacity(0.1), shape: BoxShape.circle),
-                    child: const Icon(Icons.account_balance, color: primaryCyan, size: 20),
-                  ),
-                  const SizedBox(width: 16),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Emsal Karar Ağı: Senkronize", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
-                        SizedBox(height: 4),
-                        Text("Yargıtay veritabanı ile eşzamanlı çalışıyor.", style: TextStyle(color: Colors.white54, fontSize: 11)),
-                      ],
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 🌟 1. YENİ SEKME: HUKUK AĞI DURUM PANELİ
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: SiberTema.kuantumCyan.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3)),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), shape: BoxShape.circle),
+                      child: const Icon(Icons.account_balance, color: SiberTema.kuantumCyan, size: 20),
                     ),
-                  ),
-                  const Icon(Icons.wifi_tethering, color: primaryCyan, size: 18),
-                ],
+                    const SizedBox(width: 16),
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Siber Hukuk Ağı: Senkronize", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
+                          SizedBox(height: 4),
+                          Text("Yargıtay emsalleri ile eşzamanlı TRAMER okuması yapılıyor.", style: TextStyle(color: Colors.white54, fontSize: 11)),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.wifi_tethering, color: SiberTema.kuantumCyan, size: 18),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
+              const SizedBox(height: 24),
 
             // 🚨 2. ÜST BİLGİ KARTI (Daha Siber ve Keskin)
             Container(
@@ -129,10 +189,10 @@ class _AracDegerKaybiScreenState extends State<AracDegerKaybiScreen> {
                     children: [
                       const SizedBox(
                         height: 40, width: 40,
-                        child: CircularProgressIndicator(color: primaryCyan, strokeWidth: 3),
+                        child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3),
                       ),
                       const SizedBox(height: 16),
-                      Text("Siber AI Emsal Kararları Tarıyor...", style: TextStyle(color: primaryCyan.withOpacity(0.8), fontWeight: FontWeight.bold, letterSpacing: 1))
+                      Text("Siber Hukuk Ağı Tramer Mesajını Analiz Ediyor...", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.8), fontWeight: FontWeight.bold, letterSpacing: 1))
                     ]
                 )
             )
@@ -140,16 +200,10 @@ class _AracDegerKaybiScreenState extends State<AracDegerKaybiScreen> {
                 width: double.infinity,
                 height: 60,
                 child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryCyan,
-                        foregroundColor: bgColor,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                        elevation: 10,
-                        shadowColor: primaryCyan.withOpacity(0.5)
-                    ),
+                    style: SiberTema.kuantumButonStili(),
                     onPressed: _aiHesaplamaBaslat,
-                    icon: const Icon(Icons.psychology, size: 28),
-                    label: const Text("AI MOTORU İLE HESAPLA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 1))
+                    icon: const Icon(Icons.psychology, size: 28, color: Colors.black),
+                    label: const Text("SMS'İ OKU VE HESAPLA", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 1))
                 )
             ),
             const SizedBox(height: 32),
@@ -159,22 +213,22 @@ class _AracDegerKaybiScreenState extends State<AracDegerKaybiScreen> {
               Container(
                 padding: const EdgeInsets.all(32),
                 decoration: BoxDecoration(
-                    color: panelColor,
+                    color: SiberTema.matGrey,
                     borderRadius: BorderRadius.circular(24),
-                    border: Border.all(color: primaryCyan.withOpacity(0.5), width: 2),
-                    boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.15), blurRadius: 30, spreadRadius: 5)]
+                    border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 2),
+                    boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.15), blurRadius: 30, spreadRadius: 5)]
                 ),
                 child: Column(
                   children: [
                     Container(
                       padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(color: primaryCyan.withOpacity(0.1), shape: BoxShape.circle),
-                      child: const Icon(Icons.check_circle, color: primaryCyan, size: 48),
+                      decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), shape: BoxShape.circle),
+                      child: const Icon(Icons.check_circle, color: SiberTema.kuantumCyan, size: 48),
                     ),
                     const SizedBox(height: 20),
                     const Text("TAHMİNİ DEĞER KAYBI", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
                     const SizedBox(height: 8),
-                    const Text("₺42.500", style: TextStyle(color: primaryCyan, fontSize: 44, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                    Text("₺${_hesaplananTutar.toStringAsFixed(0)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 44, fontWeight: FontWeight.w900, letterSpacing: 1)),
                     const SizedBox(height: 20),
                     const Text("Bu tutarı karşı tarafın sigortasından tahsil etmek için OtoDNA Hukuk Departmanı'na tek tuşla dosya açabilirsiniz.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 12, height: 1.5)),
                     const SizedBox(height: 24),
@@ -183,13 +237,11 @@ class _AracDegerKaybiScreenState extends State<AracDegerKaybiScreen> {
                       height: 50,
                       child: OutlinedButton.icon(
                           style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: primaryCyan.withOpacity(0.5), width: 1.5),
+                              side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 1.5),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                              foregroundColor: primaryCyan
+                              foregroundColor: SiberTema.kuantumCyan
                           ),
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Dosya Siber Avukata İletildi! ⚖️"), backgroundColor: primaryCyan));
-                          },
+                          onPressed: _avukataGonder,
                           icon: const Icon(Icons.send),
                           label: const Text("AVUKATA DOSYA GÖNDER", style: TextStyle(fontWeight: FontWeight.bold))
                       ),
@@ -205,29 +257,30 @@ class _AracDegerKaybiScreenState extends State<AracDegerKaybiScreen> {
   }
 
   // 🎛️ DİJİTAL KALE VERİ GİRİŞ ALANI WIDGET'I
-  Widget _buildSiberGirisAlani(String baslik, String hint, IconData ikon, Color panelColor, Color accentColor) {
+  Widget _buildSiberGirisAlani(String baslik, String hint, IconData ikon, TextEditingController controller, {bool isNumber = false}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
+            Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
             Container(
                 decoration: BoxDecoration(
-                    color: panelColor,
-                    borderRadius: BorderRadius.circular(16),
+                    color: SiberTema.matGrey.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.white12)
                 ),
                 child: TextField(
-                    keyboardType: TextInputType.number,
-                    style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                    controller: controller,
+                    keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+                    style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
                     decoration: InputDecoration(
-                        prefixIcon: Icon(ikon, color: accentColor.withOpacity(0.7), size: 20),
+                        prefixIcon: Icon(ikon, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 18),
                         hintText: hint,
-                        hintStyle: const TextStyle(color: Colors.white24, fontWeight: FontWeight.normal),
+                        hintStyle: const TextStyle(color: Colors.white24, fontSize: 11),
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 16)
+                        contentPadding: const EdgeInsets.symmetric(vertical: 14)
                     )
                 )
             ),

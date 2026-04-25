@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 
+import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
+import '../../models/dukkan_model.dart';
 
 /// 🏢 SİBER ESNAF KAYIT (ONBOARDING) EKRANI
 /// Trendyol usulü güvenli dükkan kaydı ve evrak yükleme arayüzü.
@@ -18,22 +23,40 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
   int _currentStep = 0;
   bool _islemSuruyor = false;
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   // 1. ADIM KONTROLLERİ
   final TextEditingController _firmaAdCtrl = TextEditingController();
   final TextEditingController _yetkiliAdCtrl = TextEditingController();
   final TextEditingController _isTelCtrl = TextEditingController();
   final TextEditingController _wpTelCtrl = TextEditingController();
 
-  // 2. ADIM: KONUM SİMÜLASYONU (İleride Dropdown'a bağlanacak)
-  String _secilenUlke = "Türkiye";
-  String _secilenBolge = "Marmara";
-  String _secilenSehir = "İstanbul";
-  String _secilenIlce = "Maslak";
+  // 2. ADIM: KONUM SİMÜLASYONU (Kuantum Lokasyon)
+  String? _secilenUlke;
+  String? _secilenBolge;
+  String? _secilenSehir;
+  String? _secilenIlce;
+  
+  // Hızlandırılmış Harita Verisi (Cihazı kasmamak için lokalde tutulur)
+  final List<String> ulkeler = ["Türkiye"];
+  final List<String> bolgeler = ["Marmara", "Ege", "İç Anadolu", "Akdeniz"];
+  final Map<String, List<String>> sehirler = {
+    "Marmara": ["İstanbul", "Bursa", "Kocaeli", "Tekirdağ", "Edirne"],
+    "Ege": ["İzmir", "Aydın", "Muğla", "Manisa", "Denizli"],
+    "İç Anadolu": ["Ankara", "Konya", "Kayseri", "Eskişehir"],
+    "Akdeniz": ["Antalya", "Adana", "Mersin", "Hatay"],
+  };
+  final Map<String, List<String>> ilceler = {
+    "İstanbul": ["Maslak", "Kadıköy", "Beşiktaş", "Pendik", "Bostancı"],
+    "Ankara": ["Çankaya", "Keçiören", "Yenimahalle", "Şaşmaz", "Ostim"],
+    "İzmir": ["Bornova", "Karşıyaka", "Buca", "Gaziemir"],
+  };
 
   // 3. ADIM: KARANLIK ODA (EVRAKLAR)
   File? _vergiLevhasi;
   File? _ustalikBelgesi;
   bool _adliProtokolOnay = false;
+  final ImagePicker _picker = ImagePicker();
 
   void _siberUyari(String mesaj, Color renk) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -41,24 +64,36 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
       backgroundColor: Colors.black87,
       shape: RoundedRectangleBorder(side: BorderSide(color: renk), borderRadius: BorderRadius.circular(8)),
       behavior: SnackBarBehavior.floating,
+      duration: const Duration(seconds: 3),
     ));
   }
 
   void _ileriGit() {
     if (_currentStep == 0) {
-      if (_firmaAdCtrl.text.isEmpty || _yetkiliAdCtrl.text.isEmpty) {
-        _siberUyari("Lütfen zorunlu alanları doldurun.", SiberTema.kanKirmizi);
+      if (!_formKey.currentState!.validate()) {
+        _siberUyari("Lütfen zorunlu alanları eksiksiz doldurun.", SiberTema.kanKirmizi);
+        HapticFeedback.vibrate();
         return;
       }
     }
     
     if (_currentStep == 1) {
-      // Konum validasyonu
+      if (_secilenUlke == null || _secilenBolge == null || _secilenSehir == null || _secilenIlce == null) {
+        _siberUyari("Kuantum Konum koordinatları eksik!", SiberTema.kanKirmizi);
+        HapticFeedback.vibrate();
+        return;
+      }
     }
 
     if (_currentStep == 2) {
+      if (_vergiLevhasi == null) {
+        _siberUyari("Vergi Levhası (Siber Mühür) zorunludur!", SiberTema.kanKirmizi);
+        HapticFeedback.vibrate();
+        return;
+      }
       if (!_adliProtokolOnay) {
         _siberUyari("Yasal Adli Protokolü onaylamanız zorunludur.", Colors.orangeAccent);
+        HapticFeedback.vibrate();
         return;
       }
       _kaydiTamamla();
@@ -80,13 +115,62 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
     setState(() => _islemSuruyor = true);
     HapticFeedback.heavyImpact();
     
-    // Simüle edilmiş kayıt süresi
-    await Future.delayed(const Duration(seconds: 3));
-    
-    setState(() => _islemSuruyor = false);
-    _siberUyari("EVRAKLAR KARARGAHA GÖNDERİLDİ! Onay süreci başladı.", SiberTema.kuantumCyan);
-    
-    // Gerçekte Navigator.pop veya Onay Bekliyor ekranına yönlendirilecek.
+    try {
+      final String epochTarih = DateTime.now().millisecondsSinceEpoch.toString();
+      final String dokumanId = _firmaAdCtrl.text.replaceAll(' ', '_').toLowerCase() + "_$epochTarih";
+      
+      String? vergiUrl;
+      String? ustalikUrl;
+
+      // STORAGE YÜKLEME (Sıralı veya paralel)
+      if (_vergiLevhasi != null) {
+        final ref = FirebaseStorage.instance.ref().child('esnaf_evraklari').child(dokumanId).child('vergi_levhasi.jpg');
+        await ref.putFile(_vergiLevhasi!);
+        vergiUrl = await ref.getDownloadURL();
+      }
+
+      if (_ustalikBelgesi != null) {
+        final ref = FirebaseStorage.instance.ref().child('esnaf_evraklari').child(dokumanId).child('ustalik_belgesi.jpg');
+        await ref.putFile(_ustalikBelgesi!);
+        ustalikUrl = await ref.getDownloadURL();
+      }
+
+      // FIRESTORE BATCH İŞLEMİ (Atomik yazma)
+      final batch = FirebaseFirestore.instance.batch();
+      final docRef = FirebaseFirestore.instance.collection('dukkanlar').doc(dokumanId);
+
+      final dukkan = Dukkan(
+        ad: _firmaAdCtrl.text.trim(),
+        countryId: _secilenUlke ?? '',
+        regionId: _secilenBolge ?? '',
+        cityId: _secilenSehir ?? '',
+        districtId: _secilenIlce ?? '',
+        firmaYetkilisiAdSoyad: _yetkiliAdCtrl.text.trim(),
+        isTelefonu: _isTelCtrl.text.trim(),
+        whatsappNumarasi: _wpTelCtrl.text.trim(),
+        vergiLevhasiUrl: vergiUrl,
+        ustalikBelgesiUrl: ustalikUrl,
+        evrakOnayDurumu: 'bekliyor',
+        aktifMi: false,
+        rozet: 'Bronz',
+        kayitTarihi: DateTime.now(),
+      );
+
+      batch.set(docRef, dukkan.toMap());
+      await batch.commit();
+
+      _siberUyari("EVRAKLAR KARARGAHA GÖNDERİLDİ! Onay süreci başladı.", SiberTema.kuantumCyan);
+      
+      await Future.delayed(const Duration(seconds: 2));
+      if (mounted) {
+        Navigator.of(context).pop(); // Geri dön
+      }
+
+    } catch (e) {
+      _siberUyari("Bağlantı Kopuşu: $e", SiberTema.kanKirmizi);
+    } finally {
+      if (mounted) setState(() => _islemSuruyor = false);
+    }
   }
 
   @override
@@ -143,7 +227,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
                 if (_currentStep > 0) ...[
                   const SizedBox(width: 12),
                   TextButton(
-                    onPressed: details.onStepCancel,
+                    onPressed: _islemSuruyor ? null : details.onStepCancel,
                     child: const Text("GERİ", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold)),
                   ),
                 ]
@@ -165,18 +249,21 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
     return Step(
       title: const Text("Firma & İletişim Zırhı", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontSize: 16)),
       content: _buildGlassContainer(
-        child: Column(
-          children: [
-            const Text("Müşterilerin size ulaşacağı resmi bilgileri girin.", style: TextStyle(color: Colors.white54, fontSize: 12)),
-            const SizedBox(height: 20),
-            _buildSiberTextField("Dükkan / Firma Adı", Icons.store_rounded, _firmaAdCtrl),
-            const SizedBox(height: 16),
-            _buildSiberTextField("Firma Yetkilisi Ad-Soyad", Icons.person_rounded, _yetkiliAdCtrl),
-            const SizedBox(height: 16),
-            _buildSiberTextField("Sabit İş Telefonu", Icons.phone_rounded, _isTelCtrl, type: TextInputType.phone),
-            const SizedBox(height: 16),
-            _buildSiberTextField("WhatsApp Destek Hattı", Icons.chat_rounded, _wpTelCtrl, type: TextInputType.phone),
-          ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              const Text("Müşterilerin size ulaşacağı resmi bilgileri girin.", style: TextStyle(color: Colors.white54, fontSize: 12)),
+              const SizedBox(height: 20),
+              _buildSiberTextField("Dükkan / Firma Adı", Icons.store_rounded, _firmaAdCtrl, zorunlu: true),
+              const SizedBox(height: 16),
+              _buildSiberTextField("Firma Yetkilisi Ad-Soyad", Icons.person_rounded, _yetkiliAdCtrl, zorunlu: true),
+              const SizedBox(height: 16),
+              _buildSiberTextField("Sabit İş Telefonu", Icons.phone_rounded, _isTelCtrl, type: TextInputType.phone),
+              const SizedBox(height: 16),
+              _buildSiberTextField("WhatsApp Destek Hattı", Icons.chat_rounded, _wpTelCtrl, type: TextInputType.phone, zorunlu: true),
+            ],
+          ),
         ),
       ),
       isActive: _currentStep >= 0,
@@ -193,14 +280,23 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
           children: [
             const Text("Milisaniyelik harita aramalarında bulunabilmeniz için tam konumunuz.", style: TextStyle(color: Colors.white54, fontSize: 12)),
             const SizedBox(height: 20),
-            // İleride Dropdown API'ye bağlanacak, şimdilik mock UI
-            _buildMockDropdown("Ülke", _secilenUlke),
+            
+            _buildSiberDropdown("Ülke", ulkeler, _secilenUlke, (v) {
+              setState(() { _secilenUlke = v; _secilenBolge = null; _secilenSehir = null; _secilenIlce = null; });
+            }),
             const SizedBox(height: 12),
-            _buildMockDropdown("Bölge", _secilenBolge),
+            _buildSiberDropdown("Bölge", _secilenUlke != null ? bolgeler : [], _secilenBolge, (v) {
+              setState(() { _secilenBolge = v; _secilenSehir = null; _secilenIlce = null; });
+            }),
             const SizedBox(height: 12),
-            _buildMockDropdown("Şehir", _secilenSehir),
+            _buildSiberDropdown("Şehir", _secilenBolge != null ? sehirler[_secilenBolge!] ?? [] : [], _secilenSehir, (v) {
+              setState(() { _secilenSehir = v; _secilenIlce = null; });
+            }),
             const SizedBox(height: 12),
-            _buildMockDropdown("İlçe (Mikro-İstihbarat Merkezi)", _secilenIlce),
+            _buildSiberDropdown("İlçe (Mikro-İstihbarat)", _secilenSehir != null ? ilceler[_secilenSehir!] ?? [] : [], _secilenIlce, (v) {
+              setState(() { _secilenIlce = v; });
+            }),
+            
             const SizedBox(height: 20),
             Container(
               padding: const EdgeInsets.all(12),
@@ -209,7 +305,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
                 children: [
                   Icon(Icons.location_on_rounded, color: SiberTema.kuantumCyan, size: 24),
                   SizedBox(width: 12),
-                  Expanded(child: Text("Siber Harita Konumunuz (GeoPoint) sistem tarafından arka planda otomatik çekilecektir.", style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.4))),
+                  Expanded(child: Text("Siber Harita Konumunuz (GeoPoint) onay sonrası karargah tarafından otomatik çekilecektir.", style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.4))),
                 ],
               ),
             )
@@ -234,9 +330,9 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
             const SizedBox(height: 24),
             Row(
               children: [
-                Expanded(child: _buildResimSeciciBox("Vergi Levhası (Zorunlu)", _vergiLevhasi)),
+                Expanded(child: _buildResimSeciciBox("Vergi Levhası (Zorunlu)", _vergiLevhasi, true)),
                 const SizedBox(width: 12),
-                Expanded(child: _buildResimSeciciBox("Ustalık Belgesi (Opsiyonel)", _ustalikBelgesi)),
+                Expanded(child: _buildResimSeciciBox("Ustalık Belgesi (Opsiyonel)", _ustalikBelgesi, false)),
               ],
             ),
             const SizedBox(height: 30),
@@ -290,15 +386,39 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
     );
   }
 
-  Widget _buildSiberTextField(String hint, IconData icon, TextEditingController controller, {TextInputType type = TextInputType.text}) {
-    return TextField(
+  Widget _buildSiberTextField(String hint, IconData icon, TextEditingController controller, {TextInputType type = TextInputType.text, bool zorunlu = false}) {
+    return TextFormField(
       controller: controller,
       style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
       keyboardType: type,
+      validator: (value) {
+        if (zorunlu && (value == null || value.trim().isEmpty)) return "Bu alan zorunludur.";
+        return null;
+      },
       decoration: InputDecoration(
-        labelText: hint,
+        labelText: hint + (zorunlu ? " *" : ""),
         labelStyle: const TextStyle(color: Colors.white54),
         prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
+        filled: true,
+        fillColor: Colors.black45,
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white12)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
+        errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kanKirmizi)),
+        focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kanKirmizi)),
+      ),
+    );
+  }
+
+  Widget _buildSiberDropdown(String label, List<String> items, String? currentValue, Function(String?) onChanged) {
+    return DropdownButtonFormField<String>(
+      value: currentValue,
+      items: items.map((e) => DropdownMenuItem(value: e, child: Text(e, style: const TextStyle(color: Colors.white)))).toList(),
+      onChanged: items.isEmpty ? null : onChanged,
+      dropdownColor: Colors.black87,
+      icon: const Icon(Icons.arrow_drop_down, color: SiberTema.kuantumCyan),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(color: Colors.white54),
         filled: true,
         fillColor: Colors.black45,
         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white12)),
@@ -307,45 +427,58 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
     );
   }
 
-  Widget _buildMockDropdown(String label, String value) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      decoration: BoxDecoration(color: Colors.black45, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label, style: const TextStyle(color: Colors.white54, fontSize: 13)),
-          Row(
-            children: [
-              Text(value, style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontSize: 14)),
-              const SizedBox(width: 8),
-              const Icon(Icons.arrow_drop_down, color: SiberTema.kuantumCyan),
-            ],
-          )
-        ],
-      ),
-    );
+  Future<void> _resimSec(bool isVergi) async {
+    try {
+      // imageQuality: 70 -> Belleği ve veritabanını kasmamak için sıkıştırma
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 70); 
+      if (image != null) {
+        setState(() {
+          if (isVergi) {
+            _vergiLevhasi = File(image.path);
+          } else {
+            _ustalikBelgesi = File(image.path);
+          }
+        });
+        HapticFeedback.lightImpact();
+      }
+    } catch (e) {
+      _siberUyari("Dosya erişim hatası. Yetkileri kontrol edin.", SiberTema.kanKirmizi);
+    }
   }
 
-  Widget _buildResimSeciciBox(String baslik, File? resimFile) {
+  Widget _buildResimSeciciBox(String baslik, File? resimFile, bool isVergi) {
     return GestureDetector(
-      onTap: () {
-        // İleride ImagePicker entegre edilecek
-        _siberUyari("Kamera modülü üretim aşamasında entegre edilecek.", SiberTema.kuantumCyan);
-      },
+      onTap: () => _resimSec(isVergi),
       child: Container(
         height: 120,
         decoration: BoxDecoration(
           color: Colors.black45,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: resimFile != null ? SiberTema.kanKirmizi : Colors.white24, width: 1.5),
+          border: Border.all(color: resimFile != null ? SiberTema.kuantumCyan : Colors.white24, width: 1.5),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.drive_folder_upload_rounded, color: resimFile != null ? SiberTema.kanKirmizi : Colors.white38, size: 36),
+            Icon(
+              resimFile != null ? Icons.check_circle_outline_rounded : Icons.drive_folder_upload_rounded, 
+              color: resimFile != null ? SiberTema.kuantumCyan : Colors.white38, 
+              size: 36
+            ),
             const SizedBox(height: 8),
-            Text(baslik, style: TextStyle(color: resimFile != null ? SiberTema.kanKirmizi : Colors.white54, fontSize: 10, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+            Text(
+              resimFile != null ? "YÜKLENDİ" : baslik, 
+              style: TextStyle(
+                color: resimFile != null ? SiberTema.kuantumCyan : Colors.white54, 
+                fontSize: 10, 
+                fontWeight: FontWeight.bold
+              ), 
+              textAlign: TextAlign.center,
+            ),
+            if (resimFile != null)
+               const Padding(
+                 padding: EdgeInsets.only(top: 4.0),
+                 child: Text("Değiştirmek için dokun", style: TextStyle(color: Colors.white38, fontSize: 8)),
+               ),
           ],
         ),
       ),

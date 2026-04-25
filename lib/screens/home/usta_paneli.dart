@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../bayi/siber_servis_kabul_paneli.dart';
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
+import '../../widgets/siber_rehber_dialog.dart';
+import '../../services/ekspertiz_muhur_servisi.dart'; // MÜHÜR VE AI SERVİSİ
 
 class UstaPaneliScreen extends StatefulWidget {
   const UstaPaneliScreen({super.key});
@@ -35,6 +39,28 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
     'Doğalgaz (CNG)'
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _rehberiGoster(otomatik: true);
+    });
+  }
+
+  void _rehberiGoster({bool otomatik = false}) {
+    const String baslik = "OTODNA USTA PANELİ";
+    const String icerik = "Siber Karargah Usta Ağına Hoş Geldiniz.\n\n"
+        "Buradan aracın şase numarasını (VIN) girerek Kuantum ağından fabrika verilerini çekebilirsiniz.\n\n"
+        "Seçilen araç sınıfına ve yakıt tipine göre dinamik test modülleri otomatik listelenir. "
+        "Test sonuçlarını sisteme mühürlediğinizde, veriler değiştirilemez şekilde Kuantum Ağına (Siber Sicil) işlenir.";
+
+    if (otomatik) {
+      SiberRehber.otomatikGoster(context: context, screenKey: 'usta_paneli_rehber', baslik: baslik, icerik: icerik);
+    } else {
+      SiberRehber.goster(context: context, screenKey: 'usta_paneli_rehber', baslik: baslik, icerik: icerik);
+    }
+  }
+
   void _sasedenSorgula() async {
     if (_saseController.text.length < 17) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Şase Numarası 17 Haneli Olmalıdır!'), backgroundColor: Colors.redAccent));
@@ -53,37 +79,82 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
     if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Araç Fabrika Verileri Hub\'dan Çekildi! ✅'), backgroundColor: Colors.green));
   }
 
-  void _raporuAgaMuhrle() {
+  void _musteriOnayinaGonder() async {
     if (_testSonuclari.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Hiçbir testi tamamlamadınız!'), backgroundColor: Colors.orangeAccent));
       return;
     }
+    
+    if (_saseController.text.length < 17) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Mühürleme için 17 Haneli Şase numarası girmelisiniz!'), backgroundColor: Colors.redAccent));
+      return;
+    }
 
+    // YÜKLEME (TASLAK OLUŞTURULUYOR) ANİMASYONU
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF121B2B), // Dijital Kale Kart Rengi
+        backgroundColor: const Color(0xFF121B2B),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: Color(0xFF00FFC2), width: 1.5)),
-        title: const Column(
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.verified_user, color: Color(0xFF00FFC2), size: 64),
+            SizedBox(width: 50, height: 50, child: CircularProgressIndicator(color: Color(0xFF00FFC2))),
             SizedBox(height: 16),
-            Text("EKSPERTİZ MÜHÜRLENDİ!", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+            Text("GPS KONUMU VE SAAT ALINIYOR...", style: TextStyle(color: Color(0xFF00FFC2), fontSize: 12, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
+            Text("Rapor Taslağı Oluşturuluyor\nMüşterinin Onayına Sunulacak...", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 10)),
           ],
         ),
-        content: const Text("Tüm test sonuçları OtoDNA Kuantum Ağına kriptolanarak kaydedildi. Araç DNA skoru güncellendi.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 12)),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
-            },
-            child: const Text("KARARGAHA DÖN", style: TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold)),
-          )
-        ],
       ),
     );
+
+    // SERVİSİ ÇAĞIR (1. ANAHTAR)
+    final servis = EkspertizMuhurServisi();
+    final sonuc = await servis.ustaOnayinaGonder(
+      saseNo: _saseController.text,
+      testSonuclari: _testSonuclari,
+      aracCinsi: _secilenAracCinsi ?? "Bilinmeyen Cins",
+      yakitTipi: _secilenYakitTipi ?? "Bilinmeyen Yakıt"
+    );
+
+    if (!mounted) return;
+    Navigator.pop(context); // Yükleme ekranını kapat
+
+    if (sonuc['basarili']) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          backgroundColor: const Color(0xFF121B2B), // Dijital Kale Kart Rengi
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: Colors.orangeAccent, width: 1.5)),
+          title: const Column(
+            children: [
+              Icon(Icons.hourglass_top, color: Colors.orangeAccent, size: 64),
+              SizedBox(height: 16),
+              Text("MÜŞTERİ ONAYINA GÖNDERİLDİ!", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+            ],
+          ),
+          content: const Text("Tesisimizin GPS konumuyla birlikte rapor taslağı araç sahibinin uygulamasına iletildi.\n\nMüşteri onaylayıp kendi mühürünü vurduğunda rapor Kuantum Ağı'na (Değiştirilemez) kilitlenecektir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 12)),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Dialogu kapat
+                setState(() {
+                  _testSonuclari.clear();
+                  _saseController.clear();
+                });
+              },
+              child: const Text("YENİ ARAÇ İNCELE", style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.bold)),
+            )
+          ],
+        ),
+      );
+    } else {
+      // HATA DURUMU
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(sonuc['mesaj']), backgroundColor: Colors.redAccent));
+    }
   }
 
   List<Widget> _dinamikModulleriGetir() {
@@ -145,14 +216,14 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
           height: 60,
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF00FFC2),
+              backgroundColor: Colors.orangeAccent,
               foregroundColor: Colors.black,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               elevation: 10,
             ),
-            onPressed: _raporuAgaMuhrle,
-            icon: const Icon(Icons.fingerprint, size: 28),
-            label: const Text("EKSPERTİZİ BİTİR VE AĞA MÜHÜRLE", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1)),
+            onPressed: _musteriOnayinaGonder,
+            icon: const Icon(Icons.send_to_mobile, size: 28),
+            label: const Text("MÜŞTERİ ONAYINA GÖNDER", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1)),
           ),
         )
     );
@@ -248,7 +319,14 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
           shape: const Border(bottom: BorderSide(color: Colors.white12, width: 1)),
           title: const Text('OtoDNA Usta Paneli', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 1)),
           iconTheme: const IconThemeData(color: primaryCyan),
-          centerTitle: true
+          centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.help_outline_rounded, color: primaryCyan),
+              tooltip: "Siber Rehber",
+              onPressed: () => _rehberiGoster(otomatik: false),
+            )
+          ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(

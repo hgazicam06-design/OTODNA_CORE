@@ -8,6 +8,7 @@ import '../core/responsive_kalkan.dart';
 
 // 🔥 ROTALAR (Bayi işleme başladığında buraya uçacak)
 import 'mega_revizyon_screen.dart';
+import '../../widgets/siber_rehber_dialog.dart';
 
 class BayiPaneliScreen extends StatefulWidget {
   final String bayiId; // Firebase Auth'dan gelecek olan Bayi UID'si
@@ -19,6 +20,28 @@ class BayiPaneliScreen extends StatefulWidget {
 }
 
 class _BayiPaneliScreenState extends State<BayiPaneliScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _rehberiGoster(otomatik: true);
+    });
+  }
+
+  void _rehberiGoster({bool otomatik = false}) {
+    const String baslik = "BAYİ KOKPİTİ (MEGA REVİZYON)";
+    const String icerik = "OtoDNA Bayi Kokpitine hoş geldiniz.\n\n"
+        "Burası işletmenizin ana kumanda merkezidir. Puanınızı, itibarınızı ve sistemden gelen canlı bölgesel 'S.O.S (Yolda Kalma)' sinyallerini buradan takip edersiniz.\n\n"
+        "Yolda kalmış bir araç için 'Müdahale Et' derseniz konumuna navigasyonla gidebilir, asılsızsa 'Asılsız İhbar' diyerek ağı temizleyebilirsiniz. "
+        "Ayrıca dükkanınıza gelen araçlar için 'YENİ ARAÇ İŞLEMİ BAŞLAT' butonuna tıklayarak Mega Revizyon modülüne geçiş yapabilirsiniz.";
+
+    if (otomatik) {
+      SiberRehber.otomatikGoster(context: context, screenKey: 'bayi_kokpiti_rehber', baslik: baslik, icerik: icerik);
+    } else {
+      SiberRehber.goster(context: context, screenKey: 'bayi_kokpiti_rehber', baslik: baslik, icerik: icerik);
+    }
+  }
 
   // --- SOS SİNYAL GÜNCELLEME MOTORU ---
   Future<void> _sinyalDurumGuncelle(String docId, String yeniDurum, bool asilsizMi) async {
@@ -74,6 +97,13 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> {
           title: Text("BAYİ KOKPİTİ", style: TextStyle(color: Colors.white.withOpacity(0.9), fontWeight: FontWeight.w800, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
           bottom: PreferredSize(preferredSize: const Size.fromHeight(1), child: Container(color: Colors.white.withOpacity(0.05), height: 1)),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.help_outline_rounded, color: SiberTema.kuantumCyan),
+              tooltip: "Siber Rehber",
+              onPressed: () => _rehberiGoster(otomatik: false),
+            )
+          ],
         ),
         body: Container(
           decoration: const BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/radar_grid.png'), fit: BoxFit.cover, opacity: 0.05)),

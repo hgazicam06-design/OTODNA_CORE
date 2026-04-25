@@ -1,23 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../widgets/siber_rehber_dialog.dart';
+
 /// 🦅 KUANTUM ARAÇ KÜNYESİ (OtoDNA Siber Sicil Kartı)
 /// Aracın canlı verilerini, DNA skorunu ve trafikteki risk durumunu gösterir.
-class KuantumAracKunyesi extends StatelessWidget {
+class KuantumAracKunyesi extends StatefulWidget {
   final String plakaID;
 
   const KuantumAracKunyesi({super.key, required this.plakaID});
 
+  @override
+  State<KuantumAracKunyesi> createState() => _KuantumAracKunyesiState();
+}
+
+class _KuantumAracKunyesiState extends State<KuantumAracKunyesi> {
   // 🎨 Siber Tasarım Standartları
   static const Color _primaryCyan = Color(0xFF00FFC2);
   static const Color _cyberBlack = Color(0xFF0A0A0B);
   static const Color _cardNavy = Color(0xFF1E293B);
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _rehberiGoster(otomatik: true);
+    });
+  }
+
+  void _rehberiGoster({bool otomatik = false}) {
+    const String baslik = "KUANTUM ARAÇ KÜNYESİ";
+    const String icerik = "OtoDNA Siber Sicil Kartına hoş geldiniz.\n\n"
+        "Bu panel, baktığınız aracın tüm geçmişini, kilometresini ve en önemlisi DNA Skorunu gösterir. Eğer araçta usta tarafından atılmış bir 'KIRMIZI X' varsa, sistem bunu hemen tespit eder ve sizi uyarır.\n\n"
+        "Tüm DNA geçmişini görmek veya bayi ile iletişime geçmek için panelin altındaki butonu kullanabilirsiniz.";
+
+    if (otomatik) {
+      SiberRehber.otomatikGoster(context: context, screenKey: 'arac_kunyesi_rehber', baslik: baslik, icerik: icerik);
+    } else {
+      SiberRehber.goster(context: context, screenKey: 'arac_kunyesi_rehber', baslik: baslik, icerik: icerik);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     // 1. FİREBASE'DEN ARACIN CANLI DNA'SINI ÇEK (Real-time Stream kullanılabilir, burada Future tercih edildi)
     return FutureBuilder<DocumentSnapshot>(
-      future: FirebaseFirestore.instance.collection('araclar').doc(plakaID).get(),
+      future: FirebaseFirestore.instance.collection('araclar').doc(widget.plakaID).get(),
       builder: (context, snapshot) {
 
         // 📡 AĞ BEKLENİYOR
@@ -68,6 +96,13 @@ class KuantumAracKunyesi extends StatelessWidget {
                     child: Text(markaModel, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1.2)),
                   ),
                   _buildDNABadge(dnaSkoru),
+                  const SizedBox(width: 8),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    icon: const Icon(Icons.help_outline_rounded, color: _primaryCyan, size: 24),
+                    onPressed: () => _rehberiGoster(otomatik: false),
+                  )
                 ],
               ),
               const SizedBox(height: 20),

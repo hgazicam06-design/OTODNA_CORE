@@ -8,6 +8,7 @@ import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 import '../../core/providers/siber_kimlik_provider.dart';
 import '../../services/ai_istihbarat_koprusu.dart';
+import '../../widgets/siber_rehber_dialog.dart';
 
 class AddProductScreen extends ConsumerStatefulWidget {
   const AddProductScreen({super.key});
@@ -28,8 +29,37 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
   final TextEditingController _urunAdController = TextEditingController();
   final TextEditingController _oemKoduController = TextEditingController();
   final TextEditingController _fiyatController = TextEditingController();
+  final TextEditingController _fiyatController = TextEditingController();
   String _secilenMarka = "Marka Seçilmedi";
+  String _secilenUrunDurumu = "Sıfır (Orijinal)"; // YENİ: Şelale Arama İçin Ürün Durumu
   bool _isLoading = false;
+
+  final List<String> _urunDurumlari = [
+    "Sıfır (Orijinal)",
+    "Sıfır (Yan Sanayi / Muadil)",
+    "Çıkma / İkinci El"
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _rehberiGoster(otomatik: true);
+    });
+  }
+
+  void _rehberiGoster({bool otomatik = false}) {
+    const String baslik = "SİBER İLAN TERMİNALİ";
+    const String icerik = "OtoDNA Küresel Parça Ağına Hoş Geldiniz!\n\n"
+        "Parçanın fotoğrafını çekerek veya ruhsat barkodunu okutarak Yapay Zekanın (AI) markayı/parçayı otomatik tanımasını sağlayabilirsiniz.\n\n"
+        "ÖNEMLİ: Eklediğiniz parçanın 'Sıfır' mı yoksa 'Çıkma' mı olduğunu doğru seçiniz. Bu veri, Kuantum Şelale Arama Motoru tarafından müşterilere parça bulunurken kullanılacaktır.";
+
+    if (otomatik) {
+      SiberRehber.otomatikGoster(context: context, screenKey: 'ilan_terminali_rehber', baslik: baslik, icerik: icerik);
+    } else {
+      SiberRehber.goster(context: context, screenKey: 'ilan_terminali_rehber', baslik: baslik, icerik: icerik);
+    }
+  }
 
   // 🧠 YAPAY ZEKA GÖRÜNTÜ İŞLEME (Siber Analiz)
   Future<void> _yapayZekaIleTani() async {
@@ -133,6 +163,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
         'urun_ad': _urunAdController.text,
         'oem_kodu': _oemKoduController.text,
         'marka': _secilenMarka,
+        'urun_durumu': _secilenUrunDurumu, // ŞELALE ARAMA KİLİDİ
         'liste_fiyati': hamFiyat,
         'gazi_payi': gaziPayi,
         'bayi_id': sicil['uid'],
@@ -166,6 +197,13 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
           title: const Text('S İ B E R   İ L A N   T E R M İ N A L İ',
               style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.help_outline_rounded, color: SiberTema.kuantumCyan),
+              tooltip: "Siber Rehber",
+              onPressed: () => _rehberiGoster(otomatik: false),
+            )
+          ],
         ),
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -182,6 +220,8 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
               _buildCyberTextField("OEM / Barkod Kodu", _oemKoduController, Icons.qr_code),
               const SizedBox(height: 16),
               _buildMarkaDisplay(),
+              const SizedBox(height: 16),
+              _buildDurumSecici(),
               const SizedBox(height: 16),
               _buildCyberTextField("Satış Fiyatı (₺)", _fiyatController, Icons.attach_money, isNumber: true),
               const SizedBox(height: 40),
@@ -258,6 +298,42 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
             ],
           )
         ],
+      ),
+    );
+  }
+
+  Widget _buildDurumSecici() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(color: _surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          dropdownColor: _cyberBlack,
+          isExpanded: true,
+          value: _secilenUrunDurumu,
+          icon: Icon(Icons.keyboard_arrow_down, color: _primaryCyan),
+          items: _urunDurumlari.map((String durum) {
+            return DropdownMenuItem<String>(
+              value: durum,
+              child: Row(
+                children: [
+                  Icon(
+                    durum.contains("Çıkma") ? Icons.recycling : Icons.verified_rounded, 
+                    color: durum.contains("Orijinal") ? _primaryCyan : (durum.contains("Çıkma") ? Colors.orangeAccent : Colors.white54), 
+                    size: 18
+                  ),
+                  const SizedBox(width: 12),
+                  Text(durum, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                ],
+              ),
+            );
+          }).toList(),
+          onChanged: (String? yeniDurum) {
+            if (yeniDurum != null) {
+              setState(() => _secilenUrunDurumu = yeniDurum);
+            }
+          },
+        ),
       ),
     );
   }

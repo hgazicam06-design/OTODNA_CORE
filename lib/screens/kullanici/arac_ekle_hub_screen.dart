@@ -1,88 +1,47 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
+// 🚀 KARARGAH ZIRHLARI
+import '../../core/siber_tema.dart';
+import '../../core/responsive_kalkan.dart';
+
 // Kendi projenin rotalarına göre buraları aktif et
 import 'arac_kayit_screen.dart';
 import 'siber_goz_tarayici_screen.dart';
-import 'ev_batarya_muhur_terminali.dart';
 import 'siber_arac_devral_screen.dart';
+import 'ev_batarya_muhur_terminali.dart'; // EV Terminali Eklendi
 
 class AracEkleHubScreen extends StatelessWidget {
   const AracEkleHubScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // 🌑 ULTRA-PREMİUM TEKNOLOJİK PALET (TESLA SİYAHI)
-    const bgColor = Color(0xFF000000);
-    const surfaceColor = Color(0xFF111111);
-    const primaryCyan = Color(0xFF00FFC2);
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      body: Stack(
-        children: [
-          // =================================================================
-          // 1. ARKA PLAN: SİBER SPOT IŞIKLARI (Daha hafif ve şık)
-          // =================================================================
-          Positioned(
-            top: -100, right: -50,
-            child: Container(
-              width: 300, height: 300,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [primaryCyan.withOpacity(0.1), Colors.transparent],
-                  stops: const [0.1, 1.0],
-                ),
-              ),
-            ),
+    return ResponsiveKalkan(
+      isOledBackground: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: SiberTema.oledBlack.withOpacity(0.8),
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
+            onPressed: () => Navigator.pop(context),
           ),
-          Positioned(
-            bottom: -150, left: -100,
-            child: Container(
-              width: 400, height: 400,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [Colors.blueAccent.withOpacity(0.05), Colors.transparent],
-                  stops: const [0.1, 1.0],
-                ),
-              ),
-            ),
+          title: const Text(
+            "KUANTUM MERKEZ",
+            style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2),
           ),
-
-          // =================================================================
-          // 2. ANA İÇERİK (HUD) VE APPBAR
-          // =================================================================
-          SafeArea(
-            child: Column(
-              children: [
-                // ZARİF APPBAR
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.05),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.white12),
-                          ),
-                          child: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 18),
-                        ),
-                      ),
-                      const Text(
-                        "K U A N T U M   M E R K E Z",
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2),
-                      ),
-                      const SizedBox(width: 38),
-                    ],
-                  ),
-                ),
+          centerTitle: true,
+        ),
+        body: Stack(
+          children: [
+            // =================================================================
+            // 2. ANA İÇERİK (HUD)
+            // =================================================================
+            SafeArea(
+              child: Column(
+                children: [
 
                 Expanded(
                   child: SingleChildScrollView(
@@ -100,11 +59,11 @@ class AracEkleHubScreen extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: primaryCyan.withOpacity(0.1),
+                                  color: SiberTema.kuantumCyan.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(12),
-                                  boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.2), blurRadius: 10)],
+                                  boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.2), blurRadius: 10)],
                                 ),
-                                child: const Icon(Icons.gpp_good_outlined, color: primaryCyan, size: 24),
+                                child: const Icon(Icons.gpp_good_outlined, color: SiberTema.kuantumCyan, size: 24),
                               ),
                               const SizedBox(width: 16),
                               const Expanded(
@@ -132,7 +91,7 @@ class AracEkleHubScreen extends StatelessWidget {
                           baslik: "Sıfır Araç / Sicil Oluştur",
                           altBaslik: "Sisteme yeni bir aracın genetiğini işleyin.",
                           ikon: Icons.add_to_photos_outlined,
-                          vurguRengi: primaryCyan,
+                          vurguRengi: SiberTema.kuantumCyan,
                           hedefEkran: const AracKayitScreen(),
                         ),
                         const SizedBox(height: 12),
@@ -141,7 +100,7 @@ class AracEkleHubScreen extends StatelessWidget {
                           baslik: "İkinci El Araç Devral",
                           altBaslik: "Eski sahibinden alınan Kuantum Kod ile aracı üzerinize alın.",
                           ikon: Icons.handshake_outlined,
-                          vurguRengi: const Color(0xFFF59E0B), // Altın Sarısı / Amber
+                          vurguRengi: SiberTema.altinSari,
                           hedefEkran: const SiberAracDevralScreen(),
                         ),
 
@@ -230,7 +189,7 @@ class AracEkleHubScreen extends StatelessWidget {
       children: [
         Container(
             width: 2, height: 14,
-            decoration: BoxDecoration(color: const Color(0xFF00FFC2), boxShadow: [BoxShadow(color: const Color(0xFF00FFC2).withOpacity(0.5), blurRadius: 6)])
+            decoration: BoxDecoration(color: SiberTema.kuantumCyan, boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.5), blurRadius: 6)])
         ),
         const SizedBox(width: 8),
         Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2)),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // OLUŞTURDUĞUMUZ DEVASA MODÜLLERİ ÇAĞIRIYORUZ
 import 'home_screen.dart';
 import '../kullanici/ikinci_el_market_screen.dart';
+import '../lojistik/otodna_cigir_screen.dart'; // YENİ ÇIĞIR MODÜLÜ
 import '../kullanici/siber_garaj_screen.dart';
 import '../kullanici/siber_cuzdan_screen.dart';
 import '../kullanici/siber_goz_tarayici_screen.dart';
@@ -21,8 +22,8 @@ class _SiberAnaGovdeScreenState extends State<SiberAnaGovdeScreen> {
   // ALT NAVİGASYONDAN GEÇİŞ YAPILACAK SAYFALARIN LİSTESİ
   final List<Widget> _sayfalar = [
     const HomeScreen(),               // 0. Sekme
-    const IkinciElMarketScreen(),     // 1. Sekme
-    const SiberGarajScreen(),         // 2. Sekme (Ortadaki QR butonu için boşluk bırakıyoruz ama indeks tutması için ekliyoruz, aslında FAB tetikleyecek)
+    const OtoDnaCigirScreen(),        // 1. Sekme (Taksi Çığır)
+    const SiberGarajScreen(),         // 2. Sekme (Ortadaki QR butonu için boşluk)
     const SiberGarajScreen(),         // 3. Sekme
     const SiberCuzdanScreen(),        // 4. Sekme
   ];
@@ -91,7 +92,7 @@ class _SiberAnaGovdeScreenState extends State<SiberAnaGovdeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildNavButonu(ikon: Icons.grid_view, baslik: "Karargah", index: 0),
-                    _buildNavButonu(ikon: Icons.directions_car, baslik: "Market", index: 1),
+                    _buildNavButonu(ikon: Icons.local_taxi, baslik: "Taksi Çığır", index: 1),
                   ],
                 ),
                 // SAĞ TARAFTAKİ BUTONLAR

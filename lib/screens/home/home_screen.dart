@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../kullanici/siber_profil_screen.dart'; // SİBER PROFİL KÖPRÜSÜ
 import '../kullanici/siber_dna_radar_screen.dart'; // SİBER ARAÇ RADARI
 import '../market/siber_ikinci_el_market.dart'; // İKİNCİ EL MARKET VİTRİNİ
+import '../lojistik/otodna_cigir_screen.dart'; // MÜŞTERİ TAKSİ ÇAĞIRMA
+import '../lojistik/surucu_kokpiti_screen.dart'; // ŞOFÖR KOKPİTİ
 import '../../models/ad_campaign_model.dart';
 import '../../widgets/siber_hedefli_reklam_panosu.dart';
 
@@ -110,13 +112,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 childAspectRatio: 1.3,
                 children: [
                   _buildTeslaCard("Araç Kaydet", Icons.add_to_photos_outlined),
+                  _buildTeslaCard("OtoDNA Çığır", Icons.local_taxi_outlined),
+                  _buildTeslaCard("Şoför Kokpiti", Icons.radar_outlined),
                   _buildTeslaCard("İkinci El Market", Icons.storefront_outlined),
                   _buildTeslaCard("Usta Paneli", Icons.engineering_outlined),
                   _buildTeslaCard("Dijital Servis", Icons.build_circle_outlined),
                   _buildTeslaCard("Yedek Parça", Icons.settings_outlined),
                   _buildTeslaCard("Kripto Cüzdan", Icons.account_balance_wallet_outlined),
-                  _buildTeslaCard("QR Doğrulama", Icons.qr_code_scanner_outlined),
-                  _buildTeslaCard("Değer Kaybı", Icons.gavel_outlined),
                 ],
               ),
 
@@ -171,6 +173,10 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () {
         if (baslik == "İkinci El Market") {
           Navigator.push(context, MaterialPageRoute(builder: (_) => const SiberIkinciElMarket()));
+        } else if (baslik == "OtoDNA Çığır") {
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const OtoDnaCigirScreen()));
+        } else if (baslik == "Şoför Kokpiti") {
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const SurucuKokpitiScreen()));
         } else {
           _testTiklama(baslik);
         }

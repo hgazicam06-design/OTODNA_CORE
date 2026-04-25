@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 import '../../models/offer_item_model.dart';
+import 'siber_odeme_gecidi_screen.dart';
 
 /// 💰 SİBER FATURA VE KUANTUM TEKLİF ARAYÜZÜ
 /// Ürünlerin manuel eklendiği veya PDF'ten okutulduğu,
@@ -314,11 +315,27 @@ class _SiberFaturaScreenState extends State<SiberFaturaScreen> {
               width: double.infinity,
               height: 50,
               child: ElevatedButton.icon(
-                onPressed: _faturaKalemleri.isEmpty ? null : () {
-                  _siberUyari("FATURA ONAYLANDI VE YAYINLANDI!", SiberTema.kuantumCyan);
+                onPressed: _faturaKalemleri.isEmpty ? null : () async {
+                  final sonuc = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SiberOdemeGecidiScreen(
+                        toplamTutar: _toplamMusteriOdemesi,
+                        komisyonTutar: _toplamGaziPayi,
+                        esnafNet: _toplamEsnafHakedisi,
+                      ),
+                    ),
+                  );
+                  
+                  if (sonuc == true) {
+                    // Ödeme başarılıysa listeyi sıfırla
+                    setState(() {
+                      _faturaKalemleri.clear();
+                    });
+                  }
                 },
-                icon: const Icon(Icons.check_circle_outline, color: Colors.black),
-                label: const Text("TEKLİFİ YAYINLA", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 16)),
+                icon: const Icon(Icons.payment_rounded, color: Colors.black),
+                label: const Text("ÖDEME AL (PayTR)", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 16)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: SiberTema.sariAltin,
                   foregroundColor: Colors.black,

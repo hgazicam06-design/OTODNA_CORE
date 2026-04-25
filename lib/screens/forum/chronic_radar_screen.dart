@@ -3,6 +3,7 @@ import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 import '../../services/chronic_radar_service.dart';
 import '../../models/chronic_issue_model.dart';
+import '../../widgets/siber_rehber_dialog.dart';
 import 'dart:ui';
 
 class ChronicRadarScreen extends StatefulWidget {
@@ -34,6 +35,23 @@ class _ChronicRadarScreenState extends State<ChronicRadarScreen> {
   void initState() {
     super.initState();
     _fetchIssues();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _rehberiGoster(otomatik: true);
+    });
+  }
+
+  void _rehberiGoster({bool otomatik = false}) {
+    const String baslik = "CHRONIC CLUB (SİBER RADAR)";
+    const String icerik = "OtoDNA Siber Radarına hoş geldiniz.\n\n"
+        "Bu panel, araç markalarının kronik sorunlarını tespit etmek ve hukuki emsal kararları sizlerle paylaşmak için Yapay Zeka tarafından derlenmiştir.\n\n"
+        "Aracınızla ilgili potansiyel sorunları önceden görebilir, çözüm yollarını öğrenebilir ve tek tuşla Kuantum Ağımızdaki yetkili ustalara veya avukatlara ulaşabilirsiniz.";
+
+    if (otomatik) {
+      SiberRehber.otomatikGoster(context: context, screenKey: 'chronic_radar_rehber', baslik: baslik, icerik: icerik);
+    } else {
+      SiberRehber.goster(context: context, screenKey: 'chronic_radar_rehber', baslik: baslik, icerik: icerik);
+    }
   }
 
   Future<void> _fetchIssues() async {
@@ -85,6 +103,13 @@ class _ChronicRadarScreenState extends State<ChronicRadarScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.help_outline_rounded, color: SiberTema.kuantumCyan),
+              tooltip: "Siber Rehber",
+              onPressed: () => _rehberiGoster(otomatik: false),
+            )
+          ],
         ),
         body: Column(
           children: [
