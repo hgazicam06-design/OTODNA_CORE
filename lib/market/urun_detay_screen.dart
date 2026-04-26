@@ -90,7 +90,7 @@ class _UrunDetayScreenState extends State<UrunDetayScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   // ─── CAM ZIRHLI APP BAR ───

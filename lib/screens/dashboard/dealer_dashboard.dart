@@ -120,7 +120,7 @@ class _DealerDashboardState extends State<DealerDashboard> {
                     return Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(color: primaryCyan.withOpacity(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: primaryCyan.withOpacity(0.2))),
-                      child: const Row(children: [Icon(Icons.shield, color: primaryCyan, size: 20), SizedBox(width: 12), Text("Bölgeniz güvenli. Aktif SOS yok.", style: TextStyle(color: primaryCyan, fontSize: 13))]),
+                      child: Row(children: [Icon(Icons.shield, color: primaryCyan, size: 20), const SizedBox(width: 12), Text("Bölgeniz güvenli. Aktif SOS yok.", style: TextStyle(color: primaryCyan, fontSize: 13))]),
                     );
                   }
 

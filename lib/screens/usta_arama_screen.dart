@@ -117,12 +117,12 @@ class _UstaAramaScreenState extends State<UstaAramaScreen> {
                             child: const Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 24),
                           ),
                           const SizedBox(width: 16),
-                          const Expanded(
+                          Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("AKTİF TARAMA BÖLGESİ", style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-                                SizedBox(height: 4),
+                                const Text("AKTİF TARAMA BÖLGESİ", style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                                const SizedBox(height: 4),
                                 Text("$_seciliBolge / $_seciliSehir", style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                               ],
                             ),

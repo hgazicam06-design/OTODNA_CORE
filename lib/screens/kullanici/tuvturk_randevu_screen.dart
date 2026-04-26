@@ -57,7 +57,7 @@ class _TuvturkRandevuScreenState extends State<TuvturkRandevuScreen> with Single
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF111111),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), border: Border.all(color: const Color(0xFF00FFC2).withOpacity(0.5))),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: const Color(0xFF00FFC2).withOpacity(0.5))),
         contentPadding: const EdgeInsets.all(32),
         content: Column(
           mainAxisSize: MainAxisSize.min,

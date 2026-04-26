@@ -4,12 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
-// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI (2 Kat Yukarı)
-import '../../../../core/siber_tema.dart';
 import '../../../../core/responsive_kalkan.dart';
 
-/// 🛡️ KUANTUM LOJİSTİK VE CANLI DESTEK MERKEZİ (SiberLojistikTakip)
-/// Müşteri, bayi ve Karargah (Admin) arasında 3'lü Kriptolu iletişim hattı kurar.
+/// 🛡️ PLAZA LOJİSTİK VE CANLI DESTEK MERKEZİ (SiberLojistikTakip)
+/// Müşteri, bayi ve Merkez (Admin) arasında 3'lü iletişim hattı kurar.
 class SiberLojistikTakip extends StatefulWidget {
   final String siparisId;
   final String kullaniciId; // Mesajı gönderenin kimliği
@@ -24,13 +22,17 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final TextEditingController _mesajCtrl = TextEditingController();
 
-  // ── 🚀 İMECE S.O.S MOTORU (ATOMİK ZIRHLI) ──
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color dangerColor = Colors.redAccent;
+  final Color textColor = const Color(0xFF1E293B);
+  final Color bgColor = const Color(0xFFFAFAFC);
+
+  // ── 🚀 S.O.S MOTORU (ATOMİK İŞLEM) ──
   Future<void> _imeceAlarmiVer() async {
     HapticFeedback.heavyImpact();
-    developer.log("🚨 SİBER ALARM: ${widget.siparisId} için İmece (Yol Yardım / Sorun) S.O.S sinyali fırlatıldı!");
+    developer.log("🚨 ACİL DURUM: ${widget.siparisId} için Yol Yardım / S.O.S sinyali fırlatıldı!");
 
     try {
-      // 🛡️ ATOMİK MÜHÜRLEME: Hem alarmı ver hem de kara kutuya yaz!
       WriteBatch batch = _db.batch();
 
       DocumentReference alarmRef = _db.collection('imece_alarmlari').doc();
@@ -43,22 +45,22 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
 
       DocumentReference logRef = _db.collection('sistem_loglari').doc();
       batch.set(logRef, {
-        'islem_turu': 'IMECE_SOS_TETIKLENDI',
-        'islem_detayi': 'SİBER KRİZ: ${widget.kullaniciId} kimlikli kullanıcı ${widget.siparisId} için acil durum füzesi ateşledi.',
+        'islem_turu': 'S.O.S_TETIKLENDI',
+        'islem_detayi': 'PLAZA ACİL: ${widget.kullaniciId} kimlikli kullanıcı ${widget.siparisId} için acil durum sinyali gönderdi.',
         'tarih': FieldValue.serverTimestamp(),
       });
 
       await batch.commit();
 
-      _siberUyariGoster("İMECE SİNYALİ GÖNDERİLDİ!", "Karargah ve en yakın bayiler alarma geçirildi.", SiberTema.kanKirmizi);
+      _plazaUyariGoster("S.O.S SİNYALİ GÖNDERİLDİ!", "Merkez ve en yakın bayiler alarma geçirildi.", dangerColor);
     } catch (e) {
       developer.log("🚨 AĞ ÇÖKTÜ!", error: e);
-      _siberUyariGoster("BAĞLANTI HATASI", "S.O.S sinyali Karargaha iletilemedi.", SiberTema.kanKirmizi);
+      _plazaUyariGoster("BAĞLANTI HATASI", "S.O.S sinyali Merkeze iletilemedi.", dangerColor);
     }
   }
 
-  // ── 💬 KRİPTOLU SOHBET MOTORU (MESAJ GÖNDERME) ──
-  Future<void> _mesajFirlat() async {
+  // ── 💬 SOHBET MOTORU (MESAJ GÖNDERME) ──
+  Future<void> _mesajGonder() async {
     String mesaj = _mesajCtrl.text.trim();
     if (mesaj.isEmpty) return;
 
@@ -66,33 +68,32 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
     _mesajCtrl.clear();
 
     try {
-      // Sohbet hızlı akması gerektiği için tekil .add yeterlidir
       await _db.collection('siparisler').doc(widget.siparisId).collection('kripto_sohbet').add({
         'gonderen_id': widget.kullaniciId,
         'mesaj_metni': mesaj,
         'zaman_damgasi': FieldValue.serverTimestamp(),
       });
-      developer.log("💬 SİBER HAT: Mesaj fırlatıldı.");
+      developer.log("💬 PLAZA HATTI: Mesaj gönderildi.");
     } catch (e) {
-      developer.log("🚨 AĞ ÇÖKTÜ: Mesaj fırlatılamadı!", error: e);
+      developer.log("🚨 AĞ ÇÖKTÜ: Mesaj gönderilemedi!", error: e);
     }
   }
 
   // ── 🚨 ARAYÜZ YARDIMCILARI ──
-  void _siberUyariGoster(String baslik, String mesaj, Color renk) {
+  void _plazaUyariGoster(String baslik, String mesaj, Color renk) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: SiberTema.matGrey,
+        backgroundColor: Colors.white,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: renk, width: 2)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold)),
+            Text(mesaj, style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -102,33 +103,35 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent, // Kalkanın arkası görünsün
+        backgroundColor: bgColor,
         appBar: AppBar(
-          title: const Text("LOJİSTİK VE DESTEK HATTI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
-          backgroundColor: Colors.transparent,
+          title: Text("LOJİSTİK VE DESTEK HATTI", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
+          backgroundColor: Colors.white,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          surfaceTintColor: Colors.transparent,
+          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          iconTheme: IconThemeData(color: primaryTeal),
         ),
         body: SafeArea(
           child: Column(
             children: [
               // 1. CANLI KARGO DURUMU RADARI
-              _buildSiberKargoRadari(),
+              _buildPlazaKargoRadari(),
 
-              // 2. İMECE (S.O.S) FÜZESİ
-              _buildImeceYardimButonu(),
+              // 2. S.O.S BUTONU
+              _buildSosyYardimButonu(),
 
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Divider(color: Colors.white24, height: 1),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Divider(color: Colors.black.withValues(alpha: 0.05), height: 1),
               ),
 
-              // 3. ÜÇLÜ KRİPTOLU MUHATAP HATTI (Müşteri - Bayi - Admin)
+              // 3. İLETİŞİM HATTI
               _buildSohbetBasligi(),
               Expanded(child: _buildCanliSohbetAkisi()),
-              _buildMesajAteslemeMotoru(),
+              _buildMesajGondermeMotoru(),
             ],
           ),
         ),
@@ -138,49 +141,46 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
 
   // ── 🛡️ ARAYÜZ MOTORLARI ──
 
-  Widget _buildSiberKargoRadari() {
+  Widget _buildPlazaKargoRadari() {
     return StreamBuilder<DocumentSnapshot>(
       stream: _db.collection('siparisler').doc(widget.siparisId).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData || !snapshot.data!.exists) {
-          return const SizedBox.shrink(); // Veri yoksa alanı gizle
+          return const SizedBox.shrink();
         }
 
         var data = snapshot.data!.data() as Map<String, dynamic>;
         String durum = data['kargo_durumu'] ?? "BİLİNMİYOR";
         String takipKodu = data['kargo_takip_kodu'] ?? "KOD BEKLENİYOR";
-        Color durumRengi = (durum == "YOLDA" || durum == "TESLİM EDİLDİ") ? SiberTema.kuantumCyan : SiberTema.altinSari;
+        Color durumRengi = (durum == "YOLDA" || durum == "TESLİM EDİLDİ") ? primaryTeal : Colors.orange;
 
         return Container(
           margin: const EdgeInsets.all(16),
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-              color: SiberTema.matGrey.withOpacity(0.8),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
-              boxShadow: [
-                BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 15, spreadRadius: 2)
-              ]
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+              boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
           ),
           child: Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                    color: SiberTema.kuantumCyan.withOpacity(0.1),
+                    color: primaryTeal.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
-                    border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5))
                 ),
-                child: const Icon(Icons.radar, color: SiberTema.kuantumCyan),
+                child: Icon(Icons.radar, color: primaryTeal),
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("LOJİSTİK DURUMU: $durum", style: TextStyle(color: durumRengi, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                    Text("LOJİSTİK DURUMU: $durum", style: TextStyle(color: durumRengi, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                     const SizedBox(height: 4),
-                    Text("SİBER BARKOD: $takipKodu", style: const TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 1, fontWeight: FontWeight.bold)),
+                    Text("BARKOD NO: $takipKodu", style: const TextStyle(color: Colors.black54, fontSize: 11, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                   ],
                 ),
               ),
@@ -191,7 +191,7 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
     );
   }
 
-  Widget _buildImeceYardimButonu() {
+  Widget _buildSosyYardimButonu() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: SizedBox(
@@ -200,13 +200,12 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
         child: ElevatedButton.icon(
           onPressed: _imeceAlarmiVer,
           icon: const Icon(Icons.sos, color: Colors.white, size: 28),
-          label: const Text("İMECE S.O.S ALARMI VER", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
+          label: const Text("ACİL DURUM / S.O.S ALARMI VER", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
           style: ElevatedButton.styleFrom(
-            backgroundColor: SiberTema.kanKirmizi,
+            backgroundColor: dangerColor,
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            elevation: 10,
-            shadowColor: SiberTema.kanKirmizi.withOpacity(0.5),
+            elevation: 0,
           ),
         ),
       ),
@@ -218,9 +217,9 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          const Icon(Icons.admin_panel_settings, color: SiberTema.kuantumCyan, size: 16),
+          Icon(Icons.admin_panel_settings, color: primaryTeal, size: 16),
           const SizedBox(width: 8),
-          const Expanded(child: Text("KARARGAH GÖZETİMİNDE KRİPTOLU HAT", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2))),
+          const Expanded(child: Text("PLAZA MERKEZ GÖZETİMİNDE İLETİŞİM", style: TextStyle(color: Colors.black45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))),
         ],
       ),
     );
@@ -230,26 +229,27 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: SiberTema.matGrey.withOpacity(0.5),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white12),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]
       ),
       child: StreamBuilder<QuerySnapshot>(
         stream: _db.collection('siparisler').doc(widget.siparisId).collection('kripto_sohbet')
             .orderBy('zaman_damgasi', descending: true).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+            return Center(child: CircularProgressIndicator(color: primaryTeal));
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text("SİBER ONAY: İletişim hattı temiz ve dinlemeye hazır.", style: TextStyle(color: Colors.white30, fontSize: 11, fontWeight: FontWeight.bold)));
+            return const Center(child: Text("Merkez bağlantısı kuruldu.\nİletişime geçebilirsiniz.", textAlign: TextAlign.center, style: TextStyle(color: Colors.black38, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')));
           }
 
           return ListView.builder(
-            reverse: true, // En yeni mesaj en altta görünür
+            reverse: true,
             physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(16),
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               var mesajVerisi = snapshot.data!.docs[index].data() as Map<String, dynamic>;
@@ -258,16 +258,21 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
               return Align(
                 alignment: benGonderdim ? Alignment.centerRight : Alignment.centerLeft,
                 child: Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   decoration: BoxDecoration(
-                    color: benGonderdim ? SiberTema.kuantumCyan.withOpacity(0.1) : Colors.white10,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: benGonderdim ? SiberTema.kuantumCyan.withOpacity(0.5) : Colors.white24),
+                    color: benGonderdim ? primaryTeal : Colors.grey.shade100,
+                    borderRadius: BorderRadius.only(
+                      topLeft: const Radius.circular(16),
+                      topRight: const Radius.circular(16),
+                      bottomLeft: Radius.circular(benGonderdim ? 16 : 4),
+                      bottomRight: Radius.circular(benGonderdim ? 4 : 16),
+                    ),
+                    boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 5, offset: const Offset(0, 2))]
                   ),
                   child: Text(
                     mesajVerisi['mesaj_metni'] ?? "",
-                    style: TextStyle(color: benGonderdim ? SiberTema.kuantumCyan : Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: benGonderdim ? Colors.white : textColor, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                   ),
                 ),
               );
@@ -278,44 +283,50 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
     );
   }
 
-  Widget _buildMesajAteslemeMotoru() {
+  Widget _buildMesajGondermeMotoru() {
     return Container(
       padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: SiberTema.matGrey.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3)),
-              ),
-              child: TextField(
-                controller: _mesajCtrl,
-                style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
-                decoration: const InputDecoration(
-                  hintText: "Karargaha veya bayiye yaz...",
-                  hintStyle: TextStyle(color: Colors.white30, fontSize: 12),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.05)))
+      ),
+      child: SafeArea(
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+                ),
+                child: TextField(
+                  controller: _mesajCtrl,
+                  style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+                  decoration: const InputDecoration(
+                    hintText: "Merkeze veya bayiye yaz...",
+                    hintStyle: TextStyle(color: Colors.black38, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(width: 12),
-          GestureDetector(
-            onTap: _mesajFirlat,
-            child: Container(
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: SiberTema.kuantumCyan,
-                shape: BoxShape.circle,
-                boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.4), blurRadius: 10)],
+            const SizedBox(width: 12),
+            GestureDetector(
+              onTap: _mesajGonder,
+              child: Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: primaryTeal,
+                  shape: BoxShape.circle,
+                  boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 4))],
+                ),
+                child: const Icon(Icons.send_rounded, color: Colors.white, size: 20),
               ),
-              child: const Icon(Icons.send_rounded, color: SiberTema.oledBlack, size: 20),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

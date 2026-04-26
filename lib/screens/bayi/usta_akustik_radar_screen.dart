@@ -57,7 +57,7 @@ class _UstaAkustikRadarScreenState extends State<UstaAkustikRadarScreen> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: SiberTema.matGrey,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.kuantumCyan)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: SiberTema.kuantumCyan)),
         title: const Text("SİBER TEŞHİS VE TEKLİF", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900)),
         content: Column(
           mainAxisSize: MainAxisSize.min,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/responsive_kalkan.dart';
 
 // Bir sonraki adıma (Ekspertiz veya Fotoğraf yükleme) geçmek için kendi rotanı buraya ekle
 // import 'ilan_ver_ekspertiz_screen.dart';
@@ -43,218 +44,252 @@ class _IlanVerAracSecimScreenState extends State<IlanVerAracSecimScreen> {
 
   void _sonrakiAdim() {
     if (_secilenMarka == null || _secilenModel == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Lütfen Marka ve Model seçiniz.', style: TextStyle(color: Colors.white)), backgroundColor: Colors.redAccent));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Lütfen Marka ve Model seçiniz.', style: TextStyle(color: Colors.white, fontFamily: 'Avenir')), backgroundColor: Colors.redAccent));
       return;
     }
     // Navigator.push(context, MaterialPageRoute(builder: (context) => const IlanVerEkspertizScreen()));
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Araç Genetiği Onaylandı. Adım 2\'ye Geçiliyor...', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: Color(0xFF00FFC2)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text('Araç Genetiği Onaylandı. Adım 2\'ye Geçiliyor...', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), backgroundColor: Colors.teal.shade700));
   }
 
   @override
   Widget build(BuildContext context) {
-    // 🌑 TESLA / APPLE ULTRA-MİNİMALİST PALET
-    const bgColor = Color(0xFF000000); // Saf OLED Siyahı
-    const surfaceColor = Color(0xFF111111); // Çok Koyu Gri
-    const accentColor = Colors.white;
-    const primaryCyan = Color(0xFF00FFC2);
+    // 🏢 PLAZA KALİTESİ PALET
+    final Color primaryTeal = Colors.teal.shade700;
+    const Color bgColor = Color(0xFFFAFAFC);
+    const Color textColor = Color(0xFF1E293B);
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: accentColor, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text('A D I M   1 / 3', style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 4)),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("Araç Seçimi", style: TextStyle(color: accentColor, fontSize: 32, fontWeight: FontWeight.w600, letterSpacing: -1)),
-                  const SizedBox(height: 8),
-                  const Text("Sisteme kaydedilecek aracın temel genetik bilgilerini seçin.", style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.5)),
-                  const SizedBox(height: 40),
+    return ResponsiveKalkan(
+      isOledBackground: false,
+      child: Scaffold(
+        backgroundColor: bgColor,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          surfaceTintColor: Colors.transparent,
+          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text('A D I M   1 / 3', style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 4, fontFamily: 'Avenir')),
+          centerTitle: true,
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Araç Seçimi", style: TextStyle(color: textColor, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -1, fontFamily: 'Avenir')),
+                    const SizedBox(height: 8),
+                    const Text("Sisteme kaydedilecek aracın temel genetik bilgilerini seçin.", style: TextStyle(color: Colors.black54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                    const SizedBox(height: 40),
 
-                  // =========================================================
-                  // MİNİMALİST DROPDOWN SEÇİCİLER
-                  // =========================================================
-                  _buildPremiumDropdown(
-                    baslik: "Marka",
-                    deger: _secilenMarka,
-                    liste: _markalar,
-                    onChanged: (val) {
-                      setState(() {
-                        _secilenMarka = val;
-                        _secilenModel = null; // Marka değişince modeli sıfırla
-                        _fiyatGuncelle();
-                      });
-                    },
-                    ikon: Icons.branding_watermark_outlined,
-                  ),
-                  const SizedBox(height: 16),
+                    // =========================================================
+                    // PLAZA DROPDOWN SEÇİCİLER
+                    // =========================================================
+                    _buildPremiumDropdown(
+                      baslik: "Marka",
+                      deger: _secilenMarka,
+                      liste: _markalar,
+                      onChanged: (val) {
+                        setState(() {
+                          _secilenMarka = val;
+                          _secilenModel = null; // Marka değişince modeli sıfırla
+                          _fiyatGuncelle();
+                        });
+                      },
+                      ikon: Icons.branding_watermark_outlined,
+                      primaryTeal: primaryTeal,
+                      textColor: textColor,
+                    ),
+                    const SizedBox(height: 16),
 
-                  _buildPremiumDropdown(
-                    baslik: "Model",
-                    deger: _secilenModel,
-                    liste: _secilenMarka != null ? _modeller[_secilenMarka!]! : [],
-                    onChanged: (val) {
-                      setState(() { _secilenModel = val; _fiyatGuncelle(); });
-                    },
-                    ikon: Icons.directions_car_outlined,
-                  ),
-                  const SizedBox(height: 16),
+                    _buildPremiumDropdown(
+                      baslik: "Model",
+                      deger: _secilenModel,
+                      liste: _secilenMarka != null ? _modeller[_secilenMarka!]! : [],
+                      onChanged: (val) {
+                        setState(() { _secilenModel = val; _fiyatGuncelle(); });
+                      },
+                      ikon: Icons.directions_car_outlined,
+                      primaryTeal: primaryTeal,
+                      textColor: textColor,
+                    ),
+                    const SizedBox(height: 16),
 
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildPremiumDropdown(
-                          baslik: "Üretim Yılı",
-                          deger: _secilenYil,
-                          liste: _yillar,
-                          onChanged: (val) { setState(() { _secilenYil = val; _fiyatGuncelle(); }); },
-                          ikon: Icons.calendar_today_outlined,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildPremiumDropdown(
+                            baslik: "Üretim Yılı",
+                            deger: _secilenYil,
+                            liste: _yillar,
+                            onChanged: (val) { setState(() { _secilenYil = val; _fiyatGuncelle(); }); },
+                            ikon: Icons.calendar_today_outlined,
+                            primaryTeal: primaryTeal,
+                            textColor: textColor,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                          decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white.withOpacity(0.05))),
-                          child: TextField(
-                            controller: _kullanimKmController,
-                            keyboardType: TextInputType.number,
-                            style: const TextStyle(color: Colors.white, fontSize: 15),
-                            decoration: const InputDecoration(
-                              icon: Icon(Icons.speed_outlined, color: Colors.white54, size: 20),
-                              labelText: "Kilometre",
-                              labelStyle: TextStyle(color: Colors.white38, fontSize: 13),
-                              border: InputBorder.none,
-                              floatingLabelBehavior: FloatingLabelBehavior.always,
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 5)]),
+                            child: TextField(
+                              controller: _kullanimKmController,
+                              keyboardType: TextInputType.number,
+                              style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.speed_outlined, color: primaryTeal, size: 20),
+                                labelText: "Kilometre",
+                                labelStyle: const TextStyle(color: Colors.black45, fontSize: 13, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
+                                border: InputBorder.none,
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 40),
-
-                  // =========================================================
-                  // OTODNA SENKRONİZASYON (TOGGLE)
-                  // =========================================================
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                        color: surfaceColor,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: _otodnaSenkronizasyon ? primaryCyan.withOpacity(0.5) : Colors.transparent)
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(color: _otodnaSenkronizasyon ? primaryCyan.withOpacity(0.1) : Colors.white.withOpacity(0.05), shape: BoxShape.circle),
-                          child: Icon(Icons.security, color: _otodnaSenkronizasyon ? primaryCyan : Colors.white54, size: 24),
-                        ),
-                        const SizedBox(width: 16),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("OtoDNA Ağ Senkronizasyonu", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
-                              SizedBox(height: 4),
-                              Text("Aracınızı Kuantum Ağına mühürleyerek güven değerini artırın.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4)),
-                            ],
-                          ),
-                        ),
-                        Switch(
-                          value: _otodnaSenkronizasyon,
-                          activeColor: primaryCyan,
-                          activeTrackColor: primaryCyan.withOpacity(0.3),
-                          inactiveThumbColor: Colors.white54,
-                          inactiveTrackColor: Colors.white12,
-                          onChanged: (val) {
-                            setState(() { _otodnaSenkronizasyon = val; _fiyatGuncelle(); });
-                          },
-                        )
                       ],
                     ),
-                  ),
+                    const SizedBox(height: 40),
 
-                  const SizedBox(height: 40),
+                    // =========================================================
+                    // OTODNA SENKRONİZASYON (TOGGLE)
+                    // =========================================================
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: _otodnaSenkronizasyon ? primaryTeal.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05), width: _otodnaSenkronizasyon ? 2 : 1),
+                          boxShadow: [
+                            if (_otodnaSenkronizasyon)
+                              BoxShadow(color: primaryTeal.withValues(alpha: 0.1), blurRadius: 15, offset: const Offset(0, 5))
+                            else
+                              BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))
+                          ]
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(color: _otodnaSenkronizasyon ? primaryTeal.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05), shape: BoxShape.circle),
+                            child: Icon(Icons.security, color: _otodnaSenkronizasyon ? primaryTeal : Colors.black38, size: 24),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("OtoDNA Ağ Senkronizasyonu", style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                                const SizedBox(height: 4),
+                                const Text("Aracınızı Kuantum Ağına mühürleyerek güven değerini artırın.", style: TextStyle(color: Colors.black54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                              ],
+                            ),
+                          ),
+                          Switch(
+                            value: _otodnaSenkronizasyon,
+                            activeColor: Colors.white,
+                            activeTrackColor: primaryTeal,
+                            inactiveThumbColor: Colors.white,
+                            inactiveTrackColor: Colors.black26,
+                            onChanged: (val) {
+                              setState(() { _otodnaSenkronizasyon = val; _fiyatGuncelle(); });
+                            },
+                          )
+                        ],
+                      ),
+                    ),
 
-                  // =========================================================
-                  // DİNAMİK FİYAT HESAPLAYICI (Siber Kasa)
-                  // =========================================================
-                  const Text("Sistem Tarafından Önerilen Değer", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                  const SizedBox(height: 8),
-                  Text(
-                      "₺${_hesaplananFiyat.toStringAsFixed(0)}",
-                      style: const TextStyle(color: primaryCyan, fontSize: 40, fontWeight: FontWeight.w600, letterSpacing: -1)
-                  ),
+                    const SizedBox(height: 40),
 
-                  const SizedBox(height: 40),
-                ],
-              ),
-            ),
-          ),
+                    // =========================================================
+                    // DİNAMİK FİYAT HESAPLAYICI
+                    // =========================================================
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(32),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: primaryTeal.withValues(alpha: 0.3)),
+                        boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, 10))]
+                      ),
+                      child: Column(
+                        children: [
+                          const Text("Sistem Tarafından Önerilen Değer", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+                          const SizedBox(height: 8),
+                          Text(
+                              "₺${_hesaplananFiyat.toStringAsFixed(0)}",
+                              style: TextStyle(color: primaryTeal, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: -1, fontFamily: 'Avenir')
+                          ),
+                        ]
+                      )
+                    ),
 
-          // =========================================================
-          // SABİT ALT BUTON ALANI
-          // =========================================================
-          Container(
-            padding: const EdgeInsets.all(24),
-            decoration: const BoxDecoration(
-              color: bgColor,
-              border: Border(top: BorderSide(color: Colors.white12)),
-            ),
-            child: SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryCyan,
-                  foregroundColor: Colors.black,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    const SizedBox(height: 40),
+                  ],
                 ),
-                onPressed: _sonrakiAdim,
-                child: const Text("SONRAKİ ADIM", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5)),
               ),
             ),
-          )
-        ],
+
+            // =========================================================
+            // SABİT ALT BUTON ALANI
+            // =========================================================
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
+              ),
+              child: SafeArea(
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryTeal,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    ),
+                    onPressed: _sonrakiAdim,
+                    child: const Text("SONRAKİ ADIM", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 
-  // 💎 TESLA MİMARİSİ: ŞIK VE SADE AÇILIR MENÜ (DROPDOWN)
-  Widget _buildPremiumDropdown({required String baslik, required String? deger, required List<String> liste, required Function(String?) onChanged, required IconData ikon}) {
+  // 💎 PLAZA MİMARİSİ: ŞIK VE SADE AÇILIR MENÜ (DROPDOWN)
+  Widget _buildPremiumDropdown({required String baslik, required String? deger, required List<String> liste, required Function(String?) onChanged, required IconData ikon, required Color primaryTeal, required Color textColor}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFF111111),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 5)]
       ),
       child: Row(
         children: [
-          Icon(ikon, color: Colors.white54, size: 20),
+          Icon(ikon, color: primaryTeal, size: 20),
           const SizedBox(width: 16),
           Expanded(
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
-                dropdownColor: const Color(0xFF111111),
+                dropdownColor: Colors.white,
                 isExpanded: true,
                 value: deger,
-                hint: Text(baslik, style: const TextStyle(color: Colors.white38, fontSize: 15)),
-                icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white24),
-                style: const TextStyle(color: Colors.white, fontSize: 15),
+                hint: Text(baslik, style: const TextStyle(color: Colors.black45, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                icon: Icon(Icons.keyboard_arrow_down, color: primaryTeal),
+                style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                 items: liste.map((String item) {
                   return DropdownMenuItem<String>(value: item, child: Text(item));
                 }).toList(),

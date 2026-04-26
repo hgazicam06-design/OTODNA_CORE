@@ -106,33 +106,33 @@ class _ArizaBildirimScreenState extends State<ArizaBildirimScreen> {
       builder: (context) => StatefulBuilder(
           builder: (context, setModalState) {
             return AlertDialog(
-              backgroundColor: const Color(0xFF121B2B), // Dijital Kale Rengi
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: Color(0xFF00FFC2), width: 1.5)),
-              title: const Row(children: [Icon(Icons.engineering, color: Color(0xFF00FFC2)), SizedBox(width: 8), Text("Siber Usta Ayarları", style: TextStyle(color: Color(0xFF00FFC2), fontSize: 16, fontWeight: FontWeight.bold))]),
+              backgroundColor: Colors.white, // Plaza Kalitesi Rengi
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.teal.shade700, width: 1.5)),
+              title: Row(children: [Icon(Icons.engineering, color: Colors.teal.shade700), const SizedBox(width: 8), Text("Siber Usta Ayarları", style: TextStyle(color: Colors.teal.shade700, fontSize: 16, fontWeight: FontWeight.bold))]),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextField(controller: isimController, style: const TextStyle(color: Colors.white), decoration: const InputDecoration(labelText: "Ustanın İsmi", labelStyle: TextStyle(color: Colors.white54), enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white24)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFF00FFC2))))),
+                    TextField(controller: isimController, style: const TextStyle(color: Color(0xFF1E293B)), decoration: InputDecoration(labelText: "Ustanın İsmi", labelStyle: const TextStyle(color: Colors.black54), enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black12)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.teal.shade700)))),
                     const SizedBox(height: 24),
-                    const Text("Usta Cinsiyeti (Ses Tonu)", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold)),
+                    const Text("Usta Cinsiyeti (Ses Tonu)", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold)),
                     Row(
                       children: [
-                        Expanded(child: RadioListTile<bool>(title: const Text("Erkek", style: TextStyle(color: Colors.white, fontSize: 12)), value: false, groupValue: geciciKadin, activeColor: const Color(0xFF00FFC2), onChanged: (v) => setModalState(() => geciciKadin = v!))),
-                        Expanded(child: RadioListTile<bool>(title: const Text("Kadın", style: TextStyle(color: Colors.white, fontSize: 12)), value: true, groupValue: geciciKadin, activeColor: const Color(0xFF00FFC2), onChanged: (v) => setModalState(() => geciciKadin = v!))),
+                        Expanded(child: RadioListTile<bool>(title: const Text("Erkek", style: TextStyle(color: Color(0xFF1E293B), fontSize: 12)), value: false, groupValue: geciciKadin, activeColor: Colors.teal.shade700, onChanged: (v) => setModalState(() => geciciKadin = v!))),
+                        Expanded(child: RadioListTile<bool>(title: const Text("Kadın", style: TextStyle(color: Color(0xFF1E293B), fontSize: 12)), value: true, groupValue: geciciKadin, activeColor: Colors.teal.shade700, onChanged: (v) => setModalState(() => geciciKadin = v!))),
                       ],
                     ),
                     const SizedBox(height: 12),
-                    const Text("Konuşma Hızı (0 ile 1 arası)", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold)),
-                    Slider(value: geciciHiz, min: 0.1, max: 1.0, activeColor: const Color(0xFF00FFC2), inactiveColor: Colors.white12, onChanged: (v) => setModalState(() => geciciHiz = v)),
+                    const Text("Konuşma Hızı (0 ile 1 arası)", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold)),
+                    Slider(value: geciciHiz, min: 0.1, max: 1.0, activeColor: Colors.teal.shade700, inactiveColor: Colors.black12, onChanged: (v) => setModalState(() => geciciHiz = v)),
                   ],
                 ),
               ),
               actions: [
-                TextButton(onPressed: () => Navigator.pop(context), child: const Text("İptal", style: TextStyle(color: Colors.white54))),
+                TextButton(onPressed: () => Navigator.pop(context), child: const Text("İptal", style: TextStyle(color: Colors.black54))),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2), foregroundColor: Colors.black, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.teal.shade700, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
                   onPressed: () async {
                     final prefs = await SharedPreferences.getInstance();
                     await prefs.setString('usta_ismi', isimController.text.trim());
@@ -172,7 +172,7 @@ class _ArizaBildirimScreenState extends State<ArizaBildirimScreen> {
   Future<void> _tarihSec(BuildContext context) async {
     final DateTime? secilen = await showDatePicker(
       context: context, initialDate: _filtreTarihi ?? DateTime.now(), firstDate: DateTime(2020), lastDate: DateTime.now(),
-      builder: (context, child) => Theme(data: ThemeData.dark().copyWith(colorScheme: const ColorScheme.dark(primary: Color(0xFF00FFC2), onPrimary: Colors.black, surface: Color(0xFF121B2B))), child: child!),
+      builder: (context, child) => Theme(data: ThemeData.light().copyWith(colorScheme: ColorScheme.light(primary: Colors.teal.shade700, onPrimary: Colors.white, surface: Colors.white)), child: child!),
     );
     if (secilen != null) setState(() => _filtreTarihi = secilen);
   }
@@ -267,7 +267,7 @@ class _ArizaBildirimScreenState extends State<ArizaBildirimScreen> {
 
       if (!mounted) return;
       await _flutterTts.speak("Kayıt mühürlendi komutanım.");
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("AĞA İŞLENDİ! 2 Saat İçinde Silinmemek Üzere Mühürlenecek! 🔒"), backgroundColor: Color(0xFF00FFC2)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("AĞA İŞLENDİ! 2 Saat İçinde Silinmemek Üzere Mühürlenecek! 🔒"), backgroundColor: Colors.teal.shade700));
       Navigator.pop(context);
 
     } catch (e) {
@@ -287,10 +287,12 @@ class _ArizaBildirimScreenState extends State<ArizaBildirimScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // 🌑 DİJİTAL KALE RENK PALETİ
-    const bgColor = Color(0xFF070B14);
-    const primaryCyan = Color(0xFF00FFC2);
-    const cardColor = Color(0xFF121B2B);
+    // 🏢 PLAZA KALİTESİ PALET
+    const bgColor = Color(0xFFFAFAFC);
+    final primaryTeal = Colors.teal.shade700;
+    const cardColor = Colors.white;
+    const textColor = Color(0xFF1E293B);
+
     String saatFormatli = "${_suAnkiZaman.hour.toString().padLeft(2, '0')}:${_suAnkiZaman.minute.toString().padLeft(2, '0')}:${_suAnkiZaman.second.toString().padLeft(2, '0')}";
 
     var gosterilecekGecmis = _filtreTarihi == null ? _gecmisKayitlar : _gecmisKayitlar.where((doc) {
@@ -303,9 +305,10 @@ class _ArizaBildirimScreenState extends State<ArizaBildirimScreen> {
       appBar: AppBar(
           backgroundColor: cardColor,
           elevation: 0,
-          shape: const Border(bottom: BorderSide(color: Colors.white12, width: 1)),
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("Kalıcı Mühür Terminali", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 1)),
+          surfaceTintColor: Colors.transparent,
+          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05), width: 1)),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text("Kalıcı Mühür Terminali", style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 1, fontFamily: 'Avenir')),
           centerTitle: true
       ),
       body: SingleChildScrollView(
@@ -318,7 +321,7 @@ class _ArizaBildirimScreenState extends State<ArizaBildirimScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               margin: const EdgeInsets.only(bottom: 24),
-              decoration: BoxDecoration(color: Colors.redAccent.withOpacity(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.redAccent.withOpacity(0.3))),
+              decoration: BoxDecoration(color: Colors.redAccent.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.redAccent.withValues(alpha: 0.3))),
               child: const Row(
                 children: [
                   Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 20),
@@ -328,52 +331,52 @@ class _ArizaBildirimScreenState extends State<ArizaBildirimScreen> {
               ),
             ),
 
-            // SAAT (Kuantum Cam Tasarımı)
-            Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: primaryCyan.withOpacity(0.5)), boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.05), blurRadius: 15)]), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text("İşlem Saati:", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold)), Text("2 Saat Sonra Kalıcı Kilit", style: TextStyle(color: primaryCyan, fontSize: 10))]), Text(saatFormatli, style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 2))])),
+            // SAAT (Plaza Cam Tasarımı)
+            Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: primaryTeal.withValues(alpha: 0.2)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 15)]), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Text("İşlem Saati:", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold)), Text("2 Saat Sonra Kalıcı Kilit", style: TextStyle(color: primaryTeal, fontSize: 10))]), Text(saatFormatli, style: TextStyle(color: textColor, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))])),
             const SizedBox(height: 24),
 
             // PLAKA VE KM
             Row(children: [
-              Expanded(flex: 2, child: Container(padding: const EdgeInsets.symmetric(horizontal: 16), decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)), child: TextField(controller: _plakaController, textCapitalization: TextCapitalization.characters, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1), decoration: const InputDecoration(icon: Icon(Icons.pin, color: primaryCyan, size: 20), hintText: "Plaka", hintStyle: TextStyle(color: Colors.white24, letterSpacing: 0), border: InputBorder.none)))),
+              Expanded(flex: 2, child: Container(padding: const EdgeInsets.symmetric(horizontal: 16), decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05))), child: TextField(controller: _plakaController, textCapitalization: TextCapitalization.characters, style: TextStyle(color: textColor, fontWeight: FontWeight.bold, letterSpacing: 1), decoration: InputDecoration(icon: Icon(Icons.pin, color: primaryTeal, size: 20), hintText: "Plaka", hintStyle: const TextStyle(color: Colors.black26, letterSpacing: 0), border: InputBorder.none)))),
               const SizedBox(width: 12),
-              Expanded(flex: 1, child: Container(padding: const EdgeInsets.symmetric(horizontal: 16), decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.redAccent.withOpacity(0.3))), child: TextField(controller: _kmController, keyboardType: TextInputType.number, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold), decoration: const InputDecoration(hintText: "KM *", hintStyle: TextStyle(color: Colors.redAccent), border: InputBorder.none)))),
+              Expanded(flex: 1, child: Container(padding: const EdgeInsets.symmetric(horizontal: 16), decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.redAccent.withValues(alpha: 0.3))), child: TextField(controller: _kmController, keyboardType: TextInputType.number, style: TextStyle(color: textColor, fontWeight: FontWeight.bold), decoration: const InputDecoration(hintText: "KM *", hintStyle: TextStyle(color: Colors.redAccent), border: InputBorder.none)))),
             ]),
             const SizedBox(height: 16),
-            SizedBox(width: double.infinity, height: 50, child: ElevatedButton.icon(style: ElevatedButton.styleFrom(backgroundColor: primaryCyan.withOpacity(0.1), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: primaryCyan.withOpacity(0.5)))), onPressed: _isSearchingHistory ? null : () => _plakaGecmisiniSorgula(_plakaController.text), icon: _isSearchingHistory ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(color: primaryCyan, strokeWidth: 2)) : const Icon(Icons.history, color: primaryCyan, size: 20), label: const Text("TÜM DNA GEÇMİŞİNİ GETİR", style: TextStyle(color: primaryCyan, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1)))),
+            SizedBox(width: double.infinity, height: 50, child: ElevatedButton.icon(style: ElevatedButton.styleFrom(backgroundColor: primaryTeal.withValues(alpha: 0.1), elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: primaryTeal.withValues(alpha: 0.5)))), onPressed: _isSearchingHistory ? null : () => _plakaGecmisiniSorgula(_plakaController.text), icon: _isSearchingHistory ? SizedBox(width: 16, height: 16, child: CircularProgressIndicator(color: primaryTeal, strokeWidth: 2)) : Icon(Icons.history, color: primaryTeal, size: 20), label: Text("TÜM DNA GEÇMİŞİNİ GETİR", style: TextStyle(color: primaryTeal, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1)))),
 
             // GEÇMİŞ
             if (_gecmisKayitlar.isNotEmpty) ...[
               const SizedBox(height: 24),
               Container(
-                  padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                  padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("Eski Kuantum Kayıtları", style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1)),
-                            GestureDetector(onTap: () => _tarihSec(context), child: Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.white12)), child: Row(children: [Icon(Icons.calendar_month, color: primaryCyan, size: 14), const SizedBox(width: 6), Text(_filtreTarihi == null ? "Tarih Seç" : "${_filtreTarihi!.day}/${_filtreTarihi!.month}/${_filtreTarihi!.year}", style: const TextStyle(color: primaryCyan, fontSize: 11, fontWeight: FontWeight.bold))]))),
+                            const Text("Eski Kuantum Kayıtları", style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1)),
+                            GestureDetector(onTap: () => _tarihSec(context), child: Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.black.withValues(alpha: 0.05))), child: Row(children: [Icon(Icons.calendar_month, color: primaryTeal, size: 14), const SizedBox(width: 6), Text(_filtreTarihi == null ? "Tarih Seç" : "${_filtreTarihi!.day}/${_filtreTarihi!.month}/${_filtreTarihi!.year}", style: TextStyle(color: primaryTeal, fontSize: 11, fontWeight: FontWeight.bold))]))),
                           ],
                         ),
                         const SizedBox(height: 16),
-                        if (gosterilecekGecmis.isEmpty) const Text("Seçili tarihte işlem bulunamadı.", style: TextStyle(color: Colors.white54, fontSize: 12)),
+                        if (gosterilecekGecmis.isEmpty) const Text("Seçili tarihte işlem bulunamadı.", style: TextStyle(color: Colors.black54, fontSize: 12)),
                         ...gosterilecekGecmis.map((doc) {
                           var data = doc.data() as Map<String, dynamic>;
                           DateTime tarih = (data['muhurlenme_vakti'] as Timestamp).toDate();
                           List bakimlar = data['kontrol_noktalari'] ?? [];
                           return Container(
-                              margin: const EdgeInsets.only(bottom: 12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
+                              margin: const EdgeInsets.only(bottom: 12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("${tarih.day}/${tarih.month}/${tarih.year} - ${tarih.hour.toString().padLeft(2,'0')}:${tarih.minute.toString().padLeft(2,'0')}", style: const TextStyle(color: primaryCyan, fontSize: 12, fontWeight: FontWeight.bold)), Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(6)), child: Text("KM: ${data['km']}", style: const TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.bold)))]),
-                                    const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: Divider(color: Colors.white12)),
-                                    if (bakimlar.isNotEmpty) ...bakimlar.map((b) => Padding(padding: const EdgeInsets.only(bottom: 6), child: Row(children: [Icon(b['durum'] == true ? Icons.check_circle : Icons.cancel, color: b['durum'] == true ? Colors.green : Colors.redAccent, size: 14), const SizedBox(width: 6), Expanded(child: Text(b['ad'], style: const TextStyle(color: Colors.white70, fontSize: 11)))]) )),
+                                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("${tarih.day}/${tarih.month}/${tarih.year} - ${tarih.hour.toString().padLeft(2,'0')}:${tarih.minute.toString().padLeft(2,'0')}", style: TextStyle(color: primaryTeal, fontSize: 12, fontWeight: FontWeight.bold)), Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(6)), child: Text("KM: ${data['km']}", style: TextStyle(color: textColor, fontSize: 10, fontWeight: FontWeight.bold)))]),
+                                    Padding(padding: const EdgeInsets.symmetric(vertical: 8), child: Divider(color: Colors.black.withValues(alpha: 0.05))),
+                                    if (bakimlar.isNotEmpty) ...bakimlar.map((b) => Padding(padding: const EdgeInsets.only(bottom: 6), child: Row(children: [Icon(b['durum'] == true ? Icons.check_circle : Icons.cancel, color: b['durum'] == true ? Colors.green : Colors.redAccent, size: 14), const SizedBox(width: 6), Expanded(child: Text(b['ad'], style: const TextStyle(color: Colors.black87, fontSize: 11)))]) )),
                                     const SizedBox(height: 8),
-                                    Text(data['detay'] ?? "", style: const TextStyle(color: Colors.white54, fontSize: 11, fontStyle: FontStyle.italic)),
+                                    Text(data['detay'] ?? "", style: const TextStyle(color: Colors.black54, fontSize: 11, fontStyle: FontStyle.italic)),
                                     const SizedBox(height: 8),
-                                    if (data['raporlayan_usta'] != null) Text("İşlemi Yapan: ${data['raporlayan_usta']}", style: const TextStyle(color: Colors.orangeAccent, fontSize: 10, fontWeight: FontWeight.bold)),
+                                    if (data['raporlayan_usta'] != null) Text("İşlemi Yapan: ${data['raporlayan_usta']}", style: const TextStyle(color: Colors.orange, fontSize: 10, fontWeight: FontWeight.bold)),
                                   ]
                               )
                           );
@@ -383,34 +386,34 @@ class _ArizaBildirimScreenState extends State<ArizaBildirimScreen> {
               )
             ],
 
-            const Padding(padding: EdgeInsets.symmetric(vertical: 24), child: Divider(color: Colors.white12)),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 24), child: Divider(color: Colors.black12)),
 
             // 🌟 YETKİLİ SERVİS FORMU (AŞAĞI AÇILAN - EXPANSION)
             Row(
               children: [
-                Container(width: 3, height: 16, decoration: BoxDecoration(color: const Color(0xFF00FFC2), borderRadius: BorderRadius.circular(2))),
+                Container(width: 3, height: 16, decoration: BoxDecoration(color: primaryTeal, borderRadius: BorderRadius.circular(2))),
                 const SizedBox(width: 8),
-                const Text("YETKİLİ SERVİS PROTOKOLÜ", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1.5)),
+                const Text("YETKİLİ SERVİS PROTOKOLÜ", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1.5)),
               ],
             ),
             const SizedBox(height: 8),
-            const Text("Fotoğrafı olmayan parçaya sistem yeşil tık (✅) attırmaz.", style: TextStyle(color: Colors.orangeAccent, fontSize: 10, fontWeight: FontWeight.bold)),
+            const Text("Fotoğrafı olmayan parçaya sistem yeşil tık (✅) attırmaz.", style: TextStyle(color: Colors.orange, fontSize: 10, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
 
             ...List.generate(_bakimGruplari.length, (grupIndex) {
               var grup = _bakimGruplari[grupIndex];
-              // Kuantum Expandable Liste Tasarımı
+              // Kuantum Expandable Liste Tasarımı -> Plaza Expandable Liste
               return Container(
-                margin: const EdgeInsets.only(bottom: 16), decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                margin: const EdgeInsets.only(bottom: 16), decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 8)]),
                 child: Theme(
                   data: Theme.of(context).copyWith(dividerColor: Colors.transparent), // Çizgiyi gizle
                   child: ExpansionTile(
-                    iconColor: primaryCyan, collapsedIconColor: Colors.white54,
-                    title: Text(grup['grupAd'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                    iconColor: primaryTeal, collapsedIconColor: Colors.black54,
+                    title: Text(grup['grupAd'], style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 12)),
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        decoration: const BoxDecoration(border: Border(top: BorderSide(color: Colors.white12))),
+                        decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.05)))),
                         child: Column(
                           children: List.generate(grup['parcalar'].length, (parcaIndex) {
                             var parca = grup['parcalar'][parcaIndex];
@@ -420,23 +423,23 @@ class _ArizaBildirimScreenState extends State<ArizaBildirimScreen> {
                                   padding: const EdgeInsets.symmetric(vertical: 10),
                                   child: Row(
                                     children: [
-                                      Expanded(child: Text(parca['ad'], style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold))),
-                                      GestureDetector(onTap: () => _parcaFotografiCek(grupIndex, parcaIndex), child: Container(margin: const EdgeInsets.symmetric(horizontal: 4), padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: parca['foto'] != null ? Colors.blueAccent.withOpacity(0.2) : bgColor, borderRadius: BorderRadius.circular(10), border: Border.all(color: parca['foto'] != null ? Colors.blueAccent : Colors.white12)), child: Icon(Icons.camera_alt, color: parca['foto'] != null ? Colors.blueAccent : Colors.white54, size: 16))),
-                                      GestureDetector(onTap: () => _durumDegistir(grupIndex, parcaIndex, true), child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: parca['durum'] == true ? Colors.green.withOpacity(0.2) : bgColor, borderRadius: BorderRadius.circular(10), border: Border.all(color: parca['durum'] == true ? Colors.green : Colors.white12)), child: Icon(Icons.check, color: parca['durum'] == true ? Colors.green : Colors.white54, size: 16))),
+                                      Expanded(child: Text(parca['ad'], style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.bold))),
+                                      GestureDetector(onTap: () => _parcaFotografiCek(grupIndex, parcaIndex), child: Container(margin: const EdgeInsets.symmetric(horizontal: 4), padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: parca['foto'] != null ? Colors.blue.withValues(alpha: 0.1) : bgColor, borderRadius: BorderRadius.circular(10), border: Border.all(color: parca['foto'] != null ? Colors.blue : Colors.black.withValues(alpha: 0.05))), child: Icon(Icons.camera_alt, color: parca['foto'] != null ? Colors.blue : Colors.black45, size: 16))),
+                                      GestureDetector(onTap: () => _durumDegistir(grupIndex, parcaIndex, true), child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: parca['durum'] == true ? Colors.green.withValues(alpha: 0.1) : bgColor, borderRadius: BorderRadius.circular(10), border: Border.all(color: parca['durum'] == true ? Colors.green : Colors.black.withValues(alpha: 0.05))), child: Icon(Icons.check, color: parca['durum'] == true ? Colors.green : Colors.black45, size: 16))),
                                       const SizedBox(width: 6),
-                                      GestureDetector(onTap: () => _durumDegistir(grupIndex, parcaIndex, false), child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: parca['durum'] == false ? Colors.redAccent.withOpacity(0.2) : bgColor, borderRadius: BorderRadius.circular(10), border: Border.all(color: parca['durum'] == false ? Colors.redAccent : Colors.white12)), child: Icon(Icons.close, color: parca['durum'] == false ? Colors.redAccent : Colors.white54, size: 16))),
+                                      GestureDetector(onTap: () => _durumDegistir(grupIndex, parcaIndex, false), child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: parca['durum'] == false ? Colors.redAccent.withValues(alpha: 0.1) : bgColor, borderRadius: BorderRadius.circular(10), border: Border.all(color: parca['durum'] == false ? Colors.redAccent : Colors.black.withValues(alpha: 0.05))), child: Icon(Icons.close, color: parca['durum'] == false ? Colors.redAccent : Colors.black45, size: 16))),
                                     ],
                                   ),
                                 ),
                                 if (parca['ozelSecenek'] == true && parca['durum'] == true)
                                   Container(
-                                    margin: const EdgeInsets.only(bottom: 12, top: 4), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: primaryCyan.withOpacity(0.2))),
+                                    margin: const EdgeInsets.only(bottom: 12, top: 4), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: primaryTeal.withValues(alpha: 0.2))),
                                     child: Column(
                                       children: [
-                                        Row(children: [const Icon(Icons.av_timer, color: primaryCyan, size: 18), const SizedBox(width: 8), const Text("Değişim\nAralığı:", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)), const SizedBox(width: 12), Expanded(child: TextField(onChanged: (v) => parca['kmSiniri'] = v, keyboardType: TextInputType.number, style: const TextStyle(color: primaryCyan, fontSize: 13, fontWeight: FontWeight.bold), decoration: InputDecoration(isDense: true, hintText: parca['kmSiniri'], hintStyle: const TextStyle(color: Colors.white24), labelText: "KM", labelStyle: const TextStyle(color: Colors.white38, fontSize: 10), enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: primaryCyan))))), const SizedBox(width: 12), Expanded(child: TextField(onChanged: (v) => parca['yilSiniri'] = v, keyboardType: TextInputType.number, style: const TextStyle(color: primaryCyan, fontSize: 13, fontWeight: FontWeight.bold), decoration: InputDecoration(isDense: true, hintText: parca['yilSiniri'], hintStyle: const TextStyle(color: Colors.white24), labelText: "YIL", labelStyle: const TextStyle(color: Colors.white38, fontSize: 10), enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: primaryCyan))))) ]),
+                                        Row(children: [Icon(Icons.av_timer, color: primaryTeal, size: 18), const SizedBox(width: 8), const Text("Değişim\nAralığı:", style: TextStyle(color: Colors.black54, fontSize: 10, fontWeight: FontWeight.bold)), const SizedBox(width: 12), Expanded(child: TextField(onChanged: (v) => parca['kmSiniri'] = v, keyboardType: TextInputType.number, style: TextStyle(color: primaryTeal, fontSize: 13, fontWeight: FontWeight.bold), decoration: InputDecoration(isDense: true, hintText: parca['kmSiniri'], hintStyle: const TextStyle(color: Colors.black26), labelText: "KM", labelStyle: const TextStyle(color: Colors.black38, fontSize: 10), enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black12)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: primaryTeal))))), const SizedBox(width: 12), Expanded(child: TextField(onChanged: (v) => parca['yilSiniri'] = v, keyboardType: TextInputType.number, style: TextStyle(color: primaryTeal, fontSize: 13, fontWeight: FontWeight.bold), decoration: InputDecoration(isDense: true, hintText: parca['yilSiniri'], hintStyle: const TextStyle(color: Colors.black26), labelText: "YIL", labelStyle: const TextStyle(color: Colors.black38, fontSize: 10), enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black12)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: primaryTeal))))) ]),
                                         if (parca['isYag'] == true) ...[
-                                          const SizedBox(height: 12), const Divider(color: Colors.white12), const SizedBox(height: 8),
-                                          Row(children: [const Icon(Icons.water_drop, color: Colors.orangeAccent, size: 18), const SizedBox(width: 8), Expanded(child: TextField(onChanged: (v) => parca['viskozite'] = v, style: const TextStyle(color: Colors.orangeAccent, fontSize: 13, fontWeight: FontWeight.bold), decoration: const InputDecoration(isDense: true, hintText: "Örn: 5W-30", hintStyle: TextStyle(color: Colors.white24), labelText: "Viskozite", labelStyle: TextStyle(color: Colors.white38, fontSize: 10), enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.orangeAccent))))), const SizedBox(width: 12), Expanded(child: TextField(onChanged: (v) => parca['marka'] = v, style: const TextStyle(color: Colors.orangeAccent, fontSize: 13, fontWeight: FontWeight.bold), decoration: const InputDecoration(isDense: true, hintText: "Örn: Castrol", hintStyle: TextStyle(color: Colors.white24), labelText: "Marka", labelStyle: TextStyle(color: Colors.white38, fontSize: 10), enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.orangeAccent))))) ])
+                                          const SizedBox(height: 12), Divider(color: Colors.black.withValues(alpha: 0.05)), const SizedBox(height: 8),
+                                          Row(children: [const Icon(Icons.water_drop, color: Colors.orange, size: 18), const SizedBox(width: 8), Expanded(child: TextField(onChanged: (v) => parca['viskozite'] = v, style: const TextStyle(color: Colors.orange, fontSize: 13, fontWeight: FontWeight.bold), decoration: const InputDecoration(isDense: true, hintText: "Örn: 5W-30", hintStyle: TextStyle(color: Colors.black26), labelText: "Viskozite", labelStyle: TextStyle(color: Colors.black38, fontSize: 10), enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black12)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.orange))))), const SizedBox(width: 12), Expanded(child: TextField(onChanged: (v) => parca['marka'] = v, style: const TextStyle(color: Colors.orange, fontSize: 13, fontWeight: FontWeight.bold), decoration: const InputDecoration(isDense: true, hintText: "Örn: Castrol", hintStyle: TextStyle(color: Colors.black26), labelText: "Marka", labelStyle: TextStyle(color: Colors.black38, fontSize: 10), enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black12)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.orange))))) ])
                                         ]
                                       ],
                                     ),
@@ -465,9 +468,9 @@ class _ArizaBildirimScreenState extends State<ArizaBildirimScreen> {
                       onTap: _dinlemeyiBaslatDurur,
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 300), padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(shape: BoxShape.circle, color: _isListening ? Colors.redAccent.withOpacity(0.1) : cardColor, border: Border.all(color: _isListening ? Colors.redAccent : Colors.white12, width: 2), boxShadow: _isListening ? [BoxShadow(color: Colors.redAccent.withOpacity(0.2), blurRadius: 15)] : []),
+                        decoration: BoxDecoration(shape: BoxShape.circle, color: _isListening ? Colors.redAccent.withValues(alpha: 0.1) : cardColor, border: Border.all(color: _isListening ? Colors.redAccent : Colors.black.withValues(alpha: 0.05), width: 2), boxShadow: _isListening ? [BoxShadow(color: Colors.redAccent.withValues(alpha: 0.2), blurRadius: 15)] : [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 8)]),
                         // TULUM GİYMİŞ USTA İKONU
-                        child: Icon(_isListening ? Icons.graphic_eq : Icons.engineering, color: _isListening ? Colors.redAccent : primaryCyan, size: 36),
+                        child: Icon(_isListening ? Icons.graphic_eq : Icons.engineering, color: _isListening ? Colors.redAccent : primaryTeal, size: 36),
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -476,12 +479,12 @@ class _ArizaBildirimScreenState extends State<ArizaBildirimScreen> {
                       onTap: _ustaAyarlariniAc,
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                        decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white12)),
+                        decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
                         child: const Row(
                           children: [
-                            Icon(Icons.settings, color: Colors.white54, size: 12),
+                            Icon(Icons.settings, color: Colors.black54, size: 12),
                             SizedBox(width: 4),
-                            Text("Ayarlar", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+                            Text("Ayarlar", style: TextStyle(color: Colors.black54, fontSize: 10, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),
@@ -492,10 +495,10 @@ class _ArizaBildirimScreenState extends State<ArizaBildirimScreen> {
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: _isListening ? Colors.redAccent.withOpacity(0.5) : Colors.white12)),
+                    decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: _isListening ? Colors.redAccent.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05))),
                     child: TextField(
-                      controller: _detayController, maxLines: 5, style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.5),
-                      decoration: InputDecoration(hintText: "$_ustaIsmi sizi dinliyor komutanım...\n(Mikrofona basıp konuşun veya yazın)", hintStyle: const TextStyle(color: Colors.white24, fontSize: 12), border: InputBorder.none),
+                      controller: _detayController, maxLines: 5, style: TextStyle(color: textColor, fontSize: 13, height: 1.5),
+                      decoration: InputDecoration(hintText: "$_ustaIsmi sizi dinliyor komutanım...\n(Mikrofona basıp konuşun veya yazın)", hintStyle: const TextStyle(color: Colors.black26, fontSize: 12), border: InputBorder.none),
                     ),
                   ),
                 ),
@@ -512,7 +515,7 @@ class _ArizaBildirimScreenState extends State<ArizaBildirimScreen> {
                         backgroundColor: const Color(0xFF991B1B), // Koyu Tehlike Kırmızısı
                         padding: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: Colors.redAccent, width: 1.5)),
-                        elevation: 15, shadowColor: Colors.redAccent.withOpacity(0.3)
+                        elevation: 15, shadowColor: Colors.redAccent.withValues(alpha: 0.3)
                     ),
                     onPressed: _isSaving ? null : _arizayiSistemeIsle,
                     child: _isSaving

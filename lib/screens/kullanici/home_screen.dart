@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:developer' as developer;
 
-// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI (2 Kat Yukarı)
-import '../../../../core/siber_tema.dart';
 import '../../../../core/responsive_kalkan.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -13,29 +11,39 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 🏢 PLAZA KALİTESİ PALET
+    final Color primaryTeal = Colors.teal.shade700;
+    const Color bgColor = Color(0xFFFAFAFC);
+    const Color textColor = Color(0xFF1E293B);
+    const Color dangerColor = Colors.redAccent;
+    const Color premiumGold = Color(0xFFD4AF37);
+
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent, // Zırhın arkasını görmeliyiz
+        backgroundColor: bgColor,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           elevation: 0,
-          title: const Text(
-            "S İ V İ L   T E R M İ N A L",
+          surfaceTintColor: Colors.transparent,
+          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          title: Text(
+            "O T O D N A   P L A Z A",
             style: TextStyle(
-              color: SiberTema.kuantumCyan,
+              color: textColor,
               fontWeight: FontWeight.w900,
-              letterSpacing: 2,
-              fontSize: 14,
+              letterSpacing: 4,
+              fontSize: 13,
+              fontFamily: 'Avenir'
             ),
           ),
           centerTitle: true,
           actions: [
             IconButton(
-              icon: const Icon(Icons.power_settings_new_rounded, color: SiberTema.kanKirmizi),
+              icon: Icon(Icons.power_settings_new_rounded, color: dangerColor, size: 22),
               onPressed: () async {
                 HapticFeedback.heavyImpact();
-                developer.log("SİBER ÇIKIŞ: Sivil terminal bağlantısı kesiliyor...");
+                developer.log("OTURUM KAPATMA: Plaza terminal bağlantısı kesiliyor...");
                 await FirebaseAuth.instance.signOut();
               },
             )
@@ -44,22 +52,23 @@ class HomeScreen extends StatelessWidget {
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(24.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 🚀 SİBER KARŞILAMA KARTI
-                _buildSiberKarsilama(),
+                // 🏢 PLAZA KARŞILAMA KARTI
+                _buildPlazaKarsilama(primaryTeal, textColor),
 
-                const SizedBox(height: 30),
+                const SizedBox(height: 40),
 
                 const Text(
                   "HIZLI ERİŞİM PROTOKOLLERİ",
                   style: TextStyle(
-                    color: Colors.white54,
+                    color: Colors.black45,
                     fontSize: 10,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 2,
+                    fontFamily: 'Avenir'
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -75,17 +84,18 @@ class HomeScreen extends StatelessWidget {
                     _buildMenuKart(
                         "ARAÇLARIM",
                         Icons.directions_car_filled_rounded,
-                        SiberTema.kuantumCyan,
+                        primaryTeal,
+                        textColor,
                             () {
                           HapticFeedback.lightImpact();
                           developer.log("SİBER ROTA: Araçlarım paneline geçiş yapılıyor.");
-                          // TODO: Rota eklenecek -> Navigator.pushNamed(context, '/araclarim');
                         }
                     ),
                     _buildMenuKart(
                         "DNA SORGULA",
                         Icons.qr_code_scanner_rounded,
-                        SiberTema.altinSari,
+                        premiumGold,
+                        textColor,
                             () {
                           HapticFeedback.lightImpact();
                           developer.log("SİBER ROTA: DNA Sorgulama motoru tetiklendi.");
@@ -94,15 +104,17 @@ class HomeScreen extends StatelessWidget {
                     _buildMenuKart(
                         "RANDEVULAR",
                         Icons.calendar_today_rounded,
-                        Colors.blueAccent,
+                        Colors.blueAccent.shade700,
+                        textColor,
                             () {
                           HapticFeedback.lightImpact();
                         }
                     ),
                     _buildMenuKart(
-                        "SİBER DESTEK",
+                        "MÜŞTERİ DESTEK",
                         Icons.support_agent_rounded,
-                        Colors.purpleAccent,
+                        Colors.purple.shade600,
+                        textColor,
                             () {
                           HapticFeedback.lightImpact();
                         }
@@ -110,10 +122,10 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 30),
+                const SizedBox(height: 40),
 
                 // 📡 SİSTEM DURUM RADARI
-                _buildSistemDurum(),
+                _buildSistemDurum(primaryTeal),
               ],
             ),
           ),
@@ -122,32 +134,44 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSiberKarsilama() {
-    return SiberTema.siberCamKalkan(
+  Widget _buildPlazaKarsilama(Color primaryTeal, Color textColor) {
+    return Container(
       padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 20, offset: const Offset(0, 8))
+        ]
+      ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: SiberTema.kuantumCyan.withOpacity(0.1),
+              color: primaryTeal.withValues(alpha: 0.1),
               shape: BoxShape.circle,
-              border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3)),
             ),
-            child: const Icon(Icons.shield_rounded, color: SiberTema.kuantumCyan, size: 32),
+            child: Icon(Icons.shield_rounded, color: primaryTeal, size: 36),
           ),
-          const SizedBox(width: 16),
-          const Expanded(
+          const SizedBox(width: 20),
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "HOŞ GELDİNİZ",
-                  style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1),
+                  style: TextStyle(color: textColor, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
                 ),
-                Text(
-                  "Kuantum Ağına Bağlısınız ✅",
-                  style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 11, fontWeight: FontWeight.bold),
+                const SizedBox(height: 6),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(6)),
+                  child: Text(
+                    "OtoDNA Plaza Ağına Bağlısınız",
+                    style: TextStyle(color: primaryTeal, fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
+                  ),
                 ),
               ],
             ),
@@ -157,43 +181,58 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuKart(String baslik, IconData ikon, Color renk, VoidCallback onTapped) {
-    return SiberTema.siberCamKalkan(
+  Widget _buildMenuKart(String baslik, IconData ikon, Color ikonRenk, Color textColor, VoidCallback onTapped) {
+    return Material(
+      color: Colors.transparent,
       child: InkWell(
         onTap: onTapped,
-        borderRadius: BorderRadius.circular(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(ikon, color: renk, size: 36),
-            const SizedBox(height: 12),
-            Text(
-              baslik,
-              style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
-            ),
-          ],
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+            boxShadow: [
+              BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))
+            ]
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(color: ikonRenk.withValues(alpha: 0.1), shape: BoxShape.circle),
+                child: Icon(ikon, color: ikonRenk, size: 32)
+              ),
+              const SizedBox(height: 16),
+              Text(
+                baslik,
+                style: TextStyle(color: textColor, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildSistemDurum() {
+  Widget _buildSistemDurum(Color primaryTeal) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.02),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
       ),
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.radar, color: Colors.greenAccent, size: 14),
+          Icon(Icons.radar, color: Colors.green, size: 16),
           SizedBox(width: 8),
           Text(
-            "SİSTEM ÇALIŞMA SÜRESİ: 99.9% | GLOBAL AĞ AKTİF",
-            style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1),
+            "SİSTEM ÇALIŞMA SÜRESİ: %99.9  |  PLAZA AĞI AKTİF",
+            style: TextStyle(color: Colors.black54, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir'),
           ),
         ],
       ),

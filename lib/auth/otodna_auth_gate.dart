@@ -15,7 +15,7 @@ import '../core/main_engine.dart';
 import '../screens/login_screen.dart';
 import '../screens/super_admin_screen.dart';
 import '../screens/usta_panel_screen.dart';
-import '../screens/siber_kokpit_screen.dart';
+import '../screens/home_screen.dart';
 import '../bayi/bayi_merkez.dart';
 import '../bayi/belge_dogrulama.dart';
 
@@ -47,7 +47,15 @@ class OtoDnaAuthGate extends ConsumerWidget {
             error: (error, stack) => _KuantumYuklemeEkrani(mesaj: "SİCİL HATASI: $error"),
             data: (userData) {
               if (userData == null) {
-                return const _KuantumYuklemeEkrani(mesaj: "SİCİL OLUŞTURULUYOR VEYA EKSİK...");
+                // 🛡️ OTONOM SİCİL İNŞASI: Auth var ama Firestore verisi yoksa, sistemi onar!
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  FirebaseFirestore.instance.collection('kullanicilar').doc(user.uid).set({
+                    'email': user.email ?? 'isimsiz_ajan@otodna.com',
+                    'rol': 'USER',
+                    'kayit_tarihi': FieldValue.serverTimestamp(),
+                  });
+                });
+                return const _KuantumYuklemeEkrani(mesaj: "SİCİL OTONOM OLARAK İNŞA EDİLİYOR...");
               }
 
               // 🛡️ BLACK STAR PROTOKOLÜ: Kullanıcı Karalistede mi?
@@ -91,7 +99,7 @@ class OtoDnaAuthGate extends ConsumerWidget {
               } else if (role == "USTA") {
                 return const UstaPanelScreen();
               } else {
-                return const SiberKokpitScreen();
+                return const HomeScreen();
               }
             },
           );

@@ -66,7 +66,7 @@ class _SiberRandevuTerminaliState extends State<SiberRandevuTerminali> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.black,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), border: Border.all(color: primaryCyan.withOpacity(0.5))),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: primaryCyan.withOpacity(0.5))),
           title: const Row(
             children: [
               Icon(Icons.shield, color: primaryCyan),

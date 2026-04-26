@@ -50,7 +50,7 @@ class _AracKayitScreenState extends State<AracKayitScreen> {
       });
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Araç sisteme başarıyla işlendi."), backgroundColor: Color(0xFF00FFC2)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Araç sisteme başarıyla işlendi.", style: TextStyle(color: Colors.white)), backgroundColor: Colors.teal.shade700));
       Navigator.pop(context);
 
     } catch (e) {
@@ -71,18 +71,19 @@ class _AracKayitScreenState extends State<AracKayitScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // 🌑 TESLA TARZI ULTRA-MİNİMALİST KARANLIK TEMA
-    const bgColor = Color(0xFF000000); // Tam Siyah (OLED)
-    const primaryCyan = Color(0xFF00FFC2);
-    const inputColor = Color(0xFF111111); // Çok hafif gri (Aşırı sade)
+    // 🏢 PLAZA KALİTESİ PALET (Açık, Ferah ve Lüks)
+    const bgColor = Color(0xFFFAFAFC); // Sedefli Fil Dişi
+    final primaryTeal = Colors.teal.shade700;
+    const inputColor = Colors.white; // Saf beyaz
+    const textColor = Color(0xFF1E293B); // Koyu Gri/Lacivert
 
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.close, color: Colors.white, size: 24), onPressed: () => Navigator.pop(context)),
-        title: const Text("O T O D N A", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 8)),
+        leading: IconButton(icon: const Icon(Icons.close, color: textColor, size: 24), onPressed: () => Navigator.pop(context)),
+        title: const Text("O T O D N A", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 8, fontFamily: 'Avenir')),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -92,61 +93,67 @@ class _AracKayitScreenState extends State<AracKayitScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // =================================================================
-            // TESLA MANTIĞI: ADIM GÖSTERGESİ VE BÜYÜK BAŞLIK
+            // PLAZA MANTIĞI: ADIM GÖSTERGESİ VE BÜYÜK BAŞLIK
             // =================================================================
-            const Text("Adım 1/2", style: TextStyle(color: Colors.white38, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1)),
+            Text("Adım 1/2", style: TextStyle(color: primaryTeal, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
             const SizedBox(height: 8),
-            const Text("Araç Kimliği", style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
+            const Text("Araç Kimliği", style: TextStyle(color: textColor, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
             const SizedBox(height: 32),
 
             // =================================================================
             // FORM ALANLARI (Minimalist & Floating Label)
             // =================================================================
-            _buildPremiumInput("Plaka / Şase", Icons.pin_outlined, _plakaController, isUppercase: true, inputColor: inputColor),
+            _buildPremiumInput("Plaka / Şase", Icons.pin_outlined, _plakaController, isUppercase: true, inputColor: inputColor, textColor: textColor, primaryTeal: primaryTeal),
             const SizedBox(height: 16),
-            _buildPremiumInput("Marka", Icons.branding_watermark_outlined, _markaController, inputColor: inputColor),
+            _buildPremiumInput("Marka", Icons.branding_watermark_outlined, _markaController, inputColor: inputColor, textColor: textColor, primaryTeal: primaryTeal),
             const SizedBox(height: 16),
-            _buildPremiumInput("Model", Icons.directions_car_outlined, _modelController, inputColor: inputColor),
+            _buildPremiumInput("Model", Icons.directions_car_outlined, _modelController, inputColor: inputColor, textColor: textColor, primaryTeal: primaryTeal),
             const SizedBox(height: 16),
 
             Row(
               children: [
-                Expanded(child: _buildPremiumInput("Üretim Yılı", Icons.calendar_today_outlined, _yilController, isNumber: true, inputColor: inputColor)),
+                Expanded(child: _buildPremiumInput("Üretim Yılı", Icons.calendar_today_outlined, _yilController, isNumber: true, inputColor: inputColor, textColor: textColor, primaryTeal: primaryTeal)),
                 const SizedBox(width: 16),
-                Expanded(child: _buildPremiumInput("Kilometre", Icons.speed_outlined, _kmController, isNumber: true, inputColor: inputColor)),
+                Expanded(child: _buildPremiumInput("Kilometre", Icons.speed_outlined, _kmController, isNumber: true, inputColor: inputColor, textColor: textColor, primaryTeal: primaryTeal)),
               ],
             ),
             const SizedBox(height: 16),
-            _buildPremiumInput("Satış Fiyatı (₺)", Icons.attach_money_outlined, _fiyatController, isNumber: true, inputColor: inputColor),
+            _buildPremiumInput("Satış Fiyatı (₺)", Icons.attach_money_outlined, _fiyatController, isNumber: true, inputColor: inputColor, textColor: textColor, primaryTeal: primaryTeal),
 
             const SizedBox(height: 40),
 
             // =================================================================
-            // TESLA MANTIĞI: ADIM 2 BAŞLIĞI
+            // PLAZA MANTIĞI: ADIM 2 BAŞLIĞI
             // =================================================================
-            const Text("Adım 2/2", style: TextStyle(color: Colors.white38, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1)),
+            Text("Adım 2/2", style: TextStyle(color: primaryTeal, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
             const SizedBox(height: 8),
-            const Text("Ekspertiz Durumu", style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
+            const Text("Ekspertiz Durumu", style: TextStyle(color: textColor, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
             const SizedBox(height: 32),
 
-            _buildPremiumInput("Hasar Durumu (Örn: Değişensiz)", Icons.health_and_safety_outlined, _durumController, inputColor: inputColor),
+            _buildPremiumInput("Hasar Durumu (Örn: Değişensiz)", Icons.health_and_safety_outlined, _durumController, inputColor: inputColor, textColor: textColor, primaryTeal: primaryTeal),
             const SizedBox(height: 16),
-            _buildPremiumInput("Ruhsat Sahibi / Bayi", Icons.person_outline, _sahibiController, inputColor: inputColor),
+            _buildPremiumInput("Ruhsat Sahibi / Bayi", Icons.person_outline, _sahibiController, inputColor: inputColor, textColor: textColor, primaryTeal: primaryTeal),
             const SizedBox(height: 16),
 
             // Premium Açıklama Kutusu
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              decoration: BoxDecoration(color: inputColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white.withOpacity(0.05))),
+              decoration: BoxDecoration(
+                color: inputColor, 
+                borderRadius: BorderRadius.circular(16), 
+                border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))],
+              ),
               child: TextField(
                 controller: _aciklamaController,
-                style: const TextStyle(color: Colors.white, fontSize: 15),
+                style: const TextStyle(color: textColor, fontSize: 15, fontFamily: 'Avenir', fontWeight: FontWeight.w600),
                 maxLines: 4,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     labelText: "Açıklama & Donanım",
-                    labelStyle: TextStyle(color: Colors.white38, fontSize: 13),
+                    labelStyle: const TextStyle(color: Colors.black38, fontSize: 13, fontFamily: 'Avenir'),
                     border: InputBorder.none,
-                    floatingLabelBehavior: FloatingLabelBehavior.always
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    floatingLabelStyle: TextStyle(color: primaryTeal, fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -154,28 +161,29 @@ class _AracKayitScreenState extends State<AracKayitScreen> {
             const SizedBox(height: 48),
 
             // =================================================================
-            // TESLA TARZI GENİŞ SADE BUTON
+            // PLAZA TARZI GENİŞ SADE BUTON
             // =================================================================
             SizedBox(
               width: double.infinity,
-              height: 56,
+              height: 60,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryCyan, // Neon ama sade renk
-                  foregroundColor: Colors.black, // İçindeki yazı siyah
-                  elevation: 0, // Gölgeleri sildik, tam düz (flat) tasarım
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  backgroundColor: textColor, // Koyu elit buton
+                  foregroundColor: Colors.white,
+                  elevation: 8,
+                  shadowColor: Colors.black.withValues(alpha: 0.1),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 ),
                 onPressed: _isSaving ? null : _araciSistemeKaydet,
                 child: _isSaving
-                    ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
-                    : const Text("SONRAKİ ADIM", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, letterSpacing: 1.5)),
+                    ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                    : const Text("SONRAKİ ADIM", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, letterSpacing: 1.5, fontFamily: 'Avenir')),
               ),
             ),
 
             const SizedBox(height: 24),
             Center(
-              child: Text("Sisteme girilen araçlar OtoDNA politikalarına tabidir.", style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 11)),
+              child: Text("Sisteme girilen araçlar OtoDNA politikalarına tabidir.", style: TextStyle(color: Colors.black38, fontSize: 11, fontFamily: 'Avenir')),
             ),
             const SizedBox(height: 40),
           ],
@@ -185,25 +193,26 @@ class _AracKayitScreenState extends State<AracKayitScreen> {
   }
 
   // -------------------------------------------------------------------------
-  // 💎 TESLA STANDARTLARINDA ULTRA-MİNİMALİST INPUT (FLOATING LABEL)
+  // 💎 PLAZA STANDARTLARINDA ULTRA-MİNİMALİST INPUT (FLOATING LABEL)
   // -------------------------------------------------------------------------
-  Widget _buildPremiumInput(String label, IconData icon, TextEditingController controller, {bool isNumber = false, bool isUppercase = false, required Color inputColor}) {
+  Widget _buildPremiumInput(String label, IconData icon, TextEditingController controller, {bool isNumber = false, bool isUppercase = false, required Color inputColor, required Color textColor, required Color primaryTeal}) {
     return Container(
       decoration: BoxDecoration(
         color: inputColor,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.05)), // Neredeyse görünmez bir çerçeve
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))],
       ),
       child: TextFormField(
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
         textCapitalization: isUppercase ? TextCapitalization.characters : TextCapitalization.sentences,
-        style: const TextStyle(color: Colors.white, fontSize: 16),
+        style: TextStyle(color: textColor, fontSize: 16, fontFamily: 'Avenir', fontWeight: FontWeight.w600),
         decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: Colors.white54, size: 20), // İçi boş (outlined) zarif ikonlar
+          prefixIcon: Icon(icon, color: Colors.black45, size: 20),
           labelText: label,
-          labelStyle: const TextStyle(color: Colors.white38, fontSize: 14),
-          floatingLabelStyle: const TextStyle(color: Color(0xFF00FFC2), fontSize: 14), // Tıklayınca parlayan label
+          labelStyle: const TextStyle(color: Colors.black38, fontSize: 14, fontFamily: 'Avenir'),
+          floatingLabelStyle: TextStyle(color: primaryTeal, fontSize: 14, fontWeight: FontWeight.bold),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 16),
         ),

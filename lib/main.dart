@@ -54,7 +54,7 @@ class OtoDNA extends StatelessWidget {
     return SeoController(
       enabled: true,
       tree: WidgetTree(context: context),
-      child: MaterialApp(
+      child: MaterialApp.router(
         title: 'OtoDNA Kuantum Ağı',
         debugShowCheckedModeBanner: false,
 

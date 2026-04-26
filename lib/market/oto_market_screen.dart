@@ -411,7 +411,7 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const UrunGirisTerminali()));
               }),
               const SizedBox(height: 16),
-              _buildIlanSecenekKarti("Otomobil & Taşıt (Galeri)", "OtoDNA kalkanlı araçlarınızı siber ağa mühürleyin.", siberGold, () {
+              _buildIlanSecenekKarti("Otomobil & Taşıt (Galeri)", "OtoDNA kalkanlı araçlarınızı siber ağa mühürleyin.", Icons.directions_car_outlined, siberGold, () {
                 Navigator.pop(ctx);
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("SİBER BİLGİ: Araç İlan Ekranı Açılıyor...")));
               }),
@@ -440,4 +440,4 @@ class _OtoMarketScreenState extends State<OtoMarketScreen> with SingleTickerProv
       ),
     );
   }
-}fi
+}

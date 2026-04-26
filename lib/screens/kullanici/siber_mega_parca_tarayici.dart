@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 import '../../services/siber_mega_parca_motoru.dart';
 import '../../widgets/siber_rehber_dialog.dart';
@@ -22,6 +21,11 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
   List<String> _eksikParcalar = [];
   double _toplamTutar = 0.0;
 
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color textColor = const Color(0xFF1E293B);
+  final Color bgColor = const Color(0xFFFAFAFC);
+  final Color surfaceColor = Colors.white;
+
   @override
   void initState() {
     super.initState();
@@ -31,10 +35,10 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
   }
 
   void _rehberiGoster({bool otomatik = false}) {
-    const String baslik = "MEGA PARÇA TARAYICI";
+    const String baslik = "AKILLI PARÇA TARAYICI";
     const String icerik = "Ustanın elinize verdiği yedek parça listesini kameraya okutun!\n\n"
         "Yapay Zekamız saniyeler içinde Orijinal, Yan Sanayi ve Çıkma stoklarını tarayıp size en uygun fiyatlı sepeti sunacaktır.\n\n"
-        "Eğer piyasada bulunamayan bir parça varsa, sistem size sorarak hurdacılardan (çıkmacılardan) anında fiyat teklifi ister.";
+        "Eğer piyasada bulunamayan bir parça varsa, sistem size sorarak anlaşmalı tedarikçilerden anında fiyat teklifi ister.";
 
     if (otomatik) {
       SiberRehber.otomatikGoster(context: context, screenKey: 'mega_parca_rehber', baslik: baslik, icerik: icerik);
@@ -76,44 +80,46 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF121B2B),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: Colors.orangeAccent, width: 1.5)),
-        title: const Column(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.orange.shade700, width: 2)),
+        title: Column(
           children: [
-            Icon(Icons.recycling, color: Colors.orangeAccent, size: 64),
-            SizedBox(height: 16),
-            Text("BAZI PARÇALAR BULUNAMADI!", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+            Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.orange.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(Icons.recycling, color: Colors.orange.shade700, size: 48)),
+            const SizedBox(height: 16),
+            Text("BAZI PARÇALAR BULUNAMADI!", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 16, fontFamily: 'Avenir')),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Ağımızda ${_bulunanParcalar.length} parçayı bulduk ve sepetinize ekledik. Ancak aşağıdaki ${_eksikParcalar.length} parça stoklarda yok:", textAlign: TextAlign.center, style: const TextStyle(color: Colors.white70, fontSize: 12)),
-            const SizedBox(height: 12),
+            Text("Ağımızda ${_bulunanParcalar.length} parçayı bulduk ve sepetinize ekledik. Ancak aşağıdaki ${_eksikParcalar.length} parça stoklarda yok:", textAlign: TextAlign.center, style: const TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            const SizedBox(height: 16),
             Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: Colors.black45, borderRadius: BorderRadius.circular(8)),
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
               child: Column(
-                children: _eksikParcalar.map((e) => Text("• $e", style: const TextStyle(color: Colors.orangeAccent, fontSize: 11, fontWeight: FontWeight.bold))).toList(),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: _eksikParcalar.map((e) => Text("• $e", style: TextStyle(color: Colors.orange.shade800, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))).toList(),
               ),
             ),
-            const SizedBox(height: 12),
-            const Text("İzninizle bu parçalar için İkinci El (Hurdacı) esnafından 'Siber Teklif (İhale)' isteyelim mi?", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 10)),
+            const SizedBox(height: 16),
+            const Text("İzninizle bu parçalar için yetkili tedarikçilerimizden anlık ihale teklifi isteyelim mi?", textAlign: TextAlign.center, style: TextStyle(color: Colors.black45, fontSize: 11, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("İSTEMİYORUM", style: TextStyle(color: Colors.white38)),
+            child: const Text("İSTEMİYORUM", style: TextStyle(color: Colors.black38, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.orangeAccent, foregroundColor: Colors.black),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.orange.shade700, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
             onPressed: () {
               Navigator.pop(context);
               _motor.hurdaciIhalesiBaslat(_eksikParcalar, "MUSTERI_123", _hedefAracMarkasi);
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Hurdacı İhalesi Başlatıldı! Teklifler Cüzdanınıza düşecek."), backgroundColor: Colors.orangeAccent));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Tedarikçi İhalesi Başlatıldı! Teklifler Cüzdanınıza düşecek.", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir')), backgroundColor: Colors.orange.shade700));
             },
-            child: const Text("EVET, TEKLİF TOPLA", style: TextStyle(fontWeight: FontWeight.bold)),
+            child: const Text("EVET, TEKLİF TOPLA", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0.5, fontFamily: 'Avenir')),
           )
         ],
       ),
@@ -123,19 +129,21 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: bgColor,
         appBar: AppBar(
-          backgroundColor: Colors.black.withOpacity(0.8),
+          backgroundColor: Colors.white,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("MEGA PARÇA TARAYICI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2)),
+          surfaceTintColor: Colors.transparent,
+          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text("AKILLI PARÇA TARAYICI", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
           actions: [
             IconButton(
-              icon: const Icon(Icons.help_outline_rounded, color: SiberTema.kuantumCyan),
-              tooltip: "Siber Rehber",
+              icon: Icon(Icons.help_outline_rounded, color: primaryTeal),
+              tooltip: "Rehber",
               onPressed: () => _rehberiGoster(otomatik: false),
             )
           ],
@@ -145,21 +153,25 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
             // TARAYICI KONTROL PANELİ
             Container(
               padding: const EdgeInsets.all(24),
-              decoration: const BoxDecoration(
-                color: Colors.black,
-                border: Border(bottom: BorderSide(color: SiberTema.kuantumCyan, width: 2)),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))],
+                border: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
               ),
               child: Column(
                 children: [
-                  const Text("LİSTEYİ YAPAY ZEKAYA OKUTUN", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                  const Text("LİSTEYİ YAPAY ZEKAYA OKUTUN", style: TextStyle(color: Colors.black45, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                   const SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity, height: 60,
                     child: ElevatedButton.icon(
-                      style: SiberTema.kuantumButonStili(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryTeal, foregroundColor: Colors.white, elevation: 0,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      ),
                       onPressed: _tariyor ? null : _kameraylaListeyiOku,
-                      icon: _tariyor ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.black)) : const Icon(Icons.document_scanner, size: 28, color: Colors.black),
-                      label: Text(_tariyor ? "YAPAY ZEKA LİSTEYİ OKUYOR..." : "KAMERAYI AÇ VE TARA", style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, color: Colors.black)),
+                      icon: _tariyor ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white)) : const Icon(Icons.document_scanner, size: 24, color: Colors.white),
+                      label: Text(_tariyor ? "YAPAY ZEKA OKUYOR..." : "KAMERAYI AÇ VE TARA", style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, color: Colors.white, fontFamily: 'Avenir')),
                     ),
                   ),
                 ],
@@ -174,9 +186,9 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.auto_awesome, size: 64, color: Colors.white.withOpacity(0.1)),
+                          Icon(Icons.document_scanner_outlined, size: 72, color: Colors.black.withValues(alpha: 0.05)),
                           const SizedBox(height: 16),
-                          Text("Taranan parçalar burada listelenecektir.", style: TextStyle(color: Colors.white.withOpacity(0.2))),
+                          const Text("Taranan parçalar burada listelenecektir.", style: TextStyle(color: Colors.black38, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                         ],
                       ),
                     ),
@@ -185,8 +197,8 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
             // SATIN ALMA BAR
             if (_taramaBitti && _bulunanParcalar.isNotEmpty)
               Container(
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(color: Colors.black, border: Border(top: BorderSide(color: Colors.white12))),
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, -5))]),
                 child: SafeArea(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -194,16 +206,16 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("TOPLAM SEPET TUTARI", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
-                          Text("₺${_toplamTutar.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900)),
+                          const Text("TOPLAM SEPET", style: TextStyle(color: Colors.black45, fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                          Text("₺${_toplamTutar.toStringAsFixed(2)}", style: TextStyle(color: textColor, fontSize: 24, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                         ],
                       ),
                       ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, foregroundColor: Colors.black, padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14)),
+                        style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)), padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16)),
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Siparişiniz satıcılara iletildi!")));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Siparişiniz satıcılara iletildi!", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir')), backgroundColor: primaryTeal));
                         },
-                        child: const Text("SİPARİŞİ ONAYLA", style: TextStyle(fontWeight: FontWeight.bold)),
+                        child: const Text("SİPARİŞİ ONAYLA", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0.5, fontFamily: 'Avenir')),
                       )
                     ],
                   ),
@@ -217,7 +229,7 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
 
   Widget _buildSepetEkrani() {
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(24),
       physics: const BouncingScrollPhysics(),
       itemCount: _bulunanParcalar.length,
       itemBuilder: (context, index) {
@@ -225,37 +237,38 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
         bool isOrijinal = item['bulunan_durum'].toString().contains("Orijinal");
         bool isCikma = item['bulunan_durum'].toString().contains("Çıkma");
 
-        Color badgeColor = isOrijinal ? SiberTema.kuantumCyan : (isCikma ? Colors.orangeAccent : Colors.white54);
+        Color badgeColor = isOrijinal ? primaryTeal : (isCikma ? Colors.orange.shade700 : Colors.blue.shade700);
 
         return Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: SiberTema.matGrey,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white12),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))]
           ),
           child: Row(
             children: [
-              Icon(isCikma ? Icons.recycling : Icons.build_circle, color: badgeColor, size: 32),
+              Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: badgeColor.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(isCikma ? Icons.recycling : Icons.build_circle, color: badgeColor, size: 24)),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(item['urun_ad'], style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+                    Text(item['urun_ad'], style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                     const SizedBox(height: 4),
-                    Text("Satıcı: ${item['bayi_adi']}", style: const TextStyle(color: Colors.white54, fontSize: 11)),
-                    const SizedBox(height: 6),
+                    Text("Satıcı: ${item['bayi_adi']}", style: const TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                    const SizedBox(height: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(color: badgeColor.withOpacity(0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: badgeColor.withOpacity(0.5))),
-                      child: Text(item['bulunan_durum'], style: TextStyle(color: badgeColor, fontSize: 9, fontWeight: FontWeight.bold)),
+                      decoration: BoxDecoration(color: badgeColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: badgeColor.withValues(alpha: 0.3))),
+                      child: Text(item['bulunan_durum'].toString().toUpperCase(), style: TextStyle(color: badgeColor, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 0.5, fontFamily: 'Avenir')),
                     )
                   ],
                 ),
               ),
-              Text("₺${item['liste_fiyati'].toStringAsFixed(0)}", style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900)),
+              Text("₺${item['liste_fiyati'].toStringAsFixed(0)}", style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             ],
           ),
         );

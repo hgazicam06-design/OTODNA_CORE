@@ -22,11 +22,16 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
 
   // YAPAY ZEKA AYARLARI
   String _asistanAdi = "Asena";
-  double _sesHizi = 1.2;
-  String _hitapSekli = "Samimi (Dostum)";
+  final double _sesHizi = 1.2;
 
   // SOHBET GEÇMİŞİ
   final List<Map<String, dynamic>> _mesajlar = [];
+
+  // PLAZA RENKLERİ
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color textColor = const Color(0xFF1E293B);
+  final Color bgColor = const Color(0xFFFAFAFC);
+  final Color surfaceColor = Colors.white;
 
   @override
   void initState() {
@@ -49,7 +54,7 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
       if (available) {
         setState(() => _dinliyor = true);
         _speech.listen(
-          localeId: 'tr_TR', // Türkçe dinleme
+          localeId: 'tr_TR',
           onResult: (val) => setState(() {
             _mesajController.text = val.recognizedWords;
           }),
@@ -86,7 +91,7 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
           setState(() {
             _yaziyor = false;
             _mesajlar.add({
-              "metin": "Bu görüntüyü işledim dostum. Bu bir Fren Diski. Orijinal OEM numarasını veri tabanından eşleştireyim mi?",
+              "metin": "Bu görüntüyü işledim. Bu bir Fren Diski. Orijinal OEM numarasını veri tabanından eşleştireyim mi?",
               "kullaniciMi": false,
               "saat": "Şimdi"
             });
@@ -112,9 +117,9 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
     Future.delayed(Duration(milliseconds: (1500 / _sesHizi).round()), () {
       if (!mounted) return;
 
-      String aiCevabi = "Kuantum ağı tarandı. İşlem tamamlandı.";
+      String aiCevabi = "Merkez ağı tarandı. İşlem tamamlandı.";
       if (metin.toLowerCase().contains("fren") || metin.toLowerCase().contains("balata")) {
-        aiCevabi = "Aracına uyumlu fren diskleri OtoMarket'te mevcut. Seni oraya yönlendireyim mi?";
+        aiCevabi = "Aracınıza uyumlu fren diskleri Global Market'te mevcut. Sizi oraya yönlendireyim mi?";
       }
 
       setState(() {
@@ -133,7 +138,7 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
     });
   }
 
-  // 💎 TESLA MİMARİSİ: ŞIK AYARLAR MENÜSÜ
+  // 💎 PLAZA AYARLAR MENÜSÜ
   void _asistanAyarlariniAc() {
     TextEditingController isimController = TextEditingController(text: _asistanAdi);
     showModalBottomSheet(
@@ -141,38 +146,38 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
       builder: (context) => Padding(
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Container(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(32),
           decoration: BoxDecoration(
-              color: const Color(0xFF111111),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-              border: Border.all(color: Colors.white.withOpacity(0.05))
+              color: Colors.white,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+              boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20, offset: const Offset(0, -5))]
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(10)))),
+              Center(child: Container(width: 40, height: 5, decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
+              const SizedBox(height: 32),
+              Text("Asistan Yapılandırması", style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
               const SizedBox(height: 24),
-              const Text("AI Kimlik Yapılandırması", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: -0.5)),
-              const SizedBox(height: 16),
               Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                  decoration: BoxDecoration(color: const Color(0xFF000000), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white.withOpacity(0.05))),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
                   child: TextField(
                       controller: isimController,
-                      style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-                      decoration: const InputDecoration(labelText: "Siber Asistan Adı", labelStyle: TextStyle(color: Colors.white38, fontSize: 12), border: InputBorder.none, floatingLabelBehavior: FloatingLabelBehavior.always)
+                      style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
+                      decoration: const InputDecoration(labelText: "Akıllı Asistan Adı", labelStyle: TextStyle(color: Colors.black45, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold), border: InputBorder.none, floatingLabelBehavior: FloatingLabelBehavior.always)
                   )
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
               SizedBox(
-                width: double.infinity, height: 50,
+                width: double.infinity, height: 56,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2), foregroundColor: Colors.black, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                  style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                   onPressed: () {
                     setState(() => _asistanAdi = isimController.text);
                     Navigator.pop(context);
                   },
-                  child: const Text("KİMLİĞİ GÜNCELLE", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
+                  child: const Text("KİMLİĞİ GÜNCELLE", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1, fontFamily: 'Avenir')),
                 ),
               )
             ],
@@ -184,20 +189,17 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // 🌑 TESLA / APPLE ULTRA-MİNİMALİST PALET
-    const primaryCyan = Color(0xFF00FFC2);
-    const bgColor = Color(0xFF000000); // Saf Siyah
-    const surfaceColor = Color(0xFF111111); // Mat Gri
-
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20), onPressed: () => Navigator.pop(context)),
-        title: Text(_asistanAdi.toUpperCase(), style: const TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 4)),
+        surfaceTintColor: Colors.transparent,
+        shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
+        title: Text(_asistanAdi.toUpperCase(), style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 4, fontFamily: 'Avenir')),
         centerTitle: true,
-        actions: [IconButton(icon: const Icon(Icons.tune_outlined, color: Colors.white), onPressed: _asistanAyarlariniAc)],
+        actions: [IconButton(icon: Icon(Icons.tune_outlined, color: primaryTeal), onPressed: _asistanAyarlariniAc)],
       ),
       body: Column(
         children: [
@@ -206,7 +208,7 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
             child: ListView.builder(
               controller: _scrollController,
               physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
               itemCount: _mesajlar.length + (_yaziyor ? 1 : 0),
               itemBuilder: (context, index) {
                 if (index == _mesajlar.length && _yaziyor) {
@@ -216,9 +218,9 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
                         alignment: Alignment.centerLeft,
                         child: Row(
                           children: [
-                            const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(color: primaryCyan, strokeWidth: 2)),
+                            SizedBox(width: 16, height: 16, child: CircularProgressIndicator(color: primaryTeal, strokeWidth: 2)),
                             const SizedBox(width: 12),
-                            Text("Siber Ağda İşleniyor...", style: TextStyle(color: primaryCyan.withOpacity(0.8), fontSize: 12, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
+                            Text("Asistan İşliyor...", style: TextStyle(color: primaryTeal.withValues(alpha: 0.8), fontSize: 12, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                           ],
                         )
                     ),
@@ -233,20 +235,21 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
                   child: Container(
                     constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
                     margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                     decoration: BoxDecoration(
-                        color: isUser ? surfaceColor : Colors.transparent,
+                        color: isUser ? primaryTeal : Colors.white,
                         borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(16), topRight: const Radius.circular(16),
-                          bottomLeft: isUser ? const Radius.circular(16) : const Radius.circular(4),
-                          bottomRight: isUser ? const Radius.circular(4) : const Radius.circular(16),
+                          topLeft: const Radius.circular(20), topRight: const Radius.circular(20),
+                          bottomLeft: isUser ? const Radius.circular(20) : const Radius.circular(4),
+                          bottomRight: isUser ? const Radius.circular(4) : const Radius.circular(20),
                         ),
-                        border: Border.all(color: isUser ? Colors.white.withOpacity(0.05) : primaryCyan.withOpacity(0.3), width: 1)
+                        border: isUser ? null : Border.all(color: Colors.black.withValues(alpha: 0.05)),
+                        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 2))]
                     ),
                     child: Column(
                       crossAxisAlignment: isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                       children: [
-                        if (mesaj['gorsel'] != null) // GERÇEK KAMERA FOTOĞRAFI
+                        if (mesaj['gorsel'] != null)
                           Padding(
                             padding: const EdgeInsets.only(bottom: 12.0),
                             child: ClipRRect(
@@ -254,7 +257,7 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
                                 child: Image.file(File(mesaj['gorsel']), height: 180, width: double.infinity, fit: BoxFit.cover)
                             ),
                           ),
-                        Text(mesaj['metin'], style: TextStyle(color: isUser ? Colors.white : primaryCyan, fontSize: 14, height: 1.4)),
+                        Text(mesaj['metin'], style: TextStyle(color: isUser ? Colors.white : textColor, fontSize: 14, height: 1.5, fontWeight: FontWeight.w600, fontFamily: 'Avenir')),
                       ],
                     ),
                   ),
@@ -265,58 +268,61 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
 
           // 2. MİNİMALİST DONANIM GİRDİ ALANI
           Container(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 24), // SafeArea yerine alt boşluk
-            decoration: const BoxDecoration(
-                color: bgColor,
-                border: Border(top: BorderSide(color: Colors.white12))
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 24),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
             ),
-            child: Row(
-              children: [
-                // GERÇEK KAMERA BUTONU
-                GestureDetector(
-                  onTap: _kamerayiAc,
-                  child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(color: surfaceColor, shape: BoxShape.circle, border: Border.all(color: Colors.white.withOpacity(0.05))),
-                      child: const Icon(Icons.camera_alt_outlined, color: Colors.white54, size: 22)
-                  ),
-                ),
-                const SizedBox(width: 12),
-
-                // TEXT KUTUSU
-                Expanded(
+            child: SafeArea(
+              child: Row(
+                children: [
+                  // KAMERA BUTONU
+                  GestureDetector(
+                    onTap: _kamerayiAc,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withOpacity(0.05))),
-                      child: TextField(
-                        controller: _mesajController,
-                        style: const TextStyle(color: Colors.white, fontSize: 14),
-                        decoration: InputDecoration(
-                          hintText: "Komut girin...",
-                          hintStyle: const TextStyle(color: Colors.white24, fontSize: 14),
-                          border: InputBorder.none,
-                        ),
-                        onSubmitted: _mesajGonder,
-                      ),
-                    )
-                ),
-                const SizedBox(width: 12),
-
-                // GERÇEK MİKROFON BUTONU (Animasyonlu)
-                GestureDetector(
-                  onTap: _sesiDinle,
-                  child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                          color: _dinliyor ? Colors.redAccent : primaryCyan,
-                          shape: BoxShape.circle,
-                          boxShadow: [BoxShadow(color: (_dinliyor ? Colors.redAccent : primaryCyan).withOpacity(0.3), blurRadius: 15)]
-                      ),
-                      child: Icon(_dinliyor ? Icons.graphic_eq : Icons.mic_none_outlined, color: Colors.black, size: 22)
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle, border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
+                        child: Icon(Icons.camera_alt_outlined, color: primaryTeal, size: 22)
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(width: 12),
+              
+                  // TEXT KUTUSU
+                  Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                        decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
+                        child: TextField(
+                          controller: _mesajController,
+                          style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+                          decoration: const InputDecoration(
+                            hintText: "Asistana mesaj yaz...",
+                            hintStyle: TextStyle(color: Colors.black38, fontSize: 13, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
+                            border: InputBorder.none,
+                          ),
+                          onSubmitted: _mesajGonder,
+                        ),
+                      )
+                  ),
+                  const SizedBox(width: 12),
+              
+                  // MİKROFON BUTONU
+                  GestureDetector(
+                    onTap: _sesiDinle,
+                    child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                            color: _dinliyor ? Colors.redAccent : primaryTeal,
+                            shape: BoxShape.circle,
+                            boxShadow: [BoxShadow(color: (_dinliyor ? Colors.redAccent : primaryTeal).withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 4))]
+                        ),
+                        child: Icon(_dinliyor ? Icons.graphic_eq : Icons.mic_none_outlined, color: Colors.white, size: 22)
+                    ),
+                  ),
+                ],
+              ),
             ),
           )
         ],

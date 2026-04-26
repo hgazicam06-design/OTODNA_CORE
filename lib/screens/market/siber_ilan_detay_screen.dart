@@ -37,7 +37,7 @@ class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         backgroundColor: Colors.black,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), border: Border.all(color: siberGold.withOpacity(0.5))),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: siberGold.withOpacity(0.5))),
         title: const Row(
           children: [
             Icon(Icons.lock_outline, color: siberGold),

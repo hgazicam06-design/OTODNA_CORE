@@ -49,9 +49,9 @@ class SiberSeoMotoru {
         MetaTag(name: 'description', content: aciklama),
         MetaTag(name: 'image', content: resimUrl),
         MetaTag(name: 'keywords', content: uretEtiketler(baslik, aciklama, "Oto Yedek Parça").join(', ')),
-        MetaTag(property: 'og:title', content: baslik),
-        MetaTag(property: 'og:description', content: aciklama),
-        MetaTag(property: 'og:image', content: resimUrl),
+        MetaTag(name: 'og:title', content: baslik),
+        MetaTag(name: 'og:description', content: aciklama),
+        MetaTag(name: 'og:image', content: resimUrl),
       ],
       child: child,
     );

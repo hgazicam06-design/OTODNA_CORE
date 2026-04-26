@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 
 class DijitalLpgRuhsatiScreen extends StatelessWidget {
@@ -8,15 +7,22 @@ class DijitalLpgRuhsatiScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 🏢 PLAZA KALİTESİ PALET
+    final primaryTeal = Colors.teal.shade700;
+    const bgColor = Color(0xFFFAFAFC);
+    const textColor = Color(0xFF1E293B);
+
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: bgColor,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18), onPressed: () => Navigator.pop(context)),
-          title: const Text("DİJİTAL MONTAJ RUHSATI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2, fontFamily: 'Avenir')),
+          surfaceTintColor: Colors.transparent,
+          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05), width: 1)),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 18), onPressed: () => Navigator.pop(context)),
+          title: Text("DİJİTAL MONTAJ RUHSATI", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -25,22 +31,22 @@ class DijitalLpgRuhsatiScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildGarantiKarti(),
+              _buildGarantiKarti(primaryTeal, textColor),
               const SizedBox(height: 32),
-              const Text("MONTAJ DETAYLARI", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+              const Text("MONTAJ DETAYLARI", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
               const SizedBox(height: 16),
-              _buildDetaySatiri("Araç Şase", "WBA**************"),
-              _buildDetaySatiri("Kit Markası", "Prins VSI-3 DI"),
-              _buildDetaySatiri("Yazılım Versiyonu", "V2.1.0"),
-              _buildDetaySatiri("Yetkili Servis", "Kadıköy Merkez Otogaz"),
+              _buildDetaySatiri("Araç Şase", "WBA**************", textColor),
+              _buildDetaySatiri("Kit Markası", "Prins VSI-3 DI", textColor),
+              _buildDetaySatiri("Yazılım Versiyonu", "V2.1.0", textColor),
+              _buildDetaySatiri("Yetkili Servis", "Kadıköy Merkez Otogaz", textColor),
               const SizedBox(height: 32),
-              const Text("MEDYA KANITLARI", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+              const Text("MEDYA KANITLARI", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Expanded(child: _buildKanitKarti("Manifold", Icons.image)),
+                  Expanded(child: _buildKanitKarti("Manifold", Icons.image, primaryTeal, textColor)),
                   const SizedBox(width: 16),
-                  Expanded(child: _buildKanitKarti("Sızdırmazlık", Icons.videocam)),
+                  Expanded(child: _buildKanitKarti("Sızdırmazlık", Icons.videocam, primaryTeal, textColor)),
                 ],
               )
             ],
@@ -50,66 +56,61 @@ class DijitalLpgRuhsatiScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildGarantiKarti() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(24),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            color: SiberTema.kuantumCyan.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
-            boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 20)],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Icon(Icons.verified_user, color: SiberTema.kuantumCyan, size: 64),
-              const SizedBox(height: 16),
-              const Text("10 YIL KUANTUM GARANTİSİ", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-              const SizedBox(height: 8),
-              const Text("Bu aracın LPG montajı yetkili Karargah bayisi tarafından yapılmış ve blokzincir ağına mühürlenmiştir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.5)),
-              const SizedBox(height: 24),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-                child: const Text("GEÇERLİLİK: 2036 YILINA KADAR", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
-              )
-            ],
-          ),
-        ),
+  Widget _buildGarantiKarti(Color primaryTeal, Color textColor) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: primaryTeal.withValues(alpha: 0.3), width: 1.5),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 20)],
       ),
-    );
-  }
-
-  Widget _buildDetaySatiri(String baslik, String deger) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 13)),
-          Text(deger, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+          Icon(Icons.verified_user, color: primaryTeal, size: 64),
+          const SizedBox(height: 16),
+          Text("10 YIL PLAZA GARANTİSİ", style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+          const SizedBox(height: 8),
+          const Text("Bu aracın montajı yetkili Karargah bayisi tarafından yapılmış ve blokzincir ağına mühürlenmiştir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.black54, fontSize: 11, height: 1.5, fontFamily: 'Avenir')),
+          const SizedBox(height: 24),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
+            child: Text("GEÇERLİLİK: 2036 YILINA KADAR", style: TextStyle(color: primaryTeal, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+          )
         ],
       ),
     );
   }
 
-  Widget _buildKanitKarti(String baslik, IconData ikon) {
+  Widget _buildDetaySatiri(String baslik, String deger, Color textColor) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(baslik, style: const TextStyle(color: Colors.black54, fontSize: 13, fontFamily: 'Avenir')),
+          Text(deger, style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildKanitKarti(String baslik, IconData ikon, Color primaryTeal, Color textColor) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.02),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white10),
+        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)],
       ),
       child: Column(
         children: [
-          Icon(ikon, color: Colors.white38, size: 32),
+          Icon(ikon, color: primaryTeal.withValues(alpha: 0.6), size: 32),
           const SizedBox(height: 12),
-          Text(baslik, style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold)),
+          Text(baslik, style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         ],
       ),
     );

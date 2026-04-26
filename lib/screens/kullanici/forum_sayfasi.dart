@@ -4,11 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
-// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI (Yollar 2 kat yukarı çıkacak şekilde ayarlandı)
-import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 
-/// 🛡️ KUANTUM CLUB VE SİBER FORUM PANELİ (SiberForumSayfasi)
+/// 🏢 OTODNA PLAZA CLUB PANELİ
 class SiberForumSayfasi extends StatelessWidget {
   final String kullaniciId;
 
@@ -16,39 +14,50 @@ class SiberForumSayfasi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 🏢 PLAZA KALİTESİ PALET
+    final Color primaryTeal = Colors.teal.shade700;
+    const Color bgColor = Color(0xFFFAFAFC);
+    const Color textColor = Color(0xFF1E293B);
+    const Color dangerColor = Colors.redAccent;
+
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: bgColor,
         appBar: AppBar(
-          title: const Text("OTODNA SİBER CLUB", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14)),
-          backgroundColor: Colors.transparent,
+          title: Text("OTODNA PLAZA CLUB", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
+          backgroundColor: Colors.white,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          surfaceTintColor: Colors.transparent,
+          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          iconTheme: IconThemeData(color: primaryTeal),
         ),
         body: StreamBuilder<DocumentSnapshot>(
           stream: FirebaseFirestore.instance.collection('kullanicilar').doc(kullaniciId).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+              return Center(child: CircularProgressIndicator(color: primaryTeal));
             }
 
             if (!snapshot.hasData || !snapshot.data!.exists) {
-              return const Center(child: Text("SİBER İHLAL: Kullanıcı verisi Karargahta bulunamadı.", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 1.5)));
+              return Center(child: Text("SİSTEM UYARISI: Kullanıcı verisi bulunamadı.", style: TextStyle(color: dangerColor, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')));
             }
 
             var userData = snapshot.data!.data() as Map<String, dynamic>;
-            String currentUserRole = userData['kulup_rolu'] ?? "Uye";
+            String currentUserRole = userData['kulup_rolu'] ?? "Üye";
 
             bool isAdmin = (currentUserRole == "Baskan" || currentUserRole == "Yardimci");
 
-            return Column(
-              children: [
-                _buildGenelKulupAlani(currentUserRole),
-                const Spacer(),
-                if (isAdmin)
-                  _buildAdminAraclari(context, currentUserRole),
-              ],
+            return Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                children: [
+                  _buildGenelKulupAlani(currentUserRole, primaryTeal, textColor),
+                  const Spacer(),
+                  if (isAdmin)
+                    _buildAdminAraclari(context, currentUserRole, dangerColor, textColor),
+                ],
+              ),
             );
           },
         ),
@@ -56,26 +65,34 @@ class SiberForumSayfasi extends StatelessWidget {
     );
   }
 
-  Widget _buildGenelKulupAlani(String rol) {
+  Widget _buildGenelKulupAlani(String rol, Color primaryTeal, Color textColor) {
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: SiberTema.matGrey.withOpacity(0.8),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white12, width: 1.5),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))],
       ),
       child: Row(
         children: [
-          const Icon(Icons.shield_outlined, color: SiberTema.kuantumCyan, size: 40),
-          const SizedBox(width: 16),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), shape: BoxShape.circle),
+            child: Icon(Icons.shield_outlined, color: primaryTeal, size: 40),
+          ),
+          const SizedBox(width: 20),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("SİBER AĞA HOŞ GELDİNİZ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-                const SizedBox(height: 4),
-                Text("AKTİF RÜTBE: ${rol.toUpperCase()}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                Text("PLAZA AĞINA HOŞ GELDİNİZ", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                const SizedBox(height: 6),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(6)),
+                  child: Text("AKTİF RÜTBE: ${rol.toUpperCase()}", style: TextStyle(color: primaryTeal, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                ),
               ],
             ),
           ),
@@ -84,26 +101,40 @@ class SiberForumSayfasi extends StatelessWidget {
     );
   }
 
-  Widget _buildAdminAraclari(BuildContext context, String rol) {
+  Widget _buildAdminAraclari(BuildContext context, String rol, Color dangerColor, Color textColor) {
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: SiberTema.kanKirmizi.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.5), width: 2),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: dangerColor.withValues(alpha: 0.3), width: 1.5),
+        boxShadow: [BoxShadow(color: dangerColor.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, 5))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(Icons.admin_panel_settings, color: SiberTema.kanKirmizi, size: 28),
-              const SizedBox(width: 12),
-              Text("KARARGAH YÖNETİM MERKEZİ ($rol)", style: const TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 12)),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(color: dangerColor.withValues(alpha: 0.1), shape: BoxShape.circle),
+                child: Icon(Icons.admin_panel_settings, color: dangerColor, size: 28),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("MERKEZ YÖNETİM", style: TextStyle(color: dangerColor, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
+                    Text("Yetki Seviyesi: $rol", style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 10, fontFamily: 'Avenir')),
+                  ],
+                ),
+              ),
             ],
           ),
-          const Divider(color: Colors.white24, height: 24),
+          const SizedBox(height: 20),
+          Divider(color: Colors.black.withValues(alpha: 0.05), height: 1),
+          const SizedBox(height: 20),
           SizedBox(
             width: double.infinity,
             height: 55,
@@ -111,15 +142,15 @@ class SiberForumSayfasi extends StatelessWidget {
               onPressed: () {
                 HapticFeedback.heavyImpact();
                 developer.log("🚨 YETKİLİ İŞLEMİ: $rol tarafından admin araçları tetiklendi!");
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text('Yönetim Terminali Başlatılıyor...'), backgroundColor: dangerColor));
               },
-              icon: const Icon(Icons.gavel, color: Colors.white),
-              label: const Text("SİBER YETKİLERİ KULLAN", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+              icon: const Icon(Icons.gavel),
+              label: const Text("YÖNETİM YETKİLERİNİ KULLAN", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
               style: ElevatedButton.styleFrom(
-                backgroundColor: SiberTema.kanKirmizi,
+                backgroundColor: dangerColor,
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                elevation: 10,
-                shadowColor: SiberTema.kanKirmizi.withOpacity(0.5),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                elevation: 0,
               ),
             ),
           )

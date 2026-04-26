@@ -4,15 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
-// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI (2 Kat Yukarı)
-import '../../../../core/siber_tema.dart';
 import '../../../../core/responsive_kalkan.dart';
-import '../../../../core/otodna_hizmet_kutuphanesi.dart'; // 🧠 Kuantum Sözlük Bağlandı!
+import '../../../../core/otodna_hizmet_kutuphanesi.dart';
 
-/// 🛡️ KUANTUM RANDEVU VE PLANLAMA MOTORU (SiberRandevuSistemi)
-/// Müşterinin seçtiği hizmet ve zamanı doğrudan Karargaha (Firebase) mühürler.
+/// 🛡️ PLAZA RANDEVU VE PLANLAMA MOTORU (SiberRandevuSistemi)
+/// Müşterinin seçtiği hizmet ve zamanı doğrudan Merkeze (Firebase) mühürler.
 class SiberRandevuSistemi extends StatefulWidget {
-  final String musteriId; // Randevuyu alan müşterinin Karargah kimliği
+  final String musteriId; // Randevuyu alan müşterinin kimliği
   final String bayiId; // Randevu talep edilen bayinin kimliği
 
   const SiberRandevuSistemi({super.key, required this.musteriId, required this.bayiId});
@@ -25,20 +23,25 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final TextEditingController _notCtrl = TextEditingController();
 
-  // ── SİBER PLANLAMA DEĞİŞKENLERİ ──
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color dangerColor = Colors.redAccent;
+  final Color textColor = const Color(0xFF1E293B);
+  final Color bgColor = const Color(0xFFFAFAFC);
+
+  // ── PLANLAMA DEĞİŞKENLERİ ──
   DateTime? _secilenTarih;
   TimeOfDay? _secilenSaat;
   String? _secilenHizmet;
   bool _islemSuruyor = false;
 
-  // 🔥 KUANTUM AĞA BAĞLANTI: Listeyi gerçek kütüphaneden çekiyoruz!
+  // 🔥 AĞA BAĞLANTI: Listeyi gerçek kütüphaneden çekiyoruz!
   final List<String> _hizmetListesi = SiberHizmetKutuphanesi.tumHizmetleriGetir();
 
   // ── 🚀 FİREBASE MÜHÜR MOTORU (ATOMİK ZIRHLI) ──
   Future<void> _randevuyuMuhurle() async {
     if (_secilenHizmet == null || _secilenTarih == null || _secilenSaat == null) {
       HapticFeedback.heavyImpact();
-      _siberUyariGoster("SİBER İHLAL", "Hizmet, tarih ve saat seçimi zorunludur!", SiberTema.kanKirmizi);
+      _plazaUyariGoster("BİLGİ EKSİK", "Hizmet, tarih ve saat seçimi zorunludur!", dangerColor);
       return;
     }
 
@@ -46,10 +49,9 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
     setState(() => _islemSuruyor = true);
     HapticFeedback.lightImpact();
 
-    developer.log("🚀 SİBER PLANLAMA: Randevu talebi Karargaha iletiliyor...");
+    developer.log("🚀 PLAZA PLANLAMA: Randevu talebi Merkeze iletiliyor...");
 
     try {
-      // Tarih ve saati birleştir
       DateTime randevuZamani = DateTime(
         _secilenTarih!.year,
         _secilenTarih!.month,
@@ -58,7 +60,6 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
         _secilenSaat!.minute,
       );
 
-      // 🛡️ ATOMİK ZIRH DEVREDE
       WriteBatch batch = _db.batch();
 
       DocumentReference randevuRef = _db.collection('randevular').doc();
@@ -75,7 +76,7 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
       DocumentReference logRef = _db.collection('sistem_loglari').doc();
       batch.set(logRef, {
         'islem_turu': 'YENI_RANDEVU',
-        'islem_detayi': 'SİBER PLANLAMA: ${widget.musteriId} kullanıcısı ${widget.bayiId} bayisinden $_secilenHizmet randevusu aldı.',
+        'islem_detayi': 'PLAZA PLANLAMA: ${widget.musteriId} kullanıcısı ${widget.bayiId} bayisinden $_secilenHizmet randevusu aldı.',
         'tarih': FieldValue.serverTimestamp(),
       });
 
@@ -85,19 +86,19 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
       developer.log("✅ RANDEVU MÜHÜRLENDİ: Talep bayinin radarına düştü.");
 
       if (mounted) {
-        _siberUyariGoster("MÜHÜRLENDİ", "Randevunuz oluşturuldu. Bayi onayından sonra bildirim alacaksınız.", SiberTema.kuantumCyan);
-        Navigator.pop(context); // İşlem bitince ekranı kapat
+        _plazaUyariGoster("MÜHÜRLENDİ", "Randevunuz oluşturuldu. Bayi onayından sonra bildirim alacaksınız.", primaryTeal);
+        Navigator.pop(context);
       }
     } catch (e) {
       HapticFeedback.heavyImpact();
       developer.log("🚨 AĞ ÇÖKTÜ: Randevu iletilemedi!", error: e);
-      _siberUyariGoster("BAĞLANTI HATASI", "Randevu oluşturulamadı. Matrix'i kontrol edin.", SiberTema.kanKirmizi);
+      _plazaUyariGoster("BAĞLANTI HATASI", "Randevu oluşturulamadı. Lütfen tekrar deneyin.", dangerColor);
     } finally {
       if (mounted) setState(() => _islemSuruyor = false);
     }
   }
 
-  // ── ⏳ ZAMAN SEÇİCİLER (Siber Temalı) ──
+  // ── ⏳ ZAMAN SEÇİCİLER ──
   Future<void> _tarihSec(BuildContext context) async {
     final DateTime? secilen = await showDatePicker(
       context: context,
@@ -107,11 +108,11 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.dark(
-              primary: SiberTema.kuantumCyan,
-              onPrimary: SiberTema.oledBlack,
-              surface: SiberTema.matGrey, // Takvim arka planı
-              onSurface: Colors.white,
+            colorScheme: ColorScheme.light(
+              primary: primaryTeal,
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: textColor,
             ),
           ),
           child: child!,
@@ -131,9 +132,9 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.dark(
-              primary: SiberTema.kuantumCyan,
-              surface: SiberTema.matGrey,
+            colorScheme: ColorScheme.light(
+              primary: primaryTeal,
+              surface: Colors.white,
             ),
           ),
           child: child!,
@@ -147,20 +148,20 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
   }
 
   // ── 🚨 ARAYÜZ YARDIMCILARI ──
-  void _siberUyariGoster(String baslik, String mesaj, Color renk) {
+  void _plazaUyariGoster(String baslik, String mesaj, Color renk) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: SiberTema.matGrey,
+        backgroundColor: Colors.white,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: renk, width: 2)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold)),
+            Text(mesaj, style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -176,14 +177,16 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent, // Kalkan aydınlatması arkadan
+        backgroundColor: bgColor,
         appBar: AppBar(
-          title: const Text("SİBER PLANLAMA VE RANDEVU", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
-          backgroundColor: Colors.transparent,
+          title: Text("PLAZA RANDEVU MERKEZİ", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
+          backgroundColor: Colors.white,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          surfaceTintColor: Colors.transparent,
+          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          iconTheme: IconThemeData(color: primaryTeal),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -194,43 +197,46 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
               children: [
                 // BİLGİ PANELİ
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                      color: SiberTema.matGrey.withOpacity(0.8),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
-                      boxShadow: [
-                        BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 15, spreadRadius: 1)
-                      ]
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+                      boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
                   ),
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Icon(Icons.calendar_month_outlined, color: SiberTema.kuantumCyan, size: 28),
-                      SizedBox(width: 12),
-                      Expanded(child: Text("Siber ağ üzerinden randevunuzu mühürleyin. Ustanız sizin için hazırlık yapacaktır.", style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold))),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), shape: BoxShape.circle),
+                        child: Icon(Icons.calendar_month_outlined, color: primaryTeal, size: 28),
+                      ),
+                      const SizedBox(width: 16),
+                      const Expanded(child: Text("OtoDNA güvencesiyle randevunuzu mühürleyin. Ustanız sizin için hazırlık yapacaktır.", style: TextStyle(color: Colors.black87, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
                     ],
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 32),
 
                 // 1. HİZMET SEÇİCİ
-                const Text("1. İŞLEM TÜRÜ", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
+                const Text("1. İŞLEM TÜRÜ", style: TextStyle(color: Colors.black45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                 const SizedBox(height: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: SiberTema.matGrey.withOpacity(0.8),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.white24, width: 1.5),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+                    boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 5)]
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      dropdownColor: SiberTema.matGrey,
-                      icon: const Icon(Icons.keyboard_arrow_down, color: SiberTema.kuantumCyan),
-                      hint: const Text("Hizmet Branşını Seçin", style: TextStyle(color: Colors.white30, fontSize: 13, fontWeight: FontWeight.bold)),
+                      dropdownColor: Colors.white,
+                      icon: Icon(Icons.keyboard_arrow_down, color: primaryTeal),
+                      hint: const Text("Hizmet Branşını Seçin", style: TextStyle(color: Colors.black38, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                       value: _secilenHizmet,
-                      style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
+                      style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
                       items: _hizmetListesi.map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -246,7 +252,7 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
                 const SizedBox(height: 24),
 
                 // 2. TARİH VE SAAT SEÇİCİ
-                const Text("2. ZAMAN KOORDİNATLARI", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
+                const Text("2. ZAMAN PLANI", style: TextStyle(color: Colors.black45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                 const SizedBox(height: 8),
                 Row(
                   children: [
@@ -272,23 +278,24 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
                 const SizedBox(height: 24),
 
                 // 3. ARIZA NOTU
-                const Text("3. İSTİHBARAT NOTU (OPSİYONEL)", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
+                const Text("3. BİLGİ NOTU (OPSİYONEL)", style: TextStyle(color: Colors.black45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                 const SizedBox(height: 8),
                 Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: SiberTema.matGrey.withOpacity(0.8),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.white24, width: 1.5),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+                    boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 5)]
                   ),
                   child: TextField(
                     controller: _notCtrl,
                     maxLines: 3,
-                    style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: textColor, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                     decoration: const InputDecoration(
-                      hintText: "Sorunu veya talebinizi kısaca Karargaha iletin...",
-                      hintStyle: TextStyle(color: Colors.white30, fontSize: 12),
+                      hintText: "Sorunu veya talebinizi kısaca ustaya iletin...",
+                      hintStyle: TextStyle(color: Colors.black38, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.all(16),
                     ),
                   ),
                 ),
@@ -297,14 +304,19 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
 
                 // 🚀 MÜHÜRLEME BUTONU
                 SizedBox(
-                  height: 60,
+                  height: 56,
                   width: double.infinity,
                   child: _islemSuruyor
-                      ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                      ? Center(child: CircularProgressIndicator(color: primaryTeal))
                       : ElevatedButton.icon(
-                    icon: const Icon(Icons.verified, color: SiberTema.oledBlack, size: 24),
-                    label: const Text("RANDEVUYU MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, color: SiberTema.oledBlack)),
-                    style: SiberTema.kuantumButonStili(),
+                    icon: const Icon(Icons.verified, color: Colors.white, size: 24),
+                    label: const Text("RANDEVUYU MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, color: Colors.white, fontFamily: 'Avenir')),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryTeal,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    ),
                     onPressed: _randevuyuMuhurle,
                   ),
                 ),
@@ -320,13 +332,13 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
   Widget _buildZamanButonu({required String etiket, required IconData ikon, required VoidCallback onTap, required bool aktif}) {
     return OutlinedButton.icon(
       onPressed: onTap,
-      icon: Icon(ikon, size: 18, color: aktif ? SiberTema.kuantumCyan : Colors.white54),
-      label: Text(etiket, style: TextStyle(color: aktif ? Colors.white : Colors.white54, fontWeight: aktif ? FontWeight.w900 : FontWeight.bold, fontSize: 12)),
+      icon: Icon(ikon, size: 18, color: aktif ? primaryTeal : Colors.black38),
+      label: Text(etiket, style: TextStyle(color: aktif ? primaryTeal : Colors.black45, fontWeight: aktif ? FontWeight.w900 : FontWeight.bold, fontSize: 12, fontFamily: 'Avenir')),
       style: OutlinedButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 16),
-        side: BorderSide(color: aktif ? SiberTema.kuantumCyan : Colors.white24, width: aktif ? 1.5 : 1),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        backgroundColor: aktif ? SiberTema.kuantumCyan.withOpacity(0.05) : SiberTema.matGrey.withOpacity(0.8),
+        side: BorderSide(color: aktif ? primaryTeal.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05), width: aktif ? 2 : 1),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        backgroundColor: aktif ? primaryTeal.withValues(alpha: 0.05) : Colors.white,
       ),
     );
   }

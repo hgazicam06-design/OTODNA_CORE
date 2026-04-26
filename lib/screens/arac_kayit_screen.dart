@@ -2,10 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mobile_scanner/mobile_scanner.dart'; // 🚀 GERÇEK SİBER GÖZ
 
 // 🚀 KARARGAH ZIRHLARI VE TEMALARI
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
+import 'dashboard/home_screen.dart'; // Yönlendirme için
 
 class AracKayitScreen extends ConsumerStatefulWidget {
   const AracKayitScreen({super.key});
@@ -21,15 +23,16 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
   // 1. Kişisel Bilgi Kontrolleri
   final _adSoyadController = TextEditingController();
   final _dogumTarihiController = TextEditingController();
-  final _ilController = TextEditingController(text: 'Ankara'); // Distribütörlük Merkezi Başlangıç
+  final _ilController = TextEditingController(text: 'Ankara');
   final _ilceController = TextEditingController();
+  final _postaKoduController = TextEditingController(); // Buraya taşındı
 
   // 2. Araç Bilgi Kontrolleri
   final _plakaController = TextEditingController();
   final _markaController = TextEditingController();
   final _modelController = TextEditingController();
+  final _modelYiliController = TextEditingController(); // YENİ
   final _renkController = TextEditingController();
-  final _postaKoduController = TextEditingController();
 
   // 3. Şase (VIN) Kontrolleri
   final _saseController = TextEditingController();
@@ -37,13 +40,7 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
 
   // 4. Tarih Kontrolleri
   final _muayeneTarihController = TextEditingController();
-  final _egzozTarihController = TextEditingController();
-  final _sigortaTarihController = TextEditingController();
-  final _kaskoTarihController = TextEditingController();
-  String _muayenePeriyodu = '2 Yılda Bir';
-
-  // 5. Kulüp Katılımı
-  bool _kulubeKatil = true;
+  final _emisyonTarihController = TextEditingController(); // Egzoz -> Emisyon oldu
 
   @override
   void dispose() {
@@ -51,38 +48,89 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
     _dogumTarihiController.dispose();
     _ilController.dispose();
     _ilceController.dispose();
+    _postaKoduController.dispose();
     _plakaController.dispose();
     _markaController.dispose();
     _modelController.dispose();
+    _modelYiliController.dispose();
     _renkController.dispose();
-    _postaKoduController.dispose();
     _saseController.dispose();
     _muayeneTarihController.dispose();
-    _egzozTarihController.dispose();
-    _sigortaTarihController.dispose();
-    _kaskoTarihController.dispose();
+    _emisyonTarihController.dispose();
     super.dispose();
   }
 
-  // 📸 SİBER GÖZ: OCR ŞASE TARAMA (SİMÜLASYON)
+  // 📸 GERÇEK SİBER GÖZ (KAMERA İLE BARKOD/QR TARAMA)
   void _saseOkuKamera() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        backgroundColor: SiberTema.kuantumCyan,
-        content: Text(
-          'SİBER GÖZ AKTİF: Şase numarasını (VIN) okutunuz. 🦅',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, letterSpacing: 1),
-        ),
-      ),
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.7,
+          decoration: const BoxDecoration(
+            color: SiberTema.geceMavisi,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 12),
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(10)),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(24.0),
+                child: Text("SİBER GÖZ AKTİF", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)),
+              ),
+              const Text("Şase numarası (VIN) veya araç QR kodunu okutun.", style: TextStyle(color: Colors.white54, fontSize: 12)),
+              const SizedBox(height: 24),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: SiberTema.kuantumCyan, width: 2),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(14),
+                    child: MobileScanner(
+                      onDetect: (capture) {
+                        final List<Barcode> barcodes = capture.barcodes;
+                        for (final barcode in barcodes) {
+                          if (barcode.rawValue != null) {
+                            String okunanSase = barcode.rawValue!;
+                            // QR Formatındaysa temizle "OTODNA:123" gibi
+                            if (okunanSase.startsWith("OTODNA:")) {
+                              okunanSase = okunanSase.replaceAll("OTODNA:", "");
+                            }
+                            setState(() {
+                              _saseController.text = okunanSase;
+                              _saseElleDogrulandi = true;
+                            });
+                            Navigator.pop(context); // Kamerayı kapat
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                backgroundColor: SiberTema.kuantumCyan,
+                                content: Text('ŞASE BAŞARIYLA ÇÖZÜMLENDİ!', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                              ),
+                            );
+                            break;
+                          }
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 40),
+            ],
+          ),
+        );
+      },
     );
-
-    Future.delayed(const Duration(seconds: 1), () {
-      if (!mounted) return;
-      setState(() {
-        _saseController.text = "NMTK33BXVX0123456";
-        _saseElleDogrulandi = false;
-      });
-    });
   }
 
   void _tarihSec(TextEditingController controller) async {
@@ -90,7 +138,7 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
-      lastDate: DateTime(2030),
+      lastDate: DateTime(2035),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -140,20 +188,18 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
           "dogum_tarihi": _dogumTarihiController.text.trim(),
           "il": _ilController.text.trim(),
           "ilce": _ilceController.text.trim(),
+          "posta_kodu": _postaKoduController.text.trim(),
         },
         "plaka": _plakaController.text.trim().replaceAll(" ", "").toUpperCase(),
         "marka_model": "${_markaController.text.trim().toUpperCase()} ${_modelController.text.trim().toUpperCase()}",
+        "model_yili": _modelYiliController.text.trim(),
         "renk": _renkController.text.trim(),
         "dna_skoru": 100,
         "muayene_durumu": "🟢 REFERANSLI",
         "tarihler": {
           "muayene_tarihi": _muayeneTarihController.text.trim(),
-          "muayene_periyodu": _muayenePeriyodu,
-          "egzoz_tarihi": _egzozTarihController.text.trim(),
-          "sigorta_tarihi": _sigortaTarihController.text.trim(),
-          "kasko_tarihi": _kaskoTarihController.text.trim(),
+          "emisyon_tarihi": _emisyonTarihController.text.trim(),
         },
-        "kulup_uyesi": _kulubeKatil,
         "kayit_tarihi": FieldValue.serverTimestamp(),
         "aktif": true,
       });
@@ -166,7 +212,12 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
         ),
       );
 
-      Navigator.pop(context, true);
+      // 🔥 BAŞARILI KAYIT SONRASI ANA EKRANA DÖNÜŞ (Ahiret Sorusunu Bitirir)
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+        (route) => false,
+      );
 
     } catch (e) {
       if (!mounted) return;
@@ -181,9 +232,9 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: SiberTema.geceMavisi,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -195,24 +246,26 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
           key: _formKey,
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32), // Daha ferah padding
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _buildBolumBasligi('1. KİMLİK PROTOKOLÜ', Icons.person_outline),
                 _buildKisiselBilgilerKarti(),
-                const SizedBox(height: 32),
+                const SizedBox(height: 48), // Boluklar artırıldı
+
                 _buildBolumBasligi('2. ARAÇ GENETİĞİ', Icons.directions_car_outlined),
                 _buildAracBilgileriKarti(),
-                const SizedBox(height: 32),
+                const SizedBox(height: 48),
+
                 _buildBolumBasligi('3. ŞASE (VIN) DOĞRULAMA', Icons.memory),
                 _buildSaseDogrulamaKarti(),
-                const SizedBox(height: 32),
+                const SizedBox(height: 48),
+
                 _buildBolumBasligi('4. ZAMAN ÇİZELGESİ', Icons.calendar_month_outlined),
                 _buildTarihlerKarti(),
-                const SizedBox(height: 32),
-                _buildOtoDnaKulupKarti(),
-                const SizedBox(height: 40),
+                const SizedBox(height: 56), // Ekstra ferahlık
+
                 SizedBox(
                   height: 64,
                   child: ElevatedButton.icon(
@@ -224,7 +277,7 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
                     label: Text(_isSaving ? 'AĞA MÜHÜRLENİYOR...' : 'KAYDI TAMAMLA VE AĞA GİR', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, color: SiberTema.oledBlack)),
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 60),
               ],
             ),
           ),
@@ -235,12 +288,21 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
 
   Widget _buildBolumBasligi(String baslik, IconData ikon) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.only(bottom: 20), // Alt boşluk artırıldı
       child: Row(
         children: [
-          Icon(ikon, color: SiberTema.kuantumCyan, size: 20),
+          ShaderMask(
+            shaderCallback: (Rect bounds) {
+              return const LinearGradient(
+                colors: [SiberTema.kuantumCyan, Colors.blueAccent],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ).createShader(bounds);
+            },
+            child: Icon(ikon, color: Colors.white, size: 24), // İkon biraz büyütüldü
+          ),
           const SizedBox(width: 12),
-          Text(baslik, style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          Text(baslik, style: const TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2)),
         ],
       ),
     );
@@ -248,31 +310,35 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
 
   Widget _buildTextField(TextEditingController controller, String hint, IconData icon, {bool isNumber = false, bool readOnly = false, VoidCallback? onTap, bool isUppercase = false}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: TextFormField(
-        controller: controller,
-        readOnly: readOnly,
-        onTap: onTap,
-        textCapitalization: isUppercase ? TextCapitalization.characters : TextCapitalization.words,
-        keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-        style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 12),
-          prefixIcon: Icon(icon, color: SiberTema.kuantumCyan.withOpacity(0.7), size: 20),
-          filled: true,
-          fillColor: SiberTema.oledBlack,
-          contentPadding: const EdgeInsets.symmetric(vertical: 18),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 1.5)),
+      padding: const EdgeInsets.only(bottom: 20), // Elemanlar arası boşluk
+      child: Container(
+        decoration: SiberTema.siberKutuZirhi,
+        child: TextFormField(
+          controller: controller,
+          readOnly: readOnly,
+          onTap: onTap,
+          textCapitalization: isUppercase ? TextCapitalization.characters : TextCapitalization.words,
+          keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+          style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.2), fontSize: 12),
+            prefixIcon: Icon(icon, color: SiberTema.kuantumCyan.withValues(alpha: 0.7), size: 20),
+            filled: false,
+            contentPadding: const EdgeInsets.symmetric(vertical: 20), // İç boşluk (ferah)
+            border: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 1.5)),
+          ),
+          validator: (value) => value!.isEmpty ? 'Gerekli!' : null,
         ),
-        validator: (value) => value!.isEmpty ? 'Gerekli!' : null,
       ),
     );
   }
 
   Widget _buildKisiselBilgilerKarti() {
     return SiberTema.siberCamKalkan(
+      padding: const EdgeInsets.all(24), // Cam kalkan iç boşluğu artırıldı
       child: Column(
         children: [
           _buildTextField(_adSoyadController, 'İsim Soyisim', Icons.person_outline),
@@ -280,10 +346,11 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
           Row(
             children: [
               Expanded(child: _buildTextField(_ilController, 'İl', Icons.map_outlined)),
-              const SizedBox(width: 12),
+              const SizedBox(width: 16), // Ara boşluk artırıldı
               Expanded(child: _buildTextField(_ilceController, 'İlçe', Icons.location_city_outlined)),
             ],
           ),
+          _buildTextField(_postaKoduController, 'Posta Kodu', Icons.markunread_mailbox_outlined, isNumber: true),
         ],
       ),
     );
@@ -291,21 +358,22 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
 
   Widget _buildAracBilgileriKarti() {
     return SiberTema.siberCamKalkan(
+      padding: const EdgeInsets.all(24),
       child: Column(
         children: [
           _buildTextField(_plakaController, 'Araç Plakası', Icons.credit_card_outlined, isUppercase: true),
           Row(
             children: [
               Expanded(child: _buildTextField(_markaController, 'Marka', Icons.directions_car_outlined, isUppercase: true)),
-              const SizedBox(width: 12),
+              const SizedBox(width: 16),
               Expanded(child: _buildTextField(_modelController, 'Model', Icons.settings_suggest_outlined, isUppercase: true)),
             ],
           ),
           Row(
             children: [
+              Expanded(child: _buildTextField(_modelYiliController, 'Model Yılı', Icons.date_range_outlined, isNumber: true)),
+              const SizedBox(width: 16),
               Expanded(child: _buildTextField(_renkController, 'Renk', Icons.color_lens_outlined)),
-              const SizedBox(width: 12),
-              Expanded(child: _buildTextField(_postaKoduController, 'Posta Kodu', Icons.markunread_mailbox_outlined, isNumber: true)),
             ],
           ),
         ],
@@ -315,20 +383,28 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
 
   Widget _buildSaseDogrulamaKarti() {
     return SiberTema.siberCamKalkan(
+      padding: const EdgeInsets.all(24),
       child: Column(
         children: [
           InkWell(
             onTap: _saseOkuKamera,
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3))),
-              child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.document_scanner_outlined, color: SiberTema.kuantumCyan, size: 20), SizedBox(width: 12), Text('ŞASE (VIN) OKU', style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900))]),
+              padding: const EdgeInsets.symmetric(vertical: 20), // Buton daha etli
+              decoration: BoxDecoration(
+                color: SiberTema.kuantumCyan.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: SiberTema.kuantumCyan.withValues(alpha: 0.6), width: 1.5),
+                boxShadow: [
+                  BoxShadow(color: SiberTema.kuantumCyan.withValues(alpha: 0.3), blurRadius: 15, spreadRadius: 1),
+                ],
+              ),
+              child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.document_scanner_outlined, color: SiberTema.kuantumCyan, size: 24), SizedBox(width: 12), Text('ŞASE (VIN) OKU / KAMERA', style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1.5))]),
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 28),
           _buildTextField(_saseController, 'Şase Numarası (VIN)', Icons.numbers, isUppercase: true),
           CheckboxListTile(
-            title: const Text('Şase numarası doğrudur, onaylıyorum.', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+            title: const Text('Şase numarası doğrudur, onaylıyorum.', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
             value: _saseElleDogrulandi,
             onChanged: (val) => setState(() => _saseElleDogrulandi = val!),
             activeColor: SiberTema.kuantumCyan,
@@ -343,25 +419,12 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
 
   Widget _buildTarihlerKarti() {
     return SiberTema.siberCamKalkan(
+      padding: const EdgeInsets.all(24),
       child: Column(
         children: [
-          _buildTextField(_muayeneTarihController, 'Muayene Bitiş', Icons.build_circle_outlined, readOnly: true, onTap: () => _tarihSec(_muayeneTarihController)),
-          _buildTextField(_egzozTarihController, 'Egzoz Bitiş', Icons.co2, readOnly: true, onTap: () => _tarihSec(_egzozTarihController)),
-          _buildTextField(_sigortaTarihController, 'Sigorta Bitiş', Icons.health_and_safety_outlined, readOnly: true, onTap: () => _tarihSec(_sigortaTarihController)),
-          _buildTextField(_kaskoTarihController, 'Kasko Bitiş', Icons.shield_outlined, readOnly: true, onTap: () => _tarihSec(_kaskoTarihController)),
+          _buildTextField(_muayeneTarihController, 'Muayene Geçerlilik Tarihi', Icons.build_circle_outlined, readOnly: true, onTap: () => _tarihSec(_muayeneTarihController)),
+          _buildTextField(_emisyonTarihController, 'Emisyon Geçerlilik Tarihi', Icons.co2, readOnly: true, onTap: () => _tarihSec(_emisyonTarihController)),
         ],
-      ),
-    );
-  }
-
-  Widget _buildOtoDnaKulupKarti() {
-    return SiberTema.siberCamKalkan(
-      child: SwitchListTile(
-        title: const Text('OTODNA KULÜP AĞINA KATIL', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900)),
-        value: _kulubeKatil,
-        onChanged: (val) => setState(() => _kulubeKatil = val),
-        activeColor: SiberTema.kuantumCyan,
-        contentPadding: EdgeInsets.zero,
       ),
     );
   }

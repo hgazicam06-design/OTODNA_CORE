@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 import '../../services/ekspertiz_muhur_servisi.dart';
 
@@ -17,6 +16,13 @@ class _SiberEkspertizOnayEkraniState extends State<SiberEkspertizOnayEkrani> {
   bool _onaylaniyor = false;
   final EkspertizMuhurServisi _servis = EkspertizMuhurServisi();
 
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color dangerColor = Colors.redAccent;
+  final Color warningColor = Colors.orange;
+  final Color textColor = const Color(0xFF1E293B);
+  final Color bgColor = const Color(0xFFFAFAFC);
+  final Color surfaceColor = Colors.white;
+
   void _raporuMusteriOlarakOnayla() async {
     setState(() => _onaylaniyor = true);
 
@@ -32,105 +38,132 @@ class _SiberEkspertizOnayEkraniState extends State<SiberEkspertizOnayEkrani> {
         context: context,
         barrierDismissible: false,
         builder: (context) => AlertDialog(
-          backgroundColor: const Color(0xFF121B2B),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: Color(0xFF00FFC2), width: 1.5)),
-          title: const Column(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          title: Column(
             children: [
-              Icon(Icons.fingerprint, color: Color(0xFF00FFC2), size: 64),
-              SizedBox(height: 16),
-              Text("İKİ ANAHTAR BİRLEŞTİ!", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+              Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(Icons.fingerprint, color: primaryTeal, size: 64)),
+              const SizedBox(height: 24),
+              Text("İKİ ANAHTAR BİRLEŞTİ!", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 16, fontFamily: 'Avenir')),
             ],
           ),
           content: const Text(
-            "GPS Mührünüz ustanın GPS mührüyle birleştirildi.\n\nRapor kilitlendi ve OtoDNA Yapay Zekası aracınızın DNA Skorunu başarıyla güncelledi.", 
+            "Müşteri onayınız ustanın mührüyle birleştirildi.\n\nRapor kilitlendi ve OtoDNA sistemleri aracınızın DNA Skorunu başarıyla güncelledi.", 
             textAlign: TextAlign.center, 
-            style: TextStyle(color: Colors.white70, fontSize: 12)
+            style: TextStyle(color: Colors.black54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')
           ),
           actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Dialogu kapat
-                Navigator.pop(context); // Ekrani kapat
-              },
-              child: const Text("CÜZDANA DÖN", style: TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold)),
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), elevation: 0),
+                onPressed: () {
+                  Navigator.pop(context); // Dialogu kapat
+                  Navigator.pop(context); // Ekrani kapat
+                },
+                child: const Text("CÜZDANA DÖN", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1, fontFamily: 'Avenir')),
+              ),
             )
           ],
         ),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(sonuc['mesaj']), backgroundColor: Colors.redAccent));
+      _plazaUyariGoster("ONAY HATASI", sonuc['mesaj'], dangerColor);
     }
+  }
+
+  void _plazaUyariGoster(String baslik, String mesaj, Color renk) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.white,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: renk, width: 2)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+            const SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: bgColor,
         appBar: AppBar(
-          backgroundColor: Colors.black.withOpacity(0.8),
+          backgroundColor: Colors.white,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("EKSPERTİZ ONAY MERKEZİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2)),
+          surfaceTintColor: Colors.transparent,
+          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text("EKSPERTİZ ONAY MERKEZİ", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5, fontFamily: 'Avenir')),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // UYARI PANELİ
               Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(color: Colors.orangeAccent.withOpacity(0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.orangeAccent)),
-                child: const Row(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: warningColor.withValues(alpha: 0.3)), boxShadow: [BoxShadow(color: warningColor.withValues(alpha: 0.05), blurRadius: 15, offset: const Offset(0, 5))]),
+                child: Row(
                   children: [
-                    Icon(Icons.warning_amber_rounded, color: Colors.orangeAccent, size: 32),
-                    SizedBox(width: 16),
+                    Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: warningColor.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(Icons.warning_amber_rounded, color: warningColor, size: 28)),
+                    const SizedBox(width: 16),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("USTA ONAYI BEKLENİYOR", style: TextStyle(color: Colors.orangeAccent, fontSize: 12, fontWeight: FontWeight.bold)),
-                          SizedBox(height: 4),
-                          Text("Tarcanlar Merkez arabanızı test etti. Lütfen aşağıdaki bulguları inceleyip mührünüzü vurun. İki anahtar birleşmeden işlem Kuantum Ağına geçemez.", style: TextStyle(color: Colors.white70, fontSize: 10)),
+                          Text("MÜŞTERİ ONAYI BEKLENİYOR", style: TextStyle(color: warningColor, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 0.5)),
+                          const SizedBox(height: 8),
+                          const Text("Merkez Bayi aracınızı test etti. Lütfen aşağıdaki bulguları inceleyip mührünüzü vurun. İki anahtar birleşmeden işlem resmiyet kazanamaz.", style: TextStyle(color: Colors.black54, fontSize: 10, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                         ],
                       ),
                     )
                   ],
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 40),
 
-              const Text("TEST BULGULARI (TASLAK)", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
-              const SizedBox(height: 12),
+              const Text("TEST BULGULARI (TASLAK)", style: TextStyle(color: Colors.black45, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+              const SizedBox(height: 16),
               
               // MOCK RAPOR (Gerçekte Firestore'dan çekilecek)
               _buildBulguKarti("Motor Bloğu & Yağ Kaçakları", "Kusursuz", true),
               _buildBulguKarti("Kaporta, Boya Değişen", "Sağ Arka Çamurluk Boyalı", true),
               _buildBulguKarti("Şase Direkleri, Podye ve Alt Takım", "Hasarlı / Riskli (Tutanak Eklendi)", false),
               
-              const SizedBox(height: 40),
+              const SizedBox(height: 48),
 
               SizedBox(
                 width: double.infinity,
-                height: 60,
+                height: 56,
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: SiberTema.kuantumCyan,
-                    foregroundColor: Colors.black,
+                    backgroundColor: primaryTeal,
+                    foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    elevation: 0,
                   ),
                   onPressed: _onaylaniyor ? null : _raporuMusteriOlarakOnayla,
                   icon: _onaylaniyor 
-                      ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.black))
-                      : const Icon(Icons.fingerprint, size: 28),
-                  label: Text(_onaylaniyor ? "MÜHÜRLENİYOR..." : "ONAYLA VE SİBER MÜHRÜ VUR", style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                      ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                      : const Icon(Icons.fingerprint, size: 24),
+                  label: Text(_onaylaniyor ? "SİSTEME İŞLENİYOR..." : "ONAYLA VE MÜHRÜ VUR", style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                 ),
               ),
-              const SizedBox(height: 16),
-              const Center(child: Text("Mühür vurulduktan sonra OtoDNA Skoru güncellenir.", style: TextStyle(color: Colors.white38, fontSize: 10))),
+              const SizedBox(height: 24),
+              const Center(child: Text("Mühür vurulduktan sonra OtoDNA Skoru güncellenir ve rapor kilitlenir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.black38, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
             ],
           ),
         ),
@@ -139,21 +172,22 @@ class _SiberEkspertizOnayEkraniState extends State<SiberEkspertizOnayEkrani> {
   }
 
   Widget _buildBulguKarti(String baslik, String sonuc, bool olumlu) {
+    Color durumRengi = olumlu ? Colors.green : dangerColor;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))]),
       child: Row(
         children: [
-          Icon(olumlu ? Icons.check_circle : Icons.warning_rounded, color: olumlu ? Colors.greenAccent : SiberTema.kanKirmizi, size: 24),
-          const SizedBox(width: 12),
+          Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: durumRengi.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(olumlu ? Icons.check_circle : Icons.warning_rounded, color: durumRengi, size: 24)),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 4),
-                Text(sonuc, style: TextStyle(color: olumlu ? Colors.greenAccent : SiberTema.kanKirmizi, fontSize: 10, fontWeight: FontWeight.bold)),
+                Text(baslik, style: TextStyle(color: textColor, fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                const SizedBox(height: 6),
+                Text(sonuc, style: TextStyle(color: durumRengi, fontSize: 11, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
               ],
             ),
           )

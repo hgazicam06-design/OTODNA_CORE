@@ -8,67 +8,66 @@ class SiberBildirimMerkeziScreen extends StatefulWidget {
 }
 
 class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen> {
-  // SİBER BİLDİRİM VERİTABANI (Simülasyon)
+  // BİLDİRİM VERİTABANI (Simülasyon)
   final List<Map<String, dynamic>> _bildirimler = [
     {
       "id": "b1",
       "baslik": "TÜVTÜRK Muayene Yaklaşıyor!",
-      "mesaj": "34 DNA 2026 plakalı aracınızın muayenesine 45 gün kaldı. Ceza yememek için Siber Asistan üzerinden hemen randevu alın.",
+      "mesaj": "34 DNA 2026 plakalı aracınızın muayenesine 45 gün kaldı. Ceza yememek için akıllı asistan üzerinden hemen randevu alın.",
       "zaman": "10 dk önce",
       "okunduMu": false,
       "ikon": Icons.warning_amber_rounded,
-      "renk": Colors.orangeAccent
+      "renk": Colors.orange
     },
     {
       "id": "b2",
       "baslik": "Ekspertiz Randevusu Onaylandı",
-      "mesaj": "Murat Plaza (Merkez Bayi) için yarın saat 10:30'a oluşturduğunuz randevu Kuantum Ağına işlendi.",
+      "mesaj": "Murat Plaza (Merkez Bayi) için yarın saat 10:30'a oluşturduğunuz randevu sisteme işlendi.",
       "zaman": "1 saat önce",
       "okunduMu": false,
       "ikon": Icons.event_available_outlined,
-      "renk": const Color(0xFF00FFC2)
+      "renk": Colors.teal.shade700
     },
     {
       "id": "b3",
       "baslik": "DNA Skoru Güncellendi",
-      "mesaj": "Aracınızın periyodik bakım verileri sisteme girildi. Güncel genetik sağlık skoru %92 olarak hesaplandı.",
+      "mesaj": "Aracınızın periyodik bakım verileri sisteme girildi. Güncel sağlık skoru %92 olarak hesaplandı.",
       "zaman": "3 saat önce",
       "okunduMu": true,
       "ikon": Icons.science_outlined,
-      "renk": Colors.purpleAccent
+      "renk": Colors.purple
     },
     {
       "id": "b4",
-      "baslik": "Market Radarı Uyarısı",
+      "baslik": "Market Uyarısı",
       "mesaj": "Takip ettiğiniz 'BMW M Performance Fren Disk Takımı' için yeni bir sıfır ilan eklendi.",
       "zaman": "Dün",
       "okunduMu": true,
       "ikon": Icons.shopping_bag_outlined,
-      "renk": Colors.blueAccent
+      "renk": Colors.blue
     },
     {
       "id": "b5",
-      "baslik": "Siber Cüzdan Hareketi",
+      "baslik": "Bağış Hareketi",
       "mesaj": "Trafik Mağdurları Derneği'ne yapılan %1'lik bağışınız başarıyla ulaştı. Teşekkür ederiz!",
       "zaman": "2 gün önce",
       "okunduMu": true,
       "ikon": Icons.volunteer_activism_outlined,
-      "renk": Colors.greenAccent
+      "renk": Colors.green
     }
   ];
+
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color textColor = const Color(0xFF1E293B);
+  final Color bgColor = const Color(0xFFFAFAFC);
+  final Color surfaceColor = Colors.white;
 
   // 💎 GERÇEKÇİ SİLME ANİMASYONU VE MANTIĞI
   void _bildirimiSil(String id) {
     setState(() {
       _bildirimler.removeWhere((element) => element['id'] == id);
     });
-    ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Sinyal ağdan kalıcı olarak silindi.", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-          backgroundColor: Colors.black87,
-          duration: Duration(seconds: 1),
-        )
-    );
+    _plazaUyariGoster("BİLDİRİM SİLİNDİ", "Bildirim kayıtlardan kalıcı olarak silindi.", Colors.black87);
   }
 
   void _tumunuOkunduIsaretle() {
@@ -77,35 +76,47 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
         bildirim['okunduMu'] = true;
       }
     });
+    _plazaUyariGoster("İŞLEM BAŞARILI", "Tüm bildirimler okundu olarak işaretlendi.", primaryTeal);
+  }
+
+  void _plazaUyariGoster(String baslik, String mesaj, Color renk) {
     ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text("Tüm Kuantum Sinyalleri Okundu Olarak İşaretlendi! 🦅", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-            backgroundColor: Color(0xFF00FFC2)
-        )
+      SnackBar(
+        backgroundColor: Colors.white,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: renk, width: 2)),
+        duration: const Duration(seconds: 2),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+            const SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+          ],
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET
-    const bgColor = Color(0xFF000000); // Saf Siyah
-    const surfaceColor = Color(0xFF111111); // Mat Gri
-    const primaryCyan = Color(0xFF00FFC2);
-
     int okunmamisSayisi = _bildirimler.where((b) => b['okunduMu'] == false).length;
 
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text("S İ N Y A L   M E R K E Z İ", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 3)),
+        surfaceTintColor: Colors.transparent,
+        shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
+        title: Text("B İ L D İ R İ M   M E R K E Z İ", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 3, fontFamily: 'Avenir')),
         centerTitle: true,
         actions: [
           if (okunmamisSayisi > 0)
             IconButton(
-              icon: const Icon(Icons.done_all, color: primaryCyan),
+              icon: Icon(Icons.done_all, color: primaryTeal),
               tooltip: "Tümünü Okundu İşaretle",
               onPressed: _tumunuOkunduIsaretle,
             ),
@@ -117,20 +128,19 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
         children: [
           // 1. ÜST BİLGİ PANELİ
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Siber Ağ Akışı", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
+                Text("Akış", style: TextStyle(color: textColor, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
                 if (okunmamisSayisi > 0)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                        color: primaryCyan.withOpacity(0.1),
+                        color: primaryTeal.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: primaryCyan.withOpacity(0.5))
                     ),
-                    child: Text("$okunmamisSayisi Yeni Sinyal", style: const TextStyle(color: primaryCyan, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 0.5)),
+                    child: Text("$okunmamisSayisi Yeni Bildirim", style: TextStyle(color: primaryTeal, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 0.5, fontFamily: 'Avenir')),
                   )
               ],
             ),
@@ -139,7 +149,7 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
           // 2. BİLDİRİM LİSTESİ VEYA BOŞ DURUM
           Expanded(
             child: _bildirimler.isEmpty
-                ? _buildEmptyState() // Eğer liste boşsa şık bir HUD ekranı çıkar
+                ? _buildEmptyState() 
                 : ListView.builder(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -158,9 +168,9 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
                     padding: const EdgeInsets.only(right: 24),
                     alignment: Alignment.centerRight,
                     decoration: BoxDecoration(
-                        color: Colors.redAccent.withOpacity(0.2),
+                        color: Colors.redAccent.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.redAccent.withOpacity(0.5))
+                        border: Border.all(color: Colors.redAccent.withValues(alpha: 0.3))
                     ),
                     child: const Icon(Icons.delete_outline, color: Colors.redAccent, size: 28),
                   ),
@@ -173,10 +183,10 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
                       margin: const EdgeInsets.only(bottom: 16),
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: isUnread ? primaryCyan.withOpacity(0.03) : surfaceColor,
+                        color: isUnread ? primaryTeal.withValues(alpha: 0.05) : surfaceColor,
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: isUnread ? primaryCyan.withOpacity(0.4) : Colors.white.withOpacity(0.05)),
-                        boxShadow: isUnread ? [BoxShadow(color: primaryCyan.withOpacity(0.05), blurRadius: 20)] : [],
+                        border: Border.all(color: isUnread ? primaryTeal.withValues(alpha: 0.3) : Colors.black.withValues(alpha: 0.05)),
+                        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))],
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,11 +195,11 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
                           Container(
                             padding: const EdgeInsets.all(14),
                             decoration: BoxDecoration(
-                              color: isUnread ? bildirim['renk'].withOpacity(0.1) : Colors.white.withOpacity(0.02),
+                              color: isUnread ? bildirim['renk'].withValues(alpha: 0.1) : bgColor,
                               shape: BoxShape.circle,
-                              border: Border.all(color: isUnread ? bildirim['renk'].withOpacity(0.5) : Colors.white12),
+                              border: Border.all(color: isUnread ? bildirim['renk'].withValues(alpha: 0.3) : Colors.black.withValues(alpha: 0.05)),
                             ),
-                            child: Icon(bildirim['ikon'], color: isUnread ? bildirim['renk'] : Colors.white38, size: 24),
+                            child: Icon(bildirim['ikon'], color: isUnread ? bildirim['renk'] : Colors.black38, size: 24),
                           ),
                           const SizedBox(width: 16),
 
@@ -198,24 +208,24 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(bildirim['baslik'], style: TextStyle(color: isUnread ? Colors.white : Colors.white54, fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: -0.5)),
+                                Text(bildirim['baslik'], style: TextStyle(color: isUnread ? textColor : Colors.black87, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
                                 const SizedBox(height: 6),
-                                Text(bildirim['mesaj'], style: TextStyle(color: isUnread ? Colors.white70 : Colors.white38, fontSize: 12, height: 1.4)),
+                                Text(bildirim['mesaj'], style: TextStyle(color: isUnread ? Colors.black87 : Colors.black54, fontSize: 12, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                                 const SizedBox(height: 12),
-                                Text(bildirim['zaman'].toUpperCase(), style: TextStyle(color: isUnread ? primaryCyan : Colors.white24, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                                Text(bildirim['zaman'].toUpperCase(), style: TextStyle(color: isUnread ? primaryTeal : Colors.black38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                               ],
                             ),
                           ),
 
-                          // Sağ Kuantum Nabzı (Sadece Okunmamışlarda)
+                          // Sağ Nabız (Sadece Okunmamışlarda)
                           if (isUnread)
                             Container(
                               width: 10, height: 10,
                               margin: const EdgeInsets.only(top: 6, left: 8),
                               decoration: BoxDecoration(
-                                  color: primaryCyan,
+                                  color: primaryTeal,
                                   shape: BoxShape.circle,
-                                  boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.8), blurRadius: 8, spreadRadius: 2)]
+                                  boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.5), blurRadius: 8, spreadRadius: 2)]
                               ),
                             )
                         ],
@@ -231,7 +241,7 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
     );
   }
 
-  // 💎 TESLA MİMARİSİ: BOŞ EKRAN DURUMU (HUD EMPTY STATE)
+  // 💎 BOŞ EKRAN DURUMU (EMPTY STATE)
   Widget _buildEmptyState() {
     return Center(
       child: Column(
@@ -240,17 +250,16 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
           Container(
             padding: const EdgeInsets.all(32),
             decoration: BoxDecoration(
-                color: const Color(0xFF111111),
+                color: bgColor,
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.white.withOpacity(0.05)),
-                boxShadow: [BoxShadow(color: const Color(0xFF00FFC2).withOpacity(0.02), blurRadius: 50, spreadRadius: 20)]
+                border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
             ),
-            child: const Icon(Icons.satellite_alt_outlined, color: Colors.white24, size: 64),
+            child: const Icon(Icons.notifications_off_outlined, color: Colors.black26, size: 64),
           ),
           const SizedBox(height: 32),
-          const Text("SİNYAL AĞI TEMİZ", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
-          const SizedBox(height: 8),
-          const Text("Kuantum radarında okunmamış veya\nbekleyen bir bildirim bulunmuyor.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white38, fontSize: 12, height: 1.5)),
+          Text("BİLDİRİM YOK", style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          const SizedBox(height: 12),
+          const Text("Şu an için okunmamış veya\nbekleyen bir bildirim bulunmuyor.", textAlign: TextAlign.center, style: TextStyle(color: Colors.black54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         ],
       ),
     );

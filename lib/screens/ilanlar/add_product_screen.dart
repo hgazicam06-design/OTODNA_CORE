@@ -120,7 +120,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         backgroundColor: _cyberBlack,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), border: Border.all(color: _primaryCyan.withOpacity(0.5))),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: _primaryCyan.withOpacity(0.5))),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

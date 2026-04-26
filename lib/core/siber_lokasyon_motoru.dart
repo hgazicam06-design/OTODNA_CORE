@@ -185,7 +185,6 @@ class _SiberLokasyonMotoruState extends State<SiberLokasyonMotoru> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }

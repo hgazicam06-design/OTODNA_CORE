@@ -4,14 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
-// 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI (2 Kat Yukarı)
-import '../../../../core/siber_tema.dart';
 import '../../../../core/responsive_kalkan.dart';
 
-/// 🛡️ KUANTUM ARIZA BİLDİRİM VE SİBER ÇAĞRI EKRANI
-/// Müşterinin arıza talebini doğrudan Karargaha mühürler ve ustaların radarına düşürür.
+/// 🛡️ PLAZA ARIZA BİLDİRİM VE SERVİS ÇAĞRI EKRANI
+/// Müşterinin arıza talebini doğrudan Merkeze mühürler ve ustaların radarına düşürür.
 class SiberMusteriArizaSecim extends StatefulWidget {
-  final String musteriId; // Talebi açan müşterinin Karargah kimliği
+  final String musteriId; // Talebi açan müşterinin kimliği
 
   const SiberMusteriArizaSecim({super.key, required this.musteriId});
 
@@ -23,7 +21,12 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   bool _islemSuruyor = false;
 
-  // ── SİBER İSTİHBARAT: GENİŞLETİLMİŞ ARIZA LİSTESİ ──
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color dangerColor = Colors.redAccent;
+  final Color textColor = const Color(0xFF1E293B);
+  final Color bgColor = const Color(0xFFFAFAFC);
+
+  // ── PLAZA İSTİHBARAT: GENİŞLETİLMİŞ ARIZA LİSTESİ ──
   final List<String> arizaListesi = [
     "Fren/Balata Sorunu",
     "Motor Sesi / Titreme",
@@ -32,7 +35,7 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
     "Alt Takım / Süspansiyon",
     "LPG Sızıntısı / Bakımı",
     "Egzoz / Emisyon Uyarısı",
-    "Genel Kuantum Kontrolü (Check-Up)"
+    "Genel Araç Kontrolü (Check-Up)"
   ];
 
   List<String> secilenler = [];
@@ -41,7 +44,7 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
   Future<void> _arizaTalebiniFirlat() async {
     if (secilenler.isEmpty) {
       HapticFeedback.heavyImpact();
-      _siberUyariGoster("SİBER İHLAL", "En az bir arıza veya kontrol tipi seçmelisiniz.", SiberTema.kanKirmizi);
+      _plazaUyariGoster("BİLGİ EKSİK", "En az bir arıza veya kontrol tipi seçmelisiniz.", dangerColor);
       return;
     }
 
@@ -49,10 +52,9 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
     setState(() => _islemSuruyor = true);
 
     HapticFeedback.lightImpact();
-    developer.log("🚀 SİBER ÇAĞRI: Arıza talebi Karargaha iletiliyor...");
+    developer.log("🚀 PLAZA ÇAĞRISI: Arıza talebi Merkeze iletiliyor...");
 
     try {
-      // 🛡️ ATOMİK ZIRH: İşlemi ve Karargah Logunu aynı anda kilitler!
       WriteBatch batch = _db.batch();
 
       DocumentReference talepRef = _db.collection('ariza_talepleri').doc();
@@ -66,24 +68,24 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
       DocumentReference logRef = _db.collection('sistem_loglari').doc();
       batch.set(logRef, {
         'islem_turu': 'MUSTERI_ARIZA_TALEBI',
-        'islem_detayi': 'SİBER ÇAĞRI: ${widget.musteriId} kimlikli kullanıcı arıza/bakım talebi fırlattı.',
+        'islem_detayi': 'PLAZA ÇAĞRI: ${widget.musteriId} kimlikli kullanıcı arıza/bakım talebi oluşturdu.',
         'tarih': FieldValue.serverTimestamp(),
       });
 
-      await batch.commit(); // Füzeleri ateşle!
+      await batch.commit();
 
       HapticFeedback.vibrate();
       developer.log("✅ ÇAĞRI ONAYLANDI: Talep başarıyla ustaların sistemine düştü.");
 
       if (mounted) {
-        _siberUyariGoster("KARARGAH ONAYI", "Talebiniz alınmıştır, en yakın ustamız sizinle iletişime geçecektir.", SiberTema.kuantumCyan);
-        Navigator.pop(context); // İşlem bitince ekranı siber bir geçişle kapatır
+        _plazaUyariGoster("TALEP ONAYLANDI", "Talebiniz alınmıştır, en yakın ustamız sizinle iletişime geçecektir.", primaryTeal);
+        Navigator.pop(context); // İşlem bitince ekranı kapatır
       }
     } catch (e) {
       HapticFeedback.heavyImpact();
-      developer.log("🚨 AĞ ÇÖKTÜ: Talep fırlatılamadı!", error: e);
+      developer.log("🚨 AĞ ÇÖKTÜ: Talep gönderilemedi!", error: e);
       if (mounted) {
-        _siberUyariGoster("BAĞLANTI HATASI", "Sistem şu an meşgul, lütfen tekrar deneyin.", SiberTema.kanKirmizi);
+        _plazaUyariGoster("BAĞLANTI HATASI", "Sistem şu an meşgul, lütfen tekrar deneyin.", dangerColor);
       }
     } finally {
       if (mounted) setState(() => _islemSuruyor = false);
@@ -91,20 +93,20 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
   }
 
   // ── 🚨 ARAYÜZ YARDIMCILARI ──
-  void _siberUyariGoster(String baslik, String mesaj, Color renk) {
+  void _plazaUyariGoster(String baslik, String mesaj, Color renk) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: SiberTema.matGrey,
+        backgroundColor: Colors.white,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: renk, width: 2)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold)),
+            Text(mesaj, style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -114,36 +116,42 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent, // Zırhın aydınlatması arkadan gelsin
+        backgroundColor: bgColor,
         appBar: AppBar(
-          title: const Text("ARIZA BİLDİRİM RADARI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
-          backgroundColor: Colors.transparent,
+          title: Text("ARIZA BİLDİRİM FORMU", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
+          backgroundColor: Colors.white,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          surfaceTintColor: Colors.transparent,
+          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          iconTheme: IconThemeData(color: primaryTeal),
         ),
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // BİLGİ PANELİ (Siber Cam)
+              // BİLGİ PANELİ
               Container(
                 margin: const EdgeInsets.all(16),
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                    color: SiberTema.matGrey.withOpacity(0.8),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
                     boxShadow: [
-                      BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 15, spreadRadius: 1)
+                      BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))
                     ]
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(Icons.precision_manufacturing, color: SiberTema.kuantumCyan, size: 28),
-                    SizedBox(width: 12),
-                    Expanded(child: Text("Aracınızdaki şikayetleri seçin. Siber ağımız en uygun ustayı yönlendirecektir.", style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold))),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), shape: BoxShape.circle),
+                      child: Icon(Icons.precision_manufacturing, color: primaryTeal, size: 28),
+                    ),
+                    const SizedBox(width: 16),
+                    const Expanded(child: Text("Aracınızdaki şikayetleri seçin. Plaza ağımız sizi en uygun ustaya yönlendirecektir.", style: TextStyle(color: Colors.black87, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
                   ],
                 ),
               ),
@@ -151,10 +159,10 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
               // LİSTE BAŞLIĞI
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                child: Text("ŞİKAYET VE KONTROL LİSTESİ", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
+                child: Text("ŞİKAYET VE KONTROL LİSTESİ", style: TextStyle(color: Colors.black45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
               ),
 
-              // SİBER SEÇİM BUTONLARI
+              // SEÇİM BUTONLARI
               Expanded(
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
@@ -175,25 +183,27 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
                         margin: const EdgeInsets.only(bottom: 12),
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                         decoration: BoxDecoration(
-                          color: seciliMi ? SiberTema.kuantumCyan.withOpacity(0.1) : SiberTema.matGrey.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: seciliMi ? SiberTema.kuantumCyan : Colors.white12, width: seciliMi ? 2 : 1),
+                          color: seciliMi ? primaryTeal.withValues(alpha: 0.05) : Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: seciliMi ? primaryTeal.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05), width: seciliMi ? 2 : 1),
+                          boxShadow: seciliMi ? null : [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 5)]
                         ),
                         child: Row(
                           children: [
                             Icon(
                               seciliMi ? Icons.check_circle : Icons.radio_button_unchecked,
-                              color: seciliMi ? SiberTema.kuantumCyan : Colors.white54,
+                              color: seciliMi ? primaryTeal : Colors.black26,
                             ),
                             const SizedBox(width: 16),
                             Expanded(
                               child: Text(
                                 ariza,
                                 style: TextStyle(
-                                    color: seciliMi ? SiberTema.kuantumCyan : Colors.white,
+                                    color: seciliMi ? primaryTeal : textColor,
                                     fontWeight: seciliMi ? FontWeight.w900 : FontWeight.bold,
-                                    fontSize: 12,
-                                    letterSpacing: 0.5
+                                    fontSize: 13,
+                                    letterSpacing: 0.5,
+                                    fontFamily: 'Avenir'
                                 ),
                               ),
                             ),
@@ -206,17 +216,27 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
               ),
 
               // ATEŞLEME BUTONU
-              Padding(
-                padding: const EdgeInsets.all(16),
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
+                ),
                 child: SizedBox(
-                  height: 60,
+                  height: 56,
                   width: double.infinity,
                   child: _islemSuruyor
-                      ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                      ? Center(child: CircularProgressIndicator(color: primaryTeal))
                       : ElevatedButton.icon(
-                    icon: const Icon(Icons.radar, color: SiberTema.oledBlack, size: 24),
-                    label: const Text("KARARGAHA VE USTAYA İLET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, color: SiberTema.oledBlack)),
-                    style: SiberTema.kuantumButonStili(),
+                    icon: const Icon(Icons.radar, color: Colors.white, size: 24),
+                    label: const Text("MERKEZE VE USTAYA İLET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, color: Colors.white, fontFamily: 'Avenir')),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryTeal,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      elevation: 0,
+                    ),
                     onPressed: _arizaTalebiniFirlat,
                   ),
                 ),

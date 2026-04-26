@@ -10,6 +10,11 @@ class SiberFormMerkeziScreen extends StatefulWidget {
 class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color textColor = const Color(0xFF1E293B);
+  final Color bgColor = const Color(0xFFFAFAFC);
+  final Color surfaceColor = Colors.white;
+
   @override
   void initState() {
     super.initState();
@@ -22,43 +27,47 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
     super.dispose();
   }
 
-  // 💎 TESLA MİMARİSİ: E-TUTANAK MODÜLÜ
+  // 💎 PLAZA KALİTESİ: E-TUTANAK MODÜLÜ
   void _kazaTutanagiBaslat() {
     showModalBottomSheet(
       context: context, isScrollControlled: true, backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(32),
         decoration: BoxDecoration(
-            color: const Color(0xFF111111),
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-            border: Border.all(color: Colors.redAccent.withOpacity(0.5))
+            color: Colors.white,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20, offset: const Offset(0, -5))]
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(10)))),
-            const SizedBox(height: 24),
-            const Row(children: [Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 32), SizedBox(width: 12), Text("E-Kaza Tespit Tutanağı", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: -0.5))]),
-            const SizedBox(height: 12),
-            const Text("Klasik kağıt tutanaklara son! Kazaya karışan aracın QR kimliğini okutarak saniyeler içinde yasal süreci başlatın.", style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.5)),
+            Center(child: Container(width: 40, height: 5, decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
+            const SizedBox(height: 32),
+            Row(children: [
+              Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.redAccent.withValues(alpha: 0.1), shape: BoxShape.circle), child: const Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 28)), 
+              const SizedBox(width: 16), 
+              Text("E-Kaza Tespit Tutanağı", style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir'))
+            ]),
+            const SizedBox(height: 16),
+            const Text("Klasik kağıt tutanaklara son! Kazaya karışan aracın QR kimliğini okutarak saniyeler içinde yasal süreci başlatın.", style: TextStyle(color: Colors.black54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             const SizedBox(height: 32),
 
-            _buildAdimSatiri(Icons.satellite_alt_outlined, "SİNYAL", "Konum uydudan çekiliyor.", Colors.blueAccent),
-            _buildAdimSatiri(Icons.document_scanner_outlined, "ANALİZ", "Yapay zeka ile hasar taranıyor.", Colors.orangeAccent),
-            _buildAdimSatiri(Icons.qr_code_scanner_outlined, "KİMLİK", "Karşı aracın Kuantum QR'ı okutuluyor.", const Color(0xFF00FFC2)),
+            _buildAdimSatiri(Icons.satellite_alt_outlined, "SİNYAL", "Konum GPS'ten çekiliyor.", Colors.blue),
+            _buildAdimSatiri(Icons.document_scanner_outlined, "ANALİZ", "Yapay zeka ile hasar taranıyor.", Colors.orange),
+            _buildAdimSatiri(Icons.qr_code_scanner_outlined, "KİMLİK", "Karşı aracın QR kimliği okutuluyor.", primaryTeal),
 
-            const SizedBox(height: 40),
+            const SizedBox(height: 48),
             SizedBox(
               width: double.infinity, height: 56,
               child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), elevation: 0),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)), elevation: 0),
                 onPressed: () {
                   Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('E-Tutanak Motoru Başlatılıyor... 🚨', style: TextStyle(fontWeight: FontWeight.bold)), backgroundColor: Colors.redAccent));
+                  _plazaUyariGoster("TUTANAK BAŞLATILDI", "E-Tutanak Modülü Devrede 🚨", Colors.redAccent);
                 },
                 icon: const Icon(Icons.shield_outlined, size: 20),
-                label: const Text("TUTANAĞI BAŞLAT", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
+                label: const Text("TUTANAĞI BAŞLAT", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1, fontFamily: 'Avenir')),
               ),
             )
           ],
@@ -69,55 +78,72 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
 
   Widget _buildAdimSatiri(IconData icon, String adim, String aciklama, Color renk) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
+      padding: const EdgeInsets.only(bottom: 20.0),
       child: Row(
         children: [
           Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(color: renk.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: renk.withOpacity(0.3))),
-              child: Icon(icon, color: renk, size: 20)
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(color: renk.withValues(alpha: 0.1), shape: BoxShape.circle, border: Border.all(color: renk.withValues(alpha: 0.3))),
+              child: Icon(icon, color: renk, size: 24)
           ),
           const SizedBox(width: 16),
-          Text(adim, style: TextStyle(color: renk, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1)),
-          const SizedBox(width: 12),
-          Expanded(child: Text(aciklama, style: const TextStyle(color: Colors.white70, fontSize: 12))),
+          Text(adim, style: TextStyle(color: renk, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1, fontFamily: 'Avenir')),
+          const SizedBox(width: 16),
+          Expanded(child: Text(aciklama, style: const TextStyle(color: Colors.black87, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
         ],
+      ),
+    );
+  }
+
+  void _plazaUyariGoster(String baslik, String mesaj, Color renk) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.white,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: renk, width: 2)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+            const SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+          ],
+        ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET
-    const primaryCyan = Color(0xFF00FFC2);
-    const bgColor = Color(0xFF000000);
-    const surfaceColor = Color(0xFF111111);
-
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text('B Ü R O K R A S İ   A Ğ I', style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 3)),
+        surfaceTintColor: Colors.transparent,
+        shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
+        title: Text('E V R A K   Y Ö N E T İ M İ', style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 3, fontFamily: 'Avenir')),
         centerTitle: true,
       ),
       body: Column(
         children: [
           // 💎 MİNİMALİST SEKMELER
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: Container(
-              height: 48,
-              decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withOpacity(0.05))),
+              height: 52,
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.03), borderRadius: BorderRadius.circular(26)),
               child: TabBar(
                 controller: _tabController,
-                indicator: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24)),
-                labelColor: Colors.black,
-                unselectedLabelColor: Colors.white38,
+                indicator: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(22), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 5, offset: const Offset(0, 2))]),
+                labelColor: primaryTeal,
+                unselectedLabelColor: Colors.black45,
                 indicatorSize: TabBarIndicatorSize.tab,
                 dividerColor: Colors.transparent,
-                labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 0.5),
+                labelStyle: const TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 0.5, fontFamily: 'Avenir'),
                 tabs: const [Tab(text: "Tutanak"), Tab(text: "Onay"), Tab(text: "Randevu")],
               ),
             ),
@@ -130,81 +156,81 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
               children: [
                 // 1. SEKME: TUTANAKLAR (Kaza, Teslimat)
                 ListView(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                   physics: const BouncingScrollPhysics(),
                   children: [
-                    const Text("Resmi Belgeler", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
-                    const SizedBox(height: 16),
+                    Text("Resmi Belgeler", style: TextStyle(color: textColor, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
+                    const SizedBox(height: 20),
                     _buildFormKarti("Kaza Tespit Tutanağı", "Kazaya karıştığınızda QR onaylı yasal e-tutanak oluşturun.", Icons.car_crash_outlined, Colors.redAccent, _kazaTutanagiBaslat),
-                    _buildFormKarti("Araç Tesellüm Tutanağı", "Aracı vale/servise bırakırken çizik ve yakıt durumunu imzalayın.", Icons.key_outlined, Colors.orangeAccent, () {}),
-                    _buildFormKarti("İkinci El Kapora Sözleşmesi", "Oto Market işlemlerinizde şifreli dijital kapora sözleşmesi yapın.", Icons.handshake_outlined, Colors.greenAccent, () {}),
+                    _buildFormKarti("Araç Tesellüm Tutanağı", "Aracı vale/servise bırakırken çizik ve yakıt durumunu imzalayın.", Icons.key_outlined, Colors.orange, () {}),
+                    _buildFormKarti("İkinci El Kapora Sözleşmesi", "Oto Market işlemlerinizde şifreli dijital kapora sözleşmesi yapın.", Icons.handshake_outlined, Colors.green, () {}),
                   ],
                 ),
 
                 // 2. SEKME: BAKIM & TEKLİF FORMLARI
                 ListView(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                   physics: const BouncingScrollPhysics(),
                   children: [
-                    const Text("Onay Bekleyen İşlemler", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
-                    const SizedBox(height: 16),
+                    Text("Onay Bekleyen İşlemler", style: TextStyle(color: textColor, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
+                    const SizedBox(height: 20),
                     _buildTeklifKarti("Gazi Oto Servis", "Ön Fren Balatası + Disk Değişimi", "4.500 ₺", "ONAY BEKLİYOR"),
 
-                    const SizedBox(height: 32),
-                    const Text("Periyodik Bakım Cetvelleri", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
-                    const SizedBox(height: 16),
-                    _buildFormKarti("10.000 KM Standart Bakım", "Yağ, filtre ve sıvı değişimlerinin dijital onay cetveli.", Icons.oil_barrel_outlined, Colors.blueAccent, () {}),
-                    _buildFormKarti("50.000 KM Ağır Bakım", "Triger, şanzıman ve balata değişim detayları.", Icons.settings_outlined, Colors.purpleAccent, () {}),
+                    const SizedBox(height: 40),
+                    Text("Periyodik Bakım Cetvelleri", style: TextStyle(color: textColor, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
+                    const SizedBox(height: 20),
+                    _buildFormKarti("10.000 KM Standart Bakım", "Yağ, filtre ve sıvı değişimlerinin dijital onay cetveli.", Icons.oil_barrel_outlined, Colors.blue, () {}),
+                    _buildFormKarti("50.000 KM Ağır Bakım", "Triger, şanzıman ve balata değişim detayları.", Icons.settings_outlined, Colors.purple, () {}),
                   ],
                 ),
 
                 // 3. SEKME: RANDEVU SİSTEMİ
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
                         width: double.infinity, height: 56,
                         child: OutlinedButton.icon(
-                          style: OutlinedButton.styleFrom(side: BorderSide(color: primaryCyan.withOpacity(0.5)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-                          onPressed: () { ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Siber Radar Başlatılıyor...', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan)); },
-                          icon: const Icon(Icons.add, color: primaryCyan, size: 20),
-                          label: const Text("YENİ SERVİS RANDEVUSU AL", style: TextStyle(color: primaryCyan, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
+                          style: OutlinedButton.styleFrom(backgroundColor: Colors.white, side: BorderSide(color: primaryTeal.withValues(alpha: 0.5)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+                          onPressed: () { _plazaUyariGoster("SİSTEM HAZIRLANIYOR", "Akıllı Asistan üzerinden randevu motoru başlatılıyor...", primaryTeal); },
+                          icon: Icon(Icons.add, color: primaryTeal, size: 20),
+                          label: Text("YENİ SERVİS RANDEVUSU AL", style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1, fontFamily: 'Avenir')),
                         ),
                       ),
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 48),
 
-                      const Text("Yaklaşan İşlemler", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
-                      const SizedBox(height: 16),
+                      Text("Yaklaşan İşlemler", style: TextStyle(color: textColor, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
+                      const SizedBox(height: 20),
 
                       Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: primaryCyan.withOpacity(0.3))),
+                        padding: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24), border: Border.all(color: primaryTeal.withValues(alpha: 0.3)), boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.05), blurRadius: 15, offset: const Offset(0, 5))]),
                         child: Row(
                           children: [
                             Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(color: primaryCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: primaryCyan.withOpacity(0.5))),
-                                child: const Column(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: primaryTeal.withValues(alpha: 0.3))),
+                                child: Column(
                                     children: [
-                                      Text("15", style: TextStyle(color: primaryCyan, fontSize: 24, fontWeight: FontWeight.w900)),
-                                      Text("MART", style: TextStyle(color: primaryCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1))
+                                      Text("15", style: TextStyle(color: primaryTeal, fontSize: 24, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                                      Text("MART", style: TextStyle(color: primaryTeal, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'))
                                     ]
                                 )
                             ),
-                            const SizedBox(width: 16),
-                            const Expanded(
+                            const SizedBox(width: 20),
+                            Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Borusan Oto Yetkili Servis", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
-                                  SizedBox(height: 6),
-                                  Text("Saat: 14:30 • Şikayet: Standart Bakım", style: TextStyle(color: Colors.white54, fontSize: 11)),
+                                  Text("Borusan Oto Yetkili Servis", style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                                  const SizedBox(height: 8),
+                                  const Text("Saat: 14:30 • Şikayet: Standart Bakım", style: TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                                 ],
                               ),
                             ),
-                            const Icon(Icons.qr_code_outlined, color: primaryCyan, size: 24)
+                            Icon(Icons.qr_code_outlined, color: primaryTeal, size: 28)
                           ],
                         ),
                       )
@@ -219,48 +245,48 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
     );
   }
 
-  // 💎 TESLA MİMARİSİ: ŞIK FORM KARTLARI
+  // 💎 ŞIK FORM KARTLARI
   Widget _buildFormKarti(String baslik, String aciklama, IconData ikon, Color renk, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16), padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(color: const Color(0xFF111111), borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withOpacity(0.05))),
+        margin: const EdgeInsets.only(bottom: 16), padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))]),
         child: Row(
           children: [
             Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(color: renk.withOpacity(0.05), shape: BoxShape.circle, border: Border.all(color: renk.withOpacity(0.3))),
-                child: Icon(ikon, color: renk, size: 24)
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(color: renk.withValues(alpha: 0.05), shape: BoxShape.circle, border: Border.all(color: renk.withValues(alpha: 0.3))),
+                child: Icon(ikon, color: renk, size: 28)
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 20),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
-                  const SizedBox(height: 6),
-                  Text(aciklama, style: const TextStyle(color: Colors.white54, fontSize: 11, height: 1.4)),
+                  Text(baslik, style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
+                  const SizedBox(height: 8),
+                  Text(aciklama, style: const TextStyle(color: Colors.black54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                 ],
               ),
             ),
-            const SizedBox(width: 8),
-            Icon(Icons.arrow_forward_ios, color: Colors.white.withOpacity(0.2), size: 16)
+            const SizedBox(width: 12),
+            Icon(Icons.arrow_forward_ios, color: Colors.black.withValues(alpha: 0.2), size: 16)
           ],
         ),
       ),
     );
   }
 
-  // 💎 TESLA MİMARİSİ: TEKLİF ONAY KARTI (Glow Efektli)
+  // 💎 TEKLİF ONAY KARTI
   Widget _buildTeklifKarti(String firma, String islem, String fiyat, String durum) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-          color: const Color(0xFF111111),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.orangeAccent.withOpacity(0.3)),
-          boxShadow: [BoxShadow(color: Colors.orangeAccent.withOpacity(0.05), blurRadius: 20)]
+          border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+          boxShadow: [BoxShadow(color: Colors.orange.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, 5))]
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,31 +296,31 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
             children: [
               Row(
                 children: [
-                  const Icon(Icons.business_outlined, color: Colors.white54, size: 18),
+                  const Icon(Icons.business_outlined, color: Colors.black45, size: 20),
                   const SizedBox(width: 8),
-                  Text(firma, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
+                  Text(firma, style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'Avenir')),
                 ],
               ),
-              Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: Colors.orangeAccent.withOpacity(0.1), borderRadius: BorderRadius.circular(6), border: Border.all(color: Colors.orangeAccent.withOpacity(0.5))), child: Text(durum, style: const TextStyle(color: Colors.orangeAccent, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1))),
+              Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6), decoration: BoxDecoration(color: Colors.orange.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.orange.withValues(alpha: 0.5))), child: Text(durum, style: const TextStyle(color: Colors.orange, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'))),
             ],
           ),
+          const SizedBox(height: 24),
+          Text(islem, style: const TextStyle(color: Colors.black87, fontSize: 14, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           const SizedBox(height: 20),
-          Text(islem, style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.4)),
-          const SizedBox(height: 16),
-          const Divider(color: Colors.white12),
+          Divider(color: Colors.black.withValues(alpha: 0.05)),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(fiyat, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -0.5)),
+              Text(fiyat, style: TextStyle(color: textColor, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
               Row(
                 children: [
-                  TextButton(onPressed: () {}, child: const Text("REDDET", style: TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1))),
+                  TextButton(onPressed: () {}, child: const Text("REDDET", style: TextStyle(color: Colors.black38, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'))),
                   const SizedBox(width: 8),
                   ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2), foregroundColor: Colors.black, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                      style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
                       onPressed: () {},
-                      child: const Text("ONAYLA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1))
+                      child: const Text("ONAYLA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1, fontFamily: 'Avenir'))
                   ),
                 ],
               )

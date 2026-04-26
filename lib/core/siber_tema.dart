@@ -14,6 +14,7 @@ class SiberTema {
   static const Color kanKirmizi = Color(0xFFFF4D4D);
   static const Color matGrey = Color(0xFF111111);
   static const Color altinSari = Color(0xFFFFD700);
+  static const Color geceMavisi = Color(0xFF0A0E1A); // 🛡️ Kurumsal Gece Mavisi
 
   // ── 🛡️ ESKİ KODLARIN ÇÖKMESİNİ ENGELLEYEN KÖPRÜLER (ZAFİYET KAPATICILAR) ──
   // responsive_kalkan.dart "decoration" beklediği için bunu BoxDecoration yaptık!
@@ -33,11 +34,28 @@ class SiberTema {
   // 🏗️ 7D SİBER CAM EFEKTİ (GLASSMORPHISM) - Sadece Dekorasyon İsteyenler İçin
   static BoxDecoration siberCamZirh({Color? renk}) {
     return BoxDecoration(
-      color: (renk ?? Colors.white).withOpacity(0.05),
+      color: (renk ?? Colors.white).withValues(alpha: 0.05),
       borderRadius: BorderRadius.circular(20),
-      border: Border.all(color: Colors.white.withOpacity(0.1), width: 1.5),
+      border: Border.all(color: Colors.white.withValues(alpha: 0.1), width: 1.5),
     );
   }
+
+  // 💎 SİBER KUTU ZIRHI (Premium Glassmorphism)
+  static BoxDecoration get siberKutuZirhi => BoxDecoration(
+    color: Colors.white.withValues(alpha: 0.05), // Hafif şeffaf iç dolgu
+    borderRadius: BorderRadius.circular(16),
+    border: Border.all(
+      color: Colors.white.withValues(alpha: 0.1), // İnce kurumsal çerçeve
+      width: 1,
+    ),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withValues(alpha: 0.5),
+        blurRadius: 10,
+        offset: const Offset(0, 4),
+      ),
+    ],
+  );
 
   // 🛡️ ESKİ EKRANLAR İÇİN WIDGET KÖPRÜSÜ (Child ve Padding hatalarını kökünden çözer!)
   static Widget siberCamKalkan({Widget? child, EdgeInsetsGeometry? padding, Color? renk}) {

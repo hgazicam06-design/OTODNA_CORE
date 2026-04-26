@@ -4,10 +4,8 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// 🚀 KARARGAH ZIRHLARI
-import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
-import 'arac_detay_screen.dart'; // Detay ekranı bağlantısı
+import 'arac_detay_screen.dart';
 
 class GarajScreen extends StatefulWidget {
   const GarajScreen({super.key});
@@ -20,7 +18,14 @@ class _GarajScreenState extends State<GarajScreen> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final User? _currentUser = FirebaseAuth.instance.currentUser;
 
-  // --- SİBER GARAJ VERİ SETİ ---
+  // 🏢 PLAZA KALİTESİ PALET
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color bgColor = const Color(0xFFFAFAFC);
+  final Color textColor = const Color(0xFF1E293B);
+  final Color dangerColor = Colors.redAccent;
+  final Color premiumGold = const Color(0xFFD4AF37);
+
+  // --- PLAZA GARAJ VERİ SETİ ---
   String? _secilenAracCinsi;
   String? _secilenMarka;
   String? _secilenModel;
@@ -62,7 +67,7 @@ class _GarajScreenState extends State<GarajScreen> {
   final List<String> _yillar = List.generate(37, (index) => (2026 - index).toString());
 
   // =======================================================================
-  // 📸 SİBER GÖZ: ŞASE (VIN) TARAMA
+  // 📸 PLAZA GÖZ: ŞASE (VIN) TARAMA
   // =======================================================================
   void _saseTarayiciyiAc() {
     showModalBottomSheet(
@@ -80,15 +85,15 @@ class _GarajScreenState extends State<GarajScreen> {
 
   void _hubdanVeriCek(String saseNo) async {
     if (saseNo.length < 17) {
-      _siberUyariGoster("SİBER İHLAL", "Şase numarası 17 haneli olmalıdır!", SiberTema.kanKirmizi);
+      _plazaUyariGoster("SİSTEM İHLALİ", "Şase numarası 17 haneli olmalıdır!", dangerColor);
       return;
     }
-    _siberUyariGoster("SİBER GÖZ AKTİF", "Şase Onaylandı. Hub Verileri Çekiliyor... ⏳", SiberTema.kuantumCyan);
+    _plazaUyariGoster("KAMERA AKTİF", "Şase Onaylandı. Hub Verileri Çekiliyor... ⏳", primaryTeal);
     await Future.delayed(const Duration(seconds: 2));
 
     setState(() {
       _secilenAracCinsi = 'Otomobil 🚗 (Maks. 9 Koltuk)';
-      _secilenMarka = 'BMW'; // Otonom OCR simülasyonu (Gerçekte API'den gelecek)
+      _secilenMarka = 'BMW'; 
       _secilenModel = '3 Serisi';
       _secilenYil = '2023';
     });
@@ -99,7 +104,7 @@ class _GarajScreenState extends State<GarajScreen> {
   // =======================================================================
   Future<void> _aracEkle() async {
     if (_plakaController.text.isEmpty || _secilenModel == null) {
-      _siberUyariGoster("EKSİK VERİ", "Plaka ve Model Seçimi Zorunludur!", SiberTema.altinSari);
+      _plazaUyariGoster("EKSİK VERİ", "Plaka ve Model Seçimi Zorunludur!", Colors.orange);
       return;
     }
 
@@ -134,26 +139,26 @@ class _GarajScreenState extends State<GarajScreen> {
         _plakaController.clear(); _saseController.clear(); _secilenAracCinsi = null; _secilenMarka = null; _secilenModel = null; _secilenYil = null;
       });
 
-      _siberUyariGoster("KAYIT BAŞARILI", "Araç Kuantum Garajına Eklendi! 🛡️", SiberTema.kuantumCyan);
+      _plazaUyariGoster("KAYIT BAŞARILI", "Araç OtoDNA Garajına Eklendi! 🛡️", primaryTeal);
 
     } catch (e) {
-      _siberUyariGoster("HATA", "Karargaha bağlantı kurulamadı.", SiberTema.kanKirmizi);
+      _plazaUyariGoster("HATA", "Merkez ile bağlantı kurulamadı.", dangerColor);
     } finally {
       if (mounted) setState(() => _islemSuruyor = false);
     }
   }
 
-  void _siberUyariGoster(String baslik, String mesaj, Color renk) {
+  void _plazaUyariGoster(String baslik, String mesaj, Color renk) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: SiberTema.matGrey,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)),
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: renk, width: 2)),
         content: Column(
           mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+            Text(mesaj, style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -162,43 +167,47 @@ class _GarajScreenState extends State<GarajScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_currentUser == null) return const Scaffold(backgroundColor: SiberTema.oledBlack, body: Center(child: Text("Kimlik Doğrulanamadı!", style: TextStyle(color: Colors.white))));
+    if (_currentUser == null) return Scaffold(backgroundColor: bgColor, body: Center(child: Text("Kimlik Doğrulanamadı!", style: TextStyle(color: textColor, fontFamily: 'Avenir', fontWeight: FontWeight.bold))));
 
     return ResponsiveKalkan(
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent, // OLED Siyah
+        backgroundColor: bgColor,
         appBar: AppBar(
-            backgroundColor: Colors.transparent, elevation: 0,
-            title: const Text('O T O D N A', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 6)),
+            backgroundColor: Colors.white, 
+            elevation: 0,
+            surfaceTintColor: Colors.transparent,
+            shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+            title: Text('O T O D N A   G A R A J', style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 4, fontFamily: 'Avenir')),
             centerTitle: true,
-            leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18), onPressed: () => Navigator.pop(context))
+            leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context))
         ),
         body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(), padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          physics: const BouncingScrollPhysics(), padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // =================================================================
               // 1. CANLI GARAJ RADARI (FİREBASE)
               // =================================================================
-              const Text("Garaj", style: TextStyle(color: Colors.white54, fontSize: 13, fontWeight: FontWeight.w600, letterSpacing: 1)),
+              Text("Garaj", style: TextStyle(color: primaryTeal, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
               const SizedBox(height: 8),
-              const Text("Kayıtlı Araçlar", style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
+              Text("Kayıtlı Araçlar", style: TextStyle(color: textColor, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
               const SizedBox(height: 24),
 
               StreamBuilder<QuerySnapshot>(
                   stream: _db.collection('arac_kimlikleri').where('sahibi_id', isEqualTo: _currentUser!.uid).snapshots(),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+                    if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: primaryTeal));
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                       return Container(
-                          width: double.infinity, padding: const EdgeInsets.all(24),
-                          decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                          width: double.infinity, padding: const EdgeInsets.all(32),
+                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
                           child: const Column(
                               children: [
-                                Icon(Icons.garage_outlined, color: Colors.white24, size: 48),
-                                SizedBox(height: 12),
-                                Text("Garajınız şu an boş.", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold)),
+                                Icon(Icons.garage_outlined, color: Colors.black12, size: 56),
+                                SizedBox(height: 16),
+                                Text("Garajınız şu an boş.", style: TextStyle(color: Colors.black45, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                               ]
                           )
                       );
@@ -210,34 +219,34 @@ class _GarajScreenState extends State<GarajScreen> {
                         var arac = snapshot.data!.docs[index].data() as Map<String, dynamic>;
                         return GestureDetector(
                           onTap: () {
-                            // Detay Ekranına Fırlat
                             Navigator.push(context, MaterialPageRoute(builder: (context) => AracDetayScreen(aracVerisi: arac)));
                           },
                           child: Container(
                             margin: const EdgeInsets.only(bottom: 16),
                             padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
-                                color: SiberTema.matGrey,
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3)) // Zırhlı Çerçeve
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+                                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
                             ),
                             child: Row(
                               children: [
-                                const Icon(Icons.directions_car_outlined, color: SiberTema.kuantumCyan, size: 32),
+                                Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(Icons.directions_car_outlined, color: primaryTeal, size: 32)),
                                 const SizedBox(width: 20),
                                 Expanded(
                                     child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text(arac['plaka'] ?? 'PLAKA YOK', style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                                          Text(arac['plaka'] ?? 'PLAKA YOK', style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                                           const SizedBox(height: 4),
-                                          Text("${arac['marka_model']} (${arac['yil']})", style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                                          Text("${arac['marka_model']} (${arac['yil']})", style: const TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                                           const SizedBox(height: 6),
-                                          Text("DNA Skoru: %${arac['dna_skoru'] ?? 100}", style: const TextStyle(color: SiberTema.altinSari, fontSize: 11, fontWeight: FontWeight.w900))
+                                          Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: premiumGold.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(6)), child: Text("DNA Skoru: %${arac['dna_skoru'] ?? 100}", style: TextStyle(color: premiumGold, fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir')))
                                         ]
                                     )
                                 ),
-                                const Icon(Icons.arrow_forward_ios, color: Colors.white30, size: 16),
+                                const Icon(Icons.arrow_forward_ios, color: Colors.black26, size: 16),
                               ],
                             ),
                           ),
@@ -246,34 +255,36 @@ class _GarajScreenState extends State<GarajScreen> {
                     );
                   }
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 40),
 
               // =================================================================
               // 2. YENİ ARAÇ EKLEME FORMU
               // =================================================================
-              const Text("Yeni İşlem", style: TextStyle(color: Colors.white54, fontSize: 13, fontWeight: FontWeight.w600, letterSpacing: 1)),
+              Text("Yeni İşlem", style: TextStyle(color: primaryTeal, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
               const SizedBox(height: 8),
-              const Text("Garaja Araç Ekle", style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
+              Text("Garaja Araç Ekle", style: TextStyle(color: textColor, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
               const SizedBox(height: 12),
-              const Text("Şase numarasını (VIN) okutun veya bilgileri elle doldurun.", style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.5)),
-              const SizedBox(height: 32),
+              const Text("Şase numarasını (VIN) okutun veya bilgileri elle doldurun.", style: TextStyle(color: Colors.black54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+              const SizedBox(height: 24),
 
               Row(
                 children: [
                   Expanded(
                       flex: 2,
-                      child: TextField(
-                          controller: _saseController,
-                          style: const TextStyle(color: Colors.white, fontSize: 15, letterSpacing: 1.5),
-                          maxLength: 17,
-                          decoration: InputDecoration(
-                            labelText: 'Şase (VIN) No',
-                            labelStyle: const TextStyle(color: Colors.white54, fontSize: 13),
-                            counterText: "",
-                            filled: true, fillColor: SiberTema.matGrey,
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
-                          )
+                      child: Container(
+                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
+                        child: TextField(
+                            controller: _saseController,
+                            style: TextStyle(color: textColor, fontSize: 15, letterSpacing: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+                            maxLength: 17,
+                            decoration: InputDecoration(
+                              labelText: 'Şase (VIN) No',
+                              labelStyle: const TextStyle(color: Colors.black45, fontSize: 13, fontFamily: 'Avenir'),
+                              counterText: "",
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                            )
+                        ),
                       )
                   ),
                   const SizedBox(width: 16),
@@ -281,24 +292,26 @@ class _GarajScreenState extends State<GarajScreen> {
                     onTap: _saseTarayiciyiAc,
                     child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                        decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5))),
-                        child: const Icon(Icons.document_scanner_outlined, color: SiberTema.kuantumCyan, size: 24)
+                        decoration: BoxDecoration(color: primaryTeal, borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.2), blurRadius: 10, offset: const Offset(0, 4))]),
+                        child: const Icon(Icons.document_scanner_outlined, color: Colors.white, size: 24)
                     ),
                   )
                 ],
               ),
               const SizedBox(height: 16),
-              TextField(
-                  controller: _plakaController,
-                  textCapitalization: TextCapitalization.characters,
-                  style: const TextStyle(color: Colors.white, fontSize: 15, letterSpacing: 2),
-                  decoration: InputDecoration(
-                    labelText: 'Plaka (Örn: 34DNA2026)',
-                    labelStyle: const TextStyle(color: Colors.white54, fontSize: 13),
-                    filled: true, fillColor: SiberTema.matGrey,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
-                  )
+              Container(
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
+                child: TextField(
+                    controller: _plakaController,
+                    textCapitalization: TextCapitalization.characters,
+                    style: TextStyle(color: textColor, fontSize: 15, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+                    decoration: const InputDecoration(
+                      labelText: 'Plaka (Örn: 34DNA2026)',
+                      labelStyle: TextStyle(color: Colors.black45, fontSize: 13, fontFamily: 'Avenir'),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    )
+                ),
               ),
               const SizedBox(height: 32),
 
@@ -315,11 +328,16 @@ class _GarajScreenState extends State<GarajScreen> {
               SizedBox(
                   width: double.infinity, height: 60,
                   child: ElevatedButton(
-                      style: SiberTema.kuantumButonStili(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryTeal,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        elevation: 0,
+                      ),
                       onPressed: _islemSuruyor ? null : _aracEkle,
                       child: _islemSuruyor
-                          ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
-                          : const Text('GARAJA MÜHÜRLE', style: TextStyle(color: SiberTema.oledBlack, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5))
+                          ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                          : const Text('SİSTEME KAYDET', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir'))
                   )
               ),
               const SizedBox(height: 40),
@@ -332,14 +350,15 @@ class _GarajScreenState extends State<GarajScreen> {
 
   Widget _buildDropdown(String hint, String? value, List<String> items, Function(String?) onChanged) {
     return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(12), border: Border.all(color: value != null ? SiberTema.kuantumCyan.withOpacity(0.5) : Colors.transparent)),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: value != null ? primaryTeal.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
         child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
-                dropdownColor: SiberTema.matGrey, isExpanded: true, value: value,
-                hint: Text(hint, style: const TextStyle(color: Colors.white38, fontSize: 14)),
-                icon: Icon(Icons.keyboard_arrow_down, color: value != null ? SiberTema.kuantumCyan : Colors.white54),
-                items: items.map((String item) { return DropdownMenuItem<String>(value: item, child: Text(item, style: const TextStyle(color: Colors.white, fontSize: 14))); }).toList(),
+                dropdownColor: Colors.white, isExpanded: true, value: value,
+                hint: Text(hint, style: const TextStyle(color: Colors.black38, fontSize: 14, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
+                icon: Icon(Icons.keyboard_arrow_down, color: value != null ? primaryTeal : Colors.black38),
+                style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+                items: items.map((String item) { return DropdownMenuItem<String>(value: item, child: Text(item)); }).toList(),
                 onChanged: onChanged
             )
         )
@@ -370,10 +389,11 @@ class _SaseScannerOverlayState extends State<SaseScannerOverlay> with SingleTick
   Widget build(BuildContext context) {
     final scanAreaWidth = MediaQuery.of(context).size.width * 0.8;
     final scanAreaHeight = 100.0;
+    final Color primaryTeal = Colors.teal.shade700;
 
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0, iconTheme: const IconThemeData(color: SiberTema.kuantumCyan), title: const Text("ŞASE TARAYICI (OCR)", style: TextStyle(color: SiberTema.kuantumCyan, letterSpacing: 2, fontSize: 14, fontWeight: FontWeight.bold)), centerTitle: true),
+      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0, iconTheme: IconThemeData(color: primaryTeal), title: Text("ŞASE TARAYICI (OCR)", style: TextStyle(color: primaryTeal, letterSpacing: 2, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')), centerTitle: true),
       body: Stack(
         children: [
           MobileScanner(onDetect: (capture) {
@@ -384,15 +404,15 @@ class _SaseScannerOverlayState extends State<SaseScannerOverlay> with SingleTick
               Navigator.pop(context, barcodes.first.rawValue);
             }
           }),
-          ColorFiltered(colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.8), BlendMode.srcOut), child: Container(decoration: const BoxDecoration(color: Colors.transparent), child: Align(alignment: Alignment.center, child: Container(width: scanAreaWidth, height: scanAreaHeight, decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(12)))))),
+          ColorFiltered(colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.8), BlendMode.srcOut), child: Container(decoration: const BoxDecoration(color: Colors.transparent), child: Align(alignment: Alignment.center, child: Container(width: scanAreaWidth, height: scanAreaHeight, decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(16)))))),
           Align(
             alignment: Alignment.center,
             child: SizedBox(
               width: scanAreaWidth, height: scanAreaHeight,
               child: Stack(
                 children: [
-                  Container(decoration: BoxDecoration(border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 2), borderRadius: BorderRadius.circular(12))),
-                  AnimatedBuilder(animation: _animationController, builder: (context, child) => Positioned(top: _animationController.value * (scanAreaHeight - 4), left: 0, right: 0, child: Container(height: 3, decoration: BoxDecoration(color: SiberTema.kuantumCyan, boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.5), blurRadius: 10, spreadRadius: 2)]))))
+                  Container(decoration: BoxDecoration(border: Border.all(color: primaryTeal, width: 2), borderRadius: BorderRadius.circular(16))),
+                  AnimatedBuilder(animation: _animationController, builder: (context, child) => Positioned(top: _animationController.value * (scanAreaHeight - 4), left: 0, right: 0, child: Container(height: 3, decoration: BoxDecoration(color: primaryTeal, boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.5), blurRadius: 10, spreadRadius: 2)]))))
                 ],
               ),
             ),

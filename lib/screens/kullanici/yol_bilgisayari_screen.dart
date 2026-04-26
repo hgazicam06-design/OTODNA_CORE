@@ -28,7 +28,7 @@ class _YolBilgisayariScreenState extends State<YolBilgisayariScreen> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF111111),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.deepOrangeAccent.withOpacity(0.5))),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Colors.deepOrangeAccent.withOpacity(0.5))),
         contentPadding: const EdgeInsets.all(32),
         content: Column(
           mainAxisSize: MainAxisSize.min,
