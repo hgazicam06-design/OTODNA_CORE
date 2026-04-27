@@ -1,6 +1,6 @@
 import 'dart:developer' as developer;
 import 'city_service.dart';
-import 'finance_service.dart';
+import 'finans/accounting_engine.dart';
 
 /// 🛡️ KUANTUM MERKEZ KARARGAH MOTORU (MerkezServis)
 /// Ankara Merkezli sistemin genel onay, yargı (ceza) ve denetim mekanizmalarını yönetir.
@@ -38,7 +38,7 @@ class MerkezServis {
     }
 
     // 🚀 SİBER MİMARİ: Hesaplama burada yapılmaz, uzmanı olan FinanceService'e sorulur!
-    Map<String, double> finansRaporu = FinanceService.bayiSatisHesapla(brut);
+    Map<String, double> finansRaporu = AccountingEngine.bayiSatisHesapla(brut);
 
     // Otonom olarak %10 net payı çeker, bulamazsa güvenli kalkan olarak %10'u manuel hesaplar
     return finansRaporu['otodna_net_pay'] ?? (brut * 0.10);

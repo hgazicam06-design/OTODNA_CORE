@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer' as developer;
 
 /// 🌊 SİBER MEGA PARÇA MOTORU (Şelale Arama Sistemi)
 /// Ustanın el yazısı listesini okuyan, ardından tüm Kuantum ağında
@@ -84,7 +85,7 @@ class SiberMegaParcaMotoru {
     }
 
     // TOPLAM TUTAR HESAPLAMA
-    double toplamTutar = sepeteEklenenler.fold(0, (sum, item) => sum + (item['liste_fiyati'] as double));
+    double toplamTutar = sepeteEklenenler.fold(0, (totalSum, item) => totalSum + (item['liste_fiyati'] as double));
 
     return {
       'bulunanlar': sepeteEklenenler,
@@ -114,9 +115,9 @@ class SiberMegaParcaMotoru {
       }
 
       await batch.commit();
-      print("🚨 HURDACI İHALESİ BAŞLATILDI: ${eksikParcalar.length} parça için teklif toplanıyor.");
+      developer.log("🚨 HURDACI İHALESİ BAŞLATILDI: ${eksikParcalar.length} parça için teklif toplanıyor.");
     } catch (e) {
-      print("İhale Başlatma Hatası: $e");
+      developer.log("İhale Başlatma Hatası: $e");
     }
   }
 

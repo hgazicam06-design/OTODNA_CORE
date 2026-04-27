@@ -86,4 +86,16 @@ class CityService {
         .where((il) => il.contains(aranan))
         .toList();
   }
+
+  /// Şehrin hangi bölgede olduğunu bulur
+  static String sehirdenBolgeBul(String sehir, {String ulke = 'TÜRKİYE'}) {
+    if (!_kureselAg.containsKey(ulke)) return 'BİLİNMEYEN BÖLGE';
+    String aranan = sehir.trim().toUpperCase();
+    for (var entry in _kureselAg[ulke]!.entries) {
+      if (entry.value.contains(aranan)) {
+        return entry.key;
+      }
+    }
+    return 'MERKEZ BÖLGE';
+  }
 }

@@ -6,6 +6,8 @@ import 'dart:developer' as developer;
 /// 🛡️ KUANTUM SOSYAL GARAJ (Canlı Forum Arayüzü)
 /// Maket verileri reddeder, doğrudan Firebase'den akarak Siber Cam (Glassmorphism) içinde listeler.
 class ForumMainPage extends StatelessWidget {
+  ForumMainPage({super.key});
+
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   @override
@@ -48,7 +50,6 @@ class ForumMainPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xFF00FFC2), // Neon Turkuaz
         elevation: 10,
-        shadowColor: const Color(0xFF00FFC2).withOpacity(0.5),
         onPressed: () {
           developer.log("SİBER HAREKAT: Yeni Soru Sorma Mühimmatı hazırlandı!");
           // Navigator.push ile hedef ekrana yönlendirilecek
@@ -78,9 +79,9 @@ class ForumMainPage extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.03), // Cam Zemin
+              color: Colors.white.withValues(alpha: 0.03), // Cam Zemin
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: const Color(0xFF00FFC2).withOpacity(0.3), width: 1.5), // Turkuaz Çerçeve
+              border: Border.all(color: const Color(0xFF00FFC2).withValues(alpha: 0.3), width: 1.5), // Turkuaz Çerçeve
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,12 +126,12 @@ class ForumMainPage extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(
-                          color: Colors.greenAccent.withOpacity(0.1),
+                          color: Colors.greenAccent.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.greenAccent.withOpacity(0.5)),
+                          border: Border.all(color: Colors.greenAccent.withValues(alpha: 0.5)),
                         ),
-                        child: Row(
-                          children: const [
+                        child: const Row(
+                          children: [
                             Icon(Icons.verified_user_outlined, color: Colors.greenAccent, size: 14),
                             SizedBox(width: 4),
                             Text("USTA BİLDİRDİ", style: TextStyle(color: Colors.greenAccent, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5)),

@@ -1,6 +1,5 @@
 // lib/services/pdf_rapor_servisi.dart
 import 'dart:io';
-import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
@@ -43,9 +42,9 @@ class PdfRaporServisi {
                   pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      pw.Text('OTODNA SİBER KARARGAH', style: pw.TextStyle(font: ttfBold, fontSize: 24, color: PdfColors.black)),
+                      pw.Text('\${bayiId.toUpperCase()}', style: pw.TextStyle(font: ttfBold, fontSize: 24, color: PdfColors.black)),
                       pw.SizedBox(height: 4),
-                      pw.Text('RESMİ CİRO VE BİLANÇO DÖKÜMÜ', style: pw.TextStyle(font: ttf, fontSize: 12, color: PdfColors.grey700)),
+                      pw.Text('RESMİ CİRO VE BİLANÇO DÖKÜMÜ - OTODNA ALTYAPISI', style: pw.TextStyle(font: ttf, fontSize: 10, color: PdfColors.grey700)),
                     ],
                   ),
                   pw.Container(
@@ -68,7 +67,7 @@ class PdfRaporServisi {
               pw.SizedBox(height: 32),
 
               // ── 📊 MUHASEBE TABLOSU ──
-              pw.Table.fromTextArray(
+              pw.TableHelper.fromTextArray(
                 border: pw.TableBorder.all(color: PdfColors.grey400),
                 headerStyle: pw.TextStyle(font: ttfBold, fontSize: 10, color: PdfColors.white),
                 headerDecoration: const pw.BoxDecoration(color: PdfColors.black),
@@ -87,7 +86,7 @@ class PdfRaporServisi {
               // ── ⚠️ GİDERLER VE KESİNTİLER ──
               pw.Text('KESİNTİLER VE KOMİSYON (SADECE PARÇA ÜZERİNDEN %12)', style: pw.TextStyle(font: ttfBold, fontSize: 10, color: PdfColors.red800)),
               pw.SizedBox(height: 8),
-              pw.Table.fromTextArray(
+              pw.TableHelper.fromTextArray(
                 border: pw.TableBorder.all(color: PdfColors.red800),
                 headerStyle: pw.TextStyle(font: ttfBold, fontSize: 10, color: PdfColors.white),
                 headerDecoration: const pw.BoxDecoration(color: PdfColors.red800),
@@ -122,7 +121,7 @@ class PdfRaporServisi {
               // ── 🛡️ ALT BİLGİ VE GÜVENLİK ──
               pw.Divider(color: PdfColors.grey500),
               pw.Text(
-                'Bu belge OtoDNA Kuantum Ağı tarafından otomatik olarak oluşturulmuştur. Çifte harcama ve veri bütünlüğü koruma altındadır.',
+                'İşbu bilanço dökümü \$bayiId firması muhasebesi için oluşturulmuştur. OtoDNA yalnızca dijital altyapı hizmeti sunar ve hiçbir finansal/hukuki mesuliyet kabul etmez.',
                 textAlign: pw.TextAlign.center,
                 style: pw.TextStyle(font: ttf, fontSize: 8, color: PdfColors.grey700),
               ),

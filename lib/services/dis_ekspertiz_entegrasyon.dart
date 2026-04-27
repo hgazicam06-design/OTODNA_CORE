@@ -1,7 +1,5 @@
 // lib/services/dis_ekspertiz_entegrasyon.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'dart:developer' as developer;
 
 /// 🛡️ KUANTUM DIŞ İSTİHBARAT VE ENTEGRASYON MOTORU

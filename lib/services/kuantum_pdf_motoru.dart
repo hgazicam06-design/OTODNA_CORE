@@ -43,8 +43,8 @@ class KuantumPdfMotoru {
                       pw.Column(
                         crossAxisAlignment: pw.CrossAxisAlignment.start,
                         children: [
-                          pw.Text("OtoDNA", style: pw.TextStyle(color: kuantumCyan, fontSize: 32, fontWeight: pw.FontWeight.bold)),
-                          pw.Text("DİJİTAL REFERANS PROTOKOLÜ", style: pw.TextStyle(color: PdfColors.white, fontSize: 10, letterSpacing: 2)),
+                          pw.Text(bayiIsim.toUpperCase(), style: pw.TextStyle(color: kuantumCyan, fontSize: 32, fontWeight: pw.FontWeight.bold)),
+                          pw.Text("DİJİTAL REFERANS PROTOKOLÜ - OTODNA ALTYAPISI", style: const pw.TextStyle(color: PdfColors.white, fontSize: 10, letterSpacing: 2)),
                         ],
                       ),
                       // Kuantum Mührü İkonu
@@ -100,7 +100,7 @@ class KuantumPdfMotoru {
                         ],
                       ),
                     );
-                  }).toList(),
+                  }),
 
                   pw.SizedBox(height: 30),
 
@@ -119,8 +119,8 @@ class KuantumPdfMotoru {
                   pw.SizedBox(height: 10),
                   pw.Center(
                     child: pw.Text(
-                      "Bu belge OtoDNA Kuantum Ağı tarafından kriptolanmış ve dijital olarak mühürlenmiştir.",
-                      style: const pw.TextStyle(color: PdfColors.grey400, fontSize: 9),
+                      "İşbu belge $bayiIsim firması tarafından düzenlenmiş olup tüm hukuki ve ticari mesuliyet firmaya aittir. OtoDNA yalnızca dijital altyapı hizmeti sunar ve hiçbir şekilde mesuliyet kabul etmez.",
+                      style: const pw.TextStyle(color: PdfColors.grey400, fontSize: 8),
                       textAlign: pw.TextAlign.center,
                     ),
                   ),

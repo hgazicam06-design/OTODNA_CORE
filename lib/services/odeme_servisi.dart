@@ -1,5 +1,5 @@
 import 'dart:developer' as developer;
-import 'firestore_servis.dart'; // 🚀 MAKET YIKILDI: Karargah havuzu bağlantısı aktif!
+import 'core_database_service.dart'; // 🚀 MAKET YIKILDI: Karargah havuzu bağlantısı aktif!
 
 /// 🛡️ KUANTUM ÖDEME VE TAHSİLAT MOTORU (OdemeServisi)
 /// Müşteri kaporalarını Kuantum Havuzuna kilitler ve caydırıcı siber yargı uyarılarını yönetir.
@@ -29,7 +29,7 @@ class OdemeServisi {
 
       // 🚀 GERÇEK VERİTABANI ATEŞLEMESİ
       // Yorum satırları imha edildi, doğrudan Atomik FirestoreServis Kalkanı tetikleniyor!
-      await FirestoreServis().kaporaKaydet(musteriId, ustaId, tutar: tutar);
+      await CoreDatabaseService().kaporaKaydet(musteriId, ustaId, tutar: tutar);
 
       developer.log("SİBER ONAY: Kapora tahsilatı ve havuz kilitleme işlemi kusursuz tamamlandı.");
 

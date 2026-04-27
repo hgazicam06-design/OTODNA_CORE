@@ -21,7 +21,7 @@ class PdfOfferService {
 
   // ── 💰 SİBER FİYAT TEKLİFİ BASKISI (MAKET YIKILDI) ──────────────────────
   static Future<File> generateOffer({
-    required String bayiId,
+    required String bayiIsim,
     required String plate,
     required List<OfferItem> items,
   }) async {
@@ -44,7 +44,7 @@ class PdfOfferService {
           build: (pw.Context context) => pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Text("OTODNA RESMI FIYAT TEKLIFI", style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold, color: PdfColors.teal900)),
+              pw.Text("\${bayiIsim.toUpperCase()} FIYAT TEKLIFI", style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold, color: PdfColors.teal900)),
               pw.SizedBox(height: 10),
               pw.Text("Arac Plakasi: ${plate.toUpperCase()}", style: const pw.TextStyle(fontSize: 14)),
               pw.Text("Tarih: ${DateTime.now().toLocal().toString().split(' ')[0]}", style: const pw.TextStyle(fontSize: 14)),
@@ -62,7 +62,7 @@ class PdfOfferService {
                     item.description,
                     item.quantity.toString(),
                     "TL ${item.totalPrice.toStringAsFixed(2)}"
-                  ]).toList(),
+                  ]),
                 ],
               ),
 
@@ -86,7 +86,8 @@ class PdfOfferService {
               pw.Text("SARTLAR VE KOSULLAR:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold, decoration: pw.TextDecoration.underline)),
               pw.Text("1. Isbu teklif 7 gun gecerlidir."),
               pw.Text("2. Mali degeri yoktur, fatura yerine gecmez."),
-              pw.Text("3. OtoDNA Kuantum Agi tarafindan siber olarak guvenceye alinmistir."),
+              pw.Text("3. Isbu fiyat teklifi \$bayiIsim tarafindan verilmistir."),
+              pw.Text("4. OtoDNA yalnizca dijital altyapi saglayicisidir, hicbir sekilde mesuliyet kabul etmez."),
 
               pw.SizedBox(height: 30),
 
@@ -116,7 +117,7 @@ class PdfOfferService {
       // ⛓️ ATOMİK ZIRH: İşlemi Karargah Kara Kutusuna Mühürle
       await _db.collection('sistem_loglari').add({
         'islem_turu': 'FIYAT_TEKLIFI',
-        'islem_detayi': 'SİBER BİLGİ: $bayiId yetkilisi tarafindan $plate plakali arac icin teklif belgesi basildi. Toplam Tutar: ₺$genelToplam',
+        'islem_detayi': 'SİBER BİLGİ: $bayiIsim yetkilisi tarafindan $plate plakali arac icin teklif belgesi basildi. Toplam Tutar: ₺$genelToplam',
         'tarih': FieldValue.serverTimestamp(),
       });
 

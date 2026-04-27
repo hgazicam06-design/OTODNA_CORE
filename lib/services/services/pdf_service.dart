@@ -39,7 +39,7 @@ class PdfService {
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
                     // Başlık ve Şasi Bilgileri
-                    pw.Text("OTODNA ARAC KONTROL FORMU", style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold, color: PdfColors.blue900)),
+                    pw.Text("\${record.bayiId.toUpperCase()} ARAC KONTROL FORMU", style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold, color: PdfColors.blue900)),
                     pw.SizedBox(height: 10),
                     pw.Text("Sase Numarasi: ${record.saseNo.toUpperCase()}", style: const pw.TextStyle(fontSize: 14)),
                     pw.Text("Islem Referansi: ${record.islemId}", style: const pw.TextStyle(fontSize: 14)),
@@ -63,7 +63,7 @@ class PdfService {
                               ]
                           )
                       );
-                    }).toList(),
+                    }),
 
                     pw.SizedBox(height: 50),
                     pw.Divider(color: PdfColors.grey),
@@ -93,7 +93,7 @@ class PdfService {
                     ),
 
                     pw.SizedBox(height: 30),
-                    pw.Center(child: pw.Text("Bu belge OtoDNA Kuantum Agi tarafindan siber olarak dogrulanmistir.", style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700))),
+                    pw.Center(child: pw.Text("Isbu belge \${record.bayiId} tarafindan duzenlenmistir. OtoDNA yalnizca dijital altyapi hizmeti sunar ve hicbir hukuki mesuliyet kabul etmez.", style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey700), textAlign: pw.TextAlign.center)),
                   ]
               )
           )

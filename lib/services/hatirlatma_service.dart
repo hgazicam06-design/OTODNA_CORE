@@ -44,7 +44,7 @@ class HatirlatmaService {
               'bitis': Timestamp.fromDate(bitis),
               'gonderildi': false, // Sinyal fırlatıldığında (Cloud Function ile) true olacak
               'saseNo': arac.saseNo.toUpperCase(),
-              'plaka': (arac.plaka ?? 'PLAKASIZ').toUpperCase(),
+              'plaka': arac.plaka.toUpperCase(),
               'sahibiUid': arac.sahibiUid,
               'olusturulma_tarihi': FieldValue.serverTimestamp(),
             });

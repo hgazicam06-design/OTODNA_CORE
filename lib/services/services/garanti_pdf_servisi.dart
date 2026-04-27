@@ -67,6 +67,7 @@ class GarantiBelgesiServisi {
 
   // ── 📄 2. GERÇEK DİJİTAL MÜHÜRLÜ PDF BASKISI (SİVİL PRINT İMHA EDİLDİ) ───
   static Future<File> garantiBelgesiBas({
+    required String bayiIsim,
     required String saseNo,
     required String islemId,
     required List<GarantiKalemi> liste
@@ -81,7 +82,7 @@ class GarantiBelgesiServisi {
           build: (pw.Context context) => pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Text("OTODNA RESMI GARANTI BELGESI", style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold, color: PdfColors.blue900)),
+              pw.Text("\${bayiIsim.toUpperCase()} RESMI GARANTI BELGESI", style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold, color: PdfColors.blue900)),
               pw.SizedBox(height: 10),
               pw.Text("Sase No: ${saseNo.toUpperCase()}", style: const pw.TextStyle(fontSize: 14)),
               pw.Text("Islem Referans: $islemId", style: const pw.TextStyle(fontSize: 14)),
@@ -102,13 +103,15 @@ class GarantiBelgesiServisi {
                       ],
                     )
                 );
-              }).toList(),
+              }),
 
               pw.SizedBox(height: 30),
               pw.Text("GARANTI SARTLARI:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold, decoration: pw.TextDecoration.underline)),
               pw.Text("1. Hatali kullanim ve agir arazi sartlari garantiyi gecersiz kilar."),
-              pw.Text("2. OtoDNA muhuru olmayan belgeler gecersizdir."),
-              pw.SizedBox(height: 40),
+              pw.Text("2. Dijital Kuantum muhuru olmayan belgeler gecersizdir."),
+              pw.SizedBox(height: 20),
+              pw.Text("Isbu garanti belgesi \$bayiIsim tarafindan duzenlenmis olup, butun hukuki ve ticari sorumluluk firmaya aittir. OtoDNA yalnizca dijital altyapi hizmeti sunar ve hicbir mesuliyet kabul etmez.", style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey700), textAlign: pw.TextAlign.center),
+              pw.SizedBox(height: 30),
 
               // 🚀 GERÇEK SİBER QR KOD ENTEGRASYONU
               pw.Center(

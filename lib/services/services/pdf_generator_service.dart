@@ -27,7 +27,7 @@ class PdfGenerator {
   // ── 📋 1. SİBER ARAÇ KONTROL FORMU (ÇİFT TİKLİ) ──────────────────────────
   static Future<File> createControlFormPDF({
     required String saseNo,
-    required String bayiId,
+    required String bayiIsim,
     required Map<String, ServiceAction> results,
   }) async {
     try {
@@ -40,7 +40,7 @@ class PdfGenerator {
           build: (pw.Context context) => pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Text("OTODNA ARAC KONTROL RAPORU", style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold, color: PdfColors.blue900)),
+              pw.Text("\${bayiIsim.toUpperCase()} ARAC KONTROL RAPORU", style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold, color: PdfColors.blue900)),
               pw.SizedBox(height: 10),
               pw.Text("Sase Numarasi: ${saseNo.toUpperCase()}", style: const pw.TextStyle(fontSize: 14)),
               pw.Text("Tarih: ${DateTime.now().toLocal().toString().split(' ')[0]}", style: const pw.TextStyle(fontSize: 14)),
@@ -58,7 +58,7 @@ class PdfGenerator {
                     entry.key,
                     entry.value.kontrolEdildi ? '[EVET]' : '[HAYIR]',
                     entry.value.degistirildi ? '[EVET]' : '[HAYIR]'
-                  ]).toList(),
+                  ]),
                 ],
               ),
 
@@ -73,6 +73,8 @@ class PdfGenerator {
                 ),
               ),
               pw.Center(child: pw.Text("DIJITAL KONTROL MUHURU", style: const pw.TextStyle(fontSize: 8))),
+              pw.SizedBox(height: 20),
+              pw.Text("Isbu arac kontrol raporu \$bayiIsim tarafindan duzenlenmistir. Tum sorumluluk firmaya aittir. OtoDNA yalnizca dijital altyapi hizmeti sunar ve mesuliyet kabul etmez.", style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey700), textAlign: pw.TextAlign.center),
             ],
           ),
         ),
@@ -84,7 +86,7 @@ class PdfGenerator {
       await file.writeAsBytes(await pdf.save());
 
       // ⛓️ ATOMİK ZIRH: Kara Kutuya Logla (Kayıt Dışılığı Engelle!)
-      await _logPdfIslemi('KONTROL_FORMU', saseNo, bayiId);
+      await _logPdfIslemi('KONTROL_FORMU', saseNo, bayiIsim);
 
       developer.log("SİBER BASKI: ✅ Kontrol Formu PDF olarak mühürlendi! Yol: ${file.path}");
       return file;
@@ -98,7 +100,7 @@ class PdfGenerator {
   // ── 💰 2. SİBER FİYAT TEKLİF FORMU ───────────────────────────────────────
   static Future<File> createPriceOfferPDF({
     required String musteriAdi,
-    required String bayiId,
+    required String bayiIsim,
     required List<OfferItem> items,
     required double total,
   }) async {
@@ -112,7 +114,7 @@ class PdfGenerator {
           build: (pw.Context context) => pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Text("OTODNA RESMI FIYAT TEKLIFI", style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold, color: PdfColors.teal900)),
+              pw.Text("\${bayiIsim.toUpperCase()} FIYAT TEKLIFI", style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold, color: PdfColors.teal900)),
               pw.SizedBox(height: 10),
               pw.Text("Musteri: ${musteriAdi.toUpperCase()}", style: const pw.TextStyle(fontSize: 14)),
               pw.Text("Tarih: ${DateTime.now().toLocal().toString().split(' ')[0]}", style: const pw.TextStyle(fontSize: 14)),
@@ -131,7 +133,7 @@ class PdfGenerator {
                     item.miktar.toString(),
                     "TL ${item.birimFiyat.toStringAsFixed(2)}",
                     "TL ${(item.miktar * item.birimFiyat).toStringAsFixed(2)}"
-                  ]).toList(),
+                  ]),
                 ],
               ),
 
@@ -145,7 +147,8 @@ class PdfGenerator {
               pw.Text("SARTLAR VE KOSULLAR:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold, decoration: pw.TextDecoration.underline)),
               pw.Text("1. Isbu teklif 7 gun gecerlidir."),
               pw.Text("2. Mali degeri yoktur, fatura yerine gecmez."),
-              pw.Text("3. OtoDNA Kuantum Agi tarafindan siber olarak guvenceye alinmistir."),
+              pw.Text("3. Isbu fiyat teklifi \$bayiIsim tarafindan verilmistir."),
+              pw.Text("4. OtoDNA yalnizca dijital altyapi saglayicisidir, mesuliyet kabul etmez."),
             ],
           ),
         ),
@@ -157,7 +160,7 @@ class PdfGenerator {
       await file.writeAsBytes(await pdf.save());
 
       // ⛓️ ATOMİK ZIRH: Kara Kutuya Logla
-      await _logPdfIslemi('FIYAT_TEKLIFI', 'Musteri: $musteriAdi', bayiId);
+      await _logPdfIslemi('FIYAT_TEKLIFI', 'Musteri: $musteriAdi', bayiIsim);
 
       developer.log("SİBER BASKI: ✅ Fiyat Teklifi PDF olarak mühürlendi! Yol: ${file.path}");
       return file;
@@ -173,7 +176,7 @@ class PdfGenerator {
     try {
       await _db.collection('sistem_loglari').add({
         'islem_turu': islemTuru,
-        'islem_detayi': 'SİBER BİLGİ: $bayiId yetkilisi tarafından $hedef için $islemTuru belgesi basıldı.',
+        'islem_detayi': 'SİBER BİLGİ: $bayiId tarafından $hedef için $islemTuru belgesi basıldı.',
         'tarih': FieldValue.serverTimestamp(),
       });
     } catch (e) {

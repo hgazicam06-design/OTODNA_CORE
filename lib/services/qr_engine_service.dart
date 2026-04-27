@@ -14,9 +14,9 @@ class QREngineService {
         throw Exception("SİBER İHLAL: Eksik DNA veya Bayi İstihbaratı!");
       }
 
-      // Kuantum Şifreleme Formatı: OTODNA_TAG_34DNA2026_BAYIID_ZAMANDAMGASİ
-      // 🚀 ZAFİYET GİDERİLDİ: dealerId artık şifreye atomik olarak gömülü!
-      String qrSinyali = 'OTODNA_TAG_${siberPlate}_${siberDealer}_${DateTime.now().millisecondsSinceEpoch}';
+      // Kuantum Şifreleme Formatı: Web URL tabanlı
+      // 🚀 Vatandaşlar normal kamera ile okuttuğunda web sitesi açılacak
+      String qrSinyali = 'https://www.otodna.com/qr/$siberPlate?dealer=$siberDealer&ts=${DateTime.now().millisecondsSinceEpoch}';
       developer.log("SİBER KRİPTOGRAFİ: Kuantum QR Mührü Şifrelendi -> $qrSinyali");
 
       return qrSinyali;
@@ -47,7 +47,7 @@ class QREngineService {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: const Color(0xFF00FFC2), width: 3), // Kuantum Turkuazı
         boxShadow: [
-          BoxShadow(color: const Color(0xFF00FFC2).withOpacity(0.5), blurRadius: 25, spreadRadius: 3)
+          BoxShadow(color: const Color(0xFF00FFC2).withValues(alpha: 0.5), blurRadius: 25, spreadRadius: 3)
         ],
       ),
       child: QrImageView(

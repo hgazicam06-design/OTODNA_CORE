@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer' as developer;
 
 /// 🚀 OTO ÇIĞIR SİBER LOJİSTİK VE FİNANS MOTORU
 /// Taksiciler ve müşteriler arasındaki fiyat, ceza, gizlilik ve sadakat işlemlerinin
@@ -78,9 +79,9 @@ class SiberLojistikMotoru {
           'sistemTetikleyicisi': 'SiberLojistikMotoru'
         });
       });
-      print("🚨 ŞOFÖR CEZALANDIRILDI: $cezaPuani Puan Kesildi.");
+      developer.log("🚨 ŞOFÖR CEZALANDIRILDI: $cezaPuani Puan Kesildi.");
     } catch (e) {
-      print("Ceza Kesme Hatası: $e");
+      developer.log("Ceza Kesme Hatası: $e");
     }
   }
 
@@ -95,7 +96,7 @@ class SiberLojistikMotoru {
         'kara_liste': FieldValue.arrayUnion([engellenenUid])
       });
     } catch (e) {
-      print("Kara Liste Hatası: $e");
+      developer.log("Kara Liste Hatası: $e");
     }
   }
 

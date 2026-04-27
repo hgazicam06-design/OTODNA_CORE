@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:developer' as developer;
-import 'package:flutter/material.dart';
 
 /// 🛡️ KUANTUM İLETİŞİM VE BİLDİRİM MOTORU (V2.1 - ZIRHLI)
 /// Araçlara QR okutulduğunda fırlatılan S.O.S ve uyarı sinyallerini Karargah standartlarıyla yönetir.

@@ -20,7 +20,7 @@ class MegaRevizyonMotoru {
       // 1. KİLİTLİ KOORDİNAT (Siber Noter - Çift Yönlü Onayın İlk Adımı)
       // Kullanıcıdan konum izni alındığı varsayılmıştır.
       developer.log("SİBER RADAR: GPS Kanıt Koordinatları aranıyor...");
-      Position pozisyon = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      Position pozisyon = await Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy: LocationAccuracy.high));
 
       // 2. FİNANSAL HESAPLAMA (%12 Karargah Payı - Asla Değişmez)
       double komutanPayi = toplamMaliyet * 0.12;

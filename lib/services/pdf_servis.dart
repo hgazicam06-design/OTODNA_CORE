@@ -10,7 +10,7 @@ import '../models/service_model.dart';
 class PdfServis {
 
   // ── 📄 DNA RAPORU OLUŞTURMA (SİBER BASKI) ────────────────────────────────
-  Future<File> generateDnaReport(List<ServiceModel> kayitlar, String saseNo) async {
+  Future<File> generateDnaReport(List<ServiceRecord> kayitlar, String saseNo) async {
     try {
       developer.log("SİBER BİLGİ: $saseNo şaseli araç için Kuantum PDF Raporu hazırlanıyor...");
 
@@ -41,7 +41,7 @@ class PdfServis {
               pw.Text("SERVIS GECMISI DETAYLARI", style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 14)),
               pw.Divider(color: PdfColors.blue900, thickness: 2),
               pw.SizedBox(height: 10),
-              ...kayitlar.map((k) => _buildKayitItem(k)).toList(),
+              ...kayitlar.map((k) => _buildKayitItem(k)),
             ],
 
             pw.SizedBox(height: 40),
@@ -108,7 +108,7 @@ class PdfServis {
             pw.SizedBox(height: 8),
             pw.Text(
               "Siber İstihbarat Radarlarımıza gore bu araca ait herhangi bir servis, kaza veya revizyon kaydi BULUNMAMAKTADIR.",
-              style: pw.TextStyle(color: PdfColors.green800, fontSize: 12),
+              style: const pw.TextStyle(color: PdfColors.green800, fontSize: 12),
               textAlign: pw.TextAlign.center,
             ),
           ],
@@ -117,7 +117,7 @@ class PdfServis {
     );
   }
 
-  pw.Widget _buildKayitItem(ServiceModel k) {
+  pw.Widget _buildKayitItem(ServiceRecord k) {
     return pw.Container(
       margin: const pw.EdgeInsets.only(bottom: 10),
       padding: const pw.EdgeInsets.all(10),
@@ -132,29 +132,29 @@ class PdfServis {
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
               pw.Text("${k.kilometre.toInt()} KM", style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.blue800)),
-              pw.Text(k.parcaDurumu.toUpperCase(), style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: _getStatusColor(k.parcaDurumu))),
+              pw.Text("BAKIM YAPILDI", style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.green900)),
             ],
           ),
           pw.SizedBox(height: 5),
-          pw.Text("Islem: ${k.aciklama}"), // Türkçe karakter çökmesini önlemek için "İşlem" yerine "Islem"
-          pw.Text("Servis: ${k.islemiYapanBayi} (Bolge: ${k.bolgeKodu})", style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700)),
+          pw.Text("Islem: ${k.yapilanIslemler.join(', ')}"), // Türkçe karakter çökmesini önlemek için "İşlem" yerine "Islem"
+          pw.Text("Servis: ${k.dukkanAdi} (Bolge: ${k.cityId})", style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700)),
         ],
       ),
     );
   }
 
-  pw.Widget _buildSummaryTable(List<ServiceModel> kayitlar) {
+  pw.Widget _buildSummaryTable(List<ServiceRecord> kayitlar) {
     return pw.TableHelper.fromTextArray(
       headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.white),
       headerDecoration: const pw.BoxDecoration(color: PdfColors.blue900),
       cellAlignment: pw.Alignment.centerLeft,
       data: <List<String>>[
-        <String>['Tarih', 'Kilometre', 'Parca Durumu', 'Bayi'], // Türkçe karakter filtresi
+        <String>['Tarih', 'Kilometre', 'Islem', 'Bayi'], // Türkçe karakter filtresi
         ...kayitlar.map((k) => [
-          k.tarih.toString().split(' ')[0],
+          k.islemTarihi.toString().split(' ')[0],
           k.kilometre.toString(),
-          k.parcaDurumu,
-          k.islemiYapanBayi
+          k.yapilanIslemler.isNotEmpty ? k.yapilanIslemler.first : 'Bakım',
+          k.dukkanAdi
         ])
       ],
     );
@@ -175,7 +175,7 @@ class PdfServis {
             pw.Text("ANKARA MERKEZ", style: pw.TextStyle(color: PdfColors.red900, fontWeight: pw.FontWeight.bold, fontSize: 12)),
             pw.Text("DISTRIBUTORLUGU", style: pw.TextStyle(color: PdfColors.red900, fontWeight: pw.FontWeight.bold, fontSize: 10)),
             pw.SizedBox(height: 5),
-            pw.Text("DIJITAL MUHUR", style: pw.TextStyle(color: PdfColors.red700, fontSize: 8, letterSpacing: 2)),
+            pw.Text("DIJITAL MUHUR", style: const pw.TextStyle(color: PdfColors.red700, fontSize: 8, letterSpacing: 2)),
           ],
         ),
       ),
@@ -183,11 +183,12 @@ class PdfServis {
   }
 
   // ── 🎨 DURUM RENKLENDİRİCİ ──────────────────────────────────────────────
-  PdfColor _getStatusColor(String status) {
-    String s = status.toLowerCase();
-    if (s.contains("orijinal")) return PdfColors.green900;
-    if (s.contains("yan sanayi")) return PdfColors.orange900;
-    if (s.contains("riskli") || s.contains("kirmizi_x")) return PdfColors.red900;
-    return PdfColors.grey700;
-  }
+  // ── 🎨 DURUM RENKLENDİRİCİ ──────────────────────────────────────────────
+  // PdfColor _getStatusColor(String status) {
+  //   String s = status.toLowerCase();
+  //   if (s.contains("orijinal")) return PdfColors.green900;
+  //   if (s.contains("yan sanayi")) return PdfColors.orange900;
+  //   if (s.contains("riskli") || s.contains("kirmizi_x")) return PdfColors.red900;
+  //   return PdfColors.grey700;
+  // }
 }

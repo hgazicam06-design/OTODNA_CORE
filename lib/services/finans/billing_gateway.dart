@@ -1,7 +1,8 @@
 import 'dart:math';
+import 'dart:developer' as developer;
 
 class BillingGateway {
-  // Satış işlemi sonrası otomatik e-Fatura oluşturur
+  // Satış işlemi sonrası otomatik Kurumsal e-Fatura oluşturur
   Future<Map<String, dynamic>> generateEInvoice({
     required String transactionId,
     required double grossPrice,
@@ -27,8 +28,8 @@ class BillingGateway {
       'qr_kodu': 'OTODNA-INV-$transactionId',
     };
     
-    // Gerçekte burada Paraşüt / Logo / EDM Bilişim API'sine istek atılır.
-    print("Siber Karargah: Otonom e-Fatura oluşturuldu -> $faturaNo");
+    // Gerçekte burada Paraşüt / Logo / EDM Bilişim API'sine kurumsal entegrasyon isteği atılır.
+    developer.log("OtoDNA Kurumsal Finans: Otonom e-Fatura oluşturuldu -> $faturaNo");
     
     return eInvoiceData;
   }

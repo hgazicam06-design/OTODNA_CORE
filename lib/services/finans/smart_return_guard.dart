@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer' as developer;
 
 class SmartReturnGuard {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  /// 1. BAYİ ÇIKIŞI: Ürün kargolanırken 1 saniyelik görsel mühür alır.
+  /// 1. BAYİ ÇIKIŞI: Ürün kargolanırken 1 saniyelik kurumsal dijital mühür alır.
   Future<void> siberGozKaydiOlustur(String islemId, String fotoUrl) async {
     // Gerçekte burada Google Gemini Vision API'ye yollayıp ürün DNA'sı (Hash/Özellik) çıkarılır.
     // Şimdilik Kuantum Simülasyonu yapıyoruz.
@@ -15,7 +16,7 @@ class SmartReturnGuard {
       'has_siber_goz': true,
     });
     
-    print("🛡️ Siber Karargah: Ürün Dijital Olarak Mühürlendi -> \$siberHash");
+    developer.log("🛡️ OtoDNA Sistem: Ürün Dijital Olarak Mühürlendi -> $siberHash");
   }
 
   /// 2. KULLANICI İADESİ: AI kıyaslaması ve Savunma/Askıya Alma Otonomisi
@@ -27,7 +28,7 @@ class SmartReturnGuard {
     final String orijinalFoto = data['orijinal_cikis_fotosu'] ?? '';
     
     // AI KARAR SİMÜLASYONU (Normalde Gemini Pro Vision API'sine iki fotoğraf gönderilir: "Same Object?")
-    bool aiEslesmeSaglandi = _simulateAiVisionDecision();
+    bool aiEslesmeSaglandi = _simulateAiVisionDecision(orijinalFoto, iadeFotoUrl);
 
     if (aiEslesmeSaglandi) {
       // EŞLEŞME BAŞARILI: İade otomatik onaylanır, kargo kodu verilir.
@@ -35,16 +36,15 @@ class SmartReturnGuard {
         'return_status': 'AI_ONAYLI_KARGO_BEKLENIYOR',
         'is_frozen': false,
       });
-      print("✅ AI ONAYI: Görseller Eşleşti. İade kabul edildi.");
+      developer.log("✅ AI ONAYI: Görseller Eşleşti. İade kabul edildi.");
     } else {
       // SAHTECİLİK ŞÜPHESİ: İşlem dondurulur, Savunma istenir.
       await _islemDondurVeSavunmaIste(islemId);
     }
   }
 
-  bool _simulateAiVisionDecision() {
+  bool _simulateAiVisionDecision(String foto1, String foto2) {
     // Gerçek entegrasyonda burada Google Gemini çalışacak.
-    // Şimdilik yapay zekanın "Eşleşmedi" kararını test edebilmek adına false dönebiliriz.
     return false; // Sahtecilik şüphesi simülasyonu
   }
 
@@ -52,16 +52,16 @@ class SmartReturnGuard {
   Future<void> _islemDondurVeSavunmaIste(String islemId) async {
     // İadeyi dondur ve parayı güvene al.
     await _db.collection('finansal_islemler').doc(islemId).update({
-      'return_status': 'SİBER_DONDURULDU',
+      'return_status': 'SİSTEM_DONDURULDU',
       'is_frozen': true,
       'savunma_istendi_mi': true,
     });
     
-    // Uygulama içinde kullanıcıya fırlatılacak kırmızı ikaz logu
-    print("🚨 SİBER UYARI: Görseller Eşleşmedi! İşlem DONDURULDU. Kullanıcıdan SAVUNMA bekleniyor (ID: \$islemId)");
+    // Uygulama içinde kullanıcıya fırlatılacak ikaz logu
+    developer.log("🚨 SİSTEM UYARISI: Görseller Eşleşmedi! İşlem DONDURULDU. Kullanıcıdan SAVUNMA bekleniyor (ID: $islemId)");
   }
 
-  /// 4. SAVUNMA KARARI VE GİYOTİN İNFAZI
+  /// 4. SAVUNMA KARARI VE İŞLEM SONUÇLANDIRMA
   Future<void> savunmaKarariVer(String islemId, String kullaniciId, bool savunmaKabulEdildi) async {
     if (savunmaKabulEdildi) {
       // Savunma makul bulundu -> İade kargosuna izin ver
@@ -69,7 +69,7 @@ class SmartReturnGuard {
         'return_status': 'SAVUNMA_ONAYLI_KARGO_BEKLENIYOR',
         'is_frozen': false,
       });
-      print("⚖️ Savunma Kabul Edildi. İşlem blokesi kaldırıldı.");
+      developer.log("⚖️ Savunma Kabul Edildi. İşlem blokesi kaldırıldı.");
     } else {
       // SAVUNMA YETERSİZ / KÖTÜ NİYETLİ: İade TAMAMEN İPTAL!
       await _db.collection('finansal_islemler').doc(islemId).update({
@@ -77,21 +77,21 @@ class SmartReturnGuard {
         'is_frozen': false, // İşlem bitti, dondurma kalktı, para bayide kaldı.
       });
       
-      // Kullanıcı Hesabını Adli Askıya Al
+      // Kullanıcı Hesabını Askıya Al
       await _db.collection('kullanicilar').doc(kullaniciId).update({
         'is_suspended': true,
-        'suspend_reason': 'Nitelikli Sahtecilik Girişimi',
+        'suspend_reason': 'Nitelikli İade Kötüye Kullanımı',
       });
       
-      // 50 Avukatlık Hukuk Paneline Suç Duyurusu Dosyasını Yolla
+      // Hukuk Paneline Dosya Gönderimi
       await _db.collection('adli_raporlar').add({
         'kullanici_id': kullaniciId,
         'islem_id': islemId,
         'tarih': FieldValue.serverTimestamp(),
-        'durum': 'Hukuki İşlem ve Dava Bekliyor',
+        'durum': 'Hukuki İnceleme Bekliyor',
       });
       
-      print("🛑 SİBER İNFAZ: Savunma reddedildi! İade engellendi. Kullanıcı ASKIYA ALINDI ve dosya Hukuk Paneline gönderildi.");
+      developer.log("🛑 KURUMSAL KARAR: Savunma reddedildi! İade engellendi. Kullanıcı ASKIYA ALINDI ve dosya Hukuk Birimine gönderildi.");
     }
   }
 }

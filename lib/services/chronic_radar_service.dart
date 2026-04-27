@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer' as developer;
 import '../models/chronic_issue_model.dart';
 
 class ChronicRadarService {
@@ -33,7 +34,7 @@ class ChronicRadarService {
               doc.data() as Map<String, dynamic>, doc.id))
           .toList();
     } catch (e) {
-      print("Siber Karargah: Kronik arıza çekme hatası: $e");
+      developer.log("Siber Karargah: Kronik arıza çekme hatası: $e");
       return [];
     }
   }
@@ -43,7 +44,7 @@ class ChronicRadarService {
     try {
       await _firestore.collection('chronic_issues').add(issue.toMap());
     } catch (e) {
-      print("Siber Karargah: Kronik arıza ekleme hatası: $e");
+      developer.log("Siber Karargah: Kronik arıza ekleme hatası: $e");
     }
   }
 
@@ -65,7 +66,7 @@ class ChronicRadarService {
         transaction.update(docRef, {'province_stats': provinceStats});
       });
     } catch (e) {
-      print("Siber Karargah: Lokasyon hata kaydı hatası: $e");
+      developer.log("Siber Karargah: Lokasyon hata kaydı hatası: $e");
     }
   }
 }
