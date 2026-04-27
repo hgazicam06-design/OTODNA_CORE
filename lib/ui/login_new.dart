@@ -6,7 +6,7 @@ import 'dart:developer' as developer;
 /// 🛡️ KUANTUM ANA GİRİŞ KAPISI (SiberLoginTerminali)
 /// OtoDNA sistemine giriş yapmak için Firebase Auth kullanan, OLED Siyah tasarımlı Kuantum Terminali.
 class LoginNew extends StatefulWidget {
-  const LoginNew({Key? key}) : super(key: key);
+  const LoginNew({super.key});
 
   @override
   State<LoginNew> createState() => _LoginNewState();
@@ -108,8 +108,8 @@ class _LoginNewState extends State<LoginNew> {
             children: [
               // 1. 🇹🇷 YERLİ VE MİLLİ İBARESİ
               const SizedBox(height: 20),
-              Row(
-                children: const [
+              const Row(
+                children: [
                   Icon(Icons.flag_outlined, color: Colors.redAccent, size: 22),
                   SizedBox(width: 10),
                   Text(
@@ -180,7 +180,7 @@ class _LoginNewState extends State<LoginNew> {
                     backgroundColor: const Color(0xFF00FFC2), // Kuantum Turkuazı
                     foregroundColor: Colors.black, // Yazı rengi
                     elevation: 10,
-                    shadowColor: const Color(0xFF00FFC2).withOpacity(0.5),
+                    shadowColor: const Color(0xFF00FFC2).withValues(alpha: 0.5),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -216,7 +216,7 @@ class _LoginNewState extends State<LoginNew> {
       decoration: BoxDecoration(
         color: const Color(0xFF111111), // Mat Koyu Gri (Glassmorphism hissiyatı)
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFF00FFC2).withOpacity(0.3), width: 1.5),
+        border: Border.all(color: const Color(0xFF00FFC2).withValues(alpha: 0.3), width: 1.5),
       ),
       child: TextField(
         controller: controller,

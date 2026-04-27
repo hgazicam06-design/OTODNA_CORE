@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text("HOŞ GELDİN, KOMUTAN", style: TextStyle(color: primaryCyan, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2)),
         background: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [primaryCyan.withOpacity(0.15), Colors.transparent], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+            gradient: LinearGradient(colors: [primaryCyan.withValues(alpha: 0.15), Colors.transparent], begin: Alignment.topCenter, end: Alignment.bottomCenter),
           ),
         ),
       ),
@@ -112,10 +112,10 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.05),
+                  color: Colors.white.withValues(alpha: 0.05),
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: primaryCyan.withOpacity(0.3), width: 1.5),
-                  boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.05), blurRadius: 20)],
+                  border: Border.all(color: primaryCyan.withValues(alpha: 0.3), width: 1.5),
+                  boxShadow: [BoxShadow(color: primaryCyan.withValues(alpha: 0.05), blurRadius: 20)],
                 ),
                 child: Row(
                   children: [
@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               style: TextStyle(color: dnaSkoru >= 80 ? primaryCyan : (dnaSkoru >= 50 ? Colors.amber : alertRed), fontSize: 16, fontWeight: FontWeight.w900)
                           ),
                           const SizedBox(height: 4),
-                          Text("Karargah radarına kilitli.", style: TextStyle(color: primaryCyan.withOpacity(0.6), fontSize: 10)),
+                          Text("Karargah radarına kilitli.", style: TextStyle(color: primaryCyan.withValues(alpha: 0.6), fontSize: 10)),
                         ],
                       ),
                     ),
@@ -178,10 +178,10 @@ class _HomeScreenState extends State<HomeScreen> {
         duration: const Duration(milliseconds: 300),
         height: 80,
         decoration: BoxDecoration(
-          color: _isSosFiring ? alertRed.withOpacity(0.8) : alertRed.withOpacity(0.1),
+          color: _isSosFiring ? alertRed.withValues(alpha: 0.8) : alertRed.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: alertRed.withOpacity(0.8), width: _isSosFiring ? 2 : 1),
-          boxShadow: _isSosFiring ? [BoxShadow(color: alertRed.withOpacity(0.5), blurRadius: 15, spreadRadius: 2)] : [],
+          border: Border.all(color: alertRed.withValues(alpha: 0.8), width: _isSosFiring ? 2 : 1),
+          boxShadow: _isSosFiring ? [BoxShadow(color: alertRed.withValues(alpha: 0.5), blurRadius: 15, spreadRadius: 2)] : [],
         ),
         child: Center(
           child: Row(
@@ -264,14 +264,14 @@ class _HomeScreenState extends State<HomeScreen> {
               margin: const EdgeInsets.only(bottom: 12),
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.05),
+                color: Colors.white.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.white10),
               ),
               child: ListTile(
                 leading: Container(
                     padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(color: primaryCyan.withOpacity(0.1), shape: BoxShape.circle),
+                    decoration: BoxDecoration(color: primaryCyan.withValues(alpha: 0.1), shape: BoxShape.circle),
                     child: Icon(Icons.directions_car, color: primaryCyan, size: 24)
                 ),
                 title: Text(car['plaka'] ?? "PLAKA YOK", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
@@ -335,7 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(color: Colors.white.withOpacity(0.02), borderRadius: BorderRadius.circular(12)),
+      decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.02), borderRadius: BorderRadius.circular(12)),
       child: Text(text, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white24, fontSize: 11, fontWeight: FontWeight.bold)),
     );
   }

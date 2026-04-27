@@ -86,11 +86,11 @@ class SistemTestMotoru {
       builder: (context) => BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15), // 🌫️ Siber Cam Efekti
         child: AlertDialog(
-          backgroundColor: Colors.black.withOpacity(0.6), // Derin Karargah Siyahı + Saydamlık
+          backgroundColor: Colors.black.withValues(alpha: 0.6), // Derin Karargah Siyahı + Saydamlık
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
             side: BorderSide(
-                color: basarili ? const Color(0xFF00FFC2).withOpacity(0.5) : Colors.redAccent.withOpacity(0.5),
+                color: basarili ? const Color(0xFF00FFC2).withValues(alpha: 0.5) : Colors.redAccent.withValues(alpha: 0.5),
                 width: 1.5 // İnce Neon Çerçeve
             ),
           ),

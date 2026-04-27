@@ -17,10 +17,10 @@ class UserVipPanel {
       decoration: BoxDecoration(
           color: const Color(0xFF000000), // OLED Siyah zırh
           border: Border(
-            top: BorderSide(color: const Color(0xFF00FFC2).withOpacity(0.4), width: 1.5), // Siber Çizgi
+            top: BorderSide(color: const Color(0xFF00FFC2).withValues(alpha: 0.4), width: 1.5), // Siber Çizgi
           ),
           boxShadow: [
-            BoxShadow(color: const Color(0xFF00FFC2).withOpacity(0.05), blurRadius: 15, spreadRadius: 1, offset: const Offset(0, -5))
+            BoxShadow(color: const Color(0xFF00FFC2).withValues(alpha: 0.05), blurRadius: 15, spreadRadius: 1, offset: const Offset(0, -5))
           ] // 🌫️ Gizli Kuantum Yansıması
       ),
       child: BottomNavigationBar(

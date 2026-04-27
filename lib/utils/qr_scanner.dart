@@ -88,7 +88,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
   Widget _buildKuantumHedefleyici() {
     return ColorFiltered(
       colorFilter: ColorFilter.mode(
-        Colors.black.withOpacity(0.8),
+        Colors.black.withValues(alpha: 0.8),
         BlendMode.srcOut,
       ),
       child: Stack(
@@ -119,7 +119,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
                 border: Border.all(color: _primaryCyan, width: 2),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
-                  BoxShadow(color: _primaryCyan.withOpacity(0.2), blurRadius: 20, spreadRadius: 5)
+                  BoxShadow(color: _primaryCyan.withValues(alpha: 0.2), blurRadius: 20, spreadRadius: 5)
                 ],
               ),
               child: _isScanned
@@ -142,8 +142,8 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
             decoration: BoxDecoration(
                 color: const Color(0xFF111111),
                 shape: BoxShape.circle,
-                border: Border.all(color: _primaryCyan.withOpacity(0.5), width: 1.5),
-                boxShadow: [BoxShadow(color: _primaryCyan.withOpacity(0.1), blurRadius: 10)]
+                border: Border.all(color: _primaryCyan.withValues(alpha: 0.5), width: 1.5),
+                boxShadow: [BoxShadow(color: _primaryCyan.withValues(alpha: 0.1), blurRadius: 10)]
             ),
             child: Icon(icon, color: _primaryCyan, size: 24),
           ),

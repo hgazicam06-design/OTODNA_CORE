@@ -107,7 +107,7 @@ class UstaProfilScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: _matGriKart,
         border: Border(
-            bottom: BorderSide(color: isBlacklisted ? Colors.redAccent : _kuantumTurkuaz.withOpacity(0.5), width: 2)
+            bottom: BorderSide(color: isBlacklisted ? Colors.redAccent : _kuantumTurkuaz.withValues(alpha: 0.5), width: 2)
         ),
       ),
       child: Column(
@@ -121,7 +121,7 @@ class UstaProfilScreen extends StatelessWidget {
               border: Border.all(color: isBlacklisted ? Colors.redAccent : _kuantumTurkuaz, width: 2),
               boxShadow: [
                 BoxShadow(
-                  color: isBlacklisted ? Colors.redAccent.withOpacity(0.3) : _kuantumTurkuaz.withOpacity(0.2),
+                  color: isBlacklisted ? Colors.redAccent.withValues(alpha: 0.3) : _kuantumTurkuaz.withValues(alpha: 0.2),
                   blurRadius: 25, spreadRadius: 2,
                 )
               ],
@@ -187,7 +187,7 @@ class UstaProfilScreen extends StatelessWidget {
       decoration: BoxDecoration(
           color: _oledSiyah,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: renk.withOpacity(0.5), width: 1.5)
+          border: Border.all(color: renk.withValues(alpha: 0.5), width: 1.5)
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -221,7 +221,7 @@ class UstaProfilScreen extends StatelessWidget {
       decoration: BoxDecoration(
           color: _matGriKart,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: renk.withOpacity(0.3), width: 1.5)
+          border: Border.all(color: renk.withValues(alpha: 0.3), width: 1.5)
       ),
       child: Column(
         children: [
@@ -259,7 +259,7 @@ class UstaProfilScreen extends StatelessWidget {
       decoration: BoxDecoration(
           color: _matGriKart,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: isBlacklisted ? Colors.redAccent.withOpacity(0.3) : Colors.white24)
+          border: Border.all(color: isBlacklisted ? Colors.redAccent.withValues(alpha: 0.3) : Colors.white24)
       ),
       child: Text(metin, style: const TextStyle(color: Colors.white70, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold)),
     );
@@ -270,9 +270,9 @@ class UstaProfilScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isBlacklisted ? Colors.red.withOpacity(0.05) : _kuantumTurkuaz.withOpacity(0.05),
+        color: isBlacklisted ? Colors.red.withValues(alpha: 0.05) : _kuantumTurkuaz.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: isBlacklisted ? Colors.redAccent.withOpacity(0.3) : _kuantumTurkuaz.withOpacity(0.3), width: 1.5),
+        border: Border.all(color: isBlacklisted ? Colors.redAccent.withValues(alpha: 0.3) : _kuantumTurkuaz.withValues(alpha: 0.3), width: 1.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -318,7 +318,7 @@ class UstaProfilScreen extends StatelessWidget {
         Expanded(
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
-                backgroundColor: isBlacklisted ? Colors.redAccent.withOpacity(0.1) : _kuantumTurkuaz,
+                backgroundColor: isBlacklisted ? Colors.redAccent.withValues(alpha: 0.1) : _kuantumTurkuaz,
                 padding: const EdgeInsets.symmetric(vertical: 18),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),

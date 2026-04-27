@@ -265,9 +265,9 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF00FFC2).withOpacity(0.05),
+              color: const Color(0xFF00FFC2).withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFF00FFC2).withOpacity(0.4)),
+              border: Border.all(color: const Color(0xFF00FFC2).withValues(alpha: 0.4)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -303,7 +303,7 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
       decoration: BoxDecoration(
         color: const Color(0xFF111111),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFF00FFC2).withOpacity(0.3), width: 1.5),
+        border: Border.all(color: const Color(0xFF00FFC2).withValues(alpha: 0.3), width: 1.5),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
@@ -377,13 +377,13 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         color: mevcutDurum == "ONAYLANDI"
-            ? const Color(0xFF00FFC2).withOpacity(0.1)
-            : (mevcutDurum == "REDDEDILDI" || isCritical) ? Colors.redAccent.withOpacity(0.1) : const Color(0xFF111111),
+            ? const Color(0xFF00FFC2).withValues(alpha: 0.1)
+            : (mevcutDurum == "REDDEDILDI" || isCritical) ? Colors.redAccent.withValues(alpha: 0.1) : const Color(0xFF111111),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
             color: mevcutDurum == "ONAYLANDI"
                 ? const Color(0xFF00FFC2)
-                : mevcutDurum == "REDDEDILDI" ? Colors.redAccent : (isCritical ? Colors.redAccent.withOpacity(0.5) : Colors.transparent)
+                : mevcutDurum == "REDDEDILDI" ? Colors.redAccent : (isCritical ? Colors.redAccent.withValues(alpha: 0.5) : Colors.transparent)
         ),
       ),
       child: ListTile(
@@ -416,7 +416,7 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
           padding: const EdgeInsets.symmetric(vertical: 18),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: const Color(0xFF00FFC2).withOpacity(0.5), width: 1.5)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: const Color(0xFF00FFC2).withValues(alpha: 0.5), width: 1.5)),
           elevation: 5,
         ),
         onPressed: onPressed,

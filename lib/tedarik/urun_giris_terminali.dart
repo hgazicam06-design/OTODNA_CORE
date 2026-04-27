@@ -4,7 +4,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import 'dart:ui';
 import 'dart:developer' as developer; // 🚀 SİBER LOGLAMA İÇİN EKLENDİ
 
 // 🚀 KARARGAH ZIRHLARI
@@ -196,7 +195,7 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
             const SizedBox(height: 12),
             Text(
               _selectedFile == null ? "TEKNİK EVRAK / GÖRSEL YÜKLE" : "EVRAK HAZIR",
-              style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.7), fontWeight: FontWeight.bold, fontSize: 10),
+              style: TextStyle(color: SiberTema.kuantumCyan.withValues(alpha: 0.7), fontWeight: FontWeight.bold, fontSize: 10),
             ),
           ],
         ),
@@ -208,9 +207,9 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: SiberTema.kuantumCyan.withOpacity(0.05),
+        color: SiberTema.kuantumCyan.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.1)),
+        border: Border.all(color: SiberTema.kuantumCyan.withValues(alpha: 0.1)),
       ),
       child: Column(
         children: [
@@ -245,7 +244,7 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
           hintText: h,
           hintStyle: const TextStyle(color: Colors.white24, fontSize: 12),
           filled: true,
-          fillColor: Colors.white.withOpacity(0.03),
+          fillColor: Colors.white.withValues(alpha: 0.03),
           enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white10)),
           focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
         ),
