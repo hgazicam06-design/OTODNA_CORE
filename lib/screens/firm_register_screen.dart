@@ -45,7 +45,7 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("GPS RADARI: Konum Kilitlendi 🦅",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: primaryCyan));
   }
 
@@ -86,7 +86,7 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("BAŞVURU SİBER AĞA MÜHÜRLENDİ!",
-              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
           backgroundColor: primaryCyan));
       Navigator.pop(context);
     } catch (e) {
@@ -118,10 +118,10 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
             onPressed: () => Navigator.pop(context)),
         title: const Text('B A Y İ   A Ğ I   K A Y I T   T E R M İ N A L İ',
-            style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 3)),
+            style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 3)),
       ),
       body: Center(
         child: ConstrainedBox(
@@ -152,11 +152,11 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
                       onPressed: _isProcessing ? null : _kaydiTamamla,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryCyan,
-                        foregroundColor: Colors.black,
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       ),
                       icon: _isProcessing
-                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
+                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                           : const Icon(Icons.lock_open_rounded, size: 24),
                       label: Text(
                         _isProcessing ? "AĞA YÜKLENİYOR..." : "KENDİ İSMİMLE SİBER AĞA KATIL",
@@ -168,7 +168,7 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
                   const Text(
                     "NOT: OTODNA Gazi Protokolü Gereği %12 Karargah Payı Sisteme Gömülüdür.",
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white24, fontSize: 9, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -188,9 +188,9 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
           child: const Icon(Icons.shield_outlined, color: primaryCyan, size: 48),
         ),
         const SizedBox(height: 24),
-        const Text("OTODNA TİCARİ İSTİHBARAT AĞI", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
+        const Text("OTODNA TİCARİ İSTİHBARAT AĞI", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
         const SizedBox(height: 12),
-        const Text("Dükkanınızı kendi markanızla kuantum ağına bağlayın.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold)),
+        const Text("Dükkanınızı kendi markanızla kuantum ağına bağlayın.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
       ],
     );
   }
@@ -202,11 +202,11 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
         textCapitalization: TextCapitalization.characters,
-        style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+        style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.bold),
-          prefixIcon: Icon(icon, color: Colors.white38, size: 20),
+          hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.bold),
+          prefixIcon: Icon(icon, color: SiberTema.textMuted, size: 20),
           filled: true,
           fillColor: surfaceColor,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),

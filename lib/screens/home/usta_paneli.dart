@@ -3,7 +3,7 @@ import '../../bayi/siber_servis_kabul_paneli.dart';
 import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 import '../../widgets/siber_rehber_dialog.dart';
-import '../../services/ekspertiz_muhur_servisi.dart'; // MÜHÜR VE AI SERVİSİ
+import '../../services/corporate_notary_service.dart'; // MÜHÜR VE AI SERVİSİ
 
 class UstaPaneliScreen extends StatefulWidget {
   const UstaPaneliScreen({super.key});
@@ -104,15 +104,15 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
             SizedBox(height: 16),
             Text("GPS KONUMU VE SAAT ALINIYOR...", style: TextStyle(color: Color(0xFF00FFC2), fontSize: 12, fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
-            Text("Rapor Taslağı Oluşturuluyor\nMüşterinin Onayına Sunulacak...", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 10)),
+            Text("Rapor Taslağı Oluşturuluyor\nMüşterinin Onayına Sunulacak...", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 10)),
           ],
         ),
       ),
     );
 
     // SERVİSİ ÇAĞIR (1. ANAHTAR)
-    final servis = EkspertizMuhurServisi();
-    final sonuc = await servis.ustaOnayinaGonder(
+    final servis = CorporateNotaryService();
+    final sonuc = await servis.expertizTaslagiOlustur(
       saseNo: _saseController.text,
       testSonuclari: _testSonuclari,
       aracCinsi: _secilenAracCinsi ?? "Bilinmeyen Cins",
@@ -133,10 +133,10 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
             children: [
               Icon(Icons.hourglass_top, color: Colors.orangeAccent, size: 64),
               SizedBox(height: 16),
-              Text("MÜŞTERİ ONAYINA GÖNDERİLDİ!", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+              Text("MÜŞTERİ ONAYINA GÖNDERİLDİ!", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
             ],
           ),
-          content: const Text("Tesisimizin GPS konumuyla birlikte rapor taslağı araç sahibinin uygulamasına iletildi.\n\nMüşteri onaylayıp kendi mühürünü vurduğunda rapor Kuantum Ağı'na (Değiştirilemez) kilitlenecektir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 12)),
+          content: const Text("Tesisimizin GPS konumuyla birlikte rapor taslağı araç sahibinin uygulamasına iletildi.\n\nMüşteri onaylayıp kendi mühürünü vurduğunda rapor Kuantum Ağı'na (Değiştirilemez) kilitlenecektir.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
           actions: [
             TextButton(
               onPressed: () {
@@ -161,7 +161,7 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
     List<Widget> moduller = [];
 
     if (_secilenAracCinsi == null || _secilenYakitTipi == null) {
-      return [const Center(child: Padding(padding: EdgeInsets.all(20.0), child: Text("Çalışır aksamların listelenmesi için Araç Cinsi ve Yakıt Tipi seçiniz.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54))))];
+      return [const Center(child: Padding(padding: EdgeInsets.all(20.0), child: Text("Çalışır aksamların listelenmesi için Araç Cinsi ve Yakıt Tipi seçiniz.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted))))];
     }
 
     if (_secilenYakitTipi == 'Tam Elektrikli (EV)' || _secilenYakitTipi == 'Hibrit (HEV / PHEV)') {
@@ -217,7 +217,7 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.orangeAccent,
-              foregroundColor: Colors.black,
+              foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               elevation: 10,
             ),
@@ -265,7 +265,7 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(baslik, style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold, decoration: isCritical ? TextDecoration.underline : TextDecoration.none, decorationColor: Colors.redAccent)),
+                Text(baslik, style: TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold, decoration: isCritical ? TextDecoration.underline : TextDecoration.none, decorationColor: Colors.redAccent)),
                 if (zorunluFoto) ...[const SizedBox(height: 4), const Text("Zorunlu Görsel Kanıt", style: TextStyle(color: Colors.orangeAccent, fontSize: 10, fontWeight: FontWeight.bold))],
                 if (durum != 'bekliyor') ...[
                   const SizedBox(height: 4),
@@ -316,8 +316,8 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
       appBar: AppBar(
           backgroundColor: cardColor,
           elevation: 0,
-          shape: const Border(bottom: BorderSide(color: Colors.white12, width: 1)),
-          title: const Text('OtoDNA Usta Paneli', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 1)),
+          shape: const Border(bottom: BorderSide(color: SiberTema.textMuted, width: 1)),
+          title: const Text('OtoDNA Usta Paneli', style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 1)),
           iconTheme: const IconThemeData(color: primaryCyan),
           centerTitle: true,
           actions: [
@@ -358,7 +358,7 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
                           children: [
                             Text("KOZMİK ODA İSTİHBARATI", style: TextStyle(color: Color(0xFF00FFC2), fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1)),
                             SizedBox(height: 4),
-                            Text("Araçların kronik sorunlarını ve fabrika verilerini anında tarayın.", style: TextStyle(color: Colors.white54, fontSize: 10)),
+                            Text("Araçların kronik sorunlarını ve fabrika verilerini anında tarayın.", style: TextStyle(color: SiberTema.textMuted, fontSize: 10)),
                           ],
                         ),
                       ),
@@ -369,11 +369,11 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
               ),
               const SizedBox(height: 24),
 
-              const Text("SİBER HUB SORGULAMA", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+              const Text("SİBER HUB SORGULAMA", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
               const SizedBox(height: 12),
               Row(
                 children: [
-                  Expanded(child: TextField(controller: _saseController, style: const TextStyle(color: Colors.white, letterSpacing: 2, fontWeight: FontWeight.bold), textCapitalization: TextCapitalization.characters, maxLength: 17, decoration: InputDecoration(hintText: '17 Haneli Şase (VIN)', hintStyle: const TextStyle(color: Colors.white24), filled: true, fillColor: cardColor, counterText: "", border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: Colors.white12))))),
+                  Expanded(child: TextField(controller: _saseController, style: const TextStyle(color: SiberTema.textMain, letterSpacing: 2, fontWeight: FontWeight.bold), textCapitalization: TextCapitalization.characters, maxLength: 17, decoration: InputDecoration(hintText: '17 Haneli Şase (VIN)', hintStyle: const TextStyle(color: SiberTema.textMuted), filled: true, fillColor: cardColor, counterText: "", border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: SiberTema.textMuted))))),
                   const SizedBox(width: 12),
                   GestureDetector(
                     onTap: _veriCekiliyor ? null : _sasedenSorgula,
@@ -384,7 +384,7 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
               const SizedBox(height: 24),
 
               // 🌟 YENİ EKLENEN HIZLI FİLTRE BÖLÜMÜ
-              const Text("HIZLI ARAÇ SINIFI FİLTRESİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+              const Text("HIZLI ARAÇ SINIFI FİLTRESİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
               const SizedBox(height: 12),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -402,28 +402,28 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
 
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    dropdownColor: cardColor, isExpanded: true, value: _secilenAracCinsi, hint: const Text("Tüm Araç Cinsleri Listesi...", style: TextStyle(color: Colors.white38, fontSize: 13)),
+                    dropdownColor: cardColor, isExpanded: true, value: _secilenAracCinsi, hint: const Text("Tüm Araç Cinsleri Listesi...", style: TextStyle(color: SiberTema.textMuted, fontSize: 13)),
                     icon: const Icon(Icons.keyboard_arrow_down, color: primaryCyan),
-                    items: _aracCinsleri.map((String cins) { return DropdownMenuItem<String>(value: cins, child: Text(cins, style: const TextStyle(color: Colors.white, fontSize: 13))); }).toList(),
+                    items: _aracCinsleri.map((String cins) { return DropdownMenuItem<String>(value: cins, child: Text(cins, style: const TextStyle(color: SiberTema.textMain, fontSize: 13))); }).toList(),
                     onChanged: (String? yeniCins) { setState(() { _secilenAracCinsi = yeniCins; _testSonuclari.clear(); }); },
                   ),
                 ),
               ),
               const SizedBox(height: 24),
 
-              const Text("MOTOR VE YAKIT TİPİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+              const Text("MOTOR VE YAKIT TİPİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    dropdownColor: cardColor, isExpanded: true, value: _secilenYakitTipi, hint: const Text("Yakıt / Motor Tipi Seçiniz...", style: TextStyle(color: Colors.white38, fontSize: 13)),
+                    dropdownColor: cardColor, isExpanded: true, value: _secilenYakitTipi, hint: const Text("Yakıt / Motor Tipi Seçiniz...", style: TextStyle(color: SiberTema.textMuted, fontSize: 13)),
                     icon: const Icon(Icons.keyboard_arrow_down, color: primaryCyan),
-                    items: _yakitTipleri.map((String yakit) { return DropdownMenuItem<String>(value: yakit, child: Text(yakit, style: const TextStyle(color: Colors.white, fontSize: 13))); }).toList(),
+                    items: _yakitTipleri.map((String yakit) { return DropdownMenuItem<String>(value: yakit, child: Text(yakit, style: const TextStyle(color: SiberTema.textMain, fontSize: 13))); }).toList(),
                     onChanged: (String? yeniYakit) { setState(() { _secilenYakitTipi = yeniYakit; _testSonuclari.clear(); }); },
                   ),
                 ),
@@ -435,7 +435,7 @@ class _UstaPaneliScreenState extends State<UstaPaneliScreen> {
                   children: [
                     Icon(Icons.science, color: primaryCyan, size: 20),
                     SizedBox(width: 8),
-                    Text("DİNAMİK ÇALIŞIR AKSAM TESTLERİ", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                    Text("DİNAMİK ÇALIŞIR AKSAM TESTLERİ", style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1)),
                   ],
                 ),
                 const SizedBox(height: 16),

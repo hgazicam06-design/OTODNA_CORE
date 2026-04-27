@@ -28,7 +28,7 @@ class _SiberIstihbaratMerkeziScreenState extends State<SiberIstihbaratMerkeziScr
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -48,7 +48,7 @@ class _SiberIstihbaratMerkeziScreenState extends State<SiberIstihbaratMerkeziScr
               child: Container(
                 margin: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.6),
+                  color: Colors.white.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3)),
                   boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 20, spreadRadius: 2)],
@@ -160,7 +160,7 @@ class _SiberIstihbaratMerkeziScreenState extends State<SiberIstihbaratMerkeziScr
                         children: [
                           Icon(Icons.terminal, color: isKritik ? SiberTema.kanKirmizi : renk, size: 14),
                           const SizedBox(width: 8),
-                          Text("[$saat] HEDEF@$hedefId", style: const TextStyle(color: Colors.white54, fontFamily: 'Courier', fontSize: 10, fontWeight: FontWeight.bold)),
+                          Text("[$saat] HEDEF@$hedefId", style: const TextStyle(color: SiberTema.textMuted, fontFamily: 'Courier', fontSize: 10, fontWeight: FontWeight.bold)),
                         ],
                       ),
                       Container(

@@ -27,7 +27,7 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
@@ -43,11 +43,11 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
                       children: [
                         _buildAvantajPaneli(),
                         const SizedBox(height: 32),
-                        const Text("B2B SİBER SİPARİŞ AĞI", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                        const Text("B2B SİBER SİPARİŞ AĞI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                         const SizedBox(height: 16),
                         _buildAltBayiRadari(),
                         const SizedBox(height: 32),
-                        const Text("TOPTAN ENVANTER MOTORU", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                        const Text("TOPTAN ENVANTER MOTORU", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                         const SizedBox(height: 16),
                         _buildTopluUrunGirisKarti(),
                       ],
@@ -67,13 +67,13 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          decoration: BoxDecoration(color: Colors.black.withOpacity(0.4), border: const Border(bottom: BorderSide(color: Colors.white10))),
+          decoration: BoxDecoration(color: Colors.white.withOpacity(0.4), border: const Border(bottom: BorderSide(color: SiberTema.textMuted))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
                 onTap: () => Navigator.pop(context),
-                child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), shape: BoxShape.circle), child: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 18)),
+                child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), shape: BoxShape.circle), child: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18)),
               ),
               const Text('D İ S T R İ B Ü T Ö R   A Ğ I', style: TextStyle(color: siberGold, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'Avenir')),
               Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: siberGold.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: siberGold.withOpacity(0.5))), child: const Icon(Icons.hub_outlined, color: siberGold, size: 18)),
@@ -107,20 +107,20 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("V.I.P DİSTRİBÜTÖR", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                        Text("V.I.P DİSTRİBÜTÖR", style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                         SizedBox(height: 4),
-                        Text("OtoDNA Özel Komisyon Anlaşması", style: TextStyle(color: Colors.white54, fontSize: 10, fontFamily: 'Avenir')),
+                        Text("OtoDNA Özel Komisyon Anlaşması", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontFamily: 'Avenir')),
                       ],
                     ),
                   )
                 ],
               ),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 20), child: Divider(color: Colors.white12)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 20), child: Divider(color: SiberTema.textMuted)),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Standart Karargah Payı", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-                  Text("%12", style: TextStyle(color: Colors.white38, fontSize: 16, fontWeight: FontWeight.bold, decoration: TextDecoration.lineThrough, fontFamily: 'Avenir')),
+                  Text("Standart Karargah Payı", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                  Text("%12", style: TextStyle(color: SiberTema.textMuted, fontSize: 16, fontWeight: FontWeight.bold, decoration: TextDecoration.lineThrough, fontFamily: 'Avenir')),
                 ],
               ),
               const SizedBox(height: 8),
@@ -160,9 +160,9 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(bayi['ad'], style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                    Text(bayi['ad'], style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                     const SizedBox(height: 4),
-                    Text("Aylık Ciro: ₺${(bayi['ciro'] as int).toString()}", style: const TextStyle(color: Colors.white54, fontSize: 10, fontFamily: 'Avenir')),
+                    Text("Aylık Ciro: ₺${(bayi['ciro'] as int).toString()}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontFamily: 'Avenir')),
                   ],
                 ),
               ),
@@ -181,7 +181,7 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
   Widget _buildTopluUrunGirisKarti() {
     return GestureDetector(
       onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("B2B Çoklu Ekleme Motoru Başlatılıyor...", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("B2B Çoklu Ekleme Motoru Başlatılıyor...", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan));
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -198,9 +198,9 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Kuantum Batch Yükleme", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                      Text("Kuantum Batch Yükleme", style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                       SizedBox(height: 8),
-                      Text("Excel/CSV dosyanızla 10.000+ ürünü tek seferde siber ağa mühürleyin. %10 komisyon avantajı otomatik uygulanır.", style: TextStyle(color: Colors.white54, fontSize: 10, height: 1.4, fontFamily: 'Avenir')),
+                      Text("Excel/CSV dosyanızla 10.000+ ürünü tek seferde siber ağa mühürleyin. %10 komisyon avantajı otomatik uygulanır.", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, height: 1.4, fontFamily: 'Avenir')),
                     ],
                   ),
                 ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/responsive_kalkan.dart';
-import '../../services/ekspertiz_muhur_servisi.dart';
+import '../../services/corporate_notary_service.dart';
 
 class SiberEkspertizOnayEkrani extends StatefulWidget {
   final String saseNo;
@@ -14,7 +14,7 @@ class SiberEkspertizOnayEkrani extends StatefulWidget {
 
 class _SiberEkspertizOnayEkraniState extends State<SiberEkspertizOnayEkrani> {
   bool _onaylaniyor = false;
-  final EkspertizMuhurServisi _servis = EkspertizMuhurServisi();
+  final CorporateNotaryService _servis = CorporateNotaryService();
 
   final Color primaryTeal = Colors.teal.shade700;
   final Color dangerColor = Colors.redAccent;
@@ -27,7 +27,12 @@ class _SiberEkspertizOnayEkraniState extends State<SiberEkspertizOnayEkrani> {
     setState(() => _onaylaniyor = true);
 
     // Müşteri "Onayla" dediğinde ikinci anahtarı çeviriyoruz.
-    final sonuc = await _servis.musteriOnaylaVeMuhrle(widget.raporId, "MUSTERI_UID_123", widget.saseNo);
+    final sonuc = await _servis.musteriOnayiVerVeMuhurle(
+      islemId: widget.raporId,
+      musteriUid: "MUSTERI_UID_123",
+      saseNo: widget.saseNo,
+      onayDurumu: true,
+    );
 
     setState(() => _onaylaniyor = false);
 
@@ -39,7 +44,7 @@ class _SiberEkspertizOnayEkraniState extends State<SiberEkspertizOnayEkrani> {
         barrierDismissible: false,
         builder: (context) => AlertDialog(
           backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           title: Column(
             children: [
               Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(Icons.fingerprint, color: primaryTeal, size: 64)),
@@ -50,7 +55,7 @@ class _SiberEkspertizOnayEkraniState extends State<SiberEkspertizOnayEkrani> {
           content: const Text(
             "Müşteri onayınız ustanın mührüyle birleştirildi.\n\nRapor kilitlendi ve OtoDNA sistemleri aracınızın DNA Skorunu başarıyla güncelledi.", 
             textAlign: TextAlign.center, 
-            style: TextStyle(color: Colors.black54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')
+            style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')
           ),
           actions: [
             SizedBox(
@@ -102,7 +107,7 @@ class _SiberEkspertizOnayEkraniState extends State<SiberEkspertizOnayEkrani> {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
           title: Text("EKSPERTİZ ONAY MERKEZİ", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5, fontFamily: 'Avenir')),
           centerTitle: true,
@@ -126,7 +131,7 @@ class _SiberEkspertizOnayEkraniState extends State<SiberEkspertizOnayEkrani> {
                         children: [
                           Text("MÜŞTERİ ONAYI BEKLENİYOR", style: TextStyle(color: warningColor, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 0.5)),
                           const SizedBox(height: 8),
-                          const Text("Merkez Bayi aracınızı test etti. Lütfen aşağıdaki bulguları inceleyip mührünüzü vurun. İki anahtar birleşmeden işlem resmiyet kazanamaz.", style: TextStyle(color: Colors.black54, fontSize: 10, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                          const Text("Merkez Bayi aracınızı test etti. Lütfen aşağıdaki bulguları inceleyip mührünüzü vurun. İki anahtar birleşmeden işlem resmiyet kazanamaz.", style: TextStyle(color: Colors.white54, fontSize: 10, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                         ],
                       ),
                     )
@@ -135,7 +140,7 @@ class _SiberEkspertizOnayEkraniState extends State<SiberEkspertizOnayEkrani> {
               ),
               const SizedBox(height: 40),
 
-              const Text("TEST BULGULARI (TASLAK)", style: TextStyle(color: Colors.black45, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+              const Text("TEST BULGULARI (TASLAK)", style: TextStyle(color: Colors.white45, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
               const SizedBox(height: 16),
               
               // MOCK RAPOR (Gerçekte Firestore'dan çekilecek)
@@ -163,7 +168,7 @@ class _SiberEkspertizOnayEkraniState extends State<SiberEkspertizOnayEkrani> {
                 ),
               ),
               const SizedBox(height: 24),
-              const Center(child: Text("Mühür vurulduktan sonra OtoDNA Skoru güncellenir ve rapor kilitlenir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.black38, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
+              const Center(child: Text("Mühür vurulduktan sonra OtoDNA Skoru güncellenir ve rapor kilitlenir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
             ],
           ),
         ),
@@ -176,7 +181,7 @@ class _SiberEkspertizOnayEkraniState extends State<SiberEkspertizOnayEkrani> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))]),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))]),
       child: Row(
         children: [
           Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: durumRengi.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(olumlu ? Icons.check_circle : Icons.warning_rounded, color: durumRengi, size: 24)),

@@ -25,7 +25,7 @@ class KurallarScreen extends StatelessWidget {
         title: const Text(
           "SİBER SÖZLEŞME VE PROTOKOLLER",
           style: TextStyle(
-            color: Colors.white,
+            color: SiberTema.textMain,
             fontWeight: FontWeight.w900,
             fontSize: 11,
             letterSpacing: 2,
@@ -68,7 +68,7 @@ class KurallarScreen extends StatelessWidget {
                     'OTODNA DİJİTAL REFERANS PROTOKOLÜ',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: Colors.white,
+                        color: SiberTema.textMain,
                         fontSize: 18,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 2,
@@ -80,7 +80,7 @@ class KurallarScreen extends StatelessWidget {
                     'Kuantum Ağına bağlanan tüm Sürücüler ve Bayiler için bağlayıcıdır. Sistemi kullanan herkes bu mühürlü şartları kabul etmiş sayılır.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: Colors.white54,
+                        color: SiberTema.textMuted,
                         fontSize: 11,
                         height: 1.6,
                         fontWeight: FontWeight.bold,
@@ -136,7 +136,7 @@ class KurallarScreen extends StatelessWidget {
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryCyan,
-                        foregroundColor: Colors.black,
+                        foregroundColor: Colors.white,
                         elevation: 0,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       ),
@@ -196,11 +196,11 @@ class KurallarScreen extends StatelessWidget {
           ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
-            child: Divider(color: Colors.white12, thickness: 1),
+            child: Divider(color: SiberTema.textMuted, thickness: 1),
           ),
           Text(
             content,
-            style: const TextStyle(color: Colors.white70, fontSize: 12, height: 1.6, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+            style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.6, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
           ),
         ],
       ),

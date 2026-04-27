@@ -27,7 +27,7 @@ class _DistributorMerkezUssuState extends State<DistributorMerkezUssu> {
     }
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent, // Zırh üzerinden aydınlatılacak
         appBar: AppBar(
@@ -41,7 +41,7 @@ class _DistributorMerkezUssuState extends State<DistributorMerkezUssu> {
             stream: _db.collection('kullanicilar').doc(_currentUser!.uid).snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.altinSari));
-              if (!snapshot.hasData || !snapshot.data!.exists) return const Center(child: Text("B2B Verisi Yükleniyor...", style: TextStyle(color: Colors.white54)));
+              if (!snapshot.hasData || !snapshot.data!.exists) return const Center(child: Text("B2B Verisi Yükleniyor...", style: TextStyle(color: SiberTema.textMuted)));
 
               var data = snapshot.data!.data() as Map<String, dynamic>;
               String firmaAdi = data['firma_adi'] ?? "KÜRESEL DİSTRİBÜTÖR";
@@ -75,7 +75,7 @@ class _DistributorMerkezUssuState extends State<DistributorMerkezUssu> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(firmaAdi.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
+                                Text(firmaAdi.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
                                 const SizedBox(height: 6),
                                 const Row(
                                   children: [
@@ -93,7 +93,7 @@ class _DistributorMerkezUssuState extends State<DistributorMerkezUssu> {
                     const SizedBox(height: 32),
 
                     // 2. SEKTÖREL OTONOM YÜKLEME (KİTLE İMHA) BUTONLARI
-                    const Text("B2B Kitle Yükleme Merkezleri", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                    const Text("B2B Kitle Yükleme Merkezleri", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
                     const SizedBox(height: 16),
                     GridView.count(
                       crossAxisCount: 2,
@@ -112,17 +112,17 @@ class _DistributorMerkezUssuState extends State<DistributorMerkezUssu> {
                     const SizedBox(height: 32),
 
                     // 3. VIP FİNANSAL BORSA EKRANI
-                    const Text("Küresel Borsa & Ciro Akışı", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                    const Text("Küresel Borsa & Ciro Akışı", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
                     const SizedBox(height: 16),
                     Container(
                       padding: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(color: const Color(0xFF1A1A1D), borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white10)),
+                      decoration: BoxDecoration(color: const Color(0xFF1A1A1D), borderRadius: BorderRadius.circular(20), border: Border.all(color: SiberTema.textMuted)),
                       child: Column(
                         children: [
-                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text("Toplam Toptan Hacim", style: TextStyle(color: Colors.white54, fontSize: 13)), Text("₺${(aylikCiro/1000000).toStringAsFixed(2)} Milyon", style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold))]),
-                          const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white12, height: 1)),
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text("Toplam Toptan Hacim", style: TextStyle(color: SiberTema.textMuted, fontSize: 13)), Text("₺${(aylikCiro/1000000).toStringAsFixed(2)} Milyon", style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.bold))]),
+                          const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted, height: 1)),
                           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text("Karargah Payı (VIP %10)", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 13)), Text("-₺${otodnaKesintisi.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kanKirmizi, fontSize: 16, fontWeight: FontWeight.bold))]),
-                          const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white12, height: 1)),
+                          const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted, height: 1)),
                           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text("Net Aktarım", style: TextStyle(color: SiberTema.altinSari, fontSize: 14, fontWeight: FontWeight.bold)), Text("₺${netHakedis.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.altinSari, fontSize: 22, fontWeight: FontWeight.w900))]),
                         ],
                       ),
@@ -179,7 +179,7 @@ class _DistributorMerkezUssuState extends State<DistributorMerkezUssu> {
           children: [
             Icon(ikon, color: renk, size: 36),
             const SizedBox(height: 16),
-            Text(baslik, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir', height: 1.3)),
+            Text(baslik, textAlign: TextAlign.center, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir', height: 1.3)),
           ],
         ),
       ),
@@ -202,7 +202,7 @@ class _DistributorMerkezUssuState extends State<DistributorMerkezUssu> {
                 children: [
                   Text(baslik, style: TextStyle(color: renk, fontSize: 15, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                   const SizedBox(height: 4),
-                  Text(altBaslik, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 11, height: 1.4)),
+                  Text(altBaslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 11, height: 1.4)),
                 ],
               ),
             ),
@@ -213,6 +213,6 @@ class _DistributorMerkezUssuState extends State<DistributorMerkezUssu> {
   }
 
   void _siberUyari(String mesaj) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mesaj, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontFamily: 'Avenir')), backgroundColor: SiberTema.altinSari));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontFamily: 'Avenir')), backgroundColor: SiberTema.altinSari));
   }
 }

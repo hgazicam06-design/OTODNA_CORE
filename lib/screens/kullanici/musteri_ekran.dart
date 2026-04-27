@@ -124,7 +124,7 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           iconTheme: IconThemeData(color: primaryTeal),
         ),
         body: SafeArea(
@@ -138,9 +138,9 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
                     boxShadow: [
-                      BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))
+                      BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))
                     ]
                 ),
                 child: Row(
@@ -151,7 +151,7 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
                       child: Icon(Icons.precision_manufacturing, color: primaryTeal, size: 28),
                     ),
                     const SizedBox(width: 16),
-                    const Expanded(child: Text("Aracınızdaki şikayetleri seçin. Plaza ağımız sizi en uygun ustaya yönlendirecektir.", style: TextStyle(color: Colors.black87, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
+                    const Expanded(child: Text("Aracınızdaki şikayetleri seçin. Plaza ağımız sizi en uygun ustaya yönlendirecektir.", style: TextStyle(color: Colors.white87, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
                   ],
                 ),
               ),
@@ -159,7 +159,7 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
               // LİSTE BAŞLIĞI
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                child: Text("ŞİKAYET VE KONTROL LİSTESİ", style: TextStyle(color: Colors.black45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                child: Text("ŞİKAYET VE KONTROL LİSTESİ", style: TextStyle(color: Colors.white45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
               ),
 
               // SEÇİM BUTONLARI
@@ -186,7 +186,7 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
                           color: seciliMi ? primaryTeal.withValues(alpha: 0.05) : Colors.white,
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(color: seciliMi ? primaryTeal.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05), width: seciliMi ? 2 : 1),
-                          boxShadow: seciliMi ? null : [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 5)]
+                          boxShadow: seciliMi ? null : [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 5)]
                         ),
                         child: Row(
                           children: [
@@ -220,8 +220,8 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
-                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
+                  border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
+                  boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
                 ),
                 child: SizedBox(
                   height: 56,
@@ -229,8 +229,8 @@ class _SiberMusteriArizaSecimState extends State<SiberMusteriArizaSecim> {
                   child: _islemSuruyor
                       ? Center(child: CircularProgressIndicator(color: primaryTeal))
                       : ElevatedButton.icon(
-                    icon: const Icon(Icons.radar, color: Colors.white, size: 24),
-                    label: const Text("MERKEZE VE USTAYA İLET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, color: Colors.white, fontFamily: 'Avenir')),
+                    icon: const Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 24),
+                    label: const Text("MERKEZE VE USTAYA İLET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, color: SiberTema.textMain, fontFamily: 'Avenir')),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryTeal,
                       foregroundColor: Colors.white,

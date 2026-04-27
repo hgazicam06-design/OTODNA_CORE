@@ -14,7 +14,7 @@ class AdminDashUI extends StatelessWidget {
   Widget build(BuildContext context) {
     // 🛡️ OTONOM KALKANI KUŞANIYORUZ (Taşmaları %100 Engeller)
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: _adminAppBar(context),
@@ -101,11 +101,11 @@ class AdminDashUI extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Text("TOPLAM KASA GİRDİSİ (%12)", style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
+                Text("TOPLAM KASA GİRDİSİ (%12)", style: TextStyle(color: SiberTema.textMain.withOpacity(0.6), fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
                 const SizedBox(height: 12),
                 Text(
                     "₺${toplamKasaGirdisi.toStringAsFixed(2)}",
-                    style: TextStyle(color: Colors.white.withOpacity(0.95), fontSize: 36, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir', shadows: const [Shadow(color: Colors.black, blurRadius: 10)])
+                    style: TextStyle(color: SiberTema.textMain.withOpacity(0.95), fontSize: 36, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir', shadows: const [Shadow(color: Colors.white, blurRadius: 10)])
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
@@ -140,7 +140,7 @@ class AdminDashUI extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(baslik, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 11, fontWeight: FontWeight.w600, fontFamily: 'Avenir'), textAlign: TextAlign.center),
+        Text(baslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 11, fontWeight: FontWeight.w600, fontFamily: 'Avenir'), textAlign: TextAlign.center),
         const SizedBox(height: 8),
         FittedBox(
           fit: BoxFit.scaleDown,
@@ -194,7 +194,7 @@ class AdminDashUI extends StatelessWidget {
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 8),
                     leading: _buildNeonIkon(Icons.warning_amber_rounded, alarmRengi),
-                    title: Text(musteri, style: TextStyle(color: Colors.white.withOpacity(0.9), fontWeight: FontWeight.w700, fontFamily: 'Avenir', fontSize: 14)),
+                    title: Text(musteri, style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontWeight: FontWeight.w700, fontFamily: 'Avenir', fontSize: 14)),
                     subtitle: Text("Bekleme: $gecenDakika dk (Siber Müdahale Gerekli!)", style: TextStyle(color: alarmRengi, fontWeight: FontWeight.w600, fontSize: 12, fontFamily: 'Avenir')),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -286,7 +286,7 @@ class AdminDashUI extends StatelessWidget {
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 8),
                     leading: _buildNeonIkon(puan < 3.0 ? Icons.gavel : Icons.verified, dereceRengi),
-                    title: Text(isim, style: TextStyle(color: Colors.white.withOpacity(0.9), fontWeight: FontWeight.w700, fontSize: 14, fontFamily: 'Avenir')),
+                    title: Text(isim, style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontWeight: FontWeight.w700, fontSize: 14, fontFamily: 'Avenir')),
                     subtitle: Text(derece, style: TextStyle(color: dereceRengi, fontWeight: FontWeight.w800, fontSize: 12, fontFamily: 'Avenir')),
                     trailing: Icon(Icons.arrow_forward_ios, color: Colors.white.withOpacity(0.2), size: 16),
                     onTap: () {},
@@ -305,7 +305,7 @@ class AdminDashUI extends StatelessWidget {
   AppBar _adminAppBar(BuildContext context) => AppBar(
     backgroundColor: Colors.transparent,
     elevation: 0,
-    title: Text("OTODNA KARA KUTU", style: TextStyle(color: Colors.white.withOpacity(0.9), fontWeight: FontWeight.w800, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
+    title: Text("OTODNA KARA KUTU", style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontWeight: FontWeight.w800, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
     centerTitle: true,
     bottom: PreferredSize(
       preferredSize: const Size.fromHeight(1),
@@ -328,7 +328,7 @@ class AdminDashUI extends StatelessWidget {
       children: [
         Icon(Icons.radar, color: renk, size: 18),
         const SizedBox(width: 10),
-        Text(metin, style: TextStyle(color: Colors.white.withOpacity(0.85), fontWeight: FontWeight.w800, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
+        Text(metin, style: TextStyle(color: SiberTema.textMain.withOpacity(0.85), fontWeight: FontWeight.w800, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
       ],
     ),
   );
@@ -400,7 +400,7 @@ class AdminDashUI extends StatelessWidget {
           children: [
             Icon(ikon, color: renk.withOpacity(0.3), size: 40),
             const SizedBox(height: 16),
-            Text(mesaj, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 13, fontWeight: FontWeight.w600, fontFamily: 'Avenir'), textAlign: TextAlign.center),
+            Text(mesaj, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 13, fontWeight: FontWeight.w600, fontFamily: 'Avenir'), textAlign: TextAlign.center),
           ],
         ),
       ),

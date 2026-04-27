@@ -46,7 +46,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent, // Kalkan arka planı kontrol ediyor
         body: StreamBuilder<DocumentSnapshot>(
@@ -89,7 +89,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
                         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                         child: Container(
                           padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(color: Colors.black26, shape: BoxShape.circle, border: Border.all(color: temaRengi.withOpacity(0.5))),
+                          decoration: BoxDecoration(color: Colors.white26, shape: BoxShape.circle, border: Border.all(color: temaRengi.withOpacity(0.5))),
                           child: Icon(Icons.arrow_back_ios_new, color: temaRengi, size: 16),
                         ),
                       ),
@@ -135,7 +135,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
                                     _buildRutbeEtiketi(paket, temaRengi),
                                     const SizedBox(height: 8),
                                     Text(firmaAdi.toUpperCase(),
-                                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                                        style: const TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                                   ],
                                 ),
                               ),
@@ -158,7 +158,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
                         const SizedBox(height: 24),
                         _sectionBaslik("KARARGAH HAKKINDA", temaRengi),
                         const SizedBox(height: 8),
-                        Text(hakkinda, style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 13, height: 1.5, fontFamily: 'Avenir')),
+                        Text(hakkinda, style: TextStyle(color: SiberTema.textMain.withOpacity(0.7), fontSize: 13, height: 1.5, fontFamily: 'Avenir')),
                         const SizedBox(height: 24),
                         if (isYeriFotolari.isNotEmpty) _buildFotoGaleri(isYeriFotolari, temaRengi),
                       ],
@@ -232,7 +232,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
       child: Row(
         children: [
           Expanded(child: _bilgiSutun("SİBER YETKİLİ", yetkili, Icons.admin_panel_settings, renk)),
-          Container(width: 1, height: 30, color: Colors.white10),
+          Container(width: 1, height: 30, color: SiberTema.textMuted),
           Expanded(child: _bilgiSutun("MESAİ SAATLERİ", saat, Icons.access_time, SiberTema.kuantumCyan)),
         ],
       ),
@@ -242,14 +242,14 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
   Widget _bilgiSutun(String baslik, String deger, IconData ikon, Color renk) {
     return Column(
       children: [
-        Text(baslik, style: TextStyle(color: Colors.white38, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 1)),
+        Text(baslik, style: TextStyle(color: SiberTema.textMuted, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 1)),
         const SizedBox(height: 6),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(ikon, color: renk, size: 14),
             const SizedBox(width: 6),
-            Flexible(child: Text(deger, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900))),
+            Flexible(child: Text(deger, style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900))),
           ],
         ),
       ],
@@ -351,7 +351,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
               borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
               child: gorsel.isNotEmpty
                   ? Image.network(gorsel, fit: BoxFit.cover, width: double.infinity)
-                  : Container(color: SiberTema.oledBlack, child: const Icon(Icons.image_not_supported, color: Colors.white10)),
+                  : Container(color: SiberTema.oledBlack, child: const Icon(Icons.image_not_supported, color: SiberTema.textMuted)),
             ),
           ),
           Padding(
@@ -359,7 +359,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(baslik, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold)),
+                Text(baslik, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 6),
                 Text("₺${fiyat.toStringAsFixed(0)}", style: TextStyle(color: renk, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 0.5)),
               ],
@@ -378,7 +378,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
           children: [
             Icon(Icons.radar, size: 48, color: renk.withOpacity(0.1)),
             const SizedBox(height: 16),
-            Text("BU RADARDA İLAN YOK", style: TextStyle(color: Colors.white24, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 2)),
+            Text("BU RADARDA İLAN YOK", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 2)),
           ],
         ),
       ),
@@ -398,7 +398,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
           const SizedBox(height: 16),
           Text(mesaj, style: const TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)),
           const SizedBox(height: 24),
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("GERİ DÖN", style: TextStyle(color: Colors.white54))),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("GERİ DÖN", style: TextStyle(color: SiberTema.textMuted))),
         ],
       ),
     );

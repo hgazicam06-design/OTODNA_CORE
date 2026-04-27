@@ -46,12 +46,12 @@ class _SiberKasaScreenState extends State<SiberKasaScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Row(children: [Icon(Icons.account_balance, color: Color(0xFF00FFC2), size: 32), SizedBox(width: 12), Text("IBAN'a Aktar", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold))]),
+              const Row(children: [Icon(Icons.account_balance, color: Color(0xFF00FFC2), size: 32), SizedBox(width: 12), Text("IBAN'a Aktar", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.bold))]),
               const SizedBox(height: 16),
-              Text("Çekilebilir Tutar: ₺${cekilebilirBakiye.toStringAsFixed(2)}\nBu tutar Kuantum Merkez (%12 vb.) kesintileri düşülmüş NET HAKEDİŞİNİZDİR.", style: const TextStyle(color: Colors.white70, fontSize: 12, height: 1.5)),
+              Text("Çekilebilir Tutar: ₺${cekilebilirBakiye.toStringAsFixed(2)}\nBu tutar Kuantum Merkez (%12 vb.) kesintileri düşülmüş NET HAKEDİŞİNİZDİR.", style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
               const SizedBox(height: 24),
               TextField(
-                controller: ibanCtrl, style: const TextStyle(color: Colors.white, letterSpacing: 2),
+                controller: ibanCtrl, style: const TextStyle(color: SiberTema.textMain, letterSpacing: 2),
                 decoration: InputDecoration(hintText: 'TR', labelText: 'IBAN Numarası', labelStyle: const TextStyle(color: Color(0xFF00FFC2)), filled: true, fillColor: const Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))),
               ),
               const SizedBox(height: 24),
@@ -105,7 +105,7 @@ class _SiberKasaScreenState extends State<SiberKasaScreen> {
                       setState(() => _isRequesting = false);
                     }
                   },
-                  child: const Text("Talebi Gönder", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)),
+                  child: const Text("Talebi Gönder", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
                 ),
               )
             ],
@@ -124,12 +124,12 @@ class _SiberKasaScreenState extends State<SiberKasaScreen> {
     if (_currentUser == null) return const Scaffold(backgroundColor: bgColor, body: Center(child: Text("Kimlik Hatası!", style: TextStyle(color: SiberTema.kanKirmizi))));
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent, elevation: 0,
-        title: const Text('Siber Kasa & Finans', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: const Text('Siber Kasa & Finans', style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
         centerTitle: true, iconTheme: const IconThemeData(color: primaryCyan),
       ),
       body: StreamBuilder<DocumentSnapshot>(
@@ -154,9 +154,9 @@ class _SiberKasaScreenState extends State<SiberKasaScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Row(children: [Icon(Icons.account_balance_wallet, color: Colors.black54), SizedBox(width: 8), Text("Çekilebilir Net Bakiye", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 14))]),
+                        const Row(children: [Icon(Icons.account_balance_wallet, color: Colors.white54), SizedBox(width: 8), Text("Çekilebilir Net Bakiye", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, fontSize: 14))]),
                         const SizedBox(height: 16),
-                        Text("₺${mevcutBakiye.toStringAsFixed(2)}", style: const TextStyle(color: Colors.black, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                        Text("₺${mevcutBakiye.toStringAsFixed(2)}", style: const TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: 1)),
                         const SizedBox(height: 24),
                         Row(
                           children: [
@@ -175,7 +175,7 @@ class _SiberKasaScreenState extends State<SiberKasaScreen> {
                   ),
                   const SizedBox(height: 32),
 
-                  const Text("Son Finansal Hareketler", style: TextStyle(color: Colors.white54, fontSize: 14, fontWeight: FontWeight.bold)),
+                  const Text("Son Finansal Hareketler", style: TextStyle(color: SiberTema.textMuted, fontSize: 14, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 16),
 
                   // GEÇMİŞ PARA ÇEKME TALEPLERİ LİSTESİ
@@ -184,7 +184,7 @@ class _SiberKasaScreenState extends State<SiberKasaScreen> {
                         stream: _db.collection('para_cekme_talepleri').where('bayi_id', isEqualTo: _currentUser!.uid).orderBy('tarih', descending: true).snapshots(),
                         builder: (context, requestSnapshot) {
                           if (requestSnapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: primaryCyan));
-                          if (!requestSnapshot.hasData || requestSnapshot.data!.docs.isEmpty) return const Center(child: Text("Henüz bir işlem hareketiniz yok.", style: TextStyle(color: Colors.white24)));
+                          if (!requestSnapshot.hasData || requestSnapshot.data!.docs.isEmpty) return const Center(child: Text("Henüz bir işlem hareketiniz yok.", style: TextStyle(color: SiberTema.textMuted)));
 
                           var talepler = requestSnapshot.data!.docs;
 
@@ -197,7 +197,7 @@ class _SiberKasaScreenState extends State<SiberKasaScreen> {
 
                               return Container(
                                 margin: const EdgeInsets.only(bottom: 12), padding: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                                decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
@@ -205,7 +205,7 @@ class _SiberKasaScreenState extends State<SiberKasaScreen> {
                                       children: [
                                         Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: isCompleted ? Colors.green.withOpacity(0.1) : Colors.orange.withOpacity(0.1), shape: BoxShape.circle), child: Icon(isCompleted ? Icons.check : Icons.hourglass_top, color: isCompleted ? Colors.green : Colors.orange, size: 20)),
                                         const SizedBox(width: 16),
-                                        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(isCompleted ? "Gönderildi" : "İnceleniyor", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)), const SizedBox(height: 4), Text("IBAN: ${talep['iban']?.toString().substring(0, 8)}...", style: const TextStyle(color: Colors.white54, fontSize: 11))]),
+                                        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(isCompleted ? "Gönderildi" : "İnceleniyor", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 14)), const SizedBox(height: 4), Text("IBAN: ${talep['iban']?.toString().substring(0, 8)}...", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11))]),
                                       ],
                                     ),
                                     Text("-₺${talep['tutar']}", style: const TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold, fontSize: 15)),

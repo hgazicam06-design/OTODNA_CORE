@@ -113,7 +113,7 @@ class _MerchantRegisterState extends State<MerchantRegister> {
   void _siberUyari(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.black)),
+        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white)),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -123,14 +123,14 @@ class _MerchantRegisterState extends State<MerchantRegister> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("ESNAF KAYİT TERMİNALİ", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2)),
+          title: const Text("ESNAF KAYİT TERMİNALİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2)),
           centerTitle: true,
         ),
         body: Center(
@@ -188,12 +188,12 @@ class _MerchantRegisterState extends State<MerchantRegister> {
         children: [
           const Icon(Icons.domain_verification, color: SiberTema.kuantumCyan, size: 48),
           const SizedBox(height: 16),
-          const Text("ANKARA MERKEZ ONAYI", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          const Text("ANKARA MERKEZ ONAYI", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
           const SizedBox(height: 8),
           Text(
             "Evraklarınız şifrelenerek Ankara Karargahına iletilir. İnceleme süreci 24 saat içinde tamamlanacaktır.",
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 11, fontWeight: FontWeight.bold, height: 1.5),
+            style: TextStyle(color: SiberTema.textMain.withOpacity(0.7), fontSize: 11, fontWeight: FontWeight.bold, height: 1.5),
           ),
         ],
       ),
@@ -224,7 +224,7 @@ class _MerchantRegisterState extends State<MerchantRegister> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(title, style: TextStyle(color: kartRengi, fontSize: 12, fontWeight: FontWeight.w900)),
-                      Text(isUploaded ? "MÜHÜRLENDİ" : "DOKÜMAN SEÇ", style: const TextStyle(color: Colors.white38, fontSize: 10)),
+                      Text(isUploaded ? "MÜHÜRLENDİ" : "DOKÜMAN SEÇ", style: const TextStyle(color: SiberTema.textMuted, fontSize: 10)),
                     ],
                   ),
                 ),
@@ -244,14 +244,14 @@ class _MerchantRegisterState extends State<MerchantRegister> {
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
           backgroundColor: SiberTema.kuantumCyan,
-          foregroundColor: Colors.black,
+          foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           disabledBackgroundColor: SiberTema.kuantumCyan.withOpacity(0.1),
         ),
         onPressed: (ready && !_isFinalizing) ? _basvuruyuTamamla : null,
         icon: _isFinalizing ? const SizedBox.shrink() : const Icon(Icons.rocket_launch),
         label: _isFinalizing
-            ? const CircularProgressIndicator(color: Colors.black)
+            ? const CircularProgressIndicator(color: Colors.white)
             : Text(ready ? "BAŞVURUYU TAMAMLA" : "EVRAKLAR BEKLENİYOR", style: const TextStyle(fontWeight: FontWeight.w900)),
       ),
     );

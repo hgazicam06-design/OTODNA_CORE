@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:go_router/go_router.dart';
 
 // 🚀 SİBER ZIRHLAR VE MERKEZİ TEMA
 import '../../core/siber_tema.dart';
@@ -25,6 +26,14 @@ class DijitalMuayeneTerminali extends StatefulWidget {
 }
 
 class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
+  // 🏢 FİLDİŞİ SEDEF PALET
+  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color surfaceColor = Colors.white;
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color textMain = const Color(0xFF1E293B);
+  final Color textMuted = const Color(0xFF64748B);
+  final Color dangerColor = SiberTema.kanKirmizi;
+
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final ImagePicker _picker = ImagePicker();
@@ -135,7 +144,7 @@ class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
       await batch.commit();
 
       if (!mounted) return;
-      Navigator.pop(context);
+      context.pop();
       _siberUyariVer(kritikRiskVarMi ? "RİSKLİ ARAÇ SİSTEME İŞLENDİ!" : "DİJİTAL REFERANS MÜHÜRLENDİ!", isError: kritikRiskVarMi);
     } catch (e) {
       if (!mounted) return;
@@ -146,8 +155,8 @@ class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
 
   void _siberUyariVer(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : Colors.black, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
-      backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
+      content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
+      backgroundColor: isError ? dangerColor : primaryTeal,
       behavior: SnackBarBehavior.floating,
       margin: const EdgeInsets.all(20),
     ));
@@ -156,18 +165,19 @@ class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false, // Ivory için false
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: bgColor,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,
-          title: Text("DİJİTAL MUAYENE TERMİNALİ", style: TextStyle(color: Colors.white.withOpacity(0.7), fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 2)),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: primaryTeal), onPressed: () => context.pop()),
+          title: Text("DİJİTAL MUAYENE", style: TextStyle(color: textMain, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 2)),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 16),
-              child: Center(child: Text(widget.plaka, style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 14))),
+              child: Center(child: Text(widget.plaka, style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, fontSize: 14))),
             )
           ],
         ),
@@ -190,11 +200,15 @@ class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
                 width: double.infinity,
                 height: 65,
                 child: ElevatedButton(
-                  style: SiberTema.kuantumButonStili(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryTeal,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  ),
                   onPressed: _isMuhurleniyor ? null : _raporuKarargahaGonder,
                   child: _isMuhurleniyor
-                      ? const CircularProgressIndicator(color: Colors.black)
-                      : const Text("RAPORU MATRIX'E GÖNDER", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text("RAPORU MATRIX'E GÖNDER", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
                 ),
               ),
             )
@@ -205,26 +219,27 @@ class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
   }
 
   Widget _buildSiberKart(String parca, int durum) {
-    Color statusColor = durum == 0 ? Colors.white24 : (durum == 1 ? SiberTema.kuantumCyan : SiberTema.kanKirmizi);
+    Color statusColor = durum == 0 ? Colors.black.withOpacity(0.1) : (durum == 1 ? primaryTeal : dangerColor);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.02),
+        color: surfaceColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: statusColor.withOpacity(0.3), width: 1.5),
+        border: Border.all(color: durum == 0 ? Colors.black.withOpacity(0.05) : statusColor.withOpacity(0.5), width: 1.5),
+        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(parca.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
+          Text(parca.toUpperCase(), style: TextStyle(color: textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
           const SizedBox(height: 20),
           Row(
             children: [
-              _statusAction(Icons.close, SiberTema.kanKirmizi, durum == -1, () => _kanitYukleVeOnayla(parca, true)),
+              _statusAction(Icons.close, dangerColor, durum == -1, () => _kanitYukleVeOnayla(parca, true)),
               const SizedBox(width: 12),
-              _statusAction(Icons.check, SiberTema.kuantumCyan, durum == 1, () => _kanitYukleVeOnayla(parca, false)),
+              _statusAction(Icons.check, primaryTeal, durum == 1, () => _kanitYukleVeOnayla(parca, false)),
             ],
           )
         ],
@@ -240,11 +255,11 @@ class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16),
           decoration: BoxDecoration(
-            color: active ? color.withOpacity(0.1) : Colors.transparent,
+            color: active ? color.withOpacity(0.1) : surfaceColor,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: active ? color : Colors.white10),
+            border: Border.all(color: active ? color : Colors.black.withOpacity(0.05)),
           ),
-          child: Icon(icon, color: active ? color : Colors.white24, size: 28),
+          child: Icon(icon, color: active ? color : textMuted, size: 28),
         ),
       ),
     );

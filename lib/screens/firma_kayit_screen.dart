@@ -47,7 +47,7 @@ class _FirmaKayitScreenState extends State<FirmaKayitScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text("KRİPTOLU BELGELER AĞA MÜHÜRLENDİ 🦅", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, letterSpacing: 1)),
+        content: Text("KRİPTOLU BELGELER AĞA MÜHÜRLENDİ 🦅", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1)),
         backgroundColor: primaryCyan,
       ),
     );
@@ -105,7 +105,7 @@ class _FirmaKayitScreenState extends State<FirmaKayitScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("KİMLİK VE FİNANSAL MÜHÜR AĞA İŞLENDİ. ONAY BEKLENİYOR.", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+          content: Text("KİMLİK VE FİNANSAL MÜHÜR AĞA İŞLENDİ. ONAY BEKLENİYOR.", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
           backgroundColor: primaryCyan,
         ),
       );
@@ -138,8 +138,8 @@ class _FirmaKayitScreenState extends State<FirmaKayitScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text('E S N A F   K A Y I T   P R O T O K O L Ü', style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+        title: const Text('E S N A F   K A Y I T   P R O T O K O L Ü', style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
       ),
       body: Center(
         child: ConstrainedBox(
@@ -154,9 +154,9 @@ class _FirmaKayitScreenState extends State<FirmaKayitScreen> {
                 children: [
                   const Icon(Icons.domain_verification, color: primaryCyan, size: 64),
                   const SizedBox(height: 16),
-                  const Text("OTODNA TİCARİ AĞINA KATILIM", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                  const Text("OTODNA TİCARİ AĞINA KATILIM", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
                   const SizedBox(height: 8),
-                  const Text("Öz isminiz ve vergi numaranızla siber ağa mühürlenin.\n%12 Gazi Finans Protokolü sisteme gömülüdür.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.5, fontWeight: FontWeight.bold)),
+                  const Text("Öz isminiz ve vergi numaranızla siber ağa mühürlenin.\n%12 Gazi Finans Protokolü sisteme gömülüdür.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.5, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 40),
 
                   _buildSiberTextField(_firmaAdiCtrl, "FİRMA ÖZ ADI (ÖR: EGE OTOMOTİV)", Icons.business_outlined),
@@ -188,11 +188,11 @@ class _FirmaKayitScreenState extends State<FirmaKayitScreen> {
                       onPressed: _isProcessing ? null : _kaydiTamamla,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryCyan,
-                        foregroundColor: Colors.black,
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       ),
                       icon: _isProcessing
-                          ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
+                          ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                           : const Icon(Icons.security, size: 24),
                       label: Text(
                         _isProcessing ? "AĞA MÜHÜRLENİYOR..." : "KENDİ İSMİMLE AĞA KATIL",
@@ -214,11 +214,11 @@ class _FirmaKayitScreenState extends State<FirmaKayitScreen> {
       controller: controller,
       keyboardType: isNumber ? TextInputType.number : TextInputType.text,
       textCapitalization: TextCapitalization.characters,
-      style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+      style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.bold),
-        prefixIcon: Icon(icon, color: Colors.white38, size: 20),
+        hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.bold),
+        prefixIcon: Icon(icon, color: SiberTema.textMuted, size: 20),
         filled: true,
         fillColor: surfaceColor,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
@@ -238,11 +238,11 @@ class _FirmaKayitScreenState extends State<FirmaKayitScreen> {
       value: currentValue,
       icon: const Icon(Icons.expand_more, color: primaryCyan),
       dropdownColor: surfaceColor,
-      style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+      style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.bold),
-        prefixIcon: const Icon(Icons.map_outlined, color: Colors.white38, size: 20),
+        hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.bold),
+        prefixIcon: const Icon(Icons.map_outlined, color: SiberTema.textMuted, size: 20),
         filled: true,
         fillColor: surfaceColor,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),

@@ -49,7 +49,7 @@ class _SiberAiAyarlariScreenState extends State<SiberAiAyarlariScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("$asistanIsmi: 'Ayarlarım güncellendi.'", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), 
+          content: Text("$asistanIsmi: 'Ayarlarım güncellendi.'", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), 
           backgroundColor: primaryTeal, 
           duration: const Duration(seconds: 2),
           behavior: SnackBarBehavior.floating,
@@ -73,7 +73,7 @@ class _SiberAiAyarlariScreenState extends State<SiberAiAyarlariScreen> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
         title: Row(
           children: [
             Icon(Icons.record_voice_over_outlined, color: _seciliSes == "KADIN" ? Colors.purpleAccent.shade400 : Colors.blueAccent.shade400, size: 24),
@@ -81,12 +81,12 @@ class _SiberAiAyarlariScreenState extends State<SiberAiAyarlariScreen> {
             const Text("SES AKTİF", style: TextStyle(color: Color(0xFF1E293B), fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
           ],
         ),
-        content: Text("Oynatma Hızı: ${_konusmaHizi.toStringAsFixed(2)}x\n\n\"$mesaj\"", style: const TextStyle(color: Colors.black87, fontSize: 13, fontStyle: FontStyle.italic, height: 1.5, fontFamily: 'Avenir')),
+        content: Text("Oynatma Hızı: ${_konusmaHizi.toStringAsFixed(2)}x\n\n\"$mesaj\"", style: const TextStyle(color: Colors.white87, fontSize: 13, fontStyle: FontStyle.italic, height: 1.5, fontFamily: 'Avenir')),
         actions: [
           TextButton(onPressed: () {
             _flutterTts.stop();
             Navigator.pop(context);
-          }, child: const Text("SUSTUR VE KAPAT", style: TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')))
+          }, child: const Text("SUSTUR VE KAPAT", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')))
         ],
       ),
     );
@@ -111,7 +111,7 @@ class _SiberAiAyarlariScreenState extends State<SiberAiAyarlariScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
           title: Text("A I   K O N F İ G Ü R A S Y O N", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3, fontFamily: 'Avenir')),
           centerTitle: true
@@ -125,22 +125,22 @@ class _SiberAiAyarlariScreenState extends State<SiberAiAyarlariScreen> {
             // BAŞLIK ALANI
             Text("Akıllı Asistan", style: TextStyle(color: textColor, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -1, fontFamily: 'Avenir')),
             const SizedBox(height: 8),
-            const Text("Yapay zeka asistanınızın ismini, sesini, hızını ve müdahale tarzını kişiselleştirin.", style: TextStyle(color: Colors.black54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            const Text("Yapay zeka asistanınızın ismini, sesini, hızını ve müdahale tarzını kişiselleştirin.", style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             const SizedBox(height: 40),
 
             // 1. İSİM ALANI
-            const Text("1. Asistan Kimliği", style: TextStyle(color: Colors.black45, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+            const Text("1. Asistan Kimliği", style: TextStyle(color: Colors.white45, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
+              decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]),
               child: TextField(
                   controller: _isimController,
                   style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
                   decoration: const InputDecoration(
                       hintText: "Örn: Cuma, Jarvis, Asena...",
-                      hintStyle: TextStyle(color: Colors.black26, fontWeight: FontWeight.bold, fontSize: 14, fontFamily: 'Avenir'),
-                      icon: Icon(Icons.smart_toy_outlined, color: Colors.black38, size: 22),
+                      hintStyle: TextStyle(color: Colors.white26, fontWeight: FontWeight.bold, fontSize: 14, fontFamily: 'Avenir'),
+                      icon: Icon(Icons.smart_toy_outlined, color: Colors.white38, size: 22),
                       border: InputBorder.none
                   )
               ),
@@ -148,7 +148,7 @@ class _SiberAiAyarlariScreenState extends State<SiberAiAyarlariScreen> {
             const SizedBox(height: 40),
 
             // 2. SES SEÇİMİ
-            const Text("2. Ses Profili", style: TextStyle(color: Colors.black45, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+            const Text("2. Ses Profili", style: TextStyle(color: Colors.white45, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
             const SizedBox(height: 16),
             Row(
                 children: [
@@ -160,11 +160,11 @@ class _SiberAiAyarlariScreenState extends State<SiberAiAyarlariScreen> {
             const SizedBox(height: 40),
 
             // 3. KONUŞMA HIZI
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text("3. Yanıt Hızı", style: TextStyle(color: Colors.black45, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')), Text("${_konusmaHizi.toStringAsFixed(2)}x", style: TextStyle(color: primaryTeal, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir'))]),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text("3. Yanıt Hızı", style: TextStyle(color: Colors.white45, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')), Text("${_konusmaHizi.toStringAsFixed(2)}x", style: TextStyle(color: primaryTeal, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir'))]),
             const SizedBox(height: 12),
             Container(
                 padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
-                decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
+                decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]),
                 child: Column(
                     children: [
                       SliderTheme(
@@ -173,7 +173,7 @@ class _SiberAiAyarlariScreenState extends State<SiberAiAyarlariScreen> {
                       ),
                       const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("Yavaş (0.5x)", style: TextStyle(color: Colors.black38, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), Text("Hızlı (1.5x)", style: TextStyle(color: Colors.black38, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))])
+                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("Yavaş (0.5x)", style: TextStyle(color: Colors.white38, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), Text("Hızlı (1.5x)", style: TextStyle(color: Colors.white38, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))])
                       )
                     ]
                 )
@@ -181,18 +181,18 @@ class _SiberAiAyarlariScreenState extends State<SiberAiAyarlariScreen> {
             const SizedBox(height: 40),
 
             // 4. MÜDAHALE TARZI
-            const Text("4. Müdahale Tarzı", style: TextStyle(color: Colors.black45, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+            const Text("4. Müdahale Tarzı", style: TextStyle(color: Colors.white45, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
             const SizedBox(height: 16),
             GestureDetector(
                 onTap: () => setState(() => _cozumTarzi = "HIZLI"),
                 child: Container(
                     padding: const EdgeInsets.all(20), margin: const EdgeInsets.only(bottom: 12),
-                    decoration: BoxDecoration(color: _cozumTarzi == "HIZLI" ? Colors.orange.withValues(alpha: 0.05) : surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: _cozumTarzi == "HIZLI" ? Colors.orange.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05)), boxShadow: _cozumTarzi == "HIZLI" ? null : [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
+                    decoration: BoxDecoration(color: _cozumTarzi == "HIZLI" ? Colors.orange.withValues(alpha: 0.05) : surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: _cozumTarzi == "HIZLI" ? Colors.orange.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05)), boxShadow: _cozumTarzi == "HIZLI" ? null : [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]),
                     child: Row(
                         children: [
                           Icon(Icons.bolt_outlined, color: _cozumTarzi == "HIZLI" ? Colors.orange : Colors.black26, size: 28),
                           const SizedBox(width: 16),
-                          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text("Acil ve Hızlı Çözüm (Önerilen)", style: TextStyle(color: _cozumTarzi == "HIZLI" ? Colors.orange : textColor, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'Avenir')), const SizedBox(height: 6), const Text("Kaza/arıza anında laf kalabalığı yapmaz, doğrudan kolluk kuvveti veya çekici menüsünü açar.", style: TextStyle(color: Colors.black54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))]))
+                          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text("Acil ve Hızlı Çözüm (Önerilen)", style: TextStyle(color: _cozumTarzi == "HIZLI" ? Colors.orange : textColor, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'Avenir')), const SizedBox(height: 6), const Text("Kaza/arıza anında laf kalabalığı yapmaz, doğrudan kolluk kuvveti veya çekici menüsünü açar.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))]))
                         ]
                     )
                 )
@@ -201,12 +201,12 @@ class _SiberAiAyarlariScreenState extends State<SiberAiAyarlariScreen> {
                 onTap: () => setState(() => _cozumTarzi = "DETAYLI"),
                 child: Container(
                     padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(color: _cozumTarzi == "DETAYLI" ? primaryTeal.withValues(alpha: 0.05) : surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: _cozumTarzi == "DETAYLI" ? primaryTeal.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05)), boxShadow: _cozumTarzi == "DETAYLI" ? null : [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
+                    decoration: BoxDecoration(color: _cozumTarzi == "DETAYLI" ? primaryTeal.withValues(alpha: 0.05) : surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: _cozumTarzi == "DETAYLI" ? primaryTeal.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05)), boxShadow: _cozumTarzi == "DETAYLI" ? null : [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]),
                     child: Row(
                         children: [
                           Icon(Icons.menu_book_outlined, color: _cozumTarzi == "DETAYLI" ? primaryTeal : Colors.black26, size: 28),
                           const SizedBox(width: 16),
-                          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text("Sakin ve Detaylı Anlatım", style: TextStyle(color: _cozumTarzi == "DETAYLI" ? primaryTeal : textColor, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'Avenir')), const SizedBox(height: 6), const Text("İşlemleri adım adım açıklar. Prosedürleri detaylı dinlemek isteyen kullanıcılar için idealdir.", style: TextStyle(color: Colors.black54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))]))
+                          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text("Sakin ve Detaylı Anlatım", style: TextStyle(color: _cozumTarzi == "DETAYLI" ? primaryTeal : textColor, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'Avenir')), const SizedBox(height: 6), const Text("İşlemleri adım adım açıklar. Prosedürleri detaylı dinlemek isteyen kullanıcılar için idealdir.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))]))
                         ]
                     )
                 )
@@ -221,7 +221,7 @@ class _SiberAiAyarlariScreenState extends State<SiberAiAyarlariScreen> {
                       child: SizedBox(
                         height: 56,
                         child: OutlinedButton.icon(
-                            style: OutlinedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: textColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)), side: BorderSide(color: Colors.black.withValues(alpha: 0.1))),
+                            style: OutlinedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: textColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)), side: BorderSide(color: Colors.white.withValues(alpha: 0.1))),
                             onPressed: _sesiTestEt,
                             icon: const Icon(Icons.volume_up_outlined, size: 18),
                             label: const Text("SESİ TEST ET", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'))
@@ -259,7 +259,7 @@ class _SiberAiAyarlariScreenState extends State<SiberAiAyarlariScreen> {
             color: aktifMi ? renk.withValues(alpha: 0.05) : Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: aktifMi ? renk.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05)),
-            boxShadow: aktifMi ? null : [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]
+            boxShadow: aktifMi ? null : [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]
         ),
         child: Column(
             children: [

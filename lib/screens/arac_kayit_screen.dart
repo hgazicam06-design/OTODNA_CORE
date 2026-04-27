@@ -79,13 +79,13 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
                 margin: const EdgeInsets.only(top: 12),
                 width: 40,
                 height: 4,
-                decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(10)),
+                decoration: BoxDecoration(color: SiberTema.textMuted, borderRadius: BorderRadius.circular(10)),
               ),
               const Padding(
                 padding: EdgeInsets.all(24.0),
                 child: Text("SİBER GÖZ AKTİF", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)),
               ),
-              const Text("Şase numarası (VIN) veya araç QR kodunu okutun.", style: TextStyle(color: Colors.white54, fontSize: 12)),
+              const Text("Şase numarası (VIN) veya araç QR kodunu okutun.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
               const SizedBox(height: 24),
               Expanded(
                 child: Container(
@@ -114,7 +114,7 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 backgroundColor: SiberTema.kuantumCyan,
-                                content: Text('ŞASE BAŞARIYLA ÇÖZÜMLENDİ!', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                                content: Text('ŞASE BAŞARIYLA ÇÖZÜMLENDİ!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                               ),
                             );
                             break;
@@ -169,7 +169,7 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: SiberTema.kanKirmizi,
-          content: Text('SİBER İHLAL: Şase numarasının doğru olduğunu onaylayın!', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+          content: Text('SİBER İHLAL: Şase numarasının doğru olduğunu onaylayın!', style: TextStyle(fontWeight: FontWeight.bold, color: SiberTema.textMain)),
         ),
       );
       return;
@@ -208,7 +208,7 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: SiberTema.kuantumCyan,
-          content: Text('ARAÇ OTODNA AĞINA MÜHÜRLENDİ! 🦅', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900)),
+          content: Text('ARAÇ OTODNA AĞINA MÜHÜRLENDİ! 🦅', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900)),
         ),
       );
 
@@ -272,7 +272,7 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
                     onPressed: _isSaving ? null : _kaydiTamamla,
                     style: SiberTema.kuantumButonStili(),
                     icon: _isSaving
-                        ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
+                        ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                         : const Icon(Icons.fingerprint, size: 24, color: SiberTema.oledBlack),
                     label: Text(_isSaving ? 'AĞA MÜHÜRLENİYOR...' : 'KAYDI TAMAMLA VE AĞA GİR', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, color: SiberTema.oledBlack)),
                   ),
@@ -299,10 +299,10 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
                 end: Alignment.bottomRight,
               ).createShader(bounds);
             },
-            child: Icon(ikon, color: Colors.white, size: 24), // İkon biraz büyütüldü
+            child: Icon(ikon, color: SiberTema.kuantumCyan, size: 24), // İkon biraz büyütüldü
           ),
           const SizedBox(width: 12),
-          Text(baslik, style: const TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2)),
         ],
       ),
     );
@@ -319,10 +319,10 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
           onTap: onTap,
           textCapitalization: isUppercase ? TextCapitalization.characters : TextCapitalization.words,
           keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-          style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+          style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.2), fontSize: 12),
+            hintStyle: TextStyle(color: SiberTema.textMain.withValues(alpha: 0.2), fontSize: 12),
             prefixIcon: Icon(icon, color: SiberTema.kuantumCyan.withValues(alpha: 0.7), size: 20),
             filled: false,
             contentPadding: const EdgeInsets.symmetric(vertical: 20), // İç boşluk (ferah)
@@ -404,7 +404,7 @@ class _AracKayitScreenState extends ConsumerState<AracKayitScreen> {
           const SizedBox(height: 28),
           _buildTextField(_saseController, 'Şase Numarası (VIN)', Icons.numbers, isUppercase: true),
           CheckboxListTile(
-            title: const Text('Şase numarası doğrudur, onaylıyorum.', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
+            title: const Text('Şase numarası doğrudur, onaylıyorum.', style: TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.bold)),
             value: _saseElleDogrulandi,
             onChanged: (val) => setState(() => _saseElleDogrulandi = val!),
             activeColor: SiberTema.kuantumCyan,

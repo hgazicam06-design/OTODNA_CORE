@@ -151,7 +151,7 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
 
   void _siberUyariVer(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12, fontFamily: 'monospace')),
+      content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 12, fontFamily: 'monospace')),
       backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
       behavior: SnackBarBehavior.floating,
     ));
@@ -162,14 +162,14 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
     if (_veriYukleniyor) return const Scaffold(backgroundColor: SiberTema.oledBlack, body: Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)));
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("İLAN TERMİNALİ V4", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'monospace')),
+          title: const Text("İLAN TERMİNALİ V4", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'monospace')),
           centerTitle: true,
         ),
         body: Stack(
@@ -196,7 +196,7 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
                 ),
               ],
             ),
-            if (_isProcessing) Container(color: Colors.black54, child: const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))),
+            if (_isProcessing) Container(color: Colors.white54, child: const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))),
           ],
         ),
       ),
@@ -215,7 +215,7 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("PAKET: $_kullaniciPaketi", style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+          Text("PAKET: $_kullaniciPaketi", style: const TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
           Text("LİMİT: $_kullaniciIlanSayisi / ${_paketLimitleri[_kullaniciPaketi] == 999999 ? '∞' : _paketLimitleri[_kullaniciPaketi]}",
               style: TextStyle(color: _limitAsildiMi ? SiberTema.kanKirmizi : SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 12)),
         ],
@@ -277,8 +277,8 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
         controller: ctrl,
         maxLines: lines,
         keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
-        style: const TextStyle(color: Colors.white, fontSize: 12),
-        decoration: InputDecoration(labelText: label, labelStyle: const TextStyle(color: Colors.white38, fontSize: 10), border: InputBorder.none),
+        style: const TextStyle(color: SiberTema.textMain, fontSize: 12),
+        decoration: InputDecoration(labelText: label, labelStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 10), border: InputBorder.none),
       ),
     );
   }

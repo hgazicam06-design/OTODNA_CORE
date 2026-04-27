@@ -31,11 +31,11 @@ class _UstaAracKabulScreenState extends State<UstaAracKabulScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(children: [const Icon(Icons.verified_user, color: SiberTema.kuantumCyan), const SizedBox(width: 8), Expanded(child: Text("$firma - Zaman Damgalı Kanıt", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)))]),
+              Row(children: [const Icon(Icons.verified_user, color: SiberTema.kuantumCyan), const SizedBox(width: 8), Expanded(child: Text("$firma - Zaman Damgalı Kanıt", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)))]),
               const SizedBox(height: 16),
-              Container(height: 200, width: double.infinity, decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(12)), child: const Center(child: Icon(Icons.play_circle_fill, color: Colors.white54, size: 64))),
+              Container(height: 200, width: double.infinity, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)), child: const Center(child: Icon(Icons.play_circle_fill, color: SiberTema.textMuted, size: 64))),
               const SizedBox(height: 16),
-              Text("İşlem: $islem", style: const TextStyle(color: Colors.white70, fontSize: 12)),
+              Text("İşlem: $islem", style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
               const SizedBox(height: 16),
               SizedBox(width: double.infinity, child: ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context), child: const Text("Kapat", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)))),
             ],
@@ -63,12 +63,12 @@ class _UstaAracKabulScreenState extends State<UstaAracKabulScreen> {
     const cardColor = SiberTema.matGrey;
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent, elevation: 0,
-          title: const Text('OtoDNA Araç Sicili', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+          title: const Text('OtoDNA Araç Sicili', style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
           centerTitle: true, iconTheme: const IconThemeData(color: primaryCyan),
         ),
       body: Column(
@@ -87,18 +87,18 @@ class _UstaAracKabulScreenState extends State<UstaAracKabulScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(widget.saseVeyaPlaka, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                      Text(widget.saseVeyaPlaka, style: const TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: 2)),
                       const SizedBox(height: 4),
                       const Text("OtoDNA Referanslı Araç", style: TextStyle(color: primaryCyan, fontSize: 12, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
-                const Icon(Icons.qr_code_2, color: Colors.white38, size: 32)
+                const Icon(Icons.qr_code_2, color: SiberTema.textMuted, size: 32)
               ],
             ),
           ),
 
-          const Padding(padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0), child: Align(alignment: Alignment.centerLeft, child: Text("Türkiye Geneli İşlem Geçmişi (Zaman Çizelgesi)", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold)))),
+          const Padding(padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0), child: Align(alignment: Alignment.centerLeft, child: Text("Türkiye Geneli İşlem Geçmişi (Zaman Çizelgesi)", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)))),
 
           // =================================================================
           // ⏳ DNA ZAMAN ÇİZELGESİ (FİREBASE CANLI RADAR)
@@ -113,7 +113,7 @@ class _UstaAracKabulScreenState extends State<UstaAracKabulScreen> {
                   }
 
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return const Center(child: Text("Bu araca ait henüz bir OtoDNA geçmişi bulunmuyor.", style: TextStyle(color: Colors.white54)));
+                    return const Center(child: Text("Bu araca ait henüz bir OtoDNA geçmişi bulunmuyor.", style: TextStyle(color: SiberTema.textMuted)));
                   }
 
                   var raporlar = snapshot.data!.docs;
@@ -160,7 +160,7 @@ class _UstaAracKabulScreenState extends State<UstaAracKabulScreen> {
                                   children: [
                                     Container(width: 16, height: 16, decoration: BoxDecoration(color: isRiskli ? Colors.redAccent : primaryCyan, shape: BoxShape.circle, border: Border.all(color: bgColor, width: 3))),
                                     if (index != raporlar.length - 1)
-                                      Container(width: 2, height: 150, color: Colors.white12), // Çizgi boyu
+                                      Container(width: 2, height: 150, color: SiberTema.textMuted), // Çizgi boyu
                                   ],
                                 ),
                                 const SizedBox(width: 16),
@@ -177,8 +177,8 @@ class _UstaAracKabulScreenState extends State<UstaAracKabulScreen> {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             // İleride burası bayinin il/ilçe bilgisinden çekilebilir
-                                            Row(children: [const Icon(Icons.location_on, color: Colors.white54, size: 14), const SizedBox(width: 4), Text(firmaAdi, style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold))]),
-                                            Text(formatliTarih, style: const TextStyle(color: Colors.white38, fontSize: 11)),
+                                            Row(children: [const Icon(Icons.location_on, color: SiberTema.textMuted, size: 14), const SizedBox(width: 4), Text(firmaAdi, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold))]),
+                                            Text(formatliTarih, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11)),
                                           ],
                                         ),
                                         const SizedBox(height: 12),
@@ -193,10 +193,10 @@ class _UstaAracKabulScreenState extends State<UstaAracKabulScreen> {
                                         const SizedBox(height: 8),
                                         Text("DNA Skoru Değişimi: -> ${raporData['yeni_dna_skoru'] ?? 'Bilinmiyor'}", style: const TextStyle(color: Colors.amber, fontSize: 12, fontWeight: FontWeight.bold)),
                                         const SizedBox(height: 12),
-                                        const Divider(color: Colors.white12),
+                                        const Divider(color: SiberTema.textMuted),
                                         const SizedBox(height: 8),
 
-                                        Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(8)), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [const Icon(Icons.comment, color: Colors.white38, size: 14), const SizedBox(width: 8), Expanded(child: Text(ustaNotu, style: const TextStyle(color: Colors.white70, fontSize: 11, fontStyle: FontStyle.italic)))])),
+                                        Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(8)), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [const Icon(Icons.comment, color: SiberTema.textMuted, size: 14), const SizedBox(width: 8), Expanded(child: Text(ustaNotu, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontStyle: FontStyle.italic)))])),
 
                                         // İleride Firebase Storage'a yüklenen video URL'sine göre bu buton açılır
                                         const SizedBox(height: 16),
@@ -224,7 +224,7 @@ class _UstaAracKabulScreenState extends State<UstaAracKabulScreen> {
           // YENİ İŞLEM BAŞLAT BUTONU
           // =================================================================
           Container(
-            padding: const EdgeInsets.all(20), decoration: const BoxDecoration(color: bgColor, border: Border(top: BorderSide(color: Colors.white12))),
+            padding: const EdgeInsets.all(20), decoration: const BoxDecoration(color: bgColor, border: Border(top: BorderSide(color: SiberTema.textMuted))),
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(

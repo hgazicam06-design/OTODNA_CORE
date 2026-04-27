@@ -212,7 +212,7 @@ class _SiberUstaDenetimSayfasiState extends State<SiberUstaDenetimSayfasi> {
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold)),
+            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
@@ -222,7 +222,7 @@ class _SiberUstaDenetimSayfasiState extends State<SiberUstaDenetimSayfasi> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent, // Kalkan arkadan aydınlatsun
         appBar: AppBar(
@@ -255,7 +255,7 @@ class _SiberUstaDenetimSayfasiState extends State<SiberUstaDenetimSayfasi> {
                         children: [
                           Icon(Icons.description_outlined, color: SiberTema.kuantumCyan, size: 20),
                           SizedBox(width: 8),
-                          Text("GÜNCEL İŞLEM LİSTESİ", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
+                          Text("GÜNCEL İŞLEM LİSTESİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
                         ],
                       ),
                       const SizedBox(height: 16),
@@ -326,10 +326,10 @@ class _SiberUstaDenetimSayfasiState extends State<SiberUstaDenetimSayfasi> {
                         child: OutlinedButton.icon(
                           onPressed: _raporuOku,
                           icon: const Icon(Icons.volume_up_outlined, size: 18, color: Colors.white),
-                          label: const Text("DİNLE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12)),
+                          label: const Text("DİNLE", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12)),
                           style: OutlinedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 18),
-                              side: const BorderSide(color: Colors.white24),
+                              side: const BorderSide(color: SiberTema.textMuted),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                               backgroundColor: SiberTema.matGrey.withOpacity(0.5)
                           ),

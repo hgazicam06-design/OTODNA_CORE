@@ -82,13 +82,13 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
           children: [
             Icon(Icons.security, color: SiberTema.kuantumCyan, size: 28),
             SizedBox(width: 12),
-            Text("GİZLİLİK KALKANI", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+            Text("GİZLİLİK KALKANI", style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold)),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("Bu aracın tüm genetik sicilini (Yağ bakımından fren balatasına, tramerden ekspertiz raporuna kadar) içeren Değiştirilemez PDF Raporunu almak üzeresiniz.", style: TextStyle(color: Colors.white70, fontSize: 12, height: 1.5)),
+            const Text("Bu aracın tüm genetik sicilini (Yağ bakımından fren balatasına, tramerden ekspertiz raporuna kadar) içeren Değiştirilemez PDF Raporunu almak üzeresiniz.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
             const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.all(12),
@@ -100,22 +100,22 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İPTAL", style: TextStyle(color: Colors.white38))),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted))),
           ElevatedButton(
             style: SiberTema.kuantumButonStili(),
             onPressed: () async {
               Navigator.pop(context);
               
               // Gerçekte burada Cloud Function ile bildirim atılır.
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Araç Sahibine Onay İsteği Gönderildi! ⏳", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.altinSari));
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Araç Sahibine Onay İsteği Gönderildi! ⏳", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.altinSari));
               
               // Simülasyon: 3 Saniye sonra onaylandı varsayalım
               await Future.delayed(const Duration(seconds: 3));
               if (!mounted) return;
               
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Araç Sahibi ONAYLADI. Cüzdandan 599 ₺ çekildi. Rapor İndiriliyor! 📥", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan, duration: Duration(seconds: 4)));
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Araç Sahibi ONAYLADI. Cüzdandan 599 ₺ çekildi. Rapor İndiriliyor! 📥", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan, duration: Duration(seconds: 4)));
             },
-            child: const Text("ONAY İSTE (599 ₺)", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900)),
+            child: const Text("ONAY İSTE (599 ₺)", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900)),
           )
         ],
       ),
@@ -132,7 +132,7 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
     Color siberRenk = dnaSkoru >= 80 ? SiberTema.kuantumCyan : (dnaSkoru >= 50 ? SiberTema.altinSari : SiberTema.kanKirmizi);
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -142,9 +142,9 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
           title: const Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.verified_user, color: Colors.white70, size: 20),
+              Icon(Icons.verified_user, color: SiberTema.textMuted, size: 20),
               SizedBox(width: 8),
-              Text("RESMİ DNA RAPORU", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2)),
+              Text("RESMİ DNA RAPORU", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2)),
             ],
           ),
           centerTitle: true,
@@ -161,13 +161,13 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                  decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
                   child: Column(
                     children: [
-                      Text("${_aracVerisi?['plaka']} - ${_aracVerisi?['marka_model']}".toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                      Text("${_aracVerisi?['plaka']} - ${_aracVerisi?['marka_model']}".toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
                       const SizedBox(height: 8),
-                      Text("ŞASE: ${widget.saseNo.toUpperCase()}", style: const TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2)),
-                      const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: Colors.white12)),
+                      Text("ŞASE: ${widget.saseNo.toUpperCase()}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, letterSpacing: 2)),
+                      const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -203,7 +203,7 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
                           const SizedBox(height: 16),
                           Text("%$dnaSkoru", style: TextStyle(color: siberRenk, fontSize: 72, fontWeight: FontWeight.w900, letterSpacing: -2)),
                           const SizedBox(height: 8),
-                          const Text("GENEL DNA SAĞLIK SKORU", style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                          const Text("GENEL DNA SAĞLIK SKORU", style: TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
                         ],
                       ),
                     );
@@ -214,7 +214,7 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
                 // =================================================================
                 // 3. DETAYLI BAKIM VE DEĞİŞİM BİLGİLERİ (Yağ, Balata vs.)
                 // =================================================================
-                const Align(alignment: Alignment.centerLeft, child: Text("KAYITLI SERVİS & BAKIM GEÇMİŞİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5))),
+                const Align(alignment: Alignment.centerLeft, child: Text("KAYITLI SERVİS & BAKIM GEÇMİŞİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5))),
                 const SizedBox(height: 16),
                 
                 _buildBakimSatiri("Motor Yağı & Filtreler", "Değişimi Yapıldı", "42.000 KM (3 Ay Önce)", SiberTema.kuantumCyan),
@@ -232,12 +232,12 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
                   child: ElevatedButton.icon(
                     style: SiberTema.kuantumButonStili(),
                     onPressed: _satinAlmaVeOnayIstegiGonder,
-                    icon: const Icon(Icons.picture_as_pdf, size: 24, color: Colors.black),
-                    label: const Text("TÜM SİCİLİ AL (599 ₺)", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 15)),
+                    icon: const Icon(Icons.picture_as_pdf, size: 24, color: Colors.white),
+                    label: const Text("TÜM SİCİLİ AL (599 ₺)", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 15)),
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text("Bu rapor OtoDNA Kuantum Ağı tarafından kriptolanmıştır. Veri İzinsiz Çoğaltılamaz.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white38, fontSize: 9)),
+                const Text("Bu rapor OtoDNA Kuantum Ağı tarafından kriptolanmıştır. Veri İzinsiz Çoğaltılamaz.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 9)),
                 const SizedBox(height: 40),
               ],
             ),
@@ -251,7 +251,7 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
+      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.textMuted)),
       child: Row(
         children: [
           Icon(Icons.build_circle, color: islemRengi, size: 24),
@@ -260,13 +260,13 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(parca, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                Text(parca, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
                 Text(islem, style: TextStyle(color: islemRengi, fontSize: 11, fontWeight: FontWeight.w900)),
               ],
             ),
           ),
-          Text(zaman, style: const TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+          Text(zaman, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
         ],
       ),
     );

@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           title: Text(
             "O T O D N A   P L A Z A",
             style: TextStyle(
@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
                 const Text(
                   "HIZLI ERİŞİM PROTOKOLLERİ",
                   style: TextStyle(
-                    color: Colors.black45,
+                    color: Colors.white45,
                     fontSize: 10,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 2,
@@ -140,9 +140,9 @@ class HomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
         boxShadow: [
-          BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 20, offset: const Offset(0, 8))
+          BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 20, offset: const Offset(0, 8))
         ]
       ),
       child: Row(
@@ -191,9 +191,9 @@ class HomeScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
             boxShadow: [
-              BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))
+              BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))
             ]
           ),
           child: Column(
@@ -223,7 +223,7 @@ class HomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -232,7 +232,7 @@ class HomeScreen extends StatelessWidget {
           SizedBox(width: 8),
           Text(
             "SİSTEM ÇALIŞMA SÜRESİ: %99.9  |  PLAZA AĞI AKTİF",
-            style: TextStyle(color: Colors.black54, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir'),
+            style: TextStyle(color: Colors.white54, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir'),
           ),
         ],
       ),

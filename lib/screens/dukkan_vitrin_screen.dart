@@ -28,7 +28,7 @@ class DukkanVitrinScreen extends StatelessWidget {
     int crossAxisCount = screenWidth > 1200 ? 5 : (screenWidth > 800 ? 4 : (screenWidth > 600 ? 3 : 2));
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -36,12 +36,12 @@ class DukkanVitrinScreen extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
             onPressed: () => Navigator.pop(context),
           ),
           title: Column(
             children: [
-              const Text('S İ B E R   V İ T R İ N', style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 3)),
+              const Text('S İ B E R   V İ T R İ N', style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 3)),
               const SizedBox(height: 2),
               // 🛡️ ŞEFFAFLIK PROTOKOLÜ: Hiçbir maskeleme yok, bayi adı doğrudan basılıyor.
               Text(dukkanAdi.toUpperCase(), style: const TextStyle(color: primaryCyan, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 2)),
@@ -137,7 +137,7 @@ class DukkanVitrinScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Text(ad.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                Text(ad.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1)),
               ],
             ),
           ),
@@ -178,9 +178,9 @@ class DukkanVitrinScreen extends StatelessWidget {
                   ? Image.network(
                 gorselUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (c, e, s) => const Icon(Icons.broken_image_outlined, color: Colors.white10, size: 40),
+                errorBuilder: (c, e, s) => const Icon(Icons.broken_image_outlined, color: SiberTema.textMuted, size: 40),
               )
-                  : const Icon(Icons.settings_input_hdmi_outlined, color: Colors.white10, size: 40),
+                  : const Icon(Icons.settings_input_hdmi_outlined, color: SiberTema.textMuted, size: 40),
             ),
           ),
           Expanded(
@@ -195,7 +195,7 @@ class DukkanVitrinScreen extends StatelessWidget {
                     ad.toString().toUpperCase(),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w900, height: 1.3),
+                    style: const TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.w900, height: 1.3),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

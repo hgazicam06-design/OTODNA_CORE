@@ -22,7 +22,7 @@ class _HomeVitrinState extends State<HomeVitrin> {
   void _siberUyari(String mesaj) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+      content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
       backgroundColor: primaryCyan,
     ));
   }
@@ -74,7 +74,7 @@ class _HomeVitrinState extends State<HomeVitrin> {
                 }
                 return Text(
                     "Hoş geldin, ${isim.split(' ').first}",
-                    style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: 1)
+                    style: const TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: 1)
                 );
               }
           ),
@@ -119,9 +119,9 @@ class _HomeVitrinState extends State<HomeVitrin> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("Aktif Araç Yuvasi", style: TextStyle(color: Colors.white54, fontSize: 12)),
+                          const Text("Aktif Araç Yuvasi", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
                           const SizedBox(height: 4),
-                          Text(plaka, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 1.5)),
+                          Text(plaka, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 1.5)),
                         ],
                       ),
                       const Spacer(),
@@ -171,7 +171,7 @@ class _HomeVitrinState extends State<HomeVitrin> {
             child: Icon(icon, color: color, size: 24),
           ),
           const SizedBox(height: 8),
-          Text(label, style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold)),
+          Text(label, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
         ],
       ),
     );
@@ -189,7 +189,7 @@ class _HomeVitrinState extends State<HomeVitrin> {
           stream: _db.collection('kullanicilar').where('rol', isEqualTo: 'bayi').where('is_vip', isEqualTo: true).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator());
-            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Center(child: Text("Şu an bölgenizde VIP bayi bulunmuyor.", style: TextStyle(color: Colors.white54)));
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Center(child: Text("Şu an bölgenizde VIP bayi bulunmuyor.", style: TextStyle(color: SiberTema.textMuted)));
 
             var vipFirmalar = snapshot.data!.docs;
 
@@ -227,7 +227,7 @@ class _HomeVitrinState extends State<HomeVitrin> {
                         padding: const EdgeInsets.all(12),
                         child: Column(
                           children: [
-                            Text(firmaAdi, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
+                            Text(firmaAdi, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13)),
                             const SizedBox(height: 8),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -244,7 +244,7 @@ class _HomeVitrinState extends State<HomeVitrin> {
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(backgroundColor: primaryCyan, padding: EdgeInsets.zero, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
                                   onPressed: () => _siberUyari("$firmaAdi için randevu alınıyor..."),
-                                  child: const Text("Randevu Al", style: TextStyle(color: Colors.black, fontSize: 11, fontWeight: FontWeight.bold))
+                                  child: const Text("Randevu Al", style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold))
                               ),
                             )
                           ],
@@ -265,7 +265,7 @@ class _HomeVitrinState extends State<HomeVitrin> {
       padding: const EdgeInsets.all(20),
       child: Align(
           alignment: Alignment.centerLeft,
-          child: Text(title, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600, letterSpacing: 1.2))
+          child: Text(title, style: const TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.w600, letterSpacing: 1.2))
       ),
     );
   }

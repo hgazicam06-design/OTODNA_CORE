@@ -76,15 +76,15 @@ class _SiberRandevuTerminaliState extends State<SiberRandevuTerminali> {
           ),
           content: const Text(
             "Karargah ağı üzerinden ustadan güvenli hizmet almak için ₺200.00 tutarında sistem işlem bedeli alınacaktır. İşlemi onaylıyor musunuz?",
-            style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.5, fontFamily: 'Avenir'),
+            style: TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.5, fontFamily: 'Avenir'),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text("İPTAL ET", style: TextStyle(color: Colors.white38)),
+              child: const Text("İPTAL ET", style: TextStyle(color: SiberTema.textMuted)),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: primaryCyan, foregroundColor: Colors.black),
+              style: ElevatedButton.styleFrom(backgroundColor: primaryCyan, foregroundColor: Colors.white),
               onPressed: () => Navigator.pop(context, true),
               child: const Text("₺200 ÖDE VE ONAYLA", style: TextStyle(fontWeight: FontWeight.bold)),
             ),
@@ -149,15 +149,15 @@ class _SiberRandevuTerminaliState extends State<SiberRandevuTerminali> {
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          decoration: BoxDecoration(color: Colors.black.withOpacity(0.4), border: const Border(bottom: BorderSide(color: Colors.white10))),
+          decoration: BoxDecoration(color: Colors.white.withOpacity(0.4), border: const Border(bottom: BorderSide(color: SiberTema.textMuted))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
                 onTap: () => Navigator.pop(context),
-                child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), shape: BoxShape.circle), child: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 18)),
+                child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), shape: BoxShape.circle), child: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18)),
               ),
-              Text(widget.dukkanAdi.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2, fontFamily: 'Avenir')),
+              Text(widget.dukkanAdi.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2, fontFamily: 'Avenir')),
               Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: primaryCyan.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: primaryCyan.withOpacity(0.5))), child: const Icon(Icons.calendar_month, color: primaryCyan, size: 18)),
             ],
           ),
@@ -189,7 +189,7 @@ class _SiberRandevuTerminaliState extends State<SiberRandevuTerminali> {
               Text(
                 "Geçmişte $_ihlalSayisi kez randevunuza gitmediğiniz Karargah radarları tarafından tespit edilmiştir. Güvenlik protokolü gereği bu hesaptan randevu oluşturma yetkisi süresiz olarak kilitlenmiştir.",
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white70, fontSize: 12, height: 1.5, fontFamily: 'Avenir'),
+                style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5, fontFamily: 'Avenir'),
               ),
             ],
           ),
@@ -206,17 +206,17 @@ class _SiberRandevuTerminaliState extends State<SiberRandevuTerminali> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("ARAÇ DNA BİLGİSİ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          const Text("ARAÇ DNA BİLGİSİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           const SizedBox(height: 12),
           _buildTextField(_saseController, "Şase No (VIN)"),
           
           const SizedBox(height: 24),
-          const Text("ARIZA / İSTEK İSTİHBARATI", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          const Text("ARIZA / İSTEK İSTİHBARATI", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           const SizedBox(height: 12),
           _buildTextField(_sikayetController, "Şikayetinizi detaylandırın...", maxLines: 4),
 
           const SizedBox(height: 24),
-          const Text("HEDEF TARİH", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          const Text("HEDEF TARİH", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           const SizedBox(height: 12),
           GestureDetector(
             onTap: () async {
@@ -240,12 +240,12 @@ class _SiberRandevuTerminaliState extends State<SiberRandevuTerminali> {
             },
             child: Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white10)),
+              decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
               child: Row(
                 children: [
                   const Icon(Icons.date_range, color: primaryCyan, size: 20),
                   const SizedBox(width: 12),
-                  Text("${_secilenTarih.day.toString().padLeft(2,'0')}.${_secilenTarih.month.toString().padLeft(2,'0')}.${_secilenTarih.year}", style: const TextStyle(color: Colors.white, fontSize: 14, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
+                  Text("${_secilenTarih.day.toString().padLeft(2,'0')}.${_secilenTarih.month.toString().padLeft(2,'0')}.${_secilenTarih.year}", style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
@@ -259,7 +259,7 @@ class _SiberRandevuTerminaliState extends State<SiberRandevuTerminali> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: primaryCyan,
-                foregroundColor: Colors.black,
+                foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               ),
               onPressed: _randevuOnayla,
@@ -276,15 +276,15 @@ class _SiberRandevuTerminaliState extends State<SiberRandevuTerminali> {
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.05),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white10),
+        border: Border.all(color: SiberTema.textMuted),
       ),
       child: TextField(
         controller: controller,
         maxLines: maxLines,
-        style: const TextStyle(color: Colors.white, fontFamily: 'Avenir'),
+        style: const TextStyle(color: SiberTema.textMain, fontFamily: 'Avenir'),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: TextStyle(color: Colors.white.withOpacity(0.3)),
+          hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.3)),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.all(16),
         ),

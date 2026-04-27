@@ -29,7 +29,7 @@ class SiberForumSayfasi extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           iconTheme: IconThemeData(color: primaryTeal),
         ),
         body: StreamBuilder<DocumentSnapshot>(
@@ -71,8 +71,8 @@ class SiberForumSayfasi extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))],
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))],
       ),
       child: Row(
         children: [
@@ -126,14 +126,14 @@ class SiberForumSayfasi extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("MERKEZ YÖNETİM", style: TextStyle(color: dangerColor, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
-                    Text("Yetki Seviyesi: $rol", style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 10, fontFamily: 'Avenir')),
+                    Text("Yetki Seviyesi: $rol", style: const TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, fontSize: 10, fontFamily: 'Avenir')),
                   ],
                 ),
               ),
             ],
           ),
           const SizedBox(height: 20),
-          Divider(color: Colors.black.withValues(alpha: 0.05), height: 1),
+          Divider(color: Colors.white.withValues(alpha: 0.05), height: 1),
           const SizedBox(height: 20),
           SizedBox(
             width: double.infinity,

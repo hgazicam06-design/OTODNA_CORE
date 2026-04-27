@@ -30,7 +30,7 @@ class _SorguSonucSayfasiState extends State<SorguSonucSayfasi> {
     // 1. İşlem başladığını bildiren Kuantum Sinyali
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text("RAPOR ŞİFRELENİYOR... LÜTFEN BEKLEYİN.", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900)),
+        content: Text("RAPOR ŞİFRELENİYOR... LÜTFEN BEKLEYİN.", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900)),
         backgroundColor: SiberTema.kuantumCyan,
         duration: Duration(seconds: 1),
       ),
@@ -72,7 +72,7 @@ class _SorguSonucSayfasiState extends State<SorguSonucSayfasi> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -85,7 +85,7 @@ class _SorguSonucSayfasiState extends State<SorguSonucSayfasi> {
           ),
           title: const Text(
             "SİBER DNA RAPORU",
-            style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
+            style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
           ),
           centerTitle: true,
         ),
@@ -99,7 +99,7 @@ class _SorguSonucSayfasiState extends State<SorguSonucSayfasi> {
               children: [
                 Icon(Icons.verified_user, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 100),
                 const SizedBox(height: 24),
-                const Text("ARAÇ DNA'SI ÇÖZÜMLENDİ", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                const Text("ARAÇ DNA'SI ÇÖZÜMLENDİ", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                 const SizedBox(height: 12),
                 Text("ŞASE: ${widget.saseNo}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 3, fontFamily: 'monospace')),
                 // ... Buraya aracın hasar/değişen durumlarını gösteren diğer siber kartları ekleyebilirsin ...
@@ -113,7 +113,7 @@ class _SorguSonucSayfasiState extends State<SorguSonucSayfasi> {
           onPressed: _pdfOlusturuluyor ? null : _muhurluRaporuAc,
           label: Text(
             _pdfOlusturuluyor ? "ŞİFRELENİYOR..." : "MÜHÜRLÜ RAPORU AÇ",
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, color: Colors.white, fontFamily: 'Avenir'),
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, color: SiberTema.textMain, fontFamily: 'Avenir'),
           ),
           icon: _pdfOlusturuluyor
               ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))

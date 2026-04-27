@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // 🚀 KARARGAH ZIRHLARI
 import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
-import '../../services/siber_istihbarat_log_motoru.dart'; // 👁️ HER ŞEYİ GÖREN GÖZ (İSTİHBARAT)
+import '../../services/corporate_audit_logger.dart'; // 👁️ HER ŞEYİ GÖREN GÖZ (İSTİHBARAT)
 
 class AdminOnayHavuzuScreen extends StatefulWidget {
   const AdminOnayHavuzuScreen({super.key});
@@ -34,11 +34,9 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
       await batch.commit();
 
       // 3. Karargah İstihbarat Ağına (Matrix'e) Sinyal Gönder
-      SiberIstihbaratLogMotoru.logBayi(
+      CorporateAuditLogger.logSystem(
         'BAYİ İŞLEMİ ONAYLANDI', 
         'Yetki onaylandı: $onerilenIslem', 
-        bayiId, 
-        firmaAdi
       );
 
       if (mounted) _siberUyariVer("SİBER ONAY: İşlem bayinin vitrinine mühürlendi!", isError: false);
@@ -59,11 +57,11 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
       await batch.commit();
 
       // 2. Karargah İstihbarat Ağına (Matrix'e) Kırmızı Sinyal Gönder
-      SiberIstihbaratLogMotoru.logGuvenlik(
+      CorporateAuditLogger.logSecurity(
         'YETKİSİZ BAYİ TALEBİ REDDEDİLDİ', 
         'Karantinaya alındı: $onerilenIslem', 
-        docId, 
-        firmaAdi
+        actorId: docId, 
+        actorName: firmaAdi
       );
 
       if (mounted) _siberUyariVer("TALEP REDDEDİLDİ: Karantina başarıyla sağlandı.", isError: true);
@@ -86,14 +84,14 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: SiberTema.oledBlack,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.security, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("SİBER ONAY HAVUZU", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2)),
+          title: const Text("SİBER ONAY HAVUZU", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2)),
           centerTitle: true,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(1),
@@ -131,7 +129,7 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
                         children: [
                           Icon(Icons.verified_user_outlined, size: 56, color: SiberTema.kuantumCyan.withOpacity(0.3)),
                           const SizedBox(height: 20),
-                          Text("KARANTİNA HAVUZU TEMİZ", style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 12, letterSpacing: 2, fontWeight: FontWeight.w700)),
+                          Text("KARANTİNA HAVUZU TEMİZ", style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 12, letterSpacing: 2, fontWeight: FontWeight.w700)),
                         ],
                       ),
                     ),
@@ -186,9 +184,9 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(firmaAdi, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w800)),
+                                        Text(firmaAdi, style: const TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.w800)),
                                         const SizedBox(height: 6),
-                                        Text("Bayi ID: $bayiId", style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 11, fontWeight: FontWeight.w500)),
+                                        Text("Bayi ID: $bayiId", style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 11, fontWeight: FontWeight.w500)),
                                       ],
                                     ),
                                   ),
@@ -210,7 +208,7 @@ class _AdminOnayHavuzuScreenState extends State<AdminOnayHavuzuScreen> {
                                   children: [
                                     Text("TALEP EDİLEN İŞLEM", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.7), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
                                     const SizedBox(height: 12),
-                                    Text(onerilenIslem, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600)),
+                                    Text(onerilenIslem, style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w600)),
                                   ],
                                 ),
                               ),

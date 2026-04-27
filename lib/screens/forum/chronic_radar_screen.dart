@@ -95,7 +95,7 @@ class _ChronicRadarScreenState extends State<ChronicRadarScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -131,7 +131,7 @@ class _ChronicRadarScreenState extends State<ChronicRadarScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3)),
         boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 10)],
@@ -145,7 +145,7 @@ class _ChronicRadarScreenState extends State<ChronicRadarScreen> {
                 value: _selectedBrand,
                 isExpanded: true,
                 icon: const Icon(Icons.keyboard_arrow_down, color: SiberTema.kuantumCyan),
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold),
                 items: _brands.map((String b) => DropdownMenuItem(value: b, child: Text(b))).toList(),
                 onChanged: (val) {
                   if (val != null) {
@@ -167,7 +167,7 @@ class _ChronicRadarScreenState extends State<ChronicRadarScreen> {
                 value: _selectedModel,
                 isExpanded: true,
                 icon: const Icon(Icons.keyboard_arrow_down, color: SiberTema.kuantumCyan),
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold),
                 items: (_models[_selectedBrand] ?? ["Tümü"]).map((String m) => DropdownMenuItem(value: m, child: Text(m))).toList(),
                 onChanged: (val) {
                   if (val != null) {
@@ -185,7 +185,7 @@ class _ChronicRadarScreenState extends State<ChronicRadarScreen> {
 
   Widget _buildPinterestGrid() {
     if (_issues.isEmpty) {
-      return const Center(child: Text("Siber Ağda Kayıt Bulunamadı.", style: TextStyle(color: Colors.white54)));
+      return const Center(child: Text("Siber Ağda Kayıt Bulunamadı.", style: TextStyle(color: SiberTema.textMuted)));
     }
     
     // Basit bir ListView olarak başlatalım (Kullanıcı Masonry/Grid isterse StaggeredGridView eklenebilir, şimdilik ListView/Cards)
@@ -232,7 +232,7 @@ class _ChronicRadarScreenState extends State<ChronicRadarScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(issue.issueTitle.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
+                          Text(issue.issueTitle.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900)),
                           Text("${issue.brand} ${issue.model} - ${issue.component}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 12, fontWeight: FontWeight.bold)),
                         ],
                       ),
@@ -243,16 +243,16 @@ class _ChronicRadarScreenState extends State<ChronicRadarScreen> {
                 const SizedBox(height: 16),
                 
                 // Belirtiler
-                const Text("BELİRTİLER:", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                const Text("BELİRTİLER:", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
                 const SizedBox(height: 4),
-                Text(issue.symptoms, style: const TextStyle(color: Colors.white70, fontSize: 13)),
+                Text(issue.symptoms, style: const TextStyle(color: SiberTema.textMuted, fontSize: 13)),
 
                 const SizedBox(height: 12),
                 
                 // Muhur / Çözüm
                 Container(
                   padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(8), border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.2))),
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8), border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.2))),
                   child: Row(
                     children: [
                       const Icon(Icons.verified, color: SiberTema.kuantumCyan, size: 28),
@@ -263,7 +263,7 @@ class _ChronicRadarScreenState extends State<ChronicRadarScreen> {
                           children: [
                             const Text("BİLİRKİŞİ ONAYLIDIR", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                             const SizedBox(height: 4),
-                            Text(issue.remedy, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                            Text(issue.remedy, style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       )
@@ -276,14 +276,14 @@ class _ChronicRadarScreenState extends State<ChronicRadarScreen> {
                 // Hukuki Durum
                 Row(
                   children: [
-                    const Icon(Icons.gavel, color: Colors.white54, size: 16),
+                    const Icon(Icons.gavel, color: SiberTema.textMuted, size: 16),
                     const SizedBox(width: 6),
-                    Text("HUKUKİ DURUM: ${issue.legalStatus}", style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold)),
+                    Text("HUKUKİ DURUM: ${issue.legalStatus}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
                   ],
                 ),
                 
                 const SizedBox(height: 16),
-                const Divider(color: Colors.white10),
+                const Divider(color: SiberTema.textMuted),
                 const SizedBox(height: 8),
 
                 // Aksiyon Butonları

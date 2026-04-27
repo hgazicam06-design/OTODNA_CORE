@@ -77,10 +77,10 @@ class _UrunKatalogScreenState extends State<UrunKatalogScreen> with SingleTicker
           backgroundColor: const Color(0xFF1E293B),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: Colors.redAccent)),
           title: const Row(children: [Icon(Icons.block, color: Colors.redAccent), SizedBox(width: 10), Text("LİMİT DOLDU!", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold))]),
-          content: const Text("Standart paketinizin 10 adet ilan limitini doldurdunuz veya toplu yükleme yetkiniz yok. Sınırsız yükleme için VIP'e geçin.", style: TextStyle(color: Colors.white70)),
+          content: const Text("Standart paketinizin 10 adet ilan limitini doldurdunuz veya toplu yükleme yetkiniz yok. Sınırsız yükleme için VIP'e geçin.", style: TextStyle(color: SiberTema.textMuted)),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: const Text("İPTAL", style: TextStyle(color: Colors.white54))),
-            ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2), foregroundColor: Colors.black), onPressed: () => Navigator.pop(context), child: const Text("VIP PAKET AL", style: TextStyle(fontWeight: FontWeight.bold))),
+            TextButton(onPressed: () => Navigator.pop(context), child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted))),
+            ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2), foregroundColor: Colors.white), onPressed: () => Navigator.pop(context), child: const Text("VIP PAKET AL", style: TextStyle(fontWeight: FontWeight.bold))),
           ],
         )
     );
@@ -106,12 +106,12 @@ class _UrunKatalogScreenState extends State<UrunKatalogScreen> with SingleTicker
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Row(children: [Icon(Icons.picture_as_pdf, color: Colors.redAccent, size: 28), SizedBox(width: 8), Text("PDF/Excel Yükle", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold))]),
+                const Row(children: [Icon(Icons.picture_as_pdf, color: Colors.redAccent, size: 28), SizedBox(width: 8), Text("PDF/Excel Yükle", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.bold))]),
                 Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4), decoration: BoxDecoration(color: const Color(0xFF00FFC2).withOpacity(0.2), borderRadius: BorderRadius.circular(8)), child: Text("$_rozet Paket", style: const TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold, fontSize: 12))),
               ],
             ),
             const SizedBox(height: 16),
-            const Text("Tedarikçi faturanızı veya parça listenizi (PDF/XLS) yükleyin. OtoDNA Yapay Zekası OEM kodlarını tarayıp görselleri HUB'dan otomatik çekecektir.\n\nMevcut Paket Limitiniz: Sınırsız Yükleme.", style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.5)),
+            const Text("Tedarikçi faturanızı veya parça listenizi (PDF/XLS) yükleyin. OtoDNA Yapay Zekası OEM kodlarını tarayıp görselleri HUB'dan otomatik çekecektir.\n\nMevcut Paket Limitiniz: Sınırsız Yükleme.", style: TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.5)),
             const SizedBox(height: 24),
 
             GestureDetector(
@@ -121,12 +121,12 @@ class _UrunKatalogScreenState extends State<UrunKatalogScreen> with SingleTicker
               },
               child: Container(
                 width: double.infinity, padding: const EdgeInsets.all(32),
-                decoration: BoxDecoration(color: const Color(0xFF0F172A), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white24, style: BorderStyle.solid)),
+                decoration: BoxDecoration(color: const Color(0xFF0F172A), borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted, style: BorderStyle.solid)),
                 child: const Column(
                   children: [
                     Icon(Icons.cloud_upload, color: Color(0xFF00FFC2), size: 48), SizedBox(height: 12),
-                    Text("Dosya Seçmek İçin Dokunun", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 4), Text("PDF, XLS, CSV (Max 10MB)", style: TextStyle(color: Colors.white54, fontSize: 11)),
+                    Text("Dosya Seçmek İçin Dokunun", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 4), Text("PDF, XLS, CSV (Max 10MB)", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
                   ],
                 ),
               ),
@@ -167,38 +167,38 @@ class _UrunKatalogScreenState extends State<UrunKatalogScreen> with SingleTicker
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(children: [Icon(isIkinciEl ? Icons.autorenew : Icons.add_box, color: isIkinciEl ? Colors.orangeAccent : const Color(0xFF00FFC2), size: 28), const SizedBox(width: 8), Text(isIkinciEl ? "2. El / Çıkma Parça Ekle" : "Sıfır Parça Ekle", style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold))]),
+                      Row(children: [Icon(isIkinciEl ? Icons.autorenew : Icons.add_box, color: isIkinciEl ? Colors.orangeAccent : const Color(0xFF00FFC2), size: 28), const SizedBox(width: 8), Text(isIkinciEl ? "2. El / Çıkma Parça Ekle" : "Sıfır Parça Ekle", style: const TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.bold))]),
                       const SizedBox(height: 20),
 
                       // OEM Kodu İle Hızlı Çekim
                       if (!isIkinciEl) ...[
                         Row(
                           children: [
-                            Expanded(child: TextField(controller: oemCtrl, style: const TextStyle(color: Colors.white), decoration: const InputDecoration(hintText: 'OEM / Barkod No', hintStyle: TextStyle(color: Colors.white38), filled: true, fillColor: Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide.none)))),
+                            Expanded(child: TextField(controller: oemCtrl, style: const TextStyle(color: SiberTema.textMain), decoration: const InputDecoration(hintText: 'OEM / Barkod No', hintStyle: TextStyle(color: SiberTema.textMuted), filled: true, fillColor: Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide.none)))),
                             const SizedBox(width: 8),
                             Container(padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: const Color(0xFF00FFC2), borderRadius: BorderRadius.circular(12)), child: const Icon(Icons.qr_code_scanner, color: Color(0xFF0F172A))),
                           ],
                         ),
-                        const Padding(padding: EdgeInsets.only(top: 8.0, bottom: 16.0), child: Text("Kodu girerseniz görsel ve açıklamalar Hub'dan otomatik gelir.", style: TextStyle(color: Colors.white54, fontSize: 11))),
+                        const Padding(padding: EdgeInsets.only(top: 8.0, bottom: 16.0), child: Text("Kodu girerseniz görsel ve açıklamalar Hub'dan otomatik gelir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11))),
                       ],
 
                       // 2. El İçin Zorunlu Fotoğraf
                       if (isIkinciEl) ...[
                         Container(width: double.infinity, padding: const EdgeInsets.all(24), decoration: BoxDecoration(color: Colors.orangeAccent.withOpacity(0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.orangeAccent)), child: const Column(children: [Icon(Icons.add_a_photo, color: Colors.orangeAccent, size: 36), SizedBox(height: 8), Text("Gerçek Ürün Fotoğrafı Yükle (Zorunlu)", style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.bold))])),
                         const SizedBox(height: 16),
-                        TextField(controller: hasarCtrl, style: const TextStyle(color: Colors.white), decoration: const InputDecoration(labelText: 'Hasar / Kondisyon Durumu (Zorunlu)', labelStyle: TextStyle(color: Colors.orangeAccent), filled: true, fillColor: Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))))),
+                        TextField(controller: hasarCtrl, style: const TextStyle(color: SiberTema.textMain), decoration: const InputDecoration(labelText: 'Hasar / Kondisyon Durumu (Zorunlu)', labelStyle: TextStyle(color: Colors.orangeAccent), filled: true, fillColor: Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))))),
                       ] else ...[
-                        Container(width: double.infinity, padding: const EdgeInsets.all(24), decoration: BoxDecoration(color: const Color(0xFF0F172A), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)), child: const Column(children: [Icon(Icons.image, color: Colors.white54, size: 36), SizedBox(height: 8), Text("Kendi Görselini Yükle (Veya Hub'a Bırak)", style: TextStyle(color: Colors.white54))])),
+                        Container(width: double.infinity, padding: const EdgeInsets.all(24), decoration: BoxDecoration(color: const Color(0xFF0F172A), borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)), child: const Column(children: [Icon(Icons.image, color: SiberTema.textMuted, size: 36), SizedBox(height: 8), Text("Kendi Görselini Yükle (Veya Hub'a Bırak)", style: TextStyle(color: SiberTema.textMuted))])),
                       ],
 
                       const SizedBox(height: 16),
-                      TextField(controller: adCtrl, style: const TextStyle(color: Colors.white), decoration: const InputDecoration(hintText: 'Ürün Adı', filled: true, fillColor: Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))))),
+                      TextField(controller: adCtrl, style: const TextStyle(color: SiberTema.textMain), decoration: const InputDecoration(hintText: 'Ürün Adı', filled: true, fillColor: Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))))),
                       const SizedBox(height: 12),
                       Row(
                         children: [
-                          Expanded(child: TextField(controller: fiyatCtrl, keyboardType: TextInputType.number, style: const TextStyle(color: Colors.white), decoration: const InputDecoration(hintText: 'Fiyat (TL)', filled: true, fillColor: Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)))))),
+                          Expanded(child: TextField(controller: fiyatCtrl, keyboardType: TextInputType.number, style: const TextStyle(color: SiberTema.textMain), decoration: const InputDecoration(hintText: 'Fiyat (TL)', filled: true, fillColor: Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)))))),
                           const SizedBox(width: 12),
-                          Expanded(child: TextField(controller: stokCtrl, keyboardType: TextInputType.number, style: const TextStyle(color: Colors.white), decoration: const InputDecoration(hintText: 'Stok Adedi', filled: true, fillColor: Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)))))),
+                          Expanded(child: TextField(controller: stokCtrl, keyboardType: TextInputType.number, style: const TextStyle(color: SiberTema.textMain), decoration: const InputDecoration(hintText: 'Stok Adedi', filled: true, fillColor: Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)))))),
                         ],
                       ),
                       const SizedBox(height: 24),
@@ -261,7 +261,7 @@ class _UrunKatalogScreenState extends State<UrunKatalogScreen> with SingleTicker
                                 }
                               },
                               child: isSaving
-                                  ? const CircularProgressIndicator(color: Colors.black)
+                                  ? const CircularProgressIndicator(color: Colors.white)
                                   : Text("OtoDNA Market'te Yayınla", style: TextStyle(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 16))
                           )
                       ),
@@ -284,12 +284,12 @@ class _UrunKatalogScreenState extends State<UrunKatalogScreen> with SingleTicker
     if (_currentUser == null) return const Scaffold(backgroundColor: bgColor, body: Center(child: Text("Siber Kimlik Hatası!", style: TextStyle(color: SiberTema.kanKirmizi))));
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent, elevation: 0,
-        title: const Text('Katalog & Envanter', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: const Text('Katalog & Envanter', style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
         centerTitle: true, iconTheme: const IconThemeData(color: primaryCyan),
         bottom: TabBar(
           controller: _tabController, indicatorColor: primaryCyan, labelColor: primaryCyan, unselectedLabelColor: Colors.white54,
@@ -306,7 +306,7 @@ class _UrunKatalogScreenState extends State<UrunKatalogScreen> with SingleTicker
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(children: [Icon(_isVip ? Icons.verified : Icons.info, color: _isVip ? primaryCyan : Colors.orangeAccent, size: 20), const SizedBox(width: 8), Text("Mevcut Plan: $_rozet Paket", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold))]),
+                Row(children: [Icon(_isVip ? Icons.verified : Icons.info, color: _isVip ? primaryCyan : Colors.orangeAccent, size: 20), const SizedBox(width: 8), Text("Mevcut Plan: $_rozet Paket", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold))]),
                 if (!_isVip)
                   GestureDetector(onTap: () {}, child: Text("$_kullanilanIlanSayisi/10 İlan | Yükselt", style: const TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)))
               ],
@@ -318,7 +318,7 @@ class _UrunKatalogScreenState extends State<UrunKatalogScreen> with SingleTicker
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
-                Expanded(child: ElevatedButton.icon(style: ElevatedButton.styleFrom(backgroundColor: cardColor, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: Colors.redAccent))), onPressed: _topluYuklemeBaslat, icon: const Icon(Icons.picture_as_pdf, color: Colors.redAccent), label: const Text("PDF Yükle (VIP)", style: TextStyle(color: Colors.white, fontSize: 13)))),
+                Expanded(child: ElevatedButton.icon(style: ElevatedButton.styleFrom(backgroundColor: cardColor, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: Colors.redAccent))), onPressed: _topluYuklemeBaslat, icon: const Icon(Icons.picture_as_pdf, color: Colors.redAccent), label: const Text("PDF Yükle (VIP)", style: TextStyle(color: SiberTema.textMain, fontSize: 13)))),
                 const SizedBox(width: 12),
                 Expanded(child: ElevatedButton.icon(style: ElevatedButton.styleFrom(backgroundColor: primaryCyan.withOpacity(0.2), padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: primaryCyan))), onPressed: () => _tekliUrunEkle(false), icon: const Icon(Icons.add, color: primaryCyan), label: const Text("Tekli Ekle", style: TextStyle(color: primaryCyan)))),
               ],
@@ -341,7 +341,7 @@ class _UrunKatalogScreenState extends State<UrunKatalogScreen> with SingleTicker
                     children: [
                       // 1. SIFIR ÜRÜNLER EKRANI (CANLI)
                       sifirUrunler.isEmpty
-                          ? const Center(child: Text("Sıfır parça vitrininiz boş.", style: TextStyle(color: Colors.white54)))
+                          ? const Center(child: Text("Sıfır parça vitrininiz boş.", style: TextStyle(color: SiberTema.textMuted)))
                           : ListView.builder(
                           padding: const EdgeInsets.all(16),
                           itemCount: sifirUrunler.length,
@@ -360,7 +360,7 @@ class _UrunKatalogScreenState extends State<UrunKatalogScreen> with SingleTicker
                           const SizedBox(height: 16),
 
                           if (ikinciElUrunler.isEmpty)
-                            const Padding(padding: EdgeInsets.only(top: 20), child: Center(child: Text("2. El vitrininiz boş.", style: TextStyle(color: Colors.white54))))
+                            const Padding(padding: EdgeInsets.only(top: 20), child: Center(child: Text("2. El vitrininiz boş.", style: TextStyle(color: SiberTema.textMuted))))
                           else
                             ...ikinciElUrunler.map((doc) {
                               var urun = doc.data() as Map<String, dynamic>;
@@ -381,13 +381,13 @@ class _UrunKatalogScreenState extends State<UrunKatalogScreen> with SingleTicker
   Widget _buildUrunKarti(String baslik, String altBaslik, String fiyat, bool isSifir, IconData ikon) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12), padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: const Color(0xFF1E293B), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+      decoration: BoxDecoration(color: const Color(0xFF1E293B), borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
       child: Row(
         children: [
           Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: const Color(0xFF0F172A), borderRadius: BorderRadius.circular(12)), child: Icon(ikon, color: isSifir ? const Color(0xFF00FFC2) : Colors.orangeAccent, size: 32)),
           const SizedBox(width: 16),
-          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(baslik, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)), const SizedBox(height: 4), Text(altBaslik, style: const TextStyle(color: Colors.white54, fontSize: 11)), const SizedBox(height: 8), Text(fiyat, style: const TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold, fontSize: 16))])),
-          IconButton(icon: const Icon(Icons.more_vert, color: Colors.white54), onPressed: () {})
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 14)), const SizedBox(height: 4), Text(altBaslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11)), const SizedBox(height: 8), Text(fiyat, style: const TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold, fontSize: 16))])),
+          IconButton(icon: const Icon(Icons.more_vert, color: SiberTema.textMuted), onPressed: () {})
         ],
       ),
       ),

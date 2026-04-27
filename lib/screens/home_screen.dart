@@ -19,9 +19,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     
-    // 🏢 PLAZA KALİTESİ PALET
+    // 🏢 FİLDİŞİ SEDEF & KUANTUM PALET (Müşteri İsteği)
     final primaryTeal = Colors.teal.shade700;
-    const bgColor = Color(0xFFFAFAFC);
+    const bgColor = Color(0xFFFDFBF7); // Fildişi Sedef Kaplama
     const textColor = Color(0xFF1E293B);
 
     return ResponsiveKalkan(
@@ -29,12 +29,12 @@ class HomeScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: bgColor,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: bgColor,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
-          title: Text("PLAZA YÖNETİM MERKEZİ",
-              style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'Avenir')),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
+          title: Text("OTODNA SİBER KARARGAH",
+              style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 3, fontFamily: 'Avenir')),
           centerTitle: true,
           actions: [
             IconButton(
@@ -65,7 +65,7 @@ class HomeScreen extends StatelessWidget {
                   
                   const SizedBox(height: 32),
                   
-                  Text("HIZLI ERİŞİM", style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
+                  Text("HIZLI ERİŞİM", style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
                   const SizedBox(height: 16),
 
                   // 📡 TERMİNALLER (GRID YAPISI İLE ŞIK DİZİLİM)
@@ -77,29 +77,40 @@ class HomeScreen extends StatelessWidget {
                     mainAxisSpacing: 16,
                     childAspectRatio: 1.1,
                     children: [
+                      // Eski Modüller (Bazılarını tutabiliriz veya hepsini yeni Kuantumlara çevirebiliriz)
+                      // Kuantum Yeni Modüller
+                      _buildGridButon(
+                        context, "Siber Radar", Icons.radar, primaryTeal, textColor,
+                        onTap: () => context.push('/siber_radar')
+                      ),
+                      _buildGridButon(
+                        context, "S.O.S Merkezi", Icons.emergency_share, Colors.redAccent, textColor,
+                        onTap: () => context.push('/siber_sos')
+                      ),
+                      _buildGridButon(
+                        context, "Resmi İşlemler", Icons.gavel_rounded, primaryTeal, textColor,
+                        onTap: () => context.push('/tuvturk_randevu')
+                      ),
+                      _buildGridButon(
+                        context, "Yedek Parça Ağı", Icons.build_circle, primaryTeal, textColor,
+                        onTap: () => context.push('/yedek_parca_ag')
+                      ),
+                      _buildGridButon(
+                        context, "Kokpit Merkezi", Icons.dashboard_customize, primaryTeal, textColor,
+                        onTap: () => context.push('/yol_bilgisayari')
+                      ),
+                      _buildGridButon(
+                        context, "Kurumsal (B2B)", Icons.business_center, primaryTeal, textColor,
+                        onTap: () => context.push('/kurumsal_baglayicilar')
+                      ),
+                      // Opsiyonel Eski Modüller
                       _buildGridButon(
                         context, "Dijital Garaj", Icons.directions_car_filled_rounded, primaryTeal, textColor,
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AracKayitScreen()))
+                        onTap: () => context.push('/arac_kayit')
                       ),
                       _buildGridButon(
-                        context, "Servis & Bakım", Icons.build_circle_outlined, primaryTeal, textColor,
+                        context, "Servis Kaydı", Icons.handyman, primaryTeal, textColor,
                         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const DijitalServisScreen()))
-                      ),
-                      _buildGridButon(
-                        context, "Kalıcı Mühür", Icons.verified_user_outlined, primaryTeal, textColor,
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ArizaBildirimScreen()))
-                      ),
-                      _buildGridButon(
-                        context, "Küresel Pazar", Icons.language_rounded, primaryTeal, textColor,
-                        onTap: () => context.push('/market')
-                      ),
-                      _buildGridButon(
-                        context, "Dijital Ruhsat", Icons.assignment_turned_in_outlined, primaryTeal, textColor,
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const DijitalLpgRuhsatiScreen()))
-                      ),
-                      _buildGridButon(
-                        context, "Canlı Radar", Icons.emergency_share, Colors.redAccent, textColor,
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CanliRadarScreen()))
                       ),
                     ],
                   ),
@@ -125,8 +136,8 @@ class HomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, 10))]
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, 10))]
       ),
       child: Column(
         children: [
@@ -137,7 +148,7 @@ class HomeScreen extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           const Text("SİSTEME HOŞ GELDİNİZ",
-              style: TextStyle(color: Colors.black54, fontSize: 10, letterSpacing: 3, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+              style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 3, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           const SizedBox(height: 8),
           Text(eposta,
               style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
@@ -154,8 +165,8 @@ class HomeScreen extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 5))]
+          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+          boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 5))]
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -179,8 +190,8 @@ class HomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]
+          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+          boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

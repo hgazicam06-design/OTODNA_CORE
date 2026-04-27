@@ -44,7 +44,7 @@ class _WebMainLayoutState extends State<WebMainLayout> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Row(
@@ -56,7 +56,7 @@ class _WebMainLayoutState extends State<WebMainLayout> {
             width: 260,
             decoration: BoxDecoration(
               color: sidebarColor,
-              border: Border(right: BorderSide(color: Colors.white12, width: 1)),
+              border: Border(right: BorderSide(color: SiberTema.textMuted, width: 1)),
               boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.05), blurRadius: 20)],
             ),
             child: Column(
@@ -76,7 +76,7 @@ class _WebMainLayoutState extends State<WebMainLayout> {
                       const SizedBox(height: 8),
                       const Text(
                         "OtoDNA WEB",
-                        style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold, letterSpacing: 2),
+                        style: TextStyle(color: SiberTema.textMain, fontSize: 22, fontWeight: FontWeight.bold, letterSpacing: 2),
                       ),
                       Text("KARARGAH TERMİNALİ", style: TextStyle(color: primaryCyan, fontSize: 10, letterSpacing: 1.5, fontWeight: FontWeight.w600)),
                     ],
@@ -108,7 +108,7 @@ class _WebMainLayoutState extends State<WebMainLayout> {
                 const Spacer(), // Ayarları en alta iter
 
                 // 3. AYARLAR VE ÇIKIŞ
-                const Divider(color: Colors.white12),
+                const Divider(color: SiberTema.textMuted),
                 _buildMenuItem(Icons.settings, "Sistem Ayarları", 5, () {}),
                 _buildMenuItem(Icons.logout, "Güvenli Çıkış", 6, () {}, isLogout: true),
                 const SizedBox(height: 20),

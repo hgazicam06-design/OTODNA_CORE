@@ -21,7 +21,7 @@ class SiberHizliKusurEkrani extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.teal.shade700,
-        content: const Text("ONAY: Merkez ustalara acil onarım talebi iletiliyor...", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+        content: const Text("ONAY: Merkez ustalara acil onarım talebi iletiliyor...", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
       ),
     );
   }
@@ -58,7 +58,7 @@ class SiberHizliKusurEkrani extends StatelessWidget {
               Text("KRİTİK KUSUR BİLDİRİMİ", style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Divider(color: Colors.black.withValues(alpha: 0.05), height: 1),
+                child: Divider(color: Colors.white.withValues(alpha: 0.05), height: 1),
               ),
 
               // 📡 CANLI FİREBASE KUSUR TARAMASI
@@ -96,7 +96,7 @@ class SiberHizliKusurEkrani extends StatelessWidget {
               const Text(
                   "Sistem bu aracın trafiğe çıkmasını riskli buldu. Güvenliğiniz için Plaza Ağımız üzerinden hemen onarım talep edin.",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.black54, fontSize: 11, height: 1.6, letterSpacing: 0.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')
+                  style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.6, letterSpacing: 0.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')
               ),
               const SizedBox(height: 32),
 

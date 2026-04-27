@@ -70,7 +70,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> {
       await batch.commit();
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("⚡ EV Batarya DNA'sı Siber Ağa Mühürlendi!", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: Color(0xFF00FFC2)));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("⚡ EV Batarya DNA'sı Siber Ağa Mühürlendi!", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: Color(0xFF00FFC2)));
 
       // Formu temizle
       _plakaController.clear(); _bataryaSagligiController.clear();
@@ -94,7 +94,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -104,7 +104,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.electric_car, color: SiberTema.kuantumCyan), SizedBox(width: 8),
-            Text("EV Batarya Mühür Terminali", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+            Text("EV Batarya Mühür Terminali", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
           ],
         ),
         centerTitle: true,
@@ -121,7 +121,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> {
               child: const Row(
                 children: [
                   Icon(Icons.info_outline, color: Colors.blueAccent), SizedBox(width: 12),
-                  Expanded(child: Text("Bu terminalden girilen veriler, aracın mevcut DNA'sını silmeden doğrudan Batarya Raporu olarak eklenir.", style: TextStyle(color: Colors.white70, fontSize: 12))),
+                  Expanded(child: Text("Bu terminalden girilen veriler, aracın mevcut DNA'sını silmeden doğrudan Batarya Raporu olarak eklenir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12))),
                 ],
               ),
             ),
@@ -131,7 +131,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> {
             const SizedBox(height: 12),
             _buildInputField("Plaka / Şase (Örn: 34DNA2026)", Icons.pin, _plakaController, isUppercase: true),
 
-            const Padding(padding: EdgeInsets.symmetric(vertical: 24), child: Divider(color: Colors.white12)),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 24), child: Divider(color: SiberTema.textMuted)),
 
             const Row(
               children: [
@@ -191,16 +191,16 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
       child: TextField(
         controller: controller,
         keyboardType: isNumber ? const TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
         textCapitalization: isUppercase ? TextCapitalization.characters : TextCapitalization.none,
-        style: const TextStyle(color: Colors.white),
+        style: const TextStyle(color: SiberTema.textMain),
         decoration: InputDecoration(
           icon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.white38, fontSize: 13),
+          hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 13),
           border: InputBorder.none,
         ),
       ),

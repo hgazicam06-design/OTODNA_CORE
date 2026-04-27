@@ -17,6 +17,12 @@ class QrMatbaaScreen extends StatefulWidget {
 }
 
 class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
+  // 🏢 FİLDİŞİ SEDEF PALET
+  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color textMain = const Color(0xFF1E293B);
+  final Color textMuted = const Color(0xFF64748B);
+
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final User? _currentUser = FirebaseAuth.instance.currentUser;
   final TextEditingController _plateController = TextEditingController();
@@ -67,12 +73,12 @@ class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
   void _siberUyari(String mesaj, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: TextStyle(
-          color: isError ? Colors.white : SiberTema.oledBlack,
+      content: Text(mesaj, style: const TextStyle(
+          color: SiberTema.textMain,
           fontWeight: FontWeight.w900,
           fontFamily: 'Avenir'
       )),
-      backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
+      backgroundColor: isError ? SiberTema.kanKirmizi : primaryTeal,
       behavior: SnackBarBehavior.floating,
     ));
   }
@@ -86,19 +92,19 @@ class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false, // Fildişi için false
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: bgColor,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
+              icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20),
               onPressed: () => Navigator.pop(context)
           ),
-          title: const Text(
+          title: Text(
               'QR MATBAA MERKEZİ',
-              style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')
+              style: TextStyle(color: primaryTeal, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')
           ),
           centerTitle: true,
         ),
@@ -107,9 +113,9 @@ class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
           child: Column(
             children: [
-              const Text(
+              Text(
                   "FİZİKSEL ARAÇ ETİKETİ BASIMI",
-                  style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, letterSpacing: 1.2, fontSize: 12)
+                  style: TextStyle(color: textMuted, fontWeight: FontWeight.bold, letterSpacing: 1.2, fontSize: 12)
               ),
               const SizedBox(height: 32),
 
@@ -121,19 +127,20 @@ class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
                   key: const ValueKey(1),
                   height: 260, width: 260,
                   decoration: BoxDecoration(
-                      color: SiberTema.matGrey.withOpacity(0.3),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(32),
-                      border: Border.all(color: Colors.white10, style: BorderStyle.dash, width: 2)
+                      border: Border.all(color: Colors.white12, style: BorderStyle.dash, width: 2),
+                      boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]
                   ),
-                  child: const Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.qr_code_2_rounded, color: Colors.white10, size: 80),
-                      SizedBox(height: 16),
+                      const Icon(Icons.qr_code_2_rounded, color: Colors.white12, size: 80),
+                      const SizedBox(height: 16),
                       Text(
                           "Siber Kimlik\nAnalizi Bekleniyor",
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white24, fontWeight: FontWeight.bold)
+                          style: TextStyle(color: textMuted, fontWeight: FontWeight.bold)
                       ),
                     ],
                   ),
@@ -144,8 +151,9 @@ class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(32),
+                        border: Border.all(color: primaryTeal.withOpacity(0.3)),
                         boxShadow: [
-                          BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.3), blurRadius: 30, spreadRadius: 5)
+                          BoxShadow(color: primaryTeal.withOpacity(0.1), blurRadius: 30, spreadRadius: 5)
                         ]
                     ),
                     child: QREngineService.buildSiberQRCode(_qrData!)
@@ -154,12 +162,18 @@ class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
               const SizedBox(height: 48),
 
               // 🖋️ PLAKA GİRİŞ TERMİNALİ
-              SiberTema.siberCamKalkan(
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.white.withOpacity(0.05)),
+                  boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]
+                ),
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                 child: TextField(
                   controller: _plateController,
                   textCapitalization: TextCapitalization.characters,
-                  style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 5),
+                  style: TextStyle(color: primaryTeal, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 5),
                   textAlign: TextAlign.center,
                   decoration: const InputDecoration(
                     hintText: "PLAKA / ŞASE",
@@ -174,11 +188,16 @@ class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
               SizedBox(
                 width: double.infinity, height: 60,
                 child: ElevatedButton.icon(
-                  style: SiberTema.kuantumButonStili(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryTeal,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    elevation: 0,
+                  ),
                   onPressed: _isGenerating ? null : _qrKodUretVeMuhrle,
                   icon: _isGenerating ? const SizedBox() : const Icon(Icons.bolt_rounded, size: 28),
                   label: _isGenerating
-                      ? const SizedBox(height: 24, width: 24, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
+                      ? const SizedBox(height: 24, width: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3))
                       : const Text('KRİPTOLU QR ÜRET', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 1.5)),
                 ),
               ),
@@ -189,24 +208,24 @@ class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
                   width: double.infinity, height: 60,
                   child: OutlinedButton.icon(
                     style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: SiberTema.kuantumCyan, width: 2),
+                        side: BorderSide(color: primaryTeal, width: 2),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))
                     ),
                     onPressed: () => _siberUyari("Etiket Bluetooth Yazıcıya Gönderiliyor... 🖨️"),
-                    icon: const Icon(Icons.print_rounded, color: SiberTema.kuantumCyan),
-                    label: const Text(
+                    icon: Icon(Icons.print_rounded, color: primaryTeal),
+                    label: Text(
                         'FİZİKSEL ETİKETİ YAZDIR',
-                        style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1)
+                        style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, letterSpacing: 1)
                     ),
                   ),
                 ),
               ],
 
               const SizedBox(height: 40),
-              const Text(
+              Text(
                 "UYARI: Üretilen kodlar tek kullanımlıktır ve sistem tarafından takip edilir.",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white24, fontSize: 10, fontStyle: FontStyle.italic),
+                style: TextStyle(color: textMuted, fontSize: 10, fontStyle: FontStyle.italic),
               )
             ],
           ),

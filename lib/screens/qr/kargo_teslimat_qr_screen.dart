@@ -18,6 +18,12 @@ class KargoTeslimatQrScreen extends StatefulWidget {
 }
 
 class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
+  // 🏢 FİLDİŞİ SEDEF PALET
+  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color textMain = const Color(0xFF1E293B);
+  final Color textMuted = const Color(0xFF64748B);
+
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   bool _islemSuruyor = false;
 
@@ -61,12 +67,25 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
           'teslim_tarihi': FieldValue.serverTimestamp(),
           'iade_baslangic_tarihi': FieldValue.serverTimestamp(), // 15 Günlük Koruma Başladı
         });
+
+        // 📡 KARARGAHA BİLDİRİM (Siber İstihbarat Logu)
+        String saticiId = data['satici_id'] ?? 'SİSTEM';
+        DocumentReference logRef = _db.collection('sistem_loglari').doc();
+        transaction.set(logRef, {
+          'islem_turu': 'KARGO_TESLIMAT_QR',
+          'siparis_id': siparisId,
+          'alici_id': widget.kullaniciId,
+          'satici_id': saticiId,
+          'mesaj': 'Ürün teslim alındı. QR Kalkanı mühürlendi. 15 günlük iade süresi başladı.',
+          'tarih': FieldValue.serverTimestamp(),
+          'onem_derecesi': 'YUKSEK',
+        });
       });
 
       HapticFeedback.vibrate();
 
       if (mounted) {
-        _siberUyariGoster("KİMLİK EŞLEŞTİ VE QR İMHA EDİLDİ\nÜrün teslim alındı. 15 günlük güvenceniz aktif.", SiberTema.kuantumCyan);
+        _siberUyariGoster("KİMLİK EŞLEŞTİ VE QR İMHA EDİLDİ\nÜrün teslim alındı. 15 günlük güvenceniz aktif.", primaryTeal);
         Future.delayed(const Duration(seconds: 2), () {
           if (mounted) Navigator.pop(context);
         });
@@ -86,7 +105,7 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
   void _siberUyariGoster(String mesaj, Color renk) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: TextStyle(color: renk == SiberTema.kanKirmizi ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+      content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
       backgroundColor: renk,
       behavior: SnackBarBehavior.floating,
     ));
@@ -95,12 +114,12 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SiberTema.oledBlack,
+      backgroundColor: bgColor,
       appBar: AppBar(
-        title: const Text("KARGO KİMLİK EŞLEŞTİRME", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 14, fontFamily: 'Avenir')),
+        title: Text("KARGO KİMLİK EŞLEŞTİRME", style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 14, fontFamily: 'Avenir')),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: primaryTeal), onPressed: () => Navigator.pop(context)),
       ),
       body: Stack(
         children: [
@@ -119,9 +138,9 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
             child: Container(
               width: 250, height: 250,
               decoration: BoxDecoration(
-                  border: Border.all(color: _islemSuruyor ? Colors.orangeAccent : SiberTema.kuantumCyan.withOpacity(0.8), width: 3),
+                  border: Border.all(color: _islemSuruyor ? Colors.orangeAccent : primaryTeal.withOpacity(0.8), width: 3),
                   borderRadius: BorderRadius.circular(32),
-                  boxShadow: [BoxShadow(color: (_islemSuruyor ? Colors.orangeAccent : SiberTema.kuantumCyan).withOpacity(0.2), blurRadius: 50, spreadRadius: 5)]
+                  boxShadow: [BoxShadow(color: (_islemSuruyor ? Colors.orangeAccent : primaryTeal).withOpacity(0.2), blurRadius: 50, spreadRadius: 5)]
               ),
             ),
           ),
@@ -129,18 +148,24 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
           // 📜 ALT BİLGİ PANELİ (Siber Cam Efekti)
           Positioned(
             bottom: 40, left: 20, right: 20,
-            child: SiberTema.siberCamKalkan(
+            child: Container(
               padding: const EdgeInsets.all(24),
-              child: const Column(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: primaryTeal.withOpacity(0.3)),
+                boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 20)]
+              ),
+              child: Column(
                 children: [
-                  Icon(Icons.fingerprint, color: SiberTema.kuantumCyan, size: 48),
-                  SizedBox(height: 16),
-                  Text("DOĞRULAMA BEKLENİYOR", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 2, fontSize: 12)),
+                  Icon(Icons.fingerprint, color: primaryTeal, size: 48),
+                  const SizedBox(height: 16),
+                  Text("DOĞRULAMA BEKLENİYOR", style: TextStyle(color: textMain, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 12)),
                   const SizedBox(height: 12),
                   Text(
                     "Kargonun üzerindeki QR kod sadece siparişi veren Karargah hesabı ile eşleşir. Onay anında sistem güncellenir.",
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.6),
+                    style: TextStyle(color: textMuted, fontSize: 11, height: 1.6),
                   ),
                 ],
               ),
@@ -150,14 +175,14 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
           // ⏳ İŞLEM SÜRÜYOR KATMANI
           if (_islemSuruyor)
             Container(
-              color: SiberTema.oledBlack.withOpacity(0.9),
-              child: const Center(
+              color: bgColor.withOpacity(0.9),
+              child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 4),
-                    SizedBox(height: 24),
-                    Text("KİMLİK DOĞRULANIYOR...", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                    CircularProgressIndicator(color: primaryTeal, strokeWidth: 4),
+                    const SizedBox(height: 24),
+                    Text("KİMLİK DOĞRULANIYOR...", style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, letterSpacing: 2)),
                   ],
                 ),
               ),

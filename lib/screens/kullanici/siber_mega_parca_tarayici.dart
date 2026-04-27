@@ -92,25 +92,25 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Ağımızda ${_bulunanParcalar.length} parçayı bulduk ve sepetinize ekledik. Ancak aşağıdaki ${_eksikParcalar.length} parça stoklarda yok:", textAlign: TextAlign.center, style: const TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            Text("Ağımızda ${_bulunanParcalar.length} parçayı bulduk ve sepetinize ekledik. Ancak aşağıdaki ${_eksikParcalar.length} parça stoklarda yok:", textAlign: TextAlign.center, style: const TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             const SizedBox(height: 16),
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
+              decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white.withValues(alpha: 0.05))),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: _eksikParcalar.map((e) => Text("• $e", style: TextStyle(color: Colors.orange.shade800, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))).toList(),
               ),
             ),
             const SizedBox(height: 16),
-            const Text("İzninizle bu parçalar için yetkili tedarikçilerimizden anlık ihale teklifi isteyelim mi?", textAlign: TextAlign.center, style: TextStyle(color: Colors.black45, fontSize: 11, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+            const Text("İzninizle bu parçalar için yetkili tedarikçilerimizden anlık ihale teklifi isteyelim mi?", textAlign: TextAlign.center, style: TextStyle(color: Colors.white45, fontSize: 11, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("İSTEMİYORUM", style: TextStyle(color: Colors.black38, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+            child: const Text("İSTEMİYORUM", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.orange.shade700, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
@@ -136,7 +136,7 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
           title: Text("AKILLI PARÇA TARAYICI", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
@@ -155,12 +155,12 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 color: Colors.white,
-                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))],
-                border: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+                boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))],
+                border: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
               ),
               child: Column(
                 children: [
-                  const Text("LİSTEYİ YAPAY ZEKAYA OKUTUN", style: TextStyle(color: Colors.black45, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                  const Text("LİSTEYİ YAPAY ZEKAYA OKUTUN", style: TextStyle(color: Colors.white45, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                   const SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity, height: 60,
@@ -171,7 +171,7 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
                       ),
                       onPressed: _tariyor ? null : _kameraylaListeyiOku,
                       icon: _tariyor ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white)) : const Icon(Icons.document_scanner, size: 24, color: Colors.white),
-                      label: Text(_tariyor ? "YAPAY ZEKA OKUYOR..." : "KAMERAYI AÇ VE TARA", style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, color: Colors.white, fontFamily: 'Avenir')),
+                      label: Text(_tariyor ? "YAPAY ZEKA OKUYOR..." : "KAMERAYI AÇ VE TARA", style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, color: SiberTema.textMain, fontFamily: 'Avenir')),
                     ),
                   ),
                 ],
@@ -186,9 +186,9 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.document_scanner_outlined, size: 72, color: Colors.black.withValues(alpha: 0.05)),
+                          Icon(Icons.document_scanner_outlined, size: 72, color: Colors.white.withValues(alpha: 0.05)),
                           const SizedBox(height: 16),
-                          const Text("Taranan parçalar burada listelenecektir.", style: TextStyle(color: Colors.black38, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                          const Text("Taranan parçalar burada listelenecektir.", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                         ],
                       ),
                     ),
@@ -198,7 +198,7 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
             if (_taramaBitti && _bulunanParcalar.isNotEmpty)
               Container(
                 padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, -5))]),
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, -5))]),
                 child: SafeArea(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -206,7 +206,7 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("TOPLAM SEPET", style: TextStyle(color: Colors.black45, fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                          const Text("TOPLAM SEPET", style: TextStyle(color: Colors.white45, fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                           Text("₺${_toplamTutar.toStringAsFixed(2)}", style: TextStyle(color: textColor, fontSize: 24, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                         ],
                       ),
@@ -245,8 +245,8 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))]
+            border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+            boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))]
           ),
           child: Row(
             children: [
@@ -258,7 +258,7 @@ class _SiberMegaParcaTarayiciScreenState extends State<SiberMegaParcaTarayiciScr
                   children: [
                     Text(item['urun_ad'], style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                     const SizedBox(height: 4),
-                    Text("Satıcı: ${item['bayi_adi']}", style: const TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                    Text("Satıcı: ${item['bayi_adi']}", style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                     const SizedBox(height: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

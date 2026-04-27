@@ -38,18 +38,18 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
             onPressed: () => Navigator.pop(context),
           ),
           title: const Text('B A Y İ   B A Ş V U R U   M E R K E Z İ',
-              style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2)),
+              style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2)),
           centerTitle: true,
           actions: [
             Container(
@@ -99,7 +99,7 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
                   Icon(Icons.hourglass_top, color: Colors.white.withOpacity(0.3), size: 20),
                   const SizedBox(width: 12),
                   const Text("ONAY BEKLEYEN BAYİ BAŞVURULARI",
-                      style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                      style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                 ],
               ),
               const SizedBox(height: 16),
@@ -150,10 +150,10 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
           border: Border.all(color: Colors.white.withOpacity(0.05))),
       child: const Column(
         children: [
-          Icon(Icons.radar, color: Colors.white10, size: 50),
+          Icon(Icons.radar, color: SiberTema.textMuted, size: 50),
           SizedBox(height: 16),
-          Text("RADAR TEMİZ", style: TextStyle(color: Colors.white24, fontWeight: FontWeight.w900, letterSpacing: 2)),
-          Text("Ağda bekleyen bayi başvuru sinyali yok.", style: TextStyle(color: Colors.white10, fontSize: 10)),
+          Text("RADAR TEMİZ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          Text("Ağda bekleyen bayi başvuru sinyali yok.", style: TextStyle(color: SiberTema.textMuted, fontSize: 10)),
         ],
       ),
     );
@@ -173,7 +173,7 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
         children: [
           Icon(icon, color: color, size: 20),
           const SizedBox(height: 16),
-          Text(title, style: const TextStyle(color: Colors.white38, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
+          Text(title, style: const TextStyle(color: SiberTema.textMuted, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
           const SizedBox(height: 6),
           Text(val, style: TextStyle(color: color, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: -1)),
         ],
@@ -201,15 +201,15 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(isim.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900)),
-                Text(bolge.toUpperCase(), style: const TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold)),
+                Text(isim.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900)),
+                Text(bolge.toUpperCase(), style: const TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: SiberTema.kuantumCyan,
-              foregroundColor: Colors.black,
+              foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             ),

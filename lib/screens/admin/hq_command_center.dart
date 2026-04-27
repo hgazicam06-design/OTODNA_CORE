@@ -47,14 +47,14 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
         elevation: 0,
         leading: const Icon(Icons.shield, color: _cyan),
-        title: const Text("ADMİN KARARGAHI", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 16)),
+        title: const Text("ADMİN KARARGAHI", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 16)),
         centerTitle: true,
         actions: [
           IconButton(
@@ -130,11 +130,11 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("Ağdaki Toplam Hacim", style: TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.bold)),
-                  Text("₺${toplamHacim.toStringAsFixed(2)}", style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900)),
+                  const Text("Ağdaki Toplam Hacim", style: TextStyle(color: SiberTema.textMuted, fontSize: 13, fontWeight: FontWeight.bold)),
+                  Text("₺${toplamHacim.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900)),
                 ],
               ),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white12, thickness: 1)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted, thickness: 1)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -143,7 +143,7 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
                     children: [
                       Text("Merkez Hakedişi", style: TextStyle(color: _cyan, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
                       SizedBox(height: 4),
-                      Text("Net %10 Pay + %2 Vergi", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+                      Text("Net %10 Pay + %2 Vergi", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
                     ],
                   ),
                   Text("₺${gaziPayi.toStringAsFixed(2)}", style: const TextStyle(color: _cyan, fontSize: 24, fontWeight: FontWeight.w900)),
@@ -189,9 +189,9 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(plaka, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                          Text(plaka, style: const TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.bold, letterSpacing: 2)),
                           const SizedBox(height: 4),
-                          Text("Sahip: $sahip", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 11)),
+                          Text("Sahip: $sahip", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 11)),
                         ],
                       ),
                     ),
@@ -264,7 +264,7 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
           children: [
             const Text("SİBER KOMUTAN", style: TextStyle(color: _cyan, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2)),
             const SizedBox(height: 4),
-            Text(_adminIsmi, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900)),
+            Text(_adminIsmi, style: const TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900)),
           ],
         ),
         const Spacer(),
@@ -303,7 +303,7 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold, height: 1.2)),
+                Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold, height: 1.2)),
                 const SizedBox(height: 6),
                 Text(altBilgi, style: TextStyle(color: renk, fontSize: 14, fontWeight: FontWeight.w900)),
               ],
@@ -324,12 +324,12 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
           children: [
             Icon(Icons.warning_amber_rounded, color: _alertRed),
             SizedBox(width: 10),
-            Text("SİSTEMDEN ÇIKIŞ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16)),
+            Text("SİSTEMDEN ÇIKIŞ", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 16)),
           ],
         ),
-        content: const Text("Karargahtan ayrılmak ve Kuantum Ağı bağlantısını kesmek istediğinize emin misiniz?", style: TextStyle(color: Colors.white70, fontSize: 13)),
+        content: const Text("Karargahtan ayrılmak ve Kuantum Ağı bağlantısını kesmek istediğinize emin misiniz?", style: TextStyle(color: SiberTema.textMuted, fontSize: 13)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İPTAL", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold))),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold))),
           ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: _alertRed, foregroundColor: Colors.white),
               onPressed: _sistemdenCik,
@@ -344,7 +344,7 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
     children: [
       Icon(icon, color: _cyan, size: 20),
       const SizedBox(width: 10),
-      Text(metin, style: const TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 12)),
+      Text(metin, style: const TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 12)),
     ],
   );
 
@@ -356,7 +356,7 @@ class _HqCommandCenterScreenState extends State<HqCommandCenterScreen> with Sing
         child: Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.4),
+            color: Colors.white.withOpacity(0.4),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: borderColor),
             boxShadow: [BoxShadow(color: _cyan.withOpacity(0.02), blurRadius: 20)],

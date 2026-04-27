@@ -69,22 +69,22 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(children: [Icon(Icons.gavel, color: Colors.redAccent, size: 32), SizedBox(width: 12), Text("Garanti Sorumluluk & Uzlaşma", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold))]),
+                  const Row(children: [Icon(Icons.gavel, color: Colors.redAccent, size: 32), SizedBox(width: 12), Text("Garanti Sorumluluk & Uzlaşma", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.bold))]),
                   const SizedBox(height: 16),
-                  const Text("Sizin onardığınız bir araç başka bir ilde arıza yapmıştır. Müşteri mağdur edilmeyecektir. Karşı bayinin tuttuğu raporu inceleyip faturayı üstlenmeniz gerekmektedir.", style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.5)),
+                  const Text("Sizin onardığınız bir araç başka bir ilde arıza yapmıştır. Müşteri mağdur edilmeyecektir. Karşı bayinin tuttuğu raporu inceleyip faturayı üstlenmeniz gerekmektedir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.5)),
                   const SizedBox(height: 24),
 
                   Container(
-                    padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: const Color(0xFF0F172A), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
+                    padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: const Color(0xFF0F172A), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.textMuted)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(children: [const Icon(Icons.business, color: Colors.white54, size: 16), const SizedBox(width: 8), Text("Raporlayan Bayi: ${talep['raporlayan_firma']}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold))]),
+                        Row(children: [const Icon(Icons.business, color: SiberTema.textMuted, size: 16), const SizedBox(width: 8), Text("Raporlayan Bayi: ${talep['raporlayan_firma']}", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold))]),
                         const SizedBox(height: 12),
-                        const Text("Sunulan Kanıtlar:", style: TextStyle(color: Colors.white54, fontSize: 12)),
+                        const Text("Sunulan Kanıtlar:", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
                         Text(talep['kanit_raporu'] ?? 'Kanıt sisteme yüklendi.', style: const TextStyle(color: Colors.orangeAccent, fontSize: 12, fontStyle: FontStyle.italic)),
                         const SizedBox(height: 12),
-                        const Divider(color: Colors.white24),
+                        const Divider(color: SiberTema.textMuted),
                         const SizedBox(height: 12),
                         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text("Karşı Bayiye Ödenecek Tutar:", style: TextStyle(color: Color(0xFF00FFC2), fontSize: 14, fontWeight: FontWeight.bold)), Text("${talep['b2b_fatura_tutari']} TL", style: const TextStyle(color: Color(0xFF00FFC2), fontSize: 16, fontWeight: FontWeight.bold))]),
                       ],
@@ -146,7 +146,7 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
                               _siberUyari('Uzlaşma Sağlandı! Tutar Karşı Firmaya Aktarılıyor. 🤝');
                             }
                           },
-                          icon: isProcessing ? const SizedBox(width:16, height:16, child: CircularProgressIndicator(color:Colors.black)) : const Icon(Icons.handshake, color: Color(0xFF0F172A)),
+                          icon: isProcessing ? const SizedBox(width:16, height:16, child: CircularProgressIndicator(color: Colors.white)) : const Icon(Icons.handshake, color: Color(0xFF0F172A)),
                           label: const Text("Kabul Et & Öde", style: TextStyle(color: Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 13))
                       )),
                     ],
@@ -184,11 +184,11 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("Rapor Oluştur & Fatura Kes", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                      const Text("Rapor Oluştur & Fatura Kes", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 16),
 
                       // FİRMA SEÇİMİ (FİREBASE CANLI)
-                      const Text("Hatalı İşlem Yapan Firma", style: TextStyle(color: Colors.white54, fontSize: 11)),
+                      const Text("Hatalı İşlem Yapan Firma", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
                       const SizedBox(height: 4),
                       FutureBuilder<QuerySnapshot>(
                         future: _db.collection('kullanicilar').where('rol', isEqualTo: 'bayi').where('aktif_mi', isEqualTo: true).get(),
@@ -198,14 +198,14 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
 
                           return Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
-                            decoration: BoxDecoration(color: const Color(0xFF0F172A), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
+                            decoration: BoxDecoration(color: const Color(0xFF0F172A), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.textMuted)),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
                                 dropdownColor: const Color(0xFF0F172A),
-                                hint: const Text("Firma Seçin...", style: TextStyle(color: Colors.white54, fontSize: 13)),
+                                hint: const Text("Firma Seçin...", style: TextStyle(color: SiberTema.textMuted, fontSize: 13)),
                                 value: secilenHataliFirmaId,
                                 isExpanded: true,
-                                style: const TextStyle(color: Colors.white, fontSize: 13),
+                                style: const TextStyle(color: SiberTema.textMain, fontSize: 13),
                                 items: firmalar.map((doc) => DropdownMenuItem(value: doc.id, child: Text(doc['ad'] ?? 'İsimsiz Firma'))).toList(),
                                 onChanged: (val) {
                                   setModalState(() {
@@ -220,11 +220,11 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
                       ),
                       const SizedBox(height: 12),
 
-                      TextField(controller: plakaCtrl, style: const TextStyle(color: Colors.white), decoration: InputDecoration(hintText: 'Araç Plakası (Örn: 34 DNA 2026)', hintStyle: const TextStyle(color: Colors.white38, fontSize: 13), filled: true, fillColor: const Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none))),
+                      TextField(controller: plakaCtrl, style: const TextStyle(color: SiberTema.textMain), decoration: InputDecoration(hintText: 'Araç Plakası (Örn: 34 DNA 2026)', hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 13), filled: true, fillColor: const Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none))),
                       const SizedBox(height: 12),
-                      TextField(controller: sorunCtrl, style: const TextStyle(color: Colors.white), decoration: InputDecoration(hintText: 'Tespit Edilen Sorun (Örn: Triger Kopması)', hintStyle: const TextStyle(color: Colors.white38, fontSize: 13), filled: true, fillColor: const Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none))),
+                      TextField(controller: sorunCtrl, style: const TextStyle(color: SiberTema.textMain), decoration: InputDecoration(hintText: 'Tespit Edilen Sorun (Örn: Triger Kopması)', hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 13), filled: true, fillColor: const Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none))),
                       const SizedBox(height: 12),
-                      TextField(controller: tutarCtrl, keyboardType: TextInputType.number, style: const TextStyle(color: Colors.white), decoration: InputDecoration(hintText: 'Talep Edilen Tutar (TL)', hintStyle: const TextStyle(color: Colors.white38, fontSize: 13), filled: true, fillColor: const Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none))),
+                      TextField(controller: tutarCtrl, keyboardType: TextInputType.number, style: const TextStyle(color: SiberTema.textMain), decoration: InputDecoration(hintText: 'Talep Edilen Tutar (TL)', hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 13), filled: true, fillColor: const Color(0xFF0F172A), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none))),
 
                       const SizedBox(height: 24),
                       SizedBox(
@@ -275,7 +275,7 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
                             }
                           },
                           icon: isSaving ? const SizedBox() : const Icon(Icons.send, color: Color(0xFF0F172A)),
-                          label: isSaving ? const CircularProgressIndicator(color: Colors.black) : const Text("Ağa Gönder & Talep Et", style: TextStyle(color: Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 16)),
+                          label: isSaving ? const CircularProgressIndicator(color: Colors.white) : const Text("Ağa Gönder & Talep Et", style: TextStyle(color: Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 16)),
                         ),
                       )
                     ],
@@ -299,12 +299,12 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
     if (_currentUser == null) return const Scaffold(backgroundColor: bgColor, body: Center(child: Text("Kimlik Hatası!")));
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent, elevation: 0,
-        title: const Text('Ulusal Garanti & İmece Ağı', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+        title: const Text('Ulusal Garanti & İmece Ağı', style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
         centerTitle: true, iconTheme: const IconThemeData(color: primaryCyan),
         bottom: TabBar(
           controller: _tabController, indicatorColor: primaryCyan, labelColor: primaryCyan, unselectedLabelColor: Colors.white54,
@@ -338,22 +338,22 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Row(children: [Icon(isResolved ? Icons.history : Icons.gavel, color: isResolved ? Colors.white54 : Colors.redAccent, size: 16), const SizedBox(width: 8), Text(talepDoc.id.substring(0, 8).toUpperCase(), style: const TextStyle(color: Colors.white54, fontSize: 11))]), Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: isResolved ? Colors.white12 : Colors.redAccent.withOpacity(0.2), borderRadius: BorderRadius.circular(8)), child: Text(talep['durum'], style: TextStyle(color: isResolved ? Colors.white70 : Colors.redAccent, fontSize: 10, fontWeight: FontWeight.bold)))]),
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Row(children: [Icon(isResolved ? Icons.history : Icons.gavel, color: isResolved ? Colors.white54 : Colors.redAccent, size: 16), const SizedBox(width: 8), Text(talepDoc.id.substring(0, 8).toUpperCase(), style: const TextStyle(color: SiberTema.textMuted, fontSize: 11))]), Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: isResolved ? Colors.white12 : Colors.redAccent.withOpacity(0.2), borderRadius: BorderRadius.circular(8)), child: Text(talep['durum'], style: TextStyle(color: isResolved ? Colors.white70 : Colors.redAccent, fontSize: 10, fontWeight: FontWeight.bold)))]),
                           const SizedBox(height: 16),
-                          Text(talep['arac'], style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                          Text(talep['arac'], style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 4),
                           Text(talep['sorun'], style: const TextStyle(color: Colors.orangeAccent, fontSize: 13)),
                           const SizedBox(height: 12),
-                          Row(children: [const Icon(Icons.location_on, color: Colors.white54, size: 14), const SizedBox(width: 4), Text("Yolda Kalınan Yer: ${talep['sorun_ili']}", style: const TextStyle(color: Colors.white70, fontSize: 12))]),
+                          Row(children: [const Icon(Icons.location_on, color: SiberTema.textMuted, size: 14), const SizedBox(width: 4), Text("Yolda Kalınan Yer: ${talep['sorun_ili']}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 12))]),
                           const SizedBox(height: 12),
-                          const Divider(color: Colors.white12),
+                          const Divider(color: SiberTema.textMuted),
                           const SizedBox(height: 8),
-                          Text("Raporlayan ve Destek Veren Bayi: ${talep['raporlayan_firma']}", style: const TextStyle(color: Colors.white54, fontSize: 11)),
+                          Text("Raporlayan ve Destek Veren Bayi: ${talep['raporlayan_firma']}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11)),
                           const SizedBox(height: 12),
                           Container(width: double.infinity, padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: primaryCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: Row(children: [const Icon(Icons.receipt_long, color: primaryCyan, size: 18), const SizedBox(width: 8), Text("Karşı Bayinin Faturası: ${talep['b2b_fatura_tutari']} TL", style: const TextStyle(color: primaryCyan, fontWeight: FontWeight.bold, fontSize: 12))])),
                           const SizedBox(height: 16),
                           if (!isResolved)
-                            SizedBox(width: double.infinity, child: ElevatedButton.icon(style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))), onPressed: () => _talepInceleVeKararVer(talepDoc.id, talep), icon: const Icon(Icons.balance, color: Colors.white, size: 18), label: const Text("Talebi İncele ve Karar Ver", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)))),
+                            SizedBox(width: double.infinity, child: ElevatedButton.icon(style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))), onPressed: () => _talepInceleVeKararVer(talepDoc.id, talep), icon: const Icon(Icons.balance, color: SiberTema.kuantumCyan, size: 18), label: const Text("Talebi İncele ve Karar Ver", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)))),
                         ],
                       ),
                     );
@@ -373,16 +373,16 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
                 child: Column(
                   children: [
                     const Icon(Icons.handshake, color: primaryCyan, size: 48), const SizedBox(height: 16),
-                    const Text("Başka Bayinin Müşterisine Destek Ver", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                    const Text("Başka Bayinin Müşterisine Destek Ver", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
-                    const Text("Yolda kalmış ve OtoDNA garantisi devam eden bir aracı dükkanınıza aldıysanız, müşteriden ASLA ücret talep etmeyin. Raporunuzu oluşturun ve faturayı işlemi yapan asıl firmaya B2B ekranından gönderin.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 12)),
+                    const Text("Yolda kalmış ve OtoDNA garantisi devam eden bir aracı dükkanınıza aldıysanız, müşteriden ASLA ücret talep etmeyin. Raporunuzu oluşturun ve faturayı işlemi yapan asıl firmaya B2B ekranından gönderin.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
                     const SizedBox(height: 16),
                     ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: primaryCyan), onPressed: _yeniFaturaKesModal, child: const Text("Rapor Oluştur & Fatura Kes", style: TextStyle(color: bgColor, fontWeight: FontWeight.bold)))
                   ],
                 ),
               ),
               const SizedBox(height: 24),
-              const Text("Kestiğim Faturalar (Tahsilat Durumu)", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+              const Text("Kestiğim Faturalar (Tahsilat Durumu)", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 14)),
               const SizedBox(height: 12),
 
               // CANLI FİREBASE SORGUSU
@@ -390,7 +390,7 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
                   stream: _db.collection('garanti_talepleri').where('raporlayan_firma_id', isEqualTo: _currentUser!.uid).snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: primaryCyan));
-                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Padding(padding: EdgeInsets.only(top: 20), child: Center(child: Text("Henüz kestiğiniz bir uzlaşma faturası yok.", style: TextStyle(color: Colors.white54))));
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Padding(padding: EdgeInsets.only(top: 20), child: Center(child: Text("Henüz kestiğiniz bir uzlaşma faturası yok.", style: TextStyle(color: SiberTema.textMuted))));
 
                     var kestigimFaturalar = snapshot.data!.docs;
 
@@ -405,13 +405,13 @@ class _UlusalGarantiScreenState extends State<UlusalGarantiScreen> with TickerPr
                         if (isRejected) durumRengi = Colors.redAccent;
 
                         return Container(
-                          padding: const EdgeInsets.all(16), margin: const EdgeInsets.only(bottom: 12), decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
+                          padding: const EdgeInsets.all(16), margin: const EdgeInsets.only(bottom: 12), decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.textMuted)),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(destek['arac'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), Icon(isApproved ? Icons.check_circle : (isRejected ? Icons.gavel : Icons.hourglass_empty), color: durumRengi, size: 16)]),
+                              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(destek['arac'], style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), Icon(isApproved ? Icons.check_circle : (isRejected ? Icons.gavel : Icons.hourglass_empty), color: durumRengi, size: 16)]),
                               const SizedBox(height: 8),
-                              Text("Sorun: ${destek['sorun']}", style: const TextStyle(color: Colors.white54, fontSize: 12)),
+                              Text("Sorun: ${destek['sorun']}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
                               Text("Fatura Kesilen Firma: ${destek['hatali_firma']}", style: const TextStyle(color: Colors.orangeAccent, fontSize: 12)),
                               const SizedBox(height: 8),
                               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("${destek['b2b_fatura_tutari']} TL", style: const TextStyle(color: primaryCyan, fontWeight: FontWeight.bold)), Text(destek['durum'], style: TextStyle(color: durumRengi, fontSize: 10, fontWeight: FontWeight.bold))])

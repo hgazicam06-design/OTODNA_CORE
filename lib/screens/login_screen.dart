@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _uyariGoster(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 13, fontFamily: 'Avenir')),
+        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w600, color: SiberTema.textMain, fontSize: 13, fontFamily: 'Avenir')),
         backgroundColor: isError ? SiberTema.kanKirmizi : Colors.teal.shade700,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -149,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
-                      BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20, spreadRadius: 5),
+                      BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20, spreadRadius: 5),
                     ],
                   ),
                   child: ClipRRect(
@@ -208,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () => _uyariGoster("Şifre sıfırlama bağlantısı yakında eklenecek."),
-                    child: const Text("Şifremi Unuttum", style: TextStyle(color: Colors.black54, fontSize: 13, fontWeight: FontWeight.w600, fontFamily: 'Avenir', decoration: TextDecoration.underline)),
+                    child: const Text("Şifremi Unuttum", style: TextStyle(color: Colors.white54, fontSize: 13, fontWeight: FontWeight.w600, fontFamily: 'Avenir', decoration: TextDecoration.underline)),
                   ),
                 ],
               ),
@@ -237,7 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: RichText(
                   text: TextSpan(
                     text: "Hesabınız yok mu? ",
-                    style: const TextStyle(color: Colors.black54, fontSize: 14, fontFamily: 'Avenir'),
+                    style: const TextStyle(color: Colors.white54, fontSize: 14, fontFamily: 'Avenir'),
                     children: [
                       TextSpan(
                         text: "Kayıt Olun",
@@ -264,18 +264,18 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)],
+            boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 10)],
           ),
           child: Row(
             children: [
               Text(_seciliDil, style: const TextStyle(color: Color(0xFF1E293B), fontWeight: FontWeight.bold, fontSize: 13)),
               const SizedBox(width: 4),
-              const Icon(Icons.language, color: Colors.black45, size: 16),
+              const Icon(Icons.language, color: Colors.white45, size: 16),
             ],
           ),
         ),
         IconButton(
-          icon: const Icon(Icons.help_outline, color: Colors.black54),
+          icon: const Icon(Icons.help_outline, color: Colors.white54),
           onPressed: () => _uyariGoster("OtoDNA Destek Hattı yakında eklenecektir."),
         )
       ],
@@ -288,7 +288,7 @@ class _LoginScreenState extends State<LoginScreen> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 15, spreadRadius: 1, offset: const Offset(0, 4)),
+          BoxShadow(color: Colors.white.withValues(alpha: 0.03), blurRadius: 15, spreadRadius: 1, offset: const Offset(0, 4)),
         ],
       ),
       child: TextField(
@@ -296,10 +296,10 @@ class _LoginScreenState extends State<LoginScreen> {
         obscureText: isPassword && sifreGizli,
         style: const TextStyle(color: Color(0xFF1E293B), fontSize: 15, fontWeight: FontWeight.w600, fontFamily: 'Avenir'),
         decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: Colors.black45, size: 22),
-          suffixIcon: isPassword ? IconButton(icon: Icon(sifreGizli ? Icons.visibility_off : Icons.visibility, color: Colors.black38, size: 20), onPressed: onVisibilityToggle) : null,
+          prefixIcon: Icon(icon, color: Colors.white45, size: 22),
+          suffixIcon: isPassword ? IconButton(icon: Icon(sifreGizli ? Icons.visibility_off : Icons.visibility, color: Colors.white38, size: 20), onPressed: onVisibilityToggle) : null,
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.black38, fontSize: 14, fontFamily: 'Avenir'),
+          hintStyle: const TextStyle(color: Colors.white38, fontSize: 14, fontFamily: 'Avenir'),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
         ),

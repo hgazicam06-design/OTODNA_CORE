@@ -121,7 +121,7 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
           isKirmiziAlarm
               ? "Verdiğiniz düşük puan Ankara Merkez Karargahında acil koda dönüştü. Firma derhal incelemeye alınacaktır!"
               : "Değerlendirmeniz Kuantum Ağına mühürlendi. OtoDNA kalitesine katkınızdan dolayı teşekkür ederiz.",
-          style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold, height: 1.5, fontFamily: 'Avenir'),
+          style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, height: 1.5, fontFamily: 'Avenir'),
         ),
         actions: [
           TextButton(
@@ -150,7 +150,7 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -158,7 +158,7 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
           elevation: 0,
           centerTitle: true,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("HİZMET DEĞERLENDİRME", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          title: const Text("HİZMET DEĞERLENDİRME", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
         ),
         body: Container(
           decoration: const BoxDecoration(
@@ -181,7 +181,7 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
                           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                           child: Container(
                             padding: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.8), borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white12)),
+                            decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.8), borderRadius: BorderRadius.circular(20), border: Border.all(color: SiberTema.textMuted)),
                             child: Row(
                               children: [
                                 Container(
@@ -194,9 +194,9 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("HEDEF FİRMA", style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                                      Text("HEDEF FİRMA", style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                                       const SizedBox(height: 4),
-                                      Text(widget.firmaAdi.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                                      Text(widget.firmaAdi.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                                     ],
                                   ),
                                 ),
@@ -208,7 +208,7 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
                       const SizedBox(height: 40),
 
                       // 2. ETKİLEŞİMLİ YILDIZ RADARI
-                      const Text("HİZMET KALİTESİNİ MÜHÜRLE", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                      const Text("HİZMET KALİTESİNİ MÜHÜRLE", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                       const SizedBox(height: 24),
 
                       Row(
@@ -246,21 +246,21 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
                       const SizedBox(height: 48),
 
                       // 4. DETAYLI İSTİHBARAT (YORUM) KUTUSU
-                      const Text("SİBER İSTİHBARAT RAPORU (YORUM)", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                      const Text("SİBER İSTİHBARAT RAPORU (YORUM)", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                       const SizedBox(height: 12),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                           child: Container(
-                            decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.8), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                            decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.8), borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
                             child: TextField(
                               controller: _yorumController,
                               maxLines: 5,
-                              style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.5, fontFamily: 'Avenir'),
+                              style: const TextStyle(color: SiberTema.textMain, fontSize: 13, height: 1.5, fontFamily: 'Avenir'),
                               decoration: InputDecoration(
                                 hintText: "Firmanın işlemi ve hizmet kalitesi hakkında detaylı bilgi verin...",
-                                hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
+                                hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
                                 border: InputBorder.none,
                                 contentPadding: const EdgeInsets.all(20),
                                 focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 1.5)),

@@ -150,22 +150,22 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-              boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20, offset: const Offset(0, -5))]
+              boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20, offset: const Offset(0, -5))]
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(child: Container(width: 40, height: 5, decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
+              Center(child: Container(width: 40, height: 5, decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
               const SizedBox(height: 32),
               Text("Asistan Yapılandırması", style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
               const SizedBox(height: 24),
               Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
+                  decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05))),
                   child: TextField(
                       controller: isimController,
                       style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
-                      decoration: const InputDecoration(labelText: "Akıllı Asistan Adı", labelStyle: TextStyle(color: Colors.black45, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold), border: InputBorder.none, floatingLabelBehavior: FloatingLabelBehavior.always)
+                      decoration: const InputDecoration(labelText: "Akıllı Asistan Adı", labelStyle: TextStyle(color: Colors.white45, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold), border: InputBorder.none, floatingLabelBehavior: FloatingLabelBehavior.always)
                   )
               ),
               const SizedBox(height: 32),
@@ -195,7 +195,7 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
-        shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+        shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
         leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
         title: Text(_asistanAdi.toUpperCase(), style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 4, fontFamily: 'Avenir')),
         centerTitle: true,
@@ -243,8 +243,8 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
                           bottomLeft: isUser ? const Radius.circular(20) : const Radius.circular(4),
                           bottomRight: isUser ? const Radius.circular(4) : const Radius.circular(20),
                         ),
-                        border: isUser ? null : Border.all(color: Colors.black.withValues(alpha: 0.05)),
-                        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 2))]
+                        border: isUser ? null : Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 2))]
                     ),
                     child: Column(
                       crossAxisAlignment: isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
@@ -271,8 +271,8 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
             padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 24),
             decoration: BoxDecoration(
                 color: Colors.white,
-                border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
-                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
+                border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
+                boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
             ),
             child: SafeArea(
               child: Row(
@@ -282,7 +282,7 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
                     onTap: _kamerayiAc,
                     child: Container(
                         padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle, border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
+                        decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle, border: Border.all(color: Colors.white.withValues(alpha: 0.05))),
                         child: Icon(Icons.camera_alt_outlined, color: primaryTeal, size: 22)
                     ),
                   ),
@@ -292,13 +292,13 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
                   Expanded(
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-                        decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
+                        decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withValues(alpha: 0.05))),
                         child: TextField(
                           controller: _mesajController,
                           style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                           decoration: const InputDecoration(
                             hintText: "Asistana mesaj yaz...",
-                            hintStyle: TextStyle(color: Colors.black38, fontSize: 13, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
+                            hintStyle: TextStyle(color: Colors.white38, fontSize: 13, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
                             border: InputBorder.none,
                           ),
                           onSubmitted: _mesajGonder,
@@ -318,7 +318,7 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
                             shape: BoxShape.circle,
                             boxShadow: [BoxShadow(color: (_dinliyor ? Colors.redAccent : primaryTeal).withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 4))]
                         ),
-                        child: Icon(_dinliyor ? Icons.graphic_eq : Icons.mic_none_outlined, color: Colors.white, size: 22)
+                        child: Icon(_dinliyor ? Icons.graphic_eq : Icons.mic_none_outlined, color: SiberTema.kuantumCyan, size: 22)
                     ),
                   ),
                 ],

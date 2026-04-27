@@ -78,7 +78,7 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
   void _siberUyariVer(String mesaj, bool isError) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir', fontSize: 12)),
+        content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir', fontSize: 12)),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan.withOpacity(0.8), // 🛠️ alarmRed yerine kanKirmizi kullanıldı
         behavior: SnackBarBehavior.floating,
       ),
@@ -88,14 +88,14 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("SİBER GÖZ: ARAÇ TANIMA", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')), // 🛠️ siberFont yerine Avenir kullanıldı
+          title: const Text("SİBER GÖZ: ARAÇ TANIMA", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')), // 🛠️ siberFont yerine Avenir kullanıldı
           centerTitle: true,
         ),
         body: Stack(
@@ -117,7 +117,7 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
             // 🛡️ 7D SİBER OVERLAY (Zırhlı Tarama Alanı)
             Positioned.fill(
               child: Container(
-                decoration: BoxDecoration(border: Border.all(color: Colors.white10, width: 1)),
+                decoration: BoxDecoration(border: Border.all(color: SiberTema.textMuted, width: 1)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -171,8 +171,8 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
       decoration: BoxDecoration(
         color: SiberTema.oledBlack.withOpacity(0.9),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white12, width: 1.5),
-        boxShadow: const [BoxShadow(color: Colors.black54, blurRadius: 20, offset: Offset(0, 10))],
+        border: Border.all(color: SiberTema.textMuted, width: 1.5),
+        boxShadow: const [BoxShadow(color: Colors.white54, blurRadius: 20, offset: Offset(0, 10))],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -181,7 +181,7 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
             children: [
               _buildStatusLed(_isLoading),
               const SizedBox(width: 12),
-              const Text("SİSTEM DURUMU:", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+              const Text("SİSTEM DURUMU:", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
               const Spacer(),
               Text(_isLoading ? "DNA ANALİZİ YAPILIYOR..." : "RADAR AKTİF", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
             ],

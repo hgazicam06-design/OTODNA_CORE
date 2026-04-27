@@ -112,7 +112,7 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
     }
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -173,12 +173,12 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
       ),
       child: Column(
         children: [
-          const Text("ÖDENECEK TOPLAM TUTAR", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
+          const Text("ÖDENECEK TOPLAM TUTAR", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
           const SizedBox(height: 8),
-          Text("${widget.toplamTutar.toStringAsFixed(2)} ₺", style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+          Text("${widget.toplamTutar.toStringAsFixed(2)} ₺", style: const TextStyle(color: SiberTema.textMain, fontSize: 32, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 12),
-            child: Divider(color: Colors.white12),
+            child: Divider(color: SiberTema.textMuted),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -196,7 +196,7 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(baslik, style: const TextStyle(color: Colors.white38, fontSize: 10)),
+        Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10)),
         const SizedBox(height: 4),
         Text(deger, style: TextStyle(color: renk, fontWeight: FontWeight.bold, fontSize: 14)),
       ],
@@ -232,16 +232,16 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(Icons.contactless, color: Colors.white54, size: 28),
-                    Text("PayTR", style: TextStyle(color: Colors.white.withOpacity(0.2), fontWeight: FontWeight.w900, fontSize: 20, fontStyle: FontStyle.italic)),
+                    const Icon(Icons.contactless, color: SiberTema.textMuted, size: 28),
+                    Text("PayTR", style: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontWeight: FontWeight.w900, fontSize: 20, fontStyle: FontStyle.italic)),
                   ],
                 ),
-                Text("**** **** **** ****", style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 24, letterSpacing: 4, fontFamily: 'Courier')),
+                Text("**** **** **** ****", style: TextStyle(color: SiberTema.textMain.withOpacity(0.8), fontSize: 24, letterSpacing: 4, fontFamily: 'Courier')),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("İSİM SOYİSİM", style: TextStyle(color: Colors.white54, fontSize: 14, letterSpacing: 2)),
-                    Text("AA/YY", style: TextStyle(color: Colors.white54, fontSize: 14, letterSpacing: 2)),
+                    Text("İSİM SOYİSİM", style: TextStyle(color: SiberTema.textMuted, fontSize: 14, letterSpacing: 2)),
+                    Text("AA/YY", style: TextStyle(color: SiberTema.textMuted, fontSize: 14, letterSpacing: 2)),
                   ],
                 )
               ],
@@ -286,7 +286,7 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
                 SizedBox(height: 12),
                 Text("OPERATÖR MOBİL ÖDEME", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontSize: 16)),
                 SizedBox(height: 8),
-                Text("Turkcell, Vodafone veya Türk Telekom faturanıza yansıtılarak tahsil edilecektir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 12)),
+                Text("Turkcell, Vodafone veya Türk Telekom faturanıza yansıtılarak tahsil edilecektir.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
               ],
             ),
           ),
@@ -305,14 +305,14 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
       controller: controller,
       keyboardType: type,
       obscureText: obscure,
-      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1.5),
+      style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, letterSpacing: 1.5),
       decoration: InputDecoration(
         labelText: hint,
-        labelStyle: const TextStyle(color: Colors.white54, letterSpacing: 0),
+        labelStyle: const TextStyle(color: SiberTema.textMuted, letterSpacing: 0),
         prefixIcon: Icon(icon, color: SiberTema.sariAltin, size: 20),
         filled: true,
         fillColor: Colors.black45,
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white12)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.textMuted)),
         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.sariAltin)),
       ),
     );
@@ -327,11 +327,11 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
         onPressed: _islemSuruyor ? null : _odemeyiTamamla,
         style: ElevatedButton.styleFrom(
           backgroundColor: SiberTema.sariAltin,
-          foregroundColor: Colors.black,
+          foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
         child: _islemSuruyor 
-            ? const CircularProgressIndicator(color: Colors.black)
+            ? const CircularProgressIndicator(color: Colors.white)
             : const Text("ÖDEMEYİ TAMAMLA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2)),
       ),
     );
@@ -364,7 +364,7 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
                   const SizedBox(height: 30),
                   const Text("ÖDEME BAŞARILI", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 4, fontFamily: 'Avenir')),
                   const SizedBox(height: 10),
-                  const Text("Hakediş hesabınıza yansıtıldı.", style: TextStyle(color: Colors.white54, fontSize: 14)),
+                  const Text("Hakediş hesabınıza yansıtıldı.", style: TextStyle(color: SiberTema.textMuted, fontSize: 14)),
                 ],
               ),
             );

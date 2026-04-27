@@ -109,13 +109,13 @@ class _SiberCheckupTerminaliState extends State<SiberCheckupTerminali> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: Text("${widget.islemTuru.replaceAll('_', ' ')} KAYDI", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
+          title: Text("${widget.islemTuru.replaceAll('_', ' ')} KAYDI", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18), onPressed: () => Navigator.pop(context)),
         ),
@@ -143,27 +143,27 @@ class _SiberCheckupTerminaliState extends State<SiberCheckupTerminali> {
               TextFormField(
                 controller: _kmController,
                 keyboardType: TextInputType.number,
-                style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
+                style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
                 decoration: SiberTema.siberInputDecor("ŞU ANKİ KİLOMETRE (KM)", Icons.speed),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _islemDetayController,
                 maxLines: 3,
-                style: const TextStyle(color: Colors.white, fontSize: 14, fontFamily: 'Avenir'),
+                style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontFamily: 'Avenir'),
                 decoration: SiberTema.siberInputDecor("ARIZA / İŞLEM DETAYINI YAZIN", Icons.build_circle),
               ),
               const SizedBox(height: 32),
 
               // ── 2. AKÜ DURUMU (TIK SİSTEMİ) ──
-              const Text("AKÜ DURUMU", style: TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+              const Text("AKÜ DURUMU", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
               const SizedBox(height: 8),
               ..._akuSeviyeleri.map((seviye) => _buildTikKarti(seviye, _seciliAkuDurumu == seviye, (val) => setState(() => _seciliAkuDurumu = val))),
 
               const SizedBox(height: 24),
 
               // ── 3. YAĞ SEVİYESİ (TIK SİSTEMİ) ──
-              const Text("MOTOR YAĞI SEVİYESİ", style: TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+              const Text("MOTOR YAĞI SEVİYESİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
               const SizedBox(height: 8),
               ..._yagSeviyeleri.map((seviye) => _buildTikKarti(seviye, _seciliYagDurumu == seviye, (val) => setState(() => _seciliYagDurumu = val))),
 

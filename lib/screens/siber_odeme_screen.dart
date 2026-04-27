@@ -126,9 +126,9 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
               child: const Icon(Icons.check_circle_outline, color: SiberTema.kuantumCyan, size: 48),
             ),
             const SizedBox(height: 24),
-            const Text("İŞLEM ONAYLANDI", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
+            const Text("İŞLEM ONAYLANDI", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
             const SizedBox(height: 12),
-            Text("₺${widget.odenecekTutar} Kuantum Ağı üzerinden tahsil edildi. İşlem başarıyla Karargaha mühürlendi.", textAlign: TextAlign.center, style: const TextStyle(color: Colors.white54, fontSize: 12, height: 1.5)),
+            Text("₺${widget.odenecekTutar} Kuantum Ağı üzerinden tahsil edildi. İşlem başarıyla Karargaha mühürlendi.", textAlign: TextAlign.center, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
             const SizedBox(height: 32),
             SizedBox(
               width: double.infinity, height: 50,
@@ -175,9 +175,9 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
                   ),
                   child: Column(
                     children: [
-                      const Text("ÖDENECEK TOPLAM TUTAR", style: TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                      const Text("ÖDENECEK TOPLAM TUTAR", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2)),
                       const SizedBox(height: 12),
-                      Text("₺${widget.odenecekTutar.toStringAsFixed(2)}", style: const TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: -1)),
+                      Text("₺${widget.odenecekTutar.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.textMain, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: -1)),
                     ],
                   ),
                 ),
@@ -186,7 +186,7 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
                 // =================================================================
                 // 2. KART BİLGİLERİ (Premium Input)
                 // =================================================================
-                const Text("KART BİLGİLERİ", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                const Text("KART BİLGİLERİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
                 const SizedBox(height: 16),
 
                 _buildTextField(hint: "Kart Üzerindeki İsim", icon: Icons.person_outline, controller: _isimController),
@@ -206,12 +206,12 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
                 // IYZICO Güvencesi Bildirimi
                 Container(
                   padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                  decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
                   child: Row(
                     children: const [
                       Icon(Icons.shield_outlined, color: SiberTema.kuantumCyan, size: 24),
                       SizedBox(width: 12),
-                      Expanded(child: Text("İşleminiz Iyzico ve OtoDNA Kuantum Zırhı ile 256-bit şifrelenmektedir.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4))),
+                      Expanded(child: Text("İşleminiz Iyzico ve OtoDNA Kuantum Zırhı ile 256-bit şifrelenmektedir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.4))),
                     ],
                   ),
                 ),
@@ -247,16 +247,16 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
       decoration: BoxDecoration(
           color: SiberTema.matGrey,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.white12)
+          border: Border.all(color: SiberTema.textMuted)
       ),
       child: TextField(
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
         obscureText: isObscure,
-        style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2),
+        style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.white24, fontWeight: FontWeight.normal, letterSpacing: 0),
+          hintStyle: const TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.normal, letterSpacing: 0),
           prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
           border: InputBorder.none,
         ),

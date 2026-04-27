@@ -24,7 +24,7 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -76,7 +76,7 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
                     children: [
                       Icon(Icons.history_edu_rounded, color: SiberTema.kuantumCyan, size: 18),
                       SizedBox(width: 10),
-                      Text("SİBER BAKIM GEÇMİŞİ", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 10)),
+                      Text("SİBER BAKIM GEÇMİŞİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 10)),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -98,7 +98,7 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
       child: Column(
         children: [
           _buildSiberSatir("KAYITLI PLAKA", plaka, isBuyuk: true),
-          const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: Colors.white12, thickness: 1)),
+          const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted, thickness: 1)),
           _buildSiberSatir("MARKA / MODEL", markaModel),
           _buildSiberSatir("KRİPTO ŞASE NO", widget.saseNo),
           _buildSiberSatir(
@@ -128,7 +128,7 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
             Text(
               "Şase: ${widget.saseNo}\n\nBu araç henüz Kuantum Ağına entegre edilmemiş veya sahte şase girişi tespit edildi.",
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white.withOpacity(0.6), height: 1.6, fontSize: 12),
+              style: TextStyle(color: SiberTema.textMain.withOpacity(0.6), height: 1.6, fontSize: 12),
             ),
           ],
         ),
@@ -164,7 +164,7 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text("$skor", style: TextStyle(color: skorRengi, fontSize: 48, fontWeight: FontWeight.w900, letterSpacing: -2)),
-              const Text("DNA SKORU", style: TextStyle(color: Colors.white38, fontSize: 10, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
+              const Text("DNA SKORU", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -188,7 +188,7 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(etiket, style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+          Text(etiket, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
           Flexible(
             child: Text(
                 deger,
@@ -223,13 +223,13 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
             decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.02),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white12)
+                border: Border.all(color: SiberTema.textMuted)
             ),
             child: const Column(
               children: [
-                Icon(Icons.layers_clear_outlined, color: Colors.white12, size: 32),
+                Icon(Icons.layers_clear_outlined, color: SiberTema.textMuted, size: 32),
                 SizedBox(height: 12),
-                Text("BU ARACA AİT GEÇMİŞ KAYIT BULUNAMADI", textAlign: TextAlign.center, style: TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                Text("BU ARACA AİT GEÇMİŞ KAYIT BULUNAMADI", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
               ],
             ),
           );
@@ -264,11 +264,11 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(islem['islem_adi'] ?? "GENEL KONTROL", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 0.5)),
+                        Text(islem['islem_adi'] ?? "GENEL KONTROL", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 0.5)),
                         const SizedBox(height: 4),
                         Text(
                             "KM: ${islem['baslangic_km'] ?? '---'}  |  BAYİ: ${islem['bayi_isim'] ?? 'MERKEZ'}",
-                            style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 10, fontWeight: FontWeight.bold)
+                            style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 10, fontWeight: FontWeight.bold)
                         ),
                       ],
                     ),

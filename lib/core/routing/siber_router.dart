@@ -29,10 +29,34 @@ import '../../screens/sorgu_sonuc_sayfasi.dart';
 import '../../screens/yedek_parca_vitrini.dart';
 import '../../screens/yorum_yap_screen.dart';
 
+// 🔥 KUANTUM AĞI - YENİ ENTEGRE EDİLEN EKRANLAR
+import '../../screens/kullanici/siber_radar_screen.dart';
+import '../../screens/kullanici/siber_sos_merkezi_screen.dart';
+import '../../screens/kullanici/tuvturk_randevu_screen.dart';
+import '../../screens/kullanici/yedek_parca_market_screen.dart';
+import '../../screens/kullanici/yol_bilgisayari_screen.dart';
+import '../../screens/kurumsal/kurumsal_baglayicilar_screen.dart';
+
 // Mevcut SiberRouter Yolları (Home & Dashboard)
 import '../../screens/home_screen.dart';
 import '../../screens/dashboard/dealer_dashboard.dart';
 import '../../market/oto_market_screen.dart';
+
+// 💎 FİLDİŞİ SEDEF & PLAZA EKRANLARI (YENİ EKLENENLER)
+import '../../screens/musteri/musteri_harita_screen.dart';
+import '../../screens/musteri/musteri_garaj_screen.dart';
+import '../../screens/musteri/qr_kimlik_screen.dart';
+import '../../screens/musteri/home_page.dart';
+import '../../screens/qr/kargo_teslimat_qr_screen.dart';
+import '../../screens/qr/qr_matbaa_screen.dart';
+import '../../screens/qr/vatandas_qr_iletisim_screen.dart';
+import '../../screens/market/siber_ikinci_el_market.dart';
+import '../../screens/market/siber_ilan_detay_screen.dart';
+import '../../screens/market/siber_ilan_ver_terminali.dart';
+import '../../screens/muayene/dijital_muayene_terminali.dart';
+import '../../screens/lojistik/otodna_cigir_screen.dart';
+import '../../screens/lojistik/surucu_kokpiti_screen.dart';
+import '../../models/car_ad_model.dart'; // SiberIlanDetayScreen için gerekli
 
 /// 🛰️ OTODNA KUANTUM YÖNLENDİRME ZIRHI
 /// Tek Domain üzerinden Web/Mobil pürüzsüz geçiş sağlar.
@@ -42,7 +66,6 @@ class SiberRouter {
     debugLogDiagnostics: true, // Siber terminalden rotaları izlemek için aktif
     routes: [
       // 🦅 ANA KARARGAH (Sivil Giriş Ekranı - Aslında Auth Gate)
-      // DİKKAT: Sistemin güvenliği için ana giriş Auth Gate olmalıdır.
       GoRoute(
         path: '/',
         builder: (context, state) => const OtoDnaAuthGate(),
@@ -120,7 +143,7 @@ class SiberRouter {
         builder: (context, state) => const SiberMarketVitrini(),
       ),
       GoRoute(
-        path: '/oto_market', // Eski siber_router'dan gelen OtoMarketScreen
+        path: '/oto_market',
         builder: (context, state) => const OtoMarketScreen(),
       ),
       GoRoute(
@@ -185,6 +208,32 @@ class SiberRouter {
         path: '/sos_merkezi',
         builder: (context, state) => const SosProtokoluScreen(),
       ),
+      GoRoute(
+        path: '/siber_sos',
+        builder: (context, state) => const SiberSosMerkeziScreen(),
+      ),
+
+      // ── YENİ KUANTUM EKRANLARI ──
+      GoRoute(
+        path: '/siber_radar',
+        builder: (context, state) => const SiberRadarScreen(),
+      ),
+      GoRoute(
+        path: '/tuvturk_randevu',
+        builder: (context, state) => const TuvturkRandevuScreen(),
+      ),
+      GoRoute(
+        path: '/yedek_parca_ag',
+        builder: (context, state) => const YedekParcaMarketScreen(),
+      ),
+      GoRoute(
+        path: '/yol_bilgisayari',
+        builder: (context, state) => const YolBilgisayariScreen(),
+      ),
+      GoRoute(
+        path: '/kurumsal_baglayicilar',
+        builder: (context, state) => const KurumsalBaglayicilarScreen(),
+      ),
 
       // ── EKSTRA (Eski siber_router'dan kalanlar) ──
       GoRoute(
@@ -195,22 +244,89 @@ class SiberRouter {
         path: '/bayi-paneli',
         builder: (context, state) => const DealerDashboard(),
       ),
+
+      // ── 💎 YENİ FİLDİŞİ SEDEF VE PLAZA ROTALARI ──
       GoRoute(
-        path: '/galeri',
-        builder: (context, state) => const Scaffold(
-          backgroundColor: Color(0xFF000000),
-          body: Center(
-              child: Text(
-                  "OtoDNA GALERİ - YAKINDA",
-                  style: TextStyle(color: Colors.cyan, fontWeight: FontWeight.bold)
-              )
-          ),
-        ),
+        path: '/musteri_harita',
+        builder: (context, state) {
+          final args = state.extra as Map<String, dynamic>? ?? {};
+          return MusteriHaritaScreen(ilkAramaKelimesi: args['ilkAramaKelimesi']);
+        },
+      ),
+      GoRoute(
+        path: '/musteri_garaj',
+        builder: (context, state) => const MusteriGarajScreen(),
+      ),
+      GoRoute(
+        path: '/qr_kimlik',
+        builder: (context, state) => const QrKimlikScreen(),
+      ),
+      GoRoute(
+        path: '/home_page_design',
+        builder: (context, state) => const HomePageDesign(),
+      ),
+      GoRoute(
+        path: '/kargo_qr',
+        builder: (context, state) {
+          final args = state.extra as Map<String, dynamic>? ?? {};
+          return KargoTeslimatQrScreen(kullaniciId: args['kullaniciId'] ?? 'BİLİNMEYEN_KULLANICI');
+        },
+      ),
+      GoRoute(
+        path: '/qr_matbaa',
+        builder: (context, state) => const QrMatbaaScreen(),
+      ),
+      // 🌐 WEB DEEP LINK: Vatandaşın normal kamerasıyla okutacağı QR URL'i
+      GoRoute(
+        path: '/qr/:plaka',
+        builder: (context, state) {
+          final plaka = state.pathParameters['plaka'] ?? 'BİLİNMİYOR';
+          // Not: Gerçek senaryoda plaka ile Firestore'dan araç sahibini çeken bir FutureBuilder eklenebilir.
+          // Şimdilik siber kalkan devreye girip anonim bilgileri dolduruyor.
+          return VatandasQrIletisimScreen(
+            hedefPlaka: plaka,
+            hedefSahipId: 'ANONIM_SAHIP_ID',
+            hedefSahipAdSoyad: 'GİZLİ ARAÇ SAHİBİ',
+          );
+        },
+      ),
+      GoRoute(
+        path: '/ikinci_el_market',
+        builder: (context, state) => const SiberIkinciElMarket(),
+      ),
+      GoRoute(
+        path: '/ilan_detay',
+        builder: (context, state) {
+          final ad = state.extra as CarAd;
+          return SiberIlanDetayScreen(ad: ad);
+        },
+      ),
+      GoRoute(
+        path: '/ilan_ver_terminali',
+        builder: (context, state) => const SiberIlanVerTerminali(),
+      ),
+      GoRoute(
+        path: '/dijital_muayene',
+        builder: (context, state) {
+          final args = state.extra as Map<String, dynamic>? ?? {};
+          return DijitalMuayeneTerminali(
+            aracId: args['aracId'] ?? 'BİLİNMEYEN_ARAC',
+            plaka: args['plaka'] ?? 'PLAKA YOK',
+          );
+        },
+      ),
+      GoRoute(
+        path: '/cigir_yolcu',
+        builder: (context, state) => const OtoDnaCigirScreen(),
+      ),
+      GoRoute(
+        path: '/surucu_kokpiti',
+        builder: (context, state) => const SurucuKokpitiScreen(),
       ),
     ],
     // ⚠️ KOORDİNAT HATASI (404) DURUMUNDA DEVREYE GİREN SİBER KALKAN
     errorBuilder: (context, state) => Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFFFDFBF7),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -230,8 +346,8 @@ class SiberRouter {
             const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF00FFC2),
-                foregroundColor: Colors.black,
+                backgroundColor: Colors.teal.shade700,
+                foregroundColor: Colors.white,
               ),
               onPressed: () => context.go('/'),
               child: const Text("MERKEZE DÖN", style: TextStyle(fontWeight: FontWeight.bold)),

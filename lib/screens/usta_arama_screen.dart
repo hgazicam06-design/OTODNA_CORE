@@ -71,7 +71,7 @@ class _UstaAramaScreenState extends State<UstaAramaScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -79,7 +79,7 @@ class _UstaAramaScreenState extends State<UstaAramaScreen> {
           elevation: 0,
           centerTitle: true,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("KÜRESEL USTA RADARI", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          title: const Text("KÜRESEL USTA RADARI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           actions: [
             IconButton(
               icon: const Icon(Icons.map_outlined, color: SiberTema.kuantumCyan),
@@ -121,9 +121,9 @@ class _UstaAramaScreenState extends State<UstaAramaScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text("AKTİF TARAMA BÖLGESİ", style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                                const Text("AKTİF TARAMA BÖLGESİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                                 const SizedBox(height: 4),
-                                Text("$_seciliBolge / $_seciliSehir", style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                                Text("$_seciliBolge / $_seciliSehir", style: TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                               ],
                             ),
                           ),
@@ -205,7 +205,7 @@ class _UstaAramaScreenState extends State<UstaAramaScreen> {
                           }
 
                           if (dokumanlar.isEmpty) {
-                            return const Center(child: Text("BU BÖLGEDE UYGUN USTA BULUNAMADI", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold, fontFamily: 'Avenir')));
+                            return const Center(child: Text("BU BÖLGEDE UYGUN USTA BULUNAMADI", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold, fontFamily: 'Avenir')));
                           }
 
                           // GERÇEK VERİTABANI DÖNGÜSÜ
@@ -326,9 +326,9 @@ class _UstaAramaScreenState extends State<UstaAramaScreen> {
                         const SizedBox(height: 6),
                         Row(
                           children: [
-                            const Icon(Icons.my_location, color: Colors.white38, size: 12),
+                            const Icon(Icons.my_location, color: SiberTema.textMuted, size: 12),
                             const SizedBox(width: 4),
-                            Text("$konum  •  $mesafe", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+                            Text("$konum  •  $mesafe", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
                           ],
                         ),
                       ],
@@ -418,7 +418,7 @@ class _UstaAramaScreenState extends State<UstaAramaScreen> {
         child: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.star, color: Colors.black, size: 14),
+            Icon(Icons.star, color: Colors.white, size: 14),
             SizedBox(width: 4),
             Text("KARA LİSTE", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
           ],

@@ -94,7 +94,7 @@ class SiberQrOnayAlani extends StatelessWidget {
 
               backgroundColor: Colors.white,
 
-              foregroundColor: Colors.black, // Siyah QR pikselleri
+              foregroundColor: Colors.white, // Siyah QR pikselleri
 
             ),
 
@@ -136,7 +136,7 @@ class SiberQrOnayAlani extends StatelessWidget {
 
             style: const TextStyle(
 
-              color: Colors.white54,
+              color: SiberTema.textMuted,
 
               fontSize: 11,
 
@@ -168,7 +168,7 @@ class SiberQrOnayAlani extends StatelessWidget {
 
                 "OtoDNA Kripto Ağı Tarafından Onaylanmıştır",
 
-                style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1),
+                style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1),
 
               ),
 

@@ -21,7 +21,7 @@ class _BolgeBayiTerminaliState extends State<BolgeBayiTerminali> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -39,7 +39,7 @@ class _BolgeBayiTerminaliState extends State<BolgeBayiTerminali> {
             children: [
               _buildStokDurumPaneli(),
               const SizedBox(height: 32),
-              const Text("ALT BAYİ ONAY BEKLEYENLER", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+              const Text("ALT BAYİ ONAY BEKLEYENLER", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
               const SizedBox(height: 16),
               _buildOnayListesi(),
             ],
@@ -64,9 +64,9 @@ class _BolgeBayiTerminaliState extends State<BolgeBayiTerminali> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("BÖLGE STOK HACMİ", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
+              const Text("BÖLGE STOK HACMİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
-              Text("$stokMiktari KİT", style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+              Text("$stokMiktari KİT", style: const TextStyle(color: SiberTema.textMain, fontSize: 28, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             ],
           ),
           Container(
@@ -88,7 +88,7 @@ class _BolgeBayiTerminaliState extends State<BolgeBayiTerminali> {
         return Container(
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(color: Colors.white.withOpacity(0.03), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white10)),
+          decoration: BoxDecoration(color: Colors.white.withOpacity(0.03), borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
           child: Row(
             children: [
               Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: Colors.amber.withOpacity(0.1), shape: BoxShape.circle), child: const Icon(Icons.handyman, color: Colors.amber, size: 18)),
@@ -97,9 +97,9 @@ class _BolgeBayiTerminaliState extends State<BolgeBayiTerminali> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Kadıköy Yetkili Servisi", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                    Text("Kadıköy Yetkili Servisi", style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
                     SizedBox(height: 4),
-                    Text("LPG Montaj Onayı Bekliyor", style: TextStyle(color: Colors.white54, fontSize: 11)),
+                    Text("LPG Montaj Onayı Bekliyor", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
                   ],
                 ),
               ),
@@ -108,7 +108,7 @@ class _BolgeBayiTerminaliState extends State<BolgeBayiTerminali> {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Bölge Onayı Verildi ve Mühürlendi!"), backgroundColor: SiberTema.kuantumCyan));
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-                child: const Text("ONAYLA", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 11)),
+                child: const Text("ONAYLA", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 11)),
               )
             ],
           ),

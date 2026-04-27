@@ -75,17 +75,17 @@ class _IlanVerEkspertizScreenState extends State<IlanVerEkspertizScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-              boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20)]
+              boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20)]
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.black12, borderRadius: BorderRadius.circular(10)))),
+                Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white12, borderRadius: BorderRadius.circular(10)))),
                 const SizedBox(height: 24),
                 Text("$parca Durumu", style: const TextStyle(color: Color(0xFF1E293B), fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
                 const SizedBox(height: 8),
-                const Text("Seçtiğiniz parçanın ekspertiz sonucunu işaretleyin.", style: TextStyle(color: Colors.black54, fontSize: 13, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
+                const Text("Seçtiğiniz parçanın ekspertiz sonucunu işaretleyin.", style: TextStyle(color: Colors.white54, fontSize: 13, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
                 const SizedBox(height: 24),
                 _buildDurumSecenekButonu(parca, "Orijinal / İşlemsiz", 0, primaryTeal),
                 _buildDurumSecenekButonu(parca, "Boyalı / Lokal Boya", 1, Colors.orange),
@@ -115,7 +115,7 @@ class _IlanVerEkspertizScreenState extends State<IlanVerEkspertizScreen> {
           color: isSelected ? renk.withValues(alpha: 0.1) : Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: isSelected ? renk.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05)),
-          boxShadow: isSelected ? null : [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 5)]
+          boxShadow: isSelected ? null : [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 5)]
         ),
         child: Row(
           children: [
@@ -153,7 +153,7 @@ class _IlanVerEkspertizScreenState extends State<IlanVerEkspertizScreen> {
   void _devamEt() {
     FocusScope.of(context).unfocus();
     if (_kullaniciFiyatController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Lütfen hedef satış fiyatınızı girin.", style: TextStyle(color: Colors.white, fontFamily: 'Avenir')), backgroundColor: Colors.redAccent));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Lütfen hedef satış fiyatınızı girin.", style: TextStyle(color: SiberTema.textMain, fontFamily: 'Avenir')), backgroundColor: Colors.redAccent));
       return;
     }
     double kullaniciFiyati = double.tryParse(_kullaniciFiyatController.text) ?? _hesaplananFiyat;
@@ -177,7 +177,7 @@ class _IlanVerEkspertizScreenState extends State<IlanVerEkspertizScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
           title: Text('A D I M   2 / 3', style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 4, fontFamily: 'Avenir')),
           centerTitle: true,
@@ -193,7 +193,7 @@ class _IlanVerEkspertizScreenState extends State<IlanVerEkspertizScreen> {
                   children: [
                     Text("Ekspertiz Haritası", style: TextStyle(color: textColor, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -1, fontFamily: 'Avenir')),
                     const SizedBox(height: 8),
-                    Text("${widget.secilenArac.join(' > ')}\nAracın kaporta durumunu dijital şemaya işleyin.", style: const TextStyle(color: Colors.black54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                    Text("${widget.secilenArac.join(' > ')}\nAracın kaporta durumunu dijital şemaya işleyin.", style: const TextStyle(color: Colors.white54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                     const SizedBox(height: 32),
 
                     // =========================================================
@@ -209,7 +209,7 @@ class _IlanVerEkspertizScreenState extends State<IlanVerEkspertizScreen> {
                             if (_otodnaSenkronizasyon)
                               BoxShadow(color: primaryTeal.withValues(alpha: 0.1), blurRadius: 15, offset: const Offset(0, 5))
                             else
-                              BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))
+                              BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))
                           ]
                       ),
                       child: Row(
@@ -226,7 +226,7 @@ class _IlanVerEkspertizScreenState extends State<IlanVerEkspertizScreen> {
                               children: [
                                 Text("Ağdan Geçmişi Çek", style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                                 const SizedBox(height: 4),
-                                const Text("Aracın OtoDNA'daki mühürlü geçmişini haritaya otomatik yansıt.", style: TextStyle(color: Colors.black54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                const Text("Aracın OtoDNA'daki mühürlü geçmişini haritaya otomatik yansıt.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                               ],
                             ),
                           ),
@@ -252,8 +252,8 @@ class _IlanVerEkspertizScreenState extends State<IlanVerEkspertizScreen> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(24),
-                          border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-                          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15)]
+                          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                          boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15)]
                         ),
                         child: Column(
                           children: [
@@ -323,9 +323,9 @@ class _IlanVerEkspertizScreenState extends State<IlanVerEkspertizScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.circle_outlined, color: Colors.black26, size: 14), const SizedBox(width: 6), const Text("Orijinal", style: TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), const SizedBox(width: 16),
-                        const Icon(Icons.circle, color: Colors.orange, size: 14), const SizedBox(width: 6), const Text("Boyalı", style: TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), const SizedBox(width: 16),
-                        const Icon(Icons.circle, color: Colors.redAccent, size: 14), const SizedBox(width: 6), const Text("Değişen", style: TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                        Icon(Icons.circle_outlined, color: Colors.white26, size: 14), const SizedBox(width: 6), const Text("Orijinal", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), const SizedBox(width: 16),
+                        const Icon(Icons.circle, color: Colors.orange, size: 14), const SizedBox(width: 6), const Text("Boyalı", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), const SizedBox(width: 16),
+                        const Icon(Icons.circle, color: Colors.redAccent, size: 14), const SizedBox(width: 6), const Text("Değişen", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                       ],
                     ),
                     const SizedBox(height: 48),
@@ -333,7 +333,7 @@ class _IlanVerEkspertizScreenState extends State<IlanVerEkspertizScreen> {
                     // =========================================================
                     // YAPAY ZEKA VE FİYAT ONAYI
                     // =========================================================
-                    const Text("Yapay Zeka Piyasa Analizi", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+                    const Text("Yapay Zeka Piyasa Analizi", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
                     const SizedBox(height: 8),
                     AnimatedSwitcher(
                       duration: const Duration(milliseconds: 500),
@@ -344,7 +344,7 @@ class _IlanVerEkspertizScreenState extends State<IlanVerEkspertizScreen> {
                     // Sizin Fiyatınız Input
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 5)]),
+                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 5)]),
                       child: TextField(
                         controller: _kullaniciFiyatController,
                         keyboardType: TextInputType.number,
@@ -352,7 +352,7 @@ class _IlanVerEkspertizScreenState extends State<IlanVerEkspertizScreen> {
                         decoration: InputDecoration(
                           icon: Icon(Icons.currency_lira, color: primaryTeal, size: 20),
                           labelText: "Sizin Satış Fiyatınız (₺)",
-                          labelStyle: const TextStyle(color: Colors.black45, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+                          labelStyle: const TextStyle(color: Colors.white45, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                           border: InputBorder.none,
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                         ),
@@ -369,8 +369,8 @@ class _IlanVerEkspertizScreenState extends State<IlanVerEkspertizScreen> {
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 color: Colors.white,
-                border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
-                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
+                border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
+                boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
               ),
               child: SafeArea(
                 child: SizedBox(

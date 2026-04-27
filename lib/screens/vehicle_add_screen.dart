@@ -83,14 +83,14 @@ class _VehicleAddScreenState extends State<VehicleAddScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("ARAÇ DNA KODLAMA", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          title: const Text("ARAÇ DNA KODLAMA", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
         ),
         body: SafeArea(
@@ -118,12 +118,12 @@ class _VehicleAddScreenState extends State<VehicleAddScreen> {
                     ),
                     const SizedBox(height: 32),
 
-                    const Text("SİSTEME ARAÇ ENTEGRE ET", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                    const Text("SİSTEME ARAÇ ENTEGRE ET", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                     const SizedBox(height: 12),
                     Text(
                       "OtoDNA Kuantum Ağına yeni bir araç mühürlemek için donanım kimliğini (17 Haneli VIN) giriniz.",
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, height: 1.5, letterSpacing: 1, fontFamily: 'Avenir'),
+                      style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, height: 1.5, letterSpacing: 1, fontFamily: 'Avenir'),
                     ),
                     const SizedBox(height: 48),
 
@@ -192,9 +192,9 @@ class _VehicleAddScreenState extends State<VehicleAddScreen> {
             style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
             decoration: InputDecoration(
               counterText: "", // Alt kısımdaki "17/17" yazısını gizler
-              prefixIcon: Icon(icon, color: Colors.white38, size: 20),
+              prefixIcon: Icon(icon, color: SiberTema.textMuted, size: 20),
               hintText: hint,
-              hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
+              hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
               focusedBorder: OutlineInputBorder(

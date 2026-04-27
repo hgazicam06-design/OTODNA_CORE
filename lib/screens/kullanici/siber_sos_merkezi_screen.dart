@@ -71,7 +71,7 @@ class _SiberSosMerkeziScreenState extends State<SiberSosMerkeziScreen> with Sing
             const SizedBox(height: 24),
             const Text("SİNYAL CİHAZA MÜHÜRLENDİ", textAlign: TextAlign.center, style: TextStyle(color: Colors.redAccent, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
             const SizedBox(height: 16),
-            const Text("S.O.S talebiniz çevrimdışı kuyruğa alındı.\n\nİnternet bağlantısı sağlandığı ilk milisaniyede konumunuz Kuantum Merkezine otomatik fırlatılacaktır.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 12, height: 1.5)),
+            const Text("S.O.S talebiniz çevrimdışı kuyruğa alındı.\n\nİnternet bağlantısı sağlandığı ilk milisaniyede konumunuz Kuantum Merkezine otomatik fırlatılacaktır.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
             const SizedBox(height: 32),
             SizedBox(
               width: double.infinity, height: 50,
@@ -98,7 +98,7 @@ class _SiberSosMerkeziScreenState extends State<SiberSosMerkeziScreen> with Sing
       await launchUrl(url);
     } else {
       if(!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Arama başlatılamadı! İzinleri kontrol edin.", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: Colors.redAccent));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Arama başlatılamadı! İzinleri kontrol edin.", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: Colors.redAccent));
     }
   }
 
@@ -109,7 +109,7 @@ class _SiberSosMerkeziScreenState extends State<SiberSosMerkeziScreen> with Sing
       await launchUrl(url);
     } else {
       if(!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("SMS başlatılamadı!", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: Colors.redAccent));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("SMS başlatılamadı!", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: Colors.redAccent));
     }
   }
 
@@ -125,8 +125,8 @@ class _SiberSosMerkeziScreenState extends State<SiberSosMerkeziScreen> with Sing
       backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent, elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text("G Ü V E N L İ K   D U V A R I", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3)),
+        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+        title: const Text("G Ü V E N L İ K   D U V A R I", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -150,7 +150,7 @@ class _SiberSosMerkeziScreenState extends State<SiberSosMerkeziScreen> with Sing
                 children: [
                   const Text("S.O.S ACİL SİNYAL", style: TextStyle(color: dangerColor, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
                   const SizedBox(height: 8),
-                  const Text("Yardım çağırmak için 5 saniye basılı tutun.", style: TextStyle(color: Colors.white54, fontSize: 11)),
+                  const Text("Yardım çağırmak için 5 saniye basılı tutun.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
                   const SizedBox(height: 32),
 
                   // 💎 5 SANİYELİK İNTERAKTİF S.O.S BUTONU
@@ -187,7 +187,7 @@ class _SiberSosMerkeziScreenState extends State<SiberSosMerkeziScreen> with Sing
                             children: [
                               Icon(Icons.power_settings_new, color: dangerColor, size: _basiliTutmaController.isAnimating ? 32 : 40),
                               if (_basiliTutmaController.isAnimating)
-                                Text("${(5 - (_basiliTutmaController.value * 5)).ceil()}", style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900))
+                                Text("${(5 - (_basiliTutmaController.value * 5)).ceil()}", style: const TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900))
                             ],
                           ),
                         ),
@@ -202,15 +202,15 @@ class _SiberSosMerkeziScreenState extends State<SiberSosMerkeziScreen> with Sing
                       decoration: BoxDecoration(color: const Color(0xFF000000), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
                       child: Row(
                           children: [
-                            const Icon(Icons.satellite_alt_outlined, color: Colors.white38, size: 18),
+                            const Icon(Icons.satellite_alt_outlined, color: SiberTema.textMuted, size: 18),
                             const SizedBox(width: 12),
                             Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text("SON TESPİT EDİLEN KONUM", style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                                    const Text("SON TESPİT EDİLEN KONUM", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
                                     const SizedBox(height: 4),
-                                    Text(_anlikKonum, style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
+                                    Text(_anlikKonum, style: const TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.bold)),
                                   ],
                                 )
                             )
@@ -249,7 +249,7 @@ class _SiberSosMerkeziScreenState extends State<SiberSosMerkeziScreen> with Sing
             // =================================================================
             // 2. QR ŞİKAYET BİLDİRİMİ
             // =================================================================
-            const Text("BAYİ / İŞLETME ŞİKAYETİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+            const Text("BAYİ / İŞLETME ŞİKAYETİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
             const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.all(24),
@@ -257,13 +257,13 @@ class _SiberSosMerkeziScreenState extends State<SiberSosMerkeziScreen> with Sing
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Kötü niyetli olduğunu düşündüğünüz bayinin veya ustanın QR kodunu okutarak doğrudan Kuantum Merkezine şikayet dosyası açabilirsiniz.", style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5)),
+                  const Text("Kötü niyetli olduğunu düşündüğünüz bayinin veya ustanın QR kodunu okutarak doğrudan Kuantum Merkezine şikayet dosyası açabilirsiniz.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
                   const SizedBox(height: 24),
                   SizedBox(
                     width: double.infinity, height: 56,
                     child: OutlinedButton.icon(
                       style: OutlinedButton.styleFrom(side: BorderSide(color: primaryCyan.withOpacity(0.5)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
-                      onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Kamera Açılıyor... Bayi QR'ını Okutun! 📸", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan)),
+                      onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Kamera Açılıyor... Bayi QR'ını Okutun! 📸", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan)),
                       icon: const Icon(Icons.qr_code_scanner_outlined, color: primaryCyan, size: 20),
                       label: const Text("ŞİKAYET İÇİN QR OKUT", style: TextStyle(color: primaryCyan, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
                     ),
@@ -276,7 +276,7 @@ class _SiberSosMerkeziScreenState extends State<SiberSosMerkeziScreen> with Sing
             // =================================================================
             // 3. KARA LİSTE (ENGELLEME) YÖNETİMİ
             // =================================================================
-            const Text("GÜVENLİK & KARA LİSTE", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+            const Text("GÜVENLİK & KARA LİSTE", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
             const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.all(24),
@@ -284,7 +284,7 @@ class _SiberSosMerkeziScreenState extends State<SiberSosMerkeziScreen> with Sing
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Siber ağınıza erişmesini engellediğiniz hesaplar:", style: TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.bold)),
+                  const Text("Siber ağınıza erişmesini engellediğiniz hesaplar:", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 20),
 
                   ..._engellenenlerListesi.map((isim) => Container(
@@ -294,15 +294,15 @@ class _SiberSosMerkeziScreenState extends State<SiberSosMerkeziScreen> with Sing
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(children: [const Icon(Icons.block_outlined, color: dangerColor, size: 16), const SizedBox(width: 12), Text(isim, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.5))]),
+                        Row(children: [const Icon(Icons.block_outlined, color: dangerColor, size: 16), const SizedBox(width: 12), Text(isim, style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.5))]),
                         GestureDetector(
-                            onTap: () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$isim engeli kaldırıldı.", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: Colors.greenAccent)),
-                            child: const Text("KALDIR", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1))
+                            onTap: () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$isim engeli kaldırıldı.", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: Colors.greenAccent)),
+                            child: const Text("KALDIR", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1))
                         )
                       ],
                     ),
                   )),
-                  const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: Colors.white12)),
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted)),
 
                   Row(
                     children: [
@@ -311,8 +311,8 @@ class _SiberSosMerkeziScreenState extends State<SiberSosMerkeziScreen> with Sing
                               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                               decoration: BoxDecoration(color: const Color(0xFF000000), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white.withOpacity(0.05))),
                               child: const TextField(
-                                  style: TextStyle(color: Colors.white, fontSize: 13),
-                                  decoration: InputDecoration(hintText: "ID Girin...", hintStyle: TextStyle(color: Colors.white24, fontSize: 12), border: InputBorder.none)
+                                  style: TextStyle(color: SiberTema.textMain, fontSize: 13),
+                                  decoration: InputDecoration(hintText: "ID Girin...", hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 12), border: InputBorder.none)
                               )
                           )
                       ),

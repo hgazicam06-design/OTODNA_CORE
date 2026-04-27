@@ -106,7 +106,7 @@ class _SiberFaturaScreenState extends State<SiberFaturaScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -157,7 +157,7 @@ class _SiberFaturaScreenState extends State<SiberFaturaScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.03),
-        border: const Border(bottom: BorderSide(color: Colors.white12, width: 1)),
+        border: const Border(bottom: BorderSide(color: SiberTema.textMuted, width: 1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -180,11 +180,11 @@ class _SiberFaturaScreenState extends State<SiberFaturaScreen> {
           const SizedBox(height: 16),
           ElevatedButton.icon(
             onPressed: _manuelUrunEkle,
-            icon: const Icon(Icons.add_shopping_cart, color: Colors.black),
+            icon: const Icon(Icons.add_shopping_cart, color: Colors.white),
             label: const Text("LİSTEYE EKLE", style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1)),
             style: ElevatedButton.styleFrom(
               backgroundColor: SiberTema.sariAltin,
-              foregroundColor: Colors.black,
+              foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
@@ -198,15 +198,15 @@ class _SiberFaturaScreenState extends State<SiberFaturaScreen> {
     return TextField(
       controller: controller,
       keyboardType: type,
-      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+      style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13),
       decoration: InputDecoration(
         labelText: hint,
-        labelStyle: const TextStyle(color: Colors.white54, fontSize: 11),
+        labelStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 11),
         prefixIcon: Icon(icon, color: SiberTema.sariAltin, size: 16),
         filled: true,
         fillColor: Colors.black45,
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Colors.white12)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: SiberTema.textMuted)),
         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: SiberTema.sariAltin)),
       ),
     );
@@ -219,9 +219,9 @@ class _SiberFaturaScreenState extends State<SiberFaturaScreen> {
         children: [
           Icon(Icons.receipt_long_rounded, size: 80, color: Colors.white.withOpacity(0.1)),
           const SizedBox(height: 16),
-          const Text("Fatura Boş", style: TextStyle(color: Colors.white54, fontSize: 18, fontWeight: FontWeight.bold)),
+          const Text("Fatura Boş", style: TextStyle(color: SiberTema.textMuted, fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
-          const Text("Yukarıdan manuel ekleyin veya PDF taratın.", style: TextStyle(color: Colors.white38, fontSize: 12)),
+          const Text("Yukarıdan manuel ekleyin veya PDF taratın.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
         ],
       ),
     );
@@ -243,7 +243,7 @@ class _SiberFaturaScreenState extends State<SiberFaturaScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: Text(item.description, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14))),
+              Expanded(child: Text(item.description, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 14))),
               IconButton(
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
@@ -252,7 +252,7 @@ class _SiberFaturaScreenState extends State<SiberFaturaScreen> {
               )
             ],
           ),
-          const Divider(color: Colors.white12, height: 16),
+          const Divider(color: SiberTema.textMuted, height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -270,7 +270,7 @@ class _SiberFaturaScreenState extends State<SiberFaturaScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(baslik, style: const TextStyle(color: Colors.white38, fontSize: 10)),
+        Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10)),
         const SizedBox(height: 2),
         Text(deger, style: TextStyle(color: renk, fontWeight: FontWeight.bold, fontSize: 12)),
       ],
@@ -282,7 +282,7 @@ class _SiberFaturaScreenState extends State<SiberFaturaScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: Colors.white,
         border: const Border(top: BorderSide(color: SiberTema.sariAltin, width: 2)),
         boxShadow: [BoxShadow(color: SiberTema.sariAltin.withOpacity(0.1), blurRadius: 20, offset: const Offset(0, -5))],
       ),
@@ -295,7 +295,7 @@ class _SiberFaturaScreenState extends State<SiberFaturaScreen> {
             _buildBilancoSatiri("OtoDNA Payı (Komisyon)", -_toplamGaziPayi, SiberTema.kanKirmizi),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
-              child: Divider(color: Colors.white24, height: 1),
+              child: Divider(color: SiberTema.textMuted, height: 1),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -304,7 +304,7 @@ class _SiberFaturaScreenState extends State<SiberFaturaScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("BAYİ NET HAKEDİŞİ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1)),
-                    Text("Esnafın cebine girecek tutar", style: TextStyle(color: Colors.white38, fontSize: 10)),
+                    Text("Esnafın cebine girecek tutar", style: TextStyle(color: SiberTema.textMuted, fontSize: 10)),
                   ],
                 ),
                 Text("${_toplamEsnafHakedisi.toStringAsFixed(2)} ₺", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
@@ -334,11 +334,11 @@ class _SiberFaturaScreenState extends State<SiberFaturaScreen> {
                     });
                   }
                 },
-                icon: const Icon(Icons.payment_rounded, color: Colors.black),
+                icon: const Icon(Icons.payment_rounded, color: Colors.white),
                 label: const Text("ÖDEME AL (PayTR)", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 16)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: SiberTema.sariAltin,
-                  foregroundColor: Colors.black,
+                  foregroundColor: Colors.white,
                   disabledBackgroundColor: Colors.white12,
                 ),
               ),
@@ -353,7 +353,7 @@ class _SiberFaturaScreenState extends State<SiberFaturaScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold)),
+        Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
         Text("${deger > 0 ? '' : ''}${deger.toStringAsFixed(2)} ₺", style: TextStyle(color: renk, fontSize: 13, fontWeight: FontWeight.bold)),
       ],
     );

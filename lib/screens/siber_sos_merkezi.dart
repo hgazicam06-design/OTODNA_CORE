@@ -129,7 +129,7 @@ class _SiberSosMerkeziState extends State<SiberSosMerkezi> with SingleTickerProv
               ],
             ),
             const SizedBox(height: 8),
-            Text(mesaj, style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.5)),
+            Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, height: 1.5)),
           ],
         ),
       ),
@@ -166,7 +166,7 @@ class _SiberSosMerkeziState extends State<SiberSosMerkezi> with SingleTickerProv
                       Text(
                         "S.O.S sinyali göndermek için aşağıdaki butona 5 saniye basılı tutun. Asılsız ihbarlar Karargah sistemleri tarafından tespit edilir ve hesabınız KARALİSTE'ye (Blacklist) alınır.",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white70, fontSize: 12, height: 1.6),
+                        style: TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.6),
                       ),
                     ],
                   ),
@@ -223,7 +223,7 @@ class _SiberSosMerkeziState extends State<SiberSosMerkezi> with SingleTickerProv
                                   ),
                                   if (!_sosTetiklendi) ...[
                                     const SizedBox(height: 8),
-                                    const Text("S . O . S", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 4)),
+                                    const Text("S . O . S", style: TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 4)),
                                   ]
                                 ],
                               ),

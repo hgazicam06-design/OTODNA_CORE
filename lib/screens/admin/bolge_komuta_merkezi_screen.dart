@@ -24,18 +24,18 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+              icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
               onPressed: () => Navigator.pop(context)),
           title: const Text('G L O B A L   D E N E T İ M',
               style: TextStyle(
-                  color: Colors.white54,
+                  color: SiberTema.textMuted,
                   fontWeight: FontWeight.w900,
                   fontSize: 11,
                   letterSpacing: 3,
@@ -132,10 +132,10 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("\$_secilenUlke BÖLGE DAĞILIMI",
-                                style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                                style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1)),
                             const SizedBox(height: 4),
                             const Text("Kuantum Ağı Üzerindeki Canlı Mühür Yoğunluğu",
-                                style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold)),
+                                style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),
@@ -154,7 +154,7 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
                           ? Center(
                               child: Text(
                                 "Bu ülkede aktif bir ağ bağlantısı yok.",
-                                style: TextStyle(color: Colors.white.withOpacity(0.3), letterSpacing: 1),
+                                style: TextStyle(color: SiberTema.textMain.withOpacity(0.3), letterSpacing: 1),
                               ),
                             )
                           : ListView.builder(
@@ -213,7 +213,7 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(baslik, style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
+              Text(baslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
               Icon(ikon, color: renk, size: 16),
             ],
           ),
@@ -237,12 +237,12 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
             child: const Icon(Icons.my_location_outlined, color: primaryCyan, size: 16),
           ),
           const SizedBox(width: 16),
-          Expanded(child: Text(bolgeAdi, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.5))),
+          Expanded(child: Text(bolgeAdi, style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.5))),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(muhurSayisi.toString(), style: TextStyle(color: primaryCyan, fontSize: 18, fontWeight: FontWeight.w900)),
-              const Text("MÜHÜR", style: TextStyle(color: Colors.white38, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
+              const Text("MÜHÜR", style: TextStyle(color: SiberTema.textMuted, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
             ],
           )
         ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 // 🔥 SİBER KÖPRÜLER
 import '../../../core/siber_tema.dart';
@@ -15,6 +16,14 @@ class SiberGozRadari extends StatefulWidget {
 }
 
 class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProviderStateMixin {
+  // 🏢 FİLDİŞİ SEDEF PALET
+  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color surfaceColor = Colors.white;
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color textMain = const Color(0xFF1E293B);
+  final Color textMuted = const Color(0xFF64748B);
+  final Color dangerColor = SiberTema.kanKirmizi;
+
   late MobileScannerController _cameraController;
   late AnimationController _animationController;
 
@@ -53,34 +62,34 @@ class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProvid
 
       final String tarananKod = barcodes.first.rawValue!;
 
-      // PROTOKOL ANALİZİ
-      if (tarananKod.contains("OTODNA_TAG_")) {
-        _siberUyari("ARAÇ DNA'SI TESPİT EDİLDİ 🦅", SiberTema.kuantumCyan);
+      // PROTOKOL ANALİZİ (Web Linklerine Uygun Güncellendi)
+      if (tarananKod.contains("/qr/") || tarananKod.contains("OTODNA_TAG_")) {
+        _siberUyari("ARAÇ DNA'SI TESPİT EDİLDİ 🦅", primaryTeal, Colors.white);
         // TODO: Vatandaş Ekranına (Araç Detay) yönlendir
-      } else if (tarananKod.contains("KARGO_")) {
-        _siberUyari("KARGO MÜHRÜ ONAYLANDI 📦", Colors.orangeAccent);
+      } else if (tarananKod.contains("/kargo/") || tarananKod.contains("KARGO_")) {
+        _siberUyari("KARGO MÜHRÜ ONAYLANDI 📦", Colors.amber.shade700, Colors.white);
         // TODO: Kargo Teslimat Ekranına yönlendir
-      } else if (tarananKod.contains("BAYI_")) {
-        _siberUyari("BAYİ KİMLİĞİ DOĞRULANDI 🏢", Colors.blueAccent);
+      } else if (tarananKod.contains("/bayi/") || tarananKod.contains("BAYI_")) {
+        _siberUyari("BAYİ KİMLİĞİ DOĞRULANDI 🏢", Colors.blueAccent, Colors.white);
       } else {
-        _siberUyari("SİBER İHLAL! GEÇERSİZ KOD 🛑", SiberTema.kanKirmizi);
+        _siberUyari("SİBER İHLAL! GEÇERSİZ KOD 🛑", dangerColor, Colors.white);
       }
 
       // İşlemden sonra otonom olarak önceki ekrana kodu döndürür
       Future.delayed(const Duration(seconds: 1), () {
-        if (mounted) Navigator.pop(context, tarananKod);
+        if (mounted) context.pop(tarananKod);
       });
     }
   }
 
-  void _siberUyari(String mesaj, Color renk) {
+  void _siberUyari(String mesaj, Color bgRenk, Color metinRenk) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      backgroundColor: renk,
+      backgroundColor: bgRenk,
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       content: Text(
           mesaj,
-          style: const TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')
+          style: TextStyle(color: metinRenk, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')
       ),
       duration: const Duration(seconds: 2),
     ));
@@ -91,16 +100,16 @@ class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProvid
     final double scanWindowSize = MediaQuery.of(context).size.width * 0.75;
 
     return Scaffold(
-      backgroundColor: SiberTema.oledBlack,
+      backgroundColor: bgColor,
       body: Stack(
         alignment: Alignment.center,
         children: [
           // 📸 SİBER KAMERA KATMANI
           MobileScanner(controller: _cameraController, onDetect: _onDetect),
 
-          // 🛡️ SİBER MASKELEME (Kamera çevresini karartır)
+          // 🛡️ SİBER MASKELEME (Kamera çevresini sedef tonunda yarı saydam yapar)
           ColorFiltered(
-            colorFilter: ColorFilter.mode(SiberTema.oledBlack.withOpacity(0.8), BlendMode.srcOut),
+            colorFilter: ColorFilter.mode(bgColor.withOpacity(0.9), BlendMode.srcOut),
             child: Stack(
               children: [
                 Container(
@@ -110,7 +119,7 @@ class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProvid
                     child: Container(
                         width: scanWindowSize,
                         height: scanWindowSize,
-                        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(40))
+                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(40))
                     ),
                   ),
                 ),
@@ -128,10 +137,10 @@ class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProvid
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
                     border: Border.all(
-                        color: _isScanned ? SiberTema.kuantumCyan : Colors.white.withOpacity(0.2),
+                        color: _isScanned ? primaryTeal : primaryTeal.withOpacity(0.3),
                         width: _isScanned ? 4.0 : 2.0
                     ),
-                    boxShadow: _isScanned ? [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.4), blurRadius: 40)] : [],
+                    boxShadow: _isScanned ? [BoxShadow(color: primaryTeal.withOpacity(0.4), blurRadius: 40)] : [],
                   ),
                 ),
                 // Hareketli Radar Çizgisi
@@ -145,15 +154,15 @@ class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProvid
                         child: Container(
                             height: 3,
                             decoration: BoxDecoration(
-                                color: SiberTema.kuantumCyan,
-                                boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.8), blurRadius: 20, spreadRadius: 4)]
+                                color: primaryTeal,
+                                boxShadow: [BoxShadow(color: primaryTeal.withOpacity(0.8), blurRadius: 20, spreadRadius: 4)]
                             )
                         ),
                       );
                     },
                   ),
                 if (_isScanned)
-                  const Center(child: Icon(Icons.qr_code_scanner_rounded, color: SiberTema.kuantumCyan, size: 100))
+                  Center(child: Icon(Icons.qr_code_scanner_rounded, color: primaryTeal, size: 100))
               ],
             ),
           ),
@@ -167,21 +176,22 @@ class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProvid
                 IconButton(
                     icon: Container(
                         padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(color: SiberTema.oledBlack.withOpacity(0.6), shape: BoxShape.circle, border: Border.all(color: Colors.white12)),
-                        child: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 18)
+                        decoration: BoxDecoration(color: surfaceColor, shape: BoxShape.circle, border: Border.all(color: Colors.white.withOpacity(0.05)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 10)]),
+                        child: Icon(Icons.arrow_back_ios_new, color: textMain, size: 18)
                     ),
-                    onPressed: () => Navigator.pop(context)
+                    onPressed: () => context.pop()
                 ),
-                const Text('SİBER GÖZ AKTİF', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 3)),
+                Text('SİBER GÖZ AKTİF', style: TextStyle(color: textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 3)),
                 IconButton(
                     icon: Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            color: _isTorchOn ? SiberTema.kuantumCyan.withOpacity(0.2) : SiberTema.oledBlack.withOpacity(0.6),
+                            color: _isTorchOn ? primaryTeal.withOpacity(0.1) : surfaceColor,
                             shape: BoxShape.circle,
-                            border: Border.all(color: _isTorchOn ? SiberTema.kuantumCyan : Colors.white12)
+                            border: Border.all(color: _isTorchOn ? primaryTeal : Colors.black.withOpacity(0.05)),
+                            boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 10)]
                         ),
-                        child: Icon(Icons.bolt_rounded, color: _isTorchOn ? SiberTema.kuantumCyan : Colors.white, size: 20)
+                        child: Icon(Icons.bolt_rounded, color: _isTorchOn ? primaryTeal : textMain, size: 20)
                     ),
                     onPressed: () {
                       setState(() => _isTorchOn = !_isTorchOn);
@@ -200,16 +210,17 @@ class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProvid
                 Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                        color: SiberTema.oledBlack.withOpacity(0.6),
+                        color: surfaceColor,
                         shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white.withOpacity(0.05))
+                        border: Border.all(color: _isScanned ? primaryTeal : Colors.black.withOpacity(0.05)),
+                        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 10)]
                     ),
-                    child: Icon(Icons.center_focus_strong_outlined, color: _isScanned ? SiberTema.kuantumCyan : Colors.white54, size: 36)
+                    child: Icon(Icons.center_focus_strong_outlined, color: _isScanned ? primaryTeal : textMuted, size: 36)
                 ),
                 const SizedBox(height: 24),
                 Text(
                     _isScanned ? 'HEDEF ANALİZ EDİLİYOR...' : 'SİBER GENETİK KODU (QR) HİZALAYIN',
-                    style: TextStyle(color: _isScanned ? SiberTema.kuantumCyan : Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)
+                    style: TextStyle(color: _isScanned ? primaryTeal : textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)
                 ),
               ],
             ),

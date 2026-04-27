@@ -104,7 +104,7 @@ class _SiberOnayVeHesapEkraniState extends State<SiberOnayVeHesapEkrani> {
     Map<String, double> finans = _hesaplamayiYap();
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent, // Kalkan aydınlatması arkadan vursun
         appBar: AppBar(
@@ -139,7 +139,7 @@ class _SiberOnayVeHesapEkraniState extends State<SiberOnayVeHesapEkrani> {
                           children: [
                             Text("SESLİ VE DİJİTAL ONAY BEKLENİYOR", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1)),
                             SizedBox(height: 4),
-                            Text("Zaman damgalı video ile mühürlenecektir.", style: TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold)),
+                            Text("Zaman damgalı video ile mühürlenecektir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),
@@ -153,14 +153,14 @@ class _SiberOnayVeHesapEkraniState extends State<SiberOnayVeHesapEkrani> {
                   decoration: BoxDecoration(
                     color: SiberTema.matGrey.withOpacity(0.8),
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.white12),
+                    border: Border.all(color: SiberTema.textMuted),
                   ),
                   child: Column(
                     children: [
                       _buildSiberSatir("Girilen Satış Tutarı", "₺${widget.girilenFiyat.toStringAsFixed(2)}"),
-                      const Divider(color: Colors.white12, height: 1),
+                      const Divider(color: SiberTema.textMuted, height: 1),
                       _buildSiberSatir("Karargah Payı (%12)", "-₺${finans['Karargah_Payi']!.toStringAsFixed(2)}", renk: SiberTema.kanKirmizi),
-                      const Divider(color: Colors.white24, height: 1, thickness: 1),
+                      const Divider(color: SiberTema.textMuted, height: 1, thickness: 1),
                       _buildSiberSatir("BAYİ NET HAKEDİŞİ", "₺${finans['Bayi_Hakedis']!.toStringAsFixed(2)}", renk: SiberTema.kuantumCyan, isBold: true),
                     ],
                   ),
@@ -195,7 +195,7 @@ class _SiberOnayVeHesapEkraniState extends State<SiberOnayVeHesapEkrani> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(etiket, style: TextStyle(color: Colors.white70, fontSize: 12, fontWeight: isBold ? FontWeight.w900 : FontWeight.bold, letterSpacing: 0.5)),
+          Text(etiket, style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: isBold ? FontWeight.w900 : FontWeight.bold, letterSpacing: 0.5)),
           Text(deger, style: TextStyle(color: renk, fontSize: isBold ? 18 : 14, fontWeight: isBold ? FontWeight.w900 : FontWeight.bold, letterSpacing: 1, fontFamily: 'monospace')),
         ],
       ),

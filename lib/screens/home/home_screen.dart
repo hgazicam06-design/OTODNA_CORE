@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _testTiklama(String modulAdi) {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('$modulAdi Açılıyor...', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+          content: Text('$modulAdi Açılıyor...', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
           backgroundColor: const Color(0xFF00FFC2),
           duration: const Duration(seconds: 1),
         )
@@ -192,8 +192,8 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(ikon, color: Colors.white, size: 28),
-            Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w500)),
+            Icon(ikon, color: SiberTema.kuantumCyan, size: 28),
+            Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w500)),
           ],
         ),
       ),

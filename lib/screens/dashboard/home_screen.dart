@@ -60,7 +60,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: SiberTema.kanKirmizi,
-          content: const Text('S.O.S SİNYALİ ATEŞLENDİ! Bölgedeki tüm yetkili bayiler uyarıldı. Lütfen aracınızda bekleyin.', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          content: const Text('S.O.S SİNYALİ ATEŞLENDİ! Bölgedeki tüm yetkili bayiler uyarıldı. Lütfen aracınızda bekleyin.', style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
           duration: const Duration(seconds: 5),
         ));
       }
@@ -78,7 +78,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     if (_currentUser == null) return Scaffold(backgroundColor: bgColor, body: Center(child: Text("Siber Kimlik Hatası!", style: TextStyle(color: SiberTema.kanKirmizi))));
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         // Fütüristik Alt Navigasyon Çubuğu
@@ -113,7 +113,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       children: [
                         _buildVehicleHologramCard(aracVar, aracData),
                         const SizedBox(height: 30),
-                        const Text('HIZLI İŞLEMLER', style: TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                        const Text('HIZLI İŞLEMLER', style: TextStyle(color: SiberTema.textMuted, fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
                         const SizedBox(height: 16),
                         _buildQuickActionsGrid(aracVar ? plaka : "PLAKASIZ"),
                         const SizedBox(height: 30),
@@ -142,7 +142,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Hoş Geldin,', style: TextStyle(color: Colors.white54, fontSize: 14)),
+                const Text('Hoş Geldin,', style: TextStyle(color: SiberTema.textMuted, fontSize: 14)),
                 StreamBuilder<DocumentSnapshot>(
                     stream: _db.collection('kullanicilar').doc(_currentUser!.uid).snapshots(),
                     builder: (context, snapshot) {
@@ -153,7 +153,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       }
                       return Text(
                         isim.split(' ').first, // Sadece ilk adını yazdır
-                        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold, shadows: [Shadow(color: primaryCyan.withOpacity(0.5), blurRadius: 10)]),
+                        style: TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.bold, shadows: [Shadow(color: primaryCyan.withOpacity(0.5), blurRadius: 10)]),
                       );
                     }
                 ),
@@ -191,7 +191,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(plaka, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w800, letterSpacing: 2)),
+                    Text(plaka, style: const TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w800, letterSpacing: 2)),
                     if (aracVar)
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -201,9 +201,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ],
                 ),
                 const Spacer(),
-                Text(markaModel, style: const TextStyle(color: Colors.white70, fontSize: 14)),
+                Text(markaModel, style: const TextStyle(color: SiberTema.textMuted, fontSize: 14)),
                 const SizedBox(height: 8),
-                Text(aracVar ? 'OtoDNA Kalkanı Devrede' : 'Araç Bekleniyor', style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300)),
+                Text(aracVar ? 'OtoDNA Kalkanı Devrede' : 'Araç Bekleniyor', style: const TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w300)),
               ],
             ),
           ),
@@ -262,8 +262,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       borderRadius: BorderRadius.circular(16),
       child: Container(
         height: 100,
-        decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(icon, color: primaryCyan, size: 32), const SizedBox(height: 12), Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600))]),
+        decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(icon, color: primaryCyan, size: 32), const SizedBox(height: 12), Text(title, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w600))]),
       ),
     );
   }
@@ -274,14 +274,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return Container(
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white12)),
+      decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: SiberTema.textMuted)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('ARACINIZIN SON DURUMU', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+              const Text('ARACINIZIN SON DURUMU', style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
               Icon(Icons.arrow_forward_ios, color: primaryCyan, size: 14),
             ],
           ),
@@ -292,7 +292,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               stream: _db.collection('raporlar').where('plaka', isEqualTo: plaka).orderBy('tarih', descending: true).limit(2).snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator());
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Text("Aracınız için henüz bir servis işlemi bulunmuyor.", style: TextStyle(color: Colors.white54));
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Text("Aracınız için henüz bir servis işlemi bulunmuyor.", style: TextStyle(color: SiberTema.textMuted));
 
                 return Column(
                   children: snapshot.data!.docs.map((doc) {
@@ -317,7 +317,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       children: [
         Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: primaryCyan.withOpacity(0.1), shape: BoxShape.circle), child: Icon(Icons.verified, color: primaryCyan, size: 20)),
         const SizedBox(width: 16),
-        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(title, style: const TextStyle(color: Colors.white, fontSize: 16)), const SizedBox(height: 4), Text(subtitle, style: const TextStyle(color: Colors.white54, fontSize: 12))])),
+        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(title, style: const TextStyle(color: SiberTema.textMain, fontSize: 16)), const SizedBox(height: 4), Text(subtitle, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12))])),
         Text(time, style: TextStyle(color: primaryCyan.withOpacity(0.7), fontSize: 12)),
       ],
     );
@@ -326,7 +326,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   // Fütüristik Alt Navigasyon
   Widget _buildBottomNav() {
     return Container(
-      decoration: const BoxDecoration(color: Color(0xFF0F172A), border: Border(top: BorderSide(color: Colors.white12))),
+      decoration: const BoxDecoration(color: Color(0xFF0F172A), border: Border(top: BorderSide(color: SiberTema.textMuted))),
       child: BottomNavigationBar(
         backgroundColor: Colors.transparent, elevation: 0, selectedItemColor: primaryCyan, unselectedItemColor: Colors.white38, type: BottomNavigationBarType.fixed,
         items: const [

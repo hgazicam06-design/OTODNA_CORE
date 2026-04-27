@@ -1,11 +1,11 @@
 {
-    "name": "OtoDNA Kuantum Ağı",
+    "name": "OtoDNA Kurumsal Ağı",
     "short_name": "OtoDNA",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#000000",
-    "theme_color": "#000000",
-    "description": "OtoDNA Kuantum Araç Ağı ve Dijital Referans Protokolü.",
+    "background_color": "#F4F6F8",
+    "theme_color": "#005A64",
+    "description": "OtoDNA Kurumsal Araç Ağı ve Dijital Referans Platformu.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

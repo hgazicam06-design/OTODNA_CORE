@@ -3,64 +3,64 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OtoDNA SİBER SORGULAMA RADARI</title>
+  <title>OtoDNA DİJİTAL SORGULAMA</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
-    /* ── 🎨 KARARGAH TASARIM DOKTRİNİ ── */
+    /* ── 🎨 KURUMSAL BANKA TASARIM DOKTRİNİ (PLATINUM) ── */
     :root {
-      --oled-black: #000000;
-      --mat-grey: #111111;
-      --kuantum-cyan: #00FFC2;
-      --kan-kirmizi: #FF3B30;
+      --bg-color: #F4F6F8;
+      --surface-color: #FFFFFF;
+      --primary-teal: #005A64;
+      --danger-red: #D32F2F;
+      --text-main: #1E293B;
+      --text-muted: #64748B;
     }
 
     body {
-      font-family: 'Courier New', Courier, monospace; /* Siber Karargah Fontu */
-      background-color: var(--oled-black);
-      color: #ffffff;
+      font-family: 'Avenir', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
       margin: 0;
       padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      background-image: radial-gradient(circle at 50% 50%, rgba(0, 255, 194, 0.05) 0%, transparent 60%);
+      background-image: radial-gradient(circle at 50% 50%, rgba(0, 90, 100, 0.02) 0%, transparent 60%);
     }
 
-    /* 🛡️ SİBER CAM EFEKTİ (Glassmorphism) */
+    /* 🛡️ KURUMSAL KART (Glassmorphism Light) */
     main {
       width: 100%;
       max-width: 500px;
-      background: rgba(17, 17, 17, 0.85);
+      background: var(--surface-color);
       padding: 40px;
       border-radius: 16px;
-      border: 1px solid rgba(0, 255, 194, 0.3);
-      box-shadow: 0 0 40px rgba(0, 255, 194, 0.1);
-      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
       box-sizing: border-box;
     }
 
     h1 {
-      color: var(--kuantum-cyan);
+      color: var(--primary-teal);
       font-size: 22px;
       font-weight: 900;
       text-align: center;
       letter-spacing: 2px;
       margin-top: 0;
       margin-bottom: 30px;
-      text-shadow: 0 0 10px rgba(0, 255, 194, 0.5);
     }
 
     .istihbarat-paneli {
-      background: rgba(0, 255, 194, 0.05);
+      background: rgba(0, 90, 100, 0.05);
       padding: 15px;
       border-radius: 8px;
-      border-left: 4px solid var(--kuantum-cyan);
+      border-left: 4px solid var(--primary-teal);
       margin-bottom: 25px;
       font-size: 12px;
-      color: #aaaaaa;
+      color: var(--text-muted);
       line-height: 1.5;
     }
 
@@ -68,7 +68,7 @@
       display: block;
       margin-bottom: 8px;
       font-size: 12px;
-      color: var(--kuantum-cyan);
+      color: var(--primary-teal);
       font-weight: bold;
       letter-spacing: 1px;
     }
@@ -76,10 +76,10 @@
     input[type=text] {
       width: 100%;
       padding: 15px;
-      background: var(--oled-black);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: var(--bg-color);
+      border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 8px;
-      color: #ffffff;
+      color: var(--text-main);
       font-size: 16px;
       font-family: inherit;
       letter-spacing: 2px;
@@ -90,15 +90,15 @@
 
     input[type=text]:focus {
       outline: none;
-      border-color: var(--kuantum-cyan);
-      box-shadow: 0 0 15px rgba(0, 255, 194, 0.2);
+      border-color: var(--primary-teal);
+      box-shadow: 0 0 15px rgba(0, 90, 100, 0.1);
     }
 
     /* 🚀 ATEŞLEME BUTONU */
     .pdf-btn {
       width: 100%;
-      background: var(--kuantum-cyan);
-      color: var(--oled-black);
+      background: var(--primary-teal);
+      color: #ffffff;
       padding: 16px;
       border-radius: 8px;
       border: none;
@@ -107,24 +107,24 @@
       font-size: 14px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      box-shadow: 0 0 20px rgba(0, 255, 194, 0.4);
+      box-shadow: 0 10px 20px rgba(0, 90, 100, 0.2);
       transition: all 0.3s ease;
     }
 
     .pdf-btn:hover {
-      background: #ffffff;
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+      background: #00444d;
+      box-shadow: 0 10px 25px rgba(0, 90, 100, 0.3);
     }
 
     .pdf-btn:active {
       transform: scale(0.98);
     }
 
-    /* 📡 SİBER RADAR (Yükleniyor) */
+    /* 📡 Yükleniyor */
     .loader {
       display: none;
       text-align: center;
-      color: var(--kuantum-cyan);
+      color: var(--primary-teal);
       margin-top: 20px;
       font-weight: bold;
       letter-spacing: 1px;
@@ -143,12 +143,12 @@
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%) translateY(100px);
-      background: var(--mat-grey);
-      color: #ffffff;
+      background: var(--surface-color);
+      color: var(--text-main);
       padding: 16px 24px;
       border-radius: 8px;
-      border: 1px solid var(--kuantum-cyan);
-      box-shadow: 0 0 20px rgba(0, 255, 194, 0.2);
+      border: 1px solid var(--primary-teal);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       font-weight: bold;
       letter-spacing: 1px;
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -160,19 +160,18 @@
     }
 
     .snackbar.error {
-      border-color: var(--kan-kirmizi);
-      box-shadow: 0 0 20px rgba(255, 59, 48, 0.3);
-      color: var(--kan-kirmizi);
+      border-color: var(--danger-red);
+      color: var(--danger-red);
     }
   </style>
 </head>
 <body>
 
 <main>
-  <h1>OTODNA SİBER RADARI</h1>
+  <h1>OTODNA DİJİTAL SORGULAMA</h1>
 
   <div class="istihbarat-paneli">
-    <strong>KARARGAH PROTOKOLÜ:</strong> Aracınızın 17 haneli şase numarasını girerek Kuantum Ağında bulunan dijital DNA raporunuza (ekspertiz, arıza ve servis geçmişi) mühürlü bir PDF olarak anında ulaşabilirsiniz.
+    <strong>KURUMSAL PROTOKOL:</strong> Aracınızın 17 haneli şase numarasını girerek platformumuzda bulunan dijital DNA raporunuza (ekspertiz, arıza ve servis geçmişi) mühürlü bir PDF olarak anında ulaşabilirsiniz.
   </div>
 
   <label for="saseNo">ARAÇ ŞASE NUMARASI (DNA)</label>
@@ -180,13 +179,13 @@
 
   <button id="downloadBtn" class="pdf-btn">DNA RAPORUNU ÇEK VE MÜHÜRLE</button>
 
-  <div id="loader" class="loader">SİBER AĞ TARANIYOR...</div>
+  <div id="loader" class="loader">KAYITLAR TARANIYOR...</div>
 </main>
 
 <div id="snackbar" class="snackbar"></div>
 
 <script>
-  // ── 🛡️ KARARGAH SİBER SCRIPT MOTORU ──
+  // ── 🛡️ KURUMSAL SCRIPT MOTORU ──
 
   function siberUyariGoster(mesaj, isError = false) {
     const sb = document.getElementById('snackbar');
@@ -205,15 +204,15 @@
 
   // SİBER NOT: Gerçek projede bu fonksiyon doğrudan Firebase Firestore'dan verileri çeker.
   async function matrikstenVeriCek(saseNo) {
-    // Simüle edilmiş bekleme süresi (Siber ağ taranıyor hissi)
+    // Simüle edilmiş bekleme süresi
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (saseNo.length < 5) {
-          reject("SİBER İHLAL: Geçersiz veya eksik Şase Numarası!");
+          reject("GÜVENLİK İHLALİ: Geçersiz veya eksik Şase Numarası!");
         } else {
           // Firebase'den geldiği varsayılan örnek Karargah verisi
           resolve([
-            { "KONTROL_NOKTASI": "Motor Bloğu", "DURUM": "✅ KUSURSUZ (Karargah Onaylı)" },
+            { "KONTROL_NOKTASI": "Motor Bloğu", "DURUM": "✅ KUSURSUZ (Kurum Onaylı)" },
             { "KONTROL_NOKTASI": "Fren Balataları", "DURUM": "⚠️ DEĞİŞİM ÖNERİLİYOR (Sınırda)" },
             { "KONTROL_NOKTASI": "Şase & Podye", "DURUM": "✅ ORİJİNAL (İşlem Yok)" },
             { "KONTROL_NOKTASI": "Akü Voltajı", "DURUM": "✅ %98 SAĞLIKLI" }
@@ -227,43 +226,43 @@
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ unit: 'pt' });
 
-    // 🎨 Kuantum Rapor Tasarımı
-    doc.setFillColor(0, 0, 0);
-    doc.rect(0, 0, 600, 850, 'F'); // Tam Siyah Arka Plan
+    // 🎨 Kurumsal Rapor Tasarımı
+    doc.setFillColor(255, 255, 255);
+    doc.rect(0, 0, 600, 850, 'F'); // Beyaz Arka Plan
 
-    doc.setTextColor(0, 255, 194); // Kuantum Turkuazı
+    doc.setTextColor(0, 90, 100); // Kurumsal Zümrüt
     doc.setFontSize(22);
-    doc.setFont("courier", "bold");
+    doc.setFont("helvetica", "bold");
     doc.text('OTODNA DİJİTAL REFERANS PROTOKOLÜ', 40, 60);
 
-    doc.setTextColor(255, 255, 255);
+    doc.setTextColor(30, 41, 59); // text-main
     doc.setFontSize(12);
     doc.text(`HEDEF ŞASE (DNA): ${saseNo.toUpperCase()}`, 40, 100);
     doc.text(`SORGULAMA TARİHİ: ${new Date().toLocaleString('tr-TR')}`, 40, 120);
 
     // Çizgi
-    doc.setDrawColor(0, 255, 194);
+    doc.setDrawColor(0, 90, 100);
     doc.setLineWidth(2);
     doc.line(40, 140, 550, 140);
 
     doc.setFontSize(14);
-    doc.setTextColor(0, 255, 194);
-    doc.text('KARARGAH İSTİHBARAT SONUÇLARI:', 40, 170);
+    doc.setTextColor(0, 90, 100);
+    doc.text('OTODNA SİSTEM SONUÇLARI:', 40, 170);
 
     let y = 200;
     const lineHeight = 25;
     doc.setFontSize(11);
 
     sonuclar.forEach((row, i) => {
-      doc.setTextColor(255, 255, 255);
+      doc.setTextColor(30, 41, 59);
       doc.text(`[00${i + 1}] KONTROL: ${row.KONTROL_NOKTASI}`, 40, y);
 
       if(row.DURUM.includes("✅")) {
-        doc.setTextColor(0, 255, 194);
+        doc.setTextColor(0, 90, 100);
       } else if(row.DURUM.includes("⚠️")) {
-        doc.setTextColor(255, 165, 0);
+        doc.setTextColor(245, 127, 23);
       } else {
-        doc.setTextColor(255, 59, 48);
+        doc.setTextColor(211, 47, 47);
       }
 
       doc.text(`     DURUM  : ${row.DURUM}`, 40, y + 12);
@@ -273,19 +272,19 @@
       // Yeni sayfaya geçiş kontrolü
       if (y > 750) {
         doc.addPage();
-        doc.setFillColor(0, 0, 0);
+        doc.setFillColor(255, 255, 255);
         doc.rect(0, 0, 600, 850, 'F');
         y = 60;
       }
     });
 
-    // 🛡️ SİBER MÜHÜR
-    doc.setDrawColor(0, 255, 194);
+    // 🛡️ KURUMSAL MÜHÜR
+    doc.setDrawColor(0, 90, 100);
     doc.line(40, y + 20, 550, y + 20);
     doc.setTextColor(100, 100, 100);
     doc.setFontSize(9);
-    doc.text('BU BELGE OTODNA SİBER KARARGAHI TARAFINDAN OTONOM OLARAK MÜHÜRLENMİŞTİR.', 40, y + 40);
-    doc.text('Oynanmış veya sahte belgeler Matrix radarı tarafından anında tespit edilir.', 40, y + 55);
+    doc.text('BU BELGE OTODNA PLATFORMU TARAFINDAN OTONOM OLARAK MÜHÜRLENMİŞTİR.', 40, y + 40);
+    doc.text('Oynanmış veya sahte belgeler bulut sunucuları tarafından anında tespit edilir.', 40, y + 55);
 
     return doc;
   }
@@ -297,31 +296,26 @@
     const btn = document.getElementById('downloadBtn');
 
     if (!saseNo) {
-      siberUyariGoster("SİBER İHLAL: Şase numarasını girmediniz!", true);
+      siberUyariGoster("GÜVENLİK İHLALİ: Şase numarasını girmediniz!", true);
       return;
     }
 
-    // Radar animasyonunu başlat
+    // Yükleme animasyonunu başlat
     btn.style.display = 'none';
     loader.style.display = 'block';
 
     try {
-      // 1. Matriksten Veriyi Çek (Firebase simülasyonu)
       const sonuclar = await matrikstenVeriCek(saseNo);
-
-      // 2. Kuantum PDF'i Üret
       const doc = await kuantumRaporuUret(sonuclar, saseNo);
-
-      // 3. Mührü İndir
-      const fileName = `OtoDNA_Siber_Rapor_${saseNo}.pdf`;
+      
+      const fileName = `OtoDNA_Kurumsal_Rapor_${saseNo}.pdf`;
       doc.save(fileName);
 
-      siberUyariGoster(`SİBER ONAY: Mühürlü Rapor İndirildi -> ${fileName}`);
+      siberUyariGoster(`ONAYLANDI: Mühürlü Rapor İndirildi -> ${fileName}`);
     } catch (err) {
       console.error(err);
       siberUyariGoster(err, true);
     } finally {
-      // Radarı kapat, butonu geri getir
       loader.style.display = 'none';
       btn.style.display = 'block';
     }

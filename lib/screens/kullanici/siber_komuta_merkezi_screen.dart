@@ -114,9 +114,9 @@ class _SiberKomutaMerkeziScreenState extends State<SiberKomutaMerkeziScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text("Siber Komutan", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                                  const Text("Siber Komutan", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2)),
                                   const SizedBox(height: 4),
-                                  Text(adSoyad.toUpperCase(), maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                                  Text(adSoyad.toUpperCase(), maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 1)),
                                 ],
                               ),
                             ),
@@ -149,11 +149,11 @@ class _SiberKomutaMerkeziScreenState extends State<SiberKomutaMerkeziScreen> {
                             border: Border.all(color: Colors.white.withOpacity(0.05)),
                           ),
                           child: TextField(
-                            style: const TextStyle(color: Colors.white, fontSize: 14),
+                            style: const TextStyle(color: SiberTema.textMain, fontSize: 14),
                             decoration: InputDecoration(
                               hintText: "Siber ağda ne arıyorsunuz?",
-                              hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 13),
-                              prefixIcon: const Icon(Icons.search, color: Colors.white38, size: 20),
+                              hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 13),
+                              prefixIcon: const Icon(Icons.search, color: SiberTema.textMuted, size: 20),
                               suffixIcon: IconButton(
                                 icon: const Icon(Icons.qr_code_scanner_outlined, color: SiberTema.kuantumCyan, size: 20),
                                 onPressed: () => _modulBaslat("QR Kimlik Ağı"),
@@ -166,7 +166,7 @@ class _SiberKomutaMerkeziScreenState extends State<SiberKomutaMerkeziScreen> {
                         const SizedBox(height: 40),
 
                         // --- 3D AKTİF ARAÇ KARTI (GARAJ KÖPRÜSÜ) ---
-                        const Text("AKTİF BAĞLANTI", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                        const Text("AKTİF BAĞLANTI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
                         const SizedBox(height: 16),
                         GestureDetector(
                           onTap: () => _modulBaslat("Kuantum Garaj"),
@@ -184,8 +184,8 @@ class _SiberKomutaMerkeziScreenState extends State<SiberKomutaMerkeziScreen> {
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.all(12),
-                                      decoration: BoxDecoration(color: SiberTema.oledBlack, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
-                                      child: const Icon(Icons.directions_car_outlined, color: Colors.white, size: 28),
+                                      decoration: BoxDecoration(color: SiberTema.oledBlack, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
+                                      child: const Icon(Icons.directions_car_outlined, color: SiberTema.kuantumCyan, size: 28),
                                     ),
                                     const SizedBox(width: 16),
                                     Expanded(
@@ -194,15 +194,15 @@ class _SiberKomutaMerkeziScreenState extends State<SiberKomutaMerkeziScreen> {
                                         children: [
                                           Container(
                                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                            decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(6), border: Border.all(color: Colors.white24)),
-                                            child: const Text("YENİ ARAÇ KAYDI", style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(6), border: Border.all(color: SiberTema.textMuted)),
+                                            child: const Text("YENİ ARAÇ KAYDI", style: TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
                                           ),
                                           const SizedBox(height: 8),
-                                          const Text("Garaja araç eklemek için dokun", style: TextStyle(color: Colors.white54, fontSize: 10)),
+                                          const Text("Garaja araç eklemek için dokun", style: TextStyle(color: SiberTema.textMuted, fontSize: 10)),
                                         ],
                                       ),
                                     ),
-                                    const Icon(Icons.arrow_forward_ios, color: Colors.white24, size: 16),
+                                    const Icon(Icons.arrow_forward_ios, color: SiberTema.textMuted, size: 16),
                                   ],
                                 ),
                               ],
@@ -215,7 +215,7 @@ class _SiberKomutaMerkeziScreenState extends State<SiberKomutaMerkeziScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("SİBER AĞ MODÜLLERİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                            const Text("SİBER AĞ MODÜLLERİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
                             Icon(Icons.tune_outlined, color: Colors.white.withOpacity(0.3), size: 18),
                           ],
                         ),
@@ -297,7 +297,7 @@ class _SiberKomutaMerkeziScreenState extends State<SiberKomutaMerkeziScreen> {
                 Icon(ikon, color: vurguRengi.withOpacity(0.8), size: 22),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 0.5), maxLines: 2),
+                  child: Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 0.5), maxLines: 2),
                 ),
               ],
             ),

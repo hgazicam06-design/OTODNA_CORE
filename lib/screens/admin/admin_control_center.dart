@@ -50,13 +50,13 @@ class AdminControlCenter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: bgDark,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: const Text("MERKEZ KARARGAH", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2.0)),
+          title: const Text("MERKEZ KARARGAH", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2.0)),
           centerTitle: true,
           actions: [
             IconButton(
@@ -124,7 +124,7 @@ class AdminControlCenter extends StatelessWidget {
       children: [
         Icon(Icons.memory, color: renk, size: 16),
         const SizedBox(width: 8),
-        Text(baslik, style: TextStyle(color: Colors.white.withOpacity(0.5), fontWeight: FontWeight.w800, letterSpacing: 2.0, fontSize: 11)),
+        Text(baslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontWeight: FontWeight.w800, letterSpacing: 2.0, fontSize: 11)),
       ],
     );
   }
@@ -151,7 +151,7 @@ class AdminControlCenter extends StatelessWidget {
               children: [
                 Icon(ikon, color: neonRenk, size: 28),
                 const SizedBox(width: 16),
-                Text(baslik, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 13, letterSpacing: 2)),
+                Text(baslik, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w800, fontSize: 13, letterSpacing: 2)),
               ],
             )
                 : Column(
@@ -162,7 +162,7 @@ class AdminControlCenter extends StatelessWidget {
                 Text(
                     baslik,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white.withOpacity(0.9), fontWeight: FontWeight.w700, fontSize: 11, letterSpacing: 1.0)
+                    style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontWeight: FontWeight.w700, fontSize: 11, letterSpacing: 1.0)
                 ),
               ],
             ),
@@ -208,7 +208,7 @@ class AdminControlCenter extends StatelessWidget {
                     Text(
                         "₺ ${siberKomutanPayi.toStringAsFixed(2)}",
                         style: const TextStyle(
-                            color: Colors.white,
+                            color: SiberTema.textMain,
                             fontSize: 36,
                             fontWeight: FontWeight.w900,
                             shadows: [Shadow(color: renkIstihbarat, blurRadius: 20)]
@@ -218,7 +218,7 @@ class AdminControlCenter extends StatelessWidget {
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("SİBER FİNANS MERKEZİ'NE GİRİŞ YAP", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                        Text("SİBER FİNANS MERKEZİ'NE GİRİŞ YAP", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
                         SizedBox(width: 4),
                         Icon(Icons.arrow_forward_ios, color: renkIstihbarat, size: 10),
                       ],
@@ -249,7 +249,7 @@ class AdminControlCenter extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) return _buildKuantumLoader();
               final docs = snapshot.data?.docs ?? [];
-              if (docs.isEmpty) return const Center(child: Text("> Radar Temiz...", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold)));
+              if (docs.isEmpty) return const Center(child: Text("> Radar Temiz...", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)));
 
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
@@ -268,7 +268,7 @@ class AdminControlCenter extends StatelessWidget {
                         Expanded(
                           child: Text(
                               "[$bayi] : $islem",
-                              style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12, fontWeight: FontWeight.w500)
+                              style: TextStyle(color: SiberTema.textMain.withOpacity(0.7), fontSize: 12, fontWeight: FontWeight.w500)
                           ),
                         ),
                       ],
@@ -287,11 +287,11 @@ class AdminControlCenter extends StatelessWidget {
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (_) => const SiberIstihbaratMerkeziScreen()));
             },
-            icon: const Icon(Icons.travel_explore, color: Colors.black),
+            icon: const Icon(Icons.travel_explore, color: Colors.white),
             label: const Text("TÜM İSTİHBARAT AĞINI AÇ", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2)),
             style: ElevatedButton.styleFrom(
               backgroundColor: renkIstihbarat,
-              foregroundColor: Colors.black,
+              foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             ),
           ),
@@ -426,7 +426,7 @@ class _SistemAyarlariTerminaliState extends State<_SistemAyarlariTerminali> {
 
   void _siberUyari(String msg, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(msg, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        content: Text(msg, style: const TextStyle(fontWeight: FontWeight.bold, color: SiberTema.textMain)),
         backgroundColor: isError ? renkKritik : renkIstihbarat
     ));
   }
@@ -449,11 +449,11 @@ class _SistemAyarlariTerminaliState extends State<_SistemAyarlariTerminali> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(10)))),
+                Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: SiberTema.textMuted, borderRadius: BorderRadius.circular(10)))),
                 const SizedBox(height: 32),
 
-                const Text("SİSTEM AYARLARI", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                const Padding(padding: EdgeInsets.symmetric(vertical: 24), child: Divider(color: Colors.white12)),
+                const Text("SİSTEM AYARLARI", style: TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 24), child: Divider(color: SiberTema.textMuted)),
 
                 // ==========================================
                 // 1. HOLOGRAM AYARLARI
@@ -463,14 +463,14 @@ class _SistemAyarlariTerminaliState extends State<_SistemAyarlariTerminali> {
 
                 Container(
                   padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(color: glassBg, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                  decoration: BoxDecoration(color: glassBg, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
                   child: Column(
                     children: [
                       Row(
                         children: [
                           const Icon(Icons.celebration, color: renkOperasyon),
                           const SizedBox(width: 16),
-                          const Expanded(child: Text("Hologram Ekranını Aktif Et", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13))),
+                          const Expanded(child: Text("Hologram Ekranını Aktif Et", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13))),
                           Switch(value: _hologramAktif, activeColor: renkOperasyon, activeTrackColor: renkOperasyon.withOpacity(0.3), inactiveThumbColor: Colors.white54, onChanged: (val) => setState(() => _hologramAktif = val)),
                         ],
                       ),
@@ -499,7 +499,7 @@ class _SistemAyarlariTerminaliState extends State<_SistemAyarlariTerminali> {
                   ),
                 ),
 
-                const Padding(padding: EdgeInsets.symmetric(vertical: 40), child: Divider(color: Colors.white12)),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 40), child: Divider(color: SiberTema.textMuted)),
 
                 // ==========================================
                 // 2. SİBER SİNYAL FIRLATICI (DUYURU)
@@ -509,20 +509,20 @@ class _SistemAyarlariTerminaliState extends State<_SistemAyarlariTerminali> {
 
                 Container(
                   padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(color: glassBg, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                  decoration: BoxDecoration(color: glassBg, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
-                        decoration: BoxDecoration(color: bgDark, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
+                        decoration: BoxDecoration(color: bgDark, borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.textMuted)),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             value: _hedefKitle,
                             dropdownColor: bgDark,
                             isExpanded: true,
                             icon: const Icon(Icons.radar, color: renkIstihbarat),
-                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                            style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13),
                             items: ["TÜM AĞ", "SADECE BAYİLER", "SADECE KULLANICILAR"].map((String value) {
                               return DropdownMenuItem<String>(value: value, child: Text(value));
                             }).toList(),
@@ -539,10 +539,10 @@ class _SistemAyarlariTerminaliState extends State<_SistemAyarlariTerminali> {
                       SizedBox(
                         width: double.infinity, height: 56,
                         child: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(backgroundColor: renkIstihbarat, foregroundColor: Colors.black, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+                          style: ElevatedButton.styleFrom(backgroundColor: renkIstihbarat, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                           onPressed: _isSendingSignal ? null : _duyuruFirlat,
                           icon: _isSendingSignal ? const SizedBox() : const Icon(Icons.rocket_launch),
-                          label: _isSendingSignal ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2)) : const Text("SİNYALİ FIRLAT", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2)),
+                          label: _isSendingSignal ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : const Text("SİNYALİ FIRLAT", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2)),
                         ),
                       )
                     ],
@@ -561,16 +561,16 @@ class _SistemAyarlariTerminaliState extends State<_SistemAyarlariTerminali> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(baslik, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
+        Text(baslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
         const SizedBox(height: 8),
         TextField(
           controller: ctrl,
           maxLines: maxLines,
-          style: const TextStyle(color: Colors.white, fontSize: 14),
+          style: const TextStyle(color: SiberTema.textMain, fontSize: 14),
           decoration: InputDecoration(
-            hintText: hint, hintStyle: TextStyle(color: Colors.white.withOpacity(0.2)),
+            hintText: hint, hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2)),
             filled: true, fillColor: bgDark.withOpacity(0.5),
-            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white12)),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.textMuted)),
             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: renkIstihbarat)),
           ),
         )

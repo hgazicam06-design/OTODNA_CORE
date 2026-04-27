@@ -148,15 +148,15 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
             ),
             content: const Text(
               "Standart paketinizin 10 adet ilan limitini doldurdunuz. Sınırsız ilan eklemek ve OtoDNA Kuantum Ağı'nın VIP ayrıcalıklarından faydalanmak için paketinizi yükseltin.",
-              style: TextStyle(color: Colors.white70),
+              style: TextStyle(color: SiberTema.textMuted),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text("İPTAL", style: TextStyle(color: Colors.white54)),
+                child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted)),
               ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2), foregroundColor: Colors.black),
+                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2), foregroundColor: Colors.white),
                 onPressed: () {
                   Navigator.pop(context);
                   // TODO: Ödeme sayfasına (Siber Kasaya) yönlendir!
@@ -180,7 +180,7 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
       appBar: AppBar(
         backgroundColor: bgColor, elevation: 0,
         leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan), onPressed: () => Navigator.pop(context)),
-        title: const Text("Kuantum İlan Terminali", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+        title: const Text("Kuantum İlan Terminali", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
         centerTitle: true,
       ),
       body: Theme(
@@ -226,11 +226,11 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
                       child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
-                          side: const BorderSide(color: Colors.white24),
+                          side: const BorderSide(color: SiberTema.textMuted),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),
                         onPressed: details.onStepCancel,
-                        child: const Text("GERİ", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold)),
+                        child: const Text("GERİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)),
                       ),
                     ),
                 ],
@@ -242,7 +242,7 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
             Step(
               isActive: _aktifAdim >= 0,
               state: _aktifAdim > 0 ? StepState.complete : StepState.indexed,
-              title: const Text("Araç Kimliği", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              title: const Text("Araç Kimliği", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
               content: Column(
                 children: [
                   _buildKuantumInput("Plaka / Şase", Icons.pin, _plakaController, isUppercase: true),
@@ -257,7 +257,7 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
             Step(
               isActive: _aktifAdim >= 1,
               state: _aktifAdim > 1 ? StepState.complete : StepState.indexed,
-              title: const Text("Ekspertiz & Durum", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              title: const Text("Ekspertiz & Durum", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
               content: Column(
                 children: [
                   _buildKuantumInput("Kilometre", Icons.speed, _kmController, isNumber: true),
@@ -270,7 +270,7 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
             // ADIM 3: SATIŞ
             Step(
               isActive: _aktifAdim >= 2,
-              title: const Text("Satış & Yayın", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              title: const Text("Satış & Yayın", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
               content: Column(
                 children: [
                   _buildKuantumInput("Satış Fiyatı (₺)", Icons.attach_money, _fiyatController, isNumber: true),
@@ -278,12 +278,12 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
                   Container(
                     margin: const EdgeInsets.only(bottom: 16),
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                    decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
                     child: TextField(
                       controller: _aciklamaController,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: SiberTema.textMain),
                       maxLines: 4,
-                      decoration: const InputDecoration(hintText: "Satıcı Açıklaması ve Ekstra Donanımlar...", hintStyle: TextStyle(color: Colors.white38, fontSize: 13), border: InputBorder.none),
+                      decoration: const InputDecoration(hintText: "Satıcı Açıklaması ve Ekstra Donanımlar...", hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 13), border: InputBorder.none),
                     ),
                   ),
                 ],
@@ -300,16 +300,16 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(color: const Color(0xFF1E293B), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+      decoration: BoxDecoration(color: const Color(0xFF1E293B), borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
       child: TextField(
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
         textCapitalization: isUppercase ? TextCapitalization.characters : TextCapitalization.sentences,
-        style: const TextStyle(color: Colors.white),
+        style: const TextStyle(color: SiberTema.textMain),
         decoration: InputDecoration(
           icon: Icon(icon, color: const Color(0xFF00FFC2), size: 20),
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.white38, fontSize: 13),
+          hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 13),
           border: InputBorder.none,
         ),
       ),

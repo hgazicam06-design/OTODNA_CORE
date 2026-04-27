@@ -64,7 +64,7 @@ class _SiberMarketVitriniState extends State<SiberMarketVitrini> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
           ],
         ),
       ),
@@ -78,7 +78,7 @@ class _SiberMarketVitriniState extends State<SiberMarketVitrini> {
         children: [
           Icon(ikon, color: SiberTema.altinSari, size: 20),
           const SizedBox(width: 8),
-          Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+          Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
         ],
       ),
     );
@@ -165,7 +165,7 @@ class _SiberMarketVitriniState extends State<SiberMarketVitrini> {
                   border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5)),
                 ),
                 child: Center(
-                  child: Text(veri['baslik'] ?? "SİBER REKLAM", style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2, backgroundColor: Colors.black45)),
+                  child: Text(veri['baslik'] ?? "SİBER REKLAM", style: const TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2, backgroundColor: Colors.black45)),
                 ),
               );
             },
@@ -204,7 +204,7 @@ class _SiberMarketVitriniState extends State<SiberMarketVitrini> {
                       child: bayi['logo_url'] == null ? const Icon(Icons.store, color: SiberTema.altinSari, size: 30) : null,
                     ),
                     const SizedBox(height: 8),
-                    Text(bayi['firma_adi'] ?? "VIP Bayi", maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                    Text(bayi['firma_adi'] ?? "VIP Bayi", maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold)),
                   ],
                 ),
               );
@@ -247,7 +247,7 @@ class _SiberMarketVitriniState extends State<SiberMarketVitrini> {
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.black26,
+                          color: Colors.white26,
                           borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                           image: urun['gorsel_url'] != null ? DecorationImage(image: NetworkImage(urun['gorsel_url']), fit: BoxFit.cover) : null,
                         ),
@@ -259,9 +259,9 @@ class _SiberMarketVitriniState extends State<SiberMarketVitrini> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(urun['ad'] ?? "Bilinmeyen Ürün", maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                          Text(urun['ad'] ?? "Bilinmeyen Ürün", maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 8),
-                          Text("Satıcı: ${urun['vitrin_satici_adi'] ?? 'Gizli'}", maxLines: 1, style: const TextStyle(color: Colors.white54, fontSize: 10)),
+                          Text("Satıcı: ${urun['vitrin_satici_adi'] ?? 'Gizli'}", maxLines: 1, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10)),
                           const SizedBox(height: 8),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -317,10 +317,10 @@ class _SiberMarketVitriniState extends State<SiberMarketVitrini> {
                   Expanded(
                     child: Center(child: Icon(Icons.inventory, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 60)),
                   ),
-                  const Divider(color: Colors.white24),
-                  Text(urun['ad'] ?? "Bilinmeyen Ürün", maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                  const Divider(color: SiberTema.textMuted),
+                  Text(urun['ad'] ?? "Bilinmeyen Ürün", maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 4),
-                  Text(urun['vitrin_satici_adi'] ?? "Bilinmeyen Satıcı", maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white54, fontSize: 10)),
+                  Text(urun['vitrin_satici_adi'] ?? "Bilinmeyen Satıcı", maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10)),
                   const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

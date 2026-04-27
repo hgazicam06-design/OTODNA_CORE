@@ -95,7 +95,7 @@ class _MusteriParcaTaramaScreenState extends State<MusteriParcaTaramaScreen> {
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1.5)),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.black87, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            Text(mesaj, style: const TextStyle(color: Colors.white87, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -119,7 +119,7 @@ class _MusteriParcaTaramaScreenState extends State<MusteriParcaTaramaScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           iconTheme: IconThemeData(color: primaryTeal),
         ),
         body: ListView(
@@ -128,7 +128,7 @@ class _MusteriParcaTaramaScreenState extends State<MusteriParcaTaramaScreen> {
           children: [
             Text("SORUMLULUK SİZDE!", style: TextStyle(color: textColor, fontSize: 22, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: -0.5)),
             const SizedBox(height: 8),
-            const Text("Aracınıza takılacak parçanın orijinal olduğundan emin olmak için kutusunu kendiniz tarayın. Sistem sahte parçayı anında tespit eder.", style: TextStyle(color: Colors.black54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            const Text("Aracınıza takılacak parçanın orijinal olduğundan emin olmak için kutusunu kendiniz tarayın. Sistem sahte parçayı anında tespit eder.", style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             const SizedBox(height: 32),
 
             // ⚖️ ADLİ PROTOKOL BEYANI
@@ -160,7 +160,7 @@ class _MusteriParcaTaramaScreenState extends State<MusteriParcaTaramaScreen> {
                       padding: EdgeInsets.only(top: 10),
                       child: Text(
                         "DİKKAT: Bu sistemdeki veriler Adli Delil niteliğindedir. Olası kaza incelemelerinde hukuki sorumluluk işlemi onaylayan taraflara aittir. OtoDNA donanım ve görsel zafiyetlerinden sorumlu tutulamaz.",
-                        style: TextStyle(color: Colors.black87, fontSize: 11, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+                        style: TextStyle(color: Colors.white87, fontSize: 11, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                       ),
                     ),
                   )
@@ -181,7 +181,7 @@ class _MusteriParcaTaramaScreenState extends State<MusteriParcaTaramaScreen> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: _adliProtokolOnaylandi ? primaryTeal.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05), width: 2),
-                    boxShadow: _adliProtokolOnaylandi ? [BoxShadow(color: primaryTeal.withValues(alpha: 0.1), blurRadius: 15, offset: const Offset(0, 5))] : [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))]
+                    boxShadow: _adliProtokolOnaylandi ? [BoxShadow(color: primaryTeal.withValues(alpha: 0.1), blurRadius: 15, offset: const Offset(0, 5))] : [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))]
                   ),
                   child: _islemSuruyor 
                     ? Center(child: CircularProgressIndicator(color: primaryTeal))
@@ -220,7 +220,7 @@ class _MusteriParcaTaramaScreenState extends State<MusteriParcaTaramaScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Divider(color: Colors.black.withValues(alpha: 0.05), height: 1),
+                      child: Divider(color: Colors.white.withValues(alpha: 0.05), height: 1),
                     ),
                     _buildBilgiSatiri("OEM Kodu", _oemKodu!),
                     const SizedBox(height: 16),
@@ -256,7 +256,7 @@ class _MusteriParcaTaramaScreenState extends State<MusteriParcaTaramaScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(baslik, style: const TextStyle(color: Colors.black45, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir', letterSpacing: 0.5)),
+        Text(baslik, style: const TextStyle(color: Colors.white45, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir', letterSpacing: 0.5)),
         const SizedBox(height: 4),
         Text(deger, style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
       ],

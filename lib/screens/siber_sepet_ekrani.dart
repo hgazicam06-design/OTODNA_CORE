@@ -102,7 +102,7 @@ class _SiberSepetEkraniState extends State<SiberSepetEkrani> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
           ],
         ),
       ),
@@ -143,7 +143,7 @@ class _SiberSepetEkraniState extends State<SiberSepetEkrani> {
                   children: [
                     Icon(Icons.remove_shopping_cart, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 80),
                     const SizedBox(height: 16),
-                    const Text("SEPETİNİZ BOŞ", style: TextStyle(color: Colors.white54, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                    const Text("SEPETİNİZ BOŞ", style: TextStyle(color: SiberTema.textMuted, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)),
                   ],
                 ),
               );
@@ -173,16 +173,16 @@ class _SiberSepetEkraniState extends State<SiberSepetEkrani> {
                         decoration: BoxDecoration(
                           color: SiberTema.matGrey,
                           borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: Colors.white12),
+                          border: Border.all(color: SiberTema.textMuted),
                         ),
                         child: ListTile(
                           contentPadding: const EdgeInsets.all(12),
                           leading: Container(
                             width: 60,
-                            decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(8)),
+                            decoration: BoxDecoration(color: Colors.white26, borderRadius: BorderRadius.circular(8)),
                             child: const Icon(Icons.inventory_2, color: SiberTema.kuantumCyan),
                           ),
-                          title: Text(urun['ad'] ?? "Bilinmeyen Ürün", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+                          title: Text(urun['ad'] ?? "Bilinmeyen Ürün", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 14)),
                           subtitle: Padding(
                             padding: const EdgeInsets.only(top: 8),
                             child: Text("₺${urun['fiyat']} x ${urun['adet'] ?? 1}", style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 16)),
@@ -206,8 +206,8 @@ class _SiberSepetEkraniState extends State<SiberSepetEkrani> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text("TOPLAM GÜÇ:", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                          Text("₺${toplamTutar.toStringAsFixed(2)}", style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900)),
+                          const Text("TOPLAM GÜÇ:", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                          Text("₺${toplamTutar.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900)),
                         ],
                       ),
                       const SizedBox(height: 20),

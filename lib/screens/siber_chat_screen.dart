@@ -75,7 +75,7 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
         backgroundColor: SiberTema.matGrey.withOpacity(0.1),
         elevation: 0,
         leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
             onPressed: () => Navigator.pop(context)
         ),
         title: _buildAppBarTitle(),
@@ -100,7 +100,7 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
             const Icon(Icons.verified_user_outlined, color: SiberTema.kuantumCyan, size: 16),
             const SizedBox(width: 8),
             Text(widget.ustaAdi.toUpperCase(),
-                style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1)),
           ],
         ),
         const SizedBox(height: 4),
@@ -112,7 +112,7 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
             ),
             const SizedBox(width: 6),
             const Text("KUANTUM AĞINA BAĞLI",
-                style: TextStyle(color: Colors.white54, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 2)),
           ],
         )
       ],
@@ -194,7 +194,7 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
         child: Column(
           crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            Text(metin, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+            Text(metin, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             Text(zaman, style: TextStyle(color: isMe ? SiberTema.kuantumCyan : Colors.white38, fontSize: 9, fontFamily: 'monospace', fontWeight: FontWeight.bold)),
           ],
@@ -212,10 +212,10 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
           Icon(Icons.shield_outlined, color: Colors.white.withOpacity(0.05), size: 80),
           const SizedBox(height: 16),
           const Text("SİBER İLETİŞİM HATTI GÜVENLİ",
-              style: TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+              style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
           const SizedBox(height: 8),
           const Text("Sohbeti başlatmak için bir mesaj ateşleyin.",
-              style: TextStyle(color: Colors.white12, fontSize: 10, fontWeight: FontWeight.bold)),
+              style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
         ],
       ),
     );
@@ -241,10 +241,10 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
               ),
               child: TextField(
                 controller: _mesajKutusu,
-                style: const TextStyle(color: Colors.white, fontSize: 14),
+                style: const TextStyle(color: SiberTema.textMain, fontSize: 14),
                 decoration: const InputDecoration(
                   hintText: 'Siber ileti gönder...',
-                  hintStyle: TextStyle(color: Colors.white24, fontSize: 13, fontWeight: FontWeight.bold),
+                  hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 13, fontWeight: FontWeight.bold),
                   border: InputBorder.none,
                 ),
                 onSubmitted: (_) => _mesajGonder(), // Klavyeden enter'a basınca da gönder
@@ -257,7 +257,7 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: const BoxDecoration(color: SiberTema.kuantumCyan, shape: BoxShape.circle),
-              child: const Icon(Icons.send_rounded, color: Colors.black, size: 20),
+              child: const Icon(Icons.send_rounded, color: Colors.white, size: 20),
             ),
           ),
         ],

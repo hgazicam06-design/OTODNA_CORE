@@ -18,7 +18,7 @@ class AracEkleHubScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -70,9 +70,9 @@ class AracEkleHubScreen extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Yetkili Terminal Bağlantısı Sağlandı", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
+                                    Text("Yetkili Terminal Bağlantısı Sağlandı", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13)),
                                     SizedBox(height: 4),
-                                    Text("Tüm işlemler 256-bit Kripto ile mühürlenir.", style: TextStyle(color: Colors.white54, fontSize: 11)),
+                                    Text("Tüm işlemler 256-bit Kripto ile mühürlenir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
                                   ],
                                 ),
                               ),
@@ -192,7 +192,7 @@ class AracEkleHubScreen extends StatelessWidget {
             decoration: BoxDecoration(color: SiberTema.kuantumCyan, boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.5), blurRadius: 6)])
         ),
         const SizedBox(width: 8),
-        Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2)),
+        Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2)),
       ],
     );
   }
@@ -222,9 +222,9 @@ class AracEkleHubScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
+                    Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
                     const SizedBox(height: 4),
-                    Text(altBaslik, style: const TextStyle(color: Colors.white54, fontSize: 11, height: 1.4)),
+                    Text(altBaslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.4)),
                   ],
                 ),
               ),
@@ -246,7 +246,7 @@ class AracEkleHubScreen extends StatelessWidget {
           if (!isRezerve && hedefEkran != null) {
             Navigator.push(context, MaterialPageRoute(builder: (context) => hedefEkran));
           } else {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Siber Ağa yakında entegre edilecektir.", style: TextStyle(color: Colors.white)), backgroundColor: Colors.black87));
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Siber Ağa yakında entegre edilecektir.", style: TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.black87));
           }
         },
         child: _buildGlassCard(

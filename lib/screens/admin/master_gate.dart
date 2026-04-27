@@ -138,7 +138,7 @@ class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerPr
                 const SizedBox(height: 32),
 
                 // 2. BAŞLIKLAR
-                const Text("MASTER GATE", style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: 6)),
+                const Text("MASTER GATE", style: TextStyle(color: SiberTema.textMain, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: 6)),
                 const SizedBox(height: 8),
                 Text("OtoDNA Kuantum Karargahı Giriş Protokolü", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.7), fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
                 const SizedBox(height: 48),
@@ -184,9 +184,9 @@ class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerPr
                 ),
 
                 const SizedBox(height: 30),
-                const Icon(Icons.lock_outline, color: Colors.white24, size: 16),
+                const Icon(Icons.lock_outline, color: SiberTema.textMuted, size: 16),
                 const SizedBox(height: 8),
-                const Text("256-Bit Kuantum Şifreleme Aktif", style: TextStyle(color: Colors.white24, fontSize: 10, letterSpacing: 1)),
+                const Text("256-Bit Kuantum Şifreleme Aktif", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 1)),
               ],
             ),
           ),
@@ -201,13 +201,13 @@ class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerPr
       decoration: BoxDecoration(
         color: SiberTema.matGrey,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white12),
+        border: Border.all(color: SiberTema.textMuted),
       ),
       child: TextField(
         controller: controller,
         obscureText: isObscure,
         keyboardType: isObscure ? TextInputType.text : TextInputType.emailAddress,
-        style: TextStyle(color: Colors.white, letterSpacing: isObscure ? 4 : 1, fontSize: 14),
+        style: TextStyle(color: SiberTema.textMain, letterSpacing: isObscure ? 4 : 1, fontSize: 14),
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
           hintText: hint,

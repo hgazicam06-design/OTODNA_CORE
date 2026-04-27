@@ -95,7 +95,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir')),
+            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -105,15 +105,15 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
   Widget _buildSiberTextField(String hint, IconData icon, TextEditingController controller, {TextInputType type = TextInputType.text}) {
     return TextField(
       controller: controller,
-      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold),
       keyboardType: type,
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.white38, fontSize: 12),
+        hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 12),
         filled: true,
         fillColor: Colors.white.withOpacity(0.05),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white12)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.textMuted)),
         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
       ),
     );
@@ -225,14 +225,14 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text("Kütüphanede bulunmayan branşınızı Karargah onayına gönderin. Onaylandıktan sonra profilinize işlenecektir.", style: TextStyle(color: Colors.white70, fontSize: 11, fontFamily: 'Avenir')),
+              const Text("Kütüphanede bulunmayan branşınızı Karargah onayına gönderin. Onaylandıktan sonra profilinize işlenecektir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontFamily: 'Avenir')),
               const SizedBox(height: 16),
               TextField(
                 controller: talepCtrl,
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold),
                 decoration: InputDecoration(
                   hintText: "Örn: Klasik Otomobil Restorasyonu",
-                  hintStyle: const TextStyle(color: Colors.white38, fontSize: 11),
+                  hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 11),
                   filled: true,
                   fillColor: Colors.black26,
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
@@ -243,7 +243,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("İPTAL", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold)),
+              child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -264,7 +264,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                   }
                 }
               },
-              style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, foregroundColor: Colors.black),
+              style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, foregroundColor: Colors.white),
               child: const Text("KARARGAHA GÖNDER", style: TextStyle(fontWeight: FontWeight.w900)),
             )
           ],
@@ -276,7 +276,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -290,7 +290,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
           padding: const EdgeInsets.all(20),
           children: [
             // ── FİRMA PROFİLİ VE RESMİ EVRAKLAR (KAPALI KASA SİSTEMİ) ──
-            const Text("RESMİ FİRMA BİLGİLERİ", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+            const Text("RESMİ FİRMA BİLGİLERİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             const SizedBox(height: 12),
             _buildSiberTextField("Firma Tam Ünvanı", Icons.business, _firmaUnvaniCtrl),
             const SizedBox(height: 12),
@@ -322,7 +322,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                               children: [
                                 Icon(Icons.person_add_alt_1, color: SiberTema.kuantumCyan, size: 30),
                                 SizedBox(height: 8),
-                                Text("Yetkili Profil Foto", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+                                Text("Yetkili Profil Foto", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
                               ],
                             )
                           : null,
@@ -348,7 +348,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                               children: [
                                 Icon(Icons.document_scanner, color: SiberTema.kuantumCyan, size: 30),
                                 SizedBox(height: 8),
-                                Text("Vergi Levhası (Gizli)", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+                                Text("Vergi Levhası (Gizli)", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
                               ],
                             )
                           : null,
@@ -360,7 +360,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
             const SizedBox(height: 20),
 
             // ── İLETİŞİM AĞI (TEXT FIELDS) ──
-            const Text("SİBER İLETİŞİM AĞI", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+            const Text("SİBER İLETİŞİM AĞI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             const SizedBox(height: 12),
             _buildSiberTextField("İş Yeri Telefonu", Icons.phone, _isTelefonuCtrl, type: TextInputType.phone),
             const SizedBox(height: 12),
@@ -370,7 +370,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
             const SizedBox(height: 30),
 
             // 1. UZMANLIK SEÇİMİ (PİNTEREST USULÜ KARTLAR VE SİBER ÇİPLER)
-            const Text("ATÖLYE UZMANLIK ALANLARINIZI SEÇİN", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+            const Text("ATÖLYE UZMANLIK ALANLARINIZI SEÇİN", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             const SizedBox(height: 12),
             
             ...SiberHizmetKutuphanesi.masterListe.entries.map((entry) {
@@ -383,9 +383,9 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.03), // Siber Cam Efekti (Glassmorphism taban)
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.white12, width: 1),
+                  border: Border.all(color: SiberTema.textMuted, width: 1),
                   boxShadow: [
-                    BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 10, spreadRadius: 1)
+                    BoxShadow(color: Colors.white.withOpacity(0.2), blurRadius: 10, spreadRadius: 1)
                   ],
                 ),
                 child: Column(
@@ -399,14 +399,14 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                         Expanded(
                           child: Text(
                             kategori,
-                            style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.2, fontFamily: 'Avenir'),
+                            style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.2, fontFamily: 'Avenir'),
                           ),
                         ),
                       ],
                     ),
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Divider(color: Colors.white10, thickness: 1),
+                      child: Divider(color: SiberTema.textMuted, thickness: 1),
                     ),
                     // Çipler (FilterChip)
                     Wrap(
@@ -487,7 +487,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                       "3. Havuz borcu ödenmez veya Karargah kuralları ihlal edilirse sistemden süresiz men ve adli yaptırım uygulanır.\n\n"
                       "4. Yetkinlik dışı (yanlış) uzmanlık beyanı, Usta DNA Puanını doğrudan düşürür ve 'Kara Liste' algoritmasını tetikler.\n\n"
                       "5. Bu sözleşme IP adresi ve cihaz kimliği ile dijital olarak mühürlenir.",
-                  style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.6, letterSpacing: 0.5, fontFamily: 'Avenir'),
+                  style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.6, letterSpacing: 0.5, fontFamily: 'Avenir'),
                 ),
               ),
             ),
@@ -526,7 +526,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
               child: _islemSuruyor
                   ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                   : ElevatedButton.icon(
-                icon: const Icon(Icons.security, color: Colors.black, size: 24),
+                icon: const Icon(Icons.security, color: Colors.white, size: 24),
                 label: const Text("SİSTEME KAYDOL VE MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _sozlesmeOnay ? SiberTema.kuantumCyan : Colors.white10,

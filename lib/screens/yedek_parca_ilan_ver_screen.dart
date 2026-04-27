@@ -129,7 +129,7 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
     double netKazanc = _girilenFiyat - gaziPayi;
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -140,7 +140,7 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
             icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan, size: 20),
             onPressed: () => Navigator.pop(context),
           ),
-          title: const Text("PARÇA İLANI OLUŞTUR", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          title: const Text("PARÇA İLANI OLUŞTUR", style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
         ),
         body: Container(
@@ -200,14 +200,14 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("KATEGORİ SEÇİMİ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+        const Text("KATEGORİ SEÇİMİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
         const SizedBox(height: 8),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
             color: SiberTema.matGrey,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.white12),
+            border: Border.all(color: SiberTema.textMuted),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
@@ -215,7 +215,7 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
               dropdownColor: SiberTema.oledBlack,
               icon: const Icon(Icons.arrow_drop_down, color: SiberTema.kuantumCyan),
               isExpanded: true,
-              style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+              style: const TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
               items: _kategoriler.map((String kategori) {
                 return DropdownMenuItem<String>(
                   value: kategori,
@@ -238,19 +238,19 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+        Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
         const SizedBox(height: 8),
         TextField(
           controller: ctrl,
           maxLines: maxLines,
-          style: const TextStyle(color: Colors.white, fontSize: 14, fontFamily: 'Avenir'),
+          style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontFamily: 'Avenir'),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 13),
+            hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 13),
             prefixIcon: maxLines == 1 ? Icon(icon, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 20) : null,
             filled: true,
             fillColor: SiberTema.matGrey,
-            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white12)),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.textMuted)),
             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 1.5)),
           ),
         ),
@@ -262,7 +262,7 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("SATIŞ FİYATI (₺)", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+        const Text("SATIŞ FİYATI (₺)", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
         const SizedBox(height: 8),
         TextField(
           controller: _fiyatCtrl,
@@ -301,11 +301,11 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("OtoDNA Sistem Kesintisi (%12)", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+              const Text("OtoDNA Sistem Kesintisi (%12)", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
               Text("- ₺${gaziPayi.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kanKirmizi, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             ],
           ),
-          const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: Colors.white12, height: 1)),
+          const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted, height: 1)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

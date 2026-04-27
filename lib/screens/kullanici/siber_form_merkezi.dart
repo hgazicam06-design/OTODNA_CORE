@@ -36,13 +36,13 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20, offset: const Offset(0, -5))]
+            boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20, offset: const Offset(0, -5))]
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(child: Container(width: 40, height: 5, decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
+            Center(child: Container(width: 40, height: 5, decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
             const SizedBox(height: 32),
             Row(children: [
               Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.redAccent.withValues(alpha: 0.1), shape: BoxShape.circle), child: const Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 28)), 
@@ -50,7 +50,7 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
               Text("E-Kaza Tespit Tutanağı", style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir'))
             ]),
             const SizedBox(height: 16),
-            const Text("Klasik kağıt tutanaklara son! Kazaya karışan aracın QR kimliğini okutarak saniyeler içinde yasal süreci başlatın.", style: TextStyle(color: Colors.black54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            const Text("Klasik kağıt tutanaklara son! Kazaya karışan aracın QR kimliğini okutarak saniyeler içinde yasal süreci başlatın.", style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             const SizedBox(height: 32),
 
             _buildAdimSatiri(Icons.satellite_alt_outlined, "SİNYAL", "Konum GPS'ten çekiliyor.", Colors.blue),
@@ -89,7 +89,7 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
           const SizedBox(width: 16),
           Text(adim, style: TextStyle(color: renk, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1, fontFamily: 'Avenir')),
           const SizedBox(width: 16),
-          Expanded(child: Text(aciklama, style: const TextStyle(color: Colors.black87, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
+          Expanded(child: Text(aciklama, style: const TextStyle(color: Colors.white87, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
         ],
       ),
     );
@@ -122,7 +122,7 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
         backgroundColor: Colors.white,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
-        shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+        shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
         leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
         title: Text('E V R A K   Y Ö N E T İ M İ', style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 3, fontFamily: 'Avenir')),
         centerTitle: true,
@@ -135,10 +135,10 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
             child: Container(
               height: 52,
               padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.03), borderRadius: BorderRadius.circular(26)),
+              decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.03), borderRadius: BorderRadius.circular(26)),
               child: TabBar(
                 controller: _tabController,
-                indicator: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(22), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 5, offset: const Offset(0, 2))]),
+                indicator: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(22), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 5, offset: const Offset(0, 2))]),
                 labelColor: primaryTeal,
                 unselectedLabelColor: Colors.black45,
                 indicatorSize: TabBarIndicatorSize.tab,
@@ -226,7 +226,7 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
                                 children: [
                                   Text("Borusan Oto Yetkili Servis", style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                                   const SizedBox(height: 8),
-                                  const Text("Saat: 14:30 • Şikayet: Standart Bakım", style: TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                  const Text("Saat: 14:30 • Şikayet: Standart Bakım", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                                 ],
                               ),
                             ),
@@ -251,7 +251,7 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 16), padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))]),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))]),
         child: Row(
           children: [
             Container(
@@ -266,12 +266,12 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
                 children: [
                   Text(baslik, style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
                   const SizedBox(height: 8),
-                  Text(aciklama, style: const TextStyle(color: Colors.black54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                  Text(aciklama, style: const TextStyle(color: Colors.white54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                 ],
               ),
             ),
             const SizedBox(width: 12),
-            Icon(Icons.arrow_forward_ios, color: Colors.black.withValues(alpha: 0.2), size: 16)
+            Icon(Icons.arrow_forward_ios, color: Colors.white.withValues(alpha: 0.2), size: 16)
           ],
         ),
       ),
@@ -296,7 +296,7 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
             children: [
               Row(
                 children: [
-                  const Icon(Icons.business_outlined, color: Colors.black45, size: 20),
+                  const Icon(Icons.business_outlined, color: Colors.white45, size: 20),
                   const SizedBox(width: 8),
                   Text(firma, style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'Avenir')),
                 ],
@@ -305,9 +305,9 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
             ],
           ),
           const SizedBox(height: 24),
-          Text(islem, style: const TextStyle(color: Colors.black87, fontSize: 14, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+          Text(islem, style: const TextStyle(color: Colors.white87, fontSize: 14, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           const SizedBox(height: 20),
-          Divider(color: Colors.black.withValues(alpha: 0.05)),
+          Divider(color: Colors.white.withValues(alpha: 0.05)),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -315,7 +315,7 @@ class _SiberFormMerkeziScreenState extends State<SiberFormMerkeziScreen> with Si
               Text(fiyat, style: TextStyle(color: textColor, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
               Row(
                 children: [
-                  TextButton(onPressed: () {}, child: const Text("REDDET", style: TextStyle(color: Colors.black38, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'))),
+                  TextButton(onPressed: () {}, child: const Text("REDDET", style: TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'))),
                   const SizedBox(width: 8),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),

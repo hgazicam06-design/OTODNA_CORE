@@ -120,7 +120,7 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
       appBar: AppBar(
         backgroundColor: bgColor, elevation: 0,
         leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan), onPressed: () => Navigator.pop(context)),
-        title: const Text("Firma Uzmanlık Radarı", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+        title: const Text("Firma Uzmanlık Radarı", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -133,11 +133,11 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
               children: [
                 Icon(Icons.radar, color: primaryCyan, size: 28),
                 SizedBox(width: 12),
-                Expanded(child: Text("Müşteriler Sizi Nasıl Bulsun?", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold))),
+                Expanded(child: Text("Müşteriler Sizi Nasıl Bulsun?", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.bold))),
               ],
             ),
             const SizedBox(height: 8),
-            const Text("OtoDNA arama motorunda (Siber Radar) doğru müşterilerle ve B2B iş ortaklarıyla eşleşmek için uzmanlık alanlarınızı net bir şekilde belirleyin.", style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.5)),
+            const Text("OtoDNA arama motorunda (Siber Radar) doğru müşterilerle ve B2B iş ortaklarıyla eşleşmek için uzmanlık alanlarınızı net bir şekilde belirleyin.", style: TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.5)),
             const SizedBox(height: 32),
 
             // 1. ANA BRANŞ SEÇİMİ (DROPDOWN)
@@ -145,14 +145,14 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+              decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   dropdownColor: cardColor,
                   value: _secilenAnaKategori,
                   isExpanded: true,
                   icon: const Icon(Icons.keyboard_arrow_down, color: primaryCyan),
-                  style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                  style: const TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.bold),
                   items: _anaKategoriler.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
                   onChanged: (val) {
                     setState(() {
@@ -168,7 +168,7 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
             // 2. DİNAMİK ALT UZMANLIKLAR (CHIPS)
             _buildSectionTitle(Icons.precision_manufacturing, "2. Detaylı Hizmetler (Çoklu Seçim)"),
             const SizedBox(height: 8),
-            const Text("Müşteriler arama çubuğuna 'Torsiyon' veya 'DSG' yazdığında sizin çıkmanızı sağlar.", style: TextStyle(color: Colors.white38, fontSize: 11)),
+            const Text("Müşteriler arama çubuğuna 'Torsiyon' veya 'DSG' yazdığında sizin çıkmanızı sağlar.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
             const SizedBox(height: 12),
             Wrap(
               spacing: 8, runSpacing: 8,
@@ -233,14 +233,14 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+              decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
               child: TextField(
                 controller: _aciklamaController,
-                style: const TextStyle(color: Colors.white, fontSize: 14),
+                style: const TextStyle(color: SiberTema.textMain, fontSize: 14),
                 maxLines: 4,
                 decoration: const InputDecoration(
                   hintText: "Müşterilerinize işletmenizin tecrübesinden, kullandığınız teknolojik cihazlardan veya garantili hizmetlerinizden bahsedin...",
-                  hintStyle: TextStyle(color: Colors.white38, fontSize: 13, height: 1.5),
+                  hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.5),
                   border: InputBorder.none,
                 ),
               ),
@@ -274,9 +274,9 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
   Widget _buildSectionTitle(IconData icon, String title) {
     return Row(
       children: [
-        Icon(icon, color: Colors.white70, size: 20),
+        Icon(icon, color: SiberTema.textMuted, size: 20),
         const SizedBox(width: 8),
-        Text(title, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)),
+        Text(title, style: const TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.bold)),
       ],
     );
   }

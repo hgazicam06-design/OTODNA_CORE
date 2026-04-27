@@ -103,9 +103,9 @@ class AracDetayScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(plaka, style: const TextStyle(color: Colors.white54, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                              Text(plaka, style: const TextStyle(color: SiberTema.textMuted, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2)),
                               const SizedBox(height: 4),
-                              Text(markaModel.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: -0.5, height: 1.2)),
+                              Text(markaModel.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: -0.5, height: 1.2)),
                             ],
                           ),
                         ),
@@ -113,7 +113,7 @@ class AracDetayScreen extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              const Text("GÜNCEL DEĞER", style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                              const Text("GÜNCEL DEĞER", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
                               const SizedBox(height: 4),
                               Text("₺$formatliFiyat", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -1)),
                             ],
@@ -137,7 +137,7 @@ class AracDetayScreen extends StatelessWidget {
                     // =================================================================
                     // 4. SİBER HATIRLATICILAR VE LASTİK OTELİ (CANLI FİREBASE)
                     // =================================================================
-                    const Text("SİBER RADAR VE LASTİK OTELİ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                    const Text("SİBER RADAR VE LASTİK OTELİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
                     const SizedBox(height: 16),
 
                     // Muayene ve Sigorta Hatırlatıcıları (Statik/Mock değil, araç verisinden okunur)
@@ -173,7 +173,7 @@ class AracDetayScreen extends StatelessWidget {
                                     children: [
                                       const Text("LASTİK OTELİ AKTİF", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1)),
                                       const SizedBox(height: 4),
-                                      Text("$tip Lastikler Karargahta Güvende! (Diş Derinliği: %$dis)", style: const TextStyle(color: Colors.white70, fontSize: 11)),
+                                      Text("$tip Lastikler Karargahta Güvende! (Diş Derinliği: %$dis)", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11)),
                                     ],
                                   ),
                                 )
@@ -186,7 +186,7 @@ class AracDetayScreen extends StatelessWidget {
                     const SizedBox(height: 40),
 
                     // 5. OTODNA EKSPERTİZ RAPORU
-                    const Text("OTODNA GENETİK RAPORU", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                    const Text("OTODNA GENETİK RAPORU", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
                     const SizedBox(height: 16),
                     Container(
                       width: double.infinity, padding: const EdgeInsets.all(24),
@@ -203,7 +203,7 @@ class AracDetayScreen extends StatelessWidget {
                                 children: [
                                   Icon(Icons.health_and_safety_outlined, color: skorRengi, size: 28),
                                   const SizedBox(height: 12),
-                                  const Text("AĞ DOĞRULAMASI", style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                                  const Text("AĞ DOĞRULAMASI", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
                                 ],
                               ),
                               Text("%$dnaSkoru", style: TextStyle(color: skorRengi, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: -2)),
@@ -216,7 +216,7 @@ class AracDetayScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 24),
                           _buildEkspertizSatiri("FİZİKSEL DURUM", durum, skorRengi),
-                          const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white12)),
+                          const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted)),
                           _buildEkspertizSatiri("TRAMER (HASAR)", "Ağ Üzerinden Doğrulandı", Colors.white),
                         ],
                       ),
@@ -224,7 +224,7 @@ class AracDetayScreen extends StatelessWidget {
                     const SizedBox(height: 40),
 
                     // 6. DONANIM VE ÖZELLİKLER
-                    const Text("SİBER DONANIM LİSTESİ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                    const Text("SİBER DONANIM LİSTESİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
                     const SizedBox(height: 16),
                     Wrap(
                       spacing: 10, runSpacing: 10,
@@ -287,12 +287,12 @@ class AracDetayScreen extends StatelessWidget {
   Widget _buildHatirlaticiSatiri(IconData ikon, String baslik, String kalanZaman, Color renk) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
+      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.textMuted)),
       child: Row(
         children: [
           Icon(ikon, color: renk, size: 24),
           const SizedBox(width: 16),
-          Expanded(child: Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold))),
+          Expanded(child: Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold))),
           Text(kalanZaman, style: TextStyle(color: renk, fontSize: 11, fontWeight: FontWeight.w900)),
         ],
       ),
@@ -310,7 +310,7 @@ class AracDetayScreen extends StatelessWidget {
             const SizedBox(height: 12),
             Text(deger, style: TextStyle(color: renk, fontSize: 13, fontWeight: FontWeight.w900)),
             const SizedBox(height: 6),
-            Text(baslik, style: const TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
+            Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
           ],
         ),
       ),
@@ -321,7 +321,7 @@ class AracDetayScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
+        Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
         Text(deger.toUpperCase(), style: TextStyle(color: degerRengi, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 0.5)),
       ],
     );
@@ -353,13 +353,13 @@ class AracDetayScreen extends StatelessWidget {
             children: [
               Icon(Icons.vpn_key_outlined, color: SiberTema.kuantumCyan),
               SizedBox(width: 8),
-              Text("DEVİR MÜHRÜ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1)),
+              Text("DEVİR MÜHRÜ", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1)),
             ],
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text("Alıcı vatandaşa bu Kuantum Kodunu verin. Yeni plakayı girerek aracı üzerine alabilir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5)),
+              const Text("Alıcı vatandaşa bu Kuantum Kodunu verin. Yeni plakayı girerek aracı üzerine alabilir.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
               const SizedBox(height: 24),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),

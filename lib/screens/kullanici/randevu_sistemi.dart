@@ -185,7 +185,7 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           iconTheme: IconThemeData(color: primaryTeal),
         ),
         body: SafeArea(
@@ -201,8 +201,8 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-                      boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                      boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
                   ),
                   child: Row(
                     children: [
@@ -212,29 +212,29 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
                         child: Icon(Icons.calendar_month_outlined, color: primaryTeal, size: 28),
                       ),
                       const SizedBox(width: 16),
-                      const Expanded(child: Text("OtoDNA güvencesiyle randevunuzu mühürleyin. Ustanız sizin için hazırlık yapacaktır.", style: TextStyle(color: Colors.black87, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
+                      const Expanded(child: Text("OtoDNA güvencesiyle randevunuzu mühürleyin. Ustanız sizin için hazırlık yapacaktır.", style: TextStyle(color: Colors.white87, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
                     ],
                   ),
                 ),
                 const SizedBox(height: 32),
 
                 // 1. HİZMET SEÇİCİ
-                const Text("1. İŞLEM TÜRÜ", style: TextStyle(color: Colors.black45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                const Text("1. İŞLEM TÜRÜ", style: TextStyle(color: Colors.white45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                 const SizedBox(height: 8),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-                    boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 5)]
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                    boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 5)]
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       isExpanded: true,
                       dropdownColor: Colors.white,
                       icon: Icon(Icons.keyboard_arrow_down, color: primaryTeal),
-                      hint: const Text("Hizmet Branşını Seçin", style: TextStyle(color: Colors.black38, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                      hint: const Text("Hizmet Branşını Seçin", style: TextStyle(color: Colors.white38, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                       value: _secilenHizmet,
                       style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
                       items: _hizmetListesi.map((String value) {
@@ -252,7 +252,7 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
                 const SizedBox(height: 24),
 
                 // 2. TARİH VE SAAT SEÇİCİ
-                const Text("2. ZAMAN PLANI", style: TextStyle(color: Colors.black45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                const Text("2. ZAMAN PLANI", style: TextStyle(color: Colors.white45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                 const SizedBox(height: 8),
                 Row(
                   children: [
@@ -278,15 +278,15 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
                 const SizedBox(height: 24),
 
                 // 3. ARIZA NOTU
-                const Text("3. BİLGİ NOTU (OPSİYONEL)", style: TextStyle(color: Colors.black45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                const Text("3. BİLGİ NOTU (OPSİYONEL)", style: TextStyle(color: Colors.white45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                 const SizedBox(height: 8),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-                    boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 5)]
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                    boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 5)]
                   ),
                   child: TextField(
                     controller: _notCtrl,
@@ -294,7 +294,7 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
                     style: TextStyle(color: textColor, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                     decoration: const InputDecoration(
                       hintText: "Sorunu veya talebinizi kısaca ustaya iletin...",
-                      hintStyle: TextStyle(color: Colors.black38, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
+                      hintStyle: TextStyle(color: Colors.white38, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
                       border: InputBorder.none,
                     ),
                   ),
@@ -309,8 +309,8 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
                   child: _islemSuruyor
                       ? Center(child: CircularProgressIndicator(color: primaryTeal))
                       : ElevatedButton.icon(
-                    icon: const Icon(Icons.verified, color: Colors.white, size: 24),
-                    label: const Text("RANDEVUYU MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, color: Colors.white, fontFamily: 'Avenir')),
+                    icon: const Icon(Icons.verified, color: SiberTema.kuantumCyan, size: 24),
+                    label: const Text("RANDEVUYU MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, color: SiberTema.textMain, fontFamily: 'Avenir')),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryTeal,
                       foregroundColor: Colors.white,

@@ -63,17 +63,17 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
           color: Colors.white,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           border: Border(top: BorderSide(color: primaryTeal.withValues(alpha: 0.3), width: 2)),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20)]
+          boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20)]
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
+            Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
             const SizedBox(height: 24),
             Text("[$belgeTuru] YÜKLE", style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
             const SizedBox(height: 8),
-            const Text("Belgenin orijinalini düz bir zemine koyarak fotoğrafını çekin veya arşivden seçin.", style: TextStyle(color: Colors.black54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            const Text("Belgenin orijinalini düz bir zemine koyarak fotoğrafını çekin veya arşivden seçin.", style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             const SizedBox(height: 32),
             Row(
               children: [
@@ -96,7 +96,7 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
         title: Row(
           children: [
             Icon(Icons.radar, color: primaryTeal),
@@ -104,9 +104,9 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
             Expanded(child: Text("OtoDNA Denetim Ağı", style: TextStyle(color: textColor, fontSize: 16, fontFamily: 'Avenir', fontWeight: FontWeight.bold))),
           ],
         ),
-        content: Text("Ağ üzerinden '$islemTuru' kayıtları canlı olarak denetleniyor. Plakanız (${widget.plaka}) ve Karayolları/EGM veritabanı eşleştiriliyor. Devam edilsin mi?", style: const TextStyle(color: Colors.black54, fontSize: 13, height: 1.5, fontFamily: 'Avenir')),
+        content: Text("Ağ üzerinden '$islemTuru' kayıtları canlı olarak denetleniyor. Plakanız (${widget.plaka}) ve Karayolları/EGM veritabanı eşleştiriliyor. Devam edilsin mi?", style: const TextStyle(color: Colors.white54, fontSize: 13, height: 1.5, fontFamily: 'Avenir')),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İptal", style: TextStyle(color: Colors.black38, fontFamily: 'Avenir'))),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İptal", style: TextStyle(color: Colors.white38, fontFamily: 'Avenir'))),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white, elevation: 0),
             onPressed: () {
@@ -174,7 +174,7 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
           title: Column(
             children: [
@@ -225,7 +225,7 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: primaryTeal.withValues(alpha: 0.3), width: 1.5),
-                        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)],
+                        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 10)],
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,21 +240,21 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                           const SizedBox(height: 8),
                           Row(
                             children: [
-                              const Icon(Icons.business, color: Colors.black54, size: 14),
+                              const Icon(Icons.business, color: Colors.white54, size: 14),
                               const SizedBox(width: 6),
-                              Text(garanti['firma_unvani'], style: const TextStyle(color: Colors.black87, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                              Text(garanti['firma_unvani'], style: const TextStyle(color: Colors.white87, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                             ],
                           ),
                           const SizedBox(height: 4),
                           Row(
                             children: [
-                              const Icon(Icons.qr_code, color: Colors.black54, size: 14),
+                              const Icon(Icons.qr_code, color: Colors.white54, size: 14),
                               const SizedBox(width: 6),
-                              Text("OEM: ${garanti['oem_kodu']}", style: const TextStyle(color: Colors.black87, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                              Text("OEM: ${garanti['oem_kodu']}", style: const TextStyle(color: Colors.white87, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                             ],
                           ),
                           const SizedBox(height: 12),
-                          Divider(color: Colors.black.withValues(alpha: 0.05), height: 1),
+                          Divider(color: Colors.white.withValues(alpha: 0.05), height: 1),
                           const SizedBox(height: 12),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -281,7 +281,7 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                 ],
 
                 // 3. FİNANS VE GİDER YÖNETİMİ (YAKIT, CEZA, HGS)
-                Text("FİNANS & GİDER YÖNETİMİ", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                Text("FİNANS & GİDER YÖNETİMİ", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                 const SizedBox(height: 12),
                 ..._finansVeGiderler.map((giderSistemi) {
                   return Container(
@@ -290,8 +290,8 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.black.withValues(alpha: 0.05), width: 1.5),
-                        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]
+                        border: Border.all(color: Colors.white.withValues(alpha: 0.05), width: 1.5),
+                        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]
                     ),
                     child: Column(
                       children: [
@@ -306,7 +306,7 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                                 children: [
                                   Text(giderSistemi['tur'], style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 0.5, fontFamily: 'Avenir')),
                                   const SizedBox(height: 4),
-                                  Text(giderSistemi['kurum'], style: const TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                  Text(giderSistemi['kurum'], style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                                 ],
                               ),
                             ),
@@ -316,7 +316,7 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("Canlı Ağ Denetimi", style: TextStyle(color: Colors.black38, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                            const Text("Canlı Ağ Denetimi", style: TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                             InkWell(
                               onTap: () {
                                 if(giderSistemi['islem'] == "YÜKLE/ANALİZ ET") {
@@ -345,7 +345,7 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                 const SizedBox(height: 24),
 
                 // 4. ZORUNLU EVRAKLAR
-                const Text("ZORUNLU ARAÇ EVRAKLARI", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                const Text("ZORUNLU ARAÇ EVRAKLARI", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                 const SizedBox(height: 12),
                 ..._zorunluEvraklar.map((evrakSablonu) {
 
@@ -369,7 +369,7 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                       border: Border.all(color: durumRengi.withValues(alpha: 0.3), width: 1.5),
                       boxShadow: [
                         if (!isEksik) BoxShadow(color: primaryTeal.withValues(alpha: 0.05), blurRadius: 10, spreadRadius: 1)
-                        else BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)
+                        else BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)
                       ]
                   ),
                   child: Column(
@@ -385,7 +385,7 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                               children: [
                                 Text(evrakSablonu['tur'], style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 0.5, fontFamily: 'Avenir')),
                                 const SizedBox(height: 4),
-                                Text(evrakSablonu['kurum'], style: const TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                Text(evrakSablonu['kurum'], style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                               ],
                             ),
                           ),

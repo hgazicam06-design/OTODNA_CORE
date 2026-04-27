@@ -93,7 +93,7 @@ class _KuantumAracKunyesiState extends State<KuantumAracKunyesi> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text(markaModel, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1.2)),
+                    child: Text(markaModel, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: SiberTema.textMain, letterSpacing: 1.2)),
                   ),
                   _buildDNABadge(dnaSkoru),
                   const SizedBox(width: 8),
@@ -112,15 +112,15 @@ class _KuantumAracKunyesiState extends State<KuantumAracKunyesi> {
                 decoration: BoxDecoration(
                   color: _cardNavy,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.white10),
+                  border: Border.all(color: SiberTema.textMuted),
                 ),
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
                     _buildDetaySatiri("Üretim Yılı", yil, Icons.calendar_today),
-                    const Divider(color: Colors.white10),
+                    const Divider(color: SiberTema.textMuted),
                     _buildDetaySatiri("Kilometre", "$km KM", Icons.speed),
-                    const Divider(color: Colors.white10),
+                    const Divider(color: SiberTema.textMuted),
                     _buildDetaySatiri("Satış Fiyatı", "₺$fiyat", Icons.payments_outlined),
                   ],
                 ),
@@ -138,7 +138,7 @@ class _KuantumAracKunyesiState extends State<KuantumAracKunyesi> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _primaryCyan,
-                    foregroundColor: Colors.black,
+                    foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
@@ -201,7 +201,7 @@ class _KuantumAracKunyesiState extends State<KuantumAracKunyesi> {
                 const SizedBox(height: 4),
                 Text(
                   kirmiziX ? "Bu araçta Usta tarafından atılmış KIRMIZI X var! Trafiğe çıkış risklidir." : not,
-                  style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.4),
+                  style: const TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.4),
                 ),
               ],
             ),
@@ -219,9 +219,9 @@ class _KuantumAracKunyesiState extends State<KuantumAracKunyesi> {
         children: [
           Icon(ikon, color: _primaryCyan.withOpacity(0.7), size: 18),
           const SizedBox(width: 12),
-          Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 14)),
+          Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 14)),
           const Spacer(),
-          Text(deger, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+          Text(deger, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
         ],
       ),
     );

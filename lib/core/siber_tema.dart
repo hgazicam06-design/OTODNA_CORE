@@ -4,30 +4,34 @@ import 'package:google_fonts/google_fonts.dart';
 
 class SiberTema {
   // 🌑 KUANTUM RENK PALETİ (TESLA STANDARTLARINDA)
-  static const Color oledBlack = Color(0xFF000000);
-  static const Color kuantumCyan = Color(0xFF00FFC2); // Neon Turkuaz
+  static const Color oledBlack = Color(0xFFF4F6F8); // Fildişi Arka Plan
+  static const Color kuantumCyan = Color(0xFF005A64); // Kurumsal Zümrüt (Primary) // Neon Turkuaz
   static const Color neonPurple = Color(0xFF9D00FF);
   static const Color siberGold = Color(0xFFFFD700);
   static const Color kritikRed = Color(0xFFFF003C);
 
   // 🚨 EKLENEN EKSİK RENKLER (Kırmızı çizgileri engeller)
-  static const Color kanKirmizi = Color(0xFFFF4D4D);
-  static const Color matGrey = Color(0xFF111111);
+  static const Color kanKirmizi = Color(0xFFD32F2F); // Profesyonel Kırmızı
+  static const Color textMain = Color(0xFF1E293B);
+  static const Color textMuted = Color(0xFF64748B);
+  static const Color matGrey = Colors.white; // Surface / Kart Rengi
   static const Color altinSari = Color(0xFFFFD700);
   static const Color geceMavisi = Color(0xFF0A0E1A); // 🛡️ Kurumsal Gece Mavisi
 
   // ── 🛡️ ESKİ KODLARIN ÇÖKMESİNİ ENGELLEYEN KÖPRÜLER (ZAFİYET KAPATICILAR) ──
   // responsive_kalkan.dart "decoration" beklediği için bunu BoxDecoration yaptık!
-  // 🔥 STRATEJİK GÜNCELLEME: 3D Derinlik Gradienti eklendi!
+  // 💎 KURUMSAL SEDEF KAPLAMA (Fildişi Sedef Parlaması)
   static BoxDecoration get siberArkaPlan => BoxDecoration(
     gradient: RadialGradient(
-      center: const Alignment(0.0, -0.4), // Hafif yukarıdan vuran Siber Işık
-      radius: 1.2,
+      center: const Alignment(-0.5, -0.6), // Sol üstten vuran sedef parlaması
+      radius: 1.5,
       colors: [
-        const Color(0xFF101820), // Merkezde hafif metalik siber boşluk
-        oledBlack, // Köşelerde mutlak OLED siyahı
+        const Color(0xFFFFFFFF), // Parlak Bembeyaz Işık Noktası
+        const Color(0xFFF8FAFC), // Sedefli Açık Mavi/Beyaz Kırılma
+        oledBlack, // Ana Fildişi Sedef Zemin (0xFFF4F6F8)
+        const Color(0xFFE2E8F0), // Sedefin koyu gölge kırılması
       ],
-      stops: const [0.0, 1.0],
+      stops: const [0.0, 0.3, 0.7, 1.0],
     ),
   );
 

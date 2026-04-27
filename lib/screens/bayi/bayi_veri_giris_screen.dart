@@ -94,10 +94,10 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: SiberTema.matGrey,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: SiberTema.kuantumCyan, width: 2)),
-        title: const Row(children: [Icon(Icons.camera_alt, color: SiberTema.kuantumCyan), SizedBox(width: 12), Text("Kanıt Yüklemesi", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold))]),
-        content: Text("Dijital Referans Protokolü gereği, '$parca' için Yeşil Tık (✅) atabilmeniz için anlık fotoğraf veya video yüklemeniz önerilir.", style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.5)),
+        title: const Row(children: [Icon(Icons.camera_alt, color: SiberTema.kuantumCyan), SizedBox(width: 12), Text("Kanıt Yüklemesi", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.bold))]),
+        content: Text("Dijital Referans Protokolü gereği, '$parca' için Yeşil Tık (✅) atabilmeniz için anlık fotoğraf veya video yüklemeniz önerilir.", style: const TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.5)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İptal", style: TextStyle(color: Colors.white54))),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İptal", style: TextStyle(color: SiberTema.textMuted))),
           ElevatedButton.icon(
             style: SiberTema.kuantumButonStili(),
             onPressed: () {
@@ -122,9 +122,9 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
         backgroundColor: SiberTema.matGrey,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: SiberTema.kanKirmizi, width: 2)),
         title: const Row(children: [Icon(Icons.warning, color: SiberTema.kanKirmizi), SizedBox(width: 12), Text("Kritik Risk Bildirimi!", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 16, fontWeight: FontWeight.bold))]),
-        content: Text("DİKKAT! '$parca' alanına Kırmızı X (❌) atıyorsunuz. Bu işlem aracın DNA Skorunu kalıcı olarak düşürecek ve Kuantum Merkezine raporlanacaktır. Onaylıyor musunuz?", style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.5)),
+        content: Text("DİKKAT! '$parca' alanına Kırmızı X (❌) atıyorsunuz. Bu işlem aracın DNA Skorunu kalıcı olarak düşürecek ve Kuantum Merkezine raporlanacaktır. Onaylıyor musunuz?", style: const TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.5)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İptal", style: TextStyle(color: Colors.white54))),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İptal", style: TextStyle(color: SiberTema.textMuted))),
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kanKirmizi),
             onPressed: () {
@@ -132,8 +132,8 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
               setState(() => _kontrolListesi[parca] = 2);
               _showSnackBar("$parca riskli işaretlendi! Aracın değeri düşürülecek. ❌", isError: true);
             },
-            icon: const Icon(Icons.gpp_bad, color: Colors.white, size: 16),
-            label: const Text("Riski Raporla", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            icon: const Icon(Icons.gpp_bad, color: SiberTema.kuantumCyan, size: 16),
+            label: const Text("Riski Raporla", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
           )
         ],
       ),
@@ -251,10 +251,10 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
                     child: TextField(
                       controller: _saseController,
                       textCapitalization: TextCapitalization.characters,
-                      style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 2),
+                      style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 2),
                       decoration: InputDecoration(
                         hintText: "ŞASE VEYA QR (VIN)",
-                        hintStyle: const TextStyle(color: Colors.white24, letterSpacing: 0),
+                        hintStyle: const TextStyle(color: SiberTema.textMuted, letterSpacing: 0),
                         filled: true, fillColor: SiberTema.matGrey,
                         prefixIcon: const Icon(Icons.qr_code_scanner, color: SiberTema.kuantumCyan),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
@@ -291,24 +291,24 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(_aracData!['plaka'] ?? 'GİZLİ PLAKA', style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                            Text(_aracData!['plaka'] ?? 'GİZLİ PLAKA', style: const TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: 2)),
                             const SizedBox(height: 4),
-                            Text(_aracData!['marka_model'] ?? "Bilinmeyen Kasa", style: const TextStyle(color: Colors.white70, fontSize: 14)),
+                            Text(_aracData!['marka_model'] ?? "Bilinmeyen Kasa", style: const TextStyle(color: SiberTema.textMuted, fontSize: 14)),
                             const SizedBox(height: 4),
                             Text("Güncel DNA: ${_aracData!['dna_skoru'] ?? 100} / 100", style: const TextStyle(color: SiberTema.altinSari, fontSize: 12, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),
-                      Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(8)), child: const Text("OtoDNA\nEkspertiz", textAlign: TextAlign.center, style: TextStyle(color: Colors.orangeAccent, fontSize: 10, fontWeight: FontWeight.bold))),
+                      Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), decoration: BoxDecoration(color: Colors.white54, borderRadius: BorderRadius.circular(8)), child: const Text("OtoDNA\nEkspertiz", textAlign: TextAlign.center, style: TextStyle(color: Colors.orangeAccent, fontSize: 10, fontWeight: FontWeight.bold))),
                     ],
                   ),
                 ),
                 const SizedBox(height: 32),
 
                 // DİJİTAL REFERANS PROTOKOLÜ (LİSTE)
-                const Text("Dijital Referans Protokolü", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                const Text("Dijital Referans Protokolü", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
-                const Text("Aşağıdaki donanımları kontrol edin. 'Kırmızı X' aracın DNA Skorunu düşürür.", style: TextStyle(color: Colors.white54, fontSize: 12)),
+                const Text("Aşağıdaki donanımları kontrol edin. 'Kırmızı X' aracın DNA Skorunu düşürür.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
                 const SizedBox(height: 16),
 
                 ListView.separated(

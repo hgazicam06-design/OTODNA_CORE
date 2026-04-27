@@ -132,7 +132,7 @@ class _SosProtokoluScreenState extends State<SosProtokoluScreen> with SingleTick
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (!_sinyalGonderildi) ...[
-                    Text("5 SANİYE BASILI TUT", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 4, fontFamily: 'Avenir')),
+                    Text("5 SANİYE BASILI TUT", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 4, fontFamily: 'Avenir')),
                     const SizedBox(height: 40),
 
                     // 5 SANİYE KURALI BUTONU
@@ -172,7 +172,7 @@ class _SosProtokoluScreenState extends State<SosProtokoluScreen> with SingleTick
                                     ],
                                   ),
                                   child: Center(
-                                    child: Icon(Icons.sos_rounded, color: Colors.white, size: 80, shadows: [Shadow(color: Colors.black.withOpacity(0.5), blurRadius: 10)]),
+                                    child: Icon(Icons.sos_rounded, color: Colors.white, size: 80, shadows: [Shadow(color: Colors.white.withOpacity(0.5), blurRadius: 10)]),
                                   ),
                                 ),
                               ],
@@ -184,13 +184,13 @@ class _SosProtokoluScreenState extends State<SosProtokoluScreen> with SingleTick
                     const SizedBox(height: 40),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                      child: Text("Asılsız ihbarlar OtoDNA Karargahı tarafından tespit edilir ve sistemden ihracınıza neden olabilir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 10, fontFamily: 'Avenir', height: 1.5)),
+                      child: Text("Asılsız ihbarlar OtoDNA Karargahı tarafından tespit edilir ve sistemden ihracınıza neden olabilir.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain.withOpacity(0.3), fontSize: 10, fontFamily: 'Avenir', height: 1.5)),
                     ),
                   ] else ...[
                     // SİNYAL GÖNDERİLDİKTEN SONRA AÇILAN PANİK GEÇİRMEZ MENÜ
-                    const Icon(Icons.radar, color: Colors.white, size: 60),
+                    const Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 60),
                     const SizedBox(height: 20),
-                    const Text("SİNYAL YAYINDA", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 4, fontFamily: 'Avenir')),
+                    const Text("SİNYAL YAYINDA", style: TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 4, fontFamily: 'Avenir')),
                     const SizedBox(height: 8),
                     Text("Bölge bayileri konumunuza yönlendiriliyor.", style: TextStyle(color: _neonCyan, fontSize: 12, fontFamily: 'Avenir')),
                     const SizedBox(height: 50),
@@ -239,7 +239,7 @@ class _SosProtokoluScreenState extends State<SosProtokoluScreen> with SingleTick
                       children: [
                         Text(baslik, style: TextStyle(color: isPrimary ? _neonCyan : Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                         const SizedBox(height: 4),
-                        Text(altBaslik, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 10, fontFamily: 'Avenir')),
+                        Text(altBaslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 10, fontFamily: 'Avenir')),
                       ],
                     ),
                   ),

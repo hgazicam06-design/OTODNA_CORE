@@ -36,7 +36,7 @@ class _BildirimDetayScreenState extends ConsumerState<BildirimDetayScreen> {
         SnackBar(
           backgroundColor: SiberTema.kuantumCyan,
           content: Text('"$mesaj" protokolü ağa mühürlendi. 🦅',
-              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, letterSpacing: 1)),
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1)),
         ),
       );
     } catch (e) {
@@ -85,7 +85,7 @@ class _BildirimDetayScreenState extends ConsumerState<BildirimDetayScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -106,7 +106,7 @@ class _BildirimDetayScreenState extends ConsumerState<BildirimDetayScreen> {
             if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
 
             var data = snapshot.data!.data() as Map<String, dynamic>?;
-            if (data == null) return const Center(child: Text("SİNYAL KAYBI: VERİ OKUNAMADI", style: TextStyle(color: Colors.white38)));
+            if (data == null) return const Center(child: Text("SİNYAL KAYBI: VERİ OKUNAMADI", style: TextStyle(color: SiberTema.textMuted)));
 
             bool isBlocked = data['durum'] == 'ENGELLENDİ';
             bool isIntervened = data['durum'] == 'Müdahale Edildi';
@@ -171,14 +171,14 @@ class _BildirimDetayScreenState extends ConsumerState<BildirimDetayScreen> {
               const SizedBox(width: 16),
               Expanded(
                   child: Text(data['baslik']?.toString().toUpperCase() ?? 'BİLİNMEYEN SİNYAL',
-                      style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)
+                      style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)
                   )
               ),
             ],
           ),
-          const Divider(color: Colors.white10, height: 32),
+          const Divider(color: SiberTema.textMuted, height: 32),
           Text(data['mesaj'] ?? 'Mesaj içeriği okunamadı.',
-              style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.6, fontWeight: FontWeight.w500)
+              style: const TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.6, fontWeight: FontWeight.w500)
           ),
         ],
       ),
@@ -209,7 +209,7 @@ class _BildirimDetayScreenState extends ConsumerState<BildirimDetayScreen> {
       child: Row(children: [
         Icon(i, color: SiberTema.kuantumCyan, size: 14),
         const SizedBox(width: 12),
-        Text(t, style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+        Text(t, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
         const Spacer(),
         Text(v, style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 11, fontFamily: 'monospace', fontWeight: FontWeight.bold)),
       ]),
@@ -241,7 +241,7 @@ class _BildirimDetayScreenState extends ConsumerState<BildirimDetayScreen> {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             backgroundColor: accent == SiberTema.kuantumCyan ? SiberTema.kuantumCyan : Colors.transparent,
-            side: accent == Colors.white ? const BorderSide(color: Colors.white24) : null,
+            side: accent == Colors.white ? const BorderSide(color: SiberTema.textMuted) : null,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             elevation: accent == SiberTema.kuantumCyan ? 10 : 0,
             shadowColor: accent.withOpacity(0.3)
@@ -262,7 +262,7 @@ class _BildirimDetayScreenState extends ConsumerState<BildirimDetayScreen> {
           const SizedBox(height: 8),
           Text("GÖNDERİLEN YANIT: ${data['yanit']}",
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold)
+              style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)
           ),
         ],
       ),

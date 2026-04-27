@@ -146,7 +146,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent, // Zırh arka planı
         appBar: AppBar(
@@ -186,7 +186,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
                 Text(
                   _codeSent ? "KUANTUM ŞİFRESİ" : "SİBER DOĞRULAMA",
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: SiberTema.textMain,
                     fontSize: 26,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 4,
@@ -200,7 +200,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
                       : "Sisteme giriş için telefon numaranızı +90 formatında doğrulayın.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.6),
+                    color: SiberTema.textMain.withOpacity(0.6),
                     fontSize: 14,
                     height: 1.5,
                     fontFamily: 'Avenir', // 🛠️ DÜZELTİLDİ
@@ -215,7 +215,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
                     color: SiberTema.matGrey.withOpacity(0.5),
                     border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
                     borderRadius: BorderRadius.circular(24),
-                    boxShadow: const [BoxShadow(color: Colors.black54, blurRadius: 20, offset: Offset(0, 10))], // 🛠️ DÜZELTİLDİ: Katmanlı Derinlik
+                    boxShadow: const [BoxShadow(color: Colors.white54, blurRadius: 20, offset: Offset(0, 10))], // 🛠️ DÜZELTİLDİ: Katmanlı Derinlik
                   ),
                   child: Column(
                     children: [
@@ -287,10 +287,10 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
       controller: controller,
       keyboardType: keyboardType,
       maxLength: maxLength,
-      style: const TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Avenir', letterSpacing: 1.5, fontWeight: FontWeight.bold), // 🛠️ DÜZELTİLDİ
+      style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontFamily: 'Avenir', letterSpacing: 1.5, fontWeight: FontWeight.bold), // 🛠️ DÜZELTİLDİ
       decoration: InputDecoration(
         counterText: "", // maxLength yazısını gizler
-        prefixIcon: Icon(icon, color: Colors.white54, size: 22),
+        prefixIcon: Icon(icon, color: SiberTema.textMuted, size: 22),
         hintText: hint,
         hintStyle: const TextStyle(color: Colors.white30, fontSize: 14, fontFamily: 'Avenir', letterSpacing: 1), // 🛠️ DÜZELTİLDİ
         filled: true,

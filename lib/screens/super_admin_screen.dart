@@ -72,7 +72,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
   void _siberMesajGoster(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.black, letterSpacing: 1, fontFamily: 'Avenir')),
+        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 1, fontFamily: 'Avenir')),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -82,7 +82,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -93,7 +93,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
             children: [
               Icon(Icons.admin_panel_settings, color: SiberTema.kuantumCyan, size: 24),
               SizedBox(width: 12),
-              Text('ANKARA MERKEZ KARARGAH', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+              Text('ANKARA MERKEZ KARARGAH', style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
             ],
           ),
           centerTitle: true,
@@ -153,9 +153,9 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
               decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3))),
               child: Column(
                 children: [
-                  const Text("OTODNA KÜRESEL SİSTEM HACMİ", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                  const Text("OTODNA KÜRESEL SİSTEM HACMİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                   const SizedBox(height: 12),
-                  Text("₺ ${data['toplam_hacim']}", style: const TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                  Text("₺ ${data['toplam_hacim']}", style: const TextStyle(color: SiberTema.textMain, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                 ],
               ),
             ),
@@ -168,7 +168,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
               ],
             ),
             const SizedBox(height: 48),
-            const Text("SON OTONOM İŞLEMLER", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+            const Text("SON OTONOM İŞLEMLER", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
             const SizedBox(height: 16),
             _buildCanliIslemListesi(),
           ],
@@ -220,7 +220,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("İPTAL TALEBİ: $id", style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                          Text("İPTAL TALEBİ: $id", style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                           const SizedBox(height: 6),
                           const Text("İkili Onay Sağlandı: Müşteri & Firma", style: TextStyle(color: adminPurple, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))
                         ],
@@ -285,7 +285,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
             ),
             const SizedBox(height: 40),
 
-            const Text("SİBER İHLAL YAPAN FİRMALAR (BLACKLIST)", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+            const Text("SİBER İHLAL YAPAN FİRMALAR (BLACKLIST)", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
             const SizedBox(height: 16),
             ...snapshot.data!.docs.map((doc) {
               var firma = doc.data() as Map<String, dynamic>;
@@ -330,9 +330,9 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
         children: [
           Icon(ikon, color: renk, size: 28),
           const SizedBox(height: 16),
-          Text(tutar, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+          Text(tutar, style: const TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
           const SizedBox(height: 8),
-          Text(baslik, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 9, fontWeight: FontWeight.bold, height: 1.5, letterSpacing: 1, fontFamily: 'Avenir')),
+          Text(baslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 9, fontWeight: FontWeight.bold, height: 1.5, letterSpacing: 1, fontFamily: 'Avenir')),
         ],
       ),
     );
@@ -350,9 +350,9 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(islem, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                Text(islem, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1.5, fontFamily: 'Avenir')),
                 const SizedBox(height: 4),
-                Text(detay, style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))
+                Text(detay, style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))
               ],
             ),
           ),
@@ -375,8 +375,8 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(plaka, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-                Text(konum, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))
+                Text(plaka, style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                Text(konum, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))
               ],
             ),
           ),
@@ -406,9 +406,9 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
             ],
           ),
           const SizedBox(height: 8),
-          Text(konum, style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-          const Divider(color: Colors.white12, height: 24),
-          Text("SİBER İHLAL: $sebep", style: const TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+          Text(konum, style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+          const Divider(color: SiberTema.textMuted, height: 24),
+          Text("SİBER İHLAL: $sebep", style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -416,7 +416,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
               TextButton(onPressed: () {}, child: const Text("UYARI SİNYALİ", style: TextStyle(color: Colors.orangeAccent, fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir'))),
               const SizedBox(width: 12),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kanKirmizi, foregroundColor: Colors.black, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kanKirmizi, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
                 onPressed: () {},
                 child: const Text("MEN ET", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
               ),
@@ -432,9 +432,9 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.shield_outlined, color: Colors.white12, size: 64),
+          const Icon(Icons.shield_outlined, color: SiberTema.textMuted, size: 64),
           const SizedBox(height: 16),
-          Text(mesaj, style: const TextStyle(color: Colors.white12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
         ],
       ),
     );
@@ -452,9 +452,9 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("ADMİN YETKİSİ: MÜHÜR KIRMA", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+            const Text("ADMİN YETKİSİ: MÜHÜR KIRMA", style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             const SizedBox(height: 24),
-            Text("İTİRAZ SEBEBİ: ${itiraz['sebep']}", style: const TextStyle(color: Colors.white70, fontSize: 11, fontFamily: 'Avenir')),
+            Text("İTİRAZ SEBEBİ: ${itiraz['sebep']}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontFamily: 'Avenir')),
             const SizedBox(height: 32),
             SizedBox(
               width: double.infinity,
@@ -462,7 +462,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> with TickerProvider
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: adminPurple),
                 onPressed: () => _muhurKir(islemId),
-                child: const Text("MÜHRÜ KIR VE ONAYLA", style: TextStyle(fontWeight: FontWeight.w900, color: Colors.black, fontFamily: 'Avenir')),
+                child: const Text("MÜHRÜ KIR VE ONAYLA", style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white, fontFamily: 'Avenir')),
               ),
             )
           ],

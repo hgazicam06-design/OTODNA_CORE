@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
-import '../../services/siber_hukuk_motoru.dart';
+import '../../services/corporate_legal_engine.dart';
 
 class AracDegerKaybiScreen extends StatefulWidget {
   const AracDegerKaybiScreen({super.key});
@@ -20,7 +20,7 @@ class _AracDegerKaybiScreenState extends State<AracDegerKaybiScreen> {
   final TextEditingController _kusurController = TextEditingController();
   final TextEditingController _saseController = TextEditingController();
 
-  final SiberHukukMotoru _hukukMotoru = SiberHukukMotoru();
+  final CorporateLegalEngine _hukukMotoru = CorporateLegalEngine();
 
   void _aiHesaplamaBaslat() async {
     if (_smsController.text.isEmpty || _kmController.text.isEmpty || _kusurController.text.isEmpty || _saseController.text.isEmpty) {
@@ -67,12 +67,12 @@ class _AracDegerKaybiScreenState extends State<AracDegerKaybiScreen> {
           children: [
             Icon(isPert ? Icons.cancel : Icons.warning, color: isPert ? SiberTema.kanKirmizi : Colors.orangeAccent, size: 32),
             const SizedBox(width: 12),
-            const Text("HUKUK MOTORU UYARISI", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+            const Text("HUKUK MOTORU UYARISI", style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
           ],
         ),
-        content: Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+        content: Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("ANLADIM", style: TextStyle(color: Colors.white38)))
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("ANLADIM", style: TextStyle(color: SiberTema.textMuted)))
         ],
       )
     );
@@ -93,7 +93,7 @@ class _AracDegerKaybiScreenState extends State<AracDegerKaybiScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -129,9 +129,9 @@ class _AracDegerKaybiScreenState extends State<AracDegerKaybiScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Siber Hukuk Ağı: Senkronize", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
+                          Text("Siber Hukuk Ağı: Senkronize", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13)),
                           SizedBox(height: 4),
-                          Text("Yargıtay emsalleri ile eşzamanlı TRAMER okuması yapılıyor.", style: TextStyle(color: Colors.white54, fontSize: 11)),
+                          Text("Yargıtay emsalleri ile eşzamanlı TRAMER okuması yapılıyor.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
                         ],
                       ),
                     ),
@@ -164,7 +164,7 @@ class _AracDegerKaybiScreenState extends State<AracDegerKaybiScreen> {
                           children: [
                             Text("HUKUKİ AI MOTORU", style: TextStyle(color: Color(0xFFEF4444), fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.2)),
                             SizedBox(height: 6),
-                            Text("Kazaya karışan aracınızın piyasa değer kaybını Kuantum AI motoru ile saniyeler içinde hesaplayın.", style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.4))
+                            Text("Kazaya karışan aracınızın piyasa değer kaybını Kuantum AI motoru ile saniyeler içinde hesaplayın.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.4))
                           ]
                       )
                   ),
@@ -174,7 +174,7 @@ class _AracDegerKaybiScreenState extends State<AracDegerKaybiScreen> {
             const SizedBox(height: 32),
 
             // 🛠️ 3. FORM ALANI (Glassmorphism Cam Efekti)
-            const Text("KAZA VE HASAR DETAYLARI", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+            const Text("KAZA VE HASAR DETAYLARI", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
             const SizedBox(height: 16),
             _buildSiberGirisAlani("Kusur Oranınız (%)", "Örn: %0 (Haklı Taraf)", Icons.pie_chart_outline, panelColor, primaryCyan),
             _buildSiberGirisAlani("Değişen Parça Sayısı", "Örn: 2", Icons.build_circle_outlined, panelColor, primaryCyan),
@@ -202,8 +202,8 @@ class _AracDegerKaybiScreenState extends State<AracDegerKaybiScreen> {
                 child: ElevatedButton.icon(
                     style: SiberTema.kuantumButonStili(),
                     onPressed: _aiHesaplamaBaslat,
-                    icon: const Icon(Icons.psychology, size: 28, color: Colors.black),
-                    label: const Text("SMS'İ OKU VE HESAPLA", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 1))
+                    icon: const Icon(Icons.psychology, size: 28, color: Colors.white),
+                    label: const Text("SMS'İ OKU VE HESAPLA", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 1))
                 )
             ),
             const SizedBox(height: 32),
@@ -226,11 +226,11 @@ class _AracDegerKaybiScreenState extends State<AracDegerKaybiScreen> {
                       child: const Icon(Icons.check_circle, color: SiberTema.kuantumCyan, size: 48),
                     ),
                     const SizedBox(height: 20),
-                    const Text("TAHMİNİ DEĞER KAYBI", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                    const Text("TAHMİNİ DEĞER KAYBI", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
                     const SizedBox(height: 8),
                     Text("₺${_hesaplananTutar.toStringAsFixed(0)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 44, fontWeight: FontWeight.w900, letterSpacing: 1)),
                     const SizedBox(height: 20),
-                    const Text("Bu tutarı karşı tarafın sigortasından tahsil etmek için OtoDNA Hukuk Departmanı'na tek tuşla dosya açabilirsiniz.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 12, height: 1.5)),
+                    const Text("Bu tutarı karşı tarafın sigortasından tahsil etmek için OtoDNA Hukuk Departmanı'na tek tuşla dosya açabilirsiniz.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
                     const SizedBox(height: 24),
                     SizedBox(
                       width: double.infinity,
@@ -263,22 +263,22 @@ class _AracDegerKaybiScreenState extends State<AracDegerKaybiScreen> {
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
+            Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             Container(
                 decoration: BoxDecoration(
                     color: SiberTema.matGrey.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.white12)
+                    border: Border.all(color: SiberTema.textMuted)
                 ),
                 child: TextField(
                     controller: controller,
                     keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-                    style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
+                    style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold),
                     decoration: InputDecoration(
                         prefixIcon: Icon(ikon, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 18),
                         hintText: hint,
-                        hintStyle: const TextStyle(color: Colors.white24, fontSize: 11),
+                        hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 11),
                         border: InputBorder.none,
                         contentPadding: const EdgeInsets.symmetric(vertical: 14)
                     )

@@ -31,7 +31,7 @@ class _SiberDnaRadarScreenState extends State<SiberDnaRadarScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
-        shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+        shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
         leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
         title: Text('D N A   R A D A R I', style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'Avenir')),
         centerTitle: true,
@@ -90,13 +90,13 @@ class _SiberDnaRadarScreenState extends State<SiberDnaRadarScreen> {
         children: [
           Container(
             padding: const EdgeInsets.all(32),
-            decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle, border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 20)]),
-            child: const Icon(Icons.blur_on, color: Colors.black26, size: 64),
+            decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle, border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 20)]),
+            child: const Icon(Icons.blur_on, color: Colors.white26, size: 64),
           ),
           const SizedBox(height: 24),
           Text("GARAJ BOŞ", style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           const SizedBox(height: 8),
-          const Text("Sisteme kayıtlı bir aracınız bulunmuyor.", style: TextStyle(color: Colors.black45, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+          const Text("Sisteme kayıtlı bir aracınız bulunmuyor.", style: TextStyle(color: Colors.white45, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         ],
       ),
     );
@@ -161,7 +161,7 @@ class _SiberDnaRadarScreenState extends State<SiberDnaRadarScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(dnaSkoru.toString(), style: TextStyle(color: skorRengi, fontSize: 24, fontWeight: FontWeight.w900, fontFamily: 'Avenir', height: 1)),
-                            const Text("DNA", style: TextStyle(color: Colors.black38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+                            const Text("DNA", style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
                           ],
                         )
                       ],
@@ -176,7 +176,7 @@ class _SiberDnaRadarScreenState extends State<SiberDnaRadarScreen> {
                       children: [
                         Text(plaka, style: TextStyle(color: textColor, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                         const SizedBox(height: 4),
-                        Text("$marka $model".toUpperCase(), style: const TextStyle(color: Colors.black45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                        Text("$marka $model".toUpperCase(), style: const TextStyle(color: Colors.white45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                         const SizedBox(height: 12),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -207,8 +207,8 @@ class _SiberDnaRadarScreenState extends State<SiberDnaRadarScreen> {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white, 
-        border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
+        border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
+        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
       ),
       child: SizedBox(
         width: double.infinity,

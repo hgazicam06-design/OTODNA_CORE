@@ -135,14 +135,14 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("DİJİTAL GARANTİ MÜHÜRLEME", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
+          title: const Text("DİJİTAL GARANTİ MÜHÜRLEME", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
           centerTitle: true,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(1),
@@ -160,7 +160,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
                 children: [
                   _build7DNeonIkon(Icons.verified_user, SiberTema.kuantumCyan),
                   const SizedBox(width: 16),
-                  const Text("SİSTEM ONAYI: İşlem Tamamlandı", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                  const Text("SİSTEM ONAYI: İşlem Tamamlandı", style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                 ],
               ),
               const SizedBox(height: 24),
@@ -171,7 +171,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
               const SizedBox(height: 40),
 
               // 3. MÜHÜRLENECEK SÜRE GİRİŞİ (7D İç Gölgeli Ekran)
-              const Text("GARANTİ SÜRESİNİ ONAYLAYIN (VEYA DÜZENLEYİN)", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 10, fontFamily: 'Avenir')),
+              const Text("GARANTİ SÜRESİNİ ONAYLAYIN (VEYA DÜZENLEYİN)", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 10, fontFamily: 'Avenir')),
               const SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(
@@ -180,7 +180,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
                     border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 1.5),
                     // SİBER DÜZELTME: inset: true kaldırıldı, hata yok edildi!
                     boxShadow: [
-                      BoxShadow(color: Colors.black.withOpacity(0.9), blurRadius: 10),
+                      BoxShadow(color: Colors.white.withOpacity(0.9), blurRadius: 10),
                       BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 15, spreadRadius: 2), // Dış Neon Kalkanı
                     ]
                 ),
@@ -189,7 +189,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
                   style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
                   decoration: InputDecoration(
                     hintText: "Örn: 12 Ay / 20.000 KM",
-                    hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 16, fontFamily: 'Avenir'),
+                    hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 16, fontFamily: 'Avenir'),
                     prefixIcon: const Icon(Icons.shield, color: SiberTema.kuantumCyan, size: 28),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
@@ -229,7 +229,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.5),
+        color: Colors.white.withOpacity(0.5),
         shape: BoxShape.circle,
         border: Border.all(color: renk.withOpacity(0.4), width: 1.5),
         boxShadow: [BoxShadow(color: renk.withOpacity(0.25), blurRadius: 15, spreadRadius: 2)], // Dış Glow
@@ -253,7 +253,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
           ),
           border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
           boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.8), blurRadius: 15, offset: const Offset(0, 8)), // Kasa Derinliği
+            BoxShadow(color: Colors.white.withOpacity(0.8), blurRadius: 15, offset: const Offset(0, 8)), // Kasa Derinliği
           ]
       ),
       child: Column(
@@ -269,7 +269,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
           const SizedBox(height: 16),
           Text(
             "Araç kullanıcısının geçmiş arazi şartları (Asfalt/Zorlu Arazi) ve kullanım alışkanlıkları incelenmiştir. Sistem, riski minimize etmek için aşağıdaki süreyi önermektedir.",
-            style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12, height: 1.5, fontFamily: 'Avenir'),
+            style: TextStyle(color: SiberTema.textMain.withOpacity(0.8), fontSize: 12, height: 1.5, fontFamily: 'Avenir'),
           ),
           const SizedBox(height: 20),
 
@@ -282,14 +282,14 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
                 border: Border.all(color: _aiOrange.withOpacity(0.4), width: 1.5),
                 // SİBER DÜZELTME: inset: true kaldırıldı!
                 boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(0.9), blurRadius: 8),
+                  BoxShadow(color: Colors.white.withOpacity(0.9), blurRadius: 8),
                   BoxShadow(color: _aiOrange.withOpacity(0.1), blurRadius: 10, spreadRadius: 1) // Hafif Parlama
                 ]
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Önerilen Güvenli Süre:", style: TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
+                const Text("Önerilen Güvenli Süre:", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
                 Text(_aiOnerisi, style: const TextStyle(color: _aiOrange, fontWeight: FontWeight.w900, fontSize: 15, fontFamily: 'Avenir', shadows: [Shadow(color: _aiOrange, blurRadius: 8)])),
               ],
             ),

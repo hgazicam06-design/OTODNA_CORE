@@ -31,7 +31,7 @@ class _SiberFinansMerkeziScreenState extends State<SiberFinansMerkeziScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -82,7 +82,7 @@ class _SiberFinansMerkeziScreenState extends State<SiberFinansMerkeziScreen> {
         children: [
           Icon(ikon, color: SiberTema.kuantumCyan, size: 20),
           const SizedBox(width: 8),
-          Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
         ],
       ),
     );
@@ -144,16 +144,16 @@ class _SiberFinansMerkeziScreenState extends State<SiberFinansMerkeziScreen> {
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.02),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.white10),
+                border: Border.all(color: SiberTema.textMuted),
               ),
               child: Column(
                 children: [
                   _buildKazancSatiri("GÜNLÜK KAZANÇ", gunlukKazan, SiberTema.sariAltin),
-                  const Divider(color: Colors.white10, height: 1),
+                  const Divider(color: SiberTema.textMuted, height: 1),
                   _buildKazancSatiri("HAFTALIK KAZANÇ", haftalikKazan, SiberTema.kuantumCyan),
-                  const Divider(color: Colors.white10, height: 1),
+                  const Divider(color: SiberTema.textMuted, height: 1),
                   _buildKazancSatiri("AYLIK KAZANÇ", aylikKazan, Colors.white),
-                  const Divider(color: Colors.white10, height: 1),
+                  const Divider(color: SiberTema.textMuted, height: 1),
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(color: SiberTema.sariAltin.withOpacity(0.1)),
@@ -180,7 +180,7 @@ class _SiberFinansMerkeziScreenState extends State<SiberFinansMerkeziScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold)),
+          Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
           Text(_formatCurrency(tutar), style: TextStyle(color: renk, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         ],
       ),
@@ -213,7 +213,7 @@ class _SiberFinansMerkeziScreenState extends State<SiberFinansMerkeziScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.black45,
+          color: Colors.white45,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: renk.withOpacity(0.5)),
         ),
@@ -221,8 +221,8 @@ class _SiberFinansMerkeziScreenState extends State<SiberFinansMerkeziScreen> {
           children: [
             Icon(ikon, color: renk, size: 24),
             const SizedBox(width: 16),
-            Expanded(child: Text(baslik, style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1))),
-            const Icon(Icons.arrow_forward_ios, color: Colors.white38, size: 14),
+            Expanded(child: Text(baslik, style: TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1))),
+            const Icon(Icons.arrow_forward_ios, color: SiberTema.textMuted, size: 14),
           ],
         ),
       ),
@@ -237,7 +237,7 @@ class _SiberFinansMerkeziScreenState extends State<SiberFinansMerkeziScreen> {
         if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
 
         final docs = snapshot.data!.docs;
-        if (docs.isEmpty) return const Center(child: Text("Henüz finansal işlem bulunmuyor...", style: TextStyle(color: Colors.white54)));
+        if (docs.isEmpty) return const Center(child: Text("Henüz finansal işlem bulunmuyor...", style: TextStyle(color: SiberTema.textMuted)));
 
         return ListView.builder(
           shrinkWrap: true,
@@ -270,15 +270,15 @@ class _SiberFinansMerkeziScreenState extends State<SiberFinansMerkeziScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(data['bayi_adi'] ?? "Bilinmeyen Bayi", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
-                        Text(data['islem_tipi'] ?? "GENEL İŞLEM", style: const TextStyle(color: Colors.white38, fontSize: 11)),
+                        Text(data['bayi_adi'] ?? "Bilinmeyen Bayi", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13)),
+                        Text(data['islem_tipi'] ?? "GENEL İŞLEM", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11)),
                       ],
                     ),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(_formatCurrency((data['brut_tutar'] ?? 0).toDouble()), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14)),
+                      Text(_formatCurrency((data['brut_tutar'] ?? 0).toDouble()), style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 14)),
                       Text(islemIptal ? "İPTAL EDİLDİ" : "+${_formatCurrency((data['gazi_payi_12'] ?? 0).toDouble())}", style: TextStyle(color: islemRengi, fontSize: 11, fontWeight: FontWeight.bold)),
                     ],
                   ),
@@ -305,7 +305,7 @@ class _SiberFinansMerkeziScreenState extends State<SiberFinansMerkeziScreen> {
         children: [
           Icon(ikon, color: renk, size: 28),
           const SizedBox(height: 16),
-          Text(deger, style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+          Text(deger, style: const TextStyle(color: SiberTema.textMain, fontSize: 28, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           const SizedBox(height: 4),
           Text(baslik, style: TextStyle(color: renk, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
         ],

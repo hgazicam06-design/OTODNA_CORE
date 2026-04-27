@@ -84,7 +84,7 @@ class _YedekParcaVitriniScreenState extends State<YedekParcaVitriniScreen> {
   void _siberUyariVer(String mesaj, bool isError) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir', fontSize: 11)),
+        content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir', fontSize: 11)),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan.withOpacity(0.9),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -95,14 +95,14 @@ class _YedekParcaVitriniScreenState extends State<YedekParcaVitriniScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.radar, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("AKILLI KÂR EKOSİSTEMİ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13, fontFamily: 'Avenir')),
+          title: const Text("AKILLI KÂR EKOSİSTEMİ", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13, fontFamily: 'Avenir')),
           centerTitle: true,
         ),
         body: Column(
@@ -235,23 +235,23 @@ class _YedekParcaVitriniScreenState extends State<YedekParcaVitriniScreen> {
                       decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(4), border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5))),
                       child: const Text("ONAYLI TEDARİKÇİ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                     ),
-                    Text("ID: ${siparisId.substring(0, 6).toUpperCase()}", style: const TextStyle(color: Colors.white24, fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Courier')),
+                    Text("ID: ${siparisId.substring(0, 6).toUpperCase()}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Courier')),
                   ],
                 ),
                 const SizedBox(height: 16),
 
                 // 2. SATICI İSMİ (Şeffaf)
-                Text(bayi.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                Text(bayi.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
 
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 12),
-                  child: Divider(color: Colors.white10, height: 1, thickness: 1),
+                  child: Divider(color: SiberTema.textMuted, height: 1, thickness: 1),
                 ),
 
                 // 3. PARÇA BİLGİSİ
                 const Text("HEDEF PARÇA", style: TextStyle(color: Colors.white30, fontSize: 9, letterSpacing: 2, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
-                Text(parca, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                Text(parca, style: const TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
 
                 const SizedBox(height: 24),
 

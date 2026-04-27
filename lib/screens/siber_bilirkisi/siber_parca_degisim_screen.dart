@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:go_router/go_router.dart';
 import 'dart:io';
 
 import '../../core/siber_tema.dart';
@@ -27,6 +28,14 @@ class SiberParcaDegisimScreen extends StatefulWidget {
 class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
   final TorpidoServisi _torpidoServisi = TorpidoServisi();
   final ImagePicker _picker = ImagePicker();
+
+  // 🏢 FİLDİŞİ SEDEF PALET
+  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color surfaceColor = Colors.white;
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color textMain = const Color(0xFF1E293B);
+  final Color textMuted = const Color(0xFF64748B);
+  final Color dangerColor = SiberTema.kanKirmizi;
 
   final TextEditingController _aracIdCtrl = TextEditingController();
   final TextEditingController _parcaAdiCtrl = TextEditingController();
@@ -69,7 +78,7 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
   // 🤖 YENİ: YAPAY ZEKA GÖRSEL TARAMA TETİKLEYİCİSİ
   Future<void> _aiTaramaBaslat() async {
     if (!_adliProtokolOnaylandi) {
-      _siberUyari("YASAL ONAY GEREKLİ", "Devam etmek için Adli Protokolü kabul etmeniz zorunludur.", Colors.orangeAccent);
+      _siberUyari("YASAL ONAY GEREKLİ", "Devam etmek için Adli Protokolü kabul etmeniz zorunludur.", Colors.orange.shade700);
       return;
     }
 
@@ -90,7 +99,7 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
         bool seriNoKullanilmisMi = await _torpidoServisi.seriNoKullanilmisMi(taramaSonucu['benzersizSeriNo']);
 
         if (seriNoKullanilmisMi) {
-          _siberUyari("🚨 SİBER İHLAL (ÇIKMA PARÇA)", "Bu seri numarası daha önce başka bir araçta kullanılmış! İşlem kilitlendi.", SiberTema.kanKirmizi);
+          _siberUyari("🚨 SİBER İHLAL (ÇIKMA PARÇA)", "Bu seri numarası daha önce başka bir araçta kullanılmış! İşlem kilitlendi.", dangerColor);
           setState(() {
             _oemKodu = null;
             _benzersizSeriNo = null;
@@ -109,11 +118,11 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
         });
 
         HapticFeedback.vibrate();
-        _siberUyari("AI TARAMA BAŞARILI", "Orijinal kutu ve irsaliye doğrulandı. Güven Skoru: %$_aiGuvenSkoru", SiberTema.kuantumCyan);
+        _siberUyari("AI TARAMA BAŞARILI", "Orijinal kutu ve irsaliye doğrulandı. Güven Skoru: %$_aiGuvenSkoru", primaryTeal);
 
       } catch (e) {
         setState(() => _islemSuruyor = false);
-        _siberUyari("TARAMA HATASI", e.toString().replaceAll("Exception: ", ""), SiberTema.kanKirmizi);
+        _siberUyari("TARAMA HATASI", e.toString().replaceAll("Exception: ", ""), dangerColor);
       }
     }
   }
@@ -121,14 +130,16 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
   void _siberUyari(String baslik, String mesaj, Color renk) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: SiberTema.matGrey,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)),
+        backgroundColor: surfaceColor,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: renk.withOpacity(0.3), width: 1.5)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            const SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: textMain, fontSize: 12)),
           ],
         ),
       ),
@@ -137,24 +148,24 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
 
   Future<void> _garantiMuhruBas() async {
     if (!_adliProtokolOnaylandi) {
-      _siberUyari("YASAL ONAY GEREKLİ", "Devam etmek için Adli Protokolü kabul etmeniz zorunludur.", Colors.orangeAccent);
+      _siberUyari("YASAL ONAY GEREKLİ", "Devam etmek için Adli Protokolü kabul etmeniz zorunludur.", Colors.orange.shade700);
       return;
     }
 
     HapticFeedback.heavyImpact();
 
     if (_aracIdCtrl.text.isEmpty || _parcaAdiCtrl.text.isEmpty) {
-      _siberUyari("EKSİK VERİ", "Araç ID ve Parça Adı boş bırakılamaz.", Colors.orangeAccent);
+      _siberUyari("EKSİK VERİ", "Araç ID ve Parça Adı boş bırakılamaz.", Colors.orange.shade700);
       return;
     }
 
     if (_oemKodu == null || _benzersizSeriNo == null) {
-      _siberUyari("SİBER İHLAL", "AI Taraması yapılmadan Mühür basılamaz!", SiberTema.kanKirmizi);
+      _siberUyari("SİBER İHLAL", "AI Taraması yapılmadan Mühür basılamaz!", dangerColor);
       return;
     }
 
     if (_eskiParcaFoto == null || _yeniParcaFoto == null) {
-      _siberUyari("EKSİK KANIT", "Çıkan eski parça ve takılan yeni parçanın fotoğrafları ZORUNLUDUR.", SiberTema.kanKirmizi);
+      _siberUyari("EKSİK KANIT", "Çıkan eski parça ve takılan yeni parçanın fotoğrafları ZORUNLUDUR.", dangerColor);
       return;
     }
 
@@ -165,7 +176,7 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
       bool oemGecerliMi = await _torpidoServisi.oemKoduDogrula(_oemKodu!);
       
       if (!oemGecerliMi) {
-        _siberUyari("SAHTE PARÇA TESPİTİ", "Okunan OEM kodu global katalogda bulunamadı. OtoDNA Mührü BASILAMAZ!", SiberTema.kanKirmizi);
+        _siberUyari("SAHTE PARÇA TESPİTİ", "Okunan OEM kodu global katalogda bulunamadı. OtoDNA Mührü BASILAMAZ!", dangerColor);
         setState(() => _islemSuruyor = false);
         return;
       }
@@ -206,10 +217,10 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
         _muhurBasildi = true;
       });
       HapticFeedback.vibrate();
-      _siberUyari("MÜHÜRLENDİ", "OtoDNA Garanti Mührü basıldı ve müşteri torpidosuna iletildi.", SiberTema.kuantumCyan);
+      _siberUyari("MÜHÜRLENDİ", "OtoDNA Garanti Mührü basıldı ve müşteri torpidosuna iletildi.", primaryTeal);
 
     } catch (e) {
-      _siberUyari("AĞ ÇÖKTÜ", "Mühürleme işlemi sırasında hata oluştu.", SiberTema.kanKirmizi);
+      _siberUyari("AĞ ÇÖKTÜ", "Mühürleme işlemi sırasında hata oluştu.", dangerColor);
     } finally {
       setState(() => _islemSuruyor = false);
     }
@@ -218,14 +229,14 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: bgColor,
         appBar: AppBar(
-          title: const Text("🛡️ GARANTİ MÜHRÜ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-          backgroundColor: Colors.black.withOpacity(0.8),
+          title: Text("🛡️ GARANTİ MÜHRÜ", style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => context.pop()),
         ),
         body: _muhurBasildi ? _buildMuhurEkrani() : _buildKriminalForm(),
       ),
@@ -234,27 +245,27 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
 
   Widget _buildKriminalForm() {
     return ListView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       physics: const BouncingScrollPhysics(),
       children: [
         // Siber Garanti Uyarı Kalkanı
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: SiberTema.kuantumCyan.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
+            color: primaryTeal.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: primaryTeal.withOpacity(0.3), width: 1.5),
           ),
           child: Row(
             children: [
-              const Icon(Icons.handshake, color: SiberTema.kuantumCyan, size: 30),
+              Icon(Icons.handshake, color: primaryTeal, size: 30),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
                   _musteriOncedenTaradiMi 
                     ? "MÜŞTERİ ONAYLI İŞLEM: Müşteri takılacak parçayı önceden taradı. İşlemi onaylayarak Çift Taraflı Mührü tamamlayın."
                     : "MÜŞTERİ YOK: Tarama sorumluluğu sizde. İşlem sonrası müşteriye uzaktan onay bildirimi gidecek.",
-                  style: const TextStyle(color: Colors.white70, fontSize: 11, height: 1.5, fontFamily: 'Avenir'),
+                  style: TextStyle(color: textMain, fontSize: 11, height: 1.5, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
                 ),
               ),
               Switch(
@@ -273,7 +284,8 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
                     }
                   });
                 },
-                activeColor: SiberTema.kuantumCyan,
+                activeColor: primaryTeal,
+                inactiveTrackColor: Colors.black12,
               )
             ],
           ),
@@ -287,30 +299,30 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
         const SizedBox(height: 16),
         
         // 🚨 OTONOM AI TARAMA KONSOLU
-        const Text("KUTU VE FATURA TARAMASI (YAPAY ZEKA)", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+        Text("KUTU VE FATURA TARAMASI (YAPAY ZEKA)", style: TextStyle(color: textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
         const SizedBox(height: 12),
         
         if (_oemKodu == null) ...[
           // Tarama Yapılmamışsa Kamera Butonu
           InkWell(
             onTap: _adliProtokolOnaylandi ? _aiTaramaBaslat : () {
-              _siberUyari("ONAY BEKLENİYOR", "Lütfen önce aşağıdaki hukuki metni okuyup onaylayın.", Colors.orangeAccent);
+              _siberUyari("ONAY BEKLENİYOR", "Lütfen önce aşağıdaki hukuki metni okuyup onaylayın.", Colors.orange.shade700);
             },
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
             child: Container(
               height: 100,
               decoration: BoxDecoration(
-                color: _adliProtokolOnaylandi ? SiberTema.kuantumCyan.withOpacity(0.1) : Colors.white12,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: _adliProtokolOnaylandi ? SiberTema.kuantumCyan : Colors.white24, width: 2),
-                boxShadow: _adliProtokolOnaylandi ? [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.2), blurRadius: 15)] : [],
+                color: _adliProtokolOnaylandi ? primaryTeal.withOpacity(0.05) : surfaceColor,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: _adliProtokolOnaylandi ? primaryTeal.withOpacity(0.5) : Colors.black.withOpacity(0.05), width: 2),
+                boxShadow: _adliProtokolOnaylandi ? [BoxShadow(color: primaryTeal.withOpacity(0.1), blurRadius: 15)] : [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)],
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.center_focus_strong, color: _adliProtokolOnaylandi ? SiberTema.kuantumCyan : Colors.white38, size: 36),
+                  Icon(Icons.center_focus_strong, color: _adliProtokolOnaylandi ? primaryTeal : textMuted.withOpacity(0.5), size: 36),
                   const SizedBox(height: 8),
-                  Text("🤖 YAPAY ZEKA İLE KUTUYU VE FATURAYI TARA", style: TextStyle(color: _adliProtokolOnaylandi ? SiberTema.kuantumCyan : Colors.white38, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
+                  Text("🤖 YAPAY ZEKA İLE KUTUYU VE FATURAYI TARA", style: TextStyle(color: _adliProtokolOnaylandi ? primaryTeal : textMuted, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
                 ],
               ),
             ),
@@ -318,23 +330,24 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
         ] else ...[
           // Tarama Yapılmışsa Kilitli Veriler
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.black45,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5)),
+              color: surfaceColor,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: primaryTeal.withOpacity(0.3)),
+              boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
+                Row(
                   children: [
-                    Icon(Icons.lock, color: SiberTema.kuantumCyan, size: 16),
-                    SizedBox(width: 8),
-                    Text("AI TARAFINDAN KİLİTLENDİ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                    Icon(Icons.lock, color: primaryTeal, size: 16),
+                    const SizedBox(width: 8),
+                    Text("AI TARAFINDAN KİLİTLENDİ", style: TextStyle(color: primaryTeal, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
                   ],
                 ),
-                const Divider(color: Colors.white12, height: 20),
+                Divider(color: Colors.white.withOpacity(0.05), height: 24),
                 _buildKilitliVeriSatiri("OEM Kodu:", _oemKodu!),
                 const SizedBox(height: 8),
                 _buildKilitliVeriSatiri("Tek Kullanımlık Seri No:", _benzersizSeriNo!),
@@ -349,10 +362,10 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
         
         const SizedBox(height: 24),
         _buildSiberTextField("Garanti Süresi (Ay)", Icons.date_range, _garantiSuresiCtrl, type: TextInputType.number),
-        const SizedBox(height: 30),
+        const SizedBox(height: 32),
 
         // 📸 GÖRSEL KANIT ZORUNLULUĞU
-        const Text("DİJİTAL GÖRSEL KANITLAR (ZORUNLU)", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+        Text("DİJİTAL GÖRSEL KANITLAR (ZORUNLU)", style: TextStyle(color: textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
         const SizedBox(height: 12),
         Row(
           children: [
@@ -367,52 +380,54 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: SiberTema.kanKirmizi.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.5)),
+            color: dangerColor.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: dangerColor.withOpacity(0.3)),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Theme(
-                data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white54),
+                data: Theme.of(context).copyWith(unselectedWidgetColor: textMuted.withOpacity(0.5)),
                 child: Checkbox(
                   value: _adliProtokolOnaylandi,
-                  activeColor: SiberTema.kanKirmizi,
+                  activeColor: dangerColor,
                   checkColor: Colors.white,
                   onChanged: (val) {
                     setState(() => _adliProtokolOnaylandi = val ?? false);
                   },
                 ),
               ),
-              const Expanded(
+              Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(top: 12),
+                  padding: const EdgeInsets.only(top: 12),
                   child: Text(
                     "DİKKAT: Bu sistemdeki veriler Adli Delil niteliğindedir. Olası kaza incelemelerinde hukuki sorumluluk işlemi onaylayan taraflara aittir. OtoDNA donanım ve görsel zafiyetlerinden sorumlu tutulamaz.",
-                    style: TextStyle(color: Colors.white70, fontSize: 10, height: 1.5),
+                    style: TextStyle(color: dangerColor, fontSize: 10, height: 1.5, fontWeight: FontWeight.bold),
                   ),
                 ),
               )
             ],
           ),
         ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 32),
 
         // Mühürleme Butonu
         SizedBox(
           height: 60,
           child: _islemSuruyor
-              ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+              ? Center(child: CircularProgressIndicator(color: primaryTeal))
               : ElevatedButton.icon(
                   onPressed: _adliProtokolOnaylandi ? _garantiMuhruBas : () {
-                    _siberUyari("ONAY BEKLENİYOR", "Lütfen önce yukarıdaki hukuki metni okuyup onaylayın.", Colors.orangeAccent);
+                    _siberUyari("ONAY BEKLENİYOR", "Lütfen önce yukarıdaki hukuki metni okuyup onaylayın.", Colors.orange.shade700);
                   },
-                  icon: const Icon(Icons.fingerprint, color: Colors.black, size: 28),
+                  icon: const Icon(Icons.fingerprint, color: SiberTema.kuantumCyan, size: 28),
                   label: const Text("OTODNA MÜHRÜNÜ BAS VE FIRLAT", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: _adliProtokolOnaylandi ? SiberTema.kuantumCyan : Colors.white24,
-                    foregroundColor: Colors.black,
+                    backgroundColor: _adliProtokolOnaylandi ? primaryTeal : Colors.black12,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    elevation: 0
                   ),
                 ),
         ),
@@ -422,18 +437,19 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
   }
 
   Widget _buildSiberTextField(String hint, IconData icon, TextEditingController controller, {TextInputType type = TextInputType.text}) {
-    return TextField(
-      controller: controller,
-      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      keyboardType: type,
-      decoration: InputDecoration(
-        labelText: hint,
-        labelStyle: const TextStyle(color: SiberTema.kuantumCyan),
-        prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
-        filled: true,
-        fillColor: Colors.white.withOpacity(0.05),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white12)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
+    return Container(
+      decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]),
+      child: TextField(
+        controller: controller,
+        style: TextStyle(color: textMain, fontWeight: FontWeight.bold),
+        keyboardType: type,
+        decoration: InputDecoration(
+          labelText: hint,
+          labelStyle: TextStyle(color: textMuted, fontSize: 12),
+          prefixIcon: Icon(icon, color: primaryTeal, size: 20),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16)
+        ),
       ),
     );
   }
@@ -444,23 +460,24 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
       child: Container(
         height: 120,
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.05),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: resimFile != null ? SiberTema.kuantumCyan : Colors.white24, width: 1.5),
+          color: surfaceColor,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: resimFile != null ? primaryTeal : Colors.black.withOpacity(0.05), width: 1.5),
+          boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)],
           image: resimFile != null ? DecorationImage(image: FileImage(resimFile), fit: BoxFit.cover) : null,
         ),
         child: resimFile == null 
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.camera_alt, color: SiberTema.kuantumCyan, size: 30),
+                  Icon(Icons.camera_alt, color: textMuted.withOpacity(0.5), size: 30),
                   const SizedBox(height: 8),
-                  Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+                  Text(baslik, style: TextStyle(color: textMuted, fontSize: 10, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
                 ],
               )
             : Container(
-                color: Colors.black45,
-                child: const Center(child: Icon(Icons.check_circle, color: SiberTema.kuantumCyan, size: 40)),
+                decoration: BoxDecoration(color: Colors.white.withOpacity(0.6), borderRadius: BorderRadius.circular(14)),
+                child: Center(child: Icon(Icons.check_circle, color: primaryTeal, size: 40)),
               ),
       ),
     );
@@ -471,8 +488,8 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold)),
-        Text(deger, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+        Text(baslik, style: TextStyle(color: textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
+        Text(deger, style: TextStyle(color: textMain, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
       ],
     );
   }
@@ -483,13 +500,17 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.shield, color: SiberTema.kuantumCyan, size: 100),
-          const SizedBox(height: 24),
-          const Text("MÜHÜRLENDİ!", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir')),
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(color: primaryTeal.withOpacity(0.1), shape: BoxShape.circle),
+            child: Icon(Icons.shield, color: primaryTeal, size: 80),
+          ),
+          const SizedBox(height: 32),
+          Text("MÜHÜRLENDİ!", style: TextStyle(color: primaryTeal, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir')),
           const SizedBox(height: 16),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40),
-            child: Text("Parça garantisi dijital olarak mühürlendi ve müşterinin Dijital Torpidosuna ışınlandı. Ustanın onuru korunmuştur.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.5)),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Text("Parça garantisi dijital olarak mühürlendi ve müşterinin Dijital Torpidosuna ışınlandı. Ustanın onuru korunmuştur.", textAlign: TextAlign.center, style: TextStyle(color: textMuted, fontSize: 13, height: 1.5, fontWeight: FontWeight.w500)),
           ),
           const SizedBox(height: 40),
           OutlinedButton.icon(
@@ -507,9 +528,12 @@ class _SiberParcaDegisimScreenState extends State<SiberParcaDegisimScreen> {
                 _muhurBasildi = false;
               });
             },
-            icon: const Icon(Icons.refresh, color: SiberTema.kuantumCyan),
-            label: const Text("YENİ İŞLEM BAŞLAT", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold)),
-            style: OutlinedButton.styleFrom(side: const BorderSide(color: SiberTema.kuantumCyan)),
+            icon: Icon(Icons.refresh, color: primaryTeal),
+            label: Text("YENİ İŞLEM BAŞLAT", style: TextStyle(color: primaryTeal, fontWeight: FontWeight.bold)),
+            style: OutlinedButton.styleFrom(
+              side: BorderSide(color: primaryTeal.withOpacity(0.5), width: 2),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))
+            ),
           )
         ],
       ),

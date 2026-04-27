@@ -176,7 +176,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -215,12 +215,12 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
                     onPressed: _islemSuruyor ? null : details.onStepContinue,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: SiberTema.kuantumCyan,
-                      foregroundColor: Colors.black,
+                      foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
                     child: _islemSuruyor 
-                        ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
+                        ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                         : Text(_currentStep == 2 ? "KAYDI KARARGAHA İLET" : "İLERİ", style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
                   ),
                 ),
@@ -228,7 +228,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
                   const SizedBox(width: 12),
                   TextButton(
                     onPressed: _islemSuruyor ? null : details.onStepCancel,
-                    child: const Text("GERİ", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold)),
+                    child: const Text("GERİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)),
                   ),
                 ]
               ],
@@ -253,7 +253,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
           key: _formKey,
           child: Column(
             children: [
-              const Text("Müşterilerin size ulaşacağı resmi bilgileri girin.", style: TextStyle(color: Colors.white54, fontSize: 12)),
+              const Text("Müşterilerin size ulaşacağı resmi bilgileri girin.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
               const SizedBox(height: 20),
               _buildSiberTextField("Dükkan / Firma Adı", Icons.store_rounded, _firmaAdCtrl, zorunlu: true),
               const SizedBox(height: 16),
@@ -278,7 +278,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
       content: _buildGlassContainer(
         child: Column(
           children: [
-            const Text("Milisaniyelik harita aramalarında bulunabilmeniz için tam konumunuz.", style: TextStyle(color: Colors.white54, fontSize: 12)),
+            const Text("Milisaniyelik harita aramalarında bulunabilmeniz için tam konumunuz.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
             const SizedBox(height: 20),
             
             _buildSiberDropdown("Ülke", ulkeler, _secilenUlke, (v) {
@@ -305,7 +305,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
                 children: [
                   Icon(Icons.location_on_rounded, color: SiberTema.kuantumCyan, size: 24),
                   SizedBox(width: 12),
-                  Expanded(child: Text("Siber Harita Konumunuz (GeoPoint) onay sonrası karargah tarafından otomatik çekilecektir.", style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.4))),
+                  Expanded(child: Text("Siber Harita Konumunuz (GeoPoint) onay sonrası karargah tarafından otomatik çekilecektir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.4))),
                 ],
               ),
             )
@@ -357,7 +357,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
                       padding: EdgeInsets.only(top: 12),
                       child: Text(
                         "Evraklarımın Kuantum Karargahı tarafından onaylanana kadar vitrine (arama sonuçlarına) ÇIKAMAYACAĞINI anladım ve kabul ediyorum.",
-                        style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.5),
+                        style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.5),
                       ),
                     ),
                   )
@@ -389,7 +389,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
   Widget _buildSiberTextField(String hint, IconData icon, TextEditingController controller, {TextInputType type = TextInputType.text, bool zorunlu = false}) {
     return TextFormField(
       controller: controller,
-      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+      style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w600),
       keyboardType: type,
       validator: (value) {
         if (zorunlu && (value == null || value.trim().isEmpty)) return "Bu alan zorunludur.";
@@ -397,11 +397,11 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
       },
       decoration: InputDecoration(
         labelText: hint + (zorunlu ? " *" : ""),
-        labelStyle: const TextStyle(color: Colors.white54),
+        labelStyle: const TextStyle(color: SiberTema.textMuted),
         prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
         filled: true,
         fillColor: Colors.black45,
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white12)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.textMuted)),
         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
         errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kanKirmizi)),
         focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kanKirmizi)),
@@ -412,16 +412,16 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
   Widget _buildSiberDropdown(String label, List<String> items, String? currentValue, Function(String?) onChanged) {
     return DropdownButtonFormField<String>(
       value: currentValue,
-      items: items.map((e) => DropdownMenuItem(value: e, child: Text(e, style: const TextStyle(color: Colors.white)))).toList(),
+      items: items.map((e) => DropdownMenuItem(value: e, child: Text(e, style: const TextStyle(color: SiberTema.textMain)))).toList(),
       onChanged: items.isEmpty ? null : onChanged,
       dropdownColor: Colors.black87,
       icon: const Icon(Icons.arrow_drop_down, color: SiberTema.kuantumCyan),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: Colors.white54),
+        labelStyle: const TextStyle(color: SiberTema.textMuted),
         filled: true,
         fillColor: Colors.black45,
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white12)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.textMuted)),
         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
       ),
     );
@@ -452,7 +452,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
       child: Container(
         height: 120,
         decoration: BoxDecoration(
-          color: Colors.black45,
+          color: Colors.white45,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: resimFile != null ? SiberTema.kuantumCyan : Colors.white24, width: 1.5),
         ),
@@ -477,7 +477,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
             if (resimFile != null)
                const Padding(
                  padding: EdgeInsets.only(top: 4.0),
-                 child: Text("Değiştirmek için dokun", style: TextStyle(color: Colors.white38, fontSize: 8)),
+                 child: Text("Değiştirmek için dokun", style: TextStyle(color: SiberTema.textMuted, fontSize: 8)),
                ),
           ],
         ),

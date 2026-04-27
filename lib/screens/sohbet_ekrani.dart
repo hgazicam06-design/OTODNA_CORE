@@ -91,7 +91,7 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Ağ Hatası: Mesaj İletilemedi ($e)", style: const TextStyle(color: Colors.white)), backgroundColor: SiberTema.kanKirmizi),
+        SnackBar(content: Text("Ağ Hatası: Mesaj İletilemedi ($e)", style: const TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi),
       );
     }
   }
@@ -99,7 +99,7 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -122,7 +122,7 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(widget.karsiTarafIsim, style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                    Text(widget.karsiTarafIsim, style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                     const Text("Kuantum Ağı Bağlantısı Aktif 🟢", style: TextStyle(color: Colors.greenAccent, fontSize: 10, fontFamily: 'Avenir', letterSpacing: 1)),
                   ],
                 ),
@@ -148,7 +148,7 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
                       return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2));
                     }
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return Center(child: Text("Siber Tünel Temiz. İlk mesajı siz gönderin.", style: TextStyle(color: Colors.white.withOpacity(0.3), fontWeight: FontWeight.bold, fontFamily: 'Avenir')));
+                      return Center(child: Text("Siber Tünel Temiz. İlk mesajı siz gönderin.", style: TextStyle(color: SiberTema.textMain.withOpacity(0.3), fontWeight: FontWeight.bold, fontFamily: 'Avenir')));
                     }
 
                     return ListView.builder(
@@ -203,7 +203,7 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
                 const SizedBox(height: 4),
                 Text(
                   "OtoDNA sistemi üzerinden yapılmayan hiçbir ticaret Karargah güvencesinde değildir. Uygulama dışı ödeme ve işlemlerde tüm sorumluluk size aittir. Bu tüneldeki yazışmalar uyuşmazlık halinde resmi delil kabul edilir.",
-                  style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 10, height: 1.4, fontFamily: 'Avenir'),
+                  style: TextStyle(color: SiberTema.textMain.withOpacity(0.8), fontSize: 10, height: 1.4, fontFamily: 'Avenir'),
                 ),
               ],
             ),
@@ -236,7 +236,7 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
         child: Text(
           mesaj,
           style: TextStyle(
-            color: Colors.white.withOpacity(0.9),
+            color: SiberTema.textMain.withOpacity(0.9),
             fontSize: 14,
             fontWeight: FontWeight.w500,
             fontFamily: 'Avenir',
@@ -268,12 +268,12 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
                   ),
                   child: TextField(
                     controller: _mesajController,
-                    style: const TextStyle(color: Colors.white, fontSize: 14, fontFamily: 'Avenir'),
+                    style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontFamily: 'Avenir'),
                     textCapitalization: TextCapitalization.sentences,
                     maxLines: null, // Çoklu satır desteği
                     decoration: InputDecoration(
                       hintText: "Siber Ağa Mesaj Yaz...",
-                      hintStyle: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 13, fontFamily: 'Avenir'),
+                      hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.3), fontSize: 13, fontFamily: 'Avenir'),
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     ),

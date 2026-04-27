@@ -150,14 +150,14 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.radar, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: Text("DİSTRİBÜTÖR AĞI KURULUMU", style: TextStyle(color: Colors.white.withOpacity(0.9), fontWeight: FontWeight.w800, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
+          title: Text("DİSTRİBÜTÖR AĞI KURULUMU", style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontWeight: FontWeight.w800, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
         ),
         body: Container(
@@ -309,7 +309,7 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
         children: [
           Container(width: 4, height: 16, color: SiberTema.kuantumCyan),
           const SizedBox(width: 10),
-          Text(baslik, style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+          Text(baslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.7), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
         ],
       ),
     );
@@ -327,11 +327,11 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : (isMultiline ? TextInputType.multiline : TextInputType.text),
         maxLines: isMultiline ? 4 : 1,
-        style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+        style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
           hintText: hint,
-          hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 12),
+          hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 12),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.all(20),
         ),
@@ -354,9 +354,9 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
           isExpanded: true,
           dropdownColor: SiberTema.oledBlack,
           icon: const Icon(Icons.arrow_drop_down_circle, color: SiberTema.kuantumCyan, size: 20),
-          hint: Text(hint, style: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 12, fontWeight: FontWeight.bold)),
+          hint: Text(hint, style: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 12, fontWeight: FontWeight.bold)),
           value: value,
-          items: items.map((String item) => DropdownMenuItem<String>(value: item, child: Text(item, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)))).toList(),
+          items: items.map((String item) => DropdownMenuItem<String>(value: item, child: Text(item, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)))).toList(),
           onChanged: onChanged,
         ),
       ),

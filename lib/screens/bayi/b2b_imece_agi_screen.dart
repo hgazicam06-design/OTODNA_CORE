@@ -109,16 +109,16 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Hedef: $talepEdenFirma", style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            Text("Hedef: $talepEdenFirma", style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
             const SizedBox(height: 4),
-            Text("Parça: $parcaAdi", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            Text("Parça: $parcaAdi", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
             const Text("Satış Fiyatı (TL):", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             TextField(
               controller: fiyatController,
               keyboardType: TextInputType.number,
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+              style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 18),
               decoration: InputDecoration(
                 filled: true,
                 fillColor: SiberTema.oledBlack,
@@ -131,7 +131,7 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İPTAL", style: TextStyle(color: Colors.white54))),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted))),
           ElevatedButton(
             style: SiberTema.kuantumButonStili(),
             onPressed: () async {
@@ -218,7 +218,7 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
                 decoration: BoxDecoration(
                   color: SiberTema.matGrey,
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-                  border: Border.all(color: Colors.white12),
+                  border: Border.all(color: SiberTema.textMuted),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -232,13 +232,13 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
                     const SizedBox(height: 12),
                     _buildSiberTextField("Ekstra Detay (İsteğe Bağlı)", Icons.notes, _aciklamaController),
                     const SizedBox(height: 16),
-                    const Text("SİNYAL ACİLİYETİ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+                    const Text("SİNYAL ACİLİYETİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
                     Row(
                       children: [
                         Expanded(
                           child: RadioListTile<String>(
-                            title: const Text("NORMAL", style: TextStyle(color: Colors.white, fontSize: 12)),
+                            title: const Text("NORMAL", style: TextStyle(color: SiberTema.textMain, fontSize: 12)),
                             activeColor: SiberTema.kuantumCyan,
                             value: "NORMAL",
                             groupValue: _aciliyetDurumu,
@@ -279,7 +279,7 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
   Widget _buildSiberTextField(String hint, IconData icon, TextEditingController controller) {
     return TextField(
       controller: controller,
-      style: const TextStyle(color: Colors.white, fontSize: 14),
+      style: const TextStyle(color: SiberTema.textMain, fontSize: 14),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: const TextStyle(color: Colors.white30, fontSize: 12),
@@ -304,7 +304,7 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
           ],
         ),
       ),
@@ -402,13 +402,13 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
                                       style: TextStyle(color: isAcil ? SiberTema.kanKirmizi : SiberTema.kuantumCyan, fontSize: 9, fontWeight: FontWeight.w900),
                                     ),
                                   ),
-                                  Text("Talep Eden: ${data['talep_eden_firma']}", style: const TextStyle(color: Colors.white54, fontSize: 10)),
+                                  Text("Talep Eden: ${data['talep_eden_firma']}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 10)),
                                 ],
                               ),
                               const SizedBox(height: 16),
-                              Text(data['parca_adi'], style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                              Text(data['parca_adi'], style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1)),
                               const SizedBox(height: 4),
-                              Text("Uyumlu Araç: ${data['arac_modeli']}", style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                              Text("Uyumlu Araç: ${data['arac_modeli']}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
                               if (data['aciklama'] != null && data['aciklama'].toString().isNotEmpty) ...[
                                 const SizedBox(height: 8),
                                 Text("Not: ${data['aciklama']}", style: const TextStyle(color: Colors.white30, fontSize: 11, fontStyle: FontStyle.italic)),
@@ -420,7 +420,7 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
                                 width: double.infinity,
                                 child: isBenimTalebim
                                     ? OutlinedButton.icon(
-                                  style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.white24), foregroundColor: Colors.white54),
+                                  style: OutlinedButton.styleFrom(side: const BorderSide(color: SiberTema.textMuted), foregroundColor: Colors.white54),
                                   icon: const Icon(Icons.hourglass_empty, size: 16),
                                   label: const Text("KENDİ TALEBİNİZ - BEKLENİYOR"),
                                   onPressed: null,

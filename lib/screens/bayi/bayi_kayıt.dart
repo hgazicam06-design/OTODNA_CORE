@@ -113,7 +113,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
           ],
         ),
       ),
@@ -123,7 +123,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -137,13 +137,13 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
           padding: const EdgeInsets.all(20),
           children: [
             // 1. UZMANLIK SEÇİMİ
-            const Text("ATÖLYE UZMANLIK ALANLARINIZI SEÇİN", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900)),
+            const Text("ATÖLYE UZMANLIK ALANLARINIZI SEÇİN", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900)),
             const SizedBox(height: 12),
             Container(
               decoration: BoxDecoration(
                 color: SiberTema.matGrey.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.white12),
+                border: Border.all(color: SiberTema.textMuted),
               ),
               child: Column(
                 children: _uzmanliklar.keys.map((String key) {
@@ -183,7 +183,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                       "2. Havuz borcu ödenmez veya Karargah kuralları ihlal edilirse sistemden süresiz men ve adli yaptırım uygulanır.\n\n"
                       "3. Yetkinlik dışı (yanlış) uzmanlık beyanı, Usta DNA Puanını doğrudan düşürür ve 'Kara Liste' algoritmasını tetikler.\n\n"
                       "4. Bu sözleşme IP adresi ve cihaz kimliği ile dijital olarak mühürlenir.",
-                  style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.6, letterSpacing: 0.5),
+                  style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.6, letterSpacing: 0.5),
                 ),
               ),
             ),
@@ -222,7 +222,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
               child: _islemSuruyor
                   ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                   : ElevatedButton.icon(
-                icon: const Icon(Icons.security, color: Colors.black, size: 24),
+                icon: const Icon(Icons.security, color: Colors.white, size: 24),
                 label: const Text("SİSTEME KAYDOL VE MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _sozlesmeOnay ? SiberTema.kuantumCyan : Colors.white10,

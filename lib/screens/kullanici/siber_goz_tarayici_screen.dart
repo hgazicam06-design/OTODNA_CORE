@@ -91,12 +91,12 @@ class _SiberGozTarayiciScreenState extends State<SiberGozTarayiciScreen> with Si
             decoration: BoxDecoration(
                 color: Colors.white, 
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 40, offset: const Offset(0, -10))]
+                boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 40, offset: const Offset(0, -10))]
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(width: 40, height: 5, decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10))),
+                Container(width: 40, height: 5, decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10))),
                 const SizedBox(height: 32),
                 Container(
                   padding: const EdgeInsets.all(24),
@@ -106,7 +106,7 @@ class _SiberGozTarayiciScreenState extends State<SiberGozTarayiciScreen> with Si
                 const SizedBox(height: 24),
                 Text(baslik, style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                 const SizedBox(height: 16),
-                Text(icerik, textAlign: TextAlign.center, style: const TextStyle(color: Colors.black54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                Text(icerik, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                 const SizedBox(height: 40),
                 SizedBox(
                     width: double.infinity, height: 56,
@@ -207,13 +207,13 @@ class _SiberGozTarayiciScreenState extends State<SiberGozTarayiciScreen> with Si
                   onTap: () => Navigator.pop(context),
                   child: Container(
                     padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle, boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10)]),
+                    decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle, boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 10)]),
                     child: Icon(Icons.close, color: textColor, size: 20),
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10)]),
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 10)]),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       value: _aktifRol,
@@ -257,7 +257,7 @@ class _SiberGozTarayiciScreenState extends State<SiberGozTarayiciScreen> with Si
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
-                      boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10)]
+                      boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 10)]
                   ),
                   child: Text(
                       _lazerKilitlendi ? "HEDEF KİLİTLENDİ" : "QR KİMLİĞİ HİZALAYIN",

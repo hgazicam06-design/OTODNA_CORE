@@ -29,7 +29,7 @@ class _DealerDashboardState extends State<DealerDashboard> {
   void _siberUyari(String mesaj) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+      content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
       backgroundColor: primaryCyan,
     ));
   }
@@ -39,7 +39,7 @@ class _DealerDashboardState extends State<DealerDashboard> {
     if (_currentUser == null) return Scaffold(backgroundColor: bgColor, body: const Center(child: Text("Siber Kimlik Hatası!", style: TextStyle(color: SiberTema.kanKirmizi))));
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -60,7 +60,7 @@ class _DealerDashboardState extends State<DealerDashboard> {
                   Expanded(
                     child: Text(
                       firmaAdi.toUpperCase(),
-                      style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 1.5),
+                      style: const TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 1.5),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -170,7 +170,7 @@ class _DealerDashboardState extends State<DealerDashboard> {
               StreamBuilder<QuerySnapshot>(
                   stream: _db.collection('market_urunleri').where('bayi_id', isEqualTo: _currentUser!.uid).limit(3).snapshots(),
                   builder: (context, snapshot) {
-                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Text("Market henüz boş.", style: TextStyle(color: Colors.white24));
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Text("Market henüz boş.", style: TextStyle(color: SiberTema.textMuted));
 
                     return Column(
                       children: snapshot.data!.docs.map((doc) {
@@ -206,10 +206,10 @@ class _DealerDashboardState extends State<DealerDashboard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('DUYURU', style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold)),
+          const Text('DUYURU', style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
-          Text(title, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-          Text(subtitle, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+          Text(title, style: const TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.bold)),
+          Text(subtitle, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
         ],
       ),
     );
@@ -220,7 +220,7 @@ class _DealerDashboardState extends State<DealerDashboard> {
       children: [
         Icon(icon, color: color, size: 18),
         const SizedBox(width: 8),
-        Text(title, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1)),
+        Text(title, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1)),
       ],
     );
   }
@@ -233,7 +233,7 @@ class _DealerDashboardState extends State<DealerDashboard> {
         children: [
           Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: alertRed.withOpacity(0.2), shape: BoxShape.circle), child: const Icon(Icons.emergency, color: Colors.redAccent)),
           const SizedBox(width: 16),
-          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(plaka, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)), Text(mesafe, style: const TextStyle(color: Colors.white54, fontSize: 12))])),
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(plaka, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)), Text(mesafe, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12))])),
           ElevatedButton(
             onPressed: () async {
               try {
@@ -268,11 +268,11 @@ class _DealerDashboardState extends State<DealerDashboard> {
   Widget _buildFinanceCard(String title, String amount, Color amountColor) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+      decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(color: Colors.white54, fontSize: 11)),
+          Text(title, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11)),
           const SizedBox(height: 8),
           Text(amount, style: TextStyle(color: amountColor, fontSize: 20, fontWeight: FontWeight.bold)),
         ],
@@ -288,7 +288,7 @@ class _DealerDashboardState extends State<DealerDashboard> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), Text(subtitle, style: TextStyle(color: primaryCyan, fontSize: 11))]),
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(title, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), Text(subtitle, style: TextStyle(color: primaryCyan, fontSize: 11))]),
           Text(price, style: const TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold)),
         ],
       ),

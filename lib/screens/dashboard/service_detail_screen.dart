@@ -104,7 +104,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   // 🚀 FİREBASE ATOMİK TEKLİF MÜHÜRLEME MOTORU
   Future<void> _teklifiMuhurleVeGonder() async {
     if (_currentOffer.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Boş teklif gönderilemez!', style: TextStyle(color: Colors.white)), backgroundColor: SiberTema.kanKirmizi));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Boş teklif gönderilemez!', style: TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi));
       return;
     }
 
@@ -142,7 +142,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Mühürleme Hatası: $e', style: const TextStyle(color: Colors.white)), backgroundColor: SiberTema.kanKirmizi));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Mühürleme Hatası: $e', style: const TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi));
       }
     } finally {
       if (mounted) setState(() => _isSending = false);
@@ -156,11 +156,11 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     const cardColor = SiberTema.matGrey;
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text(_dealerName.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+        title: Text(_dealerName.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
         backgroundColor: bgColor,
         elevation: 0,
         centerTitle: true,
@@ -185,7 +185,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
               children: [
                 Icon(Icons.handyman, color: primaryCyan, size: 20),
                 SizedBox(width: 8),
-                Text("ARAÇ KONTROL ŞEMASI", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white, letterSpacing: 1)),
+                Text("ARAÇ KONTROL ŞEMASI", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: SiberTema.textMain, letterSpacing: 1)),
               ],
             ),
             const SizedBox(height: 12),
@@ -238,7 +238,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
               child: Text(
                 "Bu döküman $brandName sisteminden üretilmiştir. Geçerliliği OtoDNA Mührü ile sabittir.",
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 10, color: Colors.white38, fontStyle: FontStyle.italic),
+                style: const TextStyle(fontSize: 10, color: SiberTema.textMuted, fontStyle: FontStyle.italic),
               ),
             ),
             const SizedBox(height: 20),
@@ -270,17 +270,17 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
         children: [
           const Icon(Icons.verified, color: Color(0xFF00FFC2), size: 40),
           const SizedBox(height: 12),
-          Text(_dealerName.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+          Text(_dealerName.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
           const SizedBox(height: 4),
           Text("YETKİLİ SERVİS DİJİTAL BİLGİ FORMU", style: TextStyle(color: primaryCyan, fontSize: 11, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
           const SizedBox(height: 20),
-          const Divider(color: Colors.white12),
+          const Divider(color: SiberTema.textMuted),
           const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(children: [const Icon(Icons.directions_car, color: Colors.white54, size: 16), const SizedBox(width: 8), Text("Plaka: $plaka", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14))]),
-              Row(children: [const Icon(Icons.calendar_month, color: Colors.white54, size: 16), const SizedBox(width: 8), Text(tarih, style: const TextStyle(color: Colors.white70, fontSize: 12))]),
+              Row(children: [const Icon(Icons.directions_car, color: SiberTema.textMuted, size: 16), const SizedBox(width: 8), Text("Plaka: $plaka", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 14))]),
+              Row(children: [const Icon(Icons.calendar_month, color: SiberTema.textMuted, size: 16), const SizedBox(width: 8), Text(tarih, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12))]),
             ],
           )
         ],
@@ -326,11 +326,11 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                 value: val,
                 activeColor: checkColor,
                 checkColor: Colors.black,
-                side: const BorderSide(color: Colors.white54),
+                side: const BorderSide(color: SiberTema.textMuted),
                 onChanged: (v) => onSub(v!)
             ),
           ),
-          Text(label, style: const TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+          Text(label, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
         ],
       ),
     );
@@ -340,15 +340,15 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     if (_currentOffer.isEmpty) {
       return Container(
         width: double.infinity, padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
-        child: const Text("Henüz teklif faturası oluşturulmadı.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54)),
+        decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.textMuted)),
+        child: const Text("Henüz teklif faturası oluşturulmadı.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted)),
       );
     }
 
     double totalAmount = _currentOffer.fold(0, (sum, item) => sum + item.unitPrice);
 
     return Container(
-      decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+      decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
       child: Column(
         children: [
           Theme(
@@ -361,18 +361,18 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                 DataColumn(label: Text("Fiyat", style: TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold))),
               ],
               rows: _currentOffer.map((item) => DataRow(cells: [
-                DataCell(Text(item.description, style: const TextStyle(color: Colors.white, fontSize: 12))),
-                DataCell(Text("₺${item.unitPrice}", style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold))),
+                DataCell(Text(item.description, style: const TextStyle(color: SiberTema.textMain, fontSize: 12))),
+                DataCell(Text("₺${item.unitPrice}", style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold))),
               ])).toList(),
             ),
           ),
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))),
+            decoration: const BoxDecoration(color: Colors.white26, borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("TOPLAM TUTAR:", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                const Text("TOPLAM TUTAR:", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
                 Text("₺$totalAmount", style: const TextStyle(color: Colors.amber, fontSize: 18, fontWeight: FontWeight.bold)),
               ],
             ),
@@ -400,7 +400,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
         Expanded(
           child: ElevatedButton.icon(
             icon: _isSending ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : const Icon(Icons.picture_as_pdf, color: Colors.white),
-            label: Text(_isSending ? "MÜHÜRLENİYOR..." : "PDF Teklif", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            label: Text(_isSending ? "MÜHÜRLENİYOR..." : "PDF Teklif", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.orange[800], padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
             onPressed: _isSending ? null : _teklifiMuhurleVeGonder,
           ),

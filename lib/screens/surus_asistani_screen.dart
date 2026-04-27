@@ -106,7 +106,7 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -115,7 +115,7 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
           title: Column(
             children: [
-              Text("SÜRÜŞ ASİSTANI", style: TextStyle(color: Colors.white.withOpacity(0.9), fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
+              Text("SÜRÜŞ ASİSTANI", style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
               Text(widget.plaka, style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             ],
           ),
@@ -150,7 +150,7 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
                             children: [
                               Icon(Icons.route, color: SiberTema.kuantumCyan, size: 28),
                               const SizedBox(width: 12),
-                              const Text("ROTA VE MALİYET", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                              const Text("ROTA VE MALİYET", style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                             ],
                           ),
                           const SizedBox(height: 24),
@@ -182,7 +182,7 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("TOPLAM MALİYET", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+                                  Text("TOPLAM MALİYET", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
                                   Text("₺${_hesaplananMaliyet.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 28, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                                 ],
                               ),
@@ -222,7 +222,7 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
                 const SizedBox(height: 32),
                 const Padding(
                   padding: EdgeInsets.only(left: 8.0),
-                  child: Text("SON SEYAHAT KAYITLARI", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                  child: Text("SON SEYAHAT KAYITLARI", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                 ),
                 const SizedBox(height: 16),
 
@@ -240,7 +240,7 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(24),
                           decoration: BoxDecoration(color: Colors.white.withOpacity(0.02), borderRadius: BorderRadius.circular(16)),
-                          child: Text("Henüz Kuantum ağına mühürlenmiş bir seyahat bulunmuyor.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(0.4), fontFamily: 'Avenir')),
+                          child: Text("Henüz Kuantum ağına mühürlenmiş bir seyahat bulunmuyor.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontFamily: 'Avenir')),
                         ),
                       );
                     }
@@ -273,9 +273,9 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${veri['nereden']} ➔ ${veri['nereye']}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir', fontSize: 13)),
+                                    Text("${veri['nereden']} ➔ ${veri['nereye']}", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir', fontSize: 13)),
                                     const SizedBox(height: 4),
-                                    Text("${veri['mesafe_km']} KM | ${tarih.day}.${tarih.month}.${tarih.year}", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 10, fontFamily: 'Avenir')),
+                                    Text("${veri['mesafe_km']} KM | ${tarih.day}.${tarih.month}.${tarih.year}", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 10, fontFamily: 'Avenir')),
                                   ],
                                 ),
                               ),
@@ -301,10 +301,10 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
     return TextField(
       controller: kontrolcu,
       keyboardType: klavye,
-      style: const TextStyle(color: Colors.white, fontFamily: 'Avenir', fontWeight: FontWeight.bold, fontSize: 12),
+      style: const TextStyle(color: SiberTema.textMain, fontFamily: 'Avenir', fontWeight: FontWeight.bold, fontSize: 12),
       decoration: InputDecoration(
         labelText: baslik,
-        labelStyle: TextStyle(color: Colors.white.withOpacity(0.5), fontFamily: 'Avenir', fontSize: 11),
+        labelStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontFamily: 'Avenir', fontSize: 11),
         prefixIcon: Icon(ikon, color: SiberTema.kuantumCyan, size: 18),
         filled: true,
         fillColor: Colors.black.withOpacity(0.5),

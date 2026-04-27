@@ -97,8 +97,8 @@ class _YedekParcaMarketScreenState extends State<YedekParcaMarketScreen> {
       backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent, elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text("Y E D E K   P A R Ç A   A Ğ I", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3)),
+        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+        title: const Text("Y E D E K   P A R Ç A   A Ğ I", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3)),
         centerTitle: true,
         actions: [
           IconButton(icon: Icon(Icons.shopping_cart_outlined, color: primaryCyan), onPressed: () {}),
@@ -114,11 +114,11 @@ class _YedekParcaMarketScreenState extends State<YedekParcaMarketScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withOpacity(0.05))),
               child: TextField(
-                style: const TextStyle(color: Colors.white, fontSize: 14),
+                style: const TextStyle(color: SiberTema.textMain, fontSize: 14),
                 decoration: InputDecoration(
-                    icon: const Icon(Icons.search, color: Colors.white38, size: 20),
+                    icon: const Icon(Icons.search, color: SiberTema.textMuted, size: 20),
                     hintText: "Siber Ağda OEM Kodu veya Parça Ara...",
-                    hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 13),
+                    hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 13),
                     border: InputBorder.none
                 ),
               ),
@@ -166,7 +166,7 @@ class _YedekParcaMarketScreenState extends State<YedekParcaMarketScreen> {
           // 💎 3. E-TİCARET GRID (SİBER KARTLAR)
           Expanded(
             child: filtrelenmisParcalar.isEmpty
-                ? const Center(child: Text("Siber ağda bu kategoride veri bulunamadı.", style: TextStyle(color: Colors.white38, fontSize: 12, fontWeight: FontWeight.bold)))
+                ? const Center(child: Text("Siber ağda bu kategoride veri bulunamadı.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)))
                 : GridView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               physics: const BouncingScrollPhysics(),
@@ -201,14 +201,14 @@ class _YedekParcaMarketScreenState extends State<YedekParcaMarketScreen> {
                           ),
                           child: Stack(
                             children: [
-                              Center(child: Icon(parca['gorsel_ikon'], size: 56, color: Colors.white24)),
+                              Center(child: Icon(parca['gorsel_ikon'], size: 56, color: SiberTema.textMuted)),
                               // Marka Etiketi
                               Positioned(
                                 top: 12, left: 12,
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.white.withOpacity(0.1))),
-                                  child: Text(parca['marka'].toUpperCase(), style: const TextStyle(color: Colors.white54, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                                  child: Text(parca['marka'].toUpperCase(), style: const TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
                                 ),
                               )
                             ],
@@ -228,16 +228,16 @@ class _YedekParcaMarketScreenState extends State<YedekParcaMarketScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(parca['ad'], maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600, letterSpacing: -0.5, height: 1.4)),
+                                  Text(parca['ad'], maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w600, letterSpacing: -0.5, height: 1.4)),
                                   const SizedBox(height: 8),
-                                  Text(parca['uyumluluk'], maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold)),
+                                  Text(parca['uyumluluk'], maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
                                 ],
                               ),
 
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("₺${parca['fiyat'].toStringAsFixed(2)}", style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: -1)),
+                                  Text("₺${parca['fiyat'].toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: -1)),
                                   const SizedBox(height: 12),
                                   SizedBox(
                                     width: double.infinity,
@@ -251,7 +251,7 @@ class _YedekParcaMarketScreenState extends State<YedekParcaMarketScreen> {
                                           padding: EdgeInsets.zero
                                       ),
                                       onPressed: stoktaVar ? () {
-                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${parca['ad']} ağ sepetine mühürlendi!", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan));
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${parca['ad']} ağ sepetine mühürlendi!", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan));
                                       } : null,
                                       child: Text(stoktaVar ? "AĞA EKLE" : "STOKTA YOK", style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
                                     ),

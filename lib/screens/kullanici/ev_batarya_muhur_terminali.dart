@@ -55,7 +55,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
       _taramaBitti = true;
     });
     
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Batarya Hücreleri Analiz Edildi. Durum: MÜKEMMEL", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), backgroundColor: evGreen));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Batarya Hücreleri Analiz Edildi. Durum: MÜKEMMEL", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), backgroundColor: evGreen));
   }
 
   void _istasyonlariTara() {
@@ -69,13 +69,13 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
           color: Colors.white,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           border: Border(top: BorderSide(color: evGreen.withValues(alpha: 0.3), width: 2)),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20)]
+          boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20)]
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
+            Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
             const SizedBox(height: 24),
             Row(
               children: [
@@ -85,7 +85,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
               ],
             ),
             const SizedBox(height: 8),
-            const Text("Bölgenizdeki 10 km yarıçapında bulunan güncel şarj noktaları.", style: TextStyle(color: Colors.black54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            const Text("Bölgenizdeki 10 km yarıçapında bulunan güncel şarj noktaları.", style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             const SizedBox(height: 24),
             
             ..._sarjIstasyonlari.map((istasyon) {
@@ -97,8 +97,8 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                  boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]
                 ),
                 child: Row(
                   children: [
@@ -110,7 +110,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
                         children: [
                           Text(istasyon['isim'], style: TextStyle(color: textColor, fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                           const SizedBox(height: 4),
-                          Text("${istasyon['tip']} • Mesafe: ${istasyon['mesafe']}", style: const TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                          Text("${istasyon['tip']} • Mesafe: ${istasyon['mesafe']}", style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                         ],
                       ),
                     ),
@@ -130,7 +130,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
             SizedBox(
               width: double.infinity, height: 50,
               child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: textColor, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: Colors.black.withValues(alpha: 0.1))), elevation: 0),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: textColor, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: Colors.white.withValues(alpha: 0.1))), elevation: 0),
                 onPressed: () => Navigator.pop(context),
                 icon: const Icon(Icons.close),
                 label: const Text("PANELİ KAPAT", style: TextStyle(fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
@@ -152,7 +152,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
           title: Text("EV BATARYA TERMİNALİ", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
@@ -165,7 +165,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
               // 1. ÜST BİLGİ PANELLERİ
               Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]),
                 child: Row(
                   children: [
                     Container(
@@ -180,7 +180,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
                         children: [
                           Text("YÜKSEK VOLTAJ (HV) AĞI", style: TextStyle(color: evGreen, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                           const SizedBox(height: 4),
-                          const Text("Elektrikli araç bataryalarının SoH (State of Health) ölçümleri ve blok mühürlemesi buradan yapılır.", style: TextStyle(color: Colors.black54, fontSize: 11, height: 1.4, fontFamily: 'Avenir')),
+                          const Text("Elektrikli araç bataryalarının SoH (State of Health) ölçümleri ve blok mühürlemesi buradan yapılır.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4, fontFamily: 'Avenir')),
                         ],
                       ),
                     )
@@ -210,7 +210,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
                           children: [
                             Text("ŞARJ İSTASYONU RADARI", style: TextStyle(color: primaryTeal, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                             const SizedBox(height: 4),
-                            const Text("En yakın DC/AC istasyonlarını tara", style: TextStyle(color: Colors.black54, fontSize: 11, fontFamily: 'Avenir')),
+                            const Text("En yakın DC/AC istasyonlarını tara", style: TextStyle(color: Colors.white54, fontSize: 11, fontFamily: 'Avenir')),
                           ],
                         ),
                       ),
@@ -266,12 +266,12 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24), border: Border.all(color: evGreen.withValues(alpha: 0.3), width: 2), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 20)]),
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24), border: Border.all(color: evGreen.withValues(alpha: 0.3), width: 2), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 20)]),
                   child: Column(
                     children: [
                       Icon(Icons.check_circle, color: evGreen, size: 48),
                       const SizedBox(height: 16),
-                      const Text("BATARYA SAĞLIĞI (SoH)", style: TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
+                      const Text("BATARYA SAĞLIĞI (SoH)", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
                       const SizedBox(height: 8),
                       Text("%96.4", style: TextStyle(color: evGreen, fontSize: 48, fontWeight: FontWeight.w900, letterSpacing: -2, fontFamily: 'Avenir')),
                       const SizedBox(height: 24),
@@ -304,7 +304,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(baslik, style: const TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+        Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         Text(deger, style: TextStyle(color: vurgu, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
       ],
     );

@@ -9,28 +9,55 @@ function showSnackbar(text) {
 }
 
 async function generateDnaReport(sonuclar, saseNo) {
-  // jsPDF UMD kullanımı
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'pt' });
 
-  doc.setFontSize(16);
-  doc.text('MÜHÜRLÜ DNA RAPORU', 40, 60);
-  doc.setFontSize(11);
-  doc.text(`Şasi No: ${saseNo || '- yok -'}`, 40, 90);
-  doc.text('Sonuçlar:', 40, 120);
+  // 🎨 Kurumsal Rapor Tasarımı
+  doc.setFillColor(255, 255, 255);
+  doc.rect(0, 0, 600, 850, 'F'); // Beyaz Arka Plan
 
-  let y = 140;
-  const lineHeight = 14;
+  doc.setTextColor(0, 90, 100); // Kurumsal Zümrüt
+  doc.setFontSize(22);
+  doc.setFont("helvetica", "bold");
+  doc.text('OTODNA KURUMSAL RAPORU', 40, 60);
+
+  doc.setTextColor(30, 41, 59); // text-main
+  doc.setFontSize(12);
+  doc.text(`Şasi No (DNA): ${saseNo || '- BİLİNMİYOR -'}`, 40, 100);
+  doc.text(`Tarih: ${new Date().toLocaleString('tr-TR')}`, 40, 120);
+
+  // Çizgi
+  doc.setDrawColor(0, 90, 100);
+  doc.setLineWidth(2);
+  doc.line(40, 140, 550, 140);
+
+  doc.setFontSize(14);
+  doc.setTextColor(0, 90, 100);
+  doc.text('SİSTEM SONUÇLARI:', 40, 170);
+
+  let y = 200;
+  const lineHeight = 20;
+  doc.setFontSize(11);
   sonuclar.forEach((row, i) => {
-    const text = `${i + 1}. ${Object.entries(row).map(([k,v]) => `${k}: ${v}`).join(' — ')}`;
-    doc.text(text, 50, y);
+    doc.setTextColor(30, 41, 59);
+    const text = `[00${i + 1}] ${Object.entries(row).map(([k,v]) => `${k}: ${v}`).join(' | ')}`;
+    doc.text(text, 40, y);
     y += lineHeight;
-    if (y > 760) { doc.addPage(); y = 40; }
+    if (y > 760) { 
+      doc.addPage(); 
+      doc.setFillColor(255, 255, 255);
+      doc.rect(0, 0, 600, 850, 'F');
+      y = 60; 
+    }
   });
 
-  // Küçük bir mühür simülasyonu (sağ alt)
-  doc.setFontSize(9);
-  doc.text('— Otodna Mühürlü Rapor —', 40, y + 30);
+  // Kurumsal mühür
+  doc.setDrawColor(0, 90, 100);
+  doc.line(40, y + 20, 550, y + 20);
+  doc.setTextColor(100, 100, 100);
+  doc.setFontSize(8);
+  doc.text('İŞBU BELGE İLGİLİ FİRMA TARAFINDAN DÜZENLENMİŞTİR. OTODNA YALNIZCA DİJİTAL ALTYAPI', 40, y + 40);
+  doc.text('HİZMETİ SUNAR VE İÇERİKLE İLGİLİ HİÇBİR HUKUKİ/TİCARİ MESULİYET KABUL ETMEZ.', 40, y + 52);
 
   return doc;
 }
@@ -47,10 +74,10 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
     return;
   }
 
-  showSnackbar('PDF oluşturuluyor...');
+  showSnackbar('Kurumsal PDF oluşturuluyor...');
   try {
     const doc = await generateDnaReport(sonuclar, saseNo);
-    const fileName = `muhurlu_rapor_${saseNo || 'unknown'}.pdf`;
+    const fileName = `OtoDNA_Kurumsal_Rapor_${saseNo || 'unknown'}.pdf`;
     const blob = doc.output('blob');
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

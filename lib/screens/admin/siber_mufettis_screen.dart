@@ -79,7 +79,7 @@ class _SiberMufettisScreenState extends State<SiberMufettisScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -123,16 +123,16 @@ class _SiberMufettisScreenState extends State<SiberMufettisScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: const BoxDecoration(
-        color: Colors.black,
+        color: Colors.white,
         border: Border(bottom: BorderSide(color: SiberTema.kanKirmizi, width: 2)),
       ),
       child: Column(
         children: [
           Icon(Icons.policy_rounded, color: SiberTema.kanKirmizi.withOpacity(0.8), size: 48),
           const SizedBox(height: 16),
-          const Text("KUANTUM İSTİHBARAT AĞI", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
+          const Text("KUANTUM İSTİHBARAT AĞI", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
           const SizedBox(height: 8),
-          const Text("3 AKTİF İZLEME", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+          const Text("3 AKTİF İZLEME", style: TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -209,19 +209,19 @@ class _SiberMufettisScreenState extends State<SiberMufettisScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(dukkan.ad, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                      Text(dukkan.ad, style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
                       const SizedBox(height: 4),
-                      Text("📍 ${dukkan.cityId} / ${dukkan.districtId}", style: const TextStyle(color: Colors.white54, fontSize: 11)),
+                      Text("📍 ${dukkan.cityId} / ${dukkan.districtId}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11)),
                       const SizedBox(height: 8),
                       Row(
                         children: [
                           Icon(Icons.star, color: SiberTema.sariAltin, size: 14),
                           const SizedBox(width: 4),
-                          Text("${dukkan.puan} Puan", style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold)),
+                          Text("${dukkan.puan} Puan", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
                           const SizedBox(width: 12),
                           Icon(dukkan.evrakOnayDurumu == "onaylandi" ? Icons.verified : Icons.pending, color: dukkan.evrakOnayDurumu == "onaylandi" ? SiberTema.kuantumCyan : Colors.orange, size: 14),
                           const SizedBox(width: 4),
-                          Text(dukkan.evrakOnayDurumu.toUpperCase(), style: const TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.bold)),
+                          Text(dukkan.evrakOnayDurumu.toUpperCase(), style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
                         ],
                       )
                     ],
@@ -237,7 +237,7 @@ class _SiberMufettisScreenState extends State<SiberMufettisScreen> {
               width: double.infinity,
               height: 48,
               decoration: const BoxDecoration(
-                border: Border(top: BorderSide(color: Colors.white12)),
+                border: Border(top: BorderSide(color: SiberTema.textMuted)),
               ),
               child: InkWell(
                 onTap: _islemSuruyor ? null : () => _siberKilitVur(index),

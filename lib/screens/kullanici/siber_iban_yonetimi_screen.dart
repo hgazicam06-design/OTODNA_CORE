@@ -49,13 +49,13 @@ class _SiberIbanYonetimiScreenState extends State<SiberIbanYonetimiScreen> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 40, offset: const Offset(0, -10))],
+            boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 40, offset: const Offset(0, -10))],
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(child: Container(width: 40, height: 5, decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
+              Center(child: Container(width: 40, height: 5, decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
               const SizedBox(height: 32),
               Row(
                 children: [
@@ -67,16 +67,16 @@ class _SiberIbanYonetimiScreenState extends State<SiberIbanYonetimiScreen> {
               const SizedBox(height: 32),
 
               // BANKA ADI
-              const Text("Banka / Kurum Adı", style: TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+              const Text("Banka / Kurum Adı", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
               const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
+                decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05))),
                 child: TextField(
                   controller: bankaController,
                   style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
                   decoration: const InputDecoration(
-                    hintText: "Örn: İş Bankası Şahıs", hintStyle: TextStyle(color: Colors.black38, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+                    hintText: "Örn: İş Bankası Şahıs", hintStyle: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                     border: InputBorder.none,
                   ),
                 ),
@@ -84,11 +84,11 @@ class _SiberIbanYonetimiScreenState extends State<SiberIbanYonetimiScreen> {
               const SizedBox(height: 24),
 
               // IBAN NUMARASI
-              const Text("IBAN Numarası", style: TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+              const Text("IBAN Numarası", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
               const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
+                decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05))),
                 child: TextField(
                   controller: ibanController,
                   keyboardType: TextInputType.number,
@@ -96,7 +96,7 @@ class _SiberIbanYonetimiScreenState extends State<SiberIbanYonetimiScreen> {
                   style: TextStyle(color: textColor, letterSpacing: 3, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'monospace'),
                   decoration: InputDecoration(
                     prefixText: "TR ", prefixStyle: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, letterSpacing: 3, fontSize: 14, fontFamily: 'monospace'),
-                    hintText: "0000 0000 0000 0000 0000 00", hintStyle: const TextStyle(color: Colors.black26, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
+                    hintText: "0000 0000 0000 0000 0000 00", hintStyle: const TextStyle(color: Colors.white26, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
                     counterText: "",
                     border: InputBorder.none,
                   ),
@@ -140,7 +140,7 @@ class _SiberIbanYonetimiScreenState extends State<SiberIbanYonetimiScreen> {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
         contentPadding: const EdgeInsets.all(32),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -153,7 +153,7 @@ class _SiberIbanYonetimiScreenState extends State<SiberIbanYonetimiScreen> {
             const SizedBox(height: 32),
             Text("Kimlik Doğrulaması", style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
             const SizedBox(height: 12),
-            const Text("FaceID / Parmak İzi onayınız bekleniyor...", textAlign: TextAlign.center, style: TextStyle(color: Colors.black54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            const Text("FaceID / Parmak İzi onayınız bekleniyor...", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -212,7 +212,7 @@ class _SiberIbanYonetimiScreenState extends State<SiberIbanYonetimiScreen> {
         backgroundColor: Colors.white, 
         elevation: 0,
         surfaceTintColor: Colors.transparent,
-        shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+        shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
         leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
         title: Text("B A N K A   H E S A P L A R I", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 3, fontFamily: 'Avenir')),
         centerTitle: true,
@@ -223,10 +223,10 @@ class _SiberIbanYonetimiScreenState extends State<SiberIbanYonetimiScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         onPressed: _yeniIbanEklePenceresiAc,
         icon: const Icon(Icons.add, color: Colors.white),
-        label: const Text("Yeni IBAN Ekle", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 0.5, fontFamily: 'Avenir')),
+        label: const Text("Yeni IBAN Ekle", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 0.5, fontFamily: 'Avenir')),
       ),
       body: _kayitliIbanlar.isEmpty
-          ? Center(child: Text("Henüz kayıtlı bir banka hesabınız yok.", style: TextStyle(color: Colors.black45, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')))
+          ? Center(child: Text("Henüz kayıtlı bir banka hesabınız yok.", style: TextStyle(color: Colors.white45, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')))
           : ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
         physics: const BouncingScrollPhysics(),
@@ -244,10 +244,10 @@ class _SiberIbanYonetimiScreenState extends State<SiberIbanYonetimiScreen> {
             decoration: BoxDecoration(
               color: isVarsayilan ? primaryTeal : Colors.white,
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
               boxShadow: isVarsayilan 
                   ? [BoxShadow(color: primaryTeal.withValues(alpha: 0.2), blurRadius: 20, offset: const Offset(0, 10))] 
-                  : [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))],
+                  : [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))],
               gradient: isVarsayilan ? LinearGradient(colors: [primaryTeal, Colors.teal.shade500], begin: Alignment.topLeft, end: Alignment.bottomRight) : null
             ),
             child: Column(
@@ -268,15 +268,15 @@ class _SiberIbanYonetimiScreenState extends State<SiberIbanYonetimiScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(8)),
-                        child: const Text("ANA HESAP", style: TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                        child: const Text("ANA HESAP", style: TextStyle(color: SiberTema.textMain, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                       )
                     else
                       GestureDetector(
                         onTap: () => _varsayilanYap(index),
                         child: Container(
                           padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black12)),
-                          child: const Icon(Icons.star_border, color: Colors.black38, size: 18),
+                          decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white12)),
+                          child: const Icon(Icons.star_border, color: Colors.white38, size: 18),
                         ),
                       )
                   ],

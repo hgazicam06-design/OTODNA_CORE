@@ -103,7 +103,7 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text("BOSCH FREN BALATASI TAKIMI", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
+                            const Text("BOSCH FREN BALATASI TAKIMI", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
                             Text("OEM Kodu: 8V0698151C", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir', letterSpacing: 2)),
                           ],
                         ),
@@ -112,7 +112,7 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
                   ),
                   const SizedBox(height: 32),
 
-                  const Text("TİCARİ AĞ GEÇİDİ (En Yakın Tedarikçiler)", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                  const Text("TİCARİ AĞ GEÇİDİ (En Yakın Tedarikçiler)", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                   const SizedBox(height: 16),
 
                   // TİCARİ SEÇENEKLER (Bu butonlar ileride Oto Marketleri listeleyecek)
@@ -160,7 +160,7 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
-                  Text(altBaslik, style: TextStyle(color: Colors.white54, fontSize: 11, fontFamily: 'Avenir')),
+                  Text(altBaslik, style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontFamily: 'Avenir')),
                 ],
               ),
             ),
@@ -192,7 +192,7 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
               fit: StackFit.expand,
               children: [
                 Container(
-                  decoration: const BoxDecoration(color: Colors.black, backgroundBlendMode: BlendMode.dstOut),
+                  decoration: const BoxDecoration(color: Colors.white, backgroundBlendMode: BlendMode.dstOut),
                 ),
                 Center(
                   child: Container(
@@ -253,7 +253,7 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
                   children: [
-                    IconButton(icon: const Icon(Icons.close, color: Colors.white, size: 32), onPressed: () => Navigator.pop(context)),
+                    IconButton(icon: const Icon(Icons.close, color: SiberTema.kuantumCyan, size: 32), onPressed: () => Navigator.pop(context)),
                     const SizedBox(width: 8),
                     const Text("SİBER GÖZ AKTİF", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 2)),
                   ],

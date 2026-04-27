@@ -19,7 +19,7 @@ class BildirimlerScreen extends StatelessWidget {
     final FirebaseFirestore db = FirebaseFirestore.instance;
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: _buildSiberAppBar(context, db),
@@ -69,13 +69,13 @@ class BildirimlerScreen extends StatelessWidget {
       elevation: 0,
       centerTitle: false,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+        icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
         onPressed: () => Navigator.pop(context),
       ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('AĞ BİLDİRİMLERİ', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          const Text('AĞ BİLDİRİMLERİ', style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2)),
           Text('HEDEF: ${plaka.toUpperCase()}', style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.7), fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'monospace')),
         ],
       ),
@@ -107,7 +107,7 @@ class BildirimlerScreen extends StatelessWidget {
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("TÜM SİNYALLER ARŞİVLENDİ VE MÜHÜRLENDİ.", style: TextStyle(fontWeight: FontWeight.w900, color: Colors.black)),
+          content: Text("TÜM SİNYALLER ARŞİVLENDİ VE MÜHÜRLENDİ.", style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white)),
           backgroundColor: SiberTema.kuantumCyan,
           behavior: SnackBarBehavior.floating,
         )
@@ -164,7 +164,7 @@ class BildirimlerScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 6),
-                    Text(mesaj, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white38, fontSize: 11, height: 1.4)),
+                    Text(mesaj, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.4)),
                     const SizedBox(height: 12),
                     Row(
                       children: [
@@ -214,9 +214,9 @@ class BildirimlerScreen extends StatelessWidget {
         children: [
           Icon(Icons.radar_rounded, color: Colors.white.withOpacity(0.05), size: 80),
           const SizedBox(height: 24),
-          const Text('RADAR TEMİZ', style: TextStyle(color: Colors.white24, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 4)),
+          const Text('RADAR TEMİZ', style: TextStyle(color: SiberTema.textMuted, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 4)),
           const SizedBox(height: 8),
-          const Text('Henüz bir siber sinyal tespit edilmedi.', style: TextStyle(color: Colors.white10, fontSize: 11)),
+          const Text('Henüz bir siber sinyal tespit edilmedi.', style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
         ],
       ),
     );

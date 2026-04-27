@@ -130,7 +130,7 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
               const SizedBox(height: 16),
               const Text("GARAJ KOTASI DOLDU", style: TextStyle(color: SiberTema.sariAltin, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)),
               const SizedBox(height: 8),
-              const Text("Kuruluş Kampanyası: %66'ya varan İNDİRİM FIRSATIYLA filonuzu genişletin!", textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.bold)),
+              const Text("Kuruluş Kampanyası: %66'ya varan İNDİRİM FIRSATIYLA filonuzu genişletin!", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 13, fontWeight: FontWeight.bold)),
               const SizedBox(height: 32),
               
               // İndirimli Paketler (Eski fiyat * 3 = Çizili fiyat)
@@ -175,18 +175,18 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(color: SiberTema.kanKirmizi, borderRadius: BorderRadius.circular(4)),
-                      child: const Text("KAMPANYA", style: TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                      child: const Text("KAMPANYA", style: TextStyle(color: SiberTema.textMain, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
                     )
                   ],
                 ),
                 const SizedBox(height: 4),
-                Text(ozellik, style: const TextStyle(color: Colors.white54, fontSize: 12)),
+                Text(ozellik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
               ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text("${eskiFiyat.toInt()} ₺", style: const TextStyle(color: Colors.white38, decoration: TextDecoration.lineThrough, fontSize: 12, fontWeight: FontWeight.bold)),
+                Text("${eskiFiyat.toInt()} ₺", style: const TextStyle(color: SiberTema.textMuted, decoration: TextDecoration.lineThrough, fontSize: 12, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 2),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -204,7 +204,7 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -226,7 +226,7 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
             _buildGarajBilgiPaneli(),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              child: Divider(color: Colors.white12, thickness: 1),
+              child: Divider(color: SiberTema.textMuted, thickness: 1),
             ),
             Expanded(
               child: _buildAracListesi(),
@@ -236,7 +236,7 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
         floatingActionButton: FloatingActionButton.extended(
           onPressed: _yeniAracEkle,
           backgroundColor: SiberTema.kuantumCyan,
-          foregroundColor: Colors.black,
+          foregroundColor: Colors.white,
           icon: const Icon(Icons.add_circle_outline),
           label: const Text("YENİ ARAÇ EKLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
         ),
@@ -266,9 +266,9 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
               const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("GÜNCEL PAKET", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                  Text("GÜNCEL PAKET", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
                   SizedBox(height: 4),
-                  Text("OtoDNA Aboneliği", style: TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.bold)),
+                  Text("OtoDNA Aboneliği", style: TextStyle(color: SiberTema.textMuted, fontSize: 13, fontWeight: FontWeight.bold)),
                 ],
               ),
               Container(
@@ -282,7 +282,7 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Garaj Kapasitesi", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12)),
+              Text("Garaj Kapasitesi", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 12)),
               Text("${_araclar.length} / ${_abonelikTipi == 'Ultra Premium' ? '∞' : _aracLimiti}", style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontSize: 16)),
             ],
           ),
@@ -338,19 +338,19 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(6),
                       decoration: const BoxDecoration(color: SiberTema.kanKirmizi, shape: BoxShape.circle),
-                      child: Text("${arac['bildirim_sayisi']}", style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+                      child: Text("${arac['bildirim_sayisi']}", style: const TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.bold)),
                     ),
                   )
               ],
             ),
-            title: Text(arac['plaka'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18, letterSpacing: 1)),
-            subtitle: Text("${arac['marka']} • Şasi: ${arac['sase']}", style: const TextStyle(color: Colors.white54, fontSize: 11)),
+            title: Text(arac['plaka'], style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 18, letterSpacing: 1)),
+            subtitle: Text("${arac['marka']} • Şasi: ${arac['sase']}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11)),
             children: [
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: const BoxDecoration(
-                  border: Border(top: BorderSide(color: Colors.white12)),
-                  color: Colors.black26,
+                  border: Border(top: BorderSide(color: SiberTema.textMuted)),
+                  color: Colors.white26,
                 ),
                 child: Row(
                   children: [
@@ -363,7 +363,7 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
                         border: Border.all(color: SiberTema.kuantumCyan, width: 2),
                       ),
                       child: const Center(
-                        child: Icon(Icons.qr_code_2, size: 80, color: Colors.black),
+                        child: Icon(Icons.qr_code_2, size: 80, color: Colors.white),
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -373,7 +373,7 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
                         children: [
                           const Text("KUANTUM QR MÜHRÜ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
                           const SizedBox(height: 8),
-                          const Text("Aracınızın camına yapıştıracağınız evrensel bildirim kodu. Okutulduğunda sadece bu araca uyarı gelir.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4)),
+                          const Text("Aracınızın camına yapıştıracağınız evrensel bildirim kodu. Okutulduğunda sadece bu araca uyarı gelir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.4)),
                           const SizedBox(height: 12),
                           OutlinedButton.icon(
                             onPressed: () => _siberUyari("Siber Cüzdandan QR Indiriliyor...", SiberTema.kuantumCyan),

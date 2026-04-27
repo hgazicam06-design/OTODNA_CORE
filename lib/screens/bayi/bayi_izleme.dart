@@ -39,7 +39,7 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -87,7 +87,7 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
                 physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 children: [
-                  const Text("SİBER İSTİHBARAT ÖZETİ", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
+                  const Text("SİBER İSTİHBARAT ÖZETİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
                   const SizedBox(height: 12),
 
                   _buildCanliIstatistikKarti(
@@ -159,7 +159,7 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
           child: const Icon(Icons.warning_amber_rounded, color: SiberTema.kanKirmizi, size: 50),
         ),
         const SizedBox(height: 16),
-        Text("🚨 $sinyalSayisi AKTİF S.O.S SİNYALİ 🚨", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2)),
+        Text("🚨 $sinyalSayisi AKTİF S.O.S SİNYALİ 🚨", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2)),
         const SizedBox(height: 8),
         ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kanKirmizi, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
@@ -195,7 +195,7 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
           child: ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             leading: Icon(ikon, color: renk, size: 32),
-            title: Text(baslik, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 11)),
+            title: Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 11)),
             trailing: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(color: renk.withOpacity(0.1), shape: BoxShape.circle),

@@ -78,7 +78,7 @@ class _SifreSifirlaScreenState extends State<SifreSifirlaScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent, // Arka plan Zırhtan geliyor
         appBar: AppBar(
@@ -90,7 +90,7 @@ class _SifreSifirlaScreenState extends State<SifreSifirlaScreen> {
           ),
           title: const Text(
             "ŞİFRE KURTARMA",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir', fontSize: 16),
+            style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir', fontSize: 16),
           ),
           centerTitle: true,
         ),
@@ -120,7 +120,7 @@ class _SifreSifirlaScreenState extends State<SifreSifirlaScreen> {
                 const Text(
                   "SİBER KİLİT KIRILIYOR",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: SiberTema.textMain,
                     fontSize: 22,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 3,
@@ -132,7 +132,7 @@ class _SifreSifirlaScreenState extends State<SifreSifirlaScreen> {
                   "Karargaha kayıtlı yetkili e-posta adresinizi girin. Kuantum sıfırlama protokolü anında başlatılacaktır.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.6),
+                    color: SiberTema.textMain.withOpacity(0.6),
                     fontSize: 14,
                     height: 1.5,
                     fontFamily: 'Avenir',
@@ -147,18 +147,18 @@ class _SifreSifirlaScreenState extends State<SifreSifirlaScreen> {
                     color: SiberTema.matGrey.withOpacity(0.5),
                     border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
                     borderRadius: BorderRadius.circular(24),
-                    boxShadow: const [BoxShadow(color: Colors.black54, blurRadius: 20, offset: Offset(0, 10))],
+                    boxShadow: const [BoxShadow(color: Colors.white54, blurRadius: 20, offset: Offset(0, 10))],
                   ),
                   child: Column(
                     children: [
                       TextField(
                         controller: _emailCtrl,
                         keyboardType: TextInputType.emailAddress,
-                        style: const TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Avenir', letterSpacing: 1.5, fontWeight: FontWeight.bold),
+                        style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontFamily: 'Avenir', letterSpacing: 1.5, fontWeight: FontWeight.bold),
                         decoration: InputDecoration(
                           hintText: "Siber E-Posta Adresi",
                           hintStyle: const TextStyle(color: Colors.white30, fontSize: 14, fontFamily: 'Avenir', letterSpacing: 1),
-                          prefixIcon: const Icon(Icons.alternate_email, color: Colors.white54, size: 22),
+                          prefixIcon: const Icon(Icons.alternate_email, color: SiberTema.textMuted, size: 22),
                           filled: true,
                           fillColor: SiberTema.oledBlack, // Derin Siyah
                           contentPadding: const EdgeInsets.symmetric(vertical: 20),

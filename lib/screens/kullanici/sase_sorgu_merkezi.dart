@@ -87,7 +87,7 @@ class _SiberSaseSorguMerkeziState extends State<SiberSaseSorguMerkezi> {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           iconTheme: IconThemeData(color: primaryTeal),
         ),
         body: SingleChildScrollView(
@@ -100,27 +100,27 @@ class _SiberSaseSorguMerkeziState extends State<SiberSaseSorguMerkezi> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                  boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("ŞASE NUMARASI (VIN)", style: TextStyle(color: Colors.black45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                    const Text("ŞASE NUMARASI (VIN)", style: TextStyle(color: Colors.white45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                     const SizedBox(height: 16),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                       decoration: BoxDecoration(
                         color: bgColor,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.black.withValues(alpha: 0.05))
+                        border: Border.all(color: Colors.white.withValues(alpha: 0.05))
                       ),
                       child: TextField(
                         controller: _saseCtrl,
                         style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2, fontFamily: 'monospace'),
                         decoration: InputDecoration(
                           hintText: "WBA123XXXXXXXXXXX",
-                          hintStyle: const TextStyle(color: Colors.black26, fontSize: 14),
+                          hintStyle: const TextStyle(color: Colors.white26, fontSize: 14),
                           border: InputBorder.none,
                           suffixIcon: Icon(Icons.fingerprint, color: primaryTeal),
                         ),
@@ -141,7 +141,7 @@ class _SiberSaseSorguMerkeziState extends State<SiberSaseSorguMerkezi> {
                         ),
                         onPressed: _derinTaramaBaslat,
                         icon: const Icon(Icons.radar, color: Colors.white),
-                        label: const Text("GLOBAL DNA TARAMASI BAŞLAT", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12, fontFamily: 'Avenir')),
+                        label: const Text("GLOBAL DNA TARAMASI BAŞLAT", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12, fontFamily: 'Avenir')),
                       ),
                     )
                   ],
@@ -182,7 +182,7 @@ class _SiberSaseSorguMerkeziState extends State<SiberSaseSorguMerkezi> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Divider(color: Colors.black.withValues(alpha: 0.05), height: 1),
+            child: Divider(color: Colors.white.withValues(alpha: 0.05), height: 1),
           ),
           _buildVeriSatiri("Marka/Model", _bulunanVeri!['marka_model'] ?? "Global Veri"),
           _buildVeriSatiri("Son Kilometre", "${_bulunanVeri!['kilometre'] ?? '---'} KM"),
@@ -217,7 +217,7 @@ class _SiberSaseSorguMerkeziState extends State<SiberSaseSorguMerkezi> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(etiket, style: const TextStyle(color: Colors.black45, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+          Text(etiket, style: const TextStyle(color: Colors.white45, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           Text(deger, style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'Avenir')),
         ],
       ),
@@ -230,15 +230,15 @@ class _SiberSaseSorguMerkeziState extends State<SiberSaseSorguMerkezi> {
         const SizedBox(height: 60),
         Container(
           padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.02), shape: BoxShape.circle),
-          child: const Icon(Icons.satellite_alt, color: Colors.black12, size: 60)
+          decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.02), shape: BoxShape.circle),
+          child: const Icon(Icons.satellite_alt, color: Colors.white12, size: 60)
         ),
         const SizedBox(height: 24),
-        const Text("SİSTEM HAZIR BEKLİYOR", style: TextStyle(color: Colors.black38, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+        const Text("SİSTEM HAZIR BEKLİYOR", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
         const SizedBox(height: 12),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 32),
-          child: Text("Şase numarası girerek aracın tüm geçmişini global ağlardan çekebilirsiniz.", textAlign: TextAlign.center, style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir', height: 1.5)),
+          child: Text("Şase numarası girerek aracın tüm geçmişini global ağlardan çekebilirsiniz.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir', height: 1.5)),
         ),
       ],
     );

@@ -44,7 +44,7 @@ class _SohbetListesiScreenState extends State<SohbetListesiScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -57,7 +57,7 @@ class _SohbetListesiScreenState extends State<SohbetListesiScreen> {
           ),
           title: const Text(
             "SİBER İLETİŞİM AĞI",
-            style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
+            style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
           ),
           centerTitle: true,
         ),
@@ -194,9 +194,9 @@ class _SohbetListesiScreenState extends State<SohbetListesiScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              child: Text(isim, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                              child: Text(isim, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                             ),
-                            Text(zaman, style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 11, fontWeight: FontWeight.w600)),
+                            Text(zaman, style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 11, fontWeight: FontWeight.w600)),
                           ],
                         ),
                         const SizedBox(height: 6),
@@ -230,9 +230,9 @@ class _SohbetListesiScreenState extends State<SohbetListesiScreen> {
         children: [
           Icon(Icons.forum_outlined, color: SiberTema.kuantumCyan.withOpacity(0.2), size: 60),
           const SizedBox(height: 16),
-          Text("SİBER AĞ TEMİZ", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
+          Text("SİBER AĞ TEMİZ", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
           const SizedBox(height: 8),
-          Text("Henüz açık bir iletişim tüneliniz bulunmuyor.", style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 12, fontFamily: 'Avenir')),
+          Text("Henüz açık bir iletişim tüneliniz bulunmuyor.", style: TextStyle(color: SiberTema.textMain.withOpacity(0.3), fontSize: 12, fontFamily: 'Avenir')),
         ],
       ),
     );

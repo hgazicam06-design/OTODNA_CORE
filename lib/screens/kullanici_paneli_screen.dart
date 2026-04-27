@@ -117,7 +117,7 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
   void _siberUyariVer(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir', fontSize: 12)),
+          content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir', fontSize: 12)),
           backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -128,7 +128,7 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -258,8 +258,8 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(plaka, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                  Text(model, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12)),
+                  Text(plaka, style: const TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                  Text(model, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 12)),
                 ],
               ),
               _buildDnaHalkasi(dnaSkoru, skorRengi),
@@ -297,7 +297,7 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
       child: Column(
         children: [
           Text(skor.toStringAsFixed(0), style: TextStyle(color: renk, fontSize: 16, fontWeight: FontWeight.w900)),
-          const Text("DNA", style: TextStyle(color: Colors.white54, fontSize: 8)),
+          const Text("DNA", style: TextStyle(color: SiberTema.textMuted, fontSize: 8)),
         ],
       ),
     );
@@ -335,7 +335,7 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
         children: [
           Icon(Icons.garage_outlined, size: 80, color: Colors.white.withOpacity(0.1)),
           const SizedBox(height: 16),
-          const Text("SİBER GARAJ BOŞ", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold, letterSpacing: 2)),
+          const Text("SİBER GARAJ BOŞ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold, letterSpacing: 2)),
           const SizedBox(height: 24),
           ElevatedButton(
               style: SiberTema.kuantumButonStili(),

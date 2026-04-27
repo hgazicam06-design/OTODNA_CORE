@@ -132,7 +132,7 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
         contentPadding: const EdgeInsets.all(32),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -145,7 +145,7 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
             const SizedBox(height: 32),
             Text("İŞLEM ONAYLANDI", style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
             const SizedBox(height: 12),
-            Text("₺${widget.odenecekTutar} başarıyla tahsil edildi. Fatura cüzdanınıza eklendi.", textAlign: TextAlign.center, style: const TextStyle(color: Colors.black54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            Text("₺${widget.odenecekTutar} başarıyla tahsil edildi. Fatura cüzdanınıza eklendi.", textAlign: TextAlign.center, style: const TextStyle(color: Colors.white54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             const SizedBox(height: 32),
             SizedBox(
               width: double.infinity, height: 56,
@@ -171,7 +171,7 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
           backgroundColor: Colors.white, 
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
           title: Text('G Ü V E N L İ   Ö D E M E', style: TextStyle(color: textColor, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir')),
           centerTitle: true,
@@ -196,9 +196,9 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
                   ),
                   child: Column(
                     children: [
-                      const Text("ÖDENECEK TOPLAM TUTAR", style: TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                      const Text("ÖDENECEK TOPLAM TUTAR", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                       const SizedBox(height: 12),
-                      Text("₺${widget.odenecekTutar.toStringAsFixed(2)}", style: const TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: -1, fontFamily: 'Avenir')),
+                      Text("₺${widget.odenecekTutar.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.textMain, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: -1, fontFamily: 'Avenir')),
                     ],
                   ),
                 ),
@@ -207,7 +207,7 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
                 // =================================================================
                 // 2. KART BİLGİLERİ (Premium Input)
                 // =================================================================
-                const Text("KART BİLGİLERİ", style: TextStyle(color: Colors.black45, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                const Text("KART BİLGİLERİ", style: TextStyle(color: Colors.white45, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                 const SizedBox(height: 16),
 
                 _buildTextField(hint: "Kart Üzerindeki İsim", icon: Icons.person_outline, controller: _isimController),
@@ -227,12 +227,12 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
                 // IYZICO Güvencesi Bildirimi
                 Container(
                   padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))]),
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))]),
                   child: Row(
                     children: [
                       Icon(Icons.shield_outlined, color: primaryTeal, size: 24),
                       const SizedBox(width: 16),
-                      const Expanded(child: Text("İşleminiz Iyzico ve OtoDNA güvencesiyle 256-bit şifrelenmektedir.", style: TextStyle(color: Colors.black54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
+                      const Expanded(child: Text("İşleminiz Iyzico ve OtoDNA güvencesiyle 256-bit şifrelenmektedir.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
                     ],
                   ),
                 ),
@@ -246,10 +246,10 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                     onPressed: _isProcessing ? null : _iyzicoOdemeyiTamamla,
-                    icon: _isProcessing ? const SizedBox() : const Icon(Icons.fingerprint, color: Colors.white, size: 24),
+                    icon: _isProcessing ? const SizedBox() : const Icon(Icons.fingerprint, color: SiberTema.kuantumCyan, size: 24),
                     label: _isProcessing
                         ? const SizedBox(height: 24, width: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                        : const Text("GÜVENLİ AĞ İLE ÖDE", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                        : const Text("GÜVENLİ AĞ İLE ÖDE", style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -268,8 +268,8 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))]
+          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+          boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))]
       ),
       child: TextField(
         controller: controller,
@@ -278,7 +278,7 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
         style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.black38, fontWeight: FontWeight.bold, letterSpacing: 0, fontFamily: 'Avenir'),
+          hintStyle: const TextStyle(color: Colors.white38, fontWeight: FontWeight.bold, letterSpacing: 0, fontFamily: 'Avenir'),
           prefixIcon: Padding(
             padding: const EdgeInsets.only(right: 12.0),
             child: Icon(icon, color: primaryTeal, size: 20),

@@ -172,13 +172,13 @@ class _GercekEkspertizTerminaliState extends State<GercekEkspertizTerminali> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent, elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: Text("${widget.plakaID} Ekspertiz Girişi", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+          title: Text("${widget.plakaID} Ekspertiz Girişi", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
           centerTitle: true,
         ),
       body: SingleChildScrollView(
@@ -193,7 +193,7 @@ class _GercekEkspertizTerminaliState extends State<GercekEkspertizTerminali> {
             _buildInput("Tramer Hasar Kaydı (₺)", _tramerController, isNumber: true, icon: Icons.money_off),
             _buildInput("Ekspertiz / Usta Notu (Örn: Şasede işlem yok, motor %90)", _ekspertizNotuController, isMultiLine: true, icon: Icons.handyman),
 
-            const Padding(padding: EdgeInsets.symmetric(vertical: 24), child: Divider(color: Colors.white12)),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 24), child: Divider(color: SiberTema.textMuted)),
 
             // 2. KAPORTA BOYA SEÇİMİ (DİNAMİK LİSTE)
             const Text("2. Dijital Kaporta Analizi", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.bold)),
@@ -239,16 +239,16 @@ class _GercekEkspertizTerminaliState extends State<GercekEkspertizTerminali> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
+      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.textMuted)),
       child: TextField(
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : (isMultiLine ? TextInputType.multiline : TextInputType.text),
         maxLines: isMultiLine ? 3 : 1,
-        style: const TextStyle(color: Colors.white),
+        style: const TextStyle(color: SiberTema.textMain),
         decoration: InputDecoration(
             icon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
             hintText: hint,
-            hintStyle: const TextStyle(color: Colors.white38, fontSize: 13),
+            hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 13),
             border: InputBorder.none
         ),
       ),
@@ -262,7 +262,7 @@ class _GercekEkspertizTerminaliState extends State<GercekEkspertizTerminali> {
       decoration: BoxDecoration(
         color: SiberTema.matGrey,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white12),
+        border: Border.all(color: SiberTema.textMuted),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -337,7 +337,7 @@ class _GercekEkspertizTerminaliState extends State<GercekEkspertizTerminali> {
       children: [
         Container(width: 14, height: 14, decoration: BoxDecoration(color: color, shape: BoxShape.circle, boxShadow: [BoxShadow(color: color.withOpacity(0.5), blurRadius: 4)])),
         const SizedBox(width: 6),
-        Text(label, style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold)),
+        Text(label, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
       ],
     );
   }

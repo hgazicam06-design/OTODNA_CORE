@@ -145,7 +145,7 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
         backgroundColor: Colors.white,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
-        shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+        shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
         leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 18), onPressed: () => Navigator.pop(context)),
         actions: [
           Container(
@@ -199,20 +199,20 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
       decoration: BoxDecoration(
         color: Colors.white, 
         borderRadius: BorderRadius.circular(24), 
-        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("KRİTİK DNA BİLGİLERİ", style: TextStyle(color: Colors.black45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          const Text("KRİTİK DNA BİLGİLERİ", style: TextStyle(color: Colors.white45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           const SizedBox(height: 16),
           _buildPlazaInput("Plaka", _plakaController, Icons.subtitles),
           const SizedBox(height: 16),
           _buildPlazaInput("Şase No (VIN) - 17 Hane", _saseController, Icons.fingerprint),
           const SizedBox(height: 32),
           
-          const Text("DONANIM BİLGİLERİ", style: TextStyle(color: Colors.black45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          const Text("DONANIM BİLGİLERİ", style: TextStyle(color: Colors.white45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           const SizedBox(height: 16),
           _buildPlazaInput("Marka", _markaController, Icons.branding_watermark),
           const SizedBox(height: 16),
@@ -233,16 +233,16 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
       decoration: BoxDecoration(
         color: bgColor, 
         borderRadius: BorderRadius.circular(16), 
-        border: Border.all(color: Colors.black.withValues(alpha: 0.05))
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05))
       ),
       child: TextField(
         controller: controller,
         style: TextStyle(color: textColor, fontSize: 14, fontFamily: 'Avenir', fontWeight: FontWeight.w900, letterSpacing: 1),
         textCapitalization: TextCapitalization.characters,
         decoration: InputDecoration(
-          prefixIcon: Icon(ikon, color: Colors.black38, size: 18),
+          prefixIcon: Icon(ikon, color: Colors.white38, size: 18),
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.black26, fontSize: 12, letterSpacing: 1, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
+          hintStyle: const TextStyle(color: Colors.white26, fontSize: 12, letterSpacing: 1, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         ),
@@ -256,13 +256,13 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
       decoration: BoxDecoration(
         color: Colors.white, 
         borderRadius: BorderRadius.circular(24), 
-        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("KULLANIM AMACI VE RİSK PROFİLİ", style: TextStyle(color: Colors.black45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          const Text("KULLANIM AMACI VE RİSK PROFİLİ", style: TextStyle(color: Colors.white45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           const SizedBox(height: 16),
           // Ana Kullanım Türü Seçimi
           Row(
@@ -302,7 +302,7 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(entry.key.toUpperCase(), style: const TextStyle(color: Colors.black45, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                  Text(entry.key.toUpperCase(), style: const TextStyle(color: Colors.white45, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 8,
@@ -328,7 +328,7 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
           color: secili ? primaryTeal.withValues(alpha: 0.05) : Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: secili ? primaryTeal.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05), width: secili ? 2 : 1),
-          boxShadow: secili ? null : [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 5)],
+          boxShadow: secili ? null : [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 5)],
         ),
         child: Column(
           children: [
@@ -351,7 +351,7 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
           color: secili ? aktifRenk : Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: secili ? aktifRenk : Colors.black.withValues(alpha: 0.05)),
-          boxShadow: secili ? [BoxShadow(color: aktifRenk.withValues(alpha: 0.3), blurRadius: 8, offset: const Offset(0, 3))] : [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 5)],
+          boxShadow: secili ? [BoxShadow(color: aktifRenk.withValues(alpha: 0.3), blurRadius: 8, offset: const Offset(0, 3))] : [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 5)],
         ),
         child: Text(etiket, style: TextStyle(color: secili ? Colors.white : Colors.black54, fontSize: 11, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
       ),
@@ -363,8 +363,8 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white, 
-        border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
+        border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
+        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
       ),
       child: SizedBox(
         width: double.infinity,

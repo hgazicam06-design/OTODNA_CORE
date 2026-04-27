@@ -131,7 +131,7 @@ class _HizliKayitFormuState extends State<HizliKayitFormu> {
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
           ],
         ),
       ),
@@ -147,7 +147,7 @@ class _HizliKayitFormuState extends State<HizliKayitFormu> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -167,17 +167,17 @@ class _HizliKayitFormuState extends State<HizliKayitFormu> {
                 const SizedBox(height: 24),
 
                 // FİRMA ADI
-                const Text("FİRMA BİLGİSİ", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
+                const Text("FİRMA BİLGİSİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
                 const SizedBox(height: 8),
                 Container(
                   decoration: BoxDecoration(
                     color: SiberTema.matGrey.withOpacity(0.8),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.white24, width: 1.5),
+                    border: Border.all(color: SiberTema.textMuted, width: 1.5),
                   ),
                   child: TextField(
                     controller: _firmaAdiCtrl,
-                    style: const TextStyle(color: Colors.white, fontSize: 14, letterSpacing: 1, fontWeight: FontWeight.bold),
+                    style: const TextStyle(color: SiberTema.textMain, fontSize: 14, letterSpacing: 1, fontWeight: FontWeight.bold),
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.business_outlined, color: SiberTema.kuantumCyan, size: 22),
                       hintText: "Örn: Siber Motor Servisi",
@@ -190,7 +190,7 @@ class _HizliKayitFormuState extends State<HizliKayitFormu> {
                 const SizedBox(height: 24),
 
                 // SEKTÖR SEÇİCİ
-                const Text("HİZMET / UZMANLIK ALANLARI", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
+                const Text("HİZMET / UZMANLIK ALANLARI", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
                 const SizedBox(height: 8),
                 _sektorSecici(),
 
@@ -199,7 +199,7 @@ class _HizliKayitFormuState extends State<HizliKayitFormu> {
 
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 30),
-                  child: Divider(color: Colors.white24, height: 1),
+                  child: Divider(color: SiberTema.textMuted, height: 1),
                 ),
 
                 _sozlesmeOnayKutusu(),
@@ -238,7 +238,7 @@ class _HizliKayitFormuState extends State<HizliKayitFormu> {
       children: [
         const Icon(Icons.shield_outlined, color: SiberTema.kuantumCyan, size: 28),
         const SizedBox(width: 12),
-        Expanded(child: Text(metin, style: const TextStyle(color: Colors.white70, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold))),
+        Expanded(child: Text(metin, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold))),
       ],
     ),
   );
@@ -247,13 +247,13 @@ class _HizliKayitFormuState extends State<HizliKayitFormu> {
     decoration: BoxDecoration(
       color: SiberTema.matGrey.withOpacity(0.8),
       borderRadius: BorderRadius.circular(12),
-      border: Border.all(color: Colors.white12),
+      border: Border.all(color: SiberTema.textMuted),
     ),
     child: Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
         leading: const Icon(Icons.category_outlined, color: SiberTema.kuantumCyan),
-        title: const Text("Sektörünüzü Seçin", style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
+        title: const Text("Sektörünüzü Seçin", style: TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
         iconColor: SiberTema.kuantumCyan,
         collapsedIconColor: Colors.white54,
         children: _sektorler.keys.map((String key) {
@@ -274,11 +274,11 @@ class _HizliKayitFormuState extends State<HizliKayitFormu> {
   );
 
   Widget _konumButonu() => Container(
-    decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.8), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
+    decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.8), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.textMuted)),
     child: ListTile(
       leading: const Icon(Icons.location_on_outlined, color: Colors.orangeAccent),
-      title: const Text("KARARGAH LOKASYONU (GPS)", style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)),
-      subtitle: const Text("Konumunuzu Mühürleyin", style: TextStyle(color: Colors.white54, fontSize: 10)),
+      title: const Text("KARARGAH LOKASYONU (GPS)", style: TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)),
+      subtitle: const Text("Konumunuzu Mühürleyin", style: TextStyle(color: SiberTema.textMuted, fontSize: 10)),
       trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white30, size: 14),
       onTap: () {
         HapticFeedback.lightImpact();

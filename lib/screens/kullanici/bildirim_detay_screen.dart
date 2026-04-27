@@ -34,7 +34,7 @@ class BildirimDetayScreen extends StatelessWidget {
         backgroundColor: _cardColor,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
-        shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05), width: 1)),
+        shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05), width: 1)),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20),
           onPressed: () => Navigator.pop(context),
@@ -72,7 +72,7 @@ class BildirimDetayScreen extends StatelessWidget {
             const SizedBox(height: 40),
 
             // ORTA KART: Bildirim İçeriği
-            const Text("SİNYAL İÇERİĞİ", style: TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+            const Text("SİNYAL İÇERİĞİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
             const SizedBox(height: 12),
             Container(
               width: double.infinity,
@@ -80,8 +80,8 @@ class BildirimDetayScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: _cardColor,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)],
+                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)],
               ),
               child: Text(
                 mesaj,
@@ -91,7 +91,7 @@ class BildirimDetayScreen extends StatelessWidget {
             const SizedBox(height: 32),
 
             // ALT KART: Güvenlik ve Ağ Verileri (IP, Tarih)
-            const Text("SİBER AĞ İZLERİ", style: TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+            const Text("SİBER AĞ İZLERİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(20),
@@ -103,9 +103,9 @@ class BildirimDetayScreen extends StatelessWidget {
               child: Column(
                 children: [
                   _buildAgaVeriSatiri(Icons.wifi_tethering, "Gönderici IP", ip, Colors.redAccent),
-                  Padding(padding: const EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.black.withValues(alpha: 0.05))),
+                  Padding(padding: const EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white.withValues(alpha: 0.05))),
                   _buildAgaVeriSatiri(Icons.security, "Hedef Şase", saseNo, _textColor),
-                  Padding(padding: const EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.black.withValues(alpha: 0.05))),
+                  Padding(padding: const EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white.withValues(alpha: 0.05))),
                   _buildAgaVeriSatiri(Icons.access_time, "Zaman Damgası", tarih != null ? _formatDate(tarih) : "Bilinmiyor", _textColor),
                 ],
               ),
@@ -119,9 +119,9 @@ class BildirimDetayScreen extends StatelessWidget {
   Widget _buildAgaVeriSatiri(IconData icon, String baslik, String deger, Color degerRengi) {
     return Row(
       children: [
-        Icon(icon, color: Colors.black38, size: 18),
+        Icon(icon, color: Colors.white38, size: 18),
         const SizedBox(width: 12),
-        Text(baslik, style: const TextStyle(color: Colors.black54, fontSize: 13, fontFamily: 'Avenir')),
+        Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 13, fontFamily: 'Avenir')),
         const Spacer(),
         Text(deger, style: TextStyle(color: degerRengi, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'monospace', letterSpacing: 1)),
       ],

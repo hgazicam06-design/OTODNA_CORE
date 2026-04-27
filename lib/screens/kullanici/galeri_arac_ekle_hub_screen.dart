@@ -35,7 +35,7 @@ class _GaleriAracEkleHubScreenState extends State<GaleriAracEkleHubScreen> {
     String girilenSase = _saseController.text.trim().replaceAll(" ", "").toUpperCase();
 
     if (girilenSase.length < 5) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Geçersiz Şase (VIN) numarası.", style: TextStyle(color: Colors.white, fontFamily: 'Avenir')), backgroundColor: Colors.redAccent));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Geçersiz Şase (VIN) numarası.", style: TextStyle(color: SiberTema.textMain, fontFamily: 'Avenir')), backgroundColor: Colors.redAccent));
       return;
     }
 
@@ -53,23 +53,23 @@ class _GaleriAracEkleHubScreenState extends State<GaleriAracEkleHubScreen> {
           _aracBulundu = true;
           _hubVerileri = Map<String, String>.from(hubRaporu["detaylar"]);
         });
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Merkez Veritabanı: Fabrika verileri eşleşti.", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), backgroundColor: primaryTeal));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Merkez Veritabanı: Fabrika verileri eşleşti.", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), backgroundColor: primaryTeal));
       }
     } else {
       // ARAÇ BULUNAMADIYSA
       if (mounted) {
         setState(() => _hubSorgulaniyor = false);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Sistem Hatası: Bu şase numarasına ait fabrika verisi bulunamadı.", style: TextStyle(color: Colors.white, fontFamily: 'Avenir')), backgroundColor: Colors.redAccent));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Sistem Hatası: Bu şase numarasına ait fabrika verisi bulunamadı.", style: TextStyle(color: SiberTema.textMain, fontFamily: 'Avenir')), backgroundColor: Colors.redAccent));
       }
     }
   }
 
   void _ilaniYayinla() {
     if (_fiyatController.text.isEmpty || _kmController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Lütfen Fiyat ve Kilometre bilgilerini girin.", style: TextStyle(color: Colors.white, fontFamily: 'Avenir')), backgroundColor: Colors.redAccent));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Lütfen Fiyat ve Kilometre bilgilerini girin.", style: TextStyle(color: SiberTema.textMain, fontFamily: 'Avenir')), backgroundColor: Colors.redAccent));
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Araç Kaydı Plaza Ağına Başarıyla Mühürlendi.", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), backgroundColor: primaryTeal));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Araç Kaydı Plaza Ağına Başarıyla Mühürlendi.", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), backgroundColor: primaryTeal));
     Future.delayed(const Duration(seconds: 1), () => Navigator.pop(context));
   }
 
@@ -83,7 +83,7 @@ class _GaleriAracEkleHubScreenState extends State<GaleriAracEkleHubScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
           title: Text("OtoDNA Veri Terminali", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 0.5, fontFamily: 'Avenir')),
           centerTitle: true,
@@ -135,8 +135,8 @@ class _GaleriAracEkleHubScreenState extends State<GaleriAracEkleHubScreen> {
                   decoration: BoxDecoration(
                     color: Colors.white, 
                     borderRadius: BorderRadius.circular(20), 
-                    border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-                    boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                    boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,14 +152,14 @@ class _GaleriAracEkleHubScreenState extends State<GaleriAracEkleHubScreen> {
                               children: [
                                 Text(_hubVerileri["Marka/Model"]!, style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
                                 const SizedBox(height: 4),
-                                Text("${_hubVerileri["Paket"]} - ${_hubVerileri["Yıl"]}", style: const TextStyle(color: Colors.black54, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                Text("${_hubVerileri["Paket"]} - ${_hubVerileri["Yıl"]}", style: const TextStyle(color: Colors.white54, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                               ],
                             ),
                           )
                         ],
                       ),
                       
-                      Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Divider(color: Colors.black.withValues(alpha: 0.05), height: 1)),
+                      Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Divider(color: Colors.white.withValues(alpha: 0.05), height: 1)),
 
                       GridView.count(
                         shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), crossAxisCount: 2, crossAxisSpacing: 16, mainAxisSpacing: 20, childAspectRatio: 2.5,
@@ -191,7 +191,7 @@ class _GaleriAracEkleHubScreenState extends State<GaleriAracEkleHubScreen> {
 
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white.withValues(alpha: 0.05))),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       value: _seciliHasar,
@@ -220,7 +220,7 @@ class _GaleriAracEkleHubScreenState extends State<GaleriAracEkleHubScreen> {
                         const SizedBox(height: 16),
                         Text("Araç Fotoğraflarını Yükle", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'Avenir')),
                         const SizedBox(height: 4),
-                        const Text("Maksimum 20 Fotoğraf", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                        const Text("Maksimum 20 Fotoğraf", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                       ],
                     ),
                   ),
@@ -249,13 +249,13 @@ class _GaleriAracEkleHubScreenState extends State<GaleriAracEkleHubScreen> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(ikon, color: Colors.black38, size: 18),
+        Icon(ikon, color: Colors.white38, size: 18),
         const SizedBox(width: 12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(baslik, style: const TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+              Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
               const SizedBox(height: 2),
               Text(deger, style: TextStyle(color: textColor, fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             ],
@@ -267,13 +267,13 @@ class _GaleriAracEkleHubScreenState extends State<GaleriAracEkleHubScreen> {
 
   Widget _buildPremiumInput(String hint, IconData icon, TextEditingController controller, {bool isNumber = false, bool isUppercase = false}) {
     return Container(
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]),
       child: TextField(
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
         textCapitalization: isUppercase ? TextCapitalization.characters : TextCapitalization.sentences,
         style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
-        decoration: InputDecoration(prefixIcon: Icon(icon, color: primaryTeal, size: 20), hintText: hint, hintStyle: const TextStyle(color: Colors.black38, fontSize: 13, fontFamily: 'Avenir'), border: InputBorder.none, contentPadding: const EdgeInsets.symmetric(vertical: 16)),
+        decoration: InputDecoration(prefixIcon: Icon(icon, color: primaryTeal, size: 20), hintText: hint, hintStyle: const TextStyle(color: Colors.white38, fontSize: 13, fontFamily: 'Avenir'), border: InputBorder.none, contentPadding: const EdgeInsets.symmetric(vertical: 16)),
       ),
     );
   }

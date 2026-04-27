@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 import '../../widgets/siber_rehber_dialog.dart';
-import '../../services/siber_lojistik_motoru.dart'; // YENİ LOJİSTİK MOTORU
+import '../../services/siber_lojistik_motoru.dart';
 
 /// 🌪️ OTODNA ÇIĞIR (B2C YOLCU EKRANI)
 /// Müşterinin 10 km çapındaki taksileri DNA skoruna ve şoför puanına göre
@@ -17,6 +18,15 @@ class OtoDnaCigirScreen extends StatefulWidget {
 }
 
 class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
+  // 🏢 FİLDİŞİ SEDEF PALET
+  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color surfaceColor = Colors.white;
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color textMain = const Color(0xFF1E293B);
+  final Color textMuted = const Color(0xFF64748B);
+  final Color accentGold = Colors.amber.shade700;
+  final Color dangerColor = SiberTema.kanKirmizi;
+
   bool _sadeceTemizDna = false;
   bool _radarTariyor = false;
   bool _hedefSecildi = false;
@@ -73,9 +83,9 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
 
   void _siberUyari(String mesaj, Color renk) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: TextStyle(color: renk, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-      backgroundColor: Colors.black87,
-      shape: RoundedRectangleBorder(side: BorderSide(color: renk), borderRadius: BorderRadius.circular(8)),
+      content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+      backgroundColor: renk,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       behavior: SnackBarBehavior.floating,
     ));
   }
@@ -84,16 +94,16 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
     setState(() => _radarTariyor = true);
     HapticFeedback.heavyImpact();
     
-    _siberUyari("$plaka plakalı araca ÇIĞIR sinyali gönderildi! Yanıt bekleniyor...", SiberTema.kuantumCyan);
+    _siberUyari("$plaka plakalı araca ÇIĞIR sinyali gönderildi! Yanıt bekleniyor...", primaryTeal);
 
     await Future.delayed(const Duration(seconds: 3)); // Simülasyon
     
     setState(() => _radarTariyor = false);
-    _siberUyari("✅ ŞOFÖR ONAYLADI! Araç konumunuza doğru yola çıktı.", Colors.greenAccent);
+    _siberUyari("✅ ŞOFÖR ONAYLADI! Araç konumunuza doğru yola çıktı.", primaryTeal);
   }
 
   void _durakBaskaninaMesajAt(String durakAdi) {
-    _siberUyari("$durakAdi Başkanına kriptolu mesaj kanalı açılıyor...", SiberTema.sariAltin);
+    _siberUyari("$durakAdi Başkanına kriptolu mesaj kanalı açılıyor...", accentGold);
   }
 
   @override
@@ -108,18 +118,18 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
     gosterilenAraclar.sort((a, b) => a['mesafe'].compareTo(b['mesafe']));
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: bgColor,
         appBar: AppBar(
-          backgroundColor: Colors.black.withOpacity(0.8),
+          backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("OTODNA ÇIĞIR", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2, fontFamily: 'Avenir')),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => context.pop()),
+          title: Text("OTODNA ÇIĞIR", style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
           actions: [
             IconButton(
-              icon: const Icon(Icons.help_outline_rounded, color: SiberTema.kuantumCyan),
+              icon: Icon(Icons.help_outline_rounded, color: primaryTeal),
               tooltip: "Siber Rehber",
               onPressed: () => _rehberiGoster(otomatik: false),
             )
@@ -155,9 +165,10 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
-      decoration: const BoxDecoration(
-        color: Colors.black,
-        border: Border(bottom: BorderSide(color: SiberTema.kuantumCyan, width: 2)),
+      decoration: BoxDecoration(
+        color: surfaceColor,
+        border: Border(bottom: BorderSide(color: primaryTeal, width: 2)),
+        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 10)]
       ),
       child: Column(
         children: [
@@ -166,16 +177,16 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
             onTap: () => setState(() => _hedefSecildi = true),
             child: Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+              decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
               child: Row(
                 children: [
-                  const Icon(Icons.location_on, color: SiberTema.kuantumCyan, size: 24),
+                  Icon(Icons.location_on, color: primaryTeal, size: 24),
                   const SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("Nereye Gideceksiniz?", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
-                      Text(_hedefSecildi ? "Kadıköy Meydan (8.5 KM)" : "Konum Seçmek İçin Dokunun", style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900)),
+                      Text("Nereye Gideceksiniz?", style: TextStyle(color: textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
+                      Text(_hedefSecildi ? "Kadıköy Meydan (8.5 KM)" : "Konum Seçmek İçin Dokunun", style: TextStyle(color: textMain, fontSize: 14, fontWeight: FontWeight.w900)),
                     ],
                   ),
                 ],
@@ -193,18 +204,18 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: _sadeceTemizDna ? SiberTema.kuantumCyan.withOpacity(0.1) : SiberTema.matGrey,
+                color: _sadeceTemizDna ? primaryTeal.withOpacity(0.1) : surfaceColor,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: _sadeceTemizDna ? SiberTema.kuantumCyan : Colors.white12),
+                border: Border.all(color: _sadeceTemizDna ? primaryTeal : Colors.black.withOpacity(0.05)),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(_sadeceTemizDna ? Icons.health_and_safety : Icons.health_and_safety_outlined, color: _sadeceTemizDna ? SiberTema.kuantumCyan : Colors.white54, size: 20),
+                  Icon(_sadeceTemizDna ? Icons.health_and_safety : Icons.health_and_safety_outlined, color: _sadeceTemizDna ? primaryTeal : textMuted, size: 20),
                   const SizedBox(width: 8),
                   Text(
                     "SADECE DNA RAPORU TEMİZ ARAÇLAR", 
-                    style: TextStyle(color: _sadeceTemizDna ? SiberTema.kuantumCyan : Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1)
+                    style: TextStyle(color: _sadeceTemizDna ? primaryTeal : textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1)
                   ),
                 ],
               ),
@@ -219,11 +230,11 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
     return Container(
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.8), borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.sariAltin.withOpacity(0.5))),
+      decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: accentGold.withOpacity(0.5)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 10)]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("KUANTUM A.I. ROTASI SEÇİN", style: TextStyle(color: SiberTema.sariAltin, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+          Text("KUANTUM A.I. ROTASI SEÇİN", style: TextStyle(color: accentGold, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
           const SizedBox(height: 12),
           Row(
             children: [
@@ -234,34 +245,34 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
               Expanded(child: _buildRotaSecenek("Kestirme", Icons.map, false)),
             ],
           ),
-          const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white12)),
+          Padding(padding: const EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white.withOpacity(0.05))),
           
           // FİNANS ÖZETİ
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Oda Tarifesi", style: TextStyle(color: Colors.white54, fontSize: 12)),
-              Text("₺${_odaTarifesiFiyati.toStringAsFixed(2)}", style: const TextStyle(color: Colors.white54, fontSize: 12, decoration: TextDecoration.lineThrough)),
+              Text("Oda Tarifesi", style: TextStyle(color: textMuted, fontSize: 12)),
+              Text("₺${_odaTarifesiFiyati.toStringAsFixed(2)}", style: TextStyle(color: textMuted, fontSize: 12, decoration: TextDecoration.lineThrough)),
             ],
           ),
           const SizedBox(height: 4),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("%${(_dinamikIndirimOrani * 100).toStringAsFixed(1)} Yolcu Sadakat İndirimi", style: const TextStyle(color: Colors.greenAccent, fontSize: 12, fontWeight: FontWeight.bold)),
-              Text("- ₺${_otodnaIndirimi.toStringAsFixed(2)}", style: const TextStyle(color: Colors.greenAccent, fontSize: 12, fontWeight: FontWeight.bold)),
+              Text("%${(_dinamikIndirimOrani * 100).toStringAsFixed(1)} Yolcu Sadakat İndirimi", style: TextStyle(color: primaryTeal, fontSize: 12, fontWeight: FontWeight.bold)),
+              Text("- ₺${_otodnaIndirimi.toStringAsFixed(2)}", style: TextStyle(color: primaryTeal, fontSize: 12, fontWeight: FontWeight.bold)),
             ],
           ),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("NET ÖDENECEK (KDV Dahil)", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900)),
-              Text("₺${_netMusteriFiyati.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900)),
+              Text("NET ÖDENECEK (KDV Dahil)", style: TextStyle(color: textMain, fontSize: 14, fontWeight: FontWeight.w900)),
+              Text("₺${_netMusteriFiyati.toStringAsFixed(2)}", style: TextStyle(color: primaryTeal, fontSize: 24, fontWeight: FontWeight.w900)),
             ],
           ),
           const SizedBox(height: 4),
-          const Text("* Şoför hizmet faturasını (%20 KDV) yolculuk sonu kesecektir.", style: TextStyle(color: Colors.white38, fontSize: 9)),
+          Text("* Şoför hizmet faturasını (%20 KDV) yolculuk sonu kesecektir.", style: TextStyle(color: textMuted.withOpacity(0.8), fontSize: 9)),
         ],
       ),
     );
@@ -273,15 +284,15 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: _seciliRota == isim ? SiberTema.sariAltin : Colors.black45,
+          color: _seciliRota == isim ? accentGold.withOpacity(0.1) : bgColor,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: _seciliRota == isim ? SiberTema.sariAltin : Colors.white12),
+          border: Border.all(color: _seciliRota == isim ? accentGold : Colors.black.withOpacity(0.05)),
         ),
         child: Column(
           children: [
-            Icon(ikon, color: _seciliRota == isim ? Colors.black : Colors.white54, size: 20),
+            Icon(ikon, color: _seciliRota == isim ? accentGold : textMuted, size: 20),
             const SizedBox(height: 6),
-            Text(isim, style: TextStyle(color: _seciliRota == isim ? Colors.black : Colors.white54, fontSize: 10, fontWeight: FontWeight.w900)),
+            Text(isim, style: TextStyle(color: _seciliRota == isim ? accentGold : textMuted, fontSize: 10, fontWeight: FontWeight.w900)),
           ],
         ),
       ),
@@ -293,14 +304,14 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(
+          SizedBox(
             width: 80, height: 80,
-            child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2),
+            child: CircularProgressIndicator(color: primaryTeal, strokeWidth: 2),
           ),
           const SizedBox(height: 24),
-          Text("SİNYAL MERKEZE İLETİLİYOR...", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.8), fontWeight: FontWeight.bold, letterSpacing: 2)),
+          Text("SİNYAL MERKEZE İLETİLİYOR...", style: TextStyle(color: primaryTeal, fontWeight: FontWeight.bold, letterSpacing: 2)),
           const SizedBox(height: 8),
-          const Text("Şoförün onay vermesi bekleniyor", style: TextStyle(color: Colors.white38, fontSize: 11)),
+          Text("Şoförün onay vermesi bekleniyor", style: TextStyle(color: textMuted, fontSize: 11)),
         ],
       ),
     );
@@ -311,15 +322,15 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
     bool isVIP = taksi['isVip'] ?? false;
     bool isRiskli = puan <= 70;
     
-    Color anaRenk = isVIP ? SiberTema.sariAltin : (isRiskli ? SiberTema.kanKirmizi : SiberTema.kuantumCyan);
+    Color anaRenk = isVIP ? accentGold : (isRiskli ? dangerColor : primaryTeal);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: SiberTema.matGrey,
+        color: surfaceColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: anaRenk.withOpacity(0.5), width: isVIP ? 2 : 1),
-        boxShadow: isVIP ? [BoxShadow(color: SiberTema.sariAltin.withOpacity(0.15), blurRadius: 20)] : [],
+        boxShadow: isVIP ? [BoxShadow(color: accentGold.withOpacity(0.15), blurRadius: 20)] : [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 10)],
       ),
       child: Column(
         children: [
@@ -333,19 +344,19 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4), border: Border.all(color: Colors.black, width: 2)),
-                      child: Text(taksi['plaka'] ?? "", style: const TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4), border: Border.all(color: Colors.white, width: 2)),
+                      child: Text(taksi['plaka'] ?? "", style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                     ),
                     if (isVIP)
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(color: SiberTema.sariAltin.withOpacity(0.2), borderRadius: BorderRadius.circular(20), border: Border.all(color: SiberTema.sariAltin)),
-                        child: const Row(
+                        decoration: BoxDecoration(color: accentGold.withOpacity(0.1), borderRadius: BorderRadius.circular(20), border: Border.all(color: accentGold)),
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.star, color: SiberTema.sariAltin, size: 12),
-                            SizedBox(width: 4),
-                            Text("ALTIN ŞOFÖR", style: TextStyle(color: SiberTema.sariAltin, fontSize: 9, fontWeight: FontWeight.w900)),
+                            Icon(Icons.star, color: accentGold, size: 12),
+                            const SizedBox(width: 4),
+                            Text("ALTIN ŞOFÖR", style: TextStyle(color: accentGold, fontSize: 9, fontWeight: FontWeight.w900)),
                           ],
                         ),
                       )
@@ -363,10 +374,10 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(taksi['soforAdi'] ?? "Bilinmiyor", style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
-                          Text("${taksi['arac']} • ${taksi['mesafe']} KM Uzakta", style: const TextStyle(color: Colors.white54, fontSize: 12)),
+                          Text(taksi['soforAdi'] ?? "Bilinmiyor", style: TextStyle(color: textMain, fontSize: 16, fontWeight: FontWeight.w900)),
+                          Text("${taksi['arac']} • ${taksi['mesafe']} KM Uzakta", style: TextStyle(color: textMuted, fontSize: 12)),
                           const SizedBox(height: 4),
-                          Text("Bağlı Durak: ${taksi['durakAdi'] ?? 'Bağımsız'}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold)),
+                          Text("Bağlı Durak: ${taksi['durakAdi'] ?? 'Bağımsız'}", style: TextStyle(color: primaryTeal, fontSize: 10, fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ),
@@ -379,15 +390,15 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
                           children: [
                             const Icon(Icons.star, color: Colors.amber, size: 14),
                             const SizedBox(width: 4),
-                            Text("${taksi['yildiz'] ?? '5.0'}", style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+                            Text("${taksi['yildiz'] ?? '5.0'}", style: TextStyle(color: textMain, fontSize: 14, fontWeight: FontWeight.bold)),
                           ],
                         ),
                         const SizedBox(height: 2),
-                        Text("(${taksi['yorumSayisi'] ?? 0} Yorum)", style: const TextStyle(color: Colors.white38, fontSize: 9)),
+                        Text("(${taksi['yorumSayisi'] ?? 0} Yorum)", style: TextStyle(color: textMuted, fontSize: 9)),
                         const SizedBox(height: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                          decoration: BoxDecoration(color: Colors.black45, borderRadius: BorderRadius.circular(8)),
+                          decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(8)),
                           child: Text("Çığır: ${taksi['puan']}", style: TextStyle(color: anaRenk, fontSize: 10, fontWeight: FontWeight.bold)),
                         )
                       ],
@@ -400,37 +411,37 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
 
           // AKSİYON BUTONLARI
           Container(
-            decoration: const BoxDecoration(border: Border(top: BorderSide(color: Colors.white12))),
+            decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05)))),
             child: Row(
               children: [
                 Expanded(
                   child: InkWell(
                     onTap: () => _durakBaskaninaMesajAt(taksi['durakAdi'] ?? 'Bilinmeyen Durak'),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 14),
-                      child: Center(child: Text("DURAKLA GÖRÜŞ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1))),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      child: Center(child: Text("DURAKLA GÖRÜŞ", style: TextStyle(color: textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1))),
                     ),
                   )
                 ),
-                Container(width: 1, height: 40, color: Colors.white12),
+                Container(width: 1, height: 40, color: Colors.white.withOpacity(0.05)),
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      _siberUyari("Şoför Engellendi. Kuantum Ağı'nda size bir daha görünmeyecek.", SiberTema.kanKirmizi);
+                      _siberUyari("Şoför Engellendi. Kuantum Ağı'nda size bir daha görünmeyecek.", dangerColor);
                     },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 14),
-                      child: Center(child: Text("ENGELLE", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1))),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      child: Center(child: Text("ENGELLE", style: TextStyle(color: dangerColor, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1))),
                     ),
                   ),
                 ),
-                Container(width: 1, height: 40, color: Colors.white12),
+                Container(width: 1, height: 40, color: Colors.white.withOpacity(0.05)),
                 Expanded(
                   flex: 2,
                   child: InkWell(
                     onTap: () {
                       if (!_hedefSecildi) {
-                        _siberUyari("Lütfen önce nereye gideceğinizi seçin!", SiberTema.kanKirmizi);
+                        _siberUyari("Lütfen önce nereye gideceğinizi seçin!", dangerColor);
                         return;
                       }
                       if (!_radarTariyor) _taksiCagir(taksi['plaka']);

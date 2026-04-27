@@ -57,7 +57,7 @@ class _UstaPanelScreenState extends State<UstaPanelScreen> {
     String ustaId = currentUser?.uid ?? "BILINMEYEN_USTA";
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -65,7 +65,7 @@ class _UstaPanelScreenState extends State<UstaPanelScreen> {
           elevation: 0,
           centerTitle: true,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("USTA KOMUTA MERKEZİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          title: const Text("USTA KOMUTA MERKEZİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           actions: [
             IconButton(
               icon: const Icon(Icons.power_settings_new, color: SiberTema.kanKirmizi),
@@ -121,7 +121,7 @@ class _UstaPanelScreenState extends State<UstaPanelScreen> {
                                       children: [
                                         const Text("HIZLI STOK VE ARAÇ TARAMA", style: TextStyle(color: SiberTema.altinSari, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                                         const SizedBox(height: 6),
-                                        Text("Yedek parça barkodunu veya aracın OtoDNA mühürlü QR kodunu okutun.", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.bold, height: 1.5, fontFamily: 'Avenir')),
+                                        Text("Yedek parça barkodunu veya aracın OtoDNA mühürlü QR kodunu okutun.", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.bold, height: 1.5, fontFamily: 'Avenir')),
                                       ],
                                     ),
                                   ),
@@ -143,13 +143,13 @@ class _UstaPanelScreenState extends State<UstaPanelScreen> {
                         children: [
                           Icon(Icons.access_time_filled, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 20),
                           const SizedBox(width: 12),
-                          const Text("AKTİF SİBER RANDEVULAR (₺200 TEMİNATLI)", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                          const Text("AKTİF SİBER RANDEVULAR (₺200 TEMİNATLI)", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                         ],
                       ),
                     ),
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 24),
-                      child: Divider(color: Colors.white12, thickness: 1),
+                      child: Divider(color: SiberTema.textMuted, thickness: 1),
                     ),
 
                     // =================================================================
@@ -175,7 +175,7 @@ class _UstaPanelScreenState extends State<UstaPanelScreen> {
                                 children: [
                                   Icon(Icons.event_available, color: SiberTema.kuantumCyan.withOpacity(0.2), size: 64),
                                   const SizedBox(height: 16),
-                                  Text("RADAR TEMİZ", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
+                                  Text("RADAR TEMİZ", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
                                 ],
                               ),
                             );
@@ -229,7 +229,7 @@ class _UstaPanelScreenState extends State<UstaPanelScreen> {
         color: SiberTema.matGrey.withOpacity(0.8),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 10)],
+        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.2), blurRadius: 10)],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,16 +256,16 @@ class _UstaPanelScreenState extends State<UstaPanelScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(child: Text(isim.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir'))),
+                    Expanded(child: Text(isim.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir'))),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), borderRadius: BorderRadius.circular(6), border: Border.all(color: Colors.white12)),
-                      child: Text(plaka, style: const TextStyle(color: Colors.white54, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+                      decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), borderRadius: BorderRadius.circular(6), border: Border.all(color: SiberTema.textMuted)),
+                      child: Text(plaka, style: const TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
                     ),
                   ],
                 ),
                 const SizedBox(height: 8),
-                Text(islem.toUpperCase(), style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.bold, height: 1.5, letterSpacing: 1, fontFamily: 'Avenir')),
+                Text(islem.toUpperCase(), style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.bold, height: 1.5, letterSpacing: 1, fontFamily: 'Avenir')),
                 const SizedBox(height: 16),
 
                 // MÜDAHALE BUTONLARI (FİREBASE CANLI BAĞLANTILI)
@@ -288,7 +288,7 @@ class _UstaPanelScreenState extends State<UstaPanelScreen> {
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           backgroundColor: SiberTema.kuantumCyan,
-                          foregroundColor: Colors.black,
+                          foregroundColor: Colors.white,
                           elevation: 0,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                         ),

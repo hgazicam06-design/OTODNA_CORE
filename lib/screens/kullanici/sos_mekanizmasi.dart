@@ -127,7 +127,7 @@ class _SiberAkilliSOSButonuState extends State<SiberAkilliSOSButonu> {
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold)),
+            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
           ],
         ),
         duration: const Duration(seconds: 5),
@@ -198,7 +198,7 @@ class _SiberAkilliSOSButonuState extends State<SiberAkilliSOSButonu> {
                       const SizedBox(height: 8),
                       const Text(
                         "5 SN BASILI TUTUN",
-                        style: TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.w900),
+                        style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900),
                       ),
                     ]
                   ],
@@ -233,7 +233,7 @@ class _SiberAkilliSOSButonuState extends State<SiberAkilliSOSButonu> {
             decoration: BoxDecoration(
               color: SiberTema.matGrey.withOpacity(0.8),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white12),
+              border: Border.all(color: SiberTema.textMuted),
             ),
             child: const Column(
               children: [
@@ -242,7 +242,7 @@ class _SiberAkilliSOSButonuState extends State<SiberAkilliSOSButonu> {
                 Text(
                   "Asılsız alarmlar Karargah radarına kaydedilir. 1. ihlalde Sarı Kart (uyarı), 2. ihlalde Kırmızı Kart ile bu özellik sisteminizde süresiz devre dışı bırakılır.",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.5, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.5, fontWeight: FontWeight.bold),
                 ),
               ],
             ),

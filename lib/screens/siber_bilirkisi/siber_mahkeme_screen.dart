@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+
 import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
-import '../../services/siber_adli_motor.dart';
+import '../../services/corporate_legal_engine.dart';
 import '../../models/adli_rapor_model.dart';
 
 /// ⚖️ SİBER MAHKEME EKRANI (OtoDNA Adli Savunma Paneli)
@@ -17,6 +19,14 @@ class SiberMahkemeScreen extends StatefulWidget {
 }
 
 class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTickerProviderStateMixin {
+  // 🏢 FİLDİŞİ SEDEF PALET
+  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color surfaceColor = Colors.white;
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color textMain = const Color(0xFF1E293B);
+  final Color textMuted = const Color(0xFF64748B);
+  final Color dangerColor = SiberTema.kanKirmizi;
+
   late TabController _tabController;
   
   // Olay Yeri Form Kontrolleri
@@ -55,12 +65,12 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
     HapticFeedback.heavyImpact();
 
     if (_saseCtrl.text.isEmpty || _parcaKoduCtrl.text.isEmpty) {
-      _uyariGoster("SİBER İHLAL", "Şase ve Parça/Tedarikçi Kodu zorunludur.", Colors.orangeAccent);
+      _uyariGoster("SİBER İHLAL", "Şase ve Parça/Tedarikçi Kodu zorunludur.", Colors.orange.shade700);
       return;
     }
 
     if (!_fotoYuklendi || !_videoYuklendi || !_sensorVerisiVar) {
-      _uyariGoster("EKSİK KANIT", "Montaj öncesi foto, montaj anı video ve test verisi (ısı/basınç) olmadan Adli Rapor üretilemez.", SiberTema.kanKirmizi);
+      _uyariGoster("EKSİK KANIT", "Montaj öncesi foto, montaj anı video ve test verisi (ısı/basınç) olmadan Adli Rapor üretilemez.", dangerColor);
       return;
     }
 
@@ -69,7 +79,7 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
     try {
       String davaTuru = _tabController.index == 0 ? "Kusur Hakemliği" : "Değer Kaybı Davası";
       
-      AdliRaporModel rapor = await SiberAdliMotor.aiAnaliziYap(
+      AdliRaporModel rapor = await CorporateLegalEngine.aiAnaliziYap(
         aracSaseNo: _saseCtrl.text.trim(),
         ustaUid: widget.ustaUid,
         tedarikciKodu: _parcaKoduCtrl.text.trim(),
@@ -80,7 +90,7 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
       );
 
       // Veritabanına şifrele
-      await SiberAdliMotor.raporuMasaustuneKilitle(rapor);
+      await CorporateLegalEngine.raporuMasaustuneKilitle(rapor);
 
       setState(() {
         _uretilenRapor = rapor;
@@ -89,7 +99,7 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
       HapticFeedback.vibrate();
 
     } catch (e) {
-      _uyariGoster("AĞ ÇÖKTÜ", "AI Motoruna ulaşılamadı.", SiberTema.kanKirmizi);
+      _uyariGoster("AĞ ÇÖKTÜ", "AI Motoruna ulaşılamadı.", dangerColor);
     } finally {
       setState(() => _islemSuruyor = false);
     }
@@ -98,14 +108,16 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
   void _uyariGoster(String baslik, String mesaj, Color renk) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: SiberTema.matGrey,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)),
+        backgroundColor: surfaceColor,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: renk.withOpacity(0.3), width: 1.5)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir')),
+            const SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: textMain, fontSize: 12, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -115,20 +127,21 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent, // Arka plan ResponsiveKalkan'dan gelir
+        backgroundColor: bgColor,
         appBar: AppBar(
-          title: const Text("⚖️ SİBER MAHKEME", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-          backgroundColor: Colors.black.withOpacity(0.8),
+          title: Text("⚖️ SİBER MAHKEME", style: TextStyle(color: dangerColor, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kanKirmizi),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: dangerColor, size: 20), onPressed: () => context.pop()),
           bottom: TabBar(
             controller: _tabController,
-            indicatorColor: SiberTema.kanKirmizi,
+            indicatorColor: dangerColor,
             indicatorWeight: 3,
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.white54,
+            labelColor: textMain,
+            unselectedLabelColor: textMuted,
+            labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
             tabs: const [
               Tab(icon: Icon(Icons.gavel_rounded), text: "KUSUR HAKEMLİĞİ"),
               Tab(icon: Icon(Icons.car_crash_rounded), text: "DEĞER KAYBI"),
@@ -143,25 +156,25 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
   // ── 📝 OLAY YERİ İNCELEME FORMU (GİRİŞ EKRANI) ──
   Widget _buildKriminalForm() {
     return ListView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       physics: const BouncingScrollPhysics(),
       children: [
         // Siber Mahkeme Uyarı Kalkanı
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: SiberTema.kanKirmizi.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.3), width: 1.5),
+            color: dangerColor.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: dangerColor.withOpacity(0.3), width: 1.5),
           ),
-          child: const Row(
+          child: Row(
             children: [
-              Icon(Icons.warning_amber_rounded, color: SiberTema.kanKirmizi, size: 30),
-              SizedBox(width: 12),
+              Icon(Icons.warning_amber_rounded, color: dangerColor, size: 30),
+              const SizedBox(width: 12),
               Expanded(
                 child: Text(
                   "DİKKAT: Sisteme yükleyeceğiniz dijital kanıtlar (foto, video, sensör verisi) Mahkemede delil olarak kullanılacaktır. Asılsız beyan Usta DNA puanını sıfırlar.",
-                  style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.5, fontFamily: 'Avenir'),
+                  style: TextStyle(color: dangerColor, fontSize: 11, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                 ),
               ),
             ],
@@ -170,83 +183,100 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
         const SizedBox(height: 24),
 
         // Araç ve Parça Kimliği
-        TextField(
-          controller: _saseCtrl,
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          decoration: InputDecoration(
-            labelText: "Aracın Şase Numarası",
-            labelStyle: const TextStyle(color: SiberTema.kuantumCyan),
-            prefixIcon: const Icon(Icons.directions_car, color: SiberTema.kuantumCyan),
-            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Colors.white24)),
-            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
+        Container(
+          decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]),
+          child: TextField(
+            controller: _saseCtrl,
+            style: TextStyle(color: textMain, fontWeight: FontWeight.bold),
+            decoration: InputDecoration(
+              labelText: "Aracın Şase Numarası",
+              labelStyle: TextStyle(color: textMuted),
+              prefixIcon: Icon(Icons.directions_car, color: primaryTeal),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16)
+            ),
           ),
         ),
         const SizedBox(height: 16),
-        TextField(
-          controller: _parcaKoduCtrl,
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          decoration: InputDecoration(
-            labelText: "Takılan Parça QR/Barkod Kodu (Örn: ORG-123 veya YAN-456)",
-            labelStyle: const TextStyle(color: SiberTema.kuantumCyan),
-            prefixIcon: const Icon(Icons.qr_code_scanner, color: SiberTema.kuantumCyan),
-            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Colors.white24)),
-            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
+        Container(
+          decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]),
+          child: TextField(
+            controller: _parcaKoduCtrl,
+            style: TextStyle(color: textMain, fontWeight: FontWeight.bold),
+            decoration: InputDecoration(
+              labelText: "Takılan Parça QR/Barkod Kodu (Örn: ORG-123 veya YAN-456)",
+              labelStyle: TextStyle(color: textMuted, fontSize: 12),
+              prefixIcon: Icon(Icons.qr_code_scanner, color: primaryTeal),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16)
+            ),
           ),
         ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 32),
 
         // Kanıt Yükleme Paneli
-        const Text("DİJİTAL DELİL (KANIT) DOSYALARI", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+        Text("DİJİTAL DELİL (KANIT) DOSYALARI", style: TextStyle(color: textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
         const SizedBox(height: 12),
-        SwitchListTile(
-          title: const Text("Montaj Öncesi ve Sonrası Fotoğraflar Yüklendi", style: TextStyle(color: Colors.white, fontSize: 12)),
-          value: _fotoYuklendi,
-          activeColor: SiberTema.kuantumCyan,
-          onChanged: (v) => setState(() => _fotoYuklendi = v),
+        Container(
+          decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
+          child: Column(
+            children: [
+              SwitchListTile(
+                title: Text("Montaj Öncesi ve Sonrası Fotoğraflar Yüklendi", style: TextStyle(color: textMain, fontSize: 12, fontWeight: FontWeight.bold)),
+                value: _fotoYuklendi,
+                activeColor: primaryTeal,
+                onChanged: (v) => setState(() => _fotoYuklendi = v),
+              ),
+              Divider(color: Colors.white.withOpacity(0.05), height: 1),
+              SwitchListTile(
+                title: Text("Montaj Anı (Torklama vb.) Video Yüklendi", style: TextStyle(color: textMain, fontSize: 12, fontWeight: FontWeight.bold)),
+                value: _videoYuklendi,
+                activeColor: primaryTeal,
+                onChanged: (v) => setState(() => _videoYuklendi = v),
+              ),
+              Divider(color: Colors.white.withOpacity(0.05), height: 1),
+              SwitchListTile(
+                title: Text("ECU Isı ve Basınç Sensör Verisi Okundu", style: TextStyle(color: textMain, fontSize: 12, fontWeight: FontWeight.bold)),
+                value: _sensorVerisiVar,
+                activeColor: primaryTeal,
+                onChanged: (v) => setState(() => _sensorVerisiVar = v),
+              ),
+            ],
+          )
         ),
-        SwitchListTile(
-          title: const Text("Montaj Anı (Torklama vb.) Video Yüklendi", style: TextStyle(color: Colors.white, fontSize: 12)),
-          value: _videoYuklendi,
-          activeColor: SiberTema.kuantumCyan,
-          onChanged: (v) => setState(() => _videoYuklendi = v),
-        ),
-        SwitchListTile(
-          title: const Text("ECU Isı ve Basınç Sensör Verisi Okundu", style: TextStyle(color: Colors.white, fontSize: 12)),
-          value: _sensorVerisiVar,
-          activeColor: SiberTema.kuantumCyan,
-          onChanged: (v) => setState(() => _sensorVerisiVar = v),
-        ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 32),
 
         // Yasal Uyarı Zırhı
         Container(
           decoration: BoxDecoration(
-            color: SiberTema.matGrey,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: _yasalUyariKabul ? SiberTema.kuantumCyan : SiberTema.kanKirmizi),
+            color: _yasalUyariKabul ? primaryTeal.withOpacity(0.05) : surfaceColor,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: _yasalUyariKabul ? primaryTeal.withOpacity(0.5) : dangerColor.withOpacity(0.3)),
           ),
           child: CheckboxListTile(
-            title: Text(AdliRaporModel.yasalUyariMetni, style: TextStyle(color: _yasalUyariKabul ? Colors.white : Colors.white54, fontSize: 10, height: 1.5, fontFamily: 'Avenir')),
+            title: Text(AdliRaporModel.yasalUyariMetni, style: TextStyle(color: _yasalUyariKabul ? textMain : textMuted, fontSize: 10, height: 1.5, fontFamily: 'Avenir')),
             value: _yasalUyariKabul,
-            activeColor: SiberTema.kuantumCyan,
-            checkColor: Colors.black,
+            activeColor: primaryTeal,
+            checkColor: Colors.white,
             onChanged: (v) => setState(() => _yasalUyariKabul = v!),
           ),
         ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 32),
 
         // Mühürleme Butonu
         SizedBox(
           height: 60,
           child: _islemSuruyor
-              ? const Center(child: CircularProgressIndicator(color: SiberTema.kanKirmizi))
+              ? Center(child: CircularProgressIndicator(color: dangerColor))
               : ElevatedButton.icon(
                   onPressed: _yasalUyariKabul ? _adliRaporUret : null,
-                  icon: const Icon(Icons.precision_manufacturing, color: Colors.black),
+                  icon: const Icon(Icons.precision_manufacturing, color: Colors.white),
                   label: const Text("SİBER BİLİRKİŞİ RAPORU ÜRET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: _yasalUyariKabul ? SiberTema.kanKirmizi : Colors.white10,
-                    foregroundColor: Colors.black,
+                    backgroundColor: _yasalUyariKabul ? dangerColor : Colors.black12,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    elevation: 0
                   ),
                 ),
         )
@@ -257,73 +287,86 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
   // ── 📄 HÜKÜM EKRANI (AI RAPORU SONUCU) ──
   Widget _buildRaporGorunumu() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       physics: const BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-            child: Icon(
-              _uretilenRapor!.kusurOraniUsta == 0 ? Icons.verified_user : Icons.dangerous,
-              color: _uretilenRapor!.kusurOraniUsta == 0 ? SiberTema.kuantumCyan : SiberTema.kanKirmizi,
-              size: 80,
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: _uretilenRapor!.kusurOraniUsta == 0 ? primaryTeal.withOpacity(0.1) : dangerColor.withOpacity(0.1),
+                shape: BoxShape.circle
+              ),
+              child: Icon(
+                _uretilenRapor!.kusurOraniUsta == 0 ? Icons.verified_user : Icons.dangerous,
+                color: _uretilenRapor!.kusurOraniUsta == 0 ? primaryTeal : dangerColor,
+                size: 60,
+              ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
           Center(
             child: Text(
               _uretilenRapor!.kusurOraniUsta == 0 ? "USTA KUSURSUZ (AKLANDI)" : "USTA KUSURLU",
               style: TextStyle(
-                color: _uretilenRapor!.kusurOraniUsta == 0 ? SiberTema.kuantumCyan : SiberTema.kanKirmizi,
+                color: _uretilenRapor!.kusurOraniUsta == 0 ? primaryTeal : dangerColor,
                 fontSize: 22,
                 fontWeight: FontWeight.w900,
-                letterSpacing: 2,
+                letterSpacing: 1.5,
                 fontFamily: 'Avenir'
               ),
             ),
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 40),
 
           // Kusur Oranları
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildKusurCemberi("Usta", _uretilenRapor!.kusurOraniUsta, SiberTema.kanKirmizi),
-              _buildKusurCemberi("Parça", _uretilenRapor!.kusurOraniParca, Colors.orange),
-              _buildKusurCemberi("Kullanıcı", _uretilenRapor!.kusurOraniKullanici, SiberTema.kuantumCyan),
-            ],
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withOpacity(0.05)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 20)]),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildKusurCemberi("Usta", _uretilenRapor!.kusurOraniUsta, dangerColor),
+                _buildKusurCemberi("Parça", _uretilenRapor!.kusurOraniParca, Colors.orange.shade700),
+                _buildKusurCemberi("Kullanıcı", _uretilenRapor!.kusurOraniKullanici, primaryTeal),
+              ],
+            ),
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 32),
 
           // AI Gerekçesi
-          const Text("SİBER BİLİRKİŞİ (AI) GEREKÇELİ KARARI", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-          const SizedBox(height: 8),
+          Text("SİBER BİLİRKİŞİ (AI) GEREKÇELİ KARARI", style: TextStyle(color: textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+          const SizedBox(height: 12),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.05),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white24),
+              color: surfaceColor,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.white.withOpacity(0.05)),
+              boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]
             ),
             child: Text(
               _uretilenRapor!.aiHukmu,
-              style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.6, fontFamily: 'Avenir'),
+              style: TextStyle(color: textMain, fontSize: 13, height: 1.6, fontWeight: FontWeight.w500, fontFamily: 'Avenir'),
             ),
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 40),
           
           // PDF İndirme Butonu (Mock)
           SizedBox(
             width: double.infinity,
-            height: 50,
+            height: 60,
             child: OutlinedButton.icon(
               onPressed: () {
-                _uyariGoster("PDF OLUŞTURULDU", "Rapor cihazınıza mahkeme formatında kaydedildi.", SiberTema.kuantumCyan);
+                _uyariGoster("PDF OLUŞTURULDU", "Rapor cihazınıza mahkeme formatında kaydedildi.", primaryTeal);
               },
-              icon: const Icon(Icons.picture_as_pdf, color: SiberTema.kuantumCyan),
-              label: const Text("ADLİ DOSYAYI (PDF) İNDİR", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, letterSpacing: 1)),
+              icon: Icon(Icons.picture_as_pdf, color: primaryTeal),
+              label: Text("ADLİ DOSYAYI (PDF) İNDİR", style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, letterSpacing: 1)),
               style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: SiberTema.kuantumCyan),
+                side: BorderSide(color: primaryTeal.withOpacity(0.5), width: 2),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))
               ),
             ),
           ),
@@ -331,7 +374,7 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
           Center(
             child: TextButton(
               onPressed: () => setState(() => _uretilenRapor = null),
-              child: const Text("YENİ İNCELEME BAŞLAT", style: TextStyle(color: Colors.white54)),
+              child: Text("YENİ İNCELEME BAŞLAT", style: TextStyle(color: textMuted, fontWeight: FontWeight.bold)),
             ),
           )
         ],
@@ -346,20 +389,20 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
           alignment: Alignment.center,
           children: [
             SizedBox(
-              width: 60,
-              height: 60,
+              width: 70,
+              height: 70,
               child: CircularProgressIndicator(
                 value: oran / 100,
                 color: renk,
-                backgroundColor: Colors.white10,
-                strokeWidth: 6,
+                backgroundColor: renk.withOpacity(0.1),
+                strokeWidth: 8,
               ),
             ),
-            Text("%$oran", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+            Text("%$oran", style: TextStyle(color: textMain, fontWeight: FontWeight.w900, fontSize: 16)),
           ],
         ),
-        const SizedBox(height: 8),
-        Text(baslik, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+        const SizedBox(height: 12),
+        Text(baslik, style: TextStyle(color: textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
       ],
     );
   }

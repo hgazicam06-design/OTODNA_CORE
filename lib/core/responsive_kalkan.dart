@@ -23,8 +23,8 @@ class ResponsiveKalkan extends StatelessWidget {
       // Scaffold arka planı şeffaf bırakıldı; derinlik Container tarafından yönetiliyor.
       backgroundColor: Colors.transparent,
       body: Container(
-        // 🔥 STRATEJİK GÜNCELLEME: 3D Derinlik Gradienti eklendi (SiberTema üzerinden çekilir)
-        decoration: isOledBackground ? SiberTema.siberArkaPlan : null,
+        // 🔥 STRATEJİK GÜNCELLEME: Tüm kurumsal ekranlara otomatik Sedef Kaplama uygula
+        decoration: SiberTema.siberArkaPlan,
         child: SafeArea(
           child: Center(
             child: ConstrainedBox(

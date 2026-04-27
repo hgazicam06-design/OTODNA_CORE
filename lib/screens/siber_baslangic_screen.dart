@@ -113,12 +113,12 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
                       ),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 24),
-                        child: Divider(color: Colors.white24, height: 1),
+                        child: Divider(color: SiberTema.textMuted, height: 1),
                       ),
                       Text(
                         mesaj,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.white, fontSize: 14, height: 1.5, fontWeight: FontWeight.bold),
+                        style: const TextStyle(color: SiberTema.textMain, fontSize: 14, height: 1.5, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 40),
                       SizedBox(
@@ -172,7 +172,7 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
               const SizedBox(height: 12),
               Text(
                 "Siber Kalkanlar Aktif, Emir Bekleniyor...",
-                style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontWeight: FontWeight.w600),
+                style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 12, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 60),
               const CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3),

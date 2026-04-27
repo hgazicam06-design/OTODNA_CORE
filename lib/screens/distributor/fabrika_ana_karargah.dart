@@ -20,7 +20,7 @@ class _FabrikaAnaKarargahState extends State<FabrikaAnaKarargah> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -44,7 +44,7 @@ class _FabrikaAnaKarargahState extends State<FabrikaAnaKarargah> {
               const SizedBox(height: 32),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
-                child: Text("SİBER VİTRİN: EN İYİ MARKALAR", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                child: Text("SİBER VİTRİN: EN İYİ MARKALAR", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
               ),
               const SizedBox(height: 16),
               _buildEnIyiMarkalar(),
@@ -57,7 +57,7 @@ class _FabrikaAnaKarargahState extends State<FabrikaAnaKarargah> {
               const SizedBox(height: 24),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
-                child: Text("KÜRESEL DİSTRİBÜTÖR AĞI (CANLI VERİ)", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                child: Text("KÜRESEL DİSTRİBÜTÖR AĞI (CANLI VERİ)", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
               ),
               const SizedBox(height: 16),
               Padding(
@@ -107,13 +107,13 @@ class _FabrikaAnaKarargahState extends State<FabrikaAnaKarargah> {
             children: [
               Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: renk.withOpacity(0.1), shape: BoxShape.circle), child: Icon(ikon, color: renk, size: 20)),
               const SizedBox(width: 12),
-              const Text("FLAŞ KAMPANYA", style: TextStyle(color: Colors.white54, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
+              const Text("FLAŞ KAMPANYA", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
             ],
           ),
           const Spacer(),
           Text(baslik, style: TextStyle(color: renk, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 0.5)),
           const SizedBox(height: 6),
-          Text(altMetin, style: const TextStyle(color: Colors.white70, fontSize: 11, height: 1.4)),
+          Text(altMetin, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.4)),
         ],
       ),
     );
@@ -145,18 +145,18 @@ class _FabrikaAnaKarargahState extends State<FabrikaAnaKarargah> {
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.02),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white10),
+        border: Border.all(color: SiberTema.textMuted),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(marka, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+          Text(marka, style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           const SizedBox(height: 4),
           Row(
             children: [
               Icon(ithalMi ? Icons.flight_land : Icons.home, color: ithalMi ? SiberTema.kuantumCyan : SiberTema.altinSari, size: 10),
               const SizedBox(width: 4),
-              Text(ulke, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 10)),
+              Text(ulke, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 10)),
             ],
           )
         ],
@@ -229,7 +229,7 @@ class _FabrikaAnaKarargahState extends State<FabrikaAnaKarargah> {
         }).toList();
 
         if (filtrelenmisDocs.isEmpty) {
-          return const Center(child: Padding(padding: EdgeInsets.all(20), child: Text("Bu filtreye uygun distribütör bulunamadı.", style: TextStyle(color: Colors.white54))));
+          return const Center(child: Padding(padding: EdgeInsets.all(20), child: Text("Bu filtreye uygun distribütör bulunamadı.", style: TextStyle(color: SiberTema.textMuted))));
         }
 
         return ListView.builder(
@@ -285,13 +285,13 @@ class _FabrikaAnaKarargahState extends State<FabrikaAnaKarargah> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(ulkeAdi, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                Text(ulkeAdi, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    Text("Mühürlü İşlem: $montaj", style: const TextStyle(color: Colors.white54, fontSize: 11)),
+                    Text("Mühürlü İşlem: $montaj", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11)),
                     const SizedBox(width: 8),
-                    Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: Colors.white10, borderRadius: BorderRadius.circular(4)), child: Text(ithalMi ? "İTHAL" : "YERLİ", style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 8, fontWeight: FontWeight.bold))),
+                    Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: SiberTema.textMuted, borderRadius: BorderRadius.circular(4)), child: Text(ithalMi ? "İTHAL" : "YERLİ", style: TextStyle(color: SiberTema.textMain.withOpacity(0.7), fontSize: 8, fontWeight: FontWeight.bold))),
                   ],
                 ),
               ],
@@ -300,7 +300,7 @@ class _FabrikaAnaKarargahState extends State<FabrikaAnaKarargah> {
           Column(
             children: [
               Text(durum, style: TextStyle(color: durumRengi, fontSize: 10, fontWeight: FontWeight.bold)),
-              IconButton(icon: const Icon(Icons.arrow_forward_ios, color: Colors.white54, size: 14), onPressed: () {}),
+              IconButton(icon: const Icon(Icons.arrow_forward_ios, color: SiberTema.textMuted, size: 14), onPressed: () {}),
             ],
           )
         ],

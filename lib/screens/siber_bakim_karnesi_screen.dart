@@ -32,7 +32,7 @@ class _SiberBakimKarnesiScreenState extends State<SiberBakimKarnesiScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -75,25 +75,25 @@ class _SiberBakimKarnesiScreenState extends State<SiberBakimKarnesiScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(widget.markaModel.toUpperCase(), style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                              Text(widget.markaModel.toUpperCase(), style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
                               const SizedBox(height: 8),
-                              Text(widget.plaka.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                              Text(widget.plaka.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 26, fontWeight: FontWeight.w900, letterSpacing: 2)),
                             ],
                           ),
                         ),
                         Container(
                           padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
+                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
                           child: const Icon(Icons.health_and_safety_outlined, color: SiberTema.kuantumCyan, size: 32),
                         )
                       ],
                     ),
-                    const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white12)),
+                    const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted)),
                     Row(
                       children: [
-                        const Icon(Icons.memory, color: Colors.white38, size: 16),
+                        const Icon(Icons.memory, color: SiberTema.textMuted, size: 16),
                         const SizedBox(width: 8),
-                        Expanded(child: Text("ŞASE (VIN): ${widget.saseNo.toUpperCase()}", style: const TextStyle(color: Colors.white70, fontSize: 11, fontFamily: 'monospace', letterSpacing: 1.5, fontWeight: FontWeight.bold))),
+                        Expanded(child: Text("ŞASE (VIN): ${widget.saseNo.toUpperCase()}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontFamily: 'monospace', letterSpacing: 1.5, fontWeight: FontWeight.bold))),
                       ],
                     )
                   ],
@@ -129,7 +129,7 @@ class _SiberBakimKarnesiScreenState extends State<SiberBakimKarnesiScreen> {
                 children: [
                   Icon(Icons.timeline, color: Colors.white.withOpacity(0.3), size: 20),
                   const SizedBox(width: 12),
-                  const Text("SİBER BAKIM GEÇMİŞİ VE İŞLEM LOGLARI", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                  const Text("SİBER BAKIM GEÇMİŞİ VE İŞLEM LOGLARI", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                 ],
               ),
             ),
@@ -251,7 +251,7 @@ class _SiberBakimKarnesiScreenState extends State<SiberBakimKarnesiScreen> {
                     Text("${record.kilometre} KM", style: TextStyle(color: durumRengi, fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
                   ],
                 ),
-                Text(islemTarihiStr, style: const TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                Text(islemTarihiStr, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
               ],
             ),
           ),
@@ -294,7 +294,7 @@ class _SiberBakimKarnesiScreenState extends State<SiberBakimKarnesiScreen> {
                 const SizedBox(height: 20),
 
                 // Değişen Parçalar (Kuantum Çipler)
-                const Text("MÜDAHALE EDİLEN DONANIMLAR:", style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                const Text("MÜDAHALE EDİLEN DONANIMLAR:", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
                 const SizedBox(height: 12),
                 Wrap(
                   spacing: 8, runSpacing: 8,
@@ -306,13 +306,13 @@ class _SiberBakimKarnesiScreenState extends State<SiberBakimKarnesiScreen> {
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(color: Colors.black45, borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.white12)),
+                    decoration: BoxDecoration(color: Colors.white45, borderRadius: BorderRadius.circular(8), border: Border.all(color: SiberTema.textMuted)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text("USTA NOTU:", style: TextStyle(color: SiberTema.sariAltin, fontSize: 9, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 4),
-                        Text(record.ustaNotu, style: const TextStyle(color: Colors.white70, fontSize: 11, fontStyle: FontStyle.italic)),
+                        Text(record.ustaNotu, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontStyle: FontStyle.italic)),
                       ],
                     ),
                   )
@@ -330,7 +330,7 @@ class _SiberBakimKarnesiScreenState extends State<SiberBakimKarnesiScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: otoDnaOnayli ? SiberTema.kuantumCyan.withOpacity(0.3) : SiberTema.kanKirmizi.withOpacity(0.3)),
       ),

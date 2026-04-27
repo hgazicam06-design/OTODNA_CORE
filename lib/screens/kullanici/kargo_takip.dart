@@ -38,7 +38,7 @@ class SiberKargoTakipEkrani extends StatelessWidget {
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.black87, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            Text(mesaj, style: const TextStyle(color: Colors.white87, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -58,7 +58,7 @@ class SiberKargoTakipEkrani extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container(
             height: 100,
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withValues(alpha: 0.05))),
             child: Center(child: CircularProgressIndicator(color: primaryTeal)),
           );
         }
@@ -66,7 +66,7 @@ class SiberKargoTakipEkrani extends StatelessWidget {
         if (!snapshot.hasData || !snapshot.data!.exists) {
           return Container(
             padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: dangerColor.withValues(alpha: 0.5)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: dangerColor.withValues(alpha: 0.5)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]),
             child: Text("SİSTEM İHLALİ: Kargo verisi bulunamadı!", style: TextStyle(color: dangerColor, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
           );
         }
@@ -85,9 +85,9 @@ class SiberKargoTakipEkrani extends StatelessWidget {
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
               boxShadow: [
-                BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5)),
+                BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5)),
               ]
           ),
           child: Column(
@@ -99,7 +99,7 @@ class SiberKargoTakipEkrani extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("LOJİSTİK DURUMU", style: TextStyle(color: Colors.black45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                      const Text("LOJİSTİK DURUMU", style: TextStyle(color: Colors.white45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                       const SizedBox(height: 4),
                       Text(durum.toUpperCase(), style: TextStyle(color: durumRengi, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1, fontFamily: 'Avenir')),
                     ],
@@ -120,7 +120,7 @@ class SiberKargoTakipEkrani extends StatelessWidget {
 
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 24),
-                child: Divider(color: Colors.black.withValues(alpha: 0.05), height: 1),
+                child: Divider(color: Colors.white.withValues(alpha: 0.05), height: 1),
               ),
 
               Row(

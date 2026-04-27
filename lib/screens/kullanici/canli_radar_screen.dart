@@ -58,7 +58,7 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
             color: Colors.white, // Plaza Kart Rengi
             borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
             border: Border.all(color: Colors.teal.shade700.withValues(alpha: 0.3)),
-            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20)]
+            boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20)]
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -160,12 +160,12 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
                   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: Row(
                     children: [
-                      Container(decoration: BoxDecoration(color: cardColor, shape: BoxShape.circle, boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8)]), child: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context))),
+                      Container(decoration: BoxDecoration(color: cardColor, shape: BoxShape.circle, boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 8)]), child: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context))),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                          decoration: BoxDecoration(color: cardColor.withValues(alpha: 0.9), borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)]),
+                          decoration: BoxDecoration(color: cardColor.withValues(alpha: 0.9), borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 10)]),
                           child: Row(
                             children: [
                               Icon(Icons.radar, color: primaryTeal, size: 18),
@@ -226,8 +226,8 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
                   decoration: BoxDecoration(
                       color: cardColor,
                       borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-                      border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
-                      boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, -5))]
+                      border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
+                      boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, -5))]
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -239,7 +239,7 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
                           Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.redAccent, width: 2.5), color: cardColor), child: Text("$_hizSiniri", style: const TextStyle(color: Colors.redAccent, fontSize: 14, fontWeight: FontWeight.bold))),
                           const SizedBox(height: 8),
                           Text("$_anlikHiz", style: TextStyle(color: _anlikHiz > _hizSiniri ? Colors.redAccent : primaryTeal, fontSize: 42, fontWeight: FontWeight.w900, height: 1, fontFamily: 'Avenir')),
-                          const Text("KM/S", style: TextStyle(color: Colors.black38, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+                          const Text("KM/S", style: TextStyle(color: Colors.white38, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
                         ],
                       ),
 
@@ -247,7 +247,7 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const Text("VARIŞ SÜRESİ", style: TextStyle(color: Colors.black54, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                          const Text("VARIŞ SÜRESİ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
                           Text(_kalanSure, style: const TextStyle(color: Colors.green, fontSize: 28, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                           const SizedBox(height: 4),
                           Text("Mesafe: $_kalanMesafe", style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
@@ -284,7 +284,7 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
   Widget _buildKucukOlayKarti(Map<String, dynamic> olay) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8), padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.95), borderRadius: BorderRadius.circular(12), border: Border.all(color: olay['renk'].withValues(alpha: 0.3)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8)]),
+      decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.95), borderRadius: BorderRadius.circular(12), border: Border.all(color: olay['renk'].withValues(alpha: 0.3)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 8)]),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

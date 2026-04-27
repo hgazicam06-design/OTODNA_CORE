@@ -122,13 +122,13 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
             color: Colors.white,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             border: Border(top: BorderSide(color: primaryTeal.withValues(alpha: 0.5), width: 2)),
-            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20)],
+            boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20)],
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
+              Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
               const SizedBox(height: 24),
               Text("YENİ GİDER EKLE", style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
               const SizedBox(height: 20),
@@ -199,9 +199,9 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
         fillColor: bgColor,
         prefixIcon: Icon(ikon, color: primaryTeal, size: 20),
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.black38, fontSize: 12, fontFamily: 'Avenir'),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+        hintStyle: const TextStyle(color: Colors.white38, fontSize: 12, fontFamily: 'Avenir'),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: primaryTeal, width: 1.5)),
       ),
     );
@@ -218,7 +218,7 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 18), onPressed: () => Navigator.pop(context)),
         ),
         floatingActionButton: FloatingActionButton.extended(
@@ -240,7 +240,7 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
             if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: primaryTeal));
 
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Center(child: Text("FİNANS VERİSİ YOK\nHenüz gider mühürlenmedi.", textAlign: TextAlign.center, style: TextStyle(color: Colors.black38, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')));
+              return const Center(child: Text("FİNANS VERİSİ YOK\nHenüz gider mühürlenmedi.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white38, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')));
             }
 
             // 🧠 SİBER ANALİZ: Maliyetleri Hesapla
@@ -280,7 +280,7 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
                     ),
                     child: Column(
                       children: [
-                        const Text("KM BAŞINA ORTALAMA MALİYET", style: TextStyle(color: Colors.black54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                        const Text("KM BAŞINA ORTALAMA MALİYET", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                         const SizedBox(height: 10),
                         Text("₺${kmBasinaMaliyet.toStringAsFixed(2)}", style: TextStyle(color: primaryTeal, fontSize: 40, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                         const SizedBox(height: 20),
@@ -297,7 +297,7 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
                   ),
 
                   const SizedBox(height: 24),
-                  const Align(alignment: Alignment.centerLeft, child: Text("SON MÜHÜRLENEN GİDERLER", style: TextStyle(color: Colors.black54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))),
+                  const Align(alignment: Alignment.centerLeft, child: Text("SON MÜHÜRLENEN GİDERLER", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))),
                   const SizedBox(height: 10),
 
                   // 📜 GİDER LİSTESİ
@@ -316,8 +316,8 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-                            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]
+                            border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                            boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]
                           ),
                           child: Row(
                             children: [
@@ -329,7 +329,7 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
                                   children: [
                                     Text(gider['aciklama'], style: TextStyle(color: textColor, fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                                     const SizedBox(height: 4),
-                                    Text("${gider['km']} KM", style: const TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                    Text("${gider['km']} KM", style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                                   ],
                                 ),
                               ),
@@ -354,7 +354,7 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
       children: [
         Text(deger, style: TextStyle(color: renk, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
         const SizedBox(height: 4),
-        Text(baslik, style: const TextStyle(color: Colors.black38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+        Text(baslik, style: const TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
       ],
     );
   }

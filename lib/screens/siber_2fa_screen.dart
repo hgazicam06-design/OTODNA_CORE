@@ -126,7 +126,7 @@ class _Siber2FAScreenState extends State<Siber2FAScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent, // Kalkanın arka planı devrede
         appBar: AppBar(
@@ -150,13 +150,13 @@ class _Siber2FAScreenState extends State<Siber2FAScreen> {
                 const SizedBox(height: 24),
                 const Text(
                   "KUANTUM DOĞRULAMA",
-                  style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir'),
+                  style: TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir'),
                 ),
                 const SizedBox(height: 12),
                 Text(
                   "Hesabın yüksek güvenlik protokolü ile korunuyor. Operasyonlarına devam etmek için operatöründen gelen SMS kodunu gir.",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12, fontFamily: 'Avenir', height: 1.5),
+                  style: TextStyle(color: SiberTema.textMain.withOpacity(0.7), fontSize: 12, fontFamily: 'Avenir', height: 1.5),
                 ),
                 const SizedBox(height: 40),
 
@@ -180,7 +180,7 @@ class _Siber2FAScreenState extends State<Siber2FAScreen> {
                             style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 10, fontFamily: 'Avenir'),
                             decoration: InputDecoration(
                               hintText: "000000",
-                              hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), letterSpacing: 10, fontFamily: 'Avenir'),
+                              hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), letterSpacing: 10, fontFamily: 'Avenir'),
                               filled: true,
                               fillColor: SiberTema.oledBlack,
                               contentPadding: const EdgeInsets.symmetric(vertical: 20),

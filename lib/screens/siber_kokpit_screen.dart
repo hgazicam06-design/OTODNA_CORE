@@ -25,7 +25,7 @@ class _SiberKokpitScreenState extends State<SiberKokpitScreen> {
   @override
   Widget build(BuildContext context) {
     if (_currentUser == null) {
-      return const Scaffold(body: Center(child: Text("SİBER İHLAL: Kimlik Bulunamadı.", style: TextStyle(color: Colors.white))));
+      return const Scaffold(body: Center(child: Text("SİBER İHLAL: Kimlik Bulunamadı.", style: TextStyle(color: SiberTema.textMain))));
     }
 
     return Scaffold(
@@ -55,7 +55,7 @@ class _SiberKokpitScreenState extends State<SiberKokpitScreen> {
                         children: [
                           Text("SİBER KOKPİT", style: TextStyle(color: _neonCyan, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
                           const SizedBox(height: 4),
-                          const Text("OtoDNA Çevrimiçi", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                          const Text("OtoDNA Çevrimiçi", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                         ],
                       ),
                       CircleAvatar(
@@ -120,7 +120,7 @@ class _SiberKokpitScreenState extends State<SiberKokpitScreen> {
                     ],
                   ),
                   child: const Center(
-                    child: Icon(Icons.sos_rounded, color: Colors.white, size: 40),
+                    child: Icon(Icons.sos_rounded, color: SiberTema.kuantumCyan, size: 40),
                   ),
                 ),
               ),
@@ -152,9 +152,9 @@ class _SiberKokpitScreenState extends State<SiberKokpitScreen> {
                 children: [
                   Icon(Icons.directions_car_outlined, size: 60, color: _neonCyan.withOpacity(0.5)),
                   const SizedBox(height: 24),
-                  const Text("GARAJINIZ BOŞ", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                  const Text("GARAJINIZ BOŞ", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                   const SizedBox(height: 12),
-                  Text("OtoDNA'nın Kuantum gücünden faydalanmak için aracınızı sisteme entegre edin.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(0.6), height: 1.5, fontFamily: 'Avenir')),
+                  Text("OtoDNA'nın Kuantum gücünden faydalanmak için aracınızı sisteme entegre edin.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain.withOpacity(0.6), height: 1.5, fontFamily: 'Avenir')),
                   const SizedBox(height: 32),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -208,7 +208,7 @@ class _SiberKokpitScreenState extends State<SiberKokpitScreen> {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(dnaSkoru.toStringAsFixed(0), style: const TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                      Text(dnaSkoru.toStringAsFixed(0), style: const TextStyle(color: SiberTema.textMain, fontSize: 48, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                       Text("DNA SKORU", style: TextStyle(color: _neonCyan, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
                     ],
                   )
@@ -217,8 +217,8 @@ class _SiberKokpitScreenState extends State<SiberKokpitScreen> {
             ),
             const SizedBox(height: 32),
 
-            Text(plaka, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir')),
-            Text("$marka $model", style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 14, fontFamily: 'Avenir')),
+            Text(plaka, style: const TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir')),
+            Text("$marka $model", style: TextStyle(color: SiberTema.textMain.withOpacity(0.6), fontSize: 14, fontFamily: 'Avenir')),
             const SizedBox(height: 40),
 
             Row(
@@ -261,9 +261,9 @@ class _SiberKokpitScreenState extends State<SiberKokpitScreen> {
               children: [
                 Icon(icon, color: _neonCyan, size: 28),
                 const SizedBox(height: 16),
-                Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                 const SizedBox(height: 4),
-                Text(altBaslik, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 10, fontFamily: 'Avenir')),
+                Text(altBaslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 10, fontFamily: 'Avenir')),
               ],
             ),
           ),

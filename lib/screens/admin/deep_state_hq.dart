@@ -33,7 +33,7 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
 
     // 🚀 AMİRAL GEMİSİ ANA KONTROL PANELİ
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Container(
@@ -145,9 +145,9 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _finansVeri("TOPLAM İŞLEM HACMİ", "₺${gunlukSatis.toStringAsFixed(2)}", Colors.white),
-              Container(height: 60, width: 1, color: Colors.white24),
+              Container(height: 60, width: 1, color: SiberTema.textMuted),
               _finansVeri("KOMUTAN NET PAY (%10)", "₺${gaziNetPay.toStringAsFixed(2)}", SiberTema.kuantumCyan),
-              Container(height: 60, width: 1, color: Colors.white24),
+              Container(height: 60, width: 1, color: SiberTema.textMuted),
               _finansVeri("DEVLET VERGİSİ (%2)", "₺${devletVergi.toStringAsFixed(2)}", SiberTema.altinSari),
             ],
           ),
@@ -171,7 +171,7 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
           child: ListTile(
             contentPadding: EdgeInsets.zero,
             leading: _buildNeonIkon(guvendeMi ? Icons.shield : Icons.warning_amber_rounded, guvendeMi ? SiberTema.kuantumCyan : SiberTema.kanKirmizi),
-            title: const Text("Kuantum Ağ Güvenliği", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            title: const Text("Kuantum Ağ Güvenliği", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             subtitle: Text(
                 guvendeMi ? "Saldırı Girişimi: 0 | Kalkanlar Aktif ✅" : "DİKKAT! $ihlalSayisi İhlal Tespit Edildi!",
                 style: TextStyle(color: guvendeMi ? SiberTema.kuantumCyan : SiberTema.kanKirmizi, fontWeight: FontWeight.bold, fontSize: 11, fontFamily: 'Avenir')
@@ -193,14 +193,14 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
           padding: const EdgeInsets.all(16),
           decoration: _sinematikKutuDekoru(SiberTema.kuantumCyan),
           child: docs.isEmpty
-              ? const Center(child: Text("Veri Yok", style: TextStyle(color: Colors.white24)))
+              ? const Center(child: Text("Veri Yok", style: TextStyle(color: SiberTema.textMuted)))
               : Column(
             children: docs.asMap().entries.map((entry) {
               var data = entry.value.data() as Map<String, dynamic>;
               return ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: Text("#${entry.key + 1}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 18, fontWeight: FontWeight.w900)),
-                title: Text(data['firma_adi'] ?? 'Bilinmeyen Bayi', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
+                title: Text(data['firma_adi'] ?? 'Bilinmeyen Bayi', style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13)),
                 trailing: Text("₺${(data['aylik_ciro'] ?? 0).toStringAsFixed(0)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900)),
               );
             }).toList(),
@@ -227,7 +227,7 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
               children: [
                 const Icon(Icons.fingerprint, size: 80, color: SiberTema.kanKirmizi, shadows: [Shadow(color: SiberTema.kanKirmizi, blurRadius: 20)]),
                 const SizedBox(height: 24),
-                const Text("AMİRAL GEMİSİ", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 4)),
+                const Text("AMİRAL GEMİSİ", style: TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 4)),
                 const SizedBox(height: 8),
                 const Text("DERİN DEVLET YETKİSİ GEREKLİ", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2)),
                 const SizedBox(height: 35),
@@ -259,7 +259,7 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("ERİŞİM REDDEDİLDİ!", style: TextStyle(fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kanKirmizi));
                       }
                     },
-                    child: _isChecking ? const CircularProgressIndicator(color: Colors.black) : const Text("MÜHRÜ ONAYLA", style: TextStyle(fontWeight: FontWeight.w900, color: Colors.black)),
+                    child: _isChecking ? const CircularProgressIndicator(color: Colors.white) : const Text("MÜHRÜ ONAYLA", style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white)),
                   ),
                 )
               ],
@@ -281,7 +281,7 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
           children: [
             Icon(ikon, color: neonRenk, size: 34, shadows: [Shadow(color: neonRenk, blurRadius: 15)]),
             const SizedBox(height: 12),
-            Text(baslik, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 9, letterSpacing: 1)),
+            Text(baslik, textAlign: TextAlign.center, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 9, letterSpacing: 1)),
           ],
         ),
       ),
@@ -293,7 +293,7 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
         borderRadius: BorderRadius.circular(20),
         gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Color(0xFF1E2026), Color(0xFF0A0B0E)]),
         border: Border.all(color: Colors.white.withOpacity(0.05)),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 15), BoxShadow(color: anaRenk.withOpacity(0.05), blurRadius: 20)]
+        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.5), blurRadius: 15), BoxShadow(color: anaRenk.withOpacity(0.05), blurRadius: 20)]
     );
   }
 
@@ -303,7 +303,7 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
       children: [
         Icon(icon, color: renk, size: 20),
         const SizedBox(width: 10),
-        Text(metin, style: TextStyle(color: Colors.white.withOpacity(0.8), fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 11)),
+        Text(metin, style: TextStyle(color: SiberTema.textMain.withOpacity(0.8), fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 11)),
         const SizedBox(width: 8),
         Expanded(child: Divider(color: renk.withOpacity(0.2))),
       ],
@@ -312,7 +312,7 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
 
   Widget _finansVeri(String baslik, String deger, Color renk) => Column(
     children: [
-      Text(baslik, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 9, fontWeight: FontWeight.bold)),
+      Text(baslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 9, fontWeight: FontWeight.bold)),
       const SizedBox(height: 8),
       Text(deger, style: TextStyle(color: renk, fontSize: 22, fontWeight: FontWeight.w900, shadows: [Shadow(color: renk, blurRadius: 10)]))
     ],
@@ -320,7 +320,7 @@ class _AmiralGemisiState extends State<AmiralGemisi> {
 
   Widget _buildSiberYanMenu() => Container(
     width: 80,
-    decoration: BoxDecoration(color: Colors.black, border: Border(right: BorderSide(color: Colors.white.withOpacity(0.05)))),
+    decoration: BoxDecoration(color: Colors.white, border: Border(right: BorderSide(color: Colors.white.withOpacity(0.05)))),
     child: Column(
       children: [
         const SizedBox(height: 60),

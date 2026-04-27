@@ -137,14 +137,14 @@ class _BayiEkosistemiScreenState extends State<BayiEkosistemiScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.shield, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("DİJİTAL REFERANS MERKEZİ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2)),
+          title: const Text("DİJİTAL REFERANS MERKEZİ", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2)),
           centerTitle: true,
         ),
         body: Stack(
@@ -158,10 +158,10 @@ class _BayiEkosistemiScreenState extends State<BayiEkosistemiScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: TextField(
                       controller: _aracIdController,
-                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 3),
+                      style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, letterSpacing: 3),
                       decoration: const InputDecoration(
                         hintText: "PLAKA VEYA ŞASE GİRİN",
-                        hintStyle: TextStyle(color: Colors.white24, fontSize: 12),
+                        hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 12),
                         border: InputBorder.none,
                         prefixIcon: Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 20),
                       ),
@@ -194,7 +194,7 @@ class _BayiEkosistemiScreenState extends State<BayiEkosistemiScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(parca, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 14)),
+                                Text(parca, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w800, fontSize: 14)),
                                 if (durum != null) Icon(durum ? Icons.verified : Icons.gpp_bad, color: durum ? SiberTema.kuantumCyan : SiberTema.kanKirmizi),
                               ],
                             ),
@@ -228,7 +228,7 @@ class _BayiEkosistemiScreenState extends State<BayiEkosistemiScreen> {
 
             if (_isProcessing)
               Container(
-                color: Colors.black87,
+                color: Colors.white87,
                 child: const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)),
               ),
           ],

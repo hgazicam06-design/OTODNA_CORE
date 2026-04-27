@@ -62,13 +62,13 @@ class _UstaAkustikRadarScreenState extends State<UstaAkustikRadarScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(controller: teshisCtrl, style: const TextStyle(color: Colors.white), maxLines: 3, decoration: const InputDecoration(hintText: "Usta Yorumu...", hintStyle: TextStyle(color: Colors.white38))),
+            TextField(controller: teshisCtrl, style: const TextStyle(color: SiberTema.textMain), maxLines: 3, decoration: const InputDecoration(hintText: "Usta Yorumu...", hintStyle: TextStyle(color: SiberTema.textMuted))),
             const SizedBox(height: 10),
-            TextField(controller: fiyatCtrl, style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold), keyboardType: TextInputType.number, decoration: const InputDecoration(hintText: "Tahmini Maliyet (₺)", hintStyle: TextStyle(color: Colors.white38))),
+            TextField(controller: fiyatCtrl, style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold), keyboardType: TextInputType.number, decoration: const InputDecoration(hintText: "Tahmini Maliyet (₺)", hintStyle: TextStyle(color: SiberTema.textMuted))),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İPTAL", style: TextStyle(color: Colors.white54))),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted))),
           ElevatedButton(
             style: SiberTema.kuantumButonStili(),
             onPressed: () async {
@@ -118,7 +118,7 @@ class _UstaAkustikRadarScreenState extends State<UstaAkustikRadarScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -131,7 +131,7 @@ class _UstaAkustikRadarScreenState extends State<UstaAkustikRadarScreen> {
           stream: _db.collection('akustik_analizler').where('durum', isEqualTo: 'USTA_DINLEMESI_BEKLIYOR').orderBy('yuklenme_tarihi', descending: true).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
-            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Center(child: Text("RADAR TEMİZ. Bekleyen ses analizi yok.", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold)));
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Center(child: Text("RADAR TEMİZ. Bekleyen ses analizi yok.", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)));
 
             return ListView.builder(
               padding: const EdgeInsets.all(16),
@@ -173,16 +173,16 @@ class _UstaAkustikRadarScreenState extends State<UstaAkustikRadarScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text("MÜŞTERİ NOTU", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                                const Text("MÜŞTERİ NOTU", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
                                 const SizedBox(height: 4),
-                                Text(veri['ariza_notu'] ?? "Not girilmemiş.", style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                                Text(veri['ariza_notu'] ?? "Not girilmemiş.", style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 20),
-                      const Divider(color: Colors.white12),
+                      const Divider(color: SiberTema.textMuted),
                       const SizedBox(height: 10),
 
                       // 2. SİBER KALFA (YAPAY ZEKA) RAPORU
@@ -197,7 +197,7 @@ class _UstaAkustikRadarScreenState extends State<UstaAkustikRadarScreen> {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        Text(veri['kalfa_notu'] ?? "", style: const TextStyle(color: Colors.white70, fontSize: 12, fontStyle: FontStyle.italic)),
+                        Text(veri['kalfa_notu'] ?? "", style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontStyle: FontStyle.italic)),
                         const SizedBox(height: 10),
                         // Eşleşme Oranları Çubuğu
                         ...List.generate((veri['ai_tahminleri'] as List).length, (i) {
@@ -206,7 +206,7 @@ class _UstaAkustikRadarScreenState extends State<UstaAkustikRadarScreen> {
                             padding: const EdgeInsets.only(bottom: 8),
                             child: Row(
                               children: [
-                                Expanded(flex: 3, child: Text(tahmin['ariza'], style: const TextStyle(color: Colors.white, fontSize: 11))),
+                                Expanded(flex: 3, child: Text(tahmin['ariza'], style: const TextStyle(color: SiberTema.textMain, fontSize: 11))),
                                 Expanded(flex: 2, child: LinearProgressIndicator(value: tahmin['eslesme_orani'] / 100, backgroundColor: Colors.white12, color: tahmin['eslesme_orani'] > 70 ? SiberTema.kanKirmizi : SiberTema.kuantumCyan)),
                                 const SizedBox(width: 8),
                                 Text("%${tahmin['eslesme_orani']}", style: TextStyle(color: tahmin['eslesme_orani'] > 70 ? SiberTema.kanKirmizi : SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontSize: 11)),

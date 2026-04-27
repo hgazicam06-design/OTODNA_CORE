@@ -88,7 +88,7 @@ class _SupportScreenState extends State<SupportScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.black, letterSpacing: 1)),
+        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 1)),
         backgroundColor: isError ? dangerColor : primaryCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -107,12 +107,12 @@ class _SupportScreenState extends State<SupportScreen> {
           children: [
             Icon(Icons.check_circle, color: primaryCyan, size: 28),
             SizedBox(width: 12),
-            Text("SİNYAL ALINDI", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
+            Text("SİNYAL ALINDI", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
           ],
         ),
         content: const Text(
           "Talebiniz Ankara Merkez Karargahına şifreli olarak ulaştı. Kuantum ağımız 24 saat içerisinde müdahale edecektir.",
-          style: TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold, height: 1.5),
+          style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, height: 1.5),
         ),
         actions: [
           TextButton(
@@ -136,7 +136,7 @@ class _SupportScreenState extends State<SupportScreen> {
         elevation: 0,
         centerTitle: true,
         leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text("MERKEZ DESTEK HATTI", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+        title: const Text("MERKEZ DESTEK HATTI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
       ),
       body: SafeArea(
         child: Center(
@@ -153,15 +153,15 @@ class _SupportScreenState extends State<SupportScreen> {
                   const SizedBox(height: 32),
 
                   // 2. KATEGORİ SEÇİMİ (Kuantum Dropdown)
-                  const Text("SİBER SORUN KATEGORİSİ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                  const Text("SİBER SORUN KATEGORİSİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
                   const SizedBox(height: 12),
                   Container(
-                    decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                    decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
                     child: DropdownButtonFormField<String>(
                       value: _secilenKategori,
                       dropdownColor: surfaceColor,
                       icon: const Icon(Icons.keyboard_arrow_down, color: primaryCyan),
-                      style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                      style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold),
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                         border: InputBorder.none,
@@ -176,17 +176,17 @@ class _SupportScreenState extends State<SupportScreen> {
                   const SizedBox(height: 32),
 
                   // 3. MESAJ KUTUSU
-                  const Text("DETAYLI İSTİHBARAT RAPORU", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                  const Text("DETAYLI İSTİHBARAT RAPORU", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
                   const SizedBox(height: 12),
                   Container(
-                    decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                    decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
                     child: TextField(
                       controller: _mesajController,
                       maxLines: 6,
-                      style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.5),
+                      style: const TextStyle(color: SiberTema.textMain, fontSize: 13, height: 1.5),
                       decoration: InputDecoration(
                         hintText: "Karşılaştığınız siber ihlali veya sistem hatasını buraya detaylıca yazın...",
-                        hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
+                        hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
                         border: InputBorder.none,
                         contentPadding: const EdgeInsets.all(20),
                         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: primaryCyan, width: 1.5)),
@@ -201,14 +201,14 @@ class _SupportScreenState extends State<SupportScreen> {
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryCyan,
-                        foregroundColor: Colors.black,
+                        foregroundColor: Colors.white,
                         elevation: 0,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                         disabledBackgroundColor: primaryCyan.withOpacity(0.3),
                       ),
                       onPressed: _isProcessing ? null : _talebiMerkezeIlet,
                       icon: _isProcessing
-                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
+                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                           : const Icon(Icons.satellite_alt, size: 24),
                       label: Text(
                         _isProcessing ? "SİNYAL İLETİLİYOR..." : "MERKEZE İLET",
@@ -250,7 +250,7 @@ class _SupportScreenState extends State<SupportScreen> {
                 SizedBox(height: 6),
                 Text(
                   "Tüm talepleriniz Ankara Merkez tarafından incelenir ve 24 saat içinde müdahale edilir.",
-                  style: TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.bold, height: 1.5),
+                  style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, height: 1.5),
                 ),
               ],
             ),

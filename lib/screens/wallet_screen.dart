@@ -35,7 +35,7 @@ class _WalletScreenState extends State<WalletScreen> {
     String uid = user?.uid ?? "BILINMEYEN_KOMUTAN";
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -43,7 +43,7 @@ class _WalletScreenState extends State<WalletScreen> {
           elevation: 0,
           centerTitle: true,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("SİBER CÜZDAN", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          title: const Text("SİBER CÜZDAN", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
         ),
         body: SafeArea(
           child: Center(
@@ -78,11 +78,11 @@ class _WalletScreenState extends State<WalletScreen> {
                               ),
                               child: Column(
                                 children: [
-                                  const Text("KUANTUM AĞI KULLANILABİLİR BAKİYE", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                                  const Text("KUANTUM AĞI KULLANILABİLİR BAKİYE", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                                   const SizedBox(height: 16),
                                   Text(
                                     "₺ ${bakiye.toStringAsFixed(2)}",
-                                    style: const TextStyle(color: Colors.white, fontSize: 36, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
+                                    style: const TextStyle(color: SiberTema.textMain, fontSize: 36, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
                                   ),
                                   const SizedBox(height: 32),
                                   Row(
@@ -98,7 +98,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                       const SizedBox(width: 16),
                                       Expanded(
                                         child: ElevatedButton.icon(
-                                          style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, foregroundColor: Colors.black, elevation: 0, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                                          style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, foregroundColor: Colors.white, elevation: 0, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
                                           onPressed: () => _siberUyariGoster("İBAN TRANSFERİ MÜHÜRLENİYOR..."),
                                           icon: const Icon(Icons.account_balance, size: 18),
                                           label: const Text("İBANA AKTAR", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
@@ -123,13 +123,13 @@ class _WalletScreenState extends State<WalletScreen> {
                       children: [
                         Icon(Icons.history, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 20),
                         const SizedBox(width: 12),
-                        const Text("SİBER İŞLEM LOGLARI", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                        const Text("SİBER İŞLEM LOGLARI", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                       ],
                     ),
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: Divider(color: Colors.white12, thickness: 1),
+                    child: Divider(color: SiberTema.textMuted, thickness: 1),
                   ),
 
                   // =================================================================
@@ -152,9 +152,9 @@ class _WalletScreenState extends State<WalletScreen> {
                               children: [
                                 Icon(Icons.account_balance_wallet_outlined, color: SiberTema.kuantumCyan.withOpacity(0.2), size: 64),
                                 const SizedBox(height: 16),
-                                Text("CÜZDAN TEMİZ", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
+                                Text("CÜZDAN TEMİZ", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
                                 const SizedBox(height: 8),
-                                Text("Henüz ağ üzerinde finansal bir işlem mühürlenmedi.", style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 12, fontFamily: 'Avenir')),
+                                Text("Henüz ağ üzerinde finansal bir işlem mühürlenmedi.", style: TextStyle(color: SiberTema.textMain.withOpacity(0.3), fontSize: 12, fontFamily: 'Avenir')),
                               ],
                             ),
                           );
@@ -222,13 +222,13 @@ class _WalletScreenState extends State<WalletScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(baslik.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                Text(baslik.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    Text(detay.toUpperCase(), style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+                    Text(detay.toUpperCase(), style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
                     const SizedBox(width: 8),
-                    Text("•  $tarih", style: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                    Text("•  $tarih", style: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                   ],
                 ),
               ],

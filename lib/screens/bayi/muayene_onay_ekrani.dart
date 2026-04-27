@@ -159,7 +159,7 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
       appBar: AppBar(
@@ -172,7 +172,7 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
               'OTO REFERANS ONAYI',
               style: TextStyle(color: primaryCyan, fontSize: 14, fontWeight: FontWeight.w800, letterSpacing: 1.5),
             ),
-            Text('Araç: ${widget.plakaID}', style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            Text('Araç: ${widget.plakaID}', style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
           ],
         ),
         leading: IconButton(
@@ -210,7 +210,7 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
                         Expanded(
                           child: Text(
                             key,
-                            style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),
+                            style: const TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.w600),
                           ),
                         ),
                         // Onay Ekranı olduğu için butonlar pasif, sadece durum gösterilir
@@ -232,7 +232,7 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
               decoration: BoxDecoration(
                 color: surfaceColor,
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-                border: const Border(top: BorderSide(color: Colors.white12)),
+                border: const Border(top: BorderSide(color: SiberTema.textMuted)),
                 boxShadow: [
                   BoxShadow(color: primaryCyan.withOpacity(0.05), blurRadius: 20, offset: const Offset(0, -5)),
                 ],

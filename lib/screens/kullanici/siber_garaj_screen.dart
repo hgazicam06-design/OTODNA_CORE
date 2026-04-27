@@ -37,7 +37,7 @@ class _SiberGarajScreenState extends State<SiberGarajScreen> with SingleTickerPr
         backgroundColor: Colors.white,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
-        shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+        shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
         leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
         title: Text("P L A Z A   G A R A J", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'Avenir')),
         centerTitle: true,
@@ -73,7 +73,7 @@ class _SiberGarajScreenState extends State<SiberGarajScreen> with SingleTickerPr
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(32),
-                        border: Border.all(color: Colors.black.withValues(alpha: 0.05), width: 1),
+                        border: Border.all(color: Colors.white.withValues(alpha: 0.05), width: 1),
                         boxShadow: [
                           BoxShadow(color: primaryTeal.withValues(alpha: 0.05 + (0.1 * _kalkanController.value)), blurRadius: 40, spreadRadius: 10, offset: const Offset(0, 10))
                         ]
@@ -99,8 +99,8 @@ class _SiberGarajScreenState extends State<SiberGarajScreen> with SingleTickerPr
                           decoration: BoxDecoration(
                             color: Colors.white, 
                             borderRadius: BorderRadius.circular(8), 
-                            border: Border.all(color: Colors.black87, width: 2),
-                            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 5, offset: const Offset(0, 2))]
+                            border: Border.all(color: Colors.white87, width: 2),
+                            boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 5, offset: const Offset(0, 2))]
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -108,7 +108,7 @@ class _SiberGarajScreenState extends State<SiberGarajScreen> with SingleTickerPr
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                 decoration: BoxDecoration(color: Colors.blue.shade700, borderRadius: BorderRadius.circular(4)),
-                                child: const Text("TR", style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                                child: const Text("TR", style: TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                               ),
                               const SizedBox(width: 12),
                               Text("34 DNA 2026", style: TextStyle(color: textColor, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
@@ -132,7 +132,7 @@ class _SiberGarajScreenState extends State<SiberGarajScreen> with SingleTickerPr
                   children: [
                     Text("Tesla Model Y", style: TextStyle(color: textColor, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
                     const SizedBox(height: 4),
-                    const Text("Long Range • 2024 • Elektrikli", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.5, fontFamily: 'Avenir')),
+                    const Text("Long Range • 2024 • Elektrikli", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.5, fontFamily: 'Avenir')),
                   ],
                 ),
                 Container(
@@ -171,8 +171,8 @@ class _SiberGarajScreenState extends State<SiberGarajScreen> with SingleTickerPr
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 20, offset: const Offset(0, 5))],
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                  boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 20, offset: const Offset(0, 5))],
                 ),
                 child: Row(
                   children: [
@@ -188,11 +188,11 @@ class _SiberGarajScreenState extends State<SiberGarajScreen> with SingleTickerPr
                         children: [
                           Text("Dijital Torpido", style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
                           const SizedBox(height: 6),
-                          const Text("Ruhsat, sigorta ve resmi evraklar", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                          const Text("Ruhsat, sigorta ve resmi evraklar", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                         ],
                       ),
                     ),
-                    Icon(Icons.arrow_forward_ios, color: Colors.black.withValues(alpha: 0.2), size: 16),
+                    Icon(Icons.arrow_forward_ios, color: Colors.white.withValues(alpha: 0.2), size: 16),
                   ],
                 ),
               ),
@@ -200,7 +200,7 @@ class _SiberGarajScreenState extends State<SiberGarajScreen> with SingleTickerPr
             const SizedBox(height: 40),
 
             // 5. DİĞER GARAJ AKSİYONLARI (Flat Minimalist Butonlar)
-            const Text("Hızlı Komutlar", style: TextStyle(color: Colors.black45, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+            const Text("Hızlı Komutlar", style: TextStyle(color: Colors.white45, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
             const SizedBox(height: 16),
             Row(
               children: [
@@ -225,14 +225,14 @@ class _SiberGarajScreenState extends State<SiberGarajScreen> with SingleTickerPr
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))]),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))]),
         child: Column(
           children: [
             Icon(ikon, color: renk, size: 28),
             const SizedBox(height: 16),
             Text(deger, style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
             const SizedBox(height: 6),
-            Text(baslik.toUpperCase(), style: const TextStyle(color: Colors.black45, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'), textAlign: TextAlign.center),
+            Text(baslik.toUpperCase(), style: const TextStyle(color: Colors.white45, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'), textAlign: TextAlign.center),
           ],
         ),
       ),

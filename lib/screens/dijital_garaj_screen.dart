@@ -104,7 +104,7 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(10))),
+                    Container(width: 40, height: 4, decoration: BoxDecoration(color: SiberTema.textMuted, borderRadius: BorderRadius.circular(10))),
                     const SizedBox(height: 24),
                     const Text("YENİ BAKIM & HARCAMA MÜHRÜ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2)),
                     const SizedBox(height: 24),
@@ -146,14 +146,14 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: Text(widget.plaka, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 3)),
+          title: Text(widget.plaka, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 3)),
           centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton.extended(
@@ -180,7 +180,7 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text("SİBER BAKIM GEÇMİŞİ", style: TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                child: Text("SİBER BAKIM GEÇMİŞİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
               ),
             ),
 
@@ -197,7 +197,7 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
                   final bakimlar = snapshot.data!.docs;
 
                   if (bakimlar.isEmpty) {
-                    return Center(child: Text("SİCİL TEMİZ: HENÜZ KAYIT YOK", style: TextStyle(color: Colors.white.withOpacity(0.2), fontWeight: FontWeight.w900, letterSpacing: 1)));
+                    return Center(child: Text("SİCİL TEMİZ: HENÜZ KAYIT YOK", style: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontWeight: FontWeight.w900, letterSpacing: 1)));
                   }
 
                   return ListView.builder(
@@ -223,9 +223,9 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(veri['islem_notu'] ?? 'BAKIM KAYDI', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
+                                  Text(veri['islem_notu'] ?? 'BAKIM KAYDI', style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13)),
                                   const SizedBox(height: 4),
-                                  Text("${tarih.day}.${tarih.month}.${tarih.year} | ${veri['bayi_referansi']}", style: TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.w900)),
+                                  Text("${tarih.day}.${tarih.month}.${tarih.year} | ${veri['bayi_referansi']}", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900)),
                                 ],
                               ),
                             ),
@@ -260,8 +260,8 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
             children: [
               Icon(ikon, color: SiberTema.kuantumCyan, size: 24),
               const SizedBox(height: 12),
-              Text(baslik, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1)),
-              Text(altBaslik, style: const TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.bold)),
+              Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1)),
+              Text(altBaslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
             ],
           ),
         ),
@@ -273,10 +273,10 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
     return TextField(
       controller: controller,
       keyboardType: type,
-      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: Colors.white38, fontSize: 12),
+        labelStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 12),
         prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
         filled: true,
         fillColor: Colors.white.withOpacity(0.05),

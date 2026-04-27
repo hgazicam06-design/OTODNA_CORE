@@ -26,7 +26,7 @@ class SiberMarketAnaSayfa extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           iconTheme: IconThemeData(color: primaryTeal),
         ),
         body: StreamBuilder<QuerySnapshot>(
@@ -39,7 +39,7 @@ class SiberMarketAnaSayfa extends StatelessWidget {
 
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
               return const Center(
-                child: Text("PLAZA BİLGİ: Vitrinde henüz ürün bulunmuyor.", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+                child: Text("PLAZA BİLGİ: Vitrinde henüz ürün bulunmuyor.", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
               );
             }
 
@@ -90,9 +90,9 @@ class SiberMarketAnaSayfa extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
           boxShadow: [
-            BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5)),
+            BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5)),
           ]
       ),
       child: Column(

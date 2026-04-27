@@ -7,6 +7,15 @@ import 'dart:ui';
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
+// 🏢 ULTRA PROFESYONEL KURUMSAL PALET
+const Color bgColor = Color(0xFFF4F6F8);
+const Color surfaceColor = Colors.white;
+const Color primaryTeal = Color(0xFF005A64);
+const Color secondaryTeal = Color(0xFF009688);
+const Color textMain = Color(0xFF1E293B);
+const Color textMuted = Color(0xFF64748B);
+const Color dangerColor = Color(0xFFD32F2F);
+
 class AppointmentScreen extends StatefulWidget {
   final String bayiId;
   final String bayiIsmi;
@@ -24,12 +33,6 @@ class AppointmentScreen extends StatefulWidget {
 }
 
 class _AppointmentScreenState extends State<AppointmentScreen> {
-  // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET
-  final Color bgColor = SiberTema.oledBlack;
-  final Color surfaceColor = SiberTema.matGrey.withOpacity(0.2);
-  final Color primaryCyan = SiberTema.kuantumCyan;
-  final Color dangerColor = SiberTema.kanKirmizi;
-
   final double caymaBedeli = 200.0;
   bool _isProcessing = false;
 
@@ -79,8 +82,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('${widget.bayiIsmi.toUpperCase()} KUANTUM AĞINA MÜHÜRLENDİ! 🦅',
-              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-          backgroundColor: primaryCyan,
+              style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+          backgroundColor: primaryTeal,
         ),
       );
 
@@ -90,7 +93,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     } catch (e) {
       setState(() => _isProcessing = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('SİBER İSTİHBARAT HATASI: $e'), backgroundColor: dangerColor),
+        SnackBar(content: Text('SİBER İSTİHBARAT HATASI: $e', style: const TextStyle(fontFamily: 'Avenir')), backgroundColor: dangerColor),
       );
     }
   }
@@ -98,19 +101,23 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: bgColor,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: surfaceColor,
           elevation: 0,
           leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+              icon: const Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20),
               onPressed: () => Navigator.pop(context)
           ),
           title: const Text('R A N D E V U   M Ü H R Ü',
-              style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3)),
+              style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3, fontFamily: 'Avenir')),
           centerTitle: true,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1.0),
+            child: Container(color: Colors.white.withOpacity(0.05), height: 1.0),
+          ),
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -125,23 +132,23 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               // 2. TUTAR VE BAŞLIK
               const Text(
                 "SİBER GÜVENCE BEDELİ",
-                style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2),
+                style: TextStyle(color: textMuted, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
               ),
               const SizedBox(height: 12),
               Text(
                 "₺${caymaBedeli.toStringAsFixed(0)}",
-                style: const TextStyle(color: Colors.white, fontSize: 56, fontWeight: FontWeight.w900, letterSpacing: -2),
+                style: const TextStyle(color: textMain, fontSize: 56, fontWeight: FontWeight.w900, letterSpacing: -2, fontFamily: 'Avenir'),
               ),
               const SizedBox(height: 16),
               Text(
                 "${widget.bayiIsmi} randevusunu Kuantum Ağına mühürlemek ve işlem sırasını rezerve etmek için yukarıdaki güvence bedeli bloke edilecektir.",
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold),
+                style: const TextStyle(color: textMuted, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
               ),
               const SizedBox(height: 40),
 
               // 3. İHLAL PROTOKOLÜ UYARISI
-              _buildIhlalKalkanı(),
+              _buildIhlalKalkani(),
               const SizedBox(height: 40),
 
               // 4. GÜVENLİ MÜHÜRLEME BUTONU
@@ -158,47 +165,54 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: primaryCyan.withOpacity(0.05),
+        color: surfaceColor,
         shape: BoxShape.circle,
-        border: Border.all(color: primaryCyan.withOpacity(0.3), width: 2),
-        boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.1), blurRadius: 40)],
+        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 20, offset: const Offset(0, 10))],
       ),
-      child: Icon(Icons.gavel_rounded, size: 64, color: primaryCyan),
+      child: const Icon(Icons.gavel_rounded, size: 64, color: primaryTeal),
     );
   }
 
-  Widget _buildIhlalKalkanı() {
-  return Container(
-  padding: const EdgeInsets.all(20),
-  decoration: BoxDecoration(
-  color: dangerColor.withOpacity(0.05),
-  borderRadius: BorderRadius.circular(20),
-  border: Border.all(color: dangerColor.withOpacity(0.3)),
-  ),
-  child: Row(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-  Icon(Icons.warning_amber_rounded, color: dangerColor, size: 24),
-  const SizedBox(width: 16),
-  const Expanded(
-  child: Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-  Text(
-  "İHLAL PROTOKOLÜ UYARISI",
-  style: TextStyle(color: Colors.redAccent, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
-  ),
-  SizedBox(height: 8),
-  Text(
-  "Randevuya gelinmediği veya son anda iptal edildiği takdirde bu bedelin ₺100'si Usta Tazminatı, ₺100'si OtoDNA İşletme Bedeli olarak kesin kesintiye uğrayacaktır.",
-  style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.5, fontWeight: FontWeight.bold),
-  ),
-  ],
-  ),
-  ),
-  ],
-  ),
-  );
+  Widget _buildIhlalKalkani() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: surfaceColor,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: dangerColor.withOpacity(0.2)),
+        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 4))],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: dangerColor.withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.warning_amber_rounded, color: dangerColor, size: 24),
+          ),
+          const SizedBox(width: 16),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "İHLAL PROTOKOLÜ UYARISI",
+                  style: TextStyle(color: dangerColor, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  "Randevuya gelinmediği veya son anda iptal edildiği takdirde bu bedelin ₺100'si Usta Tazminatı, ₺100'si OtoDNA İşletme Bedeli olarak kesin kesintiye uğrayacaktır.",
+                  style: TextStyle(color: textMain, fontSize: 11, height: 1.5, fontWeight: FontWeight.w600, fontFamily: 'Avenir'),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildMuhurleButton() {
@@ -207,18 +221,19 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
       height: 64,
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
-          backgroundColor: primaryCyan,
-          foregroundColor: Colors.black,
-          elevation: 0,
+          backgroundColor: primaryTeal,
+          foregroundColor: Colors.white,
+          elevation: 10,
+          shadowColor: primaryTeal.withOpacity(0.3),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
         onPressed: _isProcessing ? null : _odemeVeMuhurlemeBaslat,
         icon: _isProcessing
-            ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
+            ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
             : const Icon(Icons.lock_outline, size: 24),
         label: Text(
           _isProcessing ? "AĞA BAĞLANILIYOR..." : "₺200 ÖDE VE MÜHÜRLE",
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1),
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
         ),
       ),
     );

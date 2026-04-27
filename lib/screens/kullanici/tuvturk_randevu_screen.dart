@@ -45,7 +45,7 @@ class _TuvturkRandevuScreenState extends State<TuvturkRandevuScreen> with Single
   void _randevuOnayla() {
     if (_onKontrolListesi.containsValue(false)) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("AĞ UYARISI: Ödenmemiş borcunuz (HGS) bulunmaktadır! İşlem bloke edildi.", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+          content: Text("AĞ UYARISI: Ödenmemiş borcunuz (HGS) bulunmaktadır! İşlem bloke edildi.", style: TextStyle(fontWeight: FontWeight.bold, color: SiberTema.textMain)),
           backgroundColor: Colors.redAccent,
           duration: Duration(seconds: 4)
       ));
@@ -68,14 +68,14 @@ class _TuvturkRandevuScreenState extends State<TuvturkRandevuScreen> with Single
               child: const Icon(Icons.verified_outlined, color: Color(0xFF00FFC2), size: 48),
             ),
             const SizedBox(height: 24),
-            const Text("RANDEVU ONAYLANDI", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
+            const Text("RANDEVU ONAYLANDI", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
             const SizedBox(height: 12),
-            Text("$_seciliArac plakalı aracınız için $_seciliTarih saat $_seciliSaat konumuna randevunuz Kuantum Ağı üzerinden TÜVTÜRK'e şifrelenerek iletilmiştir.", textAlign: TextAlign.center, style: const TextStyle(color: Colors.white54, fontSize: 12, height: 1.5)),
+            Text("$_seciliArac plakalı aracınız için $_seciliTarih saat $_seciliSaat konumuna randevunuz Kuantum Ağı üzerinden TÜVTÜRK'e şifrelenerek iletilmiştir.", textAlign: TextAlign.center, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
             const SizedBox(height: 32),
             SizedBox(
               width: double.infinity, height: 50,
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2), foregroundColor: Colors.black, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2), foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
                 onPressed: () => Navigator.pop(context),
                 child: const Text("ANLAŞILDI", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1)),
               ),
@@ -97,8 +97,8 @@ class _TuvturkRandevuScreenState extends State<TuvturkRandevuScreen> with Single
       backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent, elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text("R E S M İ   İ Ş L E M L E R", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3)),
+        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+        title: const Text("R E S M İ   İ Ş L E M L E R", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3)),
         centerTitle: true,
       ),
       body: Column(
@@ -136,41 +136,41 @@ class _TuvturkRandevuScreenState extends State<TuvturkRandevuScreen> with Single
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("ARAÇ & İSTASYON", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                      const Text("ARAÇ & İSTASYON", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
                       const SizedBox(height: 12),
                       Container(
                         padding: const EdgeInsets.all(20), decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withOpacity(0.05))),
                         child: Column(
                           children: [
                             _buildAyarSatiri(Icons.directions_car_outlined, "Hedef Araç", _seciliArac, true),
-                            const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: Colors.white12)),
+                            const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted)),
                             _buildAyarSatiri(Icons.map_outlined, "Lokasyon", _seciliSehir, true),
-                            const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: Colors.white12)),
+                            const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted)),
                             _buildAyarSatiri(Icons.location_on_outlined, "İstasyon", _seciliIstasyon, true),
                           ],
                         ),
                       ),
                       const SizedBox(height: 32),
 
-                      const Text("ZAMAN ÇİZELGESİ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                      const Text("ZAMAN ÇİZELGESİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
                       const SizedBox(height: 12),
                       Row(
                         children: [
-                          Expanded(child: Container(padding: const EdgeInsets.all(20), decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withOpacity(0.05))), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Icon(Icons.calendar_month_outlined, color: primaryCyan, size: 20), const SizedBox(height: 12), const Text("TARİH", style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)), const SizedBox(height: 4), Text(_seciliTarih.split("•")[0].trim(), style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900))]))),
+                          Expanded(child: Container(padding: const EdgeInsets.all(20), decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withOpacity(0.05))), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Icon(Icons.calendar_month_outlined, color: primaryCyan, size: 20), const SizedBox(height: 12), const Text("TARİH", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)), const SizedBox(height: 4), Text(_seciliTarih.split("•")[0].trim(), style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900))]))),
                           const SizedBox(width: 12),
-                          Expanded(child: Container(padding: const EdgeInsets.all(20), decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withOpacity(0.05))), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Icon(Icons.access_time_outlined, color: primaryCyan, size: 20), const SizedBox(height: 12), const Text("SAAT", style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)), const SizedBox(height: 4), Text(_seciliSaat, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900))]))),
+                          Expanded(child: Container(padding: const EdgeInsets.all(20), decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withOpacity(0.05))), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Icon(Icons.access_time_outlined, color: primaryCyan, size: 20), const SizedBox(height: 12), const Text("SAAT", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)), const SizedBox(height: 4), Text(_seciliSaat, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900))]))),
                         ],
                       ),
                       const SizedBox(height: 32),
 
-                      const Text("AI ÖN KONTROL PROTOKOLÜ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                      const Text("AI ÖN KONTROL PROTOKOLÜ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
                       const SizedBox(height: 12),
                       Container(
                         padding: const EdgeInsets.all(24), decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withOpacity(0.05))),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text("Veriler Kuantum Ağı üzerinden çekildi. Kırmızı uyarılar muayeneye kesin engeldir.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.5)),
+                            const Text("Veriler Kuantum Ağı üzerinden çekildi. Kırmızı uyarılar muayeneye kesin engeldir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.5)),
                             const SizedBox(height: 24),
                             ..._onKontrolListesi.entries.map((entry) => Padding(
                               padding: const EdgeInsets.only(bottom: 16),
@@ -178,10 +178,10 @@ class _TuvturkRandevuScreenState extends State<TuvturkRandevuScreen> with Single
                                 children: [
                                   Icon(entry.value ? Icons.check_circle_outline : Icons.cancel_outlined, color: entry.value ? Colors.greenAccent : Colors.redAccent, size: 20),
                                   const SizedBox(width: 12),
-                                  Expanded(child: Text(entry.key, style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold, decoration: entry.value ? TextDecoration.none : TextDecoration.underline, decorationColor: Colors.redAccent))),
+                                  Expanded(child: Text(entry.key, style: TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold, decoration: entry.value ? TextDecoration.none : TextDecoration.underline, decorationColor: Colors.redAccent))),
                                   if (!entry.value)
                                     GestureDetector(
-                                        onTap: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Siber Cüzdan Ödeme Ekranı Açılıyor...", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan)),
+                                        onTap: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Siber Cüzdan Ödeme Ekranı Açılıyor...", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan)),
                                         child: Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), decoration: BoxDecoration(color: Colors.redAccent.withOpacity(0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.redAccent.withOpacity(0.5))), child: const Text("ÖDE", style: TextStyle(color: Colors.redAccent, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)))
                                     )
                                 ],
@@ -195,7 +195,7 @@ class _TuvturkRandevuScreenState extends State<TuvturkRandevuScreen> with Single
                       SizedBox(
                         width: double.infinity, height: 60,
                         child: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(backgroundColor: primaryCyan, foregroundColor: Colors.black, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)), elevation: 0),
+                          style: ElevatedButton.styleFrom(backgroundColor: primaryCyan, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)), elevation: 0),
                           onPressed: _randevuOnayla,
                           icon: const Icon(Icons.send_outlined, size: 20),
                           label: const Text("SİSTEME İLET", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
@@ -222,16 +222,16 @@ class _TuvturkRandevuScreenState extends State<TuvturkRandevuScreen> with Single
                           children: [
                             Icon(Icons.cloud_done_outlined, color: Colors.greenAccent, size: 48),
                             SizedBox(height: 16),
-                            Text("GEÇERLİLİK TARİHİ", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                            Text("GEÇERLİLİK TARİHİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
                             SizedBox(height: 8),
-                            Text("15 AĞU 2026", style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                            Text("15 AĞU 2026", style: TextStyle(color: SiberTema.textMain, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 1)),
                             SizedBox(height: 16),
                             Text("Emisyon ölçümü Kuantum Ağında günceldir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.greenAccent, fontSize: 11, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),
                       const SizedBox(height: 40),
-                      const Text("YETKİLİ MERKEZLER", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                      const Text("YETKİLİ MERKEZLER", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
                       const SizedBox(height: 16),
                       _buildEmisyonMerkeziKarti("Murat Plaza Servis", "3.2 km • Şaşmaz Oto Sanayi", "256 ₺", true),
                       const SizedBox(height: 16),
@@ -260,24 +260,24 @@ class _TuvturkRandevuScreenState extends State<TuvturkRandevuScreen> with Single
                       ),
                       const SizedBox(height: 32),
 
-                      const Text("BASIM BİLGİLERİ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                      const Text("BASIM BİLGİLERİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
                       const SizedBox(height: 12),
                       Container(
                         padding: const EdgeInsets.all(20), decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withOpacity(0.05))),
                         child: Column(
                           children: [
                             _buildAyarSatiri(Icons.gavel_outlined, "İşlem Nedeni", _basimNedeni, true),
-                            const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: Colors.white12)),
+                            const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted)),
                             _buildAyarSatiri(Icons.aspect_ratio_outlined, "Plaka Formatı", _plakaTipi, true),
                           ],
                         ),
                       ),
                       const SizedBox(height: 32),
 
-                      const Text("AI EVRAK DOĞRULAMA", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                      const Text("AI EVRAK DOĞRULAMA", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
                       const SizedBox(height: 12),
                       GestureDetector(
-                        onTap: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Siber Optik Okuyucu Açılıyor...", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan)),
+                        onTap: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Siber Optik Okuyucu Açılıyor...", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan)),
                         child: Container(
                           width: double.infinity, padding: const EdgeInsets.symmetric(vertical: 40),
                           decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: primaryCyan.withOpacity(0.3), style: BorderStyle.solid)),
@@ -287,7 +287,7 @@ class _TuvturkRandevuScreenState extends State<TuvturkRandevuScreen> with Single
                               const SizedBox(height: 20),
                               const Text("NOTER EVRAKINI OKUT", style: TextStyle(color: primaryCyan, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
                               const SizedBox(height: 8),
-                              const Text("Yapay zeka şasiyi otomatik eşleştirir.", style: TextStyle(color: Colors.white38, fontSize: 11)),
+                              const Text("Yapay zeka şasiyi otomatik eşleştirir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
                             ],
                           ),
                         ),
@@ -297,8 +297,8 @@ class _TuvturkRandevuScreenState extends State<TuvturkRandevuScreen> with Single
                       SizedBox(
                         width: double.infinity, height: 60,
                         child: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.black, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
-                          onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Talep Şoförler Odası Sistemine İletildi! 🖨️", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: Colors.green)),
+                          style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+                          onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Talep Şoförler Odası Sistemine İletildi! 🖨️", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: Colors.green)),
                           icon: const Icon(Icons.print_outlined, size: 20),
                           label: const Text("BASIM EMRİ VER", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
                         ),
@@ -319,17 +319,17 @@ class _TuvturkRandevuScreenState extends State<TuvturkRandevuScreen> with Single
   Widget _buildAyarSatiri(IconData ikon, String baslik, String deger, bool yonOlsun) {
     return Row(
       children: [
-        Icon(ikon, color: Colors.white54, size: 20), const SizedBox(width: 16),
+        Icon(ikon, color: SiberTema.textMuted, size: 20), const SizedBox(width: 16),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(baslik, style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5)), const SizedBox(height: 4),
-              Text(deger, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+              Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5)), const SizedBox(height: 4),
+              Text(deger, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
             ],
           ),
         ),
-        if (yonOlsun) const Icon(Icons.arrow_forward_ios, color: Colors.white24, size: 14),
+        if (yonOlsun) const Icon(Icons.arrow_forward_ios, color: SiberTema.textMuted, size: 14),
       ],
     );
   }
@@ -348,19 +348,19 @@ class _TuvturkRandevuScreenState extends State<TuvturkRandevuScreen> with Single
               children: [
                 Row(
                   children: [
-                    Text(isim, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
+                    Text(isim, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
                     if (tavsiye) ...[const SizedBox(width: 8), const Icon(Icons.verified, color: Color(0xFF00FFC2), size: 14)]
                   ],
                 ),
                 const SizedBox(height: 4),
-                Text(konum, style: const TextStyle(color: Colors.white54, fontSize: 10)),
+                Text(konum, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10)),
               ],
             ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(fiyat, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
+              Text(fiyat, style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900)),
               const SizedBox(height: 8),
               Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4), decoration: BoxDecoration(color: const Color(0xFF00FFC2).withOpacity(0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: const Color(0xFF00FFC2).withOpacity(0.5))), child: const Text("SEÇ", style: TextStyle(color: Color(0xFF00FFC2), fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1))),
             ],

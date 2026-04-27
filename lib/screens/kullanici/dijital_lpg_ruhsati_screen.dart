@@ -20,7 +20,7 @@ class DijitalLpgRuhsatiScreen extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05), width: 1)),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05), width: 1)),
           leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 18), onPressed: () => Navigator.pop(context)),
           title: Text("DİJİTAL MONTAJ RUHSATI", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
@@ -33,14 +33,14 @@ class DijitalLpgRuhsatiScreen extends StatelessWidget {
             children: [
               _buildGarantiKarti(primaryTeal, textColor),
               const SizedBox(height: 32),
-              const Text("MONTAJ DETAYLARI", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+              const Text("MONTAJ DETAYLARI", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
               const SizedBox(height: 16),
               _buildDetaySatiri("Araç Şase", "WBA**************", textColor),
               _buildDetaySatiri("Kit Markası", "Prins VSI-3 DI", textColor),
               _buildDetaySatiri("Yazılım Versiyonu", "V2.1.0", textColor),
               _buildDetaySatiri("Yetkili Servis", "Kadıköy Merkez Otogaz", textColor),
               const SizedBox(height: 32),
-              const Text("MEDYA KANITLARI", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+              const Text("MEDYA KANITLARI", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
               const SizedBox(height: 16),
               Row(
                 children: [
@@ -63,7 +63,7 @@ class DijitalLpgRuhsatiScreen extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: primaryTeal.withValues(alpha: 0.3), width: 1.5),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 20)],
+        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 20)],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,7 +72,7 @@ class DijitalLpgRuhsatiScreen extends StatelessWidget {
           const SizedBox(height: 16),
           Text("10 YIL PLAZA GARANTİSİ", style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
           const SizedBox(height: 8),
-          const Text("Bu aracın montajı yetkili Karargah bayisi tarafından yapılmış ve blokzincir ağına mühürlenmiştir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.black54, fontSize: 11, height: 1.5, fontFamily: 'Avenir')),
+          const Text("Bu aracın montajı yetkili Karargah bayisi tarafından yapılmış ve blokzincir ağına mühürlenmiştir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.5, fontFamily: 'Avenir')),
           const SizedBox(height: 24),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -90,7 +90,7 @@ class DijitalLpgRuhsatiScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(baslik, style: const TextStyle(color: Colors.black54, fontSize: 13, fontFamily: 'Avenir')),
+          Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 13, fontFamily: 'Avenir')),
           Text(deger, style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         ],
       ),
@@ -103,8 +103,8 @@ class DijitalLpgRuhsatiScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)],
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)],
       ),
       child: Column(
         children: [

@@ -85,15 +85,15 @@ class _GercekAracKayitTerminaliState extends State<GercekAracKayitTerminali> {
             ),
             content: const Text(
               "Standart paketinizin 10 adet ilan limitini doldurdunuz. Sınırsız ilan eklemek ve OtoDNA Kuantum Ağı'nın VIP ayrıcalıklarından faydalanmak için paketinizi yükseltin.",
-              style: TextStyle(color: Colors.white70),
+              style: TextStyle(color: SiberTema.textMuted),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text("İPTAL", style: TextStyle(color: Colors.white54)),
+                child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted)),
               ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2), foregroundColor: Colors.black),
+                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2), foregroundColor: Colors.white),
                 onPressed: () {
                   Navigator.pop(context);
                   // TODO: Ödeme sayfasına (Siber Kasaya) yönlendir!
@@ -250,13 +250,13 @@ class _GercekAracKayitTerminaliState extends State<GercekAracKayitTerminali> {
     const bgColor = SiberTema.oledBlack;
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent, elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("Kuantum Kayıt Terminali", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+          title: const Text("Kuantum Kayıt Terminali", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
           centerTitle: true,
         ),
       body: SingleChildScrollView(
@@ -271,13 +271,13 @@ class _GercekAracKayitTerminaliState extends State<GercekAracKayitTerminali> {
             Row(children: [Expanded(child: _buildInput("İl", _ilController)), const SizedBox(width: 12), Expanded(child: _buildInput("İlçe", _ilceController))]),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text("Doğum Tarihi", style: TextStyle(color: Colors.white54, fontSize: 13)),
-              subtitle: Text("${_secilenDogumTarihi.day}/${_secilenDogumTarihi.month}/${_secilenDogumTarihi.year}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              title: const Text("Doğum Tarihi", style: TextStyle(color: SiberTema.textMuted, fontSize: 13)),
+              subtitle: Text("${_secilenDogumTarihi.day}/${_secilenDogumTarihi.month}/${_secilenDogumTarihi.year}", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
               trailing: const Icon(Icons.calendar_month, color: primaryCyan),
               onTap: () => _tarihSec(context),
             ),
 
-            const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white12)),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted)),
             const Text("2. OtoDNA Araç Kimliği", style: TextStyle(color: primaryCyan, fontSize: 14, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
             _buildInput("Plaka (Örn: 34 MTH 139)", _plakaController, isUpper: true),
@@ -285,7 +285,7 @@ class _GercekAracKayitTerminaliState extends State<GercekAracKayitTerminali> {
             Row(children: [Expanded(child: _buildInput("Marka", _markaController)), const SizedBox(width: 12), Expanded(child: _buildInput("Model", _modelController))]),
             _buildInput("Renk", _renkController),
 
-            const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white12)),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted)),
             const Text("3. İlan & Fiyatlandırma (CarAd)", style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
             _buildInput("Satış Fiyatı (₺)", _fiyatController, isNumber: true),
@@ -322,15 +322,15 @@ class _GercekAracKayitTerminaliState extends State<GercekAracKayitTerminali> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(color: const Color(0xFF1E293B), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
+      decoration: BoxDecoration(color: const Color(0xFF1E293B), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.textMuted)),
       child: TextField(
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : (isMultiLine ? TextInputType.multiline : TextInputType.text),
         maxLength: isMaks17 ? 17 : null,
         maxLines: isMultiLine ? 3 : 1,
         textCapitalization: isUpper ? TextCapitalization.characters : TextCapitalization.words,
-        style: const TextStyle(color: Colors.white),
-        decoration: InputDecoration(counterText: "", hintText: hint, hintStyle: const TextStyle(color: Colors.white38, fontSize: 13), border: InputBorder.none),
+        style: const TextStyle(color: SiberTema.textMain),
+        decoration: InputDecoration(counterText: "", hintText: hint, hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 13), border: InputBorder.none),
       ),
     );
   }

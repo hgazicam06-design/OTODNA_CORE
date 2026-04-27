@@ -113,7 +113,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
   void _uyariGoster(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, color: Colors.black, fontSize: 11)),
+        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, color: Colors.white, fontSize: 11)),
         backgroundColor: isError ? dangerColor : primaryCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -157,7 +157,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  const Text("SİBER GÜVENLİK", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 4)),
+                  const Text("SİBER GÜVENLİK", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 4)),
                   const SizedBox(height: 8),
                   const Text("ANKARA MERKEZ DİSTRİBÜTÖRLÜK ONAYI", textAlign: TextAlign.center, style: TextStyle(color: primaryCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                   const SizedBox(height: 48),
@@ -191,7 +191,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryCyan,
-                        foregroundColor: Colors.black,
+                        foregroundColor: Colors.white,
                         elevation: 0,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       ),
@@ -199,7 +199,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
                           ? null
                           : (_otpGonderildi ? _koduDogrula : _kodGonder),
                       icon: _isProcessing
-                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
+                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                           : Icon(_otpGonderildi ? Icons.verified_user : Icons.send, size: 24),
                       label: Text(
                           _isProcessing
@@ -214,7 +214,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
                     const SizedBox(height: 24),
                     TextButton(
                       onPressed: () => setState(() => _otpGonderildi = false),
-                      child: const Text("SİNYAL ALINAMADI (YENİDEN GÖNDER)", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                      child: const Text("SİNYAL ALINAMADI (YENİDEN GÖNDER)", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
                     )
                   ]
                 ],
@@ -247,9 +247,9 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
         textAlign: isCentered ? TextAlign.center : TextAlign.start,
         style: TextStyle(color: enabled ? Colors.white : Colors.white38, fontSize: isCentered ? 20 : 14, letterSpacing: isCentered ? 8 : 1, fontWeight: FontWeight.bold),
         decoration: InputDecoration(
-          prefixIcon: isCentered ? null : Icon(icon, color: Colors.white38, size: 20),
+          prefixIcon: isCentered ? null : Icon(icon, color: SiberTema.textMuted, size: 20),
           hintText: hint,
-          hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
+          hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
           focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: primaryCyan, width: 1.5)),

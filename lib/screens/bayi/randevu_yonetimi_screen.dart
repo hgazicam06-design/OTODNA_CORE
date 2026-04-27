@@ -77,12 +77,12 @@ class _RandevuYonetimiScreenState extends State<RandevuYonetimiScreen> with Sing
     if (_currentUser == null) return const Scaffold(backgroundColor: bgColor, body: Center(child: Text("Kimlik Hatası!", style: TextStyle(color: SiberTema.kanKirmizi))));
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent, elevation: 0,
-        title: const Text('Randevu & Takvim Radarı', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: const Text('Randevu & Takvim Radarı', style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
         centerTitle: true, iconTheme: const IconThemeData(color: primaryCyan),
         bottom: TabBar(
           controller: _tabController, indicatorColor: primaryCyan, labelColor: primaryCyan, unselectedLabelColor: Colors.white54,
@@ -104,7 +104,7 @@ class _RandevuYonetimiScreenState extends State<RandevuYonetimiScreen> with Sing
               children: [
                 // 1. BEKLEYEN RANDEVULAR
                 bekleyenler.isEmpty
-                    ? const Center(child: Text("Bekleyen randevu talebi yok.", style: TextStyle(color: Colors.white54)))
+                    ? const Center(child: Text("Bekleyen randevu talebi yok.", style: TextStyle(color: SiberTema.textMuted)))
                     : ListView.builder(
                   padding: const EdgeInsets.all(16),
                   itemCount: bekleyenler.length,
@@ -117,7 +117,7 @@ class _RandevuYonetimiScreenState extends State<RandevuYonetimiScreen> with Sing
 
                 // 2. ONAYLI RANDEVULAR
                 onaylilar.isEmpty
-                    ? const Center(child: Text("Onaylanmış randevunuz bulunmuyor.", style: TextStyle(color: Colors.white54)))
+                    ? const Center(child: Text("Onaylanmış randevunuz bulunmuyor.", style: TextStyle(color: SiberTema.textMuted)))
                     : ListView.builder(
                   padding: const EdgeInsets.all(16),
                   itemCount: onaylilar.length,
@@ -144,11 +144,11 @@ class _RandevuYonetimiScreenState extends State<RandevuYonetimiScreen> with Sing
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(data['plaka'] ?? 'Plaka Yok', style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 1)), Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: isOnayli ? primaryCyan.withOpacity(0.1) : Colors.orangeAccent.withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: Text(isOnayli ? "ONAYLI" : "BEKLİYOR", style: TextStyle(color: isOnayli ? primaryCyan : Colors.orangeAccent, fontSize: 10, fontWeight: FontWeight.bold)))]),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(data['plaka'] ?? 'Plaka Yok', style: const TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 1)), Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: isOnayli ? primaryCyan.withOpacity(0.1) : Colors.orangeAccent.withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: Text(isOnayli ? "ONAYLI" : "BEKLİYOR", style: TextStyle(color: isOnayli ? primaryCyan : Colors.orangeAccent, fontSize: 10, fontWeight: FontWeight.bold)))]),
           const SizedBox(height: 12),
-          Row(children: [const Icon(Icons.person, color: Colors.white54, size: 16), const SizedBox(width: 8), Text("Müşteri: ${data['musteri_adi'] ?? 'Bilinmiyor'}", style: const TextStyle(color: Colors.white70, fontSize: 14))]),
+          Row(children: [const Icon(Icons.person, color: SiberTema.textMuted, size: 16), const SizedBox(width: 8), Text("Müşteri: ${data['musteri_adi'] ?? 'Bilinmiyor'}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 14))]),
           const SizedBox(height: 4),
-          Row(children: [const Icon(Icons.build_circle, color: Colors.white54, size: 16), const SizedBox(width: 8), Text("İşlem: ${data['islem_tipi'] ?? 'Genel Bakım'}", style: const TextStyle(color: Colors.white70, fontSize: 14))]),
+          Row(children: [const Icon(Icons.build_circle, color: SiberTema.textMuted, size: 16), const SizedBox(width: 8), Text("İşlem: ${data['islem_tipi'] ?? 'Genel Bakım'}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 14))]),
           const SizedBox(height: 12),
           Container(width: double.infinity, padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(8)), child: Row(children: [Icon(Icons.calendar_month, color: isOnayli ? primaryCyan : Colors.orangeAccent, size: 18), const SizedBox(width: 8), Text("Tarih: $formatliTarih", style: TextStyle(color: isOnayli ? primaryCyan : Colors.orangeAccent, fontWeight: FontWeight.bold, fontSize: 13))])),
 

@@ -23,7 +23,7 @@ class _PartSearchMapScreenState extends State<PartSearchMapScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.black, letterSpacing: 1)),
+        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 1)),
         backgroundColor: isCart ? Colors.orangeAccent : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -33,7 +33,7 @@ class _PartSearchMapScreenState extends State<PartSearchMapScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -43,7 +43,7 @@ class _PartSearchMapScreenState extends State<PartSearchMapScreen> {
               icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
               onPressed: () => Navigator.pop(context)
           ),
-          title: const Text("OTODNA TEDARİK AĞI", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2)),
+          title: const Text("OTODNA TEDARİK AĞI", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2)),
           centerTitle: true,
           actions: [
             IconButton(
@@ -69,7 +69,7 @@ class _PartSearchMapScreenState extends State<PartSearchMapScreen> {
 
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                    child: Divider(color: Colors.white10, thickness: 1),
+                    child: Divider(color: SiberTema.textMuted, thickness: 1),
                   ),
 
                   // 🌍 KÜRESEL ENVANTER (Tüm Ürünler Grid)
@@ -97,12 +97,12 @@ class _PartSearchMapScreenState extends State<PartSearchMapScreen> {
       ),
       child: TextField(
         controller: _aramaController,
-        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+        style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13),
         decoration: InputDecoration(
           hintText: "OEM KODU, MARKA VEYA PARÇA ARA...",
-          hintStyle: TextStyle(color: Colors.white10, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
+          hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
           prefixIcon: const Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 20),
-          suffixIcon: const Icon(Icons.qr_code_scanner, color: Colors.white24, size: 20),
+          suffixIcon: const Icon(Icons.qr_code_scanner, color: SiberTema.textMuted, size: 20),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 20),
         ),
@@ -188,7 +188,7 @@ class _PartSearchMapScreenState extends State<PartSearchMapScreen> {
             flex: 4,
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.black26,
+                color: Colors.white26,
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: Stack(
@@ -219,13 +219,13 @@ class _PartSearchMapScreenState extends State<PartSearchMapScreen> {
                     children: [
                       Text(marka.toUpperCase(), style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
                       const SizedBox(height: 4),
-                      Text(ad, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold)),
+                      Text(ad, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("₺${fiyat.toStringAsFixed(2)}", style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                      Text("₺${fiyat.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
                       const SizedBox(height: 12),
                       SizedBox(
                         width: double.infinity,
@@ -257,9 +257,9 @@ class _PartSearchMapScreenState extends State<PartSearchMapScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.radar, color: Colors.white10, size: 50),
+          Icon(Icons.radar, color: SiberTema.textMuted, size: 50),
           const SizedBox(height: 12),
-          Text(mesaj, style: const TextStyle(color: Colors.white10, fontSize: 10, fontWeight: FontWeight.bold)),
+          Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
         ],
       ),
     );

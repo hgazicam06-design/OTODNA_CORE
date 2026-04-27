@@ -22,7 +22,7 @@ class _GlobalSiberPazarScreenState extends State<GlobalSiberPazarScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -30,7 +30,7 @@ class _GlobalSiberPazarScreenState extends State<GlobalSiberPazarScreen> {
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
           title: const Text("GLOBAL SİBER PAZAR",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 4, fontFamily: 'monospace')),
+              style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 4, fontFamily: 'monospace')),
           centerTitle: true,
         ),
         body: Container(
@@ -54,10 +54,10 @@ class _GlobalSiberPazarScreenState extends State<GlobalSiberPazarScreen> {
       child: SiberTema.siberCamKalkan(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: TextField(
-          style: const TextStyle(color: Colors.white, fontFamily: 'monospace', fontWeight: FontWeight.bold),
+          style: const TextStyle(color: SiberTema.textMain, fontFamily: 'monospace', fontWeight: FontWeight.bold),
           decoration: InputDecoration(
             hintText: "OEM, Parça Kodu veya İsim İle Tara...",
-            hintStyle: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 10, letterSpacing: 1),
+            hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.3), fontSize: 10, letterSpacing: 1),
             border: InputBorder.none,
             icon: const Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 20),
           ),
@@ -155,10 +155,10 @@ class _GlobalSiberPazarScreenState extends State<GlobalSiberPazarScreen> {
                 flex: 3,
                 child: Container(
                   width: double.infinity,
-                  color: Colors.black,
+                  color: Colors.white,
                   child: ilan['gorsel_url'] != null
                       ? Image.network(ilan['gorsel_url'], fit: BoxFit.cover)
-                      : const Icon(Icons. Dionysus, color: Colors.white10), // Kuantum İkon
+                      : const Icon(Icons. Dionysus, color: SiberTema.textMuted), // Kuantum İkon
                 ),
               ),
               Expanded(
@@ -170,8 +170,8 @@ class _GlobalSiberPazarScreenState extends State<GlobalSiberPazarScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(ilan['baslik']?.toUpperCase() ?? '', maxLines: 1, overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w900)),
-                      Text("OEM: ${ilan['parca_kodu'] ?? 'YOK'}", style: const TextStyle(color: Colors.white38, fontSize: 8, fontFamily: 'monospace')),
+                          style: const TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.w900)),
+                      Text("OEM: ${ilan['parca_kodu'] ?? 'YOK'}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 8, fontFamily: 'monospace')),
                       Text("₺${sonFiyat.toStringAsFixed(2)}",
                           style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
                     ],
@@ -200,10 +200,10 @@ class _GlobalSiberPazarScreenState extends State<GlobalSiberPazarScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.radar, size: 50, color: Colors.white10),
+          const Icon(Icons.radar, size: 50, color: SiberTema.textMuted),
           const SizedBox(height: 16),
           Text("RADAR TEMİZ: VERİ BULUNAMADI",
-              style: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+              style: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
         ],
       ),
     );

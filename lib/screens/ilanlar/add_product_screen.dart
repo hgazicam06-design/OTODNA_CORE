@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 import '../../core/providers/siber_kimlik_provider.dart';
-import '../../services/ai_istihbarat_koprusu.dart';
+import '../../services/corporate_ai_engine.dart';
 import '../../widgets/siber_rehber_dialog.dart';
 
 class AddProductScreen extends ConsumerStatefulWidget {
@@ -69,7 +69,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
     _showCyberLoading("Siber Göz (AI) Parçayı Analiz Ediyor...");
 
-    final result = await AIIstihbaratKoprusu.parcayiTani(image);
+    final result = await CorporateAIEngine.parcayiTani(image);
 
     if (!mounted) return;
     Navigator.pop(context);
@@ -83,13 +83,13 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text("Kuantum Analizi Tamamlandı: Yapay Zeka Tespiti Başarılı! 🦅",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         backgroundColor: _primaryCyan,
       ));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("AI Radarı Arızası: Parça Tanımlanamadı!",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         backgroundColor: Colors.redAccent,
       ));
     }
@@ -109,7 +109,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Şasi DNA'sı Çözüldü: BMW Tespit Edildi! ✅",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+          style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
       backgroundColor: Colors.blueAccent,
     ));
   }
@@ -126,9 +126,9 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
           children: [
             CircularProgressIndicator(color: _primaryCyan),
             const SizedBox(height: 16),
-            Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             const SizedBox(height: 8),
-            const Text("Kuantum Hub Ağı Taranıyor...", style: TextStyle(color: Colors.white38, fontSize: 10, fontFamily: 'Avenir')),
+            const Text("Kuantum Hub Ağı Taranıyor...", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -175,7 +175,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: const Text("Ürün Kuantum Ağına Başarıyla Mühürlendi! 🚀",
-              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           backgroundColor: _primaryCyan));
       Navigator.pop(context);
     } catch (e) {
@@ -188,14 +188,14 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent, elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20), onPressed: () => Navigator.pop(context)),
+          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
           title: const Text('S İ B E R   İ L A N   T E R M İ N A L İ',
-              style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2, fontFamily: 'Avenir')),
+              style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
           actions: [
             IconButton(
@@ -213,7 +213,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
             children: [
               _buildAIControlPanel(),
               const SizedBox(height: 32),
-              const Text("ÜRÜN KİMLİĞİ", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+              const Text("ÜRÜN KİMLİĞİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
               const SizedBox(height: 16),
               _buildCyberTextField("Ürün / Parça Adı", _urunAdController, Icons.build_circle_outlined),
               const SizedBox(height: 16),
@@ -250,7 +250,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
               Icon(Icons.auto_awesome, color: _primaryCyan, size: 24),
               const SizedBox(width: 12),
               const Expanded(child: Text("YAPAY ZEKA (AI) İSTİHBARATI",
-                  style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'))),
+                  style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'))),
             ],
           ),
           const SizedBox(height: 16),
@@ -287,12 +287,12 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       decoration: BoxDecoration(color: _cyberBlack, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
       child: Row(
         children: [
-          const Icon(Icons.directions_car_outlined, color: Colors.white38, size: 20),
+          const Icon(Icons.directions_car_outlined, color: SiberTema.textMuted, size: 20),
           const SizedBox(width: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Uyumlu Marka / Model", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+              const Text("Uyumlu Marka / Model", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
               const SizedBox(height: 4),
               Text(_secilenMarka, style: TextStyle(color: _secilenMarka == "Marka Seçilmedi" ? Colors.white54 : _primaryCyan, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             ],
@@ -323,7 +323,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
                     size: 18
                   ),
                   const SizedBox(width: 12),
-                  Text(durum, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                  Text(durum, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                 ],
               ),
             );
@@ -344,9 +344,9 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       child: ElevatedButton.icon(
         style: SiberTema.kuantumButonStili(),
         onPressed: _isLoading ? null : _urunuAgaMuhurle,
-        icon: _isLoading ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2)) : const Icon(Icons.publish, size: 24, color: Colors.black),
+        icon: _isLoading ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : const Icon(Icons.publish, size: 24, color: Colors.white),
         label: Text(_isLoading ? "VERİ AKTARILIYOR..." : "SİBER AĞA MÜHÜRLE",
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, color: Colors.black, fontFamily: 'Avenir')),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, color: Colors.white, fontFamily: 'Avenir')),
       ),
     );
   }
@@ -357,11 +357,11 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       child: TextField(
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-        style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+        style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 13, fontFamily: 'Avenir'),
-          prefixIcon: Icon(icon, color: Colors.white38, size: 20),
+          hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 13, fontFamily: 'Avenir'),
+          prefixIcon: Icon(icon, color: SiberTema.textMuted, size: 20),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 18),
         ),

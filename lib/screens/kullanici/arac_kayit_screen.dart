@@ -24,7 +24,7 @@ class _AracKayitScreenState extends State<AracKayitScreen> {
 
   Future<void> _araciSistemeKaydet() async {
     if (_plakaController.text.isEmpty || _markaController.text.isEmpty || _fiyatController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Plaka, Marka ve Fiyat zorunlu alanlardır.", style: TextStyle(color: Colors.white)), backgroundColor: Colors.redAccent));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Plaka, Marka ve Fiyat zorunlu alanlardır.", style: TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.redAccent));
       return;
     }
 
@@ -50,7 +50,7 @@ class _AracKayitScreenState extends State<AracKayitScreen> {
       });
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Araç sisteme başarıyla işlendi.", style: TextStyle(color: Colors.white)), backgroundColor: Colors.teal.shade700));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Araç sisteme başarıyla işlendi.", style: TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.teal.shade700));
       Navigator.pop(context);
 
     } catch (e) {
@@ -141,8 +141,8 @@ class _AracKayitScreenState extends State<AracKayitScreen> {
               decoration: BoxDecoration(
                 color: inputColor, 
                 borderRadius: BorderRadius.circular(16), 
-                border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))],
+                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))],
               ),
               child: TextField(
                 controller: _aciklamaController,
@@ -150,7 +150,7 @@ class _AracKayitScreenState extends State<AracKayitScreen> {
                 maxLines: 4,
                 decoration: InputDecoration(
                     labelText: "Açıklama & Donanım",
-                    labelStyle: const TextStyle(color: Colors.black38, fontSize: 13, fontFamily: 'Avenir'),
+                    labelStyle: const TextStyle(color: Colors.white38, fontSize: 13, fontFamily: 'Avenir'),
                     border: InputBorder.none,
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     floatingLabelStyle: TextStyle(color: primaryTeal, fontSize: 14, fontWeight: FontWeight.bold),
@@ -183,7 +183,7 @@ class _AracKayitScreenState extends State<AracKayitScreen> {
 
             const SizedBox(height: 24),
             Center(
-              child: Text("Sisteme girilen araçlar OtoDNA politikalarına tabidir.", style: TextStyle(color: Colors.black38, fontSize: 11, fontFamily: 'Avenir')),
+              child: Text("Sisteme girilen araçlar OtoDNA politikalarına tabidir.", style: TextStyle(color: Colors.white38, fontSize: 11, fontFamily: 'Avenir')),
             ),
             const SizedBox(height: 40),
           ],
@@ -200,8 +200,8 @@ class _AracKayitScreenState extends State<AracKayitScreen> {
       decoration: BoxDecoration(
         color: inputColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))],
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))],
       ),
       child: TextFormField(
         controller: controller,
@@ -209,9 +209,9 @@ class _AracKayitScreenState extends State<AracKayitScreen> {
         textCapitalization: isUppercase ? TextCapitalization.characters : TextCapitalization.sentences,
         style: TextStyle(color: textColor, fontSize: 16, fontFamily: 'Avenir', fontWeight: FontWeight.w600),
         decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: Colors.black45, size: 20),
+          prefixIcon: Icon(icon, color: Colors.white45, size: 20),
           labelText: label,
-          labelStyle: const TextStyle(color: Colors.black38, fontSize: 14, fontFamily: 'Avenir'),
+          labelStyle: const TextStyle(color: Colors.white38, fontSize: 14, fontFamily: 'Avenir'),
           floatingLabelStyle: TextStyle(color: primaryTeal, fontSize: 14, fontWeight: FontWeight.bold),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 16),

@@ -57,7 +57,7 @@ class _SiberProfilScreenState extends State<SiberProfilScreen> {
                         const SizedBox(height: 32),
                         _buildGenetikSkorPaneli(),
                         const SizedBox(height: 32),
-                        const Text("SİBER KOMUTA MERKEZİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                        const Text("SİBER KOMUTA MERKEZİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                         const SizedBox(height: 16),
                         _buildKomutaMenusu(),
                       ],
@@ -78,15 +78,15 @@ class _SiberProfilScreenState extends State<SiberProfilScreen> {
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          decoration: BoxDecoration(color: Colors.black.withOpacity(0.4), border: const Border(bottom: BorderSide(color: Colors.white10))),
+          decoration: BoxDecoration(color: Colors.white.withOpacity(0.4), border: const Border(bottom: BorderSide(color: SiberTema.textMuted))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
                 onTap: () => Navigator.pop(context),
-                child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), shape: BoxShape.circle), child: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 18)),
+                child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), shape: BoxShape.circle), child: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18)),
               ),
-              const Text('K İ Ş İ S E L   A Ğ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'Avenir')),
+              const Text('K İ Ş İ S E L   A Ğ', style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'Avenir')),
               Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: primaryCyan.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: primaryCyan.withOpacity(0.5))), child: const Icon(Icons.qr_code_scanner, color: primaryCyan, size: 18)),
             ],
           ),
@@ -103,14 +103,14 @@ class _SiberProfilScreenState extends State<SiberProfilScreen> {
             width: 100, height: 100,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.black,
+              color: Colors.white,
               border: Border.all(color: primaryCyan, width: 2),
               boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.3), blurRadius: 20, spreadRadius: 5)],
               image: const DecorationImage(image: NetworkImage("https://via.placeholder.com/150/000000/00FFC2?text=AJAN"), fit: BoxFit.cover),
             ),
           ),
           const SizedBox(height: 16),
-          Text(_kullaniciMail.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+          Text(_kullaniciMail.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -130,20 +130,20 @@ class _SiberProfilScreenState extends State<SiberProfilScreen> {
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
           padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white10)),
+          decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), borderRadius: BorderRadius.circular(24), border: Border.all(color: SiberTema.textMuted)),
           child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("SİBER GENETİK SKORU", style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                  const Text("SİBER GENETİK SKORU", style: TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                   Text("%${skor.toInt()}", style: const TextStyle(color: primaryCyan, fontSize: 24, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                 ],
               ),
               const SizedBox(height: 16),
               ClipRRect(borderRadius: BorderRadius.circular(10), child: LinearProgressIndicator(value: skor / 100, minHeight: 8, backgroundColor: Colors.white.withOpacity(0.05), color: primaryCyan)),
               const SizedBox(height: 16),
-              const Text("Ağdaki güvenilirliğiniz Kuantum Yapay Zeka tarafından analiz edilmektedir. Yüksek skor, ilanlarınızın vitrinde çıkmasını sağlar.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 10, height: 1.5, fontFamily: 'Avenir')),
+              const Text("Ağdaki güvenilirliğiniz Kuantum Yapay Zeka tarafından analiz edilmektedir. Yüksek skor, ilanlarınızın vitrinde çıkmasını sağlar.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 10, height: 1.5, fontFamily: 'Avenir')),
             ],
           ),
         ),
@@ -188,7 +188,7 @@ class _SiberProfilScreenState extends State<SiberProfilScreen> {
                 children: [
                   Text(baslik, style: TextStyle(color: isTehlike ? neonPink : (isAltin ? siberGold : Colors.white), fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                   const SizedBox(height: 4),
-                  Text(altBaslik, style: const TextStyle(color: Colors.white54, fontSize: 10, fontFamily: 'Avenir')),
+                  Text(altBaslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontFamily: 'Avenir')),
                 ],
               ),
             ),
@@ -202,12 +202,12 @@ class _SiberProfilScreenState extends State<SiberProfilScreen> {
   Widget _buildGucTasarrufuAnahtari() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(color: Colors.white.withOpacity(0.02), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white10)),
+      decoration: BoxDecoration(color: Colors.white.withOpacity(0.02), borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
       child: Row(
         children: [
           Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: siberGold.withOpacity(0.1), shape: BoxShape.circle), child: const Icon(Icons.battery_saver_outlined, color: siberGold, size: 20)),
           const SizedBox(width: 16),
-          const Expanded(child: Text("Kuantum Güç Tasarrufu", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
+          const Expanded(child: Text("Kuantum Güç Tasarrufu", style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
           Switch(
             value: _gucTasarrufu,
             activeColor: primaryCyan,

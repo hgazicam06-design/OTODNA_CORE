@@ -60,7 +60,7 @@ class _SiberRadarScreenState extends State<SiberRadarScreen> with SingleTickerPr
       await launchUrl(googleMapsUrl, mode: LaunchMode.externalApplication);
     } else {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Uydu bağlantısı kurulamadı (Google Haritalar açılamadı).", style: TextStyle(color: Colors.white)), backgroundColor: Colors.redAccent));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Uydu bağlantısı kurulamadı (Google Haritalar açılamadı).", style: TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.redAccent));
       }
     }
   }
@@ -76,8 +76,8 @@ class _SiberRadarScreenState extends State<SiberRadarScreen> with SingleTickerPr
       backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent, elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text("K U A N T U M   R A D A R", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3)),
+        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+        title: const Text("K U A N T U M   R A D A R", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3)),
         centerTitle: true,
       ),
       body: Column(
@@ -93,7 +93,7 @@ class _SiberRadarScreenState extends State<SiberRadarScreen> with SingleTickerPr
                   children: [
                     Text("Siber Ağ Taranıyor...", style: TextStyle(color: primaryCyan, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: -0.5)),
                     SizedBox(height: 6),
-                    Text("Çap: 50 KM • Bölge: Ankara", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 0.5)),
+                    Text("Çap: 50 KM • Bölge: Ankara", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 0.5)),
                   ],
                 ),
                 Container(
@@ -164,9 +164,9 @@ class _SiberRadarScreenState extends State<SiberRadarScreen> with SingleTickerPr
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(10)))),
+                  Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: SiberTema.textMuted, borderRadius: BorderRadius.circular(10)))),
                   const SizedBox(height: 24),
-                  const Text("Sinyal Tespit Edilen Noktalar", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
+                  const Text("Sinyal Tespit Edilen Noktalar", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
                   const SizedBox(height: 16),
 
                   Expanded(

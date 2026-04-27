@@ -32,7 +32,7 @@ class OtoDNADashboard extends StatelessWidget {
         title: const Text(
           'O T O D N A   A N K A R A   K A R A R G A H I',
           style: TextStyle(
-              color: Colors.white54,
+              color: SiberTema.textMuted,
               fontSize: 13,
               fontWeight: FontWeight.w900,
               letterSpacing: 3,
@@ -46,7 +46,7 @@ class OtoDNADashboard extends StatelessWidget {
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                        content: Text("SİBER TARAMA BAŞLATILIYOR...", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                        content: Text("SİBER TARAMA BAŞLATILIYOR...", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                         backgroundColor: primaryCyan
                     )
                 );
@@ -77,7 +77,7 @@ class OtoDNADashboard extends StatelessWidget {
                     const SizedBox(width: 12),
                     const Text(
                         "SİBER KOMUTA MODÜLLERİ",
-                        style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2)
+                        style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2)
                     ),
                   ],
                 ),
@@ -164,13 +164,13 @@ class OtoDNADashboard extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+              style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1.5),
             ),
             const SizedBox(height: 8),
             Text(
               subtitle,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1),
+              style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1),
             ),
           ],
         ),
@@ -188,7 +188,7 @@ class OtoDNADashboard extends StatelessWidget {
         leading: const BackButton(color: Colors.white),
       ),
       body: const Center(
-        child: Text("SİBER PROTOKOLLER YÜKLENİYOR...", style: TextStyle(color: Colors.white24, fontWeight: FontWeight.bold)),
+        child: Text("SİBER PROTOKOLLER YÜKLENİYOR...", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)),
       ),
     );
   }

@@ -177,7 +177,7 @@ class _GarajScreenState extends State<GarajScreen> {
             backgroundColor: Colors.white, 
             elevation: 0,
             surfaceTintColor: Colors.transparent,
-            shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+            shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
             title: Text('O T O D N A   G A R A J', style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 4, fontFamily: 'Avenir')),
             centerTitle: true,
             leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context))
@@ -202,12 +202,12 @@ class _GarajScreenState extends State<GarajScreen> {
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                       return Container(
                           width: double.infinity, padding: const EdgeInsets.all(32),
-                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
+                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]),
                           child: const Column(
                               children: [
-                                Icon(Icons.garage_outlined, color: Colors.black12, size: 56),
+                                Icon(Icons.garage_outlined, color: Colors.white12, size: 56),
                                 SizedBox(height: 16),
-                                Text("Garajınız şu an boş.", style: TextStyle(color: Colors.black45, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                Text("Garajınız şu an boş.", style: TextStyle(color: Colors.white45, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                               ]
                           )
                       );
@@ -227,8 +227,8 @@ class _GarajScreenState extends State<GarajScreen> {
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-                                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
+                                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                                boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
                             ),
                             child: Row(
                               children: [
@@ -240,13 +240,13 @@ class _GarajScreenState extends State<GarajScreen> {
                                         children: [
                                           Text(arac['plaka'] ?? 'PLAKA YOK', style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                                           const SizedBox(height: 4),
-                                          Text("${arac['marka_model']} (${arac['yil']})", style: const TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                          Text("${arac['marka_model']} (${arac['yil']})", style: const TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                                           const SizedBox(height: 6),
                                           Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: premiumGold.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(6)), child: Text("DNA Skoru: %${arac['dna_skoru'] ?? 100}", style: TextStyle(color: premiumGold, fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir')))
                                         ]
                                     )
                                 ),
-                                const Icon(Icons.arrow_forward_ios, color: Colors.black26, size: 16),
+                                const Icon(Icons.arrow_forward_ios, color: Colors.white26, size: 16),
                               ],
                             ),
                           ),
@@ -264,7 +264,7 @@ class _GarajScreenState extends State<GarajScreen> {
               const SizedBox(height: 8),
               Text("Garaja Araç Ekle", style: TextStyle(color: textColor, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
               const SizedBox(height: 12),
-              const Text("Şase numarasını (VIN) okutun veya bilgileri elle doldurun.", style: TextStyle(color: Colors.black54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+              const Text("Şase numarasını (VIN) okutun veya bilgileri elle doldurun.", style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
               const SizedBox(height: 24),
 
               Row(
@@ -272,14 +272,14 @@ class _GarajScreenState extends State<GarajScreen> {
                   Expanded(
                       flex: 2,
                       child: Container(
-                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
+                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]),
                         child: TextField(
                             controller: _saseController,
                             style: TextStyle(color: textColor, fontSize: 15, letterSpacing: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                             maxLength: 17,
                             decoration: InputDecoration(
                               labelText: 'Şase (VIN) No',
-                              labelStyle: const TextStyle(color: Colors.black45, fontSize: 13, fontFamily: 'Avenir'),
+                              labelStyle: const TextStyle(color: Colors.white45, fontSize: 13, fontFamily: 'Avenir'),
                               counterText: "",
                               border: InputBorder.none,
                               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -293,21 +293,21 @@ class _GarajScreenState extends State<GarajScreen> {
                     child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                         decoration: BoxDecoration(color: primaryTeal, borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.2), blurRadius: 10, offset: const Offset(0, 4))]),
-                        child: const Icon(Icons.document_scanner_outlined, color: Colors.white, size: 24)
+                        child: const Icon(Icons.document_scanner_outlined, color: SiberTema.kuantumCyan, size: 24)
                     ),
                   )
                 ],
               ),
               const SizedBox(height: 16),
               Container(
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]),
                 child: TextField(
                     controller: _plakaController,
                     textCapitalization: TextCapitalization.characters,
                     style: TextStyle(color: textColor, fontSize: 15, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                     decoration: const InputDecoration(
                       labelText: 'Plaka (Örn: 34DNA2026)',
-                      labelStyle: TextStyle(color: Colors.black45, fontSize: 13, fontFamily: 'Avenir'),
+                      labelStyle: TextStyle(color: Colors.white45, fontSize: 13, fontFamily: 'Avenir'),
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                     )
@@ -351,11 +351,11 @@ class _GarajScreenState extends State<GarajScreen> {
   Widget _buildDropdown(String hint, String? value, List<String> items, Function(String?) onChanged) {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: value != null ? primaryTeal.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: value != null ? primaryTeal.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]),
         child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
                 dropdownColor: Colors.white, isExpanded: true, value: value,
-                hint: Text(hint, style: const TextStyle(color: Colors.black38, fontSize: 14, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
+                hint: Text(hint, style: const TextStyle(color: Colors.white38, fontSize: 14, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
                 icon: Icon(Icons.keyboard_arrow_down, color: value != null ? primaryTeal : Colors.black38),
                 style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                 items: items.map((String item) { return DropdownMenuItem<String>(value: item, child: Text(item)); }).toList(),
@@ -404,7 +404,7 @@ class _SaseScannerOverlayState extends State<SaseScannerOverlay> with SingleTick
               Navigator.pop(context, barcodes.first.rawValue);
             }
           }),
-          ColorFiltered(colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.8), BlendMode.srcOut), child: Container(decoration: const BoxDecoration(color: Colors.transparent), child: Align(alignment: Alignment.center, child: Container(width: scanAreaWidth, height: scanAreaHeight, decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(16)))))),
+          ColorFiltered(colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.8), BlendMode.srcOut), child: Container(decoration: const BoxDecoration(color: Colors.transparent), child: Align(alignment: Alignment.center, child: Container(width: scanAreaWidth, height: scanAreaHeight, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)))))),
           Align(
             alignment: Alignment.center,
             child: SizedBox(

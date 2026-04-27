@@ -56,7 +56,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.black, letterSpacing: 1)),
+        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 1)),
         backgroundColor: isError ? dangerColor : primaryCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -79,7 +79,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         elevation: 0,
         centerTitle: true,
         leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text("SİSTEM AYARLARI", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+        title: const Text("SİSTEM AYARLARI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
       ),
       body: SafeArea(
         child: Center(
@@ -93,7 +93,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   }
 
                   if (!snapshot.hasData || !snapshot.data!.exists) {
-                    return const Center(child: Text("KARARGAH VERİSİ BULUNAMADI", style: TextStyle(color: Colors.white38)));
+                    return const Center(child: Text("KARARGAH VERİSİ BULUNAMADI", style: TextStyle(color: SiberTema.textMuted)));
                   }
 
                   // 🧠 VERİTABANINDAN CANLI VERİLERİ ÇEK
@@ -201,7 +201,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           child: Text(
                             'OTODNA KUANTUM AĞI V1.0.0\nANKARA MERKEZ KOMUTA',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 2, height: 1.5),
+                            style: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 2, height: 1.5),
                           ),
                         ),
                         const SizedBox(height: 24),
@@ -240,7 +240,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 Text(
                   isim.toUpperCase(),
-                  style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+                  style: const TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1.5),
                 ),
                 const SizedBox(height: 8),
                 Row(
@@ -258,7 +258,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           IconButton(
             onPressed: () => _uyariGoster("KİMLİK GÜNCELLEME PROTOKOLÜ YAKINDA."),
-            icon: const Icon(Icons.edit_square, color: Colors.white38),
+            icon: const Icon(Icons.edit_square, color: SiberTema.textMuted),
           )
         ],
       ),
@@ -275,7 +275,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(width: 12),
           Text(
             title,
-            style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+            style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5),
           ),
         ],
       ),
@@ -294,9 +294,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                Text(title, style: const TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)),
                 const SizedBox(height: 6),
-                Text(subtitle, style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 10, fontWeight: FontWeight.bold, height: 1.4)),
+                Text(subtitle, style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 10, fontWeight: FontWeight.bold, height: 1.4)),
               ],
             ),
           ),
@@ -325,16 +325,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
         decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
         child: Row(
           children: [
-            Icon(icon, color: Colors.white38, size: 24),
+            Icon(icon, color: SiberTema.textMuted, size: 24),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                  Text(title, style: const TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)),
                   if (subtitle != null) ...[
                     const SizedBox(height: 6),
-                    Text(subtitle, style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 10, fontWeight: FontWeight.bold, height: 1.4)),
+                    Text(subtitle, style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 10, fontWeight: FontWeight.bold, height: 1.4)),
                   ]
                 ],
               ),

@@ -177,7 +177,7 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context)),
           title: Text('Hizmet Ağı & Firmalar', style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 0.5, fontFamily: 'Avenir')),
           centerTitle: true,
@@ -198,15 +198,15 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white, 
                   borderRadius: BorderRadius.circular(16), 
-                  border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                  boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]
                 ),
                 child: TextField(
                   style: TextStyle(color: textColor, fontSize: 14, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
                   onChanged: (val) => setState(() => _aramaMetni = val),
                   decoration: InputDecoration(
                       hintText: 'Firma, Usta veya Uzmanlık Ara...',
-                      hintStyle: const TextStyle(color: Colors.black38, fontSize: 13, fontFamily: 'Avenir'),
+                      hintStyle: const TextStyle(color: Colors.white38, fontSize: 13, fontFamily: 'Avenir'),
                       prefixIcon: Icon(Icons.search, color: primaryTeal, size: 20),
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.symmetric(vertical: 16)
@@ -240,7 +240,7 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                         border: Border.all(color: isSelected ? primaryTeal : Colors.black.withValues(alpha: 0.05)),
                         boxShadow: [
                           if (isSelected) BoxShadow(color: primaryTeal.withValues(alpha: 0.2), blurRadius: 8, offset: const Offset(0, 4))
-                          else BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 5)
+                          else BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 5)
                         ]
                       ),
                       child: Row(
@@ -256,7 +256,7 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
               ),
             ),
             const SizedBox(height: 8),
-            Divider(color: Colors.black.withValues(alpha: 0.05)),
+            Divider(color: Colors.white.withValues(alpha: 0.05)),
 
             // =========================================================================
             // FİRMA LİSTESİ (Plaza Kalitesi Kartlar)
@@ -287,7 +287,7 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                           if(firma['kategori'] == 'Distribütör & Ana Bayi')
                              BoxShadow(color: primaryTeal.withValues(alpha: 0.05), blurRadius: 15, spreadRadius: 2)
                           else
-                             BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)
+                             BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)
                         ]
                       ),
                       child: Padding(
@@ -324,9 +324,9 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                                       const SizedBox(height: 6),
                                       Row(
                                         children: [
-                                          const Icon(Icons.location_on_outlined, color: Colors.black38, size: 14),
+                                          const Icon(Icons.location_on_outlined, color: Colors.white38, size: 14),
                                           const SizedBox(width: 4),
-                                          Text("${firma['ilce']} / ${firma['il']} (${firma['mesafe']})", style: const TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                          Text("${firma['ilce']} / ${firma['il']} (${firma['mesafe']})", style: const TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                                         ],
                                       ),
                                     ],
@@ -347,7 +347,7 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                                     children: (firma['uzmanlik'] as List<String>).map((uzmanlik) {
                                       return Container(
                                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                        decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(6)),
+                                        decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(6)),
                                         child: Text(uzmanlik, style: TextStyle(color: textColor, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                                       );
                                     }).toList(),
@@ -376,7 +376,7 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                                     borderRadius: BorderRadius.circular(12),
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                                      decoration: BoxDecoration(border: Border.all(color: Colors.black.withValues(alpha: 0.1)), borderRadius: BorderRadius.circular(12)),
+                                      decoration: BoxDecoration(border: Border.all(color: Colors.white.withValues(alpha: 0.1)), borderRadius: BorderRadius.circular(12)),
                                       child: Row(
                                         children: [
                                           Icon(Icons.directions, size: 16, color: textColor),

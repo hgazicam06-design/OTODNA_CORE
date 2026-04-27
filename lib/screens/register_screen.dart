@@ -121,7 +121,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _siberMesajGoster(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.black, letterSpacing: 1)),
+        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 1)),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -133,7 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     Color activeAccent = _isKullanici ? SiberTema.kuantumCyan : SiberTema.bayiAkis;
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -152,7 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                   Text("AĞA KATIL", style: TextStyle(color: activeAccent, fontSize: 36, fontWeight: FontWeight.w900, letterSpacing: 2)),
                   const SizedBox(height: 8),
-                  const Text("OtoDNA Kuantum Ekosistemine entegre olun.", style: TextStyle(color: Colors.white24, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                  const Text("OtoDNA Kuantum Ekosistemine entegre olun.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
                   const SizedBox(height: 40),
 
                   // 1. KULLANICI / FİRMA SEÇİM ZIRHI
@@ -238,11 +238,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         controller: controller,
         obscureText: isPassword,
         keyboardType: isPhone ? TextInputType.phone : (isEmail ? TextInputType.emailAddress : TextInputType.text),
-        style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1),
+        style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1),
         decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: Colors.white24, size: 20),
+          prefixIcon: Icon(icon, color: SiberTema.textMuted, size: 20),
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.white12, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
+          hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
           focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: accent, width: 1.5)),
@@ -264,7 +264,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             onChanged: (value) => setState(() => _garantiSozlesmesiKabul = value!),
           ),
           const Expanded(
-            child: Text("OtoDNA Ulusal Çapraz Garanti Sözleşmesi şartlarını ve %12 Finansal Kesinti Protokolünü kabul ediyorum.", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, height: 1.5)),
+            child: Text("OtoDNA Ulusal Çapraz Garanti Sözleşmesi şartlarını ve %12 Finansal Kesinti Protokolünü kabul ediyorum.", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, height: 1.5)),
           ),
         ],
       ),

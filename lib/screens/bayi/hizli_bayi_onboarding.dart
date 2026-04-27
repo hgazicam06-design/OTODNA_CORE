@@ -67,7 +67,7 @@ class SiberHizliBayiOnboarding extends StatelessWidget {
     final veri = _sektorelVeriGetir(sektorKodu);
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
@@ -96,7 +96,7 @@ class SiberHizliBayiOnboarding extends StatelessWidget {
                   veri["baslik"]!,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: SiberTema.textMain,
                     fontWeight: FontWeight.w900,
                     fontSize: 22,
                     letterSpacing: 2,
@@ -110,13 +110,13 @@ class SiberHizliBayiOnboarding extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: SiberTema.matGrey.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.white12),
+                    border: Border.all(color: SiberTema.textMuted),
                   ),
                   child: Text(
                     veri["mesaj"]!,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      color: Colors.white70,
+                      color: SiberTema.textMuted,
                       fontSize: 13,
                       height: 1.6,
                       letterSpacing: 0.5,

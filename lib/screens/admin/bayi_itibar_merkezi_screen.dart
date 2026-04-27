@@ -125,14 +125,14 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("İTİBAR KOMUTA MERKEZİ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 3)),
+          title: const Text("İTİBAR KOMUTA MERKEZİ", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 3)),
           centerTitle: true,
         ),
         body: StreamBuilder<QuerySnapshot>(
@@ -144,7 +144,7 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
 
             final bayiler = snapshot.data?.docs ?? [];
             if (bayiler.isEmpty) {
-              return Center(child: Text("HİÇBİR BAYİ VERİSİ BULUNAMADI", style: TextStyle(color: Colors.white.withOpacity(0.2), letterSpacing: 2)));
+              return Center(child: Text("HİÇBİR BAYİ VERİSİ BULUNAMADI", style: TextStyle(color: SiberTema.textMain.withOpacity(0.2), letterSpacing: 2)));
             }
 
             return ListView.builder(
@@ -176,7 +176,7 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
                                 children: [
                                   Text(firma.toUpperCase(), style: TextStyle(color: isKara ? SiberTema.kanKirmizi : Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
                                   const SizedBox(height: 4),
-                                  Text("BAYİ ID: ${doc.id.substring(0, 8)}...", style: TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.bold)),
+                                  Text("BAYİ ID: ${doc.id.substring(0, 8)}...", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
                                 ],
                               ),
                             ),
@@ -185,7 +185,7 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
                         ),
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 20),
-                          child: Divider(color: Colors.white10, height: 1),
+                          child: Divider(color: SiberTema.textMuted, height: 1),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -193,7 +193,7 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
                             _build3DButon(Icons.exposure_minus_1, SiberTema.kanKirmizi, () => _itibarGuncelle(doc.id, firma, puan, false)),
                             Column(
                               children: [
-                                Text("GÜNCEL SKOR", style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                                Text("GÜNCEL SKOR", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 2)),
                                 const SizedBox(height: 6),
                                 Text(puan.toStringAsFixed(1), style: TextStyle(color: isKara ? SiberTema.kanKirmizi : SiberTema.kuantumCyan, fontSize: 28, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                               ],

@@ -177,7 +177,7 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
 
   void _siberUyari(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 12, fontFamily: 'Avenir')),
+      content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12, fontFamily: 'Avenir')),
       backgroundColor: isError ? SiberTema.kritikRed : SiberTema.kuantumCyan,
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -201,14 +201,14 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: Text("MEGA REVİZYON: ${widget.plaka}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 16, fontFamily: 'Avenir')),
+          title: Text("MEGA REVİZYON: ${widget.plaka}", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 16, fontFamily: 'Avenir')),
           actions: [
             IconButton(
               icon: Icon(Icons.document_scanner, color: _isOcrScanning ? SiberTema.kritikRed : SiberTema.altinSari),
@@ -324,13 +324,13 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
           ),
           child: Center(
             child: _isProcessing
-                ? const CircularProgressIndicator(color: Colors.black)
+                ? const CircularProgressIndicator(color: Colors.white)
                 : const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.fingerprint, color: Colors.black, size: 30),
+                Icon(Icons.fingerprint, color: Colors.white, size: 30),
                 SizedBox(width: 15),
-                Text("SİSTEME MÜHÜRLE", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 18, letterSpacing: 2, fontFamily: 'Avenir')),
+                Text("SİSTEME MÜHÜRLE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18, letterSpacing: 2, fontFamily: 'Avenir')),
               ],
             ),
           ),

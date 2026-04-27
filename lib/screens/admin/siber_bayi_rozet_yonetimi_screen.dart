@@ -24,11 +24,11 @@ class SiberBayiRozetYonetimiScreen extends StatelessWidget {
             return AlertDialog(
               backgroundColor: SiberTema.oledBlack,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5))),
-              title: const Text("BAYİ RÜTBESİNİ GÜNCELLE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14)),
+              title: const Text("BAYİ RÜTBESİNİ GÜNCELLE", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 14)),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text("$bayiAd isimli bayinin yıldızını seçin. Rozet otonom olarak atanacaktır.", style: const TextStyle(color: Colors.white54, fontSize: 12)),
+                  Text("$bayiAd isimli bayinin yıldızını seçin. Rozet otonom olarak atanacaktır.", style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
                   const SizedBox(height: 24),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -48,7 +48,7 @@ class SiberBayiRozetYonetimiScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   if (secilenYildiz == 5) const Text("🌟 ALTIN BAYİ", style: TextStyle(color: SiberTema.altinSari, fontWeight: FontWeight.bold)),
-                  if (secilenYildiz == 4) const Text("🛡️ GÜMÜŞ BAYİ", style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
+                  if (secilenYildiz == 4) const Text("🛡️ GÜMÜŞ BAYİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)),
                   if (secilenYildiz == 3) const Text("🛡️ BRONZ BAYİ", style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.bold)),
                   if (secilenYildiz <= 1) const Text("🚨 BLACKLIST (SİSTEMDEN İZOLE)", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)),
                 ],
@@ -56,7 +56,7 @@ class SiberBayiRozetYonetimiScreen extends StatelessWidget {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text("İPTAL", style: TextStyle(color: Colors.white54)),
+                  child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted)),
                 ),
                 ElevatedButton(
                   style: SiberTema.kuantumButonStili(),
@@ -84,7 +84,7 @@ class SiberBayiRozetYonetimiScreen extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Güncelleme başarısız!"), backgroundColor: SiberTema.kanKirmizi));
                     }
                   },
-                  child: const Text("MÜHÜRLE", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900)),
+                  child: const Text("MÜHÜRLE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900)),
                 )
               ],
             );
@@ -97,7 +97,7 @@ class SiberBayiRozetYonetimiScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -112,7 +112,7 @@ class SiberBayiRozetYonetimiScreen extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Center(child: Text("Sistemde kayıtlı bayi bulunmuyor.", style: TextStyle(color: Colors.white54)));
+              return const Center(child: Text("Sistemde kayıtlı bayi bulunmuyor.", style: TextStyle(color: SiberTema.textMuted)));
             }
 
             return ListView.builder(
@@ -140,11 +140,11 @@ class SiberBayiRozetYonetimiScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(bayiAd.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900)),
+                            Text(bayiAd.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900)),
                             const SizedBox(height: 4),
                             Row(
                               children: [
-                                Text("$rozet Bayi", style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold)),
+                                Text("$rozet Bayi", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
                                 const SizedBox(width: 8),
                                 Row(
                                   children: List.generate(5, (starIdx) {

@@ -61,7 +61,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.black)),
+        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white)),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -71,7 +71,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -82,7 +82,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
               icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
               onPressed: () => Navigator.pop(context)
           ),
-          title: const Text("SİBER KATALOG", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 2)),
+          title: const Text("SİBER KATALOG", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 2)),
         ),
         body: Center(
           child: ConstrainedBox(
@@ -130,9 +130,9 @@ class _CatalogScreenState extends State<CatalogScreen> {
         children: [
           Icon(Icons.radar, color: SiberTema.kuantumCyan.withOpacity(0.1), size: 80),
           const SizedBox(height: 24),
-          const Text("VİTRİN BOŞ", style: TextStyle(color: Colors.white24, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 4)),
+          const Text("VİTRİN BOŞ", style: TextStyle(color: SiberTema.textMuted, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 4)),
           const SizedBox(height: 8),
-          const Text("Sisteme henüz donanım eklenmemiş.", style: TextStyle(color: Colors.white10, fontSize: 11)),
+          const Text("Sisteme henüz donanım eklenmemiş.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
         ],
       ),
     );
@@ -157,7 +157,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
             flex: 4,
             child: Container(
               decoration: const BoxDecoration(
-                color: Colors.black26,
+                color: Colors.white26,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: Stack(
@@ -190,13 +190,13 @@ class _CatalogScreenState extends State<CatalogScreen> {
                     children: [
                       Text(marka.toUpperCase(), style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                       const SizedBox(height: 4),
-                      Text(ad.toUpperCase(), maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.bold, height: 1.3)),
+                      Text(ad.toUpperCase(), maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, height: 1.3)),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("₺${fiyat.toStringAsFixed(2)}", style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
+                      Text("₺${fiyat.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
                       const SizedBox(height: 8),
                       SizedBox(
                         width: double.infinity,
@@ -205,7 +205,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                           onPressed: _isProcessing ? null : () => _sepeteEkle(data, urunId),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: SiberTema.kuantumCyan,
-                            foregroundColor: Colors.black,
+                            foregroundColor: Colors.white,
                             elevation: 0,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                           ),

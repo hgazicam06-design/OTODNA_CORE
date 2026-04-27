@@ -19,7 +19,7 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
     if (mevcutDurum) {
       // Bağlantıyı Kes
       onUpdate(false);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$servisAdi bağlantısı ağdan koparıldı.", style: const TextStyle(color: Colors.white)), backgroundColor: Colors.redAccent));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$servisAdi bağlantısı ağdan koparıldı.", style: const TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.redAccent));
       return;
     }
 
@@ -36,9 +36,9 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
             const SizedBox(height: 16),
             const CircularProgressIndicator(color: Color(0xFF00FFC2)),
             const SizedBox(height: 24),
-            Text("$servisAdi Enterprise API'si Bekleniyor...", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
+            Text("$servisAdi Enterprise API'si Bekleniyor...", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13)),
             const SizedBox(height: 8),
-            const Text("Gemini OAuth 2.0 Anahtarı Doğrulanıyor", style: TextStyle(color: Colors.white38, fontSize: 11)),
+            const Text("Gemini OAuth 2.0 Anahtarı Doğrulanıyor", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
             const SizedBox(height: 16),
           ],
         ),
@@ -49,7 +49,7 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pop(context); // Yükleniyor ekranını kapat
       onUpdate(true); // Switch'i aktif et
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$servisAdi Kuantum Ağına Başarıyla Mühürlendi! 🦅", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: const Color(0xFF00FFC2)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$servisAdi Kuantum Ağına Başarıyla Mühürlendi! 🦅", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: const Color(0xFF00FFC2)));
     });
   }
 
@@ -154,7 +154,7 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
                 children: [
                   Icon(Icons.gpp_good_outlined, color: Colors.white.withOpacity(0.2), size: 32),
                   const SizedBox(height: 12),
-                  Text("Gemini AI API altyapısı ile korunmaktadır.", style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 11)),
+                  Text("Gemini AI API altyapısı ile korunmaktadır.", style: TextStyle(color: SiberTema.textMain.withOpacity(0.3), fontSize: 11)),
                 ],
               ),
             ),
@@ -203,7 +203,7 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
             ],
           ),
           const SizedBox(height: 12),
-          Text(aciklama, style: const TextStyle(color: Colors.white54, fontSize: 12, height: 1.5)),
+          Text(aciklama, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
         ],
       ),
     );

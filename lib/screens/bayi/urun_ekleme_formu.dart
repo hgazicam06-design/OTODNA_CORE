@@ -126,7 +126,7 @@ class _SiberUrunEklemeFormuState extends State<SiberUrunEklemeFormu> {
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold)),
+            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
@@ -146,7 +146,7 @@ class _SiberUrunEklemeFormuState extends State<SiberUrunEklemeFormu> {
   Widget build(BuildContext context) {
     // 🛡️ Bütün ekranı Kuantum Zırhına alıyoruz!
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent, // Arka plan kalkan tarafından siyah siber boyanacak
         appBar: AppBar(
@@ -168,7 +168,7 @@ class _SiberUrunEklemeFormuState extends State<SiberUrunEklemeFormu> {
                   children: [
                     const Icon(Icons.storefront, color: SiberTema.kuantumCyan, size: 28),
                     const SizedBox(width: 12),
-                    Expanded(child: Text("Yüklediğiniz ürünler OtoDNA Global Market vitrininde Karargahın güvencesiyle [${widget.bayiAdi}] bayrağı altında satılacaktır.", style: const TextStyle(color: Colors.white70, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold))),
+                    Expanded(child: Text("Yüklediğiniz ürünler OtoDNA Global Market vitrininde Karargahın güvencesiyle [${widget.bayiAdi}] bayrağı altında satılacaktır.", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold))),
                   ],
                 ),
               ),
@@ -193,7 +193,7 @@ class _SiberUrunEklemeFormuState extends State<SiberUrunEklemeFormu> {
                 decoration: BoxDecoration(
                     color: SiberTema.matGrey.withOpacity(0.8),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.white24, width: 1.5)
+                    border: Border.all(color: SiberTema.textMuted, width: 1.5)
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
@@ -202,7 +202,7 @@ class _SiberUrunEklemeFormuState extends State<SiberUrunEklemeFormu> {
                     icon: const Icon(Icons.keyboard_arrow_down, color: SiberTema.kuantumCyan),
                     hint: const Text("Kategori Seçin", style: TextStyle(color: Colors.white30, fontSize: 13, fontWeight: FontWeight.bold)),
                     value: _secilenKategori,
-                    style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900),
+                    style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900),
                     items: ["Mekanik & Motor", "Şase & Alt Takım", "Elektrik & Yazılım", "Kaporta & Estetik", "Sarf Malzeme"].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
                     onChanged: (v) => setState(() => _secilenKategori = v),
                   ),
@@ -241,7 +241,7 @@ class _SiberUrunEklemeFormuState extends State<SiberUrunEklemeFormu> {
   Widget _buildSiberBaslik(String baslik) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
+      child: Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
     );
   }
 
@@ -250,7 +250,7 @@ class _SiberUrunEklemeFormuState extends State<SiberUrunEklemeFormu> {
       decoration: BoxDecoration(
         color: SiberTema.matGrey.withOpacity(0.8),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white24, width: 1.5),
+        border: Border.all(color: SiberTema.textMuted, width: 1.5),
       ),
       child: TextFormField(
         controller: controller,
@@ -259,11 +259,11 @@ class _SiberUrunEklemeFormuState extends State<SiberUrunEklemeFormu> {
           if (value == null || value.trim().isEmpty) return '*';
           return null;
         } : null,
-        style: const TextStyle(color: Colors.white, fontSize: 14, letterSpacing: 1, fontWeight: FontWeight.w900),
+        style: const TextStyle(color: SiberTema.textMain, fontSize: 14, letterSpacing: 1, fontWeight: FontWeight.w900),
         decoration: InputDecoration(
           prefixIcon: Icon(ikon, color: SiberTema.kuantumCyan, size: 20),
           labelText: baslik,
-          labelStyle: const TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold),
+          labelStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold),
           hintText: ipucu,
           hintStyle: const TextStyle(color: Colors.white30, fontSize: 12),
           border: InputBorder.none,

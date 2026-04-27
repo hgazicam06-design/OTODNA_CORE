@@ -70,7 +70,7 @@ class _TwoFactorAuthScreenState extends State<TwoFactorAuthScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
@@ -103,13 +103,13 @@ class _TwoFactorAuthScreenState extends State<TwoFactorAuthScreen> {
                     const Text(
                         "İKİ AŞAMALI DOĞRULAMA",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir')
+                        style: TextStyle(color: SiberTema.textMain, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir')
                     ),
                     const SizedBox(height: 16),
                     Text(
                         "Ankara Merkez Güvenlik Protokolü gereği lütfen size SMS ile iletilen 4 haneli Kuantum anahtarını giriniz.",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontWeight: FontWeight.bold, height: 1.5, letterSpacing: 1, fontFamily: 'Avenir')
+                        style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 12, fontWeight: FontWeight.bold, height: 1.5, letterSpacing: 1, fontFamily: 'Avenir')
                     ),
                     const SizedBox(height: 48),
 
@@ -146,7 +146,7 @@ class _TwoFactorAuthScreenState extends State<TwoFactorAuthScreen> {
                       child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: SiberTema.altinSari,
-                          foregroundColor: Colors.black,
+                          foregroundColor: Colors.white,
                           elevation: 0,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                           disabledBackgroundColor: SiberTema.altinSari.withOpacity(0.2),

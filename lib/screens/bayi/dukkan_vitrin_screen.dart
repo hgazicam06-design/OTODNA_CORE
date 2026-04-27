@@ -16,13 +16,13 @@ class DukkanVitrinScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: const Text("FİRMA VİTRİNİ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
+          title: const Text("FİRMA VİTRİNİ", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
           centerTitle: true,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18), onPressed: () => Navigator.pop(context)),
         ),
@@ -161,7 +161,7 @@ class DukkanVitrinScreen extends StatelessWidget {
                       });
                       
                       batch.commit();
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("S.O.S Sinyali Fırlatıldı! Ekip yola çıkıyor!", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kanKirmizi));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("S.O.S Sinyali Fırlatıldı! Ekip yola çıkıyor!", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kanKirmizi));
                     }),
                   ] else ...[
                     // KARA LİSTE FİRMASINDA BUTONLAR PASİFTİR VEYA FARKLI ÇALIŞIR
@@ -171,12 +171,12 @@ class DukkanVitrinScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.02),
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.white10)
+                          border: Border.all(color: SiberTema.textMuted)
                       ),
                       child: const Text(
                         "SİBER KİLİT: Bu firma Karargah kurallarını ihlal ettiği için sistem üzerinden yeni işlem veya randevu kabul edemez. Sadece geçmiş kayıtları görüntülenebilir.",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, height: 1.5, fontFamily: 'Avenir'),
+                        style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, height: 1.5, fontFamily: 'Avenir'),
                       ),
                     )
                   ]
@@ -208,7 +208,7 @@ class DukkanVitrinScreen extends StatelessWidget {
           Text(
             "BU FİRMA OTODNA STANDARTLARINA UYMAYAN İŞLEMLER SEBEBİYLE KARA LİSTEYE ALINMIŞTIR. GÜVENLİĞİNİZ İÇİN TERCİH ETMENİZ ÖNERİLMEZ.",
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.bold, height: 1.5, fontFamily: 'Avenir'),
+            style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, height: 1.5, fontFamily: 'Avenir'),
           ),
         ],
       ),

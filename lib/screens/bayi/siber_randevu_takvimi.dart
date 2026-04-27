@@ -103,7 +103,7 @@ class _SiberRandevuTakvimiState extends State<SiberRandevuTakvimi> {
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir')),
+            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -115,7 +115,7 @@ class _SiberRandevuTakvimiState extends State<SiberRandevuTakvimi> {
     String tarihFormatli = DateFormat('yyyy-MM-dd').format(_seciliTarih);
 
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -183,7 +183,7 @@ class _SiberRandevuTakvimiState extends State<SiberRandevuTakvimi> {
                       // İşlem sürerken arayüzü kilitleyen Kuantum Kalkanı
                       if (_isProcessing)
                         Container(
-                          color: Colors.black.withOpacity(0.5),
+                          color: Colors.white.withOpacity(0.5),
                           child: const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)),
                         )
                     ],

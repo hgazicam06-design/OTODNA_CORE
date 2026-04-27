@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:go_router/go_router.dart';
 
 // 🔥 SİBER KÖPRÜLER
 import '../../core/siber_tema.dart';
@@ -17,11 +18,13 @@ class ServiceDetailScreen extends StatefulWidget {
 class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // Siber Renk Paleti (Merkezi temadan beslenir)
-  final Color _primaryCyan = SiberTema.kuantumCyan;
-  final Color _cyberBlack = SiberTema.oledBlack;
-  final Color _alertRed = SiberTema.kanKirmizi;
-  final Color _glassCard = SiberTema.matGrey;
+  // 🏢 FİLDİŞİ SEDEF PALET
+  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color surfaceColor = Colors.white;
+  final Color primaryTeal = Colors.teal.shade700;
+  final Color textMain = const Color(0xFF1E293B);
+  final Color textMuted = const Color(0xFF64748B);
+  final Color dangerColor = SiberTema.kanKirmizi;
 
   bool _isLoading = true;
   Map<String, dynamic>? _raporData;
@@ -53,8 +56,9 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     if (mounted) {
       setState(() => _isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-        backgroundColor: _alertRed,
+        content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+        backgroundColor: dangerColor,
+        behavior: SnackBarBehavior.floating,
       ));
     }
   }
@@ -62,24 +66,24 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: bgColor,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
-            onPressed: () => Navigator.pop(context),
+            icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20),
+            onPressed: () => context.pop(),
           ),
           title: Text(
             "DNA RAPORU: ${_raporData?['plaka'] ?? 'TARANIYOR...'}",
-            style: TextStyle(color: _primaryCyan, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2, fontFamily: 'Avenir'),
+            style: TextStyle(color: textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2, fontFamily: 'Avenir'),
           ),
           centerTitle: true,
         ),
         body: _isLoading
-            ? Center(child: CircularProgressIndicator(color: _primaryCyan))
+            ? Center(child: CircularProgressIndicator(color: primaryTeal))
             : SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -87,9 +91,9 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
             children: [
               _buildAracKarti(),
               const SizedBox(height: 32),
-              const Text(
+              Text(
                 "📋 EKSPERTİZ VE KONTROL NOKTALARI",
-                style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1.5, fontFamily: 'Avenir'),
+                style: TextStyle(color: textMuted, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1.5, fontFamily: 'Avenir'),
               ),
               const SizedBox(height: 16),
               _buildKontrolListesi(),
@@ -107,10 +111,10 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: _glassCard.withOpacity(0.3),
+        color: surfaceColor,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: _primaryCyan.withOpacity(0.2)),
-        boxShadow: [BoxShadow(color: _primaryCyan.withOpacity(0.05), blurRadius: 30)],
+        border: Border.all(color: primaryTeal.withOpacity(0.3)),
+        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 30)],
       ),
       child: Column(
         children: [
@@ -123,23 +127,23 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                   children: [
                     Text(
                       (_raporData?['marka_model'] ?? "Bilinmeyen Ünite").toUpperCase(),
-                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
+                      style: TextStyle(color: textMain, fontSize: 20, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
                     ),
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        Icon(Icons.speed, color: _primaryCyan, size: 14),
+                        Icon(Icons.speed, color: primaryTeal, size: 14),
                         const SizedBox(width: 6),
                         Text(
                           "${_raporData?['km'] ?? '0'} KM",
-                          style: const TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+                          style: TextStyle(color: textMuted, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                         ),
                         const SizedBox(width: 12),
-                        const Text("|", style: TextStyle(color: Colors.white24)),
+                        Text("|", style: TextStyle(color: textMuted.withOpacity(0.5))),
                         const SizedBox(width: 12),
                         Text(
                           "YIL: ${_raporData?['yil'] ?? '-'}",
-                          style: const TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+                          style: TextStyle(color: textMuted, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                         ),
                       ],
                     ),
@@ -149,27 +153,27 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: _primaryCyan,
+                  color: primaryTeal.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
-                  boxShadow: [BoxShadow(color: _primaryCyan.withOpacity(0.3), blurRadius: 10)],
+                  border: Border.all(color: primaryTeal.withOpacity(0.3)),
                 ),
                 child: Text(
                   _raporData?['plaka'] ?? "-",
-                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 16, fontFamily: 'Avenir'),
+                  style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, fontSize: 16, fontFamily: 'Avenir'),
                 ),
               )
             ],
           ),
           const SizedBox(height: 20),
-          const Divider(color: Colors.white12),
+          Divider(color: Colors.white.withOpacity(0.05)),
           const SizedBox(height: 10),
           Row(
             children: [
-              const Icon(Icons.verified_user, color: Colors.blueAccent, size: 16),
+              Icon(Icons.verified_user, color: Colors.blue.shade700, size: 16),
               const SizedBox(width: 8),
               Text(
                 "RAPOR TARİHİ: ${_raporData?['tarih'] ?? 'Belirtilmedi'}",
-                style: const TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.bold),
+                style: TextStyle(color: textMuted, fontSize: 11, fontWeight: FontWeight.bold),
               ),
             ],
           )
@@ -182,7 +186,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   Widget _buildKontrolListesi() {
     List<dynamic> kontroller = _raporData?['kontroller'] ?? [];
     if (kontroller.isEmpty) {
-      return const Center(child: Text("Kontrol verisi bulunamadı.", style: TextStyle(color: Colors.white24)));
+      return Center(child: Text("Kontrol verisi bulunamadı.", style: TextStyle(color: textMuted.withOpacity(0.5))));
     }
 
     return ListView.builder(
@@ -197,16 +201,24 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: _glassCard.withOpacity(0.1),
+            color: surfaceColor,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: isOk ? _primaryCyan.withOpacity(0.1) : _alertRed.withOpacity(0.1)),
+            border: Border.all(color: isOk ? primaryTeal.withOpacity(0.3) : dangerColor.withOpacity(0.3)),
+            boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]
           ),
           child: Row(
             children: [
-              Icon(
-                isOk ? Icons.check_circle_outline : Icons.highlight_off,
-                color: isOk ? _primaryCyan : _alertRed,
-                size: 24,
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: isOk ? primaryTeal.withOpacity(0.1) : dangerColor.withOpacity(0.1),
+                  shape: BoxShape.circle
+                ),
+                child: Icon(
+                  isOk ? Icons.check_circle_outline : Icons.highlight_off,
+                  color: isOk ? primaryTeal : dangerColor,
+                  size: 20,
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -215,12 +227,12 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                   children: [
                     Text(
                       (item['parca'] ?? "Bilinmeyen Parça").toUpperCase(),
-                      style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
+                      style: TextStyle(color: textMain, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
                     ),
                     if (item['not'] != null)
                       Text(
                         item['not'],
-                        style: const TextStyle(color: Colors.white38, fontSize: 12),
+                        style: TextStyle(color: textMuted, fontSize: 12),
                       ),
                   ],
                 ),
@@ -228,9 +240,9 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
               if (!isOk)
                 TextButton(
                   onPressed: () => _yedekParcaBul(item['parca']),
-                  child: const Text(
+                  child: Text(
                     "MARKET'TE BUL",
-                    style: TextStyle(color: Colors.orangeAccent, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
+                    style: TextStyle(color: Colors.amber.shade700, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
                   ),
                 )
             ],
@@ -248,21 +260,26 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
           width: double.infinity,
           height: 60,
           child: ElevatedButton.icon(
-            style: SiberTema.kuantumButonStili(),
-            icon: const Icon(Icons.picture_as_pdf, color: Colors.black),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: primaryTeal,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              elevation: 0
+            ),
+            icon: const Icon(Icons.picture_as_pdf, color: SiberTema.kuantumCyan, size: 20),
             label: const Text(
               "SİBER MÜHÜRLÜ PDF OLUŞTUR",
-              style: TextStyle(fontWeight: FontWeight.w900, color: Colors.black, letterSpacing: 1.5, fontFamily: 'Avenir'),
+              style: TextStyle(fontWeight: FontWeight.w900, color: SiberTema.textMain, letterSpacing: 1.5, fontFamily: 'Avenir'),
             ),
             onPressed: () => print("PDF Motoru Ateşlendi..."),
           ),
         ),
         const SizedBox(height: 20),
-        const Center(
+        Center(
           child: Text(
             "Bu rapor OtoDNA Kuantum Ağı tarafından siber mühürle doğrulanmıştır.",
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5),
+            style: TextStyle(color: textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5),
           ),
         ),
       ],
@@ -272,8 +289,8 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   void _yedekParcaBul(String parcaAdi) {
     // Gelecek operasyon: Murat Plaza veya Genel Market filtresi
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text("$parcaAdi için sisteme %12 kâr payı entegre ediliyor..."),
-      backgroundColor: Colors.orangeAccent,
+      content: Text("$parcaAdi için sisteme %12 kâr payı entegre ediliyor...", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
+      backgroundColor: Colors.amber.shade700,
     ));
   }
 }

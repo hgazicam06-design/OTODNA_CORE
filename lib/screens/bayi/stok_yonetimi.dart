@@ -39,7 +39,7 @@ class _SiberStokPaneliState extends State<SiberStokPaneli> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent, // Kalkan aydınlatması arkadan vurur
         appBar: AppBar(
@@ -80,14 +80,14 @@ class _SiberStokPaneliState extends State<SiberStokPaneli> {
 
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Divider(color: Colors.white24, height: 1),
+                  child: Divider(color: SiberTema.textMuted, height: 1),
                 ),
 
                 // 📦 STOK LİSTESİ
                 if (stokListesi.isEmpty)
                   const Expanded(
                     child: Center(
-                      child: Text("SİBER ONAY: Envanterde ürün bulunmuyor.", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                      child: Text("SİBER ONAY: Envanterde ürün bulunmuyor.", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, letterSpacing: 1)),
                     ),
                   )
                 else
@@ -134,7 +134,7 @@ class _SiberStokPaneliState extends State<SiberStokPaneli> {
       decoration: BoxDecoration(
           color: SiberTema.matGrey.withOpacity(0.8),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.white12),
+          border: Border.all(color: SiberTema.textMuted),
           boxShadow: [
             BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 15, spreadRadius: 1)
           ]
@@ -153,7 +153,7 @@ class _SiberStokPaneliState extends State<SiberStokPaneli> {
   Widget _buildOzetKart(String baslik, String deger, Color renk) {
     return Column(
       children: [
-        Text(baslik, style: const TextStyle(fontSize: 9, color: Colors.white54, fontWeight: FontWeight.w900, letterSpacing: 1)),
+        Text(baslik, style: const TextStyle(fontSize: 9, color: SiberTema.textMuted, fontWeight: FontWeight.w900, letterSpacing: 1)),
         const SizedBox(height: 8),
         Text(deger, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: renk, letterSpacing: 1)),
       ],
@@ -182,7 +182,7 @@ class _SiberStokPaneliState extends State<SiberStokPaneli> {
           decoration: BoxDecoration(color: kartRengi.withOpacity(0.1), shape: BoxShape.circle),
           child: Icon(kritikDurum ? Icons.warning_amber_rounded : Icons.inventory_2_outlined, color: kartRengi),
         ),
-        title: Text(urun['urun_adi'] ?? "Bilinmeyen Ürün", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 0.5)),
+        title: Text(urun['urun_adi'] ?? "Bilinmeyen Ürün", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 0.5)),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -281,7 +281,7 @@ class _SiberStokTarayiciEkraniState extends State<_SiberStokTarayiciEkrani> {
       HapticFeedback.heavyImpact();
       developer.log("🚨 AĞ ÇÖKTÜ: Stok düşülemedi!", error: e);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString().replaceAll("Exception:", "").trim(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)), backgroundColor: SiberTema.kanKirmizi));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString().replaceAll("Exception:", "").trim(), style: const TextStyle(fontWeight: FontWeight.bold, color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi));
         setState(() => _islemSuruyor = false); // Hata varsa tekrar okumaya izin ver
       }
     }
@@ -290,7 +290,7 @@ class _SiberStokTarayiciEkraniState extends State<_SiberStokTarayiciEkrani> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(

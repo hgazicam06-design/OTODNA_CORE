@@ -86,7 +86,7 @@ class _RandevuOnayScreenState extends State<RandevuOnayScreen> {
   void _siberMesajGoster(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.black, letterSpacing: 1)),
+        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 1)),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -96,14 +96,14 @@ class _RandevuOnayScreenState extends State<RandevuOnayScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("SİBER SÖZLEŞME ONAYI", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          title: const Text("SİBER SÖZLEŞME ONAYI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
           centerTitle: true,
         ),
         body: Center(
@@ -129,7 +129,7 @@ class _RandevuOnayScreenState extends State<RandevuOnayScreen> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  const Text("AKILLI RANDEVU PROTOKOLÜ", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                  const Text("AKILLI RANDEVU PROTOKOLÜ", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2)),
                   const SizedBox(height: 8),
                   Text("İŞLEM: ${widget.islemTipi.toUpperCase()}", textAlign: TextAlign.center, style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                   const SizedBox(height: 48),
@@ -183,7 +183,7 @@ class _RandevuOnayScreenState extends State<RandevuOnayScreen> {
                     child: Text(
                         "OtoDNA Kuantum Ağı %12 Finansal Kesinti Protokolü devrededir.",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white12, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)
+                        style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)
                     ),
                   ),
                 ],
@@ -219,7 +219,7 @@ class _RandevuOnayScreenState extends State<RandevuOnayScreen> {
               children: [
                 Text(baslik, style: TextStyle(color: vurguRengi, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                 const SizedBox(height: 8),
-                Text(icerik, style: const TextStyle(color: Colors.white70, fontSize: 11, height: 1.5, fontWeight: FontWeight.bold)),
+                Text(icerik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.5, fontWeight: FontWeight.bold)),
               ],
             ),
           ),

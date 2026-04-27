@@ -148,7 +148,7 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -165,7 +165,7 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
               decoration: const BoxDecoration(
-                border: Border(bottom: BorderSide(color: Colors.white12, width: 1)),
+                border: Border(bottom: BorderSide(color: SiberTema.textMuted, width: 1)),
                 color: SiberTema.matGrey,
               ),
               child: Row(
@@ -199,14 +199,14 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.black,
+                color: Colors.white,
                 border: const Border(top: BorderSide(color: SiberTema.sariAltin, width: 2)),
               ),
               child: Column(
                 children: [
                   Row(
                     children: [
-                      const Expanded(child: Text("Ekspertiz Ücreti (TL):", style: TextStyle(color: Colors.white54, fontSize: 12))),
+                      const Expanded(child: Text("Ekspertiz Ücreti (TL):", style: TextStyle(color: SiberTema.textMuted, fontSize: 12))),
                       SizedBox(
                         width: 100,
                         child: TextField(
@@ -215,7 +215,7 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
                           textAlign: TextAlign.right,
                           style: const TextStyle(color: SiberTema.sariAltin, fontWeight: FontWeight.bold),
                           onChanged: (val) => setState(() {}),
-                          decoration: const InputDecoration(isDense: true, enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white24))),
+                          decoration: const InputDecoration(isDense: true, enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: SiberTema.textMuted))),
                         ),
                       )
                     ],
@@ -224,11 +224,11 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text("OtoDNA Payı (Gazi Kasası):", style: TextStyle(color: Colors.white54, fontSize: 12)),
+                      const Text("OtoDNA Payı (Gazi Kasası):", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
                       Text("-${_gaziPayi.toStringAsFixed(2)} ₺", style: const TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)),
                     ],
                   ),
-                  const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: Divider(color: Colors.white24, height: 1)),
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: Divider(color: SiberTema.textMuted, height: 1)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -250,11 +250,11 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: SiberTema.kuantumCyan,
-                    foregroundColor: Colors.black,
+                    foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
                   onPressed: _isSaving ? null : _ekspertiziKuantumAgaMuhurle,
-                  icon: _isSaving ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2)) : const Icon(Icons.fingerprint, size: 20),
+                  icon: _isSaving ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : const Icon(Icons.fingerprint, size: 20),
                   label: Text(_isSaving ? "MÜHÜRLENİYOR..." : "DNA RAPORUNU AĞA İŞLE", style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5, fontFamily: 'Avenir')),
                 ),
               ),
@@ -283,7 +283,7 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
       ),
       child: Row(
         children: [
-          Expanded(child: Text(parcaAdi, style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 13, fontWeight: FontWeight.w600))),
+          Expanded(child: Text(parcaAdi, style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontSize: 13, fontWeight: FontWeight.w600))),
 
           if (isArizali) ...[
             GestureDetector(

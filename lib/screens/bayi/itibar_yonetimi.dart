@@ -18,7 +18,7 @@ class SiberItibarPaneli extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent, // Zırhın arkası görünsün
         appBar: AppBar(
@@ -52,13 +52,13 @@ class SiberItibarPaneli extends StatelessWidget {
 
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Divider(color: Colors.white24, height: 1),
+                  child: Divider(color: SiberTema.textMuted, height: 1),
                 ),
 
                 if (yorumlar.isEmpty)
                   const Expanded(
                     child: Center(
-                      child: Text("SİBER ONAY: Henüz istihbarat verisi bulunmuyor.", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                      child: Text("SİBER ONAY: Henüz istihbarat verisi bulunmuyor.", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold, letterSpacing: 1)),
                     ),
                   )
                 else
@@ -102,9 +102,9 @@ class SiberItibarPaneli extends StatelessWidget {
         children: [
           Column(
             children: [
-              const Text("KARARGAH DNA SKORU", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
+              const Text("KARARGAH DNA SKORU", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
               const SizedBox(height: 8),
-              Text(puan.toStringAsFixed(1), style: const TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
+              Text(puan.toStringAsFixed(1), style: const TextStyle(color: SiberTema.textMain, fontSize: 40, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
             ],
           ),
           Column(
@@ -152,12 +152,12 @@ class SiberItibarPaneli extends StatelessWidget {
           ),
           child: Icon(isBlacklist ? Icons.warning_amber_rounded : Icons.person_outline, color: kartRengi),
         ),
-        title: Text(yorum['musteri_adi'] ?? "Gizli Ajan", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 13)),
+        title: Text(yorum['musteri_adi'] ?? "Gizli Ajan", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 13)),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 6),
-            Text(yorum['yorum_metni'] ?? "Detay yok.", style: const TextStyle(color: Colors.white70, fontSize: 12, height: 1.4, fontWeight: FontWeight.bold)),
+            Text(yorum['yorum_metni'] ?? "Detay yok.", style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.4, fontWeight: FontWeight.bold)),
           ],
         ),
         trailing: Row(

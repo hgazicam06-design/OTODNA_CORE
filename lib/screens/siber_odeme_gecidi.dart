@@ -113,7 +113,7 @@ class _SiberOdemeGecidiState extends State<SiberOdemeGecidi> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -149,7 +149,7 @@ class _SiberOdemeGecidiState extends State<SiberOdemeGecidi> {
                 children: [
                   const Icon(Icons.security, color: SiberTema.altinSari, size: 40),
                   const SizedBox(height: 12),
-                  Text(widget.islemBaslik, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5)),
+                  Text(widget.islemBaslik, textAlign: TextAlign.center, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5)),
                   const SizedBox(height: 8),
                   Text("₺${widget.tutar.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 28, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
                 ],
@@ -177,13 +177,13 @@ class _SiberOdemeGecidiState extends State<SiberOdemeGecidi> {
                   ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                   : ElevatedButton.icon(
                       style: SiberTema.kuantumButonStili(),
-                      icon: const Icon(Icons.lock_outline, color: Colors.black),
-                      label: const Text("GÜVENLİ ÖDEME YAP", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                      icon: const Icon(Icons.lock_outline, color: Colors.white),
+                      label: const Text("GÜVENLİ ÖDEME YAP", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                       onPressed: _odemeyiBaslat,
                     ),
             ),
             const SizedBox(height: 16),
-            const Center(child: Text("256-Bit Kuantum Şifreleme ile Korunmaktadır", style: TextStyle(color: Colors.white24, fontSize: 9, letterSpacing: 1))),
+            const Center(child: Text("256-Bit Kuantum Şifreleme ile Korunmaktadır", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, letterSpacing: 1))),
           ],
         ),
       ),
@@ -199,9 +199,9 @@ class _SiberOdemeGecidiState extends State<SiberOdemeGecidi> {
         children: [
           const Icon(Icons.phonelink_ring, color: SiberTema.kuantumCyan, size: 50),
           const SizedBox(height: 16),
-          const Text("3D SECURE ONAYI", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          const Text("3D SECURE ONAYI", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
           const SizedBox(height: 8),
-          const Text("Bankanız tarafından telefonunuza gönderilen 6 haneli doğrulama kodunu giriniz. (Test için '123456' yazabilirsiniz)", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 11)),
+          const Text("Bankanız tarafından telefonunuza gönderilen 6 haneli doğrulama kodunu giriniz. (Test için '123456' yazabilirsiniz)", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
           const SizedBox(height: 32),
           
           _buildSiberInput(controller: _smsKoduCtrl, hint: "6 Haneli SMS Kodu", isNumber: true, isRequired: true),
@@ -214,8 +214,8 @@ class _SiberOdemeGecidiState extends State<SiberOdemeGecidi> {
                 ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                 : ElevatedButton.icon(
                     style: SiberTema.kuantumButonStili(),
-                    icon: const Icon(Icons.check_circle_outline, color: Colors.black),
-                    label: const Text("ONAYLA VE MÜHÜRLE", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                    icon: const Icon(Icons.check_circle_outline, color: Colors.white),
+                    label: const Text("ONAYLA VE MÜHÜRLE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                     onPressed: _smsOnaylaVeMuhurle,
                   ),
           ),
@@ -227,11 +227,11 @@ class _SiberOdemeGecidiState extends State<SiberOdemeGecidi> {
   Widget _buildSiberInput({required TextEditingController controller, required String hint, bool isNumber = false, bool isRequired = false}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.5), borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.white12)),
+      decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.5), borderRadius: BorderRadius.circular(8), border: Border.all(color: SiberTema.textMuted)),
       child: TextFormField(
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-        style: const TextStyle(color: Colors.white, fontSize: 14, fontFamily: 'monospace', letterSpacing: 1.5),
+        style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontFamily: 'monospace', letterSpacing: 1.5),
         textAlign: TextAlign.center,
         validator: isRequired ? (v) => v == null || v.isEmpty ? "Zorunlu Alan" : null : null,
         decoration: InputDecoration(hintText: hint, hintStyle: const TextStyle(color: Colors.white30, fontSize: 11, fontFamily: 'Avenir', letterSpacing: 1), border: InputBorder.none, contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16)),
@@ -241,6 +241,6 @@ class _SiberOdemeGecidiState extends State<SiberOdemeGecidi> {
 
   void _siberUyariGoster(String baslik, String mesaj, Color renk) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: SiberTema.matGrey, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)), content: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')), const SizedBox(height: 4), Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir'))])));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: SiberTema.matGrey, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)), content: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')), const SizedBox(height: 4), Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontFamily: 'Avenir'))])));
   }
 }

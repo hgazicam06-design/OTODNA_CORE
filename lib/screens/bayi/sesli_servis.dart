@@ -162,7 +162,7 @@ class _SiberSesliOnayMerkeziState extends State<SiberSesliOnayMerkezi> {
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
             const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold)),
+            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
@@ -172,7 +172,7 @@ class _SiberSesliOnayMerkeziState extends State<SiberSesliOnayMerkezi> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent, // Kalkan aydınlatması arkadan gelsin
         appBar: AppBar(
@@ -214,11 +214,11 @@ class _SiberSesliOnayMerkeziState extends State<SiberSesliOnayMerkezi> {
                     decoration: BoxDecoration(
                       color: SiberTema.matGrey.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.white12),
+                      border: Border.all(color: SiberTema.textMuted),
                     ),
                     child: Column(
                       children: [
-                        const Text("ALINAN SİBER KOMUT:", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
+                        const Text("ALINAN SİBER KOMUT:", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
                         const SizedBox(height: 12),
                         Text(
                             _ustaYaniti,

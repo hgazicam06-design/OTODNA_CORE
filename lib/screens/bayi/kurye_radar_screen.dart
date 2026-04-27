@@ -42,7 +42,7 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -137,7 +137,7 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           _buildRadarBilgi("KALAN SÜRE", "$kalanSureDk DK", Icons.timer_outlined),
-                          Container(width: 2, height: 40, color: Colors.white12),
+                          Container(width: 2, height: 40, color: SiberTema.textMuted),
                           _buildRadarBilgi("MESAFE", "${kalanMesafeKm.toStringAsFixed(1)} KM", Icons.route_outlined),
                         ],
                       ),
@@ -168,7 +168,7 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(kuryeAdi, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1)),
+                                  Text(kuryeAdi, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1)),
                                   const SizedBox(height: 4),
                                   Text("PLAKA: $plaka", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
                                 ],
@@ -187,14 +187,14 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
                           ],
                         ),
                         const SizedBox(height: 20),
-                        const Divider(color: Colors.white12),
+                        const Divider(color: SiberTema.textMuted),
                         const SizedBox(height: 16),
 
                         // DURUM ÇUBUĞU
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.info_outline, color: Colors.white54, size: 16),
+                            const Icon(Icons.info_outline, color: SiberTema.textMuted, size: 16),
                             const SizedBox(width: 8),
                             Text(
                               teslimEdildi ? "OPERASYON TAMAMLANDI" : "HEDEF BÖLGEYE İLERLİYOR...",
@@ -219,11 +219,11 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
   Widget _buildRadarBilgi(String baslik, String deger, IconData ikon) {
     return Column(
       children: [
-        Icon(ikon, color: Colors.white38, size: 24),
+        Icon(ikon, color: SiberTema.textMuted, size: 24),
         const SizedBox(height: 8),
         Text(deger, style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 1)),
         const SizedBox(height: 4),
-        Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2)),
+        Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2)),
       ],
     );
   }
@@ -237,7 +237,7 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
           const SizedBox(height: 16),
           const Text("SİNYAL KAYBI", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2)),
           const SizedBox(height: 8),
-          Text("Lojistik radarına ulaşılamıyor veya sipariş tamamlanmış olabilir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12)),
+          Text("Lojistik radarına ulaşılamıyor veya sipariş tamamlanmış olabilir.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 12)),
         ],
       ),
     );

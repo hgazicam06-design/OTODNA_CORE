@@ -91,7 +91,7 @@ class _SiberAracDevralScreenState extends State<SiberAracDevralScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           iconTheme: IconThemeData(color: primaryTeal),
         ),
         body: Center(
@@ -111,8 +111,8 @@ class _SiberAracDevralScreenState extends State<SiberAracDevralScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 20, offset: const Offset(0, 10))]
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 20, offset: const Offset(0, 10))]
       ),
       child: Form(
         key: _formKey,
@@ -126,7 +126,7 @@ class _SiberAracDevralScreenState extends State<SiberAracDevralScreen> {
             const SizedBox(height: 24),
             Text("MÜLKİYET TRANSFER PROTOKOLÜ", textAlign: TextAlign.center, style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
             const SizedBox(height: 12),
-            const Text("Eski sahibinin oluşturduğu 6 haneli devir kodunu ve (değiştiyse) yeni plakayı girerek aracı siciliyle birlikte üstünüze alın.", textAlign: TextAlign.center, style: TextStyle(color: Colors.black54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            const Text("Eski sahibinin oluşturduğu 6 haneli devir kodunu ve (değiştiyse) yeni plakayı girerek aracı siciliyle birlikte üstünüze alın.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             const SizedBox(height: 40),
 
             // KOD GİRİŞİ
@@ -160,12 +160,12 @@ class _SiberAracDevralScreenState extends State<SiberAracDevralScreen> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       ),
                       icon: const Icon(Icons.fingerprint, color: Colors.white),
-                      label: const Text("MÜLKİYETİ ÜZERİME AL", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
+                      label: const Text("MÜLKİYETİ ÜZERİME AL", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
                       onPressed: _devirIsleminiBaslat,
                     ),
             ),
             const SizedBox(height: 24),
-            const Text("UYARI: Aracın geçmiş tüm servis, bakım ve hasar sicili Şase Numarası üzerinden korunmaya devam edecektir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.black38, fontSize: 10, letterSpacing: 0.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir', height: 1.4)),
+            const Text("UYARI: Aracın geçmiş tüm servis, bakım ve hasar sicili Şase Numarası üzerinden korunmaya devam edecektir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white38, fontSize: 10, letterSpacing: 0.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir', height: 1.4)),
           ],
         ),
       ),
@@ -178,7 +178,7 @@ class _SiberAracDevralScreenState extends State<SiberAracDevralScreen> {
       decoration: BoxDecoration(
         color: bgColor, 
         borderRadius: BorderRadius.circular(16), 
-        border: Border.all(color: Colors.black.withValues(alpha: 0.05))
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05))
       ),
       child: TextFormField(
         controller: controller,
@@ -189,7 +189,7 @@ class _SiberAracDevralScreenState extends State<SiberAracDevralScreen> {
         validator: isRequired ? (v) => v == null || v.isEmpty ? "Zorunlu Alan" : null : null,
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.black38, fontSize: 12, fontFamily: 'Avenir', letterSpacing: 1, fontWeight: FontWeight.bold),
+          hintStyle: const TextStyle(color: Colors.white38, fontSize: 12, fontFamily: 'Avenir', letterSpacing: 1, fontWeight: FontWeight.bold),
           border: InputBorder.none,
           counterText: "",
           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),

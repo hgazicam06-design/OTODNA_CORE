@@ -51,8 +51,8 @@ class _OtoDnaForumScreenState extends State<OtoDnaForumScreen> {
         backgroundColor: _neonGreen,
         elevation: 10,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        icon: const Icon(Icons.bolt, color: Colors.black),
-        label: const Text("SORUN BİLDİR", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1)),
+        icon: const Icon(Icons.bolt, color: Colors.white),
+        label: const Text("SORUN BİLDİR", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1)),
         onPressed: () => _yeniKonuDialog(),
       ),
     );
@@ -84,7 +84,7 @@ class _OtoDnaForumScreenState extends State<OtoDnaForumScreen> {
                 ),
                 Text(
                   _sadeceBenimAracim ? widget.kullaniciAraci : "TÜM MODELLER",
-                  style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+                  style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -157,19 +157,19 @@ class _OtoDnaForumScreenState extends State<OtoDnaForumScreen> {
                 child: Text(post.aracModeli, style: const TextStyle(color: _neonGreen, fontSize: 10, fontWeight: FontWeight.w900)),
               ),
               const Spacer(),
-              Text(_formatDate(post.tarih), style: const TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.bold)),
+              Text(_formatDate(post.tarih), style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
             ],
           ),
           const SizedBox(height: 16),
-          Text(post.baslik.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 0.5)),
+          Text(post.baslik.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 0.5)),
           const SizedBox(height: 8),
-          Text(post.icerik, style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 13, height: 1.5)),
+          Text(post.icerik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.7), fontSize: 13, height: 1.5)),
           const SizedBox(height: 20),
           Row(
             children: [
               CircleAvatar(backgroundColor: Colors.white10, radius: 12, child: Icon(Icons.person, size: 14, color: Colors.white.withOpacity(0.5))),
               const SizedBox(width: 8),
-              Text(post.yazarAdi, style: const TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.bold)),
+              Text(post.yazarAdi, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
               const Spacer(),
               _buildAyniDertButonu(post),
             ],
@@ -227,11 +227,11 @@ class _OtoDnaForumScreenState extends State<OtoDnaForumScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white10, borderRadius: BorderRadius.circular(2))),
+            Container(width: 40, height: 4, decoration: BoxDecoration(color: SiberTema.textMuted, borderRadius: BorderRadius.circular(2))),
             const SizedBox(height: 24),
             const Text("SİBER ARIZA KAYDI", style: TextStyle(color: _neonGreen, fontWeight: FontWeight.w900, fontSize: 18, letterSpacing: 2)),
             const SizedBox(height: 8),
-            const Text("Veri paketleri anonimleştirilerek ana ağa mühürlenir.", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold)),
+            const Text("Veri paketleri anonimleştirilerek ana ağa mühürlenir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
             const SizedBox(height: 32),
             _buildInput("Sorun Başlığı (Örn: Motor Üst Kapak Sızıntısı)", baslikCtrl),
             const SizedBox(height: 16),
@@ -274,7 +274,7 @@ class _OtoDnaForumScreenState extends State<OtoDnaForumScreen> {
                   if (!mounted) return;
                   Navigator.pop(ctx);
                 },
-                child: const Text("ANA AĞA MÜHÜRLE", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                child: const Text("ANA AĞA MÜHÜRLE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
               ),
             ),
             const SizedBox(height: 32),
@@ -288,10 +288,10 @@ class _OtoDnaForumScreenState extends State<OtoDnaForumScreen> {
     return TextField(
       controller: ctrl,
       maxLines: maxLines,
-      style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+      style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: Colors.white.withOpacity(0.15), fontSize: 13, fontWeight: FontWeight.bold),
+        hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.15), fontSize: 13, fontWeight: FontWeight.bold),
         filled: true,
         fillColor: _cyberCard,
         contentPadding: const EdgeInsets.all(20),

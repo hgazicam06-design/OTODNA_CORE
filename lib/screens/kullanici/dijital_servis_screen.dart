@@ -22,16 +22,16 @@ class _DijitalServisScreenState extends State<DijitalServisScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
         title: Row(children: [Icon(Icons.camera_alt_outlined, color: Colors.teal.shade700), const SizedBox(width: 8), const Text("Siber Vizyon", style: TextStyle(color: Color(0xFF1E293B), fontSize: 16, fontFamily: 'Avenir', fontWeight: FontWeight.bold))]),
-        content: const Text("Kameranız üzerinden arızalı parçayı veya OEM kodunu taratarak küresel ağda eşleşme arayın.", style: TextStyle(color: Colors.black54, fontSize: 13, height: 1.5, fontFamily: 'Avenir')),
+        content: const Text("Kameranız üzerinden arızalı parçayı veya OEM kodunu taratarak küresel ağda eşleşme arayın.", style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.5, fontFamily: 'Avenir')),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İptal", style: TextStyle(color: Colors.black38, fontFamily: 'Avenir'))),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İptal", style: TextStyle(color: Colors.white38, fontFamily: 'Avenir'))),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.teal.shade700, foregroundColor: Colors.white, elevation: 0),
             onPressed: () {
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text('Lens Aktif Ediliyor...', style: TextStyle(color: Colors.white)), backgroundColor: Colors.teal.shade700));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text('Lens Aktif Ediliyor...', style: TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.teal.shade700));
             },
             child: const Text("Taramayı Başlat", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           ),
@@ -45,14 +45,14 @@ class _DijitalServisScreenState extends State<DijitalServisScreen> {
       context: context, backgroundColor: Colors.transparent, isScrollControlled: true,
       builder: (context) => Container(
         padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(color: Colors.white, borderRadius: const BorderRadius.vertical(top: Radius.circular(24)), border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.05))), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20)]),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: const BorderRadius.vertical(top: Radius.circular(24)), border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20)]),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(parcaAdi, style: const TextStyle(color: Color(0xFF1E293B), fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
             const SizedBox(height: 8),
-            const Text("Bu parçanın dijital genetiğine işlenecek işlemi seçin.", style: TextStyle(color: Colors.black54, fontSize: 13, fontFamily: 'Avenir')),
+            const Text("Bu parçanın dijital genetiğine işlenecek işlemi seçin.", style: TextStyle(color: Colors.white54, fontSize: 13, fontFamily: 'Avenir')),
             const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -70,7 +70,7 @@ class _DijitalServisScreenState extends State<DijitalServisScreen> {
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.teal.shade700, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: Colors.teal.shade700.withValues(alpha: 0.5))), elevation: 0),
                   onPressed: () {
                     Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text('Kamera Açılıyor...', style: TextStyle(color: Colors.white)), backgroundColor: Colors.teal.shade700));
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text('Kamera Açılıyor...', style: TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.teal.shade700));
                   },
                   icon: Icon(Icons.videocam_outlined, color: Colors.teal.shade700, size: 20),
                   label: Text("İşlem Anı Videosu Yükle", style: TextStyle(color: Colors.teal.shade700, fontWeight: FontWeight.w900, fontSize: 13, fontFamily: 'Avenir')),
@@ -118,7 +118,7 @@ class _DijitalServisScreenState extends State<DijitalServisScreen> {
           backgroundColor: surfaceColor,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
-          shape: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
+          shape: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
           title: Text('SERVIS & BAKIM', style: TextStyle(color: textColor, fontWeight: FontWeight.w900, letterSpacing: 4, fontSize: 11, fontFamily: 'Avenir')),
           centerTitle: true,
           leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 18), onPressed: () => Navigator.pop(context))
@@ -135,7 +135,7 @@ class _DijitalServisScreenState extends State<DijitalServisScreen> {
               borderRadius: BorderRadius.circular(16),
               child: Container(
                 width: double.infinity, padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
+                decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]),
                 child: Row(
                   children: [
                     Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(Icons.document_scanner_outlined, color: primaryTeal, size: 32)),
@@ -146,11 +146,11 @@ class _DijitalServisScreenState extends State<DijitalServisScreen> {
                         children: [
                           Text("Akıllı Parça Taraması", style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                           const SizedBox(height: 4),
-                          const Text("Arızalı OEM kodunu kameraya okutun.", style: TextStyle(color: Colors.black54, fontSize: 12, fontFamily: 'Avenir')),
+                          const Text("Arızalı OEM kodunu kameraya okutun.", style: TextStyle(color: Colors.white54, fontSize: 12, fontFamily: 'Avenir')),
                         ],
                       ),
                     ),
-                    Icon(Icons.arrow_forward_ios, color: Colors.black.withValues(alpha: 0.2), size: 16)
+                    Icon(Icons.arrow_forward_ios, color: Colors.white.withValues(alpha: 0.2), size: 16)
                   ],
                 ),
               ),
@@ -162,7 +162,7 @@ class _DijitalServisScreenState extends State<DijitalServisScreen> {
             const SizedBox(height: 16),
             Container(
               height: 180, width: double.infinity,
-              decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)], image: const DecorationImage(image: NetworkImage('https://img.freepik.com/free-vector/car-wireframe-transparent-background_1284-41132.jpg'), fit: BoxFit.cover, opacity: 0.1)),
+              decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)], image: const DecorationImage(image: NetworkImage('https://img.freepik.com/free-vector/car-wireframe-transparent-background_1284-41132.jpg'), fit: BoxFit.cover, opacity: 0.1)),
               child: Center(
                   child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -183,7 +183,7 @@ class _DijitalServisScreenState extends State<DijitalServisScreen> {
                 var kategori = _servisKategorileri[index];
                 return Container(
                   margin: const EdgeInsets.only(bottom: 12),
-                  decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 8)]),
+                  decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 8)]),
                   child: Theme(
                     data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
                     child: ExpansionTile(
@@ -192,12 +192,12 @@ class _DijitalServisScreenState extends State<DijitalServisScreen> {
                       iconColor: primaryTeal, collapsedIconColor: Colors.black54,
                       children: [
                         Container(
-                          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8), decoration: BoxDecoration(color: bgColor, borderRadius: const BorderRadius.vertical(bottom: Radius.circular(12)), border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.05)))),
+                          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8), decoration: BoxDecoration(color: bgColor, borderRadius: const BorderRadius.vertical(bottom: Radius.circular(12)), border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05)))),
                           child: Column(
                             children: (kategori['alt_kategoriler'] as List<String>).map((parca) {
                               return ListTile(
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-                                title: Text(parca, style: const TextStyle(color: Colors.black87, fontSize: 13, fontWeight: FontWeight.w600, fontFamily: 'Avenir')),
+                                title: Text(parca, style: const TextStyle(color: Colors.white87, fontSize: 13, fontWeight: FontWeight.w600, fontFamily: 'Avenir')),
                                 trailing: Icon(Icons.add, color: primaryTeal.withValues(alpha: 0.5), size: 18),
                                 onTap: () => _islemSecimi(parca, kategori['video_istiyor_mu']),
                               );

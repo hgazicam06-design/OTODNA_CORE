@@ -50,7 +50,7 @@ class _IkinciElIlanDetayScreenState extends State<IkinciElIlanDetayScreen> {
     else if (puan == 4) { rozetRengi = Colors.blueGrey.shade400; rozetMetni = "Gümüş Rozetli Bayi"; }
     else if (puan == 3) { rozetRengi = Colors.brown.shade400; rozetMetni = "Bronz Rozetli Bayi"; }
     else if (puan == 2) {
-      return Row(children: [const Icon(Icons.star_border, color: Colors.black38, size: 16), const SizedBox(width: 8), Text(saticiAdi, style: TextStyle(color: textColor, fontSize: 14, fontFamily: 'Avenir', fontWeight: FontWeight.bold))]);
+      return Row(children: [const Icon(Icons.star_border, color: Colors.white38, size: 16), const SizedBox(width: 8), Text(saticiAdi, style: TextStyle(color: textColor, fontSize: 14, fontFamily: 'Avenir', fontWeight: FontWeight.bold))]);
     } else {
       return Row(children: [Icon(Icons.warning_amber_rounded, color: dangerColor, size: 16), const SizedBox(width: 8), Text("$saticiAdi (Kara Liste)", style: TextStyle(color: dangerColor, fontSize: 14, decoration: TextDecoration.lineThrough, fontFamily: 'Avenir', fontWeight: FontWeight.bold))]);
     }
@@ -76,25 +76,25 @@ class _IkinciElIlanDetayScreenState extends State<IkinciElIlanDetayScreen> {
       context: context, isScrollControlled: true, backgroundColor: Colors.transparent,
       builder: (context) => Container(
         padding: const EdgeInsets.all(32),
-        decoration: BoxDecoration(color: Colors.white, borderRadius: const BorderRadius.vertical(top: Radius.circular(32)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20)]),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: const BorderRadius.vertical(top: Radius.circular(32)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20)]),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.black12, borderRadius: BorderRadius.circular(10)))),
+            Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white12, borderRadius: BorderRadius.circular(10)))),
             const SizedBox(height: 32),
             Row(children: [Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(Icons.lock_clock_outlined, color: primaryTeal, size: 24)), const SizedBox(width: 16), Text("Araç Rezervasyonu", style: TextStyle(color: textColor, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir'))]),
             const SizedBox(height: 16),
-            const Text("Bu aracı sizin adınıza ayırtmak ve satıcının doğrudan iletişim bilgilerine erişmek için OtoDNA Havuzuna kapora yatırmanız gerekmektedir.", style: TextStyle(color: Colors.black54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            const Text("Bu aracı sizin adınıza ayırtmak ve satıcının doğrudan iletişim bilgilerine erişmek için OtoDNA Havuzuna kapora yatırmanız gerekmektedir.", style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             const SizedBox(height: 32),
 
             // ÜCRET KUTUSU
             Container(
-              padding: const EdgeInsets.all(20), decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05))),
+              padding: const EdgeInsets.all(20), decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05))),
               child: Column(
                 children: [
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text("İlan Satış Fiyatı", style: TextStyle(color: Colors.black54, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), Text("₺$fiyatStr", style: const TextStyle(color: Colors.black38, fontSize: 14, decoration: TextDecoration.lineThrough, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))]),
-                  Padding(padding: const EdgeInsets.symmetric(vertical: 16.0), child: Divider(color: Colors.black.withValues(alpha: 0.05), height: 1)),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text("İlan Satış Fiyatı", style: TextStyle(color: Colors.white54, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), Text("₺$fiyatStr", style: const TextStyle(color: Colors.white38, fontSize: 14, decoration: TextDecoration.lineThrough, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))]),
+                  Padding(padding: const EdgeInsets.symmetric(vertical: 16.0), child: Divider(color: Colors.white.withValues(alpha: 0.05), height: 1)),
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("Kapora Bedeli", style: TextStyle(color: primaryTeal, fontSize: 15, fontWeight: FontWeight.w900, fontFamily: 'Avenir')), Text(kaporaBedeli, style: TextStyle(color: primaryTeal, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir'))]),
                 ],
               ),
@@ -166,10 +166,10 @@ class _IkinciElIlanDetayScreenState extends State<IkinciElIlanDetayScreen> {
                 background: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.05)))
+                    border: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05)))
                   ),
                   child: Center(
-                    child: Icon(widget.ilan['gorsel_ikon'] ?? Icons.directions_car_outlined, size: 140, color: Colors.black.withValues(alpha: 0.03)),
+                    child: Icon(widget.ilan['gorsel_ikon'] ?? Icons.directions_car_outlined, size: 140, color: Colors.white.withValues(alpha: 0.03)),
                   ),
                 ),
               ),
@@ -189,7 +189,7 @@ class _IkinciElIlanDetayScreenState extends State<IkinciElIlanDetayScreen> {
                     // SATICI ROZETİ
                     Container(
                       padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)]),
+                      decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]),
                       child: _buildSaticiRozeti(widget.ilan['puan'] ?? 3, widget.ilan['satici'] ?? 'Bilinmeyen Satıcı'),
                     ),
                     const SizedBox(height: 32),
@@ -213,7 +213,7 @@ class _IkinciElIlanDetayScreenState extends State<IkinciElIlanDetayScreen> {
                     // EKSPERTİZ ÇİZİMİ (Araç Kuşbakışı)
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 32),
-                      decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 15)]),
+                      decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15)]),
                       child: Column(
                         children: [
                           _buildAracParcasi("Ön Tampon", 140, 30, const BorderRadius.vertical(top: Radius.circular(30))),
@@ -268,9 +268,9 @@ class _IkinciElIlanDetayScreenState extends State<IkinciElIlanDetayScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.circle, color: primaryTeal.withValues(alpha: 0.2), size: 12), const SizedBox(width: 6), const Text("Orijinal", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), const SizedBox(width: 16),
-                              Icon(Icons.circle, color: warningColor, size: 12), const SizedBox(width: 6), const Text("Boyalı", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), const SizedBox(width: 16),
-                              Icon(Icons.circle, color: dangerColor, size: 12), const SizedBox(width: 6), const Text("Değişmiş", style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                              Icon(Icons.circle, color: primaryTeal.withValues(alpha: 0.2), size: 12), const SizedBox(width: 6), const Text("Orijinal", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), const SizedBox(width: 16),
+                              Icon(Icons.circle, color: warningColor, size: 12), const SizedBox(width: 6), const Text("Boyalı", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), const SizedBox(width: 16),
+                              Icon(Icons.circle, color: dangerColor, size: 12), const SizedBox(width: 6), const Text("Değişmiş", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                             ],
                           ),
                         ],
@@ -283,7 +283,7 @@ class _IkinciElIlanDetayScreenState extends State<IkinciElIlanDetayScreen> {
                     const SizedBox(height: 16),
                     const Text(
                       "Araç tamamen yetkili servis bakımlıdır. Sağ ön çamurluk sürtmeden kaynaklı boyalıdır, kaput ise bayide orijinaliyle değişmiştir. Haricinde hatasızdır.",
-                      style: TextStyle(color: Colors.black54, height: 1.6, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+                      style: TextStyle(color: Colors.white54, height: 1.6, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                     ),
                     const SizedBox(height: 40),
                   ],
@@ -300,15 +300,15 @@ class _IkinciElIlanDetayScreenState extends State<IkinciElIlanDetayScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           decoration: BoxDecoration(
               color: Colors.white,
-              border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.05))),
-              boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
+              border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
+              boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
           ),
           child: SafeArea(
             child: Row(
               children: [
                 // CHAT BUTONU
                 Container(
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.black.withValues(alpha: 0.1))),
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white.withValues(alpha: 0.1))),
                   child: IconButton(
                     icon: Icon(Icons.chat_bubble_outline, color: textColor, size: 24),
                     onPressed: () {
@@ -359,12 +359,12 @@ class _IkinciElIlanDetayScreenState extends State<IkinciElIlanDetayScreen> {
   Widget _buildDetayKutusu(IconData ikon, String baslik, String deger, Color cardColor) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.black.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 5)]),
+      decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 5)]),
       child: Row(
         children: [
           Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.teal.shade700.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(ikon, color: Colors.teal.shade700, size: 18)),
           const SizedBox(width: 12),
-          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [Text(baslik, style: const TextStyle(color: Colors.black45, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), const SizedBox(height: 2), Text(deger, style: TextStyle(color: const Color(0xFF1E293B), fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'Avenir'))])),
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [Text(baslik, style: const TextStyle(color: Colors.white45, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), const SizedBox(height: 2), Text(deger, style: TextStyle(color: const Color(0xFF1E293B), fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'Avenir'))])),
         ],
       ),
     );

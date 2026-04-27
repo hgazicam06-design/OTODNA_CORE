@@ -173,7 +173,7 @@ class _SiberAiTarayiciState extends State<SiberAiTarayici> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Center(
-                          child: Text("PLAKA VEYA ŞASEYİ\nBURAYA HİZALAYIN", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, shadows: [Shadow(color: Colors.black, blurRadius: 4)])),
+                          child: Text("PLAKA VEYA ŞASEYİ\nBURAYA HİZALAYIN", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, shadows: [Shadow(color: Colors.white, blurRadius: 4)])),
                         ),
                       )
                     ],
@@ -193,18 +193,18 @@ class _SiberAiTarayiciState extends State<SiberAiTarayici> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("VEYA MANUEL GİRİŞ YAPIN", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                  const Text("VEYA MANUEL GİRİŞ YAPIN", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
                   const SizedBox(height: 12),
                   Row(
                     children: [
                       Expanded(
                         child: TextField(
                           controller: _manuelPlakaCtrl,
-                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2),
+                          style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 2),
                           textCapitalization: TextCapitalization.characters,
                           decoration: InputDecoration(
                             hintText: "34ABC123 VEYA ŞASE",
-                            hintStyle: const TextStyle(color: Colors.white24),
+                            hintStyle: const TextStyle(color: SiberTema.textMuted),
                             filled: true,
                             fillColor: Colors.black,
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
@@ -219,7 +219,7 @@ class _SiberAiTarayiciState extends State<SiberAiTarayici> {
                             _kabulEtVeKapat(_manuelPlakaCtrl.text.trim().toUpperCase());
                           }
                         },
-                        child: const Icon(Icons.arrow_forward_ios, color: Colors.black, size: 18),
+                        child: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18),
                       ),
                     ],
                   )

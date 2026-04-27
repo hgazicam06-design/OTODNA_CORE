@@ -61,17 +61,17 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
       if(!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("5000 ₺ Kuantum Ağına Mühürlendi! 💸", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)), backgroundColor: Colors.greenAccent));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Hata: $e", style: const TextStyle(color: Colors.white)), backgroundColor: SiberTema.kanKirmizi));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Hata: $e", style: const TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi));
     }
   }
 
   void _paraTransferiAc() {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("EFT/FAST Transfer Ağı Başlatılıyor... 💸", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: Colors.blueAccent));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("EFT/FAST Transfer Ağı Başlatılıyor... 💸", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: Colors.blueAccent));
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_currentUser == null) return const Scaffold(backgroundColor: SiberTema.oledBlack, body: Center(child: Text("Siber Kimlik Hatası", style: TextStyle(color: Colors.white))));
+    if (_currentUser == null) return const Scaffold(backgroundColor: SiberTema.oledBlack, body: Center(child: Text("Siber Kimlik Hatası", style: TextStyle(color: SiberTema.textMain))));
 
     return ResponsiveKalkan(
       child: Scaffold(
@@ -100,7 +100,7 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                     child: Container(
                       height: 48,
-                      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white12)),
+                      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(24), border: Border.all(color: SiberTema.textMuted)),
                       child: TabBar(
                         controller: _tabController,
                         indicator: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.15), borderRadius: BorderRadius.circular(24), border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5))),
@@ -165,20 +165,20 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
             ),
             child: Column(
               children: [
-                const Text("KULLANILABİLİR SİBER BAKİYE", style: TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                const Text("KULLANILABİLİR SİBER BAKİYE", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2)),
                 const SizedBox(height: 12),
-                Text(formatCurrency.format(bakiye), style: const TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: -1)),
+                Text(formatCurrency.format(bakiye), style: const TextStyle(color: SiberTema.textMain, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: -1)),
                 const SizedBox(height: 32),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)),
+                  decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        const Text("Tanımlı Cüzdan IBAN", style: TextStyle(color: Colors.white38, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold)),
+                        const Text("Tanımlı Cüzdan IBAN", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 6),
-                        Text("TR12 **** **** **** **** 7890", style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1))
+                        Text("TR12 **** **** **** **** 7890", style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1))
                       ]),
                       GestureDetector(onTap: _ibanKopyala, child: const Icon(Icons.content_copy_outlined, color: SiberTema.kuantumCyan, size: 20)),
                     ],
@@ -206,14 +206,14 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Finansal Hareketler", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
+                const Text("Finansal Hareketler", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
                 Text("Tümü", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.8), fontSize: 12, fontWeight: FontWeight.bold))
               ]
           ),
           const SizedBox(height: 20),
 
           if (islemler.isEmpty)
-            const Center(child: Padding(padding: EdgeInsets.all(24), child: Text("Siber ağda henüz bir işlem kaydınız yok.", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold)))),
+            const Center(child: Padding(padding: EdgeInsets.all(24), child: Text("Siber ağda henüz bir işlem kaydınız yok.", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)))),
 
           ...islemler.map((doc) {
             var islem = doc.data() as Map<String, dynamic>;
@@ -240,7 +240,7 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
 
             return Container(
               margin: const EdgeInsets.only(bottom: 12), padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white12)),
+              decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(20), border: Border.all(color: SiberTema.textMuted)),
               child: Row(
                 children: [
                   Container(
@@ -253,9 +253,9 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(islem['baslik'] ?? 'İşlem', maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: -0.5)),
+                            Text(islem['baslik'] ?? 'İşlem', maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: -0.5)),
                             const SizedBox(height: 6),
-                            Text(tarihMetni, style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w500))
+                            Text(tarihMetni, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w500))
                           ]
                       )
                   ),
@@ -302,7 +302,7 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Dinamik Gelir Tablosu", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
+          const Text("Dinamik Gelir Tablosu", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
           const SizedBox(height: 16),
           Row(
             children: [
@@ -314,7 +314,7 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
           const SizedBox(height: 40),
 
           // 💎 OTO-DNA ACIMASIZ TİCARET MOTORU EKRANI
-          const Text("Sistem Kesintileri & Vergilendirme", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
+          const Text("Sistem Kesintileri & Vergilendirme", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
           const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(24),
@@ -322,9 +322,9 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
             child: Column(
               children: [
                 _fiyatSatiri("Platform Hizmet Bedeli (%10)", "- ${formatCurrency.format(toplamGelir * 0.10)}", SiberTema.altinSari),
-                const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: Colors.white12)),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted)),
                 _fiyatSatiri("Yasal Vergi Kesintisi (%2)", "- ${formatCurrency.format(toplamGelir * 0.02)}", SiberTema.altinSari),
-                const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white24, thickness: 1)),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted, thickness: 1)),
                 _fiyatSatiri("Toplam Ağ Kesintisi (%12)", "- ${formatCurrency.format(toplamGelir * 0.12)}", SiberTema.kanKirmizi, isBold: true),
               ],
             ),
@@ -343,7 +343,7 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
                     children: [
                       Icon(Icons.account_balance_outlined, color: SiberTema.kuantumCyan, size: 28),
                       SizedBox(height: 12),
-                      Text("Kuantum Net Kazanç", style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w600))
+                      Text("Kuantum Net Kazanç", style: TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.w600))
                     ]
                 ),
                 Text(formatCurrency.format((toplamGelir * 0.88) - toplamGider), style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -1)),
@@ -352,7 +352,7 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
           ),
           const SizedBox(height: 48),
 
-          const Text("Tanımlı IBAN Hesapları", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
+          const Text("Tanımlı IBAN Hesapları", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
           const SizedBox(height: 16),
           _buildIbanKarti("Garanti BBVA - Ticari", _aktifIban, true),
           const SizedBox(height: 12),
@@ -382,12 +382,12 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20),
-        decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white12)),
+        decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(20), border: Border.all(color: SiberTema.textMuted)),
         child: Column(
             children: [
               Icon(ikon, color: renk, size: 24),
               const SizedBox(height: 12),
-              Text(baslik, style: const TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.bold))
+              Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold))
             ]
         ),
       ),
@@ -397,13 +397,13 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
   Widget _buildMuhasebeKarti(String baslik, String deger, IconData ikon, Color renk) {
     return Container(
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white12)),
+      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(20), border: Border.all(color: SiberTema.textMuted)),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Icon(ikon, color: renk, size: 24),
             const SizedBox(height: 16),
-            Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
+            Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
             const SizedBox(height: 8),
             Text(deger, style: TextStyle(color: renk, fontSize: 16, fontWeight: FontWeight.w900))
           ]
@@ -439,7 +439,7 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(baslik, style: TextStyle(color: Colors.white70, fontSize: isBold ? 12 : 11, fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
+          Text(baslik, style: TextStyle(color: SiberTema.textMuted, fontSize: isBold ? 12 : 11, fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
           Text(deger, style: TextStyle(color: renk, fontSize: isBold ? 16 : 13, fontWeight: isBold ? FontWeight.w900 : FontWeight.bold))
         ]
     );

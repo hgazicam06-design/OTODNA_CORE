@@ -87,14 +87,14 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(icon: const Icon(Icons.radar, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: Text("BAYİ KOKPİTİ", style: TextStyle(color: Colors.white.withOpacity(0.9), fontWeight: FontWeight.w800, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
+          title: Text("BAYİ KOKPİTİ", style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontWeight: FontWeight.w800, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
           bottom: PreferredSize(preferredSize: const Size.fromHeight(1), child: Container(color: Colors.white.withOpacity(0.05), height: 1)),
           actions: [
@@ -119,7 +119,7 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> {
                   children: [
                     const Icon(Icons.cell_tower, color: SiberTema.kanKirmizi, size: 18),
                     const SizedBox(width: 8),
-                    Text("BÖLGESEL S.O.S RADARI", style: TextStyle(color: Colors.white.withOpacity(0.7), fontWeight: FontWeight.w800, letterSpacing: 1.5, fontSize: 12, fontFamily: 'Avenir')),
+                    Text("BÖLGESEL S.O.S RADARI", style: TextStyle(color: SiberTema.textMain.withOpacity(0.7), fontWeight: FontWeight.w800, letterSpacing: 1.5, fontSize: 12, fontFamily: 'Avenir')),
                   ],
                 ),
               ),
@@ -169,7 +169,7 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(child: Text(isim, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir'))),
+                    Expanded(child: Text(isim, style: const TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir'))),
                     _buildRozetGosterici(puan),
                   ],
                 ),
@@ -221,7 +221,7 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> {
               children: [
                 Icon(Icons.security, color: SiberTema.kuantumCyan.withOpacity(0.3), size: 64),
                 const SizedBox(height: 16),
-                Text('BÖLGE GÜVENDE. S.O.S YOK.', style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
+                Text('BÖLGE GÜVENDE. S.O.S YOK.', style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
               ],
             ),
           );
@@ -256,20 +256,20 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> {
                         children: [
                           Icon(isBekliyor ? Icons.warning_amber_rounded : Icons.shield, color: durumRengi, size: 20),
                           const SizedBox(width: 8),
-                          Text(sinyalData['plaka'] ?? 'BİLİNMİYOR', style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                          Text(sinyalData['plaka'] ?? 'BİLİNMİYOR', style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
                         ],
                       ),
                       Text(sinyalData['durum'] ?? 'Bekliyor', style: TextStyle(color: durumRengi, fontWeight: FontWeight.bold, fontSize: 11, fontFamily: 'Avenir')),
                     ],
                   ),
-                  const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: Colors.white12)),
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted)),
 
                   // Harita Tetikleyici
                   GestureDetector(
                     onTap: () => _haritayiAc(sinyalData['konum'] ?? ''),
                     child: Container(
                       padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
+                      decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.textMuted)),
                       child: Row(
                         children: [
                           const Icon(Icons.location_on, color: SiberTema.altinSari, size: 18),
