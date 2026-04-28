@@ -1,41 +1,8 @@
-import 'package:otodna/core/siber_tema.dart';
-// lib/core/siber_tema.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SiberTema {
   // 🌑 KUANTUM RENK PALETİ (TESLA STANDARTLARINDA)
-  static const Color oledBlack = Color(0xFFF4F6F8); // Fildişi Arka Plan
-  static const Color kuantumCyan = Color(0xFF005A64); // Kurumsal Zümrüt (Primary) // Neon Turkuaz
-  static const Color neonPurple = Color(0xFF9D00FF);
-  static const Color siberGold = Color(0xFFFFD700);
-  static const Color kritikRed = Color(0xFFFF003C);
-
-  // 🚨 EKLENEN EKSİK RENKLER (Kırmızı çizgileri engeller)
-  static const Color kanKirmizi = Color(0xFFD32F2F); // Profesyonel Kırmızı
-  static const Color textMain = Color(0xFF1E293B);
-  static const Color textMuted = Color(0xFF64748B);
-  static const Color matGrey = Colors.white; // Surface / Kart Rengi
-  static const Color altinSari = Color(0xFFFFD700);
-  static const Color geceMavisi = Color(0xFF0A0E1A); // 🛡️ Kurumsal Gece Mavisi
-
-  // ── 🛡️ ESKİ KODLARIN ÇÖKMESİNİ ENGELLEYEN KÖPRÜLER (ZAFİYET KAPATICILAR) ──
-  // responsive_kalkan.dart "decoration" beklediği için bunu BoxDecoration yaptık!
-  // 💎 KURUMSAL SEDEF KAPLAMA (Fildişi Sedef Parlaması)
-  static BoxDecoration get siberArkaPlan => BoxDecoration(
-    gradient: RadialGradient(
-      center: Alignment(-0.5, -0.6), // Sol üstten vuran sedef parlaması
-      radius: 1.5,
-      colors: [
-        Color(0xFFFFFFFF), // Parlak Bembeyaz Işık Noktası
-        Color(0xFFF8FAFC), // Sedefli Açık Mavi/Beyaz Kırılma
-        oledBlack, // Ana Fildişi Sedef Zemin (0xFFF4F6F8)
-// lib/core/siber_tema.dart
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-class SiberTema {
-  // 🌑 KUANTUM RENK PALETİ (TESLA STANDARLARINDA)
   static const Color oledBlack = Color(0xFFF4F6F8); // Fildişi Arka Plan
   static const Color kuantumCyan = Color(0xFF005A64); // Kurumsal Zümrüt (Primary) // Neon Turkuaz
   static const Color neonPurple = Color(0xFF9D00FF);
@@ -75,7 +42,7 @@ class SiberTema {
       border: Border.all(color: Color(0xFFE2E8F0), width: 1.5),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.03),
+          color: Colors.black.withOpacity(0.03),
           blurRadius: 15,
           offset: Offset(0, 5),
         ),
@@ -93,7 +60,7 @@ class SiberTema {
     ),
     boxShadow: [
       BoxShadow(
-        color: kuantumCyan.withValues(alpha: 0.05), // Çok hafif kurumsal renkli gölge
+        color: kuantumCyan.withOpacity(0.05), // Çok hafif kurumsal renkli gölge
         blurRadius: 15,
         offset: Offset(0, 8),
       ),
@@ -110,14 +77,15 @@ class SiberTema {
   }
 
   // ⚡ PLAZA BUTON STİLİ
-  static ButtonStyle kuantumButonStili({Color renk = kuantumCyan}) {
+  static ButtonStyle kuantumButonStili({Color? renk}) {
+    Color butonRengi = renk ?? kuantumCyan;
     return ElevatedButton.styleFrom(
-      backgroundColor: renk,
+      backgroundColor: butonRengi,
       foregroundColor: Colors.white, // Buton içi yazı beyaz
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       elevation: 4,
-      shadowColor: renk.withValues(alpha: 0.3),
+      shadowColor: butonRengi.withOpacity(0.3),
     );
   }
 

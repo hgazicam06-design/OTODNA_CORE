@@ -1,8 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:ui';
 import 'dart:developer' as developer;
+import 'package:otodna/core/siber_tema.dart'; // Tema eklendi
 
 /// 🛡️ KUANTUM DİNAMİK EKSPERTİZ VE TEST MOTORU (OtoDnaKategoriMotoru)
 /// Aracın cinsine ve YAKIT tipine göre otonom test modülleri üretir ve Karargaha mühürler.
@@ -41,40 +42,41 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
 
   final List<String> yakitTipleri = ['Benzin', 'Dizel', 'Elektrik (EV)', 'LPG & CNG', 'Hibrit'];
 
-  // ── 🎨 KUANTUM ARAYÜZ (UI) İNŞASI ───────────────────────────────────────
+  // ── 🎨 PLAZA ARAYÜZ (UI) İNŞASI ───────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF000000), // 🌑 TAM OLED SİYAHI
+      backgroundColor: const Color(0xFFFAFAFC), // Fildişi Sedef Arka Plan
       appBar: AppBar(
-        title: Text('KUANTUM EKSPERTİZ MOTORU',
-            style: TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2)),
+        title: Text('EKSPERTİZ MOTORU',
+            style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1.5, fontFamily: 'Avenir')),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(color: Color(0xFF00FFC2)),
+        iconTheme: IconThemeData(color: SiberTema.textMain),
+        centerTitle: true,
       ),
       body: _sorgulaniyor
-          ? Center(child: CircularProgressIndicator(color: Color(0xFF00FFC2)))
+          ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
           : Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // 1. 📡 SİBER HUB ENTEGRASYONU
             _buildSiberButon(
-              "DNA (VIN) İLE OTOMATİK DOLDUR",
+              "ŞASE (VIN) İLE OTOMATİK DOLDUR",
               Icons.qr_code_scanner,
-              Color(0xFF111111),
+              SiberTema.kuantumCyan,
               _saseSorgulaDialog,
             ),
 
             if (_hamVinVerisi != null) _buildVinSonucKarti(),
 
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
 
             // 2. ⚙️ KADEMELİ SEÇİM MOTORU
-            Text("ARAÇ CİNSİ", style: TextStyle(color: Colors.white54, fontSize: 12, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
+            Text("ARAÇ CİNSİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
             _buildSiberAramaKutusu(aracTipleri, secilenAracTipi, (val) {
               setState(() {
                 secilenAracTipi = val;
@@ -83,11 +85,11 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
               });
             }),
 
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             if (secilenAracTipi != null && secilenAracTipi != 'Motosiklet') ...[
-              Text("YAKIT / ENERJİ TİPİ", style: TextStyle(color: Colors.white54, fontSize: 12, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
+              Text("YAKIT / ENERJİ TİPİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
               _buildSiberAramaKutusu(yakitTipleri, secilenYakitTipi, (val) {
                 setState(() {
                   secilenYakitTipi = val;
@@ -96,17 +98,17 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
               }),
             ],
 
-            SizedBox(height: 20),
-            Divider(color: Color(0xFF00FFC2), thickness: 1.0, height: 30),
+            const SizedBox(height: 20),
+            Divider(color: Colors.black.withOpacity(0.05), thickness: 1.0, height: 30),
 
             // 3. 🧠 YAPAY ZEKA DİNAMİK USTA MODÜLLERİ
             Text("📋 AKTİF DENETİM MODÜLLERİ",
-                style: TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold, letterSpacing: 1.5, fontSize: 14)),
-            SizedBox(height: 16),
+                style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontSize: 14)),
+            const SizedBox(height: 16),
 
             Expanded(
               child: ListView(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 children: _dinamikModulleriUret(),
               ),
             ),
@@ -125,29 +127,29 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: Color(0xFF111111),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: Color(0xFF00FFC2), width: 1)),
-        title: Text("DNA (VIN) TARAYICI", style: TextStyle(color: Colors.white, letterSpacing: 1.5)),
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: Color(0xFFE2E8F0), width: 1)),
+        title: Text("ŞASE (VIN) TARAYICI", style: TextStyle(color: SiberTema.textMain, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
         content: TextField(
           controller: saseCtrl,
           textCapitalization: TextCapitalization.characters,
-          style: TextStyle(color: Color(0xFF00FFC2), fontFamily: 'monospace', fontSize: 18),
+          style: TextStyle(color: SiberTema.textMain, fontFamily: 'monospace', fontSize: 18, fontWeight: FontWeight.bold),
           decoration: InputDecoration(
             hintText: "17 HANELİ ŞASE GİRİN",
-            hintStyle: TextStyle(color: Colors.white38),
-            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white38)),
-            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFF00FFC2))),
+            hintStyle: TextStyle(color: SiberTema.textMuted.withOpacity(0.5)),
+            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: SiberTema.textMuted.withOpacity(0.3))),
+            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: SiberTema.kuantumCyan, width: 2)),
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: Text("İPTAL", style: TextStyle(color: Colors.grey))),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text("İPTAL", style: TextStyle(color: SiberTema.textMuted))),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF00FFC2), foregroundColor: Colors.black),
+            style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, foregroundColor: Colors.white),
             onPressed: () {
               Navigator.pop(ctx);
               _canliSaseCek(saseCtrl.text.trim().toUpperCase());
             },
-            child: Text("SORGULA", style: TextStyle(fontWeight: FontWeight.bold)),
+            child: const Text("SORGULA", style: TextStyle(fontWeight: FontWeight.bold)),
           )
         ],
       ),
@@ -168,7 +170,7 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
       QuerySnapshot snapshot = await _db.collection('araclar').where('sase_no', isEqualTo: vin).limit(1).get();
 
       if (snapshot.docs.isEmpty) {
-        throw Exception("Bu araca ait Karargah kaydı bulunamadı. Lütfen aracı sisteme kaydedin.");
+        throw Exception("Bu araca ait kayıt bulunamadı. Lütfen aracı sisteme kaydedin.");
       }
 
       var data = snapshot.docs.first.data() as Map<String, dynamic>;
@@ -187,7 +189,7 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
           secilenYakitTipi = data['yakit_tipi'];
           _denetimRaporu.clear();
         });
-        _siberBildirim("SİBER İSTİHBARAT ÇEKİLDİ! ✅");
+        _siberBildirim("ARAÇ BİLGİLERİ EŞLEŞTİRİLDİ! ✅");
       }
     } catch (e) {
       developer.log("AĞ ÇÖKTÜ: Şase bulunamadı!", error: e);
@@ -200,7 +202,7 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
   // ── ⛓️ ATOMİK MÜHÜRLEME (WRITEBATCH) ───────────────────────────────────
   Future<void> _raporuKarargahaMuhurle() async {
     if (_denetimRaporu.isEmpty) {
-      _siberBildirim("SİBER İHLAL: En az bir modülü denetlemelisiniz!", isError: true);
+      _siberBildirim("HATA: En az bir modülü denetlemelisiniz!", isError: true);
       return;
     }
 
@@ -222,21 +224,21 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
         'yakit_tipi': secilenYakitTipi,
         'test_sonuclari': _denetimRaporu,
         'tarih': FieldValue.serverTimestamp(),
-        'durum': 'KARARGAH_ONAYLI',
+        'durum': 'SISTEM_ONAYLI',
       });
 
       // 2. Kara Kutuya (Sistem Logları) Fişi Kes
       DocumentReference logRef = _db.collection('sistem_loglari').doc();
       batch.set(logRef, {
         'islem_turu': 'YENI_EKSPERTIZ_RAPORU',
-        'islem_detayi': 'SİBER BİLGİ: $ustaId ID\'li usta, ${_tarananSase ?? "Manuel"} şaseli araç için denetim raporu mühürledi.',
+        'islem_detayi': '$ustaId ID\'li personel, ${_tarananSase ?? "Manuel"} şaseli araç için denetim raporu onayladı.',
         'tarih': FieldValue.serverTimestamp(),
       });
 
       await batch.commit();
 
-      developer.log("SİBER ONAY: ✅ Rapor Karargah kasasına başarıyla mühürlendi!");
-      _siberBildirim("SİBER MÜHÜR VURULDU! RAPOR MERKEZE İLETİLDİ.");
+      developer.log("SİBER ONAY: ✅ Rapor başarıyla onaylandı!");
+      _siberBildirim("RAPOR ONAYLANDI VE SİSTEME İŞLENDİ.");
 
       // İşlem sonrası ekranı temizle
       if (mounted) {
@@ -247,74 +249,65 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
         });
       }
     } catch (e) {
-      developer.log("AĞ ÇÖKTÜ: Mühürleme başarısız!", error: e);
-      _siberBildirim("KARARGAH HATASI: Rapor kilitlenemedi. Ağı kontrol edin!", isError: true);
+      developer.log("HATA: Mühürleme başarısız!", error: e);
+      _siberBildirim("HATA: Rapor kaydedilemedi. Bağlantınızı kontrol edin!", isError: true);
     } finally {
       if (mounted) setState(() => _muhurleniyor = false);
     }
   }
 
-  // ── 🔧 ARAYÜZ YARDIMCILARI VE SİBER CAM EFEKTİ ─────────────────────────
+  // ── 🔧 ARAYÜZ YARDIMCILARI (PLAZA KART STİLİ) ─────────────────────────
   Widget _buildVinSonucKarti() {
     return Container(
-      margin: EdgeInsets.only(top: 16),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-          child: Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Color(0xFF00FFC2).withValues(alpha: 0.05),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Color(0xFF00FFC2).withValues(alpha: 0.4)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      margin: const EdgeInsets.only(top: 16),
+      decoration: SiberTema.siberKutuZirhi,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.directions_car_filled, color: SiberTema.kuantumCyan, size: 20),
+              const SizedBox(width: 8),
+              Text("SİSTEM ARAÇ VERİSİ", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, letterSpacing: 1)),
+            ],
+          ),
+          Divider(color: Colors.black.withOpacity(0.05), height: 20),
+          ..._hamVinVerisi!.entries.map((e) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Row(
               children: [
-                Row(
-                  children: [
-                    Icon(Icons.data_object, color: Color(0xFF00FFC2), size: 18),
-                    SizedBox(width: 8),
-                    Text("KUANTUM FABRİKA VERİSİ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                  ],
-                ),
-                Divider(color: Colors.white24, height: 20),
-                ..._hamVinVerisi!.entries.map((e) => Padding(
-                  padding: EdgeInsets.symmetric(vertical: 6),
-                  child: Row(
-                    children: [
-                      Text("${e.key}: ", style: TextStyle(color: Colors.white54, fontSize: 13, letterSpacing: 1)),
-                      Expanded(child: Text("${e.value}", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold))),
-                    ],
-                  ),
-                )),
+                Text("${e.key}: ", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, letterSpacing: 1)),
+                Expanded(child: Text("${e.value}", style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold))),
               ],
             ),
-          ),
-        ),
+          )),
+        ],
       ),
     );
   }
 
   Widget _buildSiberAramaKutusu(List<String> items, String? selectedValue, Function(String?) onChanged) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: Color(0xFF111111),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Color(0xFF00FFC2).withValues(alpha: 0.3), width: 1.5),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 4, offset: const Offset(0, 2)),
+        ],
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          dropdownColor: Color(0xFF111111),
+          dropdownColor: Colors.white,
           isExpanded: true,
           value: selectedValue,
-          icon: Icon(Icons.arrow_drop_down_circle_outlined, color: Color(0xFF00FFC2)),
-          style: TextStyle(color: Colors.white, fontSize: 16),
-          hint: Text("TIKLAYIN VE SEÇİN...", style: TextStyle(color: Colors.white30, letterSpacing: 1.5, fontSize: 12)),
+          icon: Icon(Icons.keyboard_arrow_down, color: SiberTema.textMuted),
+          style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w600),
+          hint: Text("Seçiniz...", style: TextStyle(color: SiberTema.textMuted.withOpacity(0.7), fontSize: 13)),
           items: items.map((String item) {
-            return DropdownMenuItem<String>(value: item, child: Text(item, style: TextStyle(letterSpacing: 1)));
+            return DropdownMenuItem<String>(value: item, child: Text(item));
           }).toList(),
           onChanged: onChanged,
         ),
@@ -325,7 +318,7 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
   List<Widget> _dinamikModulleriUret() {
     List<Widget> moduller = [];
     if (secilenAracTipi == null) {
-      return [Padding(padding: EdgeInsets.all(20), child: Text("SİSTEM BEKLEMEDE... ARAÇ TİPİ SEÇİN.", style: TextStyle(color: Colors.white30, letterSpacing: 1.5)))];
+      return [Padding(padding: const EdgeInsets.all(20), child: Text("SİSTEM BEKLEMEDE... LÜTFEN ARAÇ TİPİ SEÇİN.", style: TextStyle(color: SiberTema.textMuted, letterSpacing: 1.0, fontSize: 12)))];
     }
 
     if (secilenYakitTipi == 'Elektrik (EV)' || secilenYakitTipi == 'Hibrit') {
@@ -373,32 +366,42 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
   Widget _buildKayitMotoruKarti(String baslik, String modulKodu, IconData ikon, {bool isCritical = false, bool zorunluFoto = false}) {
     String mevcutDurum = _denetimRaporu[modulKodu] ?? "BEKLIYOR";
     return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
-      margin: EdgeInsets.symmetric(vertical: 8),
+      duration: const Duration(milliseconds: 300),
+      margin: const EdgeInsets.symmetric(vertical: 6),
       decoration: BoxDecoration(
         color: mevcutDurum == "ONAYLANDI"
-            ? Color(0xFF00FFC2).withValues(alpha: 0.1)
-            : (mevcutDurum == "REDDEDILDI" || isCritical) ? Colors.redAccent.withValues(alpha: 0.1) : Color(0xFF111111),
+            ? Colors.green.withOpacity(0.05)
+            : (mevcutDurum == "REDDEDILDI" || isCritical) ? SiberTema.kanKirmizi.withOpacity(0.05) : Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
             color: mevcutDurum == "ONAYLANDI"
-                ? Color(0xFF00FFC2)
-                : mevcutDurum == "REDDEDILDI" ? Colors.redAccent : (isCritical ? Colors.redAccent.withValues(alpha: 0.5) : Colors.transparent)
+                ? Colors.green.withOpacity(0.5)
+                : mevcutDurum == "REDDEDILDI" ? SiberTema.kanKirmizi.withOpacity(0.5) : (isCritical ? SiberTema.kanKirmizi.withOpacity(0.2) : const Color(0xFFE2E8F0))
         ),
+        boxShadow: mevcutDurum == "BEKLIYOR" ? [
+          BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 4, offset: const Offset(0, 2))
+        ] : null,
       ),
       child: ListTile(
-        leading: Icon(ikon, color: isCritical || mevcutDurum == "REDDEDILDI" ? Colors.redAccent : Color(0xFF00FFC2), size: 28),
-        title: Text(baslik, style: TextStyle(color: Colors.white, fontWeight: isCritical ? FontWeight.bold : FontWeight.w600, letterSpacing: 1)),
-        subtitle: zorunluFoto ? Text("📸 KANIT YÜKLEMESİ ZORUNLUDUR", style: TextStyle(color: Colors.orangeAccent, fontSize: 10, letterSpacing: 1)) : null,
+        leading: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: mevcutDurum == "ONAYLANDI" ? Colors.green.withOpacity(0.1) : (mevcutDurum == "REDDEDILDI" || isCritical ? SiberTema.kanKirmizi.withOpacity(0.1) : const Color(0xFFFAFAFC)),
+            borderRadius: BorderRadius.circular(8)
+          ),
+          child: Icon(ikon, color: mevcutDurum == "ONAYLANDI" ? Colors.green : (mevcutDurum == "REDDEDILDI" || isCritical ? SiberTema.kanKirmizi : SiberTema.textMuted), size: 22)
+        ),
+        title: Text(baslik, style: TextStyle(color: SiberTema.textMain, fontWeight: isCritical ? FontWeight.bold : FontWeight.w600, fontSize: 13)),
+        subtitle: zorunluFoto ? Text("📸 KANIT YÜKLEMESİ ZORUNLUDUR", style: TextStyle(color: Colors.orange.shade700, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5)) : null,
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-                icon: Icon(mevcutDurum == "REDDEDILDI" ? Icons.close : Icons.close_outlined, color: mevcutDurum == "REDDEDILDI" ? Colors.redAccent : Colors.white30),
+                icon: Icon(mevcutDurum == "REDDEDILDI" ? Icons.close : Icons.close_outlined, color: mevcutDurum == "REDDEDILDI" ? SiberTema.kanKirmizi : SiberTema.textMuted.withOpacity(0.3)),
                 onPressed: () => setState(() => _denetimRaporu[modulKodu] = "REDDEDILDI")
             ),
             IconButton(
-                icon: Icon(mevcutDurum == "ONAYLANDI" ? Icons.check_circle : Icons.check_circle_outline, color: mevcutDurum == "ONAYLANDI" ? Color(0xFF00FFC2) : Colors.white30),
+                icon: Icon(mevcutDurum == "ONAYLANDI" ? Icons.check_circle : Icons.check_circle_outline, color: mevcutDurum == "ONAYLANDI" ? Colors.green : SiberTema.textMuted.withOpacity(0.3)),
                 onPressed: () => setState(() => _denetimRaporu[modulKodu] = "ONAYLANDI")
             ),
           ],
@@ -411,13 +414,14 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        icon: Icon(icon, color: Color(0xFF00FFC2)),
-        label: Text(text, style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2)),
+        icon: Icon(icon, color: Colors.white, size: 20),
+        label: Text(text, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
-          padding: EdgeInsets.symmetric(vertical: 18),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: Color(0xFF00FFC2).withValues(alpha: 0.5), width: 1.5)),
-          elevation: 5,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          elevation: 4,
+          shadowColor: color.withOpacity(0.3),
         ),
         onPressed: onPressed,
       ),
@@ -426,20 +430,21 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
 
   Widget _buildMuhurleButonu() {
     return Padding(
-      padding: EdgeInsets.only(top: 20, bottom: 40),
+      padding: const EdgeInsets.only(top: 24, bottom: 40),
       child: SizedBox(
         width: double.infinity,
-        height: 55,
+        height: 54,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF00FFC2),
-            foregroundColor: Colors.black,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            backgroundColor: SiberTema.textMain, // Koyu Kurumsal Renk
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            elevation: 4,
           ),
           onPressed: _muhurleniyor ? null : _raporuKarargahaMuhurle,
           child: _muhurleniyor
-              ? CircularProgressIndicator(color: Colors.black)
-              : Text("TÜM RAPORU MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 3, fontSize: 16)),
+              ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3))
+              : const Text("TÜM RAPORU ONAYLA", style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 2, fontSize: 14)),
         ),
       ),
     );
@@ -448,8 +453,10 @@ class _OtoDnaKategoriMotoruState extends State<OtoDnaKategoriMotoru> {
   void _siberBildirim(String mesaj, {bool isError = false}) {
     if(!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-      backgroundColor: isError ? Colors.redAccent : Color(0xFF00FFC2),
+      content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+      backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ));
   }
 }
