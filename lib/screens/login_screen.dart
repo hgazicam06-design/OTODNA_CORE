@@ -1,16 +1,15 @@
-import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-
 import '../core/siber_tema.dart';
 
-/// 🏢 PLAZA KALİTESİNDE GİRİŞ TERMİNALİ (Lüks ve Ferah)
+/// 🏢 VIP PLAZA GİRİŞ TERMİNALİ
+/// Somun tasarımı iptal edilmiş, yerine "Marble & Gold" (Mermer ve Altın) 
+/// kurumsal/bankacılık stili entegre edilmiştir. Yazı tipleri "Sert ve Kurumsal"dır.
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -26,7 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isProcessing = false;
   bool _sifreGizli = true;
   bool _beniHatirla = true;
-  final String _seciliDil = "TR";
 
   @override
   void dispose() {
@@ -41,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (email.isEmpty || sifre.isEmpty) {
       HapticFeedback.heavyImpact();
-      _uyariGoster("Lütfen E-Posta ve Şifrenizi giriniz.", isError: true);
+      _uyariGoster("Lütfen E-Posta ve Kuantum Şifrenizi giriniz.", isError: true);
       return;
     }
 
@@ -69,58 +67,12 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<void> _yeniKayit() async {
-    final email = _emailController.text.trim();
-    final sifre = _sifreController.text.trim();
-
-    if (email.isEmpty || sifre.isEmpty) {
-      HapticFeedback.heavyImpact();
-      _uyariGoster("Kayıt olmak için E-Posta ve Şifre giriniz.", isError: true);
-      return;
-    }
-
-    setState(() => _isProcessing = true);
-    HapticFeedback.lightImpact();
-
-    try {
-      UserCredential cred = await _auth.createUserWithEmailAndPassword(email: email, password: sifre);
-      
-      await _db.collection('kullanicilar').doc(cred.user!.uid).set({
-        'email': email,
-        'rol': 'USER',
-        'kayit_tarihi': FieldValue.serverTimestamp(),
-      });
-
-      await _db.collection('sistem_loglari').add({
-        'islem_turu': 'YENİ_KAYIT',
-        'islem_detayi': 'YENİ ÜYE: $email sisteme katıldı.',
-        'tarih': FieldValue.serverTimestamp(),
-      });
-      _uyariGoster("Kayıt Başarılı! Sisteme yönlendiriliyorsunuz.");
-      
-    } on FirebaseAuthException catch (e) {
-      HapticFeedback.heavyImpact();
-      String hataMesaji = "Kayıt Başarısız.";
-      if (e.code == 'email-already-in-use') {
-        hataMesaji = "Bu E-Posta adresi zaten kayıtlı!";
-      } else if (e.code == 'weak-password') {
-        hataMesaji = "Şifre çok zayıf! En az 6 karakter olmalı.";
-      } else if (e.code == 'invalid-email') {
-        hataMesaji = "Geçersiz E-Posta formatı!";
-      }
-      _uyariGoster(hataMesaji, isError: true);
-    } catch (e) {
-      _uyariGoster("Bağlantı Hatası: İnternetinizi kontrol edin.", isError: true);
-    } finally {
-      if (mounted) setState(() => _isProcessing = false);
-    }
-  }
-
   void _uyariGoster(String mesaj, {bool isError = false}) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 13, fontFamily: 'Avenir')),
-        backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
+        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white, fontSize: 13, fontFamily: 'Avenir', letterSpacing: 1.0)),
+        backgroundColor: isError ? SiberTema.kanKirmizi : const Color(0xFFC5A059), // Gold error/success
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
@@ -129,299 +81,376 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Somun boyutları
-    final double nutSize = 340.0;
-    final double innerHoleSize = nutSize * 0.70; // Formun sığacağı delik boyutu
-
     return Scaffold(
-      backgroundColor: Color(0xFFFAFAFC), // Sedefli Fil Dişi Arka Plan (Plaza / Banka Stili)
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // ── ÜST BAR ──
+      backgroundColor: const Color(0xFFFAFAFC), // Fildişi/Krem zemin
+      body: Stack(
+        children: [
+          // ── ARKA PLAN (Mermer Dokusu Simülasyonu) ──
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    const Color(0xFFFFFFFF),
+                    const Color(0xFFF0F0F5),
+                    const Color(0xFFE8E8EE),
+                  ],
+                ),
+              ),
+              // İnce mermer çatlaklarını simüle etmek için hafif bir noise/pattern eklenebilir,
+              // Şimdilik lüks bir gradient kullanıyoruz.
+            ),
+          ),
+
+          SafeArea(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                // ── ÜST BAŞLIK (HEADER & LOGO) ──
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "OtoDNA",
-                        style: TextStyle(
-                          color: SiberTema.kuantumCyan,
-                          fontSize: 22,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: -1,
-                          fontFamily: 'Avenir',
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "OtoDNA",
+                            style: TextStyle(
+                              color: const Color(0xFF2C2519), // Koyu Kahve/Gold
+                              fontSize: 22,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 2.0,
+                              fontFamily: 'Avenir', // Sert ve Keskin
+                            ),
+                          ),
+                          Text(
+                            "Siber Karargah",
+                            style: TextStyle(
+                              color: const Color(0xFF8B7355), // Orta Kahve
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.5,
+                              fontFamily: 'Avenir',
+                            ),
+                          ),
+                        ],
                       ),
+                      // Dil Seçimi
                       Row(
                         children: [
-                          Text(_seciliDil, style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold, fontSize: 13)),
-                          SizedBox(width: 4),
-                          Icon(Icons.language, color: SiberTema.textMuted, size: 16),
+                          const Text("TR", style: TextStyle(color: Color(0xFF8B7355), fontWeight: FontWeight.w900, fontSize: 13, fontFamily: 'Avenir')),
+                          const SizedBox(width: 4),
+                          const Icon(Icons.language, color: Color(0xFF8B7355), size: 18),
                         ],
                       ),
                     ],
                   ),
                 ),
-                
-                // ── ORTA SOMUN FORMU ──
-                Center(
-                  child: SizedBox(
-                    width: nutSize,
-                    height: nutSize,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        // Somun Çizimi
-                        CustomPaint(
-                          size: Size(nutSize, nutSize),
-                          painter: _SomunPainter(),
+
+                const Spacer(flex: 2),
+
+                // ── MERKEZ VIP GİRİŞ KARTI ──
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Container(
+                    padding: const EdgeInsets.all(32),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: const Color(0xFFEBE3D5), width: 2),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF8B7355).withOpacity(0.1),
+                          blurRadius: 30,
+                          offset: const Offset(0, 15),
                         ),
-                        
-                        // İç Boşluktaki Form
-                        SizedBox(
-                          width: innerHoleSize * 0.85, // Deliğin içine tam oturması için
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                "GİRİŞ YAP",
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Karşılama Metni
+                        const Text(
+                          "İyi Günler, Siber Komutan\nGazi Çam",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFF2C2519), // Sert ve koyu
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 0.5,
+                            fontFamily: 'Avenir',
+                            height: 1.4,
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+
+                        // E-Posta Alanı
+                        _buildGoldTextField(
+                          controller: _emailController,
+                          icon: Icons.person_outline,
+                          hint: "E-Posta / Sicil No",
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Şifre Alanı
+                        _buildGoldTextField(
+                          controller: _sifreController,
+                          icon: Icons.lock_outline,
+                          hint: "Kuantum Şifre",
+                          isPassword: true,
+                          sifreGizli: _sifreGizli,
+                          onVisibilityToggle: () => setState(() => _sifreGizli = !_sifreGizli),
+                        ),
+                        const SizedBox(height: 24),
+
+                        // Şifremi Unuttum & Beni Hatırla
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () => _uyariGoster("Şifre sıfırlama yakında aktif edilecek."),
+                              child: const Text(
+                                "Şifremi Unuttum",
                                 style: TextStyle(
-                                  color: SiberTema.textMain,
-                                  fontSize: 16,
+                                  color: Color(0xFF8B7355),
+                                  fontSize: 13,
                                   fontWeight: FontWeight.w900,
-                                  letterSpacing: 1,
-                                  fontFamily: 'Avenir',
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: Color(0xFF8B7355),
                                 ),
                               ),
-                              SizedBox(height: 16),
-                              
-                              // Kullanıcı Adı (Sade Bankacılık Stili)
-                              _buildSadeTextField(
-                                controller: _emailController,
-                                icon: Icons.person_outline,
-                                hint: "T.C. Kimlik / E-Posta",
+                            ),
+                            GestureDetector(
+                              onTap: () => setState(() => _beniHatirla = !_beniHatirla),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Beni Hatırla",
+                                    style: const TextStyle(
+                                      color: Color(0xFF8B7355),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Container(
+                                    width: 18,
+                                    height: 18,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: const Color(0xFF8B7355), width: 2),
+                                      borderRadius: BorderRadius.circular(4),
+                                      color: _beniHatirla ? const Color(0xFF8B7355) : Colors.transparent,
+                                    ),
+                                    child: _beniHatirla
+                                        ? const Icon(Icons.check, size: 14, color: Colors.white)
+                                        : null,
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 12),
-                              
-                              // Şifre
-                              _buildSadeTextField(
-                                controller: _sifreController,
-                                icon: Icons.lock_outline,
-                                hint: "Şifre",
-                                isPassword: true,
-                                sifreGizli: _sifreGizli,
-                                onVisibilityToggle: () => setState(() => _sifreGizli = !_sifreGizli),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 32),
+
+                        // ALTIN / GOLD GİRİŞ BUTONU
+                        SizedBox(
+                          width: double.infinity,
+                          height: 56,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color(0xFFE2C485), // Açık Altın
+                                  Color(0xFFC5A059), // Orta Altın
+                                  Color(0xFFA57D36), // Koyu Altın
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                               ),
-                            ],
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xFFC5A059).withOpacity(0.4),
+                                  blurRadius: 15,
+                                  offset: const Offset(0, 8),
+                                ),
+                              ],
+                            ),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(12),
+                                onTap: _isProcessing ? null : _kapiyiZorla,
+                                child: Center(
+                                  child: _isProcessing
+                                      ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3))
+                                      : Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            const Text(
+                                              "Giriş Yap",
+                                              style: TextStyle(
+                                                color: Colors.white, // Zıtlık için bembeyaz
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w900,
+                                                letterSpacing: 2.0,
+                                                fontFamily: 'Avenir',
+                                              ),
+                                            ),
+                                            const SizedBox(width: 12),
+                                            const Icon(Icons.lock, color: Colors.white, size: 18),
+                                          ],
+                                        ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                
-                // ── ALT AKSİYONLAR VE BUTONLAR ──
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: () => setState(() => _beniHatirla = !_beniHatirla),
-                            child: Row(
-                              children: [
-                                Icon(_beniHatirla ? Icons.check_circle : Icons.radio_button_unchecked, color: _beniHatirla ? SiberTema.kuantumCyan : Colors.black26, size: 20),
-                                SizedBox(width: 8),
-                                Text("Beni Hatırla", style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w600, fontFamily: 'Avenir')),
-                              ],
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () => _uyariGoster("Şifre sıfırlama bağlantısı yakında eklenecek."),
-                            child: Text("Şifremi Unuttum", style: TextStyle(color: SiberTema.textMuted, fontSize: 13, fontWeight: FontWeight.w600, fontFamily: 'Avenir', decoration: TextDecoration.underline)),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 32),
-                      
-                      // Geniş Giriş Butonu (Bankacılık Stili)
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: SiberTema.kuantumCyan, // Kurumsal Turkuaz/Mavi
-                            foregroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(vertical: 18),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                            elevation: 4,
-                            shadowColor: SiberTema.kuantumCyan.withOpacity(0.4),
-                          ),
-                          onPressed: _isProcessing ? null : _kapiyiZorla,
-                          child: _isProcessing
-                              ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                              : Text("GİRİŞ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
-                        ),
-                      ),
-                      SizedBox(height: 24),
-                      
-                      TextButton(
-                        onPressed: _isProcessing ? null : _yeniKayit,
-                        child: RichText(
-                          text: TextSpan(
-                            text: "Hesabınız yok mu? ",
-                            style: TextStyle(color: SiberTema.textMuted, fontSize: 14, fontFamily: 'Avenir'),
-                            children: [
-                              TextSpan(
-                                text: "Kayıt Olun",
-                                style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
+
+                const Spacer(flex: 3),
+
+                // ── 5 İKONLU ALT MENÜ (BOTTOM BAR) ──
+                Container(
+                  padding: const EdgeInsets.fromLTRB(16, 20, 16, 30),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(32),
+                      topRight: Radius.circular(32),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 20,
+                        offset: const Offset(0, -5),
                       ),
                     ],
                   ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      _buildBottomMenuIcon(Icons.settings_outlined, "Parça\nTedarik"),
+                      _buildBottomMenuIcon(Icons.build_outlined, "Siber\nServis"),
+                      
+                      // Merkez Büyük QR İkonu
+                      GestureDetector(
+                        onTap: () {
+                          HapticFeedback.heavyImpact();
+                          _uyariGoster("Kuantum Radar Başlatılıyor...");
+                          // Navigator.push(context, MaterialPageRoute(builder: (context) => QrPublicScreen()));
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 8),
+                          width: 64,
+                          height: 64,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFFF9EDD6), Color(0xFFDCC8A9)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            border: Border.all(color: const Color(0xFFC5A059), width: 2),
+                            boxShadow: [
+                              BoxShadow(color: const Color(0xFFC5A059).withOpacity(0.3), blurRadius: 15, offset: const Offset(0, 5)),
+                            ],
+                          ),
+                          child: const Icon(Icons.qr_code_scanner, color: Color(0xFF8B7355), size: 32),
+                        ),
+                      ),
+
+                      _buildBottomMenuIcon(Icons.pie_chart_outline, "Kuantum\nAnalizler"),
+                      _buildBottomMenuIcon(Icons.checklist_rtl_outlined, "Operasyon\nKontrol"),
+                    ],
+                  ),
                 ),
-              ],
-            ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         ),
-      ),
-    );
+      ],
+    ),
+  );
   }
 
-  Widget _buildSadeTextField({required TextEditingController controller, required IconData icon, required String hint, bool isPassword = false, bool sifreGizli = false, VoidCallback? onVisibilityToggle}) {
+  // ── YARDIMCI WIDGETLAR (ALTIN ÇERÇEVELİ) ──
+  Widget _buildGoldTextField({
+    required TextEditingController controller,
+    required IconData icon,
+    required String hint,
+    bool isPassword = false,
+    bool sifreGizli = false,
+    VoidCallback? onVisibilityToggle,
+  }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: SiberTema.textMuted.withOpacity(0.2)),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 4, offset: Offset(0, 2)),
-        ],
+        color: const Color(0xFFFAFAFC),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFDCC8A9), width: 1.5), // Altın/Kahve Border
       ),
       child: TextField(
         controller: controller,
         obscureText: isPassword && sifreGizli,
-        style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w600, fontFamily: 'Avenir'),
+        style: const TextStyle(
+          color: Color(0xFF2C2519), // Sert siyah/kahve
+          fontSize: 15,
+          fontWeight: FontWeight.w900,
+          fontFamily: 'Avenir',
+        ),
         decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: SiberTema.textMuted, size: 18),
-          suffixIcon: isPassword ? IconButton(icon: Icon(sifreGizli ? Icons.visibility_off : Icons.visibility, color: SiberTema.textMuted, size: 18), onPressed: onVisibilityToggle) : null,
+          prefixIcon: Icon(icon, color: const Color(0xFF8B7355), size: 20),
+          suffixIcon: isPassword
+              ? IconButton(
+                  icon: Icon(sifreGizli ? Icons.visibility_off : Icons.visibility, color: const Color(0xFF8B7355), size: 20),
+                  onPressed: onVisibilityToggle,
+                )
+              : null,
           hintText: hint,
-          hintStyle: TextStyle(color: SiberTema.textMuted.withOpacity(0.6), fontSize: 13, fontFamily: 'Avenir'),
+          hintStyle: const TextStyle(color: Color(0xFFBCAAA4), fontSize: 14, fontWeight: FontWeight.bold),
           border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         ),
       ),
     );
   }
-}
 
-/// 🔧 METALİK SOMUN ÇİZİCİSİ (Altıgen ve Yivli)
-class _SomunPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    double width = size.width;
-    double height = size.height;
-    double radius = width / 2;
-    Offset center = Offset(width / 2, height / 2);
-
-    // 1. Somunun Altıgen Dış Gövdesi
-    Path outerPath = Path();
-    for (int i = 0; i < 6; i++) {
-      // 30 derece kaydırılmış (sivri uçlar yatayda değil dikeyde olacak şekilde)
-      double angle = (math.pi / 3) * i - (math.pi / 6); 
-      double x = center.dx + radius * math.cos(angle);
-      double y = center.dy + radius * math.sin(angle);
-      if (i == 0) outerPath.moveTo(x, y);
-      else outerPath.lineTo(x, y);
-    }
-    outerPath.close();
-
-    // 2. İç Delik (Kullanıcı giriş kısmının oyuğu)
-    double innerRadius = radius * 0.70;
-    outerPath.addOval(Rect.fromCircle(center: center, radius: innerRadius));
-    outerPath.fillType = PathFillType.evenOdd; // Deliği boşalt
-
-    // 3. Gövde Gölgesi (Yere vuran)
-    canvas.drawShadow(outerPath, Colors.black.withOpacity(0.3), 15, true);
-
-    // 4. Metalik Gradient Dolgu
-    Paint bodyPaint = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [
-          Color(0xFFF5F5F5), // Açık metalik parlama
-          Color(0xFFE0E0E0),
-          Color(0xFFBDBDBD),
-          Color(0xFF9E9E9E), // Koyu metalik köşe
-        ],
-        stops: [0.0, 0.4, 0.7, 1.0],
-      ).createShader(Rect.fromLTWH(0, 0, width, height));
-    
-    canvas.drawPath(outerPath, bodyPaint);
-
-    // 5. İç Yiv Çizgileri (Somunun dişleri)
-    Paint threadPaint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.5;
-
-    for (int i = 1; i <= 4; i++) {
-      // İç deliğin hemen etrafında 4 adet yiv dairesi
-      double threadRadius = innerRadius + (i * 3);
-      
-      // Işık ve gölge etkisi için yarı saydam geçişli yivler
-      threadPaint.shader = LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [
-          Colors.white.withOpacity(0.5),
-          Colors.black.withOpacity(0.2),
-        ],
-      ).createShader(Rect.fromCircle(center: center, radius: threadRadius));
-
-      canvas.drawCircle(center, threadRadius, threadPaint);
-    }
-
-    // 6. Dış Altıgenin 3D Işık Kenarları (Bevel Etkisi)
-    Paint bevelHighlight = Paint()
-      ..color = Colors.white.withOpacity(0.8)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0;
-
-    Paint bevelShadow = Paint()
-      ..color = Colors.black.withOpacity(0.2)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0;
-
-    for (int i = 0; i < 6; i++) {
-      double angle1 = (math.pi / 3) * i - (math.pi / 6);
-      double angle2 = (math.pi / 3) * (i + 1) - (math.pi / 6);
-      
-      double x1 = center.dx + radius * math.cos(angle1);
-      double y1 = center.dy + radius * math.sin(angle1);
-      double x2 = center.dx + radius * math.cos(angle2);
-      double y2 = center.dy + radius * math.sin(angle2);
-
-      // Sol üst ve üst kenarlara ışık, sağ alt kenarlara gölge ver
-      if (i >= 3 && i <= 5) { // Sol, Sol Üst, Sağ Üst 
-        canvas.drawLine(Offset(x1, y1), Offset(x2, y2), bevelHighlight);
-      } else { // Sağ, Sağ Alt, Sol Alt
-        canvas.drawLine(Offset(x1, y1), Offset(x2, y2), bevelShadow);
-      }
-    }
+  Widget _buildBottomMenuIcon(IconData icon, String text) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, color: const Color(0xFF8B7355), size: 28),
+        const SizedBox(height: 6),
+        Text(
+          text,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: Color(0xFF2C2519),
+            fontSize: 10,
+            fontWeight: FontWeight.w900, // Sert font
+            letterSpacing: 0.5,
+          ),
+        ),
+      ],
+    );
   }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

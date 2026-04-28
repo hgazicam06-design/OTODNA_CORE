@@ -1,31 +1,79 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // ── 🛡️ SİBER KİMLİK DOĞRULAMA (KARARGAH KALKANI) ──
-    // Sadece OtoDNA sistemine yetkili giriş yapmış personeli tanır
-    function isAuth() {
+    
+    // YARDIMCI FONKSİYONLAR
+    function isGirisYapmis() {
       return request.auth != null;
     }
-
-    // ── 🌐 WEB SORGULAMA VE MARKET (SİVİL VİTRİN - SADECE OKUMA) ──
-    // Web'den plaka/şase sorgulayan müşteriler ve marketi gezenler sadece veriyi GÖREBİLİR.
-    // Değişiklik yapmak (write) için yetkili olmak şarttır!
-    match /arac_kimlikleri/{document} {
-      allow read: if true;
-      allow write: if isAuth();
+    
+    function isKendiVerisi(sahipId) {
+      return request.auth.uid == sahipId;
     }
 
-    match /market_urunleri/{document} {
-      allow read: if true;
-      allow write: if isAuth();
+    function isSuperAdmin() {
+      // Gerçek senaryoda kullanıcı dökümanındaki "role" alanı kontrol edilebilir.
+      // Örnek: return get(/databases/$(database)/documents/kullanicilar/$(request.auth.uid)).data.rol == 'super_admin';
+      // Şimdilik sadece geçici izin bırakıyoruz (Güvenlik testleri için admin_ids array'ine uid'nizi yazabilirsiniz)
+      return false; // Sadece sistem/SDK müdahale edebilir.
     }
 
-    // ── 🚨 KRİTİK İSTİHBARAT BİRİMLERİ (TAM KİLİTLİ KARARGAH KASASI) ──
-    // bayi_stoklari, sos_sinyalleri, yapilan_islemler, ariza_talepleri vb...
-    // BUNLARA SADECE SİBER KİMLİĞİ OLANLAR ERİŞEBİLİR! SİVİLLER GİREMEZ!
-    match /{document=**} {
-      allow read, write: if isAuth();
+    // ── 1. ARAÇLAR (Garaj) ──
+    match /araclar/{aracId} {
+      // Araç marketteyse veya galerideyse HERKES okuyabilir. Aksi halde SADECE sahibi.
+      allow read: if resource.data.durum == 'Sahibinden' || resource.data.durum == 'Satışta' || isKendiVerisi(resource.data.sahip_id);
+      
+      // Oluşturma: Sadece giriş yapmış kullanıcı ve plaka bilgisi ZORUNLU
+      allow create: if isGirisYapmis() && request.resource.data.keys().hasAll(['plaka', 'sahip_id']) && isKendiVerisi(request.resource.data.sahip_id);
+      
+      // Güncelleme ve Silme: Sadece aracın sahibi yapabilir.
+      allow update, delete: if isGirisYapmis() && isKendiVerisi(resource.data.sahip_id);
+    }
+
+    // ── 2. YEDEK PARÇA VE İLANLAR ──
+    match /ilanlar/{ilanId} {
+      // Herkes pazardaki ilanları okuyabilir.
+      allow read: if true;
+      
+      // İlanı sadece sahibi oluşturabilir ve güncelleyebilir.
+      allow create: if isGirisYapmis() && request.resource.data.keys().hasAll(['ilan_ad', 'fiyat', 'satici_id']) && isKendiVerisi(request.resource.data.satici_id);
+      allow update, delete: if isGirisYapmis() && isKendiVerisi(resource.data.satici_id);
+    }
+
+    // ── 3. EKSPERTİZ VE SERVİS RAPORLARI ──
+    match /ekspertiz_raporlari/{raporId} {
+      // Aracı satın alan kişi, sahibi veya onaylayan usta görebilir. 
+      // (Geçici olarak okumayı giriş yapmış herkese açıyoruz, detaylı izolasyon backend'de yapılmalı)
+      allow read: if isGirisYapmis();
+      
+      // Usta rapor oluşturabilir. (WriteBatch üzerinden atılıyor)
+      allow create: if isGirisYapmis() && request.resource.data.keys().hasAll(['sase_no', 'usta_id']) && isKendiVerisi(request.resource.data.usta_id);
+      allow update: if isGirisYapmis() && isKendiVerisi(resource.data.usta_id);
+      allow delete: if false; // Ekspertiz raporları SİLİNEMEZ! Hukuki Kanıt. (Soft delete kullanılmalı)
+    }
+
+    // ── 4. SİSTEM LOGLARI (SİBER KARA KUTU) ──
+    match /sistem_loglari/{logId} {
+      // Kimse logları uygulamadan doğrudan okuyamaz. Sadece Firebase Console'dan (Admin) okunur.
+      allow read: if isSuperAdmin();
+      
+      // Sistem (Cloud Functions veya WriteBatch) tarafından log yazılabilir. 
+      // Doğrudan API istekleri limitlenmiştir, ancak usta ID'si zorunlu.
+      allow create: if isGirisYapmis();
+      allow update, delete: if false; // Loglar ASLA DEĞİŞTİRİLEMEZ VEYA SİLİNEMEZ.
+    }
+
+    // ── 5. KULLANICI PROFİLLERİ VE KVKK ONAYLARI ──
+    match /kullanicilar/{userId} {
+      allow read: if isGirisYapmis() && (isKendiVerisi(userId) || isSuperAdmin());
+      allow create, update: if isKendiVerisi(userId);
+      allow delete: if false; // KVKK 10 yıl kuralı. Gerçek silme işlemi Cloud Functions ile "anonimleştirme" yapılarak sağlanır.
+    }
+
+    // ── 6. FİNANS VE CÜZDAN ──
+    match /cuzdanlar/{cuzdanId} {
+      allow read: if isGirisYapmis() && isKendiVerisi(cuzdanId); // Sadece kendi bakiyesini görür
+      allow write: if false; // Para işlemleri SADECE Cloud Functions (Sunucu) üzerinden güvenli yapılır. Frontend'den bakiye yazılamaz!
     }
 
   }

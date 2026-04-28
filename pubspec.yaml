@@ -73,6 +73,6 @@ flutter:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/otodna_logo_new.jpg"
+  image_path: "assets/images/otodna_beyaz_ikon.jpg"
   adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/images/otodna_logo_new.jpg"
+  adaptive_icon_foreground: "assets/images/otodna_beyaz_ikon.jpg"

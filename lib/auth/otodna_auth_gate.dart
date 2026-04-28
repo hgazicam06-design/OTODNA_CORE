@@ -1,5 +1,3 @@
-﻿import 'package:otodna/core/siber_tema.dart';
-// lib/auth/otodna_auth_gate.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,10 +17,11 @@ import '../screens/usta_panel_screen.dart';
 import '../screens/home_screen.dart';
 import '../bayi/bayi_merkez.dart';
 import '../bayi/belge_dogrulama.dart';
+import '../screens/auth/kvkk_onay_screen.dart'; // YASAL ZIRH
 
 /// 🛡️ KUANTUM GİRİŞ KAPISI VE RÜTBE YÖNLENDİRİCİSİ (RIVERPOD DESTEKLİ)
 class OtoDnaAuthGate extends ConsumerWidget {
-  OtoDnaAuthGate({super.key});
+  const OtoDnaAuthGate({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,7 +36,7 @@ class OtoDnaAuthGate extends ConsumerWidget {
         data: (user) {
           // Eğer kullanıcı hiç giriş yapmamışsa Zırhlı LoginScreen'e fırlat!
           if (user == null) {
-            return LoginScreen();
+            return const LoginScreen();
           }
 
           // 🛡️ 2. KARARGAH SİCİL MOTORUNU DİNLE
@@ -86,9 +85,15 @@ class OtoDnaAuthGate extends ConsumerWidget {
               // Rol veya Rutbe değişkenlerini destekler (Geriye dönük uyumluluk)
               String role = (userData['rol'] ?? userData['rutbe'] ?? "USER").toString().toUpperCase();
 
+              // 🛡️ YASAL ZIRH: KVKK Onay Kontrolü (Hukuk Kalkanı)
+              bool kvkkOnayli = userData['kvkk_onay'] ?? false;
+              if (!kvkkOnayli) {
+                return const KvkkOnayScreen(hedefRota: '/home'); 
+              }
+
               // 🧠 KUANTUM YÖNLENDİRME MERKEZİ (Özgür Kullanım Protokolü)
               if (role == "ADMIN" || role == "BOLGE_KOMUTANI" || role == "SUPER_ADMIN" || role == "BASKAN") {
-                return SuperAdminScreen();
+                return const SuperAdminScreen();
               } else if (role == "BAYI") {
                 // 🛡️ SİBER ZIRH: Bayi belgelerini Karargaha mühürledi mi?
                 bool belgelerYuklendi = userData['belgeler_yuklendi'] ?? false;
@@ -98,9 +103,9 @@ class OtoDnaAuthGate extends ConsumerWidget {
                   return BayiMerkezi(bayiId: user.uid);
                 }
               } else if (role == "USTA") {
-                return UstaPanelScreen();
+                return const UstaPanelScreen();
               } else {
-                return HomeScreen();
+                return const HomeScreen();
               }
             },
           );
@@ -126,34 +131,34 @@ class _KuantumYuklemeEkrani extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.all(24),
+              padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
                 boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 20, spreadRadius: 5)],
               ),
-              child: Icon(Icons.shield_outlined, size: 56, color: SiberTema.kuantumCyan),
+              child: const Icon(Icons.shield_outlined, size: 56, color: SiberTema.kuantumCyan),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
 
-            Text(
+            const Text(
               'OtoDNA',
               style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: Colors.white, fontFamily: 'Avenir', letterSpacing: 4.0),
             ),
-            SizedBox(height: 8),
-            Text(
+            const SizedBox(height: 8),
+            const Text(
               'SİBER KARARGAH BAĞLANTISI',
               style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: SiberTema.kuantumCyan, fontFamily: 'Avenir', letterSpacing: 3.0),
             ),
 
-            SizedBox(height: 64),
+            const SizedBox(height: 64),
 
-            SizedBox(
+            const SizedBox(
               width: 32,
               height: 32,
               child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2.5),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
 
             Text(
               mesaj,
@@ -178,43 +183,43 @@ class _KaraListeEkrani extends StatelessWidget {
       backgroundColor: SiberTema.oledBlack,
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: EdgeInsets.all(32),
+                padding: const EdgeInsets.all(32),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(color: SiberTema.kanKirmizi, width: 2),
                   boxShadow: [BoxShadow(color: SiberTema.kanKirmizi.withOpacity(0.2), blurRadius: 40, spreadRadius: 10)],
                 ),
-                child: Icon(Icons.block, size: 70, color: SiberTema.kanKirmizi),
+                child: const Icon(Icons.block, size: 70, color: SiberTema.kanKirmizi),
               ),
-              SizedBox(height: 40),
-              Text(
+              const SizedBox(height: 40),
+              const Text(
                 'SİSTEM ERİŞİMİ REDDEDİLDİ',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: SiberTema.kanKirmizi, fontFamily: 'Avenir', letterSpacing: 2.0),
               ),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Siber Sicilinizde tespit edilen ihlaller nedeniyle Kuantum Ağına erişiminiz kalıcı olarak engellenmiştir. (BLACK STAR MÜHRÜ)',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white70, fontFamily: 'Avenir', height: 1.5),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: SiberTema.kanKirmizi.withOpacity(0.1),
                   foregroundColor: SiberTema.kanKirmizi,
-                  side: BorderSide(color: SiberTema.kanKirmizi),
-                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  side: const BorderSide(color: SiberTema.kanKirmizi),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 onPressed: () => FirebaseAuth.instance.signOut(),
-                icon: Icon(Icons.power_settings_new),
-                label: Text("BAĞLANTIYI KES", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                icon: const Icon(Icons.power_settings_new),
+                label: const Text("BAĞLANTIYI KES", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
               )
             ],
           ),
@@ -222,4 +227,4 @@ class _KaraListeEkrani extends StatelessWidget {
       ),
     );
   }
-}
+}
