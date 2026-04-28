@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import '../services/hatirlatma_service.dart';
 import '../widgets/asistan_widget.dart';
 
 class AnaEkran extends StatefulWidget {
-  const AnaEkran({super.key});
+  AnaEkran({super.key});
 
   @override
   State<AnaEkran> createState() => _AnaEkranState();
@@ -18,13 +19,13 @@ class AnaEkran extends StatefulWidget {
 
 class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
   // 🏢 ULTRA PROFESYONEL KURUMSAL PALET (Kurumsal Web Sitesi Esintisi)
-  final Color bgColor = const Color(0xFFF4F6F8); // Çok hafif kurumsal gri
+  final Color bgColor = Color(0xFFF4F6F8); // Çok hafif kurumsal gri
   final Color surfaceColor = Colors.white;
-  final Color primaryTeal = const Color(0xFF005A64); // Yapı Kredi & Kurumsal derin turkuaz/lacivert karışımı
-  final Color secondaryTeal = const Color(0xFF009688); // Açık turkuaz vurgu
-  final Color textMain = const Color(0xFF1E293B);
-  final Color textMuted = const Color(0xFF64748B);
-  final Color dangerColor = const Color(0xFFD32F2F); // Profesyonel kırmız
+  final Color primaryTeal = Color(0xFF005A64); // Yapı Kredi & Kurumsal derin turkuaz/lacivert karışımı
+  final Color secondaryTeal = Color(0xFF009688); // Açık turkuaz vurgu
+  final Color textMain = Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
+  final Color dangerColor = Color(0xFFD32F2F); // Profesyonel kırmız
 
   final _asistan = AsistanService();
   List<AracModel> _araclar = [];
@@ -37,7 +38,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
     super.initState();
     _pulseCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3),
+      duration: Duration(seconds: 3),
     )..repeat(reverse: true);
     _araclariYukle();
     _asistaniBaslat();
@@ -95,13 +96,13 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
             child: _yukleniyor
                 ? Center(child: CircularProgressIndicator(color: primaryTeal, strokeWidth: 3))
                 : ListView(
-                    physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-                    padding: const EdgeInsets.only(top: 20, bottom: 100),
+                    physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+                    padding: EdgeInsets.only(top: 20, bottom: 100),
                     children: [
                       _buildAraclarBolumu(),
-                      const SizedBox(height: 32),
+                      SizedBox(height: 32),
                       _buildHizliIslemler(),
-                      const SizedBox(height: 32),
+                      SizedBox(height: 32),
                       _buildAnaIslemlerListe(),
                     ],
                   ),
@@ -123,7 +124,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
       title: Container(
         height: 40,
         decoration: BoxDecoration(
-          color: const Color(0xFFF1F3F5), // Web tarzı açık gri arama kutusu
+          color: Color(0xFFF1F3F5), // Web tarzı açık gri arama kutusu
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: Colors.white.withOpacity(0.05)),
         ),
@@ -134,7 +135,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
             hintStyle: TextStyle(color: textMuted.withOpacity(0.8), fontFamily: 'Avenir', fontSize: 13),
             prefixIcon: Icon(Icons.search, color: textMuted, size: 20),
             border: InputBorder.none,
-            contentPadding: const EdgeInsets.symmetric(vertical: 11), // Merkezi hizalama
+            contentPadding: EdgeInsets.symmetric(vertical: 11), // Merkezi hizalama
           ),
         ),
       ),
@@ -151,17 +152,17 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
                 right: 12,
                 top: 12,
                 child: Container(
-                  padding: const EdgeInsets.all(4),
+                  padding: EdgeInsets.all(4),
                   decoration: BoxDecoration(color: dangerColor, shape: BoxShape.circle, border: Border.all(color: surfaceColor, width: 1.5)),
-                  child: Text('${_bildirimSayisi()}', style: const TextStyle(color: SiberTema.textMain, fontSize: 7, fontWeight: FontWeight.bold)),
+                  child: Text('${_bildirimSayisi()}', style: TextStyle(color: SiberTema.textMain, fontSize: 7, fontWeight: FontWeight.bold)),
                 ),
               )
           ],
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: 8),
       ],
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1.0),
+        preferredSize: Size.fromHeight(1.0),
         child: Container(color: Colors.white.withOpacity(0.05), height: 1.0), // Zarif bir ayırıcı çizgi
       ),
     );
@@ -177,11 +178,11 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 60, bottom: 20, left: 20, right: 20),
+            padding: EdgeInsets.only(top: 60, bottom: 20, left: 20, right: 20),
             decoration: BoxDecoration(
               color: primaryTeal,
               image: DecorationImage(
-                image: const AssetImage('assets/images/radar_grid.png'),
+                image: AssetImage('assets/images/radar_grid.png'),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.1), BlendMode.dstIn),
               )
@@ -193,13 +194,13 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
                   backgroundColor: Colors.white,
                   child: Icon(Icons.person, color: primaryTeal, size: 36),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(userName, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1, fontSize: 16)),
-                      const SizedBox(height: 4),
+                      Text(userName, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1, fontSize: 16)),
+                      SizedBox(height: 4),
                       Text(user?.email ?? '', style: TextStyle(color: SiberTema.textMain.withOpacity(0.8), fontSize: 11, fontFamily: 'Avenir')),
                     ],
                   ),
@@ -209,25 +210,25 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
           ),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.symmetric(vertical: 10),
               children: [
                 _drawerItem(Icons.language, "Dil Seçenekleri (TR)"),
                 _drawerItem(Icons.settings_outlined, "Hesap Ayarları"),
                 _drawerItem(Icons.security_outlined, "Güvenlik & Gizlilik"),
-                const Divider(height: 30),
+                Divider(height: 30),
                 _drawerItem(Icons.headset_mic_outlined, "Müşteri İletişim Merkezi"),
                 _drawerItem(Icons.info_outline, "Hakkımızda & Sözleşmeler"),
               ],
             ),
           ),
-          const Divider(height: 1),
+          Divider(height: 1),
           ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             leading: Icon(Icons.logout, color: dangerColor),
             title: Text("Güvenli Çıkış", style: TextStyle(color: dangerColor, fontWeight: FontWeight.bold, fontFamily: 'Avenir', fontSize: 14)),
             onTap: _cikisYap,
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
         ],
       ),
     );
@@ -235,7 +236,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
 
   Widget _drawerItem(IconData icon, String title) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 24),
+      contentPadding: EdgeInsets.symmetric(horizontal: 24),
       leading: Icon(icon, color: textMuted, size: 22),
       title: Text(title, style: TextStyle(color: textMain, fontWeight: FontWeight.w600, fontFamily: 'Avenir', fontSize: 14)),
       trailing: Icon(Icons.arrow_forward_ios, size: 12, color: textMuted.withOpacity(0.5)),
@@ -249,7 +250,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: EdgeInsets.symmetric(horizontal: 24),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -259,7 +260,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
                 child: Row(
                   children: [
                     Icon(Icons.add_circle, color: secondaryTeal, size: 16),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4),
                     Text("Yeni Araç Ekle", style: TextStyle(color: secondaryTeal, fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                   ],
                 ),
@@ -267,13 +268,13 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
             ],
           ),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: 20),
         SizedBox(
           height: 190, // Kart yüksekliği biraz daha artırıldı
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 16),
             itemCount: _araclar.isEmpty ? 1 : _araclar.length,
             itemBuilder: (ctx, i) {
               if (_araclar.isEmpty) return _buildAracYokKarti();
@@ -288,16 +289,16 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
   Widget _buildPremiumAracKarti(AracModel a) {
     return Container(
       width: 320,
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: LinearGradient(
-          colors: [primaryTeal, const Color(0xFF003D47)], // Çok derin, kurumsal lacivert/turkuaz
+          colors: [primaryTeal, Color(0xFF003D47)], // Çok derin, kurumsal lacivert/turkuaz
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         boxShadow: [
-          BoxShadow(color: primaryTeal.withOpacity(0.25), blurRadius: 15, offset: const Offset(0, 8)),
+          BoxShadow(color: primaryTeal.withOpacity(0.25), blurRadius: 15, offset: Offset(0, 8)),
         ],
       ),
       child: Stack(
@@ -309,7 +310,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
             child: Icon(Icons.directions_car, color: Colors.white.withOpacity(0.03), size: 150),
           ),
           Padding(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -318,26 +319,26 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.memory, color: Color(0xFFFFD700), size: 24), // Altın çip detayı
-                        const SizedBox(width: 8),
+                        Icon(Icons.memory, color: Color(0xFFFFD700), size: 24), // Altın çip detayı
+                        SizedBox(width: 8),
                         Text("OTODNA PLATINUM", style: TextStyle(color: SiberTema.textMain.withOpacity(0.6), fontSize: 9, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                       ],
                     ),
                     GestureDetector(
                       onTap: () => context.push('/qr/${a.plaka}'), 
                       child: Container(
-                        padding: const EdgeInsets.all(6),
+                        padding: EdgeInsets.all(6),
                         decoration: BoxDecoration(color: Colors.white.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-                        child: const Icon(Icons.qr_code_scanner, color: SiberTema.kuantumCyan, size: 16),
+                        child: Icon(Icons.qr_code_scanner, color: SiberTema.kuantumCyan, size: 16),
                       ),
                     )
                   ],
                 ),
-                const Spacer(),
-                Text(a.plaka.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir')),
-                const SizedBox(height: 4),
+                Spacer(),
+                Text(a.plaka.toUpperCase(), style: TextStyle(color: SiberTema.textMain, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir')),
+                SizedBox(height: 4),
                 Text('${a.marka} ${a.model}'.toUpperCase(), style: TextStyle(color: SiberTema.textMain.withOpacity(0.8), fontSize: 13, fontFamily: 'Avenir', fontWeight: FontWeight.w500)),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -359,7 +360,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(baslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 8, letterSpacing: 1, fontFamily: 'Avenir')),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         Text(deger, style: TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: isMonospace ? 'monospace' : 'Avenir', letterSpacing: isMonospace ? 1 : 0)),
       ],
     );
@@ -375,24 +376,24 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
   Widget _buildAracYokKarti() {
     return Container(
       width: 320,
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: textMuted.withOpacity(0.2), style: BorderStyle.solid),
-        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.03), blurRadius: 10, offset: const Offset(0, 4))],
+        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.03), blurRadius: 10, offset: Offset(0, 4))],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
             child: Icon(Icons.add_directions_car, color: primaryTeal, size: 36),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Text("GARAJINIZ BOŞ", style: TextStyle(color: textMain, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1, fontFamily: 'Avenir')),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text("OtoDNA'nın ayrıcalıklı dünyasına\nkatılmak için araç ekleyin.", textAlign: TextAlign.center, style: TextStyle(color: textMuted, fontSize: 12, fontFamily: 'Avenir', height: 1.5)),
         ],
       ),
@@ -402,12 +403,12 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
   // ── 4. HIZLI İŞLEMLER (Varlıklarım / İşlemler Menüsü) ──
   Widget _buildHizliIslemler() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
-      padding: const EdgeInsets.all(24),
+      margin: EdgeInsets.symmetric(horizontal: 24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.03), blurRadius: 20, offset: const Offset(0, 8))],
+        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.03), blurRadius: 20, offset: Offset(0, 8))],
         border: Border.all(color: Colors.white.withOpacity(0.02))
       ),
       child: Row(
@@ -439,7 +440,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
             ),
             child: Icon(icon, color: primaryTeal, size: 26),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           Text(label, textAlign: TextAlign.center, style: TextStyle(color: textMain, fontSize: 11, fontWeight: FontWeight.w800, fontFamily: 'Avenir')),
         ],
       ),
@@ -449,12 +450,12 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
   // ── 5. ANA İŞLEMLER DİZİLİMİ (OtoDNA Finans & İşlem Dünyası) ──
   Widget _buildAnaIslemlerListe() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("OtoDNA İşlemleri", style: TextStyle(color: textMain, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 0.5)),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
           _kurumsalIslemSatiri(Icons.gavel, "Siber Bilirkişi (AI)", "Adli Rapor & Kusur Hakemliği", isHighlight: true),
           _kurumsalIslemSatiri(Icons.document_scanner_outlined, "Ekspertiz Raporları", "Araç geçmişini detaylı sorgulayın"),
           _kurumsalIslemSatiri(Icons.calendar_month_outlined, "TÜVTÜRK İşlemleri", "Muayene randevusu ve hatırlatmalar"),
@@ -467,17 +468,17 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
 
   Widget _kurumsalIslemSatiri(IconData icon, String title, String subtitle, {bool isHighlight = false}) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: isHighlight ? secondaryTeal.withOpacity(0.3) : Colors.black.withOpacity(0.04)),
-        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 4))],
+        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10, offset: Offset(0, 4))],
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         leading: Container(
-          padding: const EdgeInsets.all(12),
+          padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: isHighlight ? secondaryTeal.withOpacity(0.1) : bgColor,
             borderRadius: BorderRadius.circular(14),
@@ -486,7 +487,7 @@ class _AnaEkranState extends State<AnaEkran> with TickerProviderStateMixin {
         ),
         title: Text(title, style: TextStyle(color: textMain, fontSize: 14, fontWeight: FontWeight.w800, fontFamily: 'Avenir')),
         subtitle: Padding(
-          padding: const EdgeInsets.only(top: 4),
+          padding: EdgeInsets.only(top: 4),
           child: Text(subtitle, style: TextStyle(color: textMuted, fontSize: 11, fontFamily: 'Avenir')),
         ),
         trailing: Icon(Icons.arrow_forward_ios, size: 14, color: textMuted.withOpacity(0.4)),

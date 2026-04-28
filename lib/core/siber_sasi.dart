@@ -1,4 +1,4 @@
-// lib/core/siber_sasi.dart
+﻿// lib/core/siber_sasi.dart
 import 'package:flutter/material.dart';
 
 /// 🏗️ SİBER ŞASİ: Cihazın ekran boyutuna göre formu değiştiren adaptif zırh.
@@ -9,7 +9,7 @@ class SiberSasi extends StatelessWidget {
   final Widget tablet; // Araç İçi Double Teyp & Tabletler için
   final Widget desktop; // Karargah Merkez (Bilgisayar / Web) için
 
-  const SiberSasi({
+  SiberSasi({
     super.key,
     required this.mobile,
     required this.tablet,

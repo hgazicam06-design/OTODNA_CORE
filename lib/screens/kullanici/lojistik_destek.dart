@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/kullanici/lojistik_destek.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +13,7 @@ class SiberLojistikTakip extends StatefulWidget {
   final String siparisId;
   final String kullaniciId; // Mesajı gönderenin kimliği
 
-  const SiberLojistikTakip({super.key, required this.siparisId, required this.kullaniciId});
+  SiberLojistikTakip({super.key, required this.siparisId, required this.kullaniciId});
 
   @override
   State<SiberLojistikTakip> createState() => _SiberLojistikTakipState();
@@ -24,8 +25,8 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
 
   final Color primaryTeal = Colors.teal.shade700;
   final Color dangerColor = Colors.redAccent;
-  final Color textColor = const Color(0xFF1E293B);
-  final Color bgColor = const Color(0xFFFAFAFC);
+  final Color textColor = Color(0xFF1E293B);
+  final Color bgColor = Color(0xFFFAFAFC);
 
   // ── 🚀 S.O.S MOTORU (ATOMİK İŞLEM) ──
   Future<void> _imeceAlarmiVer() async {
@@ -92,7 +93,7 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(mesaj, style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           ],
         ),
@@ -124,7 +125,7 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
               _buildSosyYardimButonu(),
 
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Divider(color: Colors.white.withValues(alpha: 0.05), height: 1),
               ),
 
@@ -146,7 +147,7 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
       stream: _db.collection('siparisler').doc(widget.siparisId).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData || !snapshot.data!.exists) {
-          return const SizedBox.shrink();
+          return SizedBox.shrink();
         }
 
         var data = snapshot.data!.data() as Map<String, dynamic>;
@@ -155,32 +156,32 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
         Color durumRengi = (durum == "YOLDA" || durum == "TESLİM EDİLDİ") ? primaryTeal : Colors.orange;
 
         return Container(
-          margin: const EdgeInsets.all(16),
-          padding: const EdgeInsets.all(20),
+          margin: EdgeInsets.all(16),
+          padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-              boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
+              boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: Offset(0, 5))]
           ),
           child: Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
                     color: primaryTeal.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                 ),
                 child: Icon(Icons.radar, color: primaryTeal),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("LOJİSTİK DURUMU: $durum", style: TextStyle(color: durumRengi, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-                    const SizedBox(height: 4),
-                    Text("BARKOD NO: $takipKodu", style: const TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                    SizedBox(height: 4),
+                    Text("BARKOD NO: $takipKodu", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                   ],
                 ),
               ),
@@ -193,14 +194,14 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
 
   Widget _buildSosyYardimButonu() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: SizedBox(
         width: double.infinity,
         height: 55,
         child: ElevatedButton.icon(
           onPressed: _imeceAlarmiVer,
-          icon: const Icon(Icons.sos, color: SiberTema.kuantumCyan, size: 28),
-          label: const Text("ACİL DURUM / S.O.S ALARMI VER", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
+          icon: Icon(Icons.sos, color: SiberTema.kuantumCyan, size: 28),
+          label: Text("ACİL DURUM / S.O.S ALARMI VER", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
           style: ElevatedButton.styleFrom(
             backgroundColor: dangerColor,
             foregroundColor: Colors.white,
@@ -214,12 +215,12 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
 
   Widget _buildSohbetBasligi() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
           Icon(Icons.admin_panel_settings, color: primaryTeal, size: 16),
-          const SizedBox(width: 8),
-          const Expanded(child: Text("PLAZA MERKEZ GÖZETİMİNDE İLETİŞİM", style: TextStyle(color: Colors.white45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))),
+          SizedBox(width: 8),
+          Expanded(child: Text("PLAZA MERKEZ GÖZETİMİNDE İLETİŞİM", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))),
         ],
       ),
     );
@@ -227,7 +228,7 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
 
   Widget _buildCanliSohbetAkisi() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      margin: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -243,13 +244,13 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text("Merkez bağlantısı kuruldu.\nİletişime geçebilirsiniz.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white38, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')));
+            return Center(child: Text("Merkez bağlantısı kuruldu.\nİletişime geçebilirsiniz.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white38, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')));
           }
 
           return ListView.builder(
             reverse: true,
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(16),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.all(16),
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               var mesajVerisi = snapshot.data!.docs[index].data() as Map<String, dynamic>;
@@ -258,17 +259,17 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
               return Align(
                 alignment: benGonderdim ? Alignment.centerRight : Alignment.centerLeft,
                 child: Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  margin: EdgeInsets.only(bottom: 12),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   decoration: BoxDecoration(
                     color: benGonderdim ? primaryTeal : Colors.grey.shade100,
                     borderRadius: BorderRadius.only(
-                      topLeft: const Radius.circular(16),
-                      topRight: const Radius.circular(16),
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16),
                       bottomLeft: Radius.circular(benGonderdim ? 16 : 4),
                       bottomRight: Radius.circular(benGonderdim ? 4 : 16),
                     ),
-                    boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 5, offset: const Offset(0, 2))]
+                    boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 5, offset: Offset(0, 2))]
                   ),
                   child: Text(
                     mesajVerisi['mesaj_metni'] ?? "",
@@ -285,7 +286,7 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
 
   Widget _buildMesajGondermeMotoru() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05)))
@@ -303,7 +304,7 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
                 child: TextField(
                   controller: _mesajCtrl,
                   style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: "Merkeze veya bayiye yaz...",
                     hintStyle: TextStyle(color: Colors.white38, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
                     border: InputBorder.none,
@@ -312,17 +313,17 @@ class _SiberLojistikTakipState extends State<SiberLojistikTakip> {
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12),
             GestureDetector(
               onTap: _mesajGonder,
               child: Container(
-                padding: const EdgeInsets.all(14),
+                padding: EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   color: primaryTeal,
                   shape: BoxShape.circle,
-                  boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 4))],
+                  boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.3), blurRadius: 10, offset: Offset(0, 4))],
                 ),
-                child: const Icon(Icons.send_rounded, color: SiberTema.kuantumCyan, size: 20),
+                child: Icon(Icons.send_rounded, color: SiberTema.kuantumCyan, size: 20),
               ),
             ),
           ],

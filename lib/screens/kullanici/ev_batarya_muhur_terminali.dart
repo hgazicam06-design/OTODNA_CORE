@@ -1,9 +1,10 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/responsive_kalkan.dart';
 
 class EvBataryaMuhurTerminali extends StatefulWidget {
-  const EvBataryaMuhurTerminali({super.key});
+  EvBataryaMuhurTerminali({super.key});
 
   @override
   State<EvBataryaMuhurTerminali> createState() => _EvBataryaMuhurTerminaliState();
@@ -17,9 +18,9 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
 
   // Plaza Kalitesi Renkleri (EV Konsepti: Zümrüt Yeşili & Teal)
   final Color primaryTeal = Colors.teal.shade700;
-  final Color bgColor = const Color(0xFFFAFAFC);
-  final Color textColor = const Color(0xFF1E293B);
-  final Color evGreen = const Color(0xFF10B981); // Emerald Green
+  final Color bgColor = Color(0xFFFAFAFC);
+  final Color textColor = Color(0xFF1E293B);
+  final Color evGreen = Color(0xFF10B981); // Emerald Green
 
   // Şarj İstasyonları Mock Verisi
   final List<Map<String, dynamic>> _sarjIstasyonlari = [
@@ -31,7 +32,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
   @override
   void initState() {
     super.initState();
-    _pulseController = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat(reverse: true);
+    _pulseController = AnimationController(vsync: this, duration: Duration(seconds: 2))..repeat(reverse: true);
   }
 
   @override
@@ -47,7 +48,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
     });
 
     // Simüle edilmiş batarya analizi (3 saniye)
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 3));
 
     if (!mounted) return;
     setState(() {
@@ -55,7 +56,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
       _taramaBitti = true;
     });
     
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Batarya Hücreleri Analiz Edildi. Durum: MÜKEMMEL", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), backgroundColor: evGreen));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Batarya Hücreleri Analiz Edildi. Durum: MÜKEMMEL", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), backgroundColor: evGreen));
   }
 
   void _istasyonlariTara() {
@@ -64,10 +65,10 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           border: Border(top: BorderSide(color: evGreen.withValues(alpha: 0.3), width: 2)),
           boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20)]
         ),
@@ -76,24 +77,24 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             Row(
               children: [
                 Icon(Icons.radar, color: evGreen, size: 28),
-                const SizedBox(width: 12),
+                SizedBox(width: 12),
                 Text("EN YAKIN ŞARJ İSTASYONLARI", style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
               ],
             ),
-            const SizedBox(height: 8),
-            const Text("Bölgenizdeki 10 km yarıçapında bulunan güncel şarj noktaları.", style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-            const SizedBox(height: 24),
+            SizedBox(height: 8),
+            Text("Bölgenizdeki 10 km yarıçapında bulunan güncel şarj noktaları.", style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            SizedBox(height: 24),
             
             ..._sarjIstasyonlari.map((istasyon) {
               bool isDolu = istasyon['soket'] == 'Dolu';
               Color durumRengi = isDolu ? Colors.redAccent : evGreen;
               return Container(
-                margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.all(16),
+                margin: EdgeInsets.only(bottom: 12),
+                padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
@@ -102,15 +103,15 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
                 ),
                 child: Row(
                   children: [
-                    Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: durumRengi.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(istasyon['ikon'], color: durumRengi, size: 24)),
-                    const SizedBox(width: 16),
+                    Container(padding: EdgeInsets.all(12), decoration: BoxDecoration(color: durumRengi.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(istasyon['ikon'], color: durumRengi, size: 24)),
+                    SizedBox(width: 16),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(istasyon['isim'], style: TextStyle(color: textColor, fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-                          const SizedBox(height: 4),
-                          Text("${istasyon['tip']} • Mesafe: ${istasyon['mesafe']}", style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                          SizedBox(height: 4),
+                          Text("${istasyon['tip']} • Mesafe: ${istasyon['mesafe']}", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                         ],
                       ),
                     ),
@@ -118,7 +119,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Icon(isDolu ? Icons.do_disturb : Icons.check_circle, color: durumRengi, size: 16),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         Text(istasyon['soket'], style: TextStyle(color: durumRengi, fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                       ],
                     )
@@ -126,14 +127,14 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
                 ),
               );
             }),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             SizedBox(
               width: double.infinity, height: 50,
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: textColor, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: Colors.white.withValues(alpha: 0.1))), elevation: 0),
                 onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.close),
-                label: const Text("PANELİ KAPAT", style: TextStyle(fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                icon: Icon(Icons.close),
+                label: Text("PANELİ KAPAT", style: TextStyle(fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
               ),
             )
           ],
@@ -158,59 +159,59 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.all(24),
+          physics: BouncingScrollPhysics(),
           child: Column(
             children: [
               // 1. ÜST BİLGİ PANELLERİ
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10)]),
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(color: evGreen.withValues(alpha: 0.1), shape: BoxShape.circle),
                       child: Icon(Icons.electric_car, color: evGreen, size: 28),
                     ),
-                    const SizedBox(width: 16),
+                    SizedBox(width: 16),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("YÜKSEK VOLTAJ (HV) AĞI", style: TextStyle(color: evGreen, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-                          const SizedBox(height: 4),
-                          const Text("Elektrikli araç bataryalarının SoH (State of Health) ölçümleri ve blok mühürlemesi buradan yapılır.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4, fontFamily: 'Avenir')),
+                          SizedBox(height: 4),
+                          Text("Elektrikli araç bataryalarının SoH (State of Health) ölçümleri ve blok mühürlemesi buradan yapılır.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4, fontFamily: 'Avenir')),
                         ],
                       ),
                     )
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
 
               // ŞARJ İSTASYONU RADARI (YENİ EKLENTİ)
               InkWell(
                 onTap: _istasyonlariTara,
                 borderRadius: BorderRadius.circular(16),
                 child: Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: primaryTeal.withValues(alpha: 0.3)), boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.05), blurRadius: 10)]),
                   child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), shape: BoxShape.circle),
                         child: Icon(Icons.ev_station, color: primaryTeal, size: 28),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("ŞARJ İSTASYONU RADARI", style: TextStyle(color: primaryTeal, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-                            const SizedBox(height: 4),
-                            const Text("En yakın DC/AC istasyonlarını tara", style: TextStyle(color: Colors.white54, fontSize: 11, fontFamily: 'Avenir')),
+                            SizedBox(height: 4),
+                            Text("En yakın DC/AC istasyonlarını tara", style: TextStyle(color: Colors.white54, fontSize: 11, fontFamily: 'Avenir')),
                           ],
                         ),
                       ),
@@ -219,7 +220,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
                   ),
                 ),
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
 
               // 2. RADAR VE TARAMA (BATARYA)
               AnimatedBuilder(
@@ -241,7 +242,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
                   );
                 },
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
 
               // 3. TARAMA BUTONU
               if (!_taramaBitti)
@@ -257,7 +258,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
                     ),
                     onPressed: _taranmiyor ? _bataryayiTara : null,
                     icon: Icon(_taranmiyor ? Icons.radar : Icons.hourglass_top, size: 24),
-                    label: Text(_taranmiyor ? "BATARYA HÜCRELERİNİ TARA" : "OBD2 VERİSİ OKUNUYOR...", style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                    label: Text(_taranmiyor ? "BATARYA HÜCRELERİNİ TARA" : "OBD2 VERİSİ OKUNUYOR...", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                   ),
                 ),
 
@@ -265,29 +266,29 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
               if (_taramaBitti)
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(24),
                   decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24), border: Border.all(color: evGreen.withValues(alpha: 0.3), width: 2), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 20)]),
                   child: Column(
                     children: [
                       Icon(Icons.check_circle, color: evGreen, size: 48),
-                      const SizedBox(height: 16),
-                      const Text("BATARYA SAĞLIĞI (SoH)", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 16),
+                      Text("BATARYA SAĞLIĞI (SoH)", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
+                      SizedBox(height: 8),
                       Text("%96.4", style: TextStyle(color: evGreen, fontSize: 48, fontWeight: FontWeight.w900, letterSpacing: -2, fontFamily: 'Avenir')),
-                      const SizedBox(height: 24),
+                      SizedBox(height: 24),
                       _buildHucreSatiri("Hücre Voltaj Dengesi", "KUSURSUZ (0.02V Fark)", evGreen, textColor),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
                       _buildHucreSatiri("Şarj Döngüsü (Cycle)", "142 Kez Dolduruldu", textColor, textColor),
-                      const SizedBox(height: 32),
+                      SizedBox(height: 32),
                       SizedBox(
                         width: double.infinity, height: 50,
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(backgroundColor: evGreen, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), elevation: 0),
                           onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Batarya Plaza Ağına Mühürlendi!"), backgroundColor: primaryTeal));
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Batarya Plaza Ağına Mühürlendi!"), backgroundColor: primaryTeal));
                           },
-                          icon: const Icon(Icons.vpn_key),
-                          label: const Text("BATARYAYI MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                          icon: Icon(Icons.vpn_key),
+                          label: Text("BATARYAYI MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                         ),
                       )
                     ],
@@ -304,7 +305,7 @@ class _EvBataryaMuhurTerminaliState extends State<EvBataryaMuhurTerminali> with 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+        Text(baslik, style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         Text(deger, style: TextStyle(color: vurgu, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
       ],
     );

@@ -1,9 +1,10 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+  SettingsScreen({super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -11,10 +12,10 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET
-  static const Color bgColor = Color(0xFF000000);
-  static const Color surfaceColor = Color(0xFF111111);
-  static const Color primaryCyan = Color(0xFF00FFC2);
-  static const Color dangerColor = Colors.redAccent;
+  static Color bgColor = Color(0xFF000000);
+  static Color surfaceColor = Color(0xFF111111);
+  static Color primaryCyan = Color(0xFF00FFC2);
+  static Color dangerColor = Colors.redAccent;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -56,7 +57,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 1)),
+        content: Text(mesaj, style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 1)),
         backgroundColor: isError ? dangerColor : primaryCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -66,7 +67,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     if (_user == null) {
-      return const Scaffold(
+      return Scaffold(
         backgroundColor: bgColor,
         body: Center(child: Text("SİBER İHLAL: KULLANICI KİMLİĞİ BULUNAMADI!", style: TextStyle(color: dangerColor, fontWeight: FontWeight.bold))),
       );
@@ -78,22 +79,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text("SİSTEM AYARLARI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryCyan, size: 20), onPressed: () => Navigator.pop(context)),
+        title: Text("SİSTEM AYARLARI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
       ),
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600), // 🖥️ Web / Double Teyp Kalkanı
+            constraints: BoxConstraints(maxWidth: 600), // 🖥️ Web / Double Teyp Kalkanı
             child: StreamBuilder<DocumentSnapshot>(
                 stream: _db.collection('kullanicilar').doc(_user!.uid).snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator(color: primaryCyan));
+                    return Center(child: CircularProgressIndicator(color: primaryCyan));
                   }
 
                   if (!snapshot.hasData || !snapshot.data!.exists) {
-                    return const Center(child: Text("KARARGAH VERİSİ BULUNAMADI", style: TextStyle(color: SiberTema.textMuted)));
+                    return Center(child: Text("KARARGAH VERİSİ BULUNAMADI", style: TextStyle(color: SiberTema.textMuted)));
                   }
 
                   // 🧠 VERİTABANINDAN CANLI VERİLERİ ÇEK
@@ -109,14 +110,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   bool kampanyaTeklifleri = ayarlar['kampanya_teklif'] ?? true;
 
                   return SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-                    physics: const BouncingScrollPhysics(),
+                    padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                    physics: BouncingScrollPhysics(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         // 1. CANLI PROFİL KARTI
                         _buildProfileCard(isim, rol),
-                        const SizedBox(height: 40),
+                        SizedBox(height: 40),
 
                         // 2. GÜVENLİK VE GİZLİLİK
                         _buildSectionTitle('GÜVENLİK VE GİZLİLİK', Icons.security),
@@ -138,7 +139,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           icon: Icons.password,
                           onTap: () => _uyariGoster("2FA PROTOKOLÜ YAKINDA AÇILACAK."),
                         ),
-                        const SizedBox(height: 40),
+                        SizedBox(height: 40),
 
                         // 3. ARAÇ VE BİLDİRİMLER
                         _buildSectionTitle('ARAÇ VE BİLDİRİMLER', Icons.directions_car),
@@ -160,7 +161,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           value: kulupBildirimleri,
                           onChanged: (val) => _ayarGuncelle('kulup_bildirim', val),
                         ),
-                        const SizedBox(height: 40),
+                        SizedBox(height: 40),
 
                         // 4. DESTEK VE BİLGİ
                         _buildSectionTitle('KARARGAH', Icons.info_outline),
@@ -174,7 +175,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           icon: Icons.headset_mic_outlined,
                           onTap: () {},
                         ),
-                        const SizedBox(height: 48),
+                        SizedBox(height: 48),
 
                         // 5. ATEŞLEME (ÇIKIŞ YAP) BUTONU
                         SizedBox(
@@ -187,14 +188,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               elevation: 0,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: dangerColor.withOpacity(0.5))),
                             ),
-                            icon: const Icon(Icons.power_settings_new, size: 24),
-                            label: const Text(
+                            icon: Icon(Icons.power_settings_new, size: 24),
+                            label: Text(
                               'SİSTEMDEN GÜVENLİ ÇIKIŞ YAP',
                               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 32),
+                        SizedBox(height: 32),
 
                         // ALT SİBER MÜHÜR
                         Center(
@@ -204,7 +205,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             style: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 2, height: 1.5),
                           ),
                         ),
-                        const SizedBox(height: 24),
+                        SizedBox(height: 24),
                       ],
                     ),
                   );
@@ -219,7 +220,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   // 💎 YARDIMCI BİLEŞEN: CANLI PROFİL KARTI
   Widget _buildProfileCard(String isim, String rol) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(20),
@@ -229,27 +230,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(color: primaryCyan.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: primaryCyan.withOpacity(0.5))),
-            child: const Icon(Icons.person, color: primaryCyan, size: 32),
+            child: Icon(Icons.person, color: primaryCyan, size: 32),
           ),
-          const SizedBox(width: 20),
+          SizedBox(width: 20),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   isim.toUpperCase(),
-                  style: const TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+                  style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1.5),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Row(
                   children: [
-                    const Icon(Icons.verified_user, color: primaryCyan, size: 14),
-                    const SizedBox(width: 6),
+                    Icon(Icons.verified_user, color: primaryCyan, size: 14),
+                    SizedBox(width: 6),
                     Text(
                       'SİBER KİMLİK: ${rol.toUpperCase()}',
-                      style: const TextStyle(color: primaryCyan, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1),
+                      style: TextStyle(color: primaryCyan, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1),
                     ),
                   ],
                 ),
@@ -258,7 +259,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           IconButton(
             onPressed: () => _uyariGoster("KİMLİK GÜNCELLEME PROTOKOLÜ YAKINDA."),
-            icon: const Icon(Icons.edit_square, color: SiberTema.textMuted),
+            icon: Icon(Icons.edit_square, color: SiberTema.textMuted),
           )
         ],
       ),
@@ -268,14 +269,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   // 💎 YARDIMCI BİLEŞEN: BÖLÜM BAŞLIKLARI
   Widget _buildSectionTitle(String title, IconData icon) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0, left: 8),
+      padding: EdgeInsets.only(bottom: 16.0, left: 8),
       child: Row(
         children: [
           Icon(icon, color: primaryCyan.withOpacity(0.5), size: 18),
-          const SizedBox(width: 12),
+          SizedBox(width: 12),
           Text(
             title,
-            style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+            style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5),
           ),
         ],
       ),
@@ -285,8 +286,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   // 💎 YARDIMCI BİLEŞEN: CANLI ŞALTER KARTI (Switch)
   Widget _buildSwitchTile({required String title, required String subtitle, required bool value, required Function(bool) onChanged}) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      margin: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
       child: Row(
         children: [
@@ -294,13 +295,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)),
-                const SizedBox(height: 6),
+                Text(title, style: TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                SizedBox(height: 6),
                 Text(subtitle, style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 10, fontWeight: FontWeight.bold, height: 1.4)),
               ],
             ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16),
           Switch(
             value: value,
             onChanged: onChanged,
@@ -320,26 +321,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        margin: EdgeInsets.only(bottom: 12),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
         child: Row(
           children: [
             Icon(icon, color: SiberTema.textMuted, size: 24),
-            const SizedBox(width: 16),
+            SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                  Text(title, style: TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)),
                   if (subtitle != null) ...[
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6),
                     Text(subtitle, style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 10, fontWeight: FontWeight.bold, height: 1.4)),
                   ]
                 ],
               ),
             ),
-            const Icon(Icons.arrow_forward_ios, color: primaryCyan, size: 16),
+            Icon(Icons.arrow_forward_ios, color: primaryCyan, size: 16),
           ],
         ),
       ),

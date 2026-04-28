@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/siber_cuzdan_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +10,7 @@ import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
 class SiberCuzdanScreen extends StatefulWidget {
-  const SiberCuzdanScreen({super.key});
+  SiberCuzdanScreen({super.key});
 
   @override
   State<SiberCuzdanScreen> createState() => _SiberCuzdanScreenState();
@@ -37,7 +38,7 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
   }
 
   void _ibanKopyala() {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("IBAN Kuantum Panoya Kopyalandı! 📋", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan, duration: Duration(seconds: 1)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("IBAN Kuantum Panoya Kopyalandı! 📋", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan, duration: Duration(seconds: 1)));
   }
 
   // 💎 GERÇEK FİREBASE BAKİYE YÜKLEME (WriteBatch/Increment)
@@ -59,19 +60,19 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
       });
 
       if(!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("5000 ₺ Kuantum Ağına Mühürlendi! 💸", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)), backgroundColor: Colors.greenAccent));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("5000 ₺ Kuantum Ağına Mühürlendi! 💸", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)), backgroundColor: Colors.greenAccent));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Hata: $e", style: const TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Hata: $e", style: TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi));
     }
   }
 
   void _paraTransferiAc() {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("EFT/FAST Transfer Ağı Başlatılıyor... 💸", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: Colors.blueAccent));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("EFT/FAST Transfer Ağı Başlatılıyor... 💸", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: Colors.blueAccent));
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_currentUser == null) return const Scaffold(backgroundColor: SiberTema.oledBlack, body: Center(child: Text("Siber Kimlik Hatası", style: TextStyle(color: SiberTema.textMain))));
+    if (_currentUser == null) return Scaffold(backgroundColor: SiberTema.oledBlack, body: Center(child: Text("Siber Kimlik Hatası", style: TextStyle(color: SiberTema.textMain))));
 
     return ResponsiveKalkan(
       child: Scaffold(
@@ -79,14 +80,14 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("D İ J İ T A L   C Ü Z D A N", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 3)),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text("D İ J İ T A L   C Ü Z D A N", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 3)),
           centerTitle: true,
         ),
         body: StreamBuilder<DocumentSnapshot>(
             stream: _db.collection('kullanicilar').doc(_currentUser!.uid).snapshots(),
             builder: (context, userSnapshot) {
-              if (userSnapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+              if (userSnapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
 
               double anlikBakiye = 0.0;
               if (userSnapshot.hasData && userSnapshot.data!.exists) {
@@ -97,7 +98,7 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
                 children: [
                   // MİNİMALİST SEKMELER
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                     child: Container(
                       height: 48,
                       decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(24), border: Border.all(color: SiberTema.textMuted)),
@@ -108,8 +109,8 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
                         unselectedLabelColor: Colors.white38,
                         indicatorSize: TabBarIndicatorSize.tab,
                         dividerColor: Colors.transparent,
-                        labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, letterSpacing: 0.5),
-                        tabs: const [Tab(text: "Bakiye & Özet"), Tab(text: "Ağ Muhasebesi")],
+                        labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, letterSpacing: 0.5),
+                        tabs: [Tab(text: "Bakiye & Özet"), Tab(text: "Ağ Muhasebesi")],
                       ),
                     ),
                   ),
@@ -119,13 +120,13 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
                     child: StreamBuilder<QuerySnapshot>(
                         stream: _db.collection('cuzdan_islemleri').where('kullanici_id', isEqualTo: _currentUser!.uid).orderBy('tarih', descending: true).snapshots(),
                         builder: (context, islemSnapshot) {
-                          if (islemSnapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+                          if (islemSnapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
 
                           List<DocumentSnapshot> islemler = islemSnapshot.hasData ? islemSnapshot.data!.docs : [];
 
                           return TabBarView(
                             controller: _tabController,
-                            physics: const BouncingScrollPhysics(),
+                            physics: BouncingScrollPhysics(),
                             children: [
                               _buildCuzdanOzetiSekmesi(anlikBakiye, islemler),
                               _buildMuhasebeSekmesi(islemler),
@@ -149,71 +150,71 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
     final formatCurrency = NumberFormat.currency(locale: 'tr_TR', symbol: '₺');
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      physics: BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // PREMİUM BAKİYE KARTI
           Container(
-            width: double.infinity, padding: const EdgeInsets.all(32),
+            width: double.infinity, padding: EdgeInsets.all(32),
             decoration: BoxDecoration(
                 color: SiberTema.oledBlack,
                 borderRadius: BorderRadius.circular(32),
                 border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 1.5),
-                boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 40, spreadRadius: 5, offset: const Offset(0, 10))]
+                boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 40, spreadRadius: 5, offset: Offset(0, 10))]
             ),
             child: Column(
               children: [
-                const Text("KULLANILABİLİR SİBER BAKİYE", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2)),
-                const SizedBox(height: 12),
-                Text(formatCurrency.format(bakiye), style: const TextStyle(color: SiberTema.textMain, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: -1)),
-                const SizedBox(height: 32),
+                Text("KULLANILABİLİR SİBER BAKİYE", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                SizedBox(height: 12),
+                Text(formatCurrency.format(bakiye), style: TextStyle(color: SiberTema.textMain, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: -1)),
+                SizedBox(height: 32),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        const Text("Tanımlı Cüzdan IBAN", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 6),
+                        Text("Tanımlı Cüzdan IBAN", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold)),
+                        SizedBox(height: 6),
                         Text("TR12 **** **** **** **** 7890", style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1))
                       ]),
-                      GestureDetector(onTap: _ibanKopyala, child: const Icon(Icons.content_copy_outlined, color: SiberTema.kuantumCyan, size: 20)),
+                      GestureDetector(onTap: _ibanKopyala, child: Icon(Icons.content_copy_outlined, color: SiberTema.kuantumCyan, size: 20)),
                     ],
                   ),
                 )
               ],
             ),
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: 32),
 
           // HIZLI AKSİYONLAR
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(child: _buildHizliAksiyon(Icons.account_balance_wallet_outlined, "Para Yükle", Colors.greenAccent, _paraYukleTest)),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(child: _buildHizliAksiyon(Icons.send_outlined, "Ağ Transferi", Colors.blueAccent, _paraTransferiAc)),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(child: _buildHizliAksiyon(Icons.qr_code_scanner_outlined, "QR Ödeme", SiberTema.kuantumCyan, () {})),
             ],
           ),
-          const SizedBox(height: 48),
+          SizedBox(height: 48),
 
           // SİBER HAREKETLER LİSTESİ
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Finansal Hareketler", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
+                Text("Finansal Hareketler", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
                 Text("Tümü", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.8), fontSize: 12, fontWeight: FontWeight.bold))
               ]
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
 
           if (islemler.isEmpty)
-            const Center(child: Padding(padding: EdgeInsets.all(24), child: Text("Siber ağda henüz bir işlem kaydınız yok.", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)))),
+            Center(child: Padding(padding: EdgeInsets.all(24), child: Text("Siber ağda henüz bir işlem kaydınız yok.", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)))),
 
           ...islemler.map((doc) {
             var islem = doc.data() as Map<String, dynamic>;
@@ -239,23 +240,23 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
             }
 
             return Container(
-              margin: const EdgeInsets.only(bottom: 12), padding: const EdgeInsets.all(16),
+              margin: EdgeInsets.only(bottom: 12), padding: EdgeInsets.all(16),
               decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(20), border: Border.all(color: SiberTema.textMuted)),
               child: Row(
                 children: [
                   Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(color: islemRengi.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: islemRengi.withOpacity(0.3))),
                       child: Icon(ikon, color: islemRengi, size: 20)
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16),
                   Expanded(
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(islem['baslik'] ?? 'İşlem', maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: -0.5)),
-                            const SizedBox(height: 6),
-                            Text(tarihMetni, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w500))
+                            Text(islem['baslik'] ?? 'İşlem', maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: -0.5)),
+                            SizedBox(height: 6),
+                            Text(tarihMetni, style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w500))
                           ]
                       )
                   ),
@@ -263,15 +264,15 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text("${gelirMi ? '+' : '-'} ${formatCurrency.format(netTutar)}", style: TextStyle(color: islemRengi, fontSize: 14, fontWeight: FontWeight.w900)),
-                        if (gelirMi) const SizedBox(height: 6),
-                        if (gelirMi) Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: islemRengi.withOpacity(0.1), borderRadius: BorderRadius.circular(4)), child: Text("NET KAZANÇ", style: TextStyle(color: islemRengi, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)))
+                        if (gelirMi) SizedBox(height: 6),
+                        if (gelirMi) Container(padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: islemRengi.withOpacity(0.1), borderRadius: BorderRadius.circular(4)), child: Text("NET KAZANÇ", style: TextStyle(color: islemRengi, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)))
                       ]
                   )
                 ],
               ),
             );
           }),
-          const SizedBox(height: 40),
+          SizedBox(height: 40),
         ],
       ),
     );
@@ -297,48 +298,48 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      physics: BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Dinamik Gelir Tablosu", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
-          const SizedBox(height: 16),
+          Text("Dinamik Gelir Tablosu", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
+          SizedBox(height: 16),
           Row(
             children: [
               Expanded(child: _buildMuhasebeKarti("BRÜT GELİR", formatCurrency.format(toplamGelir), Icons.trending_up_rounded, Colors.greenAccent)),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               Expanded(child: _buildMuhasebeKarti("TOPLAM GİDER", formatCurrency.format(toplamGider), Icons.trending_down_rounded, SiberTema.kanKirmizi)),
             ],
           ),
-          const SizedBox(height: 40),
+          SizedBox(height: 40),
 
           // 💎 OTO-DNA ACIMASIZ TİCARET MOTORU EKRANI
-          const Text("Sistem Kesintileri & Vergilendirme", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
-          const SizedBox(height: 16),
+          Text("Sistem Kesintileri & Vergilendirme", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
+          SizedBox(height: 16),
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(24), border: Border.all(color: SiberTema.altinSari.withOpacity(0.3))),
             child: Column(
               children: [
                 _fiyatSatiri("Platform Hizmet Bedeli (%10)", "- ${formatCurrency.format(toplamGelir * 0.10)}", SiberTema.altinSari),
-                const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted)),
+                Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted)),
                 _fiyatSatiri("Yasal Vergi Kesintisi (%2)", "- ${formatCurrency.format(toplamGelir * 0.02)}", SiberTema.altinSari),
-                const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted, thickness: 1)),
+                Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted, thickness: 1)),
                 _fiyatSatiri("Toplam Ağ Kesintisi (%12)", "- ${formatCurrency.format(toplamGelir * 0.12)}", SiberTema.kanKirmizi, isBold: true),
               ],
             ),
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: 32),
 
           // NET KAZANÇ ALANI
           Container(
-            width: double.infinity, padding: const EdgeInsets.all(24),
+            width: double.infinity, padding: EdgeInsets.all(24),
             decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.05), borderRadius: BorderRadius.circular(24), border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 1.5)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Column(
+                Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Icon(Icons.account_balance_outlined, color: SiberTema.kuantumCyan, size: 28),
@@ -346,29 +347,29 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
                       Text("Kuantum Net Kazanç", style: TextStyle(color: SiberTema.textMain, fontSize: 11, fontWeight: FontWeight.w600))
                     ]
                 ),
-                Text(formatCurrency.format((toplamGelir * 0.88) - toplamGider), style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -1)),
+                Text(formatCurrency.format((toplamGelir * 0.88) - toplamGider), style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -1)),
               ],
             ),
           ),
-          const SizedBox(height: 48),
+          SizedBox(height: 48),
 
-          const Text("Tanımlı IBAN Hesapları", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
-          const SizedBox(height: 16),
+          Text("Tanımlı IBAN Hesapları", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
+          SizedBox(height: 16),
           _buildIbanKarti("Garanti BBVA - Ticari", _aktifIban, true),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           _buildIbanKarti("Ziraat Bankası - Şahıs", "TR99 0001 0000 0001 1111 2222 33", false),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
 
           SizedBox(
             width: double.infinity, height: 56,
             child: OutlinedButton.icon(
               style: OutlinedButton.styleFrom(side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-              onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Biyometrik Onay İsteniyor...", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan)),
-              icon: const Icon(Icons.add, color: SiberTema.kuantumCyan, size: 20),
-              label: const Text("YENİ IBAN EKLE", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
+              onPressed: () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Biyometrik Onay İsteniyor...", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan)),
+              icon: Icon(Icons.add, color: SiberTema.kuantumCyan, size: 20),
+              label: Text("YENİ IBAN EKLE", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
             ),
           ),
-          const SizedBox(height: 40),
+          SizedBox(height: 40),
         ],
       ),
     );
@@ -381,13 +382,13 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: EdgeInsets.symmetric(vertical: 20),
         decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(20), border: Border.all(color: SiberTema.textMuted)),
         child: Column(
             children: [
               Icon(ikon, color: renk, size: 24),
-              const SizedBox(height: 12),
-              Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold))
+              SizedBox(height: 12),
+              Text(baslik, style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold))
             ]
         ),
       ),
@@ -396,15 +397,15 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
 
   Widget _buildMuhasebeKarti(String baslik, String deger, IconData ikon, Color renk) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(20), border: Border.all(color: SiberTema.textMuted)),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Icon(ikon, color: renk, size: 24),
-            const SizedBox(height: 16),
-            Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
-            const SizedBox(height: 8),
+            SizedBox(height: 16),
+            Text(baslik, style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
+            SizedBox(height: 8),
             Text(deger, style: TextStyle(color: renk, fontSize: 16, fontWeight: FontWeight.w900))
           ]
       ),
@@ -413,23 +414,23 @@ class _SiberCuzdanScreenState extends State<SiberCuzdanScreen> with SingleTicker
 
   Widget _buildIbanKarti(String banka, String iban, bool aktif) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(color: aktif ? SiberTema.kuantumCyan.withOpacity(0.05) : SiberTema.matGrey, borderRadius: BorderRadius.circular(20), border: Border.all(color: aktif ? SiberTema.kuantumCyan.withOpacity(0.5) : Colors.white12)),
       child: Row(
         children: [
           Icon(Icons.account_balance_outlined, color: aktif ? SiberTema.kuantumCyan : Colors.white38, size: 24),
-          const SizedBox(width: 16),
+          SizedBox(width: 16),
           Expanded(
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(banka, style: TextStyle(color: aktif ? SiberTema.kuantumCyan : Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6),
                     Text(iban, style: TextStyle(color: aktif ? Colors.white70 : Colors.white38, fontSize: 10, letterSpacing: 1.5, fontWeight: FontWeight.bold))
                   ]
               )
           ),
-          if (aktif) const Icon(Icons.check_circle, color: SiberTema.kuantumCyan, size: 20),
+          if (aktif) Icon(Icons.check_circle, color: SiberTema.kuantumCyan, size: 20),
         ],
       ),
     );

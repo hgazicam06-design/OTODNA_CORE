@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +12,7 @@ class SiberChatScreen extends StatefulWidget {
   final String ustaId;
   final String ustaAdi;
 
-  const SiberChatScreen({super.key, required this.ustaId, required this.ustaAdi});
+  SiberChatScreen({super.key, required this.ustaId, required this.ustaAdi});
 
   @override
   State<SiberChatScreen> createState() => _SiberChatScreenState();
@@ -60,7 +61,7 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text('SİBER BAĞLANTI HATASI: $e', style: const TextStyle(fontWeight: FontWeight.bold)),
+              content: Text('SİBER BAĞLANTI HATASI: $e', style: TextStyle(fontWeight: FontWeight.bold)),
               backgroundColor: Colors.redAccent
           )
       );
@@ -75,7 +76,7 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
         backgroundColor: SiberTema.matGrey.withOpacity(0.1),
         elevation: 0,
         leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
+            icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
             onPressed: () => Navigator.pop(context)
         ),
         title: _buildAppBarTitle(),
@@ -97,21 +98,21 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
       children: [
         Row(
           children: [
-            const Icon(Icons.verified_user_outlined, color: SiberTema.kuantumCyan, size: 16),
-            const SizedBox(width: 8),
+            Icon(Icons.verified_user_outlined, color: SiberTema.kuantumCyan, size: 16),
+            SizedBox(width: 8),
             Text(widget.ustaAdi.toUpperCase(),
-                style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1)),
           ],
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         Row(
           children: [
             Container(
                 width: 6, height: 6,
-                decoration: const BoxDecoration(color: SiberTema.kuantumCyan, shape: BoxShape.circle)
+                decoration: BoxDecoration(color: SiberTema.kuantumCyan, shape: BoxShape.circle)
             ),
-            const SizedBox(width: 6),
-            const Text("KUANTUM AĞINA BAĞLI",
+            SizedBox(width: 6),
+            Text("KUANTUM AĞINA BAĞLI",
                 style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 2)),
           ],
         )
@@ -123,9 +124,9 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
   Widget _buildKriptoBar() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.symmetric(vertical: 8),
       color: SiberTema.kuantumCyan.withOpacity(0.05),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.lock_outline, color: SiberTema.kuantumCyan, size: 12),
@@ -144,11 +145,11 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
           .orderBy('zaman_damgasi', descending: true).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+          return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
         }
 
         if (snapshot.hasError) {
-          return const Center(child: Text("SİBER AĞ KOPUKLUĞU", style: TextStyle(color: Colors.redAccent)));
+          return Center(child: Text("SİBER AĞ KOPUKLUĞU", style: TextStyle(color: Colors.redAccent)));
         }
 
         final docs = snapshot.data?.docs ?? [];
@@ -156,7 +157,7 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
 
         return ListView.builder(
           reverse: true, // En yeni mesaj en altta görünür (Chat mantığı)
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           itemCount: docs.length,
           itemBuilder: (context, index) {
             var data = docs[index].data() as Map<String, dynamic>;
@@ -178,24 +179,24 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
+        margin: EdgeInsets.only(bottom: 16),
         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: isMe ? SiberTema.kuantumCyan.withOpacity(0.1) : SiberTema.matGrey.withOpacity(0.1),
           borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(20),
-            topRight: const Radius.circular(20),
-            bottomLeft: isMe ? const Radius.circular(20) : Radius.zero,
-            bottomRight: isMe ? Radius.zero : const Radius.circular(20),
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+            bottomLeft: isMe ? Radius.circular(20) : Radius.zero,
+            bottomRight: isMe ? Radius.zero : Radius.circular(20),
           ),
           border: Border.all(color: isMe ? SiberTema.kuantumCyan.withOpacity(0.3) : Colors.white.withOpacity(0.05)),
         ),
         child: Column(
           crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            Text(metin, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
+            Text(metin, style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
             Text(zaman, style: TextStyle(color: isMe ? SiberTema.kuantumCyan : Colors.white38, fontSize: 9, fontFamily: 'monospace', fontWeight: FontWeight.bold)),
           ],
         ),
@@ -210,11 +211,11 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.shield_outlined, color: Colors.white.withOpacity(0.05), size: 80),
-          const SizedBox(height: 16),
-          const Text("SİBER İLETİŞİM HATTI GÜVENLİ",
+          SizedBox(height: 16),
+          Text("SİBER İLETİŞİM HATTI GÜVENLİ",
               style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
-          const SizedBox(height: 8),
-          const Text("Sohbeti başlatmak için bir mesaj ateşleyin.",
+          SizedBox(height: 8),
+          Text("Sohbeti başlatmak için bir mesaj ateşleyin.",
               style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
         ],
       ),
@@ -224,7 +225,7 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
   // 💎 ATEŞLEME PANELİ (Girdi Alanı)
   Widget _buildAteslemePaneli() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+      padding: EdgeInsets.fromLTRB(16, 12, 16, 24),
       decoration: BoxDecoration(
         color: SiberTema.matGrey.withOpacity(0.05),
         border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05))),
@@ -233,7 +234,7 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
         children: [
           Expanded(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                 color: SiberTema.oledBlack,
                 borderRadius: BorderRadius.circular(24),
@@ -241,8 +242,8 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
               ),
               child: TextField(
                 controller: _mesajKutusu,
-                style: const TextStyle(color: SiberTema.textMain, fontSize: 14),
-                decoration: const InputDecoration(
+                style: TextStyle(color: SiberTema.textMain, fontSize: 14),
+                decoration: InputDecoration(
                   hintText: 'Siber ileti gönder...',
                   hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 13, fontWeight: FontWeight.bold),
                   border: InputBorder.none,
@@ -251,13 +252,13 @@ class _SiberChatScreenState extends State<SiberChatScreen> {
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12),
           GestureDetector(
             onTap: _mesajGonder,
             child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: const BoxDecoration(color: SiberTema.kuantumCyan, shape: BoxShape.circle),
-              child: const Icon(Icons.send_rounded, color: Colors.white, size: 20),
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(color: SiberTema.kuantumCyan, shape: BoxShape.circle),
+              child: Icon(Icons.send_rounded, color: Colors.white, size: 20),
             ),
           ),
         ],

@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +8,7 @@ import '../core/siber_tema.dart';
 class SiberHedefliReklamPanosu extends StatelessWidget {
   final OtoDNACampaign kampanya;
   
-  const SiberHedefliReklamPanosu({super.key, required this.kampanya});
+  SiberHedefliReklamPanosu({super.key, required this.kampanya});
 
   void _reklamaTikla(BuildContext context) async {
     // 🔥 KARARGAH FİNANS PROTOKOLÜ: Tıklanma %12 Komisyon İçin Atomik Olarak İşlenir
@@ -39,12 +40,12 @@ class SiberHedefliReklamPanosu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!kampanya.aktifMi) return const SizedBox.shrink();
+    if (!kampanya.aktifMi) return SizedBox.shrink();
 
     return GestureDetector(
       onTap: () => _reklamaTikla(context),
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 12),
+        margin: EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: SiberTema.siberGold.withOpacity(0.5), width: 1.5),
@@ -86,20 +87,20 @@ class SiberHedefliReklamPanosu extends StatelessWidget {
 
               // İÇERİK
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(16.0),
                 child: Row(
                   children: [
                     // REKLAM İKONU / ROZETİ
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: SiberTema.siberGold.withOpacity(0.2),
                         shape: BoxShape.circle,
                         border: Border.all(color: SiberTema.siberGold),
                       ),
-                      child: const Icon(Icons.star_rounded, color: SiberTema.siberGold, size: 28),
+                      child: Icon(Icons.star_rounded, color: SiberTema.siberGold, size: 28),
                     ),
-                    const SizedBox(width: 16),
+                    SizedBox(width: 16),
                     
                     // METİNLER
                     Expanded(
@@ -108,20 +109,20 @@ class SiberHedefliReklamPanosu extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
                               color: SiberTema.kuantumCyan.withOpacity(0.2),
                               borderRadius: BorderRadius.circular(4),
                             ),
-                            child: const Text(
+                            child: Text(
                               "SPONSORLU KAMPANYA", 
                               style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1),
                             ),
                           ),
-                          const SizedBox(height: 6),
+                          SizedBox(height: 6),
                           Text(
                             kampanya.kampanyaBaslik,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.w900,
@@ -130,7 +131,7 @@ class SiberHedefliReklamPanosu extends StatelessWidget {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4),
                           Text(
                             kampanya.sirketAd.toUpperCase(),
                             style: TextStyle(
@@ -146,7 +147,7 @@ class SiberHedefliReklamPanosu extends StatelessWidget {
                     ),
                     
                     // GİT BUTONU
-                    const Icon(Icons.arrow_forward_ios, color: SiberTema.siberGold, size: 18),
+                    Icon(Icons.arrow_forward_ios, color: SiberTema.siberGold, size: 18),
                   ],
                 ),
               ),

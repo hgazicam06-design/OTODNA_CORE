@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +11,7 @@ import '../../models/dukkan_model.dart';
 /// Ana Distribütörün (Admin) ağdaki tüm esnafların AI Risk Skorlarını izlediği
 /// ve gerektiğinde "Siber Kilit" (Ban) vurduğu kokpit.
 class SiberMufettisScreen extends StatefulWidget {
-  const SiberMufettisScreen({super.key});
+  SiberMufettisScreen({super.key});
 
   @override
   State<SiberMufettisScreen> createState() => _SiberMufettisScreenState();
@@ -66,7 +67,7 @@ class _SiberMufettisScreenState extends State<SiberMufettisScreen> {
     HapticFeedback.heavyImpact();
 
     // SİBER SİMÜLASYON
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 2));
 
     setState(() {
       _istihbaratListesi.removeAt(index);
@@ -85,12 +86,12 @@ class _SiberMufettisScreenState extends State<SiberMufettisScreen> {
         appBar: AppBar(
           backgroundColor: Colors.black.withOpacity(0.8),
           elevation: 0,
-          title: const Text("👁️ SİBER MÜFETTİŞ (AI)", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          title: Text("👁️ SİBER MÜFETTİŞ (AI)", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
-          iconTheme: const IconThemeData(color: SiberTema.kanKirmizi),
+          iconTheme: IconThemeData(color: SiberTema.kanKirmizi),
           actions: [
             IconButton(
-              icon: const Icon(Icons.radar, color: SiberTema.kanKirmizi),
+              icon: Icon(Icons.radar, color: SiberTema.kanKirmizi),
               onPressed: () => _siberUyari("Yapay Zeka Taraması Yenileniyor...", SiberTema.kuantumCyan),
             )
           ],
@@ -103,8 +104,8 @@ class _SiberMufettisScreenState extends State<SiberMufettisScreen> {
             // ── RİSKLİ ESNAF LİSTESİ ──
             Expanded(
               child: ListView.builder(
-                padding: const EdgeInsets.all(16),
-                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsets.all(16),
+                physics: BouncingScrollPhysics(),
                 itemCount: _istihbaratListesi.length,
                 itemBuilder: (context, index) {
                   final dukkan = _istihbaratListesi[index];
@@ -121,24 +122,24 @@ class _SiberMufettisScreenState extends State<SiberMufettisScreen> {
   Widget _buildSiberRadarPaneli() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: const BoxDecoration(
+      padding: EdgeInsets.all(24),
+      decoration: BoxDecoration(
         color: Colors.white,
         border: Border(bottom: BorderSide(color: SiberTema.kanKirmizi, width: 2)),
       ),
       child: Column(
         children: [
           Icon(Icons.policy_rounded, color: SiberTema.kanKirmizi.withOpacity(0.8), size: 48),
-          const SizedBox(height: 16),
-          const Text("KUANTUM İSTİHBARAT AĞI", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
-          const SizedBox(height: 8),
-          const Text("3 AKTİF İZLEME", style: TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
+          Text("KUANTUM İSTİHBARAT AĞI", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
+          SizedBox(height: 8),
+          Text("3 AKTİF İZLEME", style: TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+          SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _buildMiniBilgi("Yüksek Risk", "1 Adet", SiberTema.kanKirmizi),
-              const SizedBox(width: 24),
+              SizedBox(width: 24),
               _buildMiniBilgi("Güvenli", "2 Adet", SiberTema.kuantumCyan),
             ],
           )
@@ -151,9 +152,9 @@ class _SiberMufettisScreenState extends State<SiberMufettisScreen> {
     return Column(
       children: [
         Text(baslik, style: TextStyle(color: renk, fontSize: 10, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(color: renk.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
           child: Text(deger, style: TextStyle(color: renk, fontWeight: FontWeight.bold, fontSize: 14)),
         ),
@@ -173,7 +174,7 @@ class _SiberMufettisScreenState extends State<SiberMufettisScreen> {
     }
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: SiberTema.matGrey,
         borderRadius: BorderRadius.circular(16),
@@ -183,7 +184,7 @@ class _SiberMufettisScreenState extends State<SiberMufettisScreen> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             child: Row(
               children: [
                 // RİSK DAİRESİ
@@ -202,26 +203,26 @@ class _SiberMufettisScreenState extends State<SiberMufettisScreen> {
                     Text("%${dukkan.aiRiskSkoru.toInt()}", style: TextStyle(color: riskRengi, fontWeight: FontWeight.bold, fontSize: 14)),
                   ],
                 ),
-                const SizedBox(width: 20),
+                SizedBox(width: 20),
                 
                 // ESNAF BİLGİLERİ
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(dukkan.ad, style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
-                      const SizedBox(height: 4),
-                      Text("📍 ${dukkan.cityId} / ${dukkan.districtId}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11)),
-                      const SizedBox(height: 8),
+                      Text(dukkan.ad, style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                      SizedBox(height: 4),
+                      Text("📍 ${dukkan.cityId} / ${dukkan.districtId}", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
+                      SizedBox(height: 8),
                       Row(
                         children: [
                           Icon(Icons.star, color: SiberTema.sariAltin, size: 14),
-                          const SizedBox(width: 4),
-                          Text("${dukkan.puan} Puan", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 4),
+                          Text("${dukkan.puan} Puan", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
+                          SizedBox(width: 12),
                           Icon(dukkan.evrakOnayDurumu == "onaylandi" ? Icons.verified : Icons.pending, color: dukkan.evrakOnayDurumu == "onaylandi" ? SiberTema.kuantumCyan : Colors.orange, size: 14),
-                          const SizedBox(width: 4),
-                          Text(dukkan.evrakOnayDurumu.toUpperCase(), style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
+                          SizedBox(width: 4),
+                          Text(dukkan.evrakOnayDurumu.toUpperCase(), style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
                         ],
                       )
                     ],
@@ -236,16 +237,16 @@ class _SiberMufettisScreenState extends State<SiberMufettisScreen> {
             Container(
               width: double.infinity,
               height: 48,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 border: Border(top: BorderSide(color: SiberTema.textMuted)),
               ),
               child: InkWell(
                 onTap: _islemSuruyor ? null : () => _siberKilitVur(index),
-                borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
                 child: Center(
                   child: _islemSuruyor 
-                    ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.kanKirmizi, strokeWidth: 2))
-                    : const Text("🚨 SİBER KİLİT VUR (AĞDAN AT)", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                    ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.kanKirmizi, strokeWidth: 2))
+                    : Text("🚨 SİBER KİLİT VUR (AĞDAN AT)", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 1)),
                 ),
               ),
             ),

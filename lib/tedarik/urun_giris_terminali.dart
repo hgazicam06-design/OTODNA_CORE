@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,7 +12,7 @@ import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 
 class UrunGirisTerminali extends StatefulWidget {
-  const UrunGirisTerminali({super.key});
+  UrunGirisTerminali({super.key});
 
   @override
   State<UrunGirisTerminali> createState() => _UrunGirisTerminaliState();
@@ -32,7 +33,7 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
     super.initState();
     _pulseController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: Duration(seconds: 2),
     )..repeat(reverse: true);
   }
 
@@ -139,7 +140,7 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
 
   void _siberMesaj(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)),
+      content: Text(mesaj, style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)),
       backgroundColor: isError ? SiberTema.kritikRed : SiberTema.kuantumCyan,
       behavior: SnackBarBehavior.floating,
     ));
@@ -156,19 +157,19 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
           title: Text("TEDARİK TERMİNALİ V2.0", style: SiberTema.kuantumBaslik.copyWith(fontSize: 16)),
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           child: Form(
             key: _formKey,
             child: Column(
               children: [
                 _buildEvrakAlani(),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 _buildSiberInput(_adController, "PARÇA / ÜRÜN ADI", Icons.precision_manufacturing),
                 _buildSiberInput(_fiyatController, "BİRİM ALIŞ FİYATI (₺)", Icons.payments, isNumber: true),
                 _buildSiberInput(_stokController, "STOK MİKTARI", Icons.inventory, isNumber: true),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 _buildFinansPaneli(),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
                 _buildAteslemeButonu(),
               ],
             ),
@@ -183,7 +184,7 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
       onTap: _dosyaSec,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(40),
+        padding: EdgeInsets.all(40),
         decoration: SiberTema.siberCamZirh(),
         child: Column(
           children: [
@@ -192,7 +193,7 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
               color: SiberTema.kuantumCyan,
               size: 50,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             Text(
               _selectedFile == null ? "TEKNİK EVRAK / GÖRSEL YÜKLE" : "EVRAK HAZIR",
               style: TextStyle(color: SiberTema.kuantumCyan.withValues(alpha: 0.7), fontWeight: FontWeight.bold, fontSize: 10),
@@ -205,7 +206,7 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
 
   Widget _buildFinansPaneli() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: SiberTema.kuantumCyan.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
@@ -214,7 +215,7 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
       child: Column(
         children: [
           _buildRow("KARARGAH PAYI (%12)", "${_karargahPayi.toStringAsFixed(2)} ₺", SiberTema.kuantumCyan),
-          const Divider(color: Colors.white10),
+          Divider(color: Colors.white10),
           _buildRow("TOPLAM SATIŞ", "${((double.tryParse(_fiyatController.text) ?? 0) + _karargahPayi).toStringAsFixed(2)} ₺", Colors.white),
         ],
       ),
@@ -225,7 +226,7 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(l, style: const TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.bold)),
+        Text(l, style: TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.bold)),
         Text(v, style: TextStyle(color: c, fontSize: 16, fontWeight: FontWeight.w900)),
       ],
     );
@@ -233,20 +234,20 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
 
   Widget _buildSiberInput(TextEditingController c, String h, IconData i, {bool isNumber = false}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: 16),
       child: TextFormField(
         controller: c,
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-        style: const TextStyle(color: Colors.white, fontSize: 14),
+        style: TextStyle(color: Colors.white, fontSize: 14),
         onChanged: (_) => setState(() {}),
         decoration: InputDecoration(
           prefixIcon: Icon(i, color: SiberTema.kuantumCyan, size: 20),
           hintText: h,
-          hintStyle: const TextStyle(color: Colors.white24, fontSize: 12),
+          hintStyle: TextStyle(color: Colors.white24, fontSize: 12),
           filled: true,
           fillColor: Colors.white.withValues(alpha: 0.03),
-          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white10)),
-          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
+          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white10)),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kuantumCyan)),
         ),
         validator: (v) => v!.isEmpty ? "EKSİK VERİ" : null,
       ),
@@ -261,8 +262,8 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> with SingleTick
         style: SiberTema.kuantumButonStili(),
         onPressed: _isProcessing ? null : _sistemeMuhurle,
         child: _isProcessing
-            ? const CircularProgressIndicator(color: SiberTema.oledBlack)
-            : const Text("SİBER AĞA MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+            ? CircularProgressIndicator(color: SiberTema.oledBlack)
+            : Text("SİBER AĞA MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5)),
       ),
     );
   }

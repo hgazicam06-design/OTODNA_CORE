@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/ariza_kaydi.dart
 import 'dart:io';
 import 'dart:developer' as developer;
@@ -17,7 +18,7 @@ class SiberArizaKaydi extends StatefulWidget {
   final String modulKodu; // Örn: ICE_MOTOR_KACAK
   final String ustaId;
 
-  const SiberArizaKaydi({
+  SiberArizaKaydi({
     super.key,
     required this.saseNo,
     required this.modulKodu,
@@ -136,8 +137,8 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: Colors.white70, fontSize: 12)),
           ],
         ),
       ),
@@ -151,27 +152,27 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
       child: Scaffold(
         backgroundColor: Colors.transparent, // Arka plan Zırhtan geliyor
         appBar: AppBar(
-          title: const Text('KANIT YÜKLEME MERKEZİ', style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 15)),
+          title: Text('KANIT YÜKLEME MERKEZİ', style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 15)),
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
+            icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
             onPressed: () => Navigator.pop(context),
           ),
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1),
+            preferredSize: Size.fromHeight(1),
             child: Container(color: SiberTema.kuantumCyan.withOpacity(0.2), height: 1),
           ),
         ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: EdgeInsets.all(24.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // 1. ÜST BİLGİ PANELİ (3D Derinlikli)
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: SiberTema.matGrey.withOpacity(0.8),
                     borderRadius: BorderRadius.circular(16),
@@ -181,21 +182,21 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("DENETİM MODÜLÜ", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 6),
-                      Text(widget.modulKodu.replaceAll('_', ' '), style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900)),
-                      const SizedBox(height: 12),
+                      Text("DENETİM MODÜLÜ", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 6),
+                      Text(widget.modulKodu.replaceAll('_', ' '), style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900)),
+                      SizedBox(height: 12),
                       Row(
                         children: [
-                          const Icon(Icons.pin_drop, color: SiberTema.altinSari, size: 16),
-                          const SizedBox(width: 8),
-                          Text("ŞASE: ${widget.saseNo}", style: const TextStyle(color: SiberTema.altinSari, fontSize: 12, fontWeight: FontWeight.bold)),
+                          Icon(Icons.pin_drop, color: SiberTema.altinSari, size: 16),
+                          SizedBox(width: 8),
+                          Text("ŞASE: ${widget.saseNo}", style: TextStyle(color: SiberTema.altinSari, fontSize: 12, fontWeight: FontWeight.bold)),
                         ],
                       )
                     ],
                   ),
                 ),
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
 
                 // 2. SİBER MEDYA PANELİ (Kamera Ekranı)
                 Expanded(
@@ -218,10 +219,10 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
                           ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.add_a_photo_rounded, color: SiberTema.kanKirmizi, size: 60, shadows: [Shadow(color: SiberTema.kanKirmizi, blurRadius: 15)]),
-                          const SizedBox(height: 16),
-                          const Text("ZORUNLU KANIT GEREKİYOR", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-                          const SizedBox(height: 8),
+                          Icon(Icons.add_a_photo_rounded, color: SiberTema.kanKirmizi, size: 60, shadows: [Shadow(color: SiberTema.kanKirmizi, blurRadius: 15)]),
+                          SizedBox(height: 16),
+                          Text("ZORUNLU KANIT GEREKİYOR", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                          SizedBox(height: 8),
                           Text("Kamerayı Açmak İçin Dokun", style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12)),
                         ],
                       )
@@ -229,10 +230,10 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
                         alignment: Alignment.topRight,
                         children: [
                           Container(
-                            margin: const EdgeInsets.all(12),
+                            margin: EdgeInsets.all(12),
                             decoration: BoxDecoration(color: SiberTema.oledBlack.withOpacity(0.7), shape: BoxShape.circle, border: Border.all(color: SiberTema.kanKirmizi)),
                             child: IconButton(
-                              icon: const Icon(Icons.close, color: SiberTema.kanKirmizi),
+                              icon: Icon(Icons.close, color: SiberTema.kanKirmizi),
                               onPressed: () => setState(() => _kanitMedya = null),
                             ),
                           )
@@ -242,18 +243,18 @@ class _SiberArizaKaydiState extends State<SiberArizaKaydi> {
                   ),
                 ),
 
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
 
                 // 3. KARARGAH MÜHÜRLEME BUTONU (3D)
                 SizedBox(
                   height: 64,
                   child: ElevatedButton.icon(
                     icon: _islemSuruyor
-                        ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
-                        : const Icon(Icons.check_circle_outline, color: SiberTema.oledBlack, size: 28),
+                        ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
+                        : Icon(Icons.check_circle_outline, color: SiberTema.oledBlack, size: 28),
                     label: Text(
                         _islemSuruyor ? "AĞA YÜKLENİYOR..." : "YEŞİL TIK (MÜHÜRLE)",
-                        style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 15, color: SiberTema.oledBlack)
+                        style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 15, color: SiberTema.oledBlack)
                     ),
                     style: SiberTema.kuantumButonStili(), // 🔥 3D Kuantum Zırhı
                     onPressed: _islemSuruyor ? null : _yesilTikOnayi,

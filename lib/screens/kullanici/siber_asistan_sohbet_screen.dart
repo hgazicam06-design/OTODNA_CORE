@@ -1,10 +1,11 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class SiberAsistanSohbetScreen extends StatefulWidget {
-  const SiberAsistanSohbetScreen({super.key});
+  SiberAsistanSohbetScreen({super.key});
 
   @override
   State<SiberAsistanSohbetScreen> createState() => _SiberAsistanSohbetScreenState();
@@ -29,8 +30,8 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
 
   // PLAZA RENKLERİ
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textColor = const Color(0xFF1E293B);
-  final Color bgColor = const Color(0xFFFAFAFC);
+  final Color textColor = Color(0xFF1E293B);
+  final Color bgColor = Color(0xFFFAFAFC);
   final Color surfaceColor = Colors.white;
 
   @override
@@ -86,7 +87,7 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
         _asagiKaydir();
 
         // AI Görüntü İşleme Simülasyonu
-        Future.delayed(const Duration(seconds: 2), () {
+        Future.delayed(Duration(seconds: 2), () {
           if (!mounted) return;
           setState(() {
             _yaziyor = false;
@@ -131,9 +132,9 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
   }
 
   void _asagiKaydir() {
-    Future.delayed(const Duration(milliseconds: 100), () {
+    Future.delayed(Duration(milliseconds: 100), () {
       if (_scrollController.hasClients) {
-        _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+        _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeOut);
       }
     });
   }
@@ -146,29 +147,29 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
       builder: (context) => Padding(
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Container(
-          padding: const EdgeInsets.all(32),
+          padding: EdgeInsets.all(32),
           decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-              boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20, offset: const Offset(0, -5))]
+              borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+              boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20, offset: Offset(0, -5))]
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(child: Container(width: 40, height: 5, decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
               Text("Asistan Yapılandırması", style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
               Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05))),
                   child: TextField(
                       controller: isimController,
                       style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
-                      decoration: const InputDecoration(labelText: "Akıllı Asistan Adı", labelStyle: TextStyle(color: Colors.white45, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold), border: InputBorder.none, floatingLabelBehavior: FloatingLabelBehavior.always)
+                      decoration: InputDecoration(labelText: "Akıllı Asistan Adı", labelStyle: TextStyle(color: Colors.white54, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold), border: InputBorder.none, floatingLabelBehavior: FloatingLabelBehavior.always)
                   )
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
               SizedBox(
                 width: double.infinity, height: 56,
                 child: ElevatedButton(
@@ -177,7 +178,7 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
                     setState(() => _asistanAdi = isimController.text);
                     Navigator.pop(context);
                   },
-                  child: const Text("KİMLİĞİ GÜNCELLE", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1, fontFamily: 'Avenir')),
+                  child: Text("KİMLİĞİ GÜNCELLE", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1, fontFamily: 'Avenir')),
                 ),
               )
             ],
@@ -207,19 +208,19 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 24),
               itemCount: _mesajlar.length + (_yaziyor ? 1 : 0),
               itemBuilder: (context, index) {
                 if (index == _mesajlar.length && _yaziyor) {
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
+                    padding: EdgeInsets.only(bottom: 16.0),
                     child: Align(
                         alignment: Alignment.centerLeft,
                         child: Row(
                           children: [
                             SizedBox(width: 16, height: 16, child: CircularProgressIndicator(color: primaryTeal, strokeWidth: 2)),
-                            const SizedBox(width: 12),
+                            SizedBox(width: 12),
                             Text("Asistan İşliyor...", style: TextStyle(color: primaryTeal.withValues(alpha: 0.8), fontSize: 12, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                           ],
                         )
@@ -234,24 +235,24 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
                   alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
                   child: Container(
                     constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
-                    margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                    margin: EdgeInsets.only(bottom: 12),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                     decoration: BoxDecoration(
                         color: isUser ? primaryTeal : Colors.white,
                         borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(20), topRight: const Radius.circular(20),
-                          bottomLeft: isUser ? const Radius.circular(20) : const Radius.circular(4),
-                          bottomRight: isUser ? const Radius.circular(4) : const Radius.circular(20),
+                          topLeft: Radius.circular(20), topRight: Radius.circular(20),
+                          bottomLeft: isUser ? Radius.circular(20) : Radius.circular(4),
+                          bottomRight: isUser ? Radius.circular(4) : Radius.circular(20),
                         ),
                         border: isUser ? null : Border.all(color: Colors.white.withValues(alpha: 0.05)),
-                        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 2))]
+                        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: Offset(0, 2))]
                     ),
                     child: Column(
                       crossAxisAlignment: isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                       children: [
                         if (mesaj['gorsel'] != null)
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 12.0),
+                            padding: EdgeInsets.only(bottom: 12.0),
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
                                 child: Image.file(File(mesaj['gorsel']), height: 180, width: double.infinity, fit: BoxFit.cover)
@@ -268,11 +269,11 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
 
           // 2. MİNİMALİST DONANIM GİRDİ ALANI
           Container(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 24),
+            padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 24),
             decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
-                boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
+                boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: Offset(0, -5))]
             ),
             child: SafeArea(
               child: Row(
@@ -281,22 +282,22 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
                   GestureDetector(
                     onTap: _kamerayiAc,
                     child: Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle, border: Border.all(color: Colors.white.withValues(alpha: 0.05))),
                         child: Icon(Icons.camera_alt_outlined, color: primaryTeal, size: 22)
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
               
                   // TEXT KUTUSU
                   Expanded(
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
                         decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withValues(alpha: 0.05))),
                         child: TextField(
                           controller: _mesajController,
                           style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             hintText: "Asistana mesaj yaz...",
                             hintStyle: TextStyle(color: Colors.white38, fontSize: 13, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
                             border: InputBorder.none,
@@ -305,18 +306,18 @@ class _SiberAsistanSohbetScreenState extends State<SiberAsistanSohbetScreen> {
                         ),
                       )
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
               
                   // MİKROFON BUTONU
                   GestureDetector(
                     onTap: _sesiDinle,
                     child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        padding: const EdgeInsets.all(14),
+                        duration: Duration(milliseconds: 300),
+                        padding: EdgeInsets.all(14),
                         decoration: BoxDecoration(
                             color: _dinliyor ? Colors.redAccent : primaryTeal,
                             shape: BoxShape.circle,
-                            boxShadow: [BoxShadow(color: (_dinliyor ? Colors.redAccent : primaryTeal).withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 4))]
+                            boxShadow: [BoxShadow(color: (_dinliyor ? Colors.redAccent : primaryTeal).withValues(alpha: 0.3), blurRadius: 10, offset: Offset(0, 4))]
                         ),
                         child: Icon(_dinliyor ? Icons.graphic_eq : Icons.mic_none_outlined, color: SiberTema.kuantumCyan, size: 22)
                     ),

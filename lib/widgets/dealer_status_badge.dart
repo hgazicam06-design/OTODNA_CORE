@@ -1,4 +1,4 @@
-// lib/widgets/dealer_status_badge.dart
+﻿// lib/widgets/dealer_status_badge.dart
 import 'package:flutter/material.dart';
 
 /// 🛡️ KUANTUM LİYAKAT VE RÜTBE ROZETİ (SiberBayiRozeti)
@@ -6,18 +6,18 @@ import 'package:flutter/material.dart';
 class SiberBayiRozeti extends StatelessWidget {
   final int rating; // 1 ile 5 arası Karargah Puanı
 
-  const SiberBayiRozeti({super.key, required this.rating});
+  SiberBayiRozeti({super.key, required this.rating});
 
   // ── 🎨 KARARGAH TASARIM DOKTRİNİ ──
-  static const Color _oledBlack = Color(0xFF000000);
-  static const Color _matGrey = Color(0xFF111111);
+  static Color _oledBlack = Color(0xFF000000);
+  static Color _matGrey = Color(0xFF111111);
 
   @override
   Widget build(BuildContext context) {
     // 🚨 1 YILDIZ: KARA LİSTE (BLACKLIST) PROTOKOLÜ
     if (rating <= 1) {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           color: _matGrey,
           borderRadius: BorderRadius.circular(12),
@@ -26,7 +26,7 @@ class SiberBayiRozeti extends StatelessWidget {
             BoxShadow(color: Colors.redAccent.withOpacity(0.4), blurRadius: 15) // Kırmızı Parlama
           ],
         ),
-        child: const Row(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.gpp_bad_rounded, color: Colors.redAccent, size: 18),
@@ -59,7 +59,7 @@ class SiberBayiRozeti extends StatelessWidget {
     bool isPremium = rating >= 4;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: _oledBlack,
         borderRadius: BorderRadius.circular(8),
@@ -70,7 +70,7 @@ class SiberBayiRozeti extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(ikon, color: renk, size: 16),
-          const SizedBox(width: 6),
+          SizedBox(width: 6),
           Text(
             rutbe,
             style: TextStyle(color: renk, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1.5),

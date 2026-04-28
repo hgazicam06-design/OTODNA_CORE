@@ -1,4 +1,4 @@
-// lib/core/otodna_hizmet_kutuphanesi.dart
+﻿// lib/core/otodna_hizmet_kutuphanesi.dart
 import 'dart:developer' as developer;
 
 /// 🛡️ KUANTUM OTODNA HİZMET KÜTÜPHANESİ (SiberHizmetKutuphanesi)
@@ -6,7 +6,7 @@ import 'dart:developer' as developer;
 class SiberHizmetKutuphanesi {
 
   // ── 🧠 KARARGAH MASTER LİSTESİ (DEĞİŞTİRİLEMEZ ANA VERİ) ──
-  static const Map<String, List<String>> masterListe = {
+  static Map<String, List<String>> masterListe = {
     "OTO MEKANİK & REVİZYON": [
       "Periyodik Bakım",
       "Motor Rektefiye",

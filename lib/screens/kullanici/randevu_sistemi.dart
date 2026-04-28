@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/kullanici/randevu_sistemi.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +14,7 @@ class SiberRandevuSistemi extends StatefulWidget {
   final String musteriId; // Randevuyu alan müşterinin kimliği
   final String bayiId; // Randevu talep edilen bayinin kimliği
 
-  const SiberRandevuSistemi({super.key, required this.musteriId, required this.bayiId});
+  SiberRandevuSistemi({super.key, required this.musteriId, required this.bayiId});
 
   @override
   State<SiberRandevuSistemi> createState() => _SiberRandevuSistemiState();
@@ -25,8 +26,8 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
 
   final Color primaryTeal = Colors.teal.shade700;
   final Color dangerColor = Colors.redAccent;
-  final Color textColor = const Color(0xFF1E293B);
-  final Color bgColor = const Color(0xFFFAFAFC);
+  final Color textColor = Color(0xFF1E293B);
+  final Color bgColor = Color(0xFFFAFAFC);
 
   // ── PLANLAMA DEĞİŞKENLERİ ──
   DateTime? _secilenTarih;
@@ -102,9 +103,9 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
   Future<void> _tarihSec(BuildContext context) async {
     final DateTime? secilen = await showDatePicker(
       context: context,
-      initialDate: DateTime.now().add(const Duration(days: 1)),
+      initialDate: DateTime.now().add(Duration(days: 1)),
       firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 30)),
+      lastDate: DateTime.now().add(Duration(days: 30)),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -128,7 +129,7 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
   Future<void> _saatSec(BuildContext context) async {
     final TimeOfDay? secilen = await showTimePicker(
       context: context,
-      initialTime: const TimeOfDay(hour: 9, minute: 0),
+      initialTime: TimeOfDay(hour: 9, minute: 0),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -160,7 +161,7 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(mesaj, style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           ],
         ),
@@ -190,39 +191,39 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(24),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // BİLGİ PANELİ
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-                      boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
+                      boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: Offset(0, 5))]
                   ),
                   child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), shape: BoxShape.circle),
                         child: Icon(Icons.calendar_month_outlined, color: primaryTeal, size: 28),
                       ),
-                      const SizedBox(width: 16),
-                      const Expanded(child: Text("OtoDNA güvencesiyle randevunuzu mühürleyin. Ustanız sizin için hazırlık yapacaktır.", style: TextStyle(color: Colors.white87, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
+                      SizedBox(width: 16),
+                      Expanded(child: Text("OtoDNA güvencesiyle randevunuzu mühürleyin. Ustanız sizin için hazırlık yapacaktır.", style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
                     ],
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: 32),
 
                 // 1. HİZMET SEÇİCİ
-                const Text("1. İŞLEM TÜRÜ", style: TextStyle(color: Colors.white45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-                const SizedBox(height: 8),
+                Text("1. İŞLEM TÜRÜ", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                SizedBox(height: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
@@ -234,7 +235,7 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
                       isExpanded: true,
                       dropdownColor: Colors.white,
                       icon: Icon(Icons.keyboard_arrow_down, color: primaryTeal),
-                      hint: const Text("Hizmet Branşını Seçin", style: TextStyle(color: Colors.white38, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                      hint: Text("Hizmet Branşını Seçin", style: TextStyle(color: Colors.white38, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                       value: _secilenHizmet,
                       style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
                       items: _hizmetListesi.map((String value) {
@@ -249,11 +250,11 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
 
                 // 2. TARİH VE SAAT SEÇİCİ
-                const Text("2. ZAMAN PLANI", style: TextStyle(color: Colors.white45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-                const SizedBox(height: 8),
+                Text("2. ZAMAN PLANI", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                SizedBox(height: 8),
                 Row(
                   children: [
                     Expanded(
@@ -264,7 +265,7 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
                         aktif: _secilenTarih != null,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     Expanded(
                       child: _buildZamanButonu(
                         etiket: _secilenSaat == null ? "SAAT SEÇ" : _secilenSaat!.format(context),
@@ -275,13 +276,13 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
 
                 // 3. ARIZA NOTU
-                const Text("3. BİLGİ NOTU (OPSİYONEL)", style: TextStyle(color: Colors.white45, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-                const SizedBox(height: 8),
+                Text("3. BİLGİ NOTU (OPSİYONEL)", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                SizedBox(height: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
@@ -292,7 +293,7 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
                     controller: _notCtrl,
                     maxLines: 3,
                     style: TextStyle(color: textColor, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: "Sorunu veya talebinizi kısaca ustaya iletin...",
                       hintStyle: TextStyle(color: Colors.white38, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
                       border: InputBorder.none,
@@ -300,7 +301,7 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
                   ),
                 ),
 
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
 
                 // 🚀 MÜHÜRLEME BUTONU
                 SizedBox(
@@ -309,8 +310,8 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
                   child: _islemSuruyor
                       ? Center(child: CircularProgressIndicator(color: primaryTeal))
                       : ElevatedButton.icon(
-                    icon: const Icon(Icons.verified, color: SiberTema.kuantumCyan, size: 24),
-                    label: const Text("RANDEVUYU MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, color: SiberTema.textMain, fontFamily: 'Avenir')),
+                    icon: Icon(Icons.verified, color: SiberTema.kuantumCyan, size: 24),
+                    label: Text("RANDEVUYU MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, color: SiberTema.textMain, fontFamily: 'Avenir')),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryTeal,
                       foregroundColor: Colors.white,
@@ -335,7 +336,7 @@ class _SiberRandevuSistemiState extends State<SiberRandevuSistemi> {
       icon: Icon(ikon, size: 18, color: aktif ? primaryTeal : Colors.black38),
       label: Text(etiket, style: TextStyle(color: aktif ? primaryTeal : Colors.black45, fontWeight: aktif ? FontWeight.w900 : FontWeight.bold, fontSize: 12, fontFamily: 'Avenir')),
       style: OutlinedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: EdgeInsets.symmetric(vertical: 16),
         side: BorderSide(color: aktif ? primaryTeal.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05), width: aktif ? 2 : 1),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         backgroundColor: aktif ? primaryTeal.withValues(alpha: 0.05) : Colors.white,

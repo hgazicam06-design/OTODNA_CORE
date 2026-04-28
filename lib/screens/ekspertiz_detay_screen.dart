@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/ekspertiz_detay_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,7 +14,7 @@ class EkspertizDetayScreen extends StatefulWidget {
   final String raporId;
   final String kullaniciId;
 
-  const EkspertizDetayScreen({super.key, required this.raporId, required this.kullaniciId});
+  EkspertizDetayScreen({super.key, required this.raporId, required this.kullaniciId});
 
   @override
   State<EkspertizDetayScreen> createState() => _EkspertizDetayScreenState();
@@ -30,7 +31,7 @@ class _EkspertizDetayScreenState extends State<EkspertizDetayScreen> {
   void initState() {
     super.initState();
     // Ekran açıkken her dakika durumu kontrol edip UI'ı yenilemek için canlı radar
-    _sayac = Timer.periodic(const Duration(minutes: 1), (timer) {
+    _sayac = Timer.periodic(Duration(minutes: 1), (timer) {
       if (mounted) setState(() {});
     });
   }
@@ -55,13 +56,13 @@ class _EkspertizDetayScreenState extends State<EkspertizDetayScreen> {
       );
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("SİBER ONAY: Ödeme alındı. PDF hazırlanıyor...", style: TextStyle(fontWeight: FontWeight.w900)),
         backgroundColor: SiberTema.kuantumCyan,
       ));
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("ÖDEME HATASI: İşlem tamamlanamadı.", style: TextStyle(fontWeight: FontWeight.w900)),
         backgroundColor: SiberTema.kanKirmizi,
       ));
@@ -77,17 +78,17 @@ class _EkspertizDetayScreenState extends State<EkspertizDetayScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("SİCİL VE MÜHÜR MERKEZİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
+          title: Text("SİCİL VE MÜHÜR MERKEZİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: StreamBuilder<DocumentSnapshot>(
           // 📡 Rapor verisi anlık Firebase'den okunuyor
           stream: _db.collection('ekspertiz_raporlari').doc(widget.raporId).snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
-            if (!snapshot.hasData || !snapshot.data!.exists) return const Center(child: Text("SİBER İHLAL: Rapor Bulunamadı", style: TextStyle(color: SiberTema.kanKirmizi)));
+            if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+            if (!snapshot.hasData || !snapshot.data!.exists) return Center(child: Text("SİBER İHLAL: Rapor Bulunamadı", style: TextStyle(color: SiberTema.kanKirmizi)));
 
             var raporData = snapshot.data!.data() as Map<String, dynamic>;
             Timestamp? olusturulmaTarihi = raporData['olusturulma_tarihi'];
@@ -95,14 +96,14 @@ class _EkspertizDetayScreenState extends State<EkspertizDetayScreen> {
             bool pdfSatildiMi = raporData['pdf_satildi'] ?? false;
 
             return Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // 🛡️ DİJİTAL MÜHÜR DURUM KARTI
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(24),
+                    padding: EdgeInsets.all(24),
                     decoration: BoxDecoration(
                         color: isMuhurlu ? SiberTema.kuantumCyan.withOpacity(0.1) : SiberTema.matGrey.withOpacity(0.8),
                         borderRadius: BorderRadius.circular(16),
@@ -114,30 +115,30 @@ class _EkspertizDetayScreenState extends State<EkspertizDetayScreen> {
                     child: Column(
                       children: [
                         Icon(isMuhurlu ? Icons.lock : Icons.lock_open, color: isMuhurlu ? SiberTema.kuantumCyan : Colors.orangeAccent, size: 48),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16),
                         Text(
                           isMuhurlu ? "SİCİL MÜHÜRLENDİ (DEĞİŞTİRİLEMEZ)" : "2 SAATLİK İTİRAZ SÜRESİ AKTİF",
                           textAlign: TextAlign.center,
                           style: TextStyle(color: isMuhurlu ? SiberTema.kuantumCyan : Colors.orangeAccent, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1),
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8),
                         Text(
                           isMuhurlu
                               ? "Bu rapor Kuantum Ağına kilitlenmiştir. Kilometre veya parça durumu geriye dönük değiştirilemez."
                               : "Rapor oluşturulduktan 2 saat sonra kalıcı olarak mühürlenecek ve PDF erişimine açılacaktır.",
                           textAlign: TextAlign.center,
-                          style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.5),
+                          style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.5),
                         ),
                       ],
                     ),
                   ),
 
-                  const SizedBox(height: 30),
+                  SizedBox(height: 30),
 
                   // 📄 RAPOR İÇERİĞİ (Siber Cam Kabuk)
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: SiberTema.matGrey.withOpacity(0.5),
                         borderRadius: BorderRadius.circular(16),
@@ -145,27 +146,27 @@ class _EkspertizDetayScreenState extends State<EkspertizDetayScreen> {
                       ),
                       child: ListView(
                         children: [
-                          const Text("ARAÇ BİLGİLERİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 10),
+                          Text("ARAÇ BİLGİLERİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold)),
+                          SizedBox(height: 10),
                           _buildBilgiSatiri("Şase No", raporData['sase_no'] ?? "Bilinmiyor"),
                           _buildBilgiSatiri("Kilometre", "${raporData['kilometre'] ?? 0} KM"),
-                          const Divider(color: SiberTema.textMuted, height: 30),
-                          const Text("SİBER TESPİTLER", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 10),
-                          Text(raporData['rapor_detayi'] ?? "Henüz detay girilmedi.", style: const TextStyle(color: SiberTema.textMain, fontSize: 13, height: 1.5)),
+                          Divider(color: SiberTema.textMuted, height: 30),
+                          Text("SİBER TESPİTLER", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold)),
+                          SizedBox(height: 10),
+                          Text(raporData['rapor_detayi'] ?? "Henüz detay girilmedi.", style: TextStyle(color: SiberTema.textMain, fontSize: 13, height: 1.5)),
                         ],
                       ),
                     ),
                   ),
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
 
                   // 🚀 ATEŞLEME BUTONU (PDF OLUŞTURMA)
                   SizedBox(
                     height: 65,
                     width: double.infinity,
                     child: _isProcessing
-                        ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                        ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                         : ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: isMuhurlu ? SiberTema.kuantumCyan : SiberTema.matGrey,
@@ -180,7 +181,7 @@ class _EkspertizDetayScreenState extends State<EkspertizDetayScreen> {
                         !isMuhurlu
                             ? "MÜHÜR BEKLENİYOR..."
                             : (pdfSatildiMi ? "PDF'İ İNDİR" : "RESMİ ÇIKTIYI AL (₺499)"),
-                        style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13),
+                        style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13),
                       ),
                     ),
                   )
@@ -195,12 +196,12 @@ class _EkspertizDetayScreenState extends State<EkspertizDetayScreen> {
 
   Widget _buildBilgiSatiri(String baslik, String deger) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: EdgeInsets.only(bottom: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 13)),
-          Text(deger, style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1)),
+          Text(baslik, style: TextStyle(color: SiberTema.textMuted, fontSize: 13)),
+          Text(deger, style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1)),
         ],
       ),
     );

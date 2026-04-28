@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/bayi/siber_bakim_formu.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,7 +16,7 @@ class SiberBakimFormu extends StatefulWidget {
   final String saseNo;
   final String plaka;
 
-  const SiberBakimFormu({super.key, required this.saseNo, required this.plaka});
+  SiberBakimFormu({super.key, required this.saseNo, required this.plaka});
 
   @override
   State<SiberBakimFormu> createState() => _SiberBakimFormuState();
@@ -51,11 +52,11 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: Text("${widget.plaka} - SERVİS KAYDI", style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'Avenir', letterSpacing: 1.5)),
+          title: Text("${widget.plaka} - SERVİS KAYDI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'Avenir', letterSpacing: 1.5)),
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
+            icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -63,13 +64,13 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
           children: [
             Expanded(
               child: ListView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.all(20),
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.all(20),
                 children: [
                   _buildBakimTipiSecici(),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                   _buildParcaEklemeBolumu(),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                   _buildIscilikInput(),
                 ],
               ),
@@ -83,24 +84,24 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
 
   Widget _buildBakimTipiSecici() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       decoration: SiberTema.siberCamZirh(renk: SiberTema.matGrey),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("BAKIM PROTOKOLÜ SEÇİN", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir', letterSpacing: 1)),
-          const SizedBox(height: 12),
+          Text("BAKIM PROTOKOLÜ SEÇİN", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir', letterSpacing: 1)),
+          SizedBox(height: 12),
           DropdownButtonFormField<String>(
             dropdownColor: SiberTema.matGrey,
             value: _secilenBakimTipi,
-            icon: const Icon(Icons.keyboard_arrow_down, color: SiberTema.kuantumCyan),
-            style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
-            decoration: const InputDecoration(
+            icon: Icon(Icons.keyboard_arrow_down, color: SiberTema.kuantumCyan),
+            style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+            decoration: InputDecoration(
               enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white10)),
               focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: SiberTema.kuantumCyan)),
             ),
             items: _bakimProtokolleri.keys.map((String key) {
-              return DropdownMenuItem(value: key, child: Text(key, style: const TextStyle(fontFamily: 'Avenir')));
+              return DropdownMenuItem(value: key, child: Text(key, style: TextStyle(fontFamily: 'Avenir')));
             }).toList(),
             onChanged: (val) {
               setState(() {
@@ -118,32 +119,32 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("KULLANILAN PARÇALAR (Maliyet Fiyatı)", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir', letterSpacing: 1)),
-        const SizedBox(height: 12),
+        Text("KULLANILAN PARÇALAR (Maliyet Fiyatı)", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir', letterSpacing: 1)),
+        SizedBox(height: 12),
         ..._eklenenParcalar.map((p) => Container(
-          margin: const EdgeInsets.only(bottom: 8),
+          margin: EdgeInsets.only(bottom: 8),
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.02),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: Colors.white.withOpacity(0.05)),
           ),
           child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-            title: Text(p['ad'], style: const TextStyle(color: Colors.white, fontSize: 13, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
+            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            title: Text(p['ad'], style: TextStyle(color: Colors.white, fontSize: 13, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("₺${(p['fiyat'] as double).toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontFamily: 'monospace', fontSize: 14)),
-                const SizedBox(width: 8),
+                Text("₺${(p['fiyat'] as double).toStringAsFixed(2)}", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontFamily: 'monospace', fontSize: 14)),
+                SizedBox(width: 8),
                 IconButton(
-                  icon: const Icon(Icons.remove_circle_outline, color: SiberTema.kritikRed, size: 20),
+                  icon: Icon(Icons.remove_circle_outline, color: SiberTema.kritikRed, size: 20),
                   onPressed: () => setState(() => _eklenenParcalar.remove(p)),
                 )
               ],
             ),
           ),
         )),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         Row(
           children: [
             Expanded(
@@ -153,13 +154,13 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
                   foregroundColor: SiberTema.kuantumCyan,
                   side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5)),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  padding: EdgeInsets.symmetric(vertical: 12),
                 ),
-                icon: const Icon(Icons.add_circle_outline, size: 18),
-                label: const Text("PARÇA EKLE", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, fontFamily: 'Avenir', letterSpacing: 1)),
+                icon: Icon(Icons.add_circle_outline, size: 18),
+                label: Text("PARÇA EKLE", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, fontFamily: 'Avenir', letterSpacing: 1)),
               ),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8),
             Expanded(
               child: ElevatedButton.icon(
                 onPressed: _parcaTeklifiDialog,
@@ -168,10 +169,10 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
                   foregroundColor: SiberTema.altinSari,
                   side: BorderSide(color: SiberTema.altinSari.withOpacity(0.5)),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  padding: EdgeInsets.symmetric(vertical: 12),
                 ),
-                icon: const Icon(Icons.send_outlined, size: 18),
-                label: const Text("TEKLİF GÖNDER", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, fontFamily: 'Avenir', letterSpacing: 1)),
+                icon: Icon(Icons.send_outlined, size: 18),
+                label: Text("TEKLİF GÖNDER", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, fontFamily: 'Avenir', letterSpacing: 1)),
               ),
             ),
           ],
@@ -189,13 +190,13 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
       ),
       child: TextField(
         keyboardType: TextInputType.number,
-        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, fontFamily: 'monospace'),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, fontFamily: 'monospace'),
         decoration: InputDecoration(
           labelText: "SAF İŞÇİLİK ÜCRETİ (₺) - %100 SİZİN",
           labelStyle: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 11, fontFamily: 'Avenir', fontWeight: FontWeight.bold, letterSpacing: 1),
-          prefixIcon: const Icon(Icons.build_circle_outlined, color: Colors.white54),
+          prefixIcon: Icon(Icons.build_circle_outlined, color: Colors.white54),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.all(20),
+          contentPadding: EdgeInsets.all(20),
         ),
         onChanged: (val) => setState(() => _iscilikUcreti = double.tryParse(val.replaceAll(',', '.')) ?? 0.0),
       ),
@@ -204,22 +205,22 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
 
   Widget _buildFinansalAltPanel(double vitrinToplam, double pay, double vitrinParca) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: SiberTema.matGrey,
-        border: const Border(top: BorderSide(color: Colors.white12)),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.8), blurRadius: 20, offset: const Offset(0, -5))],
+        border: Border(top: BorderSide(color: Colors.white12)),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.8), blurRadius: 20, offset: Offset(0, -5))],
       ),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("KARARGAH PAYI (%12 PARÇADAN):", style: TextStyle(color: SiberTema.kritikRed, fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
-              Text("₺${pay.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kritikRed, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
+              Text("KARARGAH PAYI (%12 PARÇADAN):", style: TextStyle(color: SiberTema.kritikRed, fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
+              Text("₺${pay.toStringAsFixed(2)}", style: TextStyle(color: SiberTema.kritikRed, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
             height: 60,
@@ -227,11 +228,11 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
               style: SiberTema.kuantumButonStili(),
               onPressed: _isProcessing ? null : () => _servisKaydiMuhurle(vitrinToplam, pay, vitrinParca),
               icon: _isProcessing
-                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
-                  : const Icon(Icons.fingerprint, color: Colors.black, size: 24),
+                  ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
+                  : Icon(Icons.fingerprint, color: Colors.black, size: 24),
               label: Text(
                   _isProcessing ? "MÜHÜRLENİYOR..." : "İŞLEMİ MÜHÜRLE (₺${vitrinToplam.toStringAsFixed(2)})",
-                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 13, fontFamily: 'Avenir', letterSpacing: 1.5)
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 13, fontFamily: 'Avenir', letterSpacing: 1.5)
               ),
             ),
           ),
@@ -317,7 +318,7 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
   void _siberUyariGoster(String mesaj, bool isError) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir', fontSize: 12)),
+        content: Text(mesaj, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir', fontSize: 12)),
         backgroundColor: isError ? SiberTema.kritikRed : SiberTema.kuantumCyan.withOpacity(0.8),
         behavior: SnackBarBehavior.floating,
       ),
@@ -335,46 +336,46 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
         return Dialog(
           backgroundColor: Colors.transparent,
           child: Container(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             decoration: SiberTema.siberCamZirh(renk: SiberTema.matGrey),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.settings_input_component, color: SiberTema.kuantumCyan, size: 40),
-                const SizedBox(height: 16),
-                const Text("YENİ PARÇA EKLE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, fontFamily: 'Avenir', letterSpacing: 1.5)),
-                const SizedBox(height: 24),
+                Icon(Icons.settings_input_component, color: SiberTema.kuantumCyan, size: 40),
+                SizedBox(height: 16),
+                Text("YENİ PARÇA EKLE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, fontFamily: 'Avenir', letterSpacing: 1.5)),
+                SizedBox(height: 24),
 
                 // Parça Adı
                 TextField(
                   controller: adCtrl,
-                  style: const TextStyle(color: Colors.white, fontFamily: 'Avenir'),
+                  style: TextStyle(color: Colors.white, fontFamily: 'Avenir'),
                   decoration: InputDecoration(
                     labelText: "Parça Adı",
                     labelStyle: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontFamily: 'Avenir'),
                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.1))),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
+                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kuantumCyan)),
                     filled: true,
                     fillColor: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
 
                 // Maliyet
                 TextField(
                   controller: fiyatCtrl,
                   keyboardType: TextInputType.number,
-                  style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
+                  style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
                   decoration: InputDecoration(
                     labelText: "Maliyet Fiyatı (₺)",
                     labelStyle: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontFamily: 'Avenir'),
                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.1))),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
+                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kuantumCyan)),
                     filled: true,
                     fillColor: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: 32),
 
                 // Butonlar
                 Row(
@@ -382,7 +383,7 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
                     Expanded(
                       child: TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: const Text("İPTAL", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                        child: Text("İPTAL", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                       ),
                     ),
                     Expanded(
@@ -400,7 +401,7 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
                             Navigator.pop(context);
                           }
                         },
-                        child: const Text("EKLE", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                        child: Text("EKLE", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                       ),
                     )
                   ],
@@ -424,53 +425,53 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
         return Dialog(
           backgroundColor: Colors.transparent,
           child: Container(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             decoration: SiberTema.siberCamZirh(renk: SiberTema.matGrey),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.handshake_outlined, color: SiberTema.altinSari, size: 40),
-                const SizedBox(height: 16),
-                const Text("ARAÇ SAHİBİNE TEKLİF SUN", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'Avenir', letterSpacing: 1)),
-                const SizedBox(height: 8),
-                const Text("Parça fiyatına %12 Karargah Payı yansıtılarak araç sahibine iletilecektir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 11)),
-                const SizedBox(height: 24),
+                Icon(Icons.handshake_outlined, color: SiberTema.altinSari, size: 40),
+                SizedBox(height: 16),
+                Text("ARAÇ SAHİBİNE TEKLİF SUN", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'Avenir', letterSpacing: 1)),
+                SizedBox(height: 8),
+                Text("Parça fiyatına %12 Karargah Payı yansıtılarak araç sahibine iletilecektir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 11)),
+                SizedBox(height: 24),
 
                 TextField(
                   controller: adCtrl,
-                  style: const TextStyle(color: Colors.white, fontFamily: 'Avenir'),
+                  style: TextStyle(color: Colors.white, fontFamily: 'Avenir'),
                   decoration: InputDecoration(
                     labelText: "Önerilen Parça",
                     labelStyle: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontFamily: 'Avenir'),
                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.1))),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.altinSari)),
+                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.altinSari)),
                     filled: true,
                     fillColor: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
 
                 TextField(
                   controller: fiyatCtrl,
                   keyboardType: TextInputType.number,
-                  style: const TextStyle(color: SiberTema.altinSari, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
+                  style: TextStyle(color: SiberTema.altinSari, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
                   decoration: InputDecoration(
                     labelText: "Satış Fiyatı (₺)",
                     labelStyle: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontFamily: 'Avenir'),
                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.1))),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.altinSari)),
+                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.altinSari)),
                     filled: true,
                     fillColor: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: 32),
 
                 Row(
                   children: [
                     Expanded(
                       child: TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: const Text("İPTAL", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                        child: Text("İPTAL", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                       ),
                     ),
                     Expanded(
@@ -495,7 +496,7 @@ class _SiberBakimFormuState extends State<SiberBakimFormu> {
                             if (mounted) _siberUyariGoster("SİBER TİCARET: Teklif Mühürlendi!", false);
                           }
                         },
-                        child: const Text("GÖNDER", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                        child: Text("GÖNDER", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                       ),
                     )
                   ],

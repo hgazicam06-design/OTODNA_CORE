@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// 🌍 OTODNA GLOBAL KONUM VE SİGORTA İSTİHBARAT MİMARİSİ
 /// Bu dosya, 1MB limitini aşmamak için "Flat (Parçalanmış)" mimariyle yazılmıştır.
@@ -117,9 +117,9 @@ class City {
     required this.plateCode,
     this.merkezUsMu = false,
     this.merkezKonum,
-    this.enCokBozulanParcalar = const [],
-    this.kronikSorunlar = const [],
-    this.kazaKritikNoktalari = const [],
+    this.enCokBozulanParcalar = [],
+    this.kronikSorunlar = [],
+    this.kazaKritikNoktalari = [],
     this.toplamArizaKaydi = 0,
     this.toplamKazaKaydi = 0,
   });
@@ -192,9 +192,9 @@ class District {
     required this.cityId,
     required this.name,
     this.merkezKonum,
-    this.enCokBozulanParcalar = const [],
-    this.kronikSorunlar = const [],
-    this.kazaKritikNoktalari = const [],
+    this.enCokBozulanParcalar = [],
+    this.kronikSorunlar = [],
+    this.kazaKritikNoktalari = [],
     this.toplamArizaKaydi = 0,
     this.toplamKazaKaydi = 0,
   });

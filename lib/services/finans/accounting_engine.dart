@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
 class AccountingEngine {
@@ -51,7 +51,7 @@ class AccountingEngine {
   // 15 Günlük Lojistik Kırmızı Alarm Kontrolü
   Future<void> checkLogisticsAlarms() async {
     try {
-      final threshold15Days = DateTime.now().subtract(const Duration(days: 15));
+      final threshold15Days = DateTime.now().subtract(Duration(days: 15));
       final query = await _db.collection('finansal_islemler')
         .where('logistics_status', isEqualTo: 'in_transit')
         .where('created_at', isLessThanOrEqualTo: Timestamp.fromDate(threshold15Days))

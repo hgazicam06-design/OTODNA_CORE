@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart'; // 📡 SİBER MÜHÜR İÇİN ŞART!
 
@@ -10,7 +11,7 @@ class GarantiSertifikasi extends StatelessWidget {
   final String garantiSuresi;
   final String sertifikaId;
 
-  const GarantiSertifikasi({
+  GarantiSertifikasi({
     super.key,
     required this.plaka,
     required this.islem,
@@ -20,10 +21,10 @@ class GarantiSertifikasi extends StatelessWidget {
   });
 
   // 🌑 TESLA MİMARİSİ: OLED SİYAH VE KUANTUM ALTIN PALETİ
-  static const Color _bgColor = Color(0xFF000000);
-  static const Color _surfaceColor = Color(0xFF0A0A0A);
-  static const Color _primaryCyan = Color(0xFF00FFC2);
-  static const Color _goldBadge = Color(0xFFFFD700);
+  static Color _bgColor = Color(0xFF000000);
+  static Color _surfaceColor = Color(0xFF0A0A0A);
+  static Color _primaryCyan = Color(0xFF00FFC2);
+  static Color _goldBadge = Color(0xFFFFD700);
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +35,10 @@ class GarantiSertifikasi extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.security_update_good, color: _primaryCyan, size: 20),
+          icon: Icon(Icons.security_update_good, color: _primaryCyan, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('D İ J İ T A L   M Ü H Ü R',
+        title: Text('D İ J İ T A L   M Ü H Ü R',
             style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 4)),
       ),
       body: Container(
@@ -50,13 +51,13 @@ class GarantiSertifikasi extends StatelessWidget {
         ),
         child: Center(
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 40),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildSiberSertifikaKarti(context),
-                const SizedBox(height: 48),
+                SizedBox(height: 48),
                 _buildAksiyonPaneli(context),
               ],
             ),
@@ -70,8 +71,8 @@ class GarantiSertifikasi extends StatelessWidget {
   Widget _buildSiberSertifikaKarti(BuildContext context) {
     return Container(
       width: double.infinity,
-      constraints: const BoxConstraints(maxWidth: 420),
-      padding: const EdgeInsets.all(32),
+      constraints: BoxConstraints(maxWidth: 420),
+      padding: EdgeInsets.all(32),
       decoration: BoxDecoration(
         color: _surfaceColor,
         borderRadius: BorderRadius.circular(40),
@@ -85,12 +86,12 @@ class GarantiSertifikasi extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildMuhurIkonyu(),
-          const SizedBox(height: 28),
-          const Text("OTODNA ONAYLI", style: TextStyle(color: _goldBadge, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: 5)),
-          const SizedBox(height: 12),
+          SizedBox(height: 28),
+          Text("OTODNA ONAYLI", style: TextStyle(color: _goldBadge, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: 5)),
+          SizedBox(height: 12),
           _buildDurumEtiketi(),
 
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(vertical: 28),
             child: Divider(color: SiberTema.textMuted, thickness: 0.5),
           ),
@@ -100,19 +101,19 @@ class GarantiSertifikasi extends StatelessWidget {
           _buildBilgiSatiri("MÜHÜR TARİHİ", tarih, isMonospace: true),
           _buildBilgiSatiri("GARANTİ SÜRESİ", garantiSuresi.toUpperCase(), color: _primaryCyan),
 
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(vertical: 28),
             child: Divider(color: SiberTema.textMuted, thickness: 0.5),
           ),
 
           _buildQrMotoru(),
 
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
           Text("SERİ NO: ${sertifikaId.toUpperCase()}",
-              style: const TextStyle(color: SiberTema.textMuted, fontSize: 9, fontFamily: 'monospace', fontWeight: FontWeight.bold, letterSpacing: 2)),
+              style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontFamily: 'monospace', fontWeight: FontWeight.bold, letterSpacing: 2)),
 
-          const SizedBox(height: 32),
-          const Text(
+          SizedBox(height: 32),
+          Text(
               "Bu belge OtoDNA Dijital Referans Protokolü ile mühürlenmiştir.\nSiber Karargah tarafından doğrulanabilir.",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 8, color: SiberTema.textMuted, height: 1.6, fontWeight: FontWeight.bold, letterSpacing: 0.5)
@@ -138,7 +139,7 @@ class GarantiSertifikasi extends StatelessWidget {
             border: Border.all(color: _goldBadge.withOpacity(0.5), width: 1.5),
             boxShadow: [BoxShadow(color: _goldBadge.withOpacity(0.1), blurRadius: 20)],
           ),
-          child: const Icon(Icons.verified_user_rounded, color: _goldBadge, size: 36),
+          child: Icon(Icons.verified_user_rounded, color: _goldBadge, size: 36),
         ),
       ],
     );
@@ -146,7 +147,7 @@ class GarantiSertifikasi extends StatelessWidget {
 
   Widget _buildDurumEtiketi() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
         color: _primaryCyan.withOpacity(0.05),
         borderRadius: BorderRadius.circular(20),
@@ -155,9 +156,9 @@ class GarantiSertifikasi extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(width: 6, height: 6, decoration: const BoxDecoration(color: _primaryCyan, shape: BoxShape.circle)),
-          const SizedBox(width: 8),
-          const Text("SİBER GÜVENCE: AKTİF", style: TextStyle(color: _primaryCyan, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          Container(width: 6, height: 6, decoration: BoxDecoration(color: _primaryCyan, shape: BoxShape.circle)),
+          SizedBox(width: 8),
+          Text("SİBER GÜVENCE: AKTİF", style: TextStyle(color: _primaryCyan, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 2)),
         ],
       ),
     );
@@ -165,25 +166,25 @@ class GarantiSertifikasi extends StatelessWidget {
 
   Widget _buildQrMotoru() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24)),
       child: QrImageView(
         data: "OTODNA-CERT-$sertifikaId",
         version: QrVersions.auto,
         size: 140,
-        eyeStyle: const QrEyeStyle(eyeShape: QrEyeShape.square, color: Colors.white),
-        dataModuleStyle: const QrDataModuleStyle(dataModuleShape: QrDataModuleShape.circle, color: Colors.white),
+        eyeStyle: QrEyeStyle(eyeShape: QrEyeShape.square, color: Colors.white),
+        dataModuleStyle: QrDataModuleStyle(dataModuleShape: QrDataModuleShape.circle, color: Colors.white),
       ),
     );
   }
 
   Widget _buildBilgiSatiri(String baslik, String deger, {bool isMonospace = false, Color color = Colors.white}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+          Text(baslik, style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
           Text(deger, textAlign: TextAlign.right, style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: isMonospace ? 'monospace' : null, letterSpacing: 0.5)),
         ],
       ),
@@ -194,7 +195,7 @@ class GarantiSertifikasi extends StatelessWidget {
     return Row(
       children: [
         _buildAksiyonButonu(Icons.file_download_outlined, "SİSTEME KAYDET", () {}),
-        const SizedBox(width: 16),
+        SizedBox(width: 16),
         _buildAksiyonButonu(Icons.qr_code_scanner_rounded, "KRİPTOLU PAYLAŞ", () {}, isPrimary: true),
       ],
     );
@@ -206,7 +207,7 @@ class GarantiSertifikasi extends StatelessWidget {
         onTap: eylem,
         borderRadius: BorderRadius.circular(18),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 18),
+          padding: EdgeInsets.symmetric(vertical: 18),
           decoration: BoxDecoration(
             color: isPrimary ? _primaryCyan : Colors.transparent,
             borderRadius: BorderRadius.circular(18),
@@ -216,7 +217,7 @@ class GarantiSertifikasi extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, size: 18, color: isPrimary ? Colors.black : _primaryCyan),
-              const SizedBox(width: 10),
+              SizedBox(width: 10),
               Text(label, style: TextStyle(color: isPrimary ? Colors.black : _primaryCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
             ],
           ),

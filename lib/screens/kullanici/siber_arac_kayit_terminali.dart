@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../models/arac_model.dart';
 
 class SiberAracKayitTerminali extends StatefulWidget {
-  const SiberAracKayitTerminali({super.key});
+  SiberAracKayitTerminali({super.key});
 
   @override
   State<SiberAracKayitTerminali> createState() => _SiberAracKayitTerminaliState();
@@ -13,8 +13,8 @@ class SiberAracKayitTerminali extends StatefulWidget {
 class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
   final Color primaryTeal = Colors.teal.shade700;
   final Color dangerColor = Colors.redAccent;
-  final Color textColor = const Color(0xFF1E293B);
-  final Color bgColor = const Color(0xFFFAFAFC);
+  final Color textColor = Color(0xFF1E293B);
+  final Color bgColor = Color(0xFFFAFAFC);
   final Color warningColor = Colors.orange;
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -105,7 +105,7 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
 
       if (mounted) {
         _plazaUyariGoster("KAYIT BAŞARILI", "Araç OtoDNA Güvencesiyle Sisteme Eklendi!", primaryTeal);
-        await Future.delayed(const Duration(seconds: 1));
+        await Future.delayed(Duration(seconds: 1));
         Navigator.pop(context);
       }
     } catch (e) {
@@ -128,7 +128,7 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(mesaj, style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           ],
         ),
@@ -149,8 +149,8 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
         leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 18), onPressed: () => Navigator.pop(context)),
         actions: [
           Container(
-            margin: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
-            padding: const EdgeInsets.all(8),
+            margin: EdgeInsets.only(right: 16, top: 8, bottom: 8),
+            padding: EdgeInsets.all(8),
             decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), shape: BoxShape.circle),
             child: Icon(Icons.qr_code_scanner, color: primaryTeal, size: 18)
           )
@@ -160,15 +160,15 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.all(24),
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.all(24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildHolografikBaslik(),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
                   _buildKullanimAmaciKarti(),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                   _buildTerminalFormu(),
                 ],
               ),
@@ -183,7 +183,7 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
   Widget _buildHolografikBaslik() {
     return Center(
       child: Container(
-        padding: const EdgeInsets.all(32),
+        padding: EdgeInsets.all(32),
         decoration: BoxDecoration(
           color: primaryTeal.withValues(alpha: 0.05),
           shape: BoxShape.circle,
@@ -195,31 +195,31 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
 
   Widget _buildTerminalFormu() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white, 
         borderRadius: BorderRadius.circular(24), 
         border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
+        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: Offset(0, 5))]
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("KRİTİK DNA BİLGİLERİ", style: TextStyle(color: Colors.white45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-          const SizedBox(height: 16),
+          Text("KRİTİK DNA BİLGİLERİ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          SizedBox(height: 16),
           _buildPlazaInput("Plaka", _plakaController, Icons.subtitles),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           _buildPlazaInput("Şase No (VIN) - 17 Hane", _saseController, Icons.fingerprint),
-          const SizedBox(height: 32),
+          SizedBox(height: 32),
           
-          const Text("DONANIM BİLGİLERİ", style: TextStyle(color: Colors.white45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-          const SizedBox(height: 16),
+          Text("DONANIM BİLGİLERİ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          SizedBox(height: 16),
           _buildPlazaInput("Marka", _markaController, Icons.branding_watermark),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Row(
             children: [
               Expanded(child: _buildPlazaInput("Model", _modelController, Icons.model_training)),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               Expanded(child: _buildPlazaInput("Renk", _renkController, Icons.color_lens)),
             ],
           )
@@ -242,9 +242,9 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
         decoration: InputDecoration(
           prefixIcon: Icon(ikon, color: Colors.white38, size: 18),
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.white26, fontSize: 12, letterSpacing: 1, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
+          hintStyle: TextStyle(color: Colors.white24, fontSize: 12, letterSpacing: 1, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         ),
       ),
     );
@@ -252,18 +252,18 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
 
   Widget _buildKullanimAmaciKarti() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white, 
         borderRadius: BorderRadius.circular(24), 
         border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
+        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: Offset(0, 5))]
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("KULLANIM AMACI VE RİSK PROFİLİ", style: TextStyle(color: Colors.white45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-          const SizedBox(height: 16),
+          Text("KULLANIM AMACI VE RİSK PROFİLİ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          SizedBox(height: 16),
           // Ana Kullanım Türü Seçimi
           Row(
             children: [
@@ -274,7 +274,7 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
                   _operasyonAlani = null;
                 });
               })),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(child: _buildPlazaSecimKarti("Ticari", Icons.local_shipping, _kullanimTuru == "Ticari", () {
                 setState(() {
                   _kullanimTuru = "Ticari";
@@ -284,26 +284,26 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
           ),
           
           if (_kullanimTuru == "Ticari") ...[
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             Text("SAHİPLİK YAPISI", style: TextStyle(color: primaryTeal, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             Wrap(
               spacing: 8,
               runSpacing: 8,
               children: _sahiplikYapiListesi.map((yapi) => _buildPlazaChip(yapi, _sahiplikYapisi == yapi, () => setState(() => _sahiplikYapisi = yapi), primaryTeal)).toList(),
             ),
             
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             Text("OPERASYON ALANI (RİSK GRUBU)", style: TextStyle(color: warningColor, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             
             ..._operasyonKategorileri.entries.map((entry) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+              padding: EdgeInsets.only(bottom: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(entry.key.toUpperCase(), style: const TextStyle(color: Colors.white45, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-                  const SizedBox(height: 8),
+                  Text(entry.key.toUpperCase(), style: TextStyle(color: Colors.white54, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                  SizedBox(height: 8),
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -322,8 +322,8 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        duration: Duration(milliseconds: 300),
+        padding: EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
           color: secili ? primaryTeal.withValues(alpha: 0.05) : Colors.white,
           borderRadius: BorderRadius.circular(16),
@@ -333,7 +333,7 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
         child: Column(
           children: [
             Icon(ikon, color: secili ? primaryTeal : Colors.black26, size: 28),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Text(baslik, style: TextStyle(color: secili ? primaryTeal : textColor, fontSize: 12, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           ],
         ),
@@ -345,13 +345,13 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        duration: Duration(milliseconds: 200),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           color: secili ? aktifRenk : Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: secili ? aktifRenk : Colors.black.withValues(alpha: 0.05)),
-          boxShadow: secili ? [BoxShadow(color: aktifRenk.withValues(alpha: 0.3), blurRadius: 8, offset: const Offset(0, 3))] : [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 5)],
+          boxShadow: secili ? [BoxShadow(color: aktifRenk.withValues(alpha: 0.3), blurRadius: 8, offset: Offset(0, 3))] : [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 5)],
         ),
         child: Text(etiket, style: TextStyle(color: secili ? Colors.white : Colors.black54, fontSize: 11, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
       ),
@@ -360,11 +360,11 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
 
   Widget _buildMuhurleButonu() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white, 
         border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
-        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
+        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: Offset(0, -5))]
       ),
       child: SizedBox(
         width: double.infinity,
@@ -378,8 +378,8 @@ class _SiberAracKayitTerminaliState extends State<SiberAracKayitTerminali> {
           ),
           onPressed: _isProcessing ? null : _araciMerkezeMuhurle,
           child: _isProcessing 
-              ? const CircularProgressIndicator(color: Colors.white)
-              : const Text("SİSTEME KAYDET", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+              ? CircularProgressIndicator(color: Colors.white)
+              : Text("SİSTEME KAYDET", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
         ),
       ),
     );

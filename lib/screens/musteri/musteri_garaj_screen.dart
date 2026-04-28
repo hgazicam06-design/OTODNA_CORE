@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 
 class MusteriGarajScreen extends StatefulWidget {
-  const MusteriGarajScreen({super.key});
+  MusteriGarajScreen({super.key});
 
   @override
   State<MusteriGarajScreen> createState() => _MusteriGarajScreenState();
@@ -13,11 +14,11 @@ class MusteriGarajScreen extends StatefulWidget {
 
 class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
   // 🏢 FİLDİŞİ SEDEF PALET (Siyah İptal)
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color surfaceColor = Colors.white;
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMuted = const Color(0xFF64748B);
-  final Color textMain = const Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
+  final Color textMain = Color(0xFF1E293B);
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -40,7 +41,7 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
         centerTitle: true,
         actions: [
           Container(
-            margin: const EdgeInsets.only(right: 16),
+            margin: EdgeInsets.only(right: 16),
             decoration: BoxDecoration(
                 color: primaryTeal.withOpacity(0.1),
                 shape: BoxShape.circle,
@@ -49,7 +50,7 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
             child: IconButton(
                 icon: Icon(Icons.add, color: primaryTeal, size: 20),
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Araç Ekleme Terminali Başlatılıyor...", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: primaryTeal));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Araç Ekleme Terminali Başlatılıyor...", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: primaryTeal));
                 }
             ),
           ),
@@ -69,8 +70,8 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
             var araclar = snapshot.data!.docs;
 
             return ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               itemCount: araclar.length,
               itemBuilder: (context, index) {
                 var aracData = araclar[index].data() as Map<String, dynamic>;
@@ -98,9 +99,9 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text("AKTİF SİBER BAĞLANTI", style: TextStyle(color: textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         Container(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           decoration: BoxDecoration(
               color: surfaceColor,
               borderRadius: BorderRadius.circular(24),
@@ -118,7 +119,7 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(
                             color: bgColor,
                             borderRadius: BorderRadius.circular(16),
@@ -126,16 +127,16 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
                         ),
                         child: Icon(Icons.directions_car_outlined, color: primaryTeal, size: 28),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(color: primaryTeal.withOpacity(0.1), borderRadius: BorderRadius.circular(6), border: Border.all(color: primaryTeal.withOpacity(0.2))),
                             child: Text(plaka.toUpperCase(), style: TextStyle(color: primaryTeal, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2)),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: 8),
                           Text("$marka $model • $yil", style: TextStyle(color: textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
                         ],
                       ),
@@ -145,9 +146,9 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
                   Icon(Icons.qr_code_scanner_outlined, color: primaryTeal, size: 24),
                 ],
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
               Divider(color: Colors.white.withOpacity(0.05)),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
 
               // DNA SCORE BAR
               Row(
@@ -157,7 +158,7 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
                   Text("%${dnaSkoru.toInt()}", style: TextStyle(color: primaryTeal, fontSize: 18, fontWeight: FontWeight.w900)),
                 ],
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: LinearProgressIndicator(
@@ -170,7 +171,7 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
             ],
           ),
         ),
-        const SizedBox(height: 32),
+        SizedBox(height: 32),
 
         // =================================================================
         // 2. HIZLI İŞLEMLER (Yan Yana Siber Tuşlar)
@@ -178,23 +179,23 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
         Row(
           children: [
             Expanded(child: _buildQuickAction(Icons.science_outlined, "EKSPERTİZ\nRAPORU", Colors.purpleAccent.shade400)),
-            const SizedBox(width: 16),
+            SizedBox(width: 16),
             Expanded(child: _buildQuickAction(Icons.build_circle_outlined, "SİBER\nSERVİS", Colors.orange.shade700)),
-            const SizedBox(width: 16),
+            SizedBox(width: 16),
             Expanded(child: _buildQuickAction(Icons.sell_outlined, "AĞA\nSAT", Colors.green.shade600)),
           ],
         ),
-        const SizedBox(height: 48),
+        SizedBox(height: 48),
 
         // =================================================================
         // 3. SİCİL VE GEÇMİŞ ZAMAN ÇİZELGESİ (Firebase'den Dinamik)
         // =================================================================
         Text("ARAÇ SİCİLİ & GEÇMİŞ", style: TextStyle(color: textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
 
         if (sicilGecmisi.isEmpty)
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
             child: Center(child: Text("Siber ağda henüz kayıtlı bir işlem bulunmuyor.", style: TextStyle(color: textMuted, fontSize: 11, fontWeight: FontWeight.bold))),
           )
@@ -216,7 +217,7 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
             return _buildHistoryItem(islemIkon, islem['baslik'] ?? 'İşlem', islem['kurum'] ?? 'OtoDNA Ağı', tarihMetni, islemRenk);
           }).toList(),
 
-        const SizedBox(height: 40),
+        SizedBox(height: 40),
       ],
     );
   }
@@ -224,7 +225,7 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
   // 🛡️ YARDIMCI WIDGET: HIZLI İŞLEM BUTONU (Minimalist Tesla)
   Widget _buildQuickAction(IconData icon, String title, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.symmetric(vertical: 20),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(20),
@@ -234,7 +235,7 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
       child: Column(
         children: [
           Icon(icon, color: color, size: 24),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Text(title, textAlign: TextAlign.center, style: TextStyle(color: color, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
         ],
       ),
@@ -244,8 +245,8 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
   // 🛡️ YARDIMCI WIDGET: SİCİL GEÇMİŞİ SATIRI
   Widget _buildHistoryItem(IconData icon, String title, String subtitle, String time, Color iconColor) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(20),
+      margin: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(20),
@@ -255,7 +256,7 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12),
             decoration: BoxDecoration(
                 color: iconColor.withOpacity(0.1),
                 shape: BoxShape.circle,
@@ -263,13 +264,13 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
             ),
             child: Icon(icon, color: iconColor, size: 20),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, style: TextStyle(color: textMain, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: -0.5)),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(subtitle, style: TextStyle(color: textMuted, fontSize: 11)),
               ],
             ),
@@ -284,27 +285,27 @@ class _MusteriGarajScreenState extends State<MusteriGarajScreen> {
   Widget _buildBosGarajEkrani() {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: EdgeInsets.all(32.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               decoration: BoxDecoration(color: primaryTeal.withOpacity(0.05), shape: BoxShape.circle, border: Border.all(color: primaryTeal.withOpacity(0.3), width: 2)),
               child: Icon(Icons.car_rental, color: primaryTeal, size: 64),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             Text("SİBER GARAJ BOŞ", style: TextStyle(color: textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             Text("Kuantum ağında üzerinize kayıtlı bir araç bulunamadı. Hemen yeni bir araç ekleyip DNA oluşturun.", textAlign: TextAlign.center, style: TextStyle(color: textMuted, fontSize: 12, height: 1.5)),
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
             SizedBox(
               width: double.infinity, height: 56,
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                 onPressed: () {},
-                icon: const Icon(Icons.add, size: 20),
-                label: const Text("ARAÇ EKLE", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
+                icon: Icon(Icons.add, size: 20),
+                label: Text("ARAÇ EKLE", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
               ),
             )
           ],

@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/siber_sos_merkezi.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +13,7 @@ import '../core/responsive_kalkan.dart';
 /// 🚨 KUANTUM S.O.S MERKEZİ (MEGA PROTOKOL)
 /// 5 saniye basılı tutma kuralıyla asılsız ihbarları önler, canlı konumu Matrix'e fırlatır.
 class SiberSosMerkezi extends StatefulWidget {
-  const SiberSosMerkezi({super.key});
+  SiberSosMerkezi({super.key});
 
   @override
   State<SiberSosMerkezi> createState() => _SiberSosMerkeziState();
@@ -32,7 +33,7 @@ class _SiberSosMerkeziState extends State<SiberSosMerkezi> with SingleTickerProv
     // 5 Saniyelik Kuantum Dolum Motoru
     _basiliTutmaMotoru = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 5),
+      duration: Duration(seconds: 5),
     );
 
     // Motor 5 saniyeyi doldurduğunda füzeyi ateşle!
@@ -69,7 +70,7 @@ class _SiberSosMerkeziState extends State<SiberSosMerkezi> with SingleTickerProv
         'kullanici_id': uid,
         // SİBER NOT: Gerçek GPS paketi eklendiğinde buraya cihazın anlık konumu gelecek.
         // Şimdilik sistemin çalışması için Karargah (Ankara) koordinatları atanıyor.
-        'konum': const GeoPoint(39.92077, 32.85411),
+        'konum': GeoPoint(39.92077, 32.85411),
         'zaman_damgasi': FieldValue.serverTimestamp(),
         'durum': 'KIRMIZI_KOD_BEKLIYOR', // Admin 30 dk içinde müdahale etmeli!
         'mudahale_eden_bayi_id': null,
@@ -115,7 +116,7 @@ class _SiberSosMerkeziState extends State<SiberSosMerkezi> with SingleTickerProv
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: SiberTema.matGrey,
-        duration: const Duration(seconds: 5),
+        duration: Duration(seconds: 5),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -124,12 +125,12 @@ class _SiberSosMerkeziState extends State<SiberSosMerkezi> with SingleTickerProv
             Row(
               children: [
                 Icon(Icons.warning_amber_rounded, color: renk, size: 24),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
               ],
             ),
-            const SizedBox(height: 8),
-            Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, height: 1.5)),
+            SizedBox(height: 8),
+            Text(mesaj, style: TextStyle(color: SiberTema.textMain, fontSize: 13, height: 1.5)),
           ],
         ),
       ),
@@ -142,22 +143,22 @@ class _SiberSosMerkeziState extends State<SiberSosMerkezi> with SingleTickerProv
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("ACİL DURUM MERKEZİ", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          title: Text("ACİL DURUM MERKEZİ", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 2)),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
+            icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
             onPressed: () => Navigator.pop(context),
           ),
         ),
         body: Center(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: EdgeInsets.all(24.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // 🛡️ SİBER BİLGİLENDİRME PANELİ
                 SiberTema.siberCamKalkan(
-                  padding: const EdgeInsets.all(20),
-                  child: const Column(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
                     children: [
                       Icon(Icons.satellite_alt_outlined, color: SiberTema.kuantumCyan, size: 40),
                       SizedBox(height: 16),
@@ -171,7 +172,7 @@ class _SiberSosMerkeziState extends State<SiberSosMerkezi> with SingleTickerProv
                     ],
                   ),
                 ),
-                const SizedBox(height: 60),
+                SizedBox(height: 60),
 
                 // 🚨 OTONOM S.O.S BUTONU (Basılı Tutma Radarı)
                 GestureDetector(
@@ -212,7 +213,7 @@ class _SiberSosMerkeziState extends State<SiberSosMerkezi> with SingleTickerProv
                             ),
                             child: Center(
                               child: _islemSuruyor
-                                  ? const CircularProgressIndicator(color: Colors.white)
+                                  ? CircularProgressIndicator(color: Colors.white)
                                   : Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -222,8 +223,8 @@ class _SiberSosMerkeziState extends State<SiberSosMerkezi> with SingleTickerProv
                                       size: 60
                                   ),
                                   if (!_sosTetiklendi) ...[
-                                    const SizedBox(height: 8),
-                                    const Text("S . O . S", style: TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 4)),
+                                    SizedBox(height: 8),
+                                    Text("S . O . S", style: TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 4)),
                                   ]
                                 ],
                               ),
@@ -247,14 +248,14 @@ class _SiberSosMerkeziState extends State<SiberSosMerkezi> with SingleTickerProv
                   ),
                 ),
 
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
 
                 // Durum Gösterge Metni
                 AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
+                  duration: Duration(milliseconds: 300),
                   child: _sosTetiklendi
-                      ? const Text("SİNYAL İLETİLDİ. LÜTFEN BEKLEYİN.", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2))
-                      : const Text("TETİKLEMEK İÇİN BASILI TUTUN", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                      ? Text("SİNYAL İLETİLDİ. LÜTFEN BEKLEYİN.", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2))
+                      : Text("TETİKLEMEK İÇİN BASILI TUTUN", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold, letterSpacing: 2)),
                 )
               ],
             ),

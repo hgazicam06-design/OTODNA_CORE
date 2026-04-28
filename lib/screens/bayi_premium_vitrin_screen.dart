@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +9,7 @@ import '../core/responsive_kalkan.dart';
 
 class BayiPremiumVitrinScreen extends StatefulWidget {
   final String bayiId;
-  const BayiPremiumVitrinScreen({super.key, required this.bayiId});
+  BayiPremiumVitrinScreen({super.key, required this.bayiId});
 
   @override
   State<BayiPremiumVitrinScreen> createState() => _BayiPremiumVitrinScreenState();
@@ -53,7 +54,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
           stream: _db.collection('kullanicilar').doc(widget.bayiId).snapshots(),
           builder: (context, bayiSnapshot) {
             if (bayiSnapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3));
+              return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3));
             }
 
             if (!bayiSnapshot.hasData || !bayiSnapshot.data!.exists) {
@@ -75,7 +76,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
             Color temaRengi = _getRütbeRengi(paket);
 
             return CustomScrollView(
-              physics: const BouncingScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               slivers: [
                 // ── 1. HOLOGRAFİK KAPAK (SliverAppBar) ──
                 SliverAppBar(
@@ -88,8 +89,8 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
                       child: BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                         child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(color: Colors.white26, shape: BoxShape.circle, border: Border.all(color: temaRengi.withOpacity(0.5))),
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(color: Colors.white24, shape: BoxShape.circle, border: Border.all(color: temaRengi.withOpacity(0.5))),
                           child: Icon(Icons.arrow_back_ios_new, color: temaRengi, size: 16),
                         ),
                       ),
@@ -97,7 +98,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
                     onPressed: () => Navigator.pop(context),
                   ),
                   flexibleSpace: FlexibleSpaceBar(
-                    stretchModes: const [StretchMode.zoomBackground, StretchMode.blurBackground],
+                    stretchModes: [StretchMode.zoomBackground, StretchMode.blurBackground],
                     background: Stack(
                       fit: StackFit.expand,
                       children: [
@@ -112,7 +113,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [Colors.transparent, SiberTema.oledBlack.withOpacity(0.8), SiberTema.oledBlack],
-                              stops: const [0.4, 0.8, 1.0],
+                              stops: [0.4, 0.8, 1.0],
                             ),
                           ),
                         ),
@@ -126,16 +127,16 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               _buildSiberLogo(logoFoto, temaRengi),
-                              const SizedBox(width: 16),
+                              SizedBox(width: 16),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     _buildRutbeEtiketi(paket, temaRengi),
-                                    const SizedBox(height: 8),
+                                    SizedBox(height: 8),
                                     Text(firmaAdi.toUpperCase(),
-                                        style: const TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                                        style: TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                                   ],
                                 ),
                               ),
@@ -150,16 +151,16 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
                 // ── 2. KARARGAH BİLGİLERİ ──
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: EdgeInsets.all(20.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildBilgiKarti(yetkiliIsim, calismaSaatleri, temaRengi),
-                        const SizedBox(height: 24),
+                        SizedBox(height: 24),
                         _sectionBaslik("KARARGAH HAKKINDA", temaRengi),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8),
                         Text(hakkinda, style: TextStyle(color: SiberTema.textMain.withOpacity(0.7), fontSize: 13, height: 1.5, fontFamily: 'Avenir')),
-                        const SizedBox(height: 24),
+                        SizedBox(height: 24),
                         if (isYeriFotolari.isNotEmpty) _buildFotoGaleri(isYeriFotolari, temaRengi),
                       ],
                     ),
@@ -175,7 +176,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
                         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                         child: Container(
                           color: SiberTema.oledBlack.withOpacity(0.8),
-                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          padding: EdgeInsets.symmetric(vertical: 10),
                           child: _buildKategoriListesi(temaRengi),
                         ),
                       ),
@@ -186,7 +187,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
                 // ── 4. SİBER İLAN AĞI ──
                 _buildIlanGrid(temaRengi),
 
-                const SliverToBoxAdapter(child: SizedBox(height: 120)),
+                SliverToBoxAdapter(child: SizedBox(height: 120)),
               ],
             );
           },
@@ -212,13 +213,13 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
 
   Widget _buildRutbeEtiketi(String paket, Color renk) {
     return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         decoration: BoxDecoration(color: renk.withOpacity(0.15), borderRadius: BorderRadius.circular(8), border: Border.all(color: renk.withOpacity(0.5))),
         child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
             Icon(_getRütbeIkoni(paket), color: renk, size: 12),
-    const SizedBox(width: 6),
+    SizedBox(width: 6),
     Text("$paket BAYİ", style: TextStyle(color: renk, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
     ],
     ),
@@ -227,7 +228,7 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
 
   Widget _buildBilgiKarti(String yetkili, String saat, Color renk) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       decoration: SiberTema.siberCamDekoru(borderColor: Colors.white10),
       child: Row(
         children: [
@@ -243,13 +244,13 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
     return Column(
       children: [
         Text(baslik, style: TextStyle(color: SiberTema.textMuted, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 1)),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(ikon, color: renk, size: 14),
-            const SizedBox(width: 6),
-            Flexible(child: Text(deger, style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900))),
+            SizedBox(width: 6),
+            Flexible(child: Text(deger, style: TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900))),
           ],
         ),
       ],
@@ -261,11 +262,11 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
       height: 110,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         itemCount: fotolar.length,
         itemBuilder: (context, index) => Container(
           width: 160,
-          margin: const EdgeInsets.only(right: 12),
+          margin: EdgeInsets.only(right: 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             border: Border.all(color: renk.withOpacity(0.2)),
@@ -279,17 +280,17 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
   Widget _buildKategoriListesi(Color renk) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      physics: BouncingScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: _kategoriler.map((kat) {
           bool isSelected = _seciliKategori == kat;
           return GestureDetector(
             onTap: () => setState(() => _seciliKategori = kat),
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 250),
-              margin: const EdgeInsets.only(right: 10),
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+              duration: Duration(milliseconds: 250),
+              margin: EdgeInsets.only(right: 10),
+              padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
               decoration: BoxDecoration(
                 color: isSelected ? renk.withOpacity(0.2) : Colors.white.withOpacity(0.03),
                 borderRadius: BorderRadius.circular(12),
@@ -309,15 +310,15 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
           ? _db.collection('ilanlar').where('satici_id', isEqualTo: widget.bayiId).where('aktif_mi', isEqualTo: true).snapshots()
           : _db.collection('ilanlar').where('satici_id', isEqualTo: widget.bayiId).where('kategori', isEqualTo: _seciliKategori).where('aktif_mi', isEqualTo: true).snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) return const SliverToBoxAdapter(child: Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator(color: SiberTema.kuantumCyan))));
+        if (snapshot.connectionState == ConnectionState.waiting) return SliverToBoxAdapter(child: Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator(color: SiberTema.kuantumCyan))));
 
         final ilanlar = snapshot.data?.docs ?? [];
         if (ilanlar.isEmpty) return _buildBosIlanMesaji(renk);
 
         return SliverPadding(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           sliver: SliverGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: 0.72,
               crossAxisSpacing: 15,
@@ -348,19 +349,19 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
         children: [
           Expanded(
             child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
               child: gorsel.isNotEmpty
                   ? Image.network(gorsel, fit: BoxFit.cover, width: double.infinity)
-                  : Container(color: SiberTema.oledBlack, child: const Icon(Icons.image_not_supported, color: SiberTema.textMuted)),
+                  : Container(color: SiberTema.oledBlack, child: Icon(Icons.image_not_supported, color: SiberTema.textMuted)),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(baslik, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 6),
+                Text(baslik, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
+                SizedBox(height: 6),
                 Text("₺${fiyat.toStringAsFixed(0)}", style: TextStyle(color: renk, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 0.5)),
               ],
             ),
@@ -373,11 +374,11 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
   Widget _buildBosIlanMesaji(Color renk) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 60),
+        padding: EdgeInsets.symmetric(vertical: 60),
         child: Column(
           children: [
             Icon(Icons.radar, size: 48, color: renk.withOpacity(0.1)),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             Text("BU RADARDA İLAN YOK", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 2)),
           ],
         ),
@@ -394,11 +395,11 @@ class _BayiPremiumVitrinScreenState extends State<BayiPremiumVitrinScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.error_outline, color: SiberTema.kanKirmizi, size: 50),
-          const SizedBox(height: 16),
-          Text(mesaj, style: const TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 24),
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("GERİ DÖN", style: TextStyle(color: SiberTema.textMuted))),
+          Icon(Icons.error_outline, color: SiberTema.kanKirmizi, size: 50),
+          SizedBox(height: 16),
+          Text(mesaj, style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)),
+          SizedBox(height: 24),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text("GERİ DÖN", style: TextStyle(color: SiberTema.textMuted))),
         ],
       ),
     );

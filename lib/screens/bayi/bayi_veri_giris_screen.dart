@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/bayi/bayi_veri_giris_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +9,7 @@ import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
 class BayiVeriGirisScreen extends StatefulWidget {
-  const BayiVeriGirisScreen({super.key});
+  BayiVeriGirisScreen({super.key});
 
   @override
   State<BayiVeriGirisScreen> createState() => _BayiVeriGirisScreenState();
@@ -93,11 +94,11 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         backgroundColor: SiberTema.matGrey,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: SiberTema.kuantumCyan, width: 2)),
-        title: const Row(children: [Icon(Icons.camera_alt, color: SiberTema.kuantumCyan), SizedBox(width: 12), Text("Kanıt Yüklemesi", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.bold))]),
-        content: Text("Dijital Referans Protokolü gereği, '$parca' için Yeşil Tık (✅) atabilmeniz için anlık fotoğraf veya video yüklemeniz önerilir.", style: const TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.5)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: SiberTema.kuantumCyan, width: 2)),
+        title: Row(children: [Icon(Icons.camera_alt, color: SiberTema.kuantumCyan), SizedBox(width: 12), Text("Kanıt Yüklemesi", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.bold))]),
+        content: Text("Dijital Referans Protokolü gereği, '$parca' için Yeşil Tık (✅) atabilmeniz için anlık fotoğraf veya video yüklemeniz önerilir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.5)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İptal", style: TextStyle(color: SiberTema.textMuted))),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text("İptal", style: TextStyle(color: SiberTema.textMuted))),
           ElevatedButton.icon(
             style: SiberTema.kuantumButonStili(),
             onPressed: () {
@@ -105,8 +106,8 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
               setState(() => _kontrolListesi[parca] = 1);
               _showSnackBar("$parca onaylandı ve dijital imzanız atıldı! ✅");
             },
-            icon: const Icon(Icons.check_circle, color: SiberTema.oledBlack, size: 16),
-            label: const Text("Onayla & Geç", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)),
+            icon: Icon(Icons.check_circle, color: SiberTema.oledBlack, size: 16),
+            label: Text("Onayla & Geç", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)),
           )
         ],
       ),
@@ -120,11 +121,11 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         backgroundColor: SiberTema.matGrey,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: SiberTema.kanKirmizi, width: 2)),
-        title: const Row(children: [Icon(Icons.warning, color: SiberTema.kanKirmizi), SizedBox(width: 12), Text("Kritik Risk Bildirimi!", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 16, fontWeight: FontWeight.bold))]),
-        content: Text("DİKKAT! '$parca' alanına Kırmızı X (❌) atıyorsunuz. Bu işlem aracın DNA Skorunu kalıcı olarak düşürecek ve Kuantum Merkezine raporlanacaktır. Onaylıyor musunuz?", style: const TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.5)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: SiberTema.kanKirmizi, width: 2)),
+        title: Row(children: [Icon(Icons.warning, color: SiberTema.kanKirmizi), SizedBox(width: 12), Text("Kritik Risk Bildirimi!", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 16, fontWeight: FontWeight.bold))]),
+        content: Text("DİKKAT! '$parca' alanına Kırmızı X (❌) atıyorsunuz. Bu işlem aracın DNA Skorunu kalıcı olarak düşürecek ve Kuantum Merkezine raporlanacaktır. Onaylıyor musunuz?", style: TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.5)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İptal", style: TextStyle(color: SiberTema.textMuted))),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text("İptal", style: TextStyle(color: SiberTema.textMuted))),
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kanKirmizi),
             onPressed: () {
@@ -132,8 +133,8 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
               setState(() => _kontrolListesi[parca] = 2);
               _showSnackBar("$parca riskli işaretlendi! Aracın değeri düşürülecek. ❌", isError: true);
             },
-            icon: const Icon(Icons.gpp_bad, color: SiberTema.kuantumCyan, size: 16),
-            label: const Text("Riski Raporla", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
+            icon: Icon(Icons.gpp_bad, color: SiberTema.kuantumCyan, size: 16),
+            label: Text("Riski Raporla", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
           )
         ],
       ),
@@ -214,7 +215,7 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
             ? "Rapor İletildi! Araç Kusurlu Bulundu (DNA -$cezaPuani). 🛡️"
             : "Kusursuz Rapor! Dijital İmzanız Ağa İşlendi. ✅");
 
-        Future.delayed(const Duration(seconds: 2), () => Navigator.pop(context));
+        Future.delayed(Duration(seconds: 2), () => Navigator.pop(context));
       }
 
     } catch (e) {
@@ -232,96 +233,96 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
         backgroundColor: Colors.transparent, // Zırh zaten siyah
         appBar: AppBar(
           backgroundColor: Colors.transparent, elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("Usta Veri Terminali", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, letterSpacing: 2)),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          title: Text("Usta Veri Terminali", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, letterSpacing: 2)),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(24),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // 1. SORGULAMA EKRANI
-              const Text("Araç Tanımlama", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 12),
+              Text("Araç Tanımlama", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.bold)),
+              SizedBox(height: 12),
               Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: _saseController,
                       textCapitalization: TextCapitalization.characters,
-                      style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 2),
+                      style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 2),
                       decoration: InputDecoration(
                         hintText: "ŞASE VEYA QR (VIN)",
-                        hintStyle: const TextStyle(color: SiberTema.textMuted, letterSpacing: 0),
+                        hintStyle: TextStyle(color: SiberTema.textMuted, letterSpacing: 0),
                         filled: true, fillColor: SiberTema.matGrey,
-                        prefixIcon: const Icon(Icons.qr_code_scanner, color: SiberTema.kuantumCyan),
+                        prefixIcon: Icon(Icons.qr_code_scanner, color: SiberTema.kuantumCyan),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-                        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 2)),
+                        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: SiberTema.kuantumCyan, width: 2)),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   GestureDetector(
                     onTap: _isSearching ? null : _sorgula,
                     child: Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(color: SiberTema.kuantumCyan, borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.3), blurRadius: 10, spreadRadius: 1)]),
                       child: _isSearching
-                          ? const SizedBox(height: 28, width: 28, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
-                          : const Icon(Icons.radar, color: SiberTema.oledBlack, size: 28),
+                          ? SizedBox(height: 28, width: 28, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
+                          : Icon(Icons.radar, color: SiberTema.oledBlack, size: 28),
                     ),
                   )
                 ],
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
 
               // 2. ARAÇ BULUNDUYSA KONTROL LİSTESİNİ GÖSTER
               if (_aracSorgulandi && _aracData != null) ...[
                 // CANLI ARAÇ BİLGİ KARTI
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5))),
                   child: Row(
                     children: [
-                      const Icon(Icons.directions_car, color: SiberTema.kuantumCyan, size: 40),
-                      const SizedBox(width: 16),
+                      Icon(Icons.directions_car, color: SiberTema.kuantumCyan, size: 40),
+                      SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(_aracData!['plaka'] ?? 'GİZLİ PLAKA', style: const TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: 2)),
-                            const SizedBox(height: 4),
-                            Text(_aracData!['marka_model'] ?? "Bilinmeyen Kasa", style: const TextStyle(color: SiberTema.textMuted, fontSize: 14)),
-                            const SizedBox(height: 4),
-                            Text("Güncel DNA: ${_aracData!['dna_skoru'] ?? 100} / 100", style: const TextStyle(color: SiberTema.altinSari, fontSize: 12, fontWeight: FontWeight.bold)),
+                            Text(_aracData!['plaka'] ?? 'GİZLİ PLAKA', style: TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                            SizedBox(height: 4),
+                            Text(_aracData!['marka_model'] ?? "Bilinmeyen Kasa", style: TextStyle(color: SiberTema.textMuted, fontSize: 14)),
+                            SizedBox(height: 4),
+                            Text("Güncel DNA: ${_aracData!['dna_skoru'] ?? 100} / 100", style: TextStyle(color: SiberTema.altinSari, fontSize: 12, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),
-                      Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), decoration: BoxDecoration(color: Colors.white54, borderRadius: BorderRadius.circular(8)), child: const Text("OtoDNA\nEkspertiz", textAlign: TextAlign.center, style: TextStyle(color: Colors.orangeAccent, fontSize: 10, fontWeight: FontWeight.bold))),
+                      Container(padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6), decoration: BoxDecoration(color: Colors.white54, borderRadius: BorderRadius.circular(8)), child: Text("OtoDNA\nEkspertiz", textAlign: TextAlign.center, style: TextStyle(color: Colors.orangeAccent, fontSize: 10, fontWeight: FontWeight.bold))),
                     ],
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: 32),
 
                 // DİJİTAL REFERANS PROTOKOLÜ (LİSTE)
-                const Text("Dijital Referans Protokolü", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 8),
-                const Text("Aşağıdaki donanımları kontrol edin. 'Kırmızı X' aracın DNA Skorunu düşürür.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
-                const SizedBox(height: 16),
+                Text("Dijital Referans Protokolü", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.bold)),
+                SizedBox(height: 8),
+                Text("Aşağıdaki donanımları kontrol edin. 'Kırmızı X' aracın DNA Skorunu düşürür.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+                SizedBox(height: 16),
 
                 ListView.separated(
                   shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: _kontrolListesi.keys.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 12),
+                  separatorBuilder: (context, index) => SizedBox(height: 12),
                   itemBuilder: (context, index) {
                     String parca = _kontrolListesi.keys.elementAt(index);
                     int durum = _kontrolListesi[parca]!;
 
                     return Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: durum == 0 ? SiberTema.matGrey : durum == 1 ? Colors.green.withOpacity(0.1) : SiberTema.kanKirmizi.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(16),
@@ -336,17 +337,17 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
                           GestureDetector(
                             onTap: () => _retVer(parca),
                             child: Container(
-                              padding: const EdgeInsets.all(8),
+                              padding: EdgeInsets.all(8),
                               decoration: BoxDecoration(color: durum == 2 ? SiberTema.kanKirmizi : SiberTema.oledBlack, shape: BoxShape.circle, border: Border.all(color: SiberTema.kanKirmizi)),
                               child: Icon(Icons.close, color: durum == 2 ? Colors.white : SiberTema.kanKirmizi, size: 20),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           // YEŞİL TIK BUTONU
                           GestureDetector(
                             onTap: () => _onayVer(parca),
                             child: Container(
-                              padding: const EdgeInsets.all(8),
+                              padding: EdgeInsets.all(8),
                               decoration: BoxDecoration(color: durum == 1 ? Colors.green : SiberTema.oledBlack, shape: BoxShape.circle, border: Border.all(color: Colors.green)),
                               child: Icon(Icons.check, color: durum == 1 ? Colors.white : Colors.green, size: 20),
                             ),
@@ -356,7 +357,7 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
                     );
                   },
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
 
                 // DİJİTAL İMZA VE KAYDET BUTONU
                 SizedBox(
@@ -365,13 +366,13 @@ class _BayiVeriGirisScreenState extends State<BayiVeriGirisScreen> {
                   child: ElevatedButton.icon(
                     style: SiberTema.kuantumButonStili(),
                     onPressed: _isSaving ? null : _protokoluTamamla,
-                    icon: _isSaving ? const SizedBox() : const Icon(Icons.fingerprint, color: SiberTema.oledBlack, size: 24),
+                    icon: _isSaving ? SizedBox() : Icon(Icons.fingerprint, color: SiberTema.oledBlack, size: 24),
                     label: _isSaving
-                        ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
-                        : const Text("Dijital İmzam ile Ağa Kaydet", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 0.5)),
+                        ? SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
+                        : Text("Dijital İmzam ile Ağa Kaydet", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 0.5)),
                   ),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
               ]
             ],
           ),

@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
@@ -9,7 +10,7 @@ import '../../core/responsive_kalkan.dart';
 class ServiceDetailScreen extends StatefulWidget {
   final String raporId;
 
-  const ServiceDetailScreen({super.key, required this.raporId});
+  ServiceDetailScreen({super.key, required this.raporId});
 
   @override
   State<ServiceDetailScreen> createState() => _ServiceDetailScreenState();
@@ -19,11 +20,11 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // 🏢 FİLDİŞİ SEDEF PALET
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color surfaceColor = Colors.white;
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMain = const Color(0xFF1E293B);
-  final Color textMuted = const Color(0xFF64748B);
+  final Color textMain = Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
   final Color dangerColor = SiberTema.kanKirmizi;
 
   bool _isLoading = true;
@@ -56,7 +57,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     if (mounted) {
       setState(() => _isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+        content: Text(mesaj, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         backgroundColor: dangerColor,
         behavior: SnackBarBehavior.floating,
       ));
@@ -85,19 +86,19 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
         body: _isLoading
             ? Center(child: CircularProgressIndicator(color: primaryTeal))
             : SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildAracKarti(),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
               Text(
                 "📋 EKSPERTİZ VE KONTROL NOKTALARI",
                 style: TextStyle(color: textMuted, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1.5, fontFamily: 'Avenir'),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               _buildKontrolListesi(),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
               _buildAksiyonButonlari(),
             ],
           ),
@@ -109,7 +110,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   // 🚗 ARAÇ KİMLİK KARTI (SİBER CAM EFEKTİ)
   Widget _buildAracKarti() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(24),
@@ -129,18 +130,18 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                       (_raporData?['marka_model'] ?? "Bilinmeyen Ünite").toUpperCase(),
                       style: TextStyle(color: textMain, fontSize: 20, fontWeight: FontWeight.w900, fontFamily: 'Avenir'),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     Row(
                       children: [
                         Icon(Icons.speed, color: primaryTeal, size: 14),
-                        const SizedBox(width: 6),
+                        SizedBox(width: 6),
                         Text(
                           "${_raporData?['km'] ?? '0'} KM",
                           style: TextStyle(color: textMuted, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                         ),
-                        const SizedBox(width: 12),
+                        SizedBox(width: 12),
                         Text("|", style: TextStyle(color: textMuted.withOpacity(0.5))),
-                        const SizedBox(width: 12),
+                        SizedBox(width: 12),
                         Text(
                           "YIL: ${_raporData?['yil'] ?? '-'}",
                           style: TextStyle(color: textMuted, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
@@ -151,7 +152,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   color: primaryTeal.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
@@ -164,13 +165,13 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
               )
             ],
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
           Divider(color: Colors.white.withOpacity(0.05)),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           Row(
             children: [
               Icon(Icons.verified_user, color: Colors.blue.shade700, size: 16),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               Text(
                 "RAPOR TARİHİ: ${_raporData?['tarih'] ?? 'Belirtilmedi'}",
                 style: TextStyle(color: textMuted, fontSize: 11, fontWeight: FontWeight.bold),
@@ -191,15 +192,15 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
 
     return ListView.builder(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       itemCount: kontroller.length,
       itemBuilder: (context, index) {
         var item = kontroller[index];
         bool isOk = item['durum'] == 'OK';
 
         return Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          padding: const EdgeInsets.all(16),
+          margin: EdgeInsets.only(bottom: 12),
+          padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: surfaceColor,
             borderRadius: BorderRadius.circular(16),
@@ -209,7 +210,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
           child: Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: isOk ? primaryTeal.withOpacity(0.1) : dangerColor.withOpacity(0.1),
                   shape: BoxShape.circle
@@ -220,7 +221,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                   size: 20,
                 ),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,15 +267,15 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               elevation: 0
             ),
-            icon: const Icon(Icons.picture_as_pdf, color: SiberTema.kuantumCyan, size: 20),
-            label: const Text(
+            icon: Icon(Icons.picture_as_pdf, color: SiberTema.kuantumCyan, size: 20),
+            label: Text(
               "SİBER MÜHÜRLÜ PDF OLUŞTUR",
               style: TextStyle(fontWeight: FontWeight.w900, color: SiberTema.textMain, letterSpacing: 1.5, fontFamily: 'Avenir'),
             ),
             onPressed: () => print("PDF Motoru Ateşlendi..."),
           ),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: 20),
         Center(
           child: Text(
             "Bu rapor OtoDNA Kuantum Ağı tarafından siber mühürle doğrulanmıştır.",
@@ -289,7 +290,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   void _yedekParcaBul(String parcaAdi) {
     // Gelecek operasyon: Murat Plaza veya Genel Market filtresi
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text("$parcaAdi için sisteme %12 kâr payı entegre ediliyor...", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
+      content: Text("$parcaAdi için sisteme %12 kâr payı entegre ediliyor...", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
       backgroundColor: Colors.amber.shade700,
     ));
   }

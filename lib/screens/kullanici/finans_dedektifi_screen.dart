@@ -1,4 +1,4 @@
-// lib/screens/kullanici/finans_dedektifi_screen.dart
+﻿// lib/screens/kullanici/finans_dedektifi_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,7 +13,7 @@ class FinansDedektifiScreen extends StatefulWidget {
   final String aracId;
   final String plaka;
 
-  const FinansDedektifiScreen({super.key, required this.aracId, required this.plaka});
+  FinansDedektifiScreen({super.key, required this.aracId, required this.plaka});
 
   @override
   State<FinansDedektifiScreen> createState() => _FinansDedektifiScreenState();
@@ -31,8 +31,8 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
 
   // 🏢 PLAZA KALİTESİ PALET
   final Color primaryTeal = Colors.teal.shade700;
-  final Color bgColor = const Color(0xFFFAFAFC);
-  final Color textColor = const Color(0xFF1E293B);
+  final Color bgColor = Color(0xFFFAFAFC);
+  final Color textColor = Color(0xFF1E293B);
   final Color dangerColor = Colors.redAccent;
   final Color warningColor = Colors.orange;
 
@@ -117,10 +117,10 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
       builder: (context) => Padding(
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Container(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
             border: Border(top: BorderSide(color: primaryTeal.withValues(alpha: 0.5), width: 2)),
             boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20)],
           ),
@@ -129,9 +129,9 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
               Text("YENİ GİDER EKLE", style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
 
               // Kategori Seçici
               Row(
@@ -157,13 +157,13 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
                 ],
               ),
 
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               _buildGirdiAlani(controller: _tutarCtrl, hint: "Tutar (₺)", ikon: Icons.attach_money, isNumber: true),
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               _buildGirdiAlani(controller: _kmCtrl, hint: "Güncel Kilometre (KM)", ikon: Icons.speed, isNumber: true),
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               _buildGirdiAlani(controller: _aciklamaCtrl, hint: "Açıklama (Örn: Shell 50L veya Balata)", ikon: Icons.description),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               SizedBox(
                 width: double.infinity,
@@ -178,8 +178,8 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
                     elevation: 0,
                   ),
                   onPressed: _gideriKarargahaYaz,
-                  icon: const Icon(Icons.save_alt),
-                  label: const Text("SİSTEME MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                  icon: Icon(Icons.save_alt),
+                  label: Text("SİSTEME MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                 ),
               )
             ],
@@ -199,7 +199,7 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
         fillColor: bgColor,
         prefixIcon: Icon(ikon, color: primaryTeal, size: 20),
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.white38, fontSize: 12, fontFamily: 'Avenir'),
+        hintStyle: TextStyle(color: Colors.white38, fontSize: 12, fontFamily: 'Avenir'),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: primaryTeal, width: 1.5)),
@@ -240,7 +240,7 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
             if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: primaryTeal));
 
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Center(child: Text("FİNANS VERİSİ YOK\nHenüz gider mühürlenmedi.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white38, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')));
+              return Center(child: Text("FİNANS VERİSİ YOK\nHenüz gider mühürlenmedi.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white38, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')));
             }
 
             // 🧠 SİBER ANALİZ: Maliyetleri Hesapla
@@ -265,25 +265,25 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
             double kmBasinaMaliyet = (toplamYakit + toplamServis) / yapilanKm;
 
             return Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(20.0),
               child: Column(
                 children: [
                   // 📊 SİBER RADAR KARTI (KM BAŞINA MALİYET)
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(24),
+                    padding: EdgeInsets.all(24),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: primaryTeal.withValues(alpha: 0.3), width: 1.5),
-                      boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.05), blurRadius: 30, offset: const Offset(0, 10))],
+                      boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.05), blurRadius: 30, offset: Offset(0, 10))],
                     ),
                     child: Column(
                       children: [
-                        const Text("KM BAŞINA ORTALAMA MALİYET", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-                        const SizedBox(height: 10),
+                        Text("KM BAŞINA ORTALAMA MALİYET", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                        SizedBox(height: 10),
                         Text("₺${kmBasinaMaliyet.toStringAsFixed(2)}", style: TextStyle(color: primaryTeal, fontSize: 40, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -296,14 +296,14 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: 24),
-                  const Align(alignment: Alignment.centerLeft, child: Text("SON MÜHÜRLENEN GİDERLER", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 24),
+                  Align(alignment: Alignment.centerLeft, child: Text("SON MÜHÜRLENEN GİDERLER", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))),
+                  SizedBox(height: 10),
 
                   // 📜 GİDER LİSTESİ
                   Expanded(
                     child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
+                      physics: BouncingScrollPhysics(),
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
                         var gider = snapshot.data!.docs[index].data() as Map<String, dynamic>;
@@ -311,8 +311,8 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
                         Color kRenk = isYakit ? warningColor : dangerColor;
 
                         return Container(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          padding: const EdgeInsets.all(16),
+                          margin: EdgeInsets.only(bottom: 12),
+                          padding: EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(12),
@@ -321,15 +321,15 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
                           ),
                           child: Row(
                             children: [
-                              Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: kRenk.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(isYakit ? Icons.local_gas_station : Icons.build_circle, color: kRenk, size: 24)),
-                              const SizedBox(width: 16),
+                              Container(padding: EdgeInsets.all(10), decoration: BoxDecoration(color: kRenk.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(isYakit ? Icons.local_gas_station : Icons.build_circle, color: kRenk, size: 24)),
+                              SizedBox(width: 16),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(gider['aciklama'], style: TextStyle(color: textColor, fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-                                    const SizedBox(height: 4),
-                                    Text("${gider['km']} KM", style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                    SizedBox(height: 4),
+                                    Text("${gider['km']} KM", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                                   ],
                                 ),
                               ),
@@ -353,8 +353,8 @@ class _FinansDedektifiScreenState extends State<FinansDedektifiScreen> {
     return Column(
       children: [
         Text(deger, style: TextStyle(color: renk, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-        const SizedBox(height: 4),
-        Text(baslik, style: const TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+        SizedBox(height: 4),
+        Text(baslik, style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
       ],
     );
   }

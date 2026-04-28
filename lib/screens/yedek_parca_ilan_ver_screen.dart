@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +9,7 @@ import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
 class YedekParcaIlanVerScreen extends StatefulWidget {
-  const YedekParcaIlanVerScreen({super.key});
+  YedekParcaIlanVerScreen({super.key});
 
   @override
   State<YedekParcaIlanVerScreen> createState() => _YedekParcaIlanVerScreenState();
@@ -100,7 +101,7 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
       _siberUyari("SİBER ONAY: Parça İlanınız Kuantum Marketine başarıyla mühürlendi!", isError: false);
 
       // Mühürlendikten Sonra Markete Geri Dön
-      Future.delayed(const Duration(seconds: 1), () {
+      Future.delayed(Duration(seconds: 1), () {
         if (mounted) Navigator.pop(context);
       });
 
@@ -137,37 +138,37 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
           elevation: 1,
           shadowColor: SiberTema.kuantumCyan.withOpacity(0.3),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan, size: 20),
+            icon: Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan, size: 20),
             onPressed: () => Navigator.pop(context),
           ),
-          title: const Text("PARÇA İLANI OLUŞTUR", style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          title: Text("PARÇA İLANI OLUŞTUR", style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
         ),
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(image: AssetImage('assets/images/radar_grid.png'), fit: BoxFit.cover, opacity: 0.05),
           ),
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(24),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildKategoriSecici(),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
 
                 _buildGirdiAlani("PARÇA / HİZMET ADI", "Örn: Orijinal BMW F30 Ön Tampon", _baslikCtrl, Icons.title),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
 
                 _buildFiyatAlani(),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
 
                 // 💰 CANLI FİNANS PANELİ (KARARGAH PAYI EKRANI)
                 _buildCanliFinansRadari(gaziPayi, netKazanc),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
 
                 _buildGirdiAlani("AÇIKLAMA", "Durumu, garanti bilgisi, uyumlu araçlar vb.", _aciklamaCtrl, Icons.description, maxLines: 4),
-                const SizedBox(height: 32),
+                SizedBox(height: 32),
 
                 // 🚀 FIRLATMA BUTONU
                 SizedBox(
@@ -177,15 +178,15 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
                     style: SiberTema.kuantumButonStili(),
                     onPressed: _isLoading ? null : _ilaniMuhurle,
                     icon: _isLoading
-                        ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
-                        : const Icon(Icons.satellite_alt, color: SiberTema.oledBlack, size: 24),
+                        ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
+                        : Icon(Icons.satellite_alt, color: SiberTema.oledBlack, size: 24),
                     label: Text(
                         _isLoading ? "MÜHÜRLENİYOR..." : "AĞA YÜKLE VE SATIŞA BAŞLA",
-                        style: const TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 14, fontFamily: 'Avenir')
+                        style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 14, fontFamily: 'Avenir')
                     ),
                   ),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
               ],
             ),
           ),
@@ -200,10 +201,10 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("KATEGORİ SEÇİMİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-        const SizedBox(height: 8),
+        Text("KATEGORİ SEÇİMİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+        SizedBox(height: 8),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
             color: SiberTema.matGrey,
             borderRadius: BorderRadius.circular(12),
@@ -213,9 +214,9 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
             child: DropdownButton<String>(
               value: _seciliKategori,
               dropdownColor: SiberTema.oledBlack,
-              icon: const Icon(Icons.arrow_drop_down, color: SiberTema.kuantumCyan),
+              icon: Icon(Icons.arrow_drop_down, color: SiberTema.kuantumCyan),
               isExpanded: true,
-              style: const TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+              style: TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
               items: _kategoriler.map((String kategori) {
                 return DropdownMenuItem<String>(
                   value: kategori,
@@ -238,20 +239,20 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-        const SizedBox(height: 8),
+        Text(baslik, style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+        SizedBox(height: 8),
         TextField(
           controller: ctrl,
           maxLines: maxLines,
-          style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontFamily: 'Avenir'),
+          style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontFamily: 'Avenir'),
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 13),
             prefixIcon: maxLines == 1 ? Icon(icon, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 20) : null,
             filled: true,
             fillColor: SiberTema.matGrey,
-            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.textMuted)),
-            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 1.5)),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.textMuted)),
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kuantumCyan, width: 1.5)),
           ),
         ),
       ],
@@ -262,25 +263,25 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("SATIŞ FİYATI (₺)", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-        const SizedBox(height: 8),
+        Text("SATIŞ FİYATI (₺)", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+        SizedBox(height: 8),
         TextField(
           controller: _fiyatCtrl,
           keyboardType: TextInputType.number,
-          style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 2),
+          style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 2),
           onChanged: (deger) {
             setState(() {
               _girilenFiyat = double.tryParse(deger.replaceAll(',', '.')) ?? 0.0;
             });
           },
           decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.currency_lira, color: SiberTema.kuantumCyan, size: 24),
+            prefixIcon: Icon(Icons.currency_lira, color: SiberTema.kuantumCyan, size: 24),
             hintText: "0.00",
             hintStyle: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.2)),
             filled: true,
             fillColor: SiberTema.kuantumCyan.withOpacity(0.05),
             enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.3))),
-            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 2)),
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kuantumCyan, width: 2)),
           ),
         ),
       ],
@@ -290,7 +291,7 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
   // 💸 EŞ ZAMANLI KESİNTİ VE HAKEDİŞ EKRANI
   Widget _buildCanliFinansRadari(double gaziPayi, double netKazanc) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: SiberTema.altinSari.withOpacity(0.05),
         borderRadius: BorderRadius.circular(12),
@@ -301,16 +302,16 @@ class _YedekParcaIlanVerScreenState extends State<YedekParcaIlanVerScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("OtoDNA Sistem Kesintisi (%12)", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-              Text("- ₺${gaziPayi.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kanKirmizi, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+              Text("OtoDNA Sistem Kesintisi (%12)", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+              Text("- ₺${gaziPayi.toStringAsFixed(2)}", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             ],
           ),
-          const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted, height: 1)),
+          Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted, height: 1)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("NET HAKEDİŞİNİZ", style: TextStyle(color: SiberTema.altinSari, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-              Text("₺${netKazanc.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.altinSari, fontSize: 20, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+              Text("NET HAKEDİŞİNİZ", style: TextStyle(color: SiberTema.altinSari, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+              Text("₺${netKazanc.toStringAsFixed(2)}", style: TextStyle(color: SiberTema.altinSari, fontSize: 20, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             ],
           ),
         ],

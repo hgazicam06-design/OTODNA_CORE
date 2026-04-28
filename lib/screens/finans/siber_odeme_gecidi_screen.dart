@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +13,7 @@ class SiberOdemeGecidiScreen extends StatefulWidget {
   final double komisyonTutar;
   final double esnafNet;
 
-  const SiberOdemeGecidiScreen({
+  SiberOdemeGecidiScreen({
     super.key,
     required this.toplamTutar,
     required this.komisyonTutar,
@@ -72,7 +73,7 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
     HapticFeedback.heavyImpact();
 
     // SİBER İŞLEM SİMÜLASYONU
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 2));
 
     try {
       // 🚀 FIRESTORE ATOMİK KAYIT
@@ -96,7 +97,7 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
       _siberUyari("✅ KUANTUM FİNANS TRANSFERİ BAŞARILI!", SiberTema.kuantumCyan);
 
       // Başarılı ödeme sonrası fatura ekranına (veya ana ekrana) dön
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(Duration(seconds: 3));
       if (mounted) Navigator.pop(context, true);
 
     } catch (e) {
@@ -118,7 +119,7 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
         appBar: AppBar(
           backgroundColor: Colors.black.withOpacity(0.8),
           elevation: 0,
-          title: const Row(
+          title: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(Icons.shield_moon_rounded, color: SiberTema.sariAltin),
@@ -127,13 +128,13 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
             ],
           ),
           centerTitle: true,
-          iconTheme: const IconThemeData(color: SiberTema.sariAltin),
+          iconTheme: IconThemeData(color: SiberTema.sariAltin),
           bottom: TabBar(
             controller: _tabController,
             indicatorColor: SiberTema.sariAltin,
             labelColor: SiberTema.sariAltin,
             unselectedLabelColor: Colors.white54,
-            tabs: const [
+            tabs: [
               Tab(icon: Icon(Icons.credit_card), text: "Kredi Kartı"),
               Tab(icon: Icon(Icons.phone_iphone), text: "Mobil Ödeme"),
             ],
@@ -163,8 +164,8 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
   // ── GERÇEK ZAMANLI BİLANÇO ÖZETİ ──
   Widget _buildFinansalOzet() {
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(20),
+      margin: EdgeInsets.all(16),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: SiberTema.matGrey,
         borderRadius: BorderRadius.circular(16),
@@ -173,10 +174,10 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
       ),
       child: Column(
         children: [
-          const Text("ÖDENECEK TOPLAM TUTAR", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
-          const SizedBox(height: 8),
-          Text("${widget.toplamTutar.toStringAsFixed(2)} ₺", style: const TextStyle(color: SiberTema.textMain, fontSize: 32, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-          const Padding(
+          Text("ÖDENECEK TOPLAM TUTAR", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
+          SizedBox(height: 8),
+          Text("${widget.toplamTutar.toStringAsFixed(2)} ₺", style: TextStyle(color: SiberTema.textMain, fontSize: 32, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+          Padding(
             padding: EdgeInsets.symmetric(vertical: 12),
             child: Divider(color: SiberTema.textMuted),
           ),
@@ -196,8 +197,8 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10)),
-        const SizedBox(height: 4),
+        Text(baslik, style: TextStyle(color: SiberTema.textMuted, fontSize: 10)),
+        SizedBox(height: 4),
         Text(deger, style: TextStyle(color: renk, fontWeight: FontWeight.bold, fontSize: 14)),
       ],
     );
@@ -206,17 +207,17 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
   // ── KREDİ KARTI (PAYTR SİMÜLASYONU) ──
   Widget _buildKrediKartiFormu() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.all(16),
+      physics: BouncingScrollPhysics(),
       child: Column(
         children: [
           // 3D SİBER KART GÖRSELİ
           Container(
             height: 200,
             width: double.infinity,
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 colors: [Color(0xFF1E1E1E), Colors.black],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -232,12 +233,12 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(Icons.contactless, color: SiberTema.textMuted, size: 28),
+                    Icon(Icons.contactless, color: SiberTema.textMuted, size: 28),
                     Text("PayTR", style: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontWeight: FontWeight.w900, fontSize: 20, fontStyle: FontStyle.italic)),
                   ],
                 ),
                 Text("**** **** **** ****", style: TextStyle(color: SiberTema.textMain.withOpacity(0.8), fontSize: 24, letterSpacing: 4, fontFamily: 'Courier')),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("İSİM SOYİSİM", style: TextStyle(color: SiberTema.textMuted, fontSize: 14, letterSpacing: 2)),
@@ -247,19 +248,19 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
           _buildSiberInput("Kart Numarası", Icons.credit_card, _kartNoCtrl, TextInputType.number),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           _buildSiberInput("Kart Üzerindeki İsim", Icons.person, _kartSahibiCtrl, TextInputType.name),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Row(
             children: [
               Expanded(child: _buildSiberInput("Son Kullanma (AA/YY)", Icons.calendar_today, _skTarihCtrl, TextInputType.datetime)),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               Expanded(child: _buildSiberInput("CVV", Icons.security, _cvvCtrl, TextInputType.number, obscure: true)),
             ],
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: 30),
           _buildOdemeButonu(),
         ],
       ),
@@ -269,18 +270,18 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
   // ── MOBİL ÖDEME (OPERATÖR) SİMÜLASYONU ──
   Widget _buildMobilOdemeFormu() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.all(16),
+      physics: BouncingScrollPhysics(),
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: SiberTema.kuantumCyan.withOpacity(0.05),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3)),
             ),
-            child: const Column(
+            child: Column(
               children: [
                 Icon(Icons.cell_tower_rounded, color: SiberTema.kuantumCyan, size: 48),
                 SizedBox(height: 12),
@@ -290,9 +291,9 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
               ],
             ),
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: 30),
           _buildSiberInput("Cep Telefonu Numarası", Icons.phone_iphone, _telefonCtrl, TextInputType.phone),
-          const SizedBox(height: 30),
+          SizedBox(height: 30),
           _buildOdemeButonu(),
         ],
       ),
@@ -305,15 +306,15 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
       controller: controller,
       keyboardType: type,
       obscureText: obscure,
-      style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, letterSpacing: 1.5),
+      style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, letterSpacing: 1.5),
       decoration: InputDecoration(
         labelText: hint,
-        labelStyle: const TextStyle(color: SiberTema.textMuted, letterSpacing: 0),
+        labelStyle: TextStyle(color: SiberTema.textMuted, letterSpacing: 0),
         prefixIcon: Icon(icon, color: SiberTema.sariAltin, size: 20),
         filled: true,
         fillColor: Colors.black45,
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.textMuted)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.sariAltin)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.textMuted)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.sariAltin)),
       ),
     );
   }
@@ -331,8 +332,8 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
         child: _islemSuruyor 
-            ? const CircularProgressIndicator(color: Colors.white)
-            : const Text("ÖDEMEYİ TAMAMLA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2)),
+            ? CircularProgressIndicator(color: Colors.white)
+            : Text("ÖDEMEYİ TAMAMLA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2)),
       ),
     );
   }
@@ -344,7 +345,7 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
       body: Center(
         child: TweenAnimationBuilder<double>(
           tween: Tween(begin: 0.0, end: 1.0),
-          duration: const Duration(milliseconds: 800),
+          duration: Duration(milliseconds: 800),
           curve: Curves.elasticOut,
           builder: (context, value, child) {
             return Transform.scale(
@@ -353,18 +354,18 @@ class _SiberOdemeGecidiScreenState extends State<SiberOdemeGecidiScreen> with Si
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(30),
+                    padding: EdgeInsets.all(30),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: SiberTema.kuantumCyan.withOpacity(0.1),
                       boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.5), blurRadius: 50, spreadRadius: value * 20)],
                     ),
-                    child: const Icon(Icons.check_circle, color: SiberTema.kuantumCyan, size: 100),
+                    child: Icon(Icons.check_circle, color: SiberTema.kuantumCyan, size: 100),
                   ),
-                  const SizedBox(height: 30),
-                  const Text("ÖDEME BAŞARILI", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 4, fontFamily: 'Avenir')),
-                  const SizedBox(height: 10),
-                  const Text("Hakediş hesabınıza yansıtıldı.", style: TextStyle(color: SiberTema.textMuted, fontSize: 14)),
+                  SizedBox(height: 30),
+                  Text("ÖDEME BAŞARILI", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 4, fontFamily: 'Avenir')),
+                  SizedBox(height: 10),
+                  Text("Hakediş hesabınıza yansıtıldı.", style: TextStyle(color: SiberTema.textMuted, fontSize: 14)),
                 ],
               ),
             );

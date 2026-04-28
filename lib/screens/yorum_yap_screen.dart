@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +13,7 @@ class YorumYapScreen extends StatefulWidget {
   final String firmaAdi;
   final String islemId;
 
-  const YorumYapScreen({
+  YorumYapScreen({
     super.key,
     this.firmaId = "FİRMA_001", // Test verisi
     this.firmaAdi = "HEDEF FİRMA", // Test verisi
@@ -113,7 +114,7 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
         title: Row(
           children: [
             Icon(isKirmiziAlarm ? Icons.warning_amber_rounded : Icons.check_circle, color: isKirmiziAlarm ? SiberTema.kanKirmizi : SiberTema.kuantumCyan, size: 28),
-            const SizedBox(width: 12),
+            SizedBox(width: 12),
             Expanded(child: Text(isKirmiziAlarm ? "KIRMIZI ALARM VERİLDİ" : "MÜHÜR İLETİLDİ", style: TextStyle(color: isKirmiziAlarm ? SiberTema.kanKirmizi : SiberTema.kuantumCyan, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'))),
           ],
         ),
@@ -121,7 +122,7 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
           isKirmiziAlarm
               ? "Verdiğiniz düşük puan Ankara Merkez Karargahında acil koda dönüştü. Firma derhal incelemeye alınacaktır!"
               : "Değerlendirmeniz Kuantum Ağına mühürlendi. OtoDNA kalitesine katkınızdan dolayı teşekkür ederiz.",
-          style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, height: 1.5, fontFamily: 'Avenir'),
+          style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, height: 1.5, fontFamily: 'Avenir'),
         ),
         actions: [
           TextButton(
@@ -157,20 +158,20 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("HİZMET DEĞERLENDİRME", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text("HİZMET DEĞERLENDİRME", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
         ),
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(image: AssetImage('assets/images/radar_grid.png'), fit: BoxFit.cover, opacity: 0.05),
           ),
           child: SafeArea(
             child: Center(
               child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 600), // 🖥️ Web / Double Teyp Kalkanı
+                constraints: BoxConstraints(maxWidth: 600), // 🖥️ Web / Double Teyp Kalkanı
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(24.0),
-                  physics: const BouncingScrollPhysics(),
+                  padding: EdgeInsets.all(24.0),
+                  physics: BouncingScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -180,23 +181,23 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                           child: Container(
-                            padding: const EdgeInsets.all(20),
+                            padding: EdgeInsets.all(20),
                             decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.8), borderRadius: BorderRadius.circular(20), border: Border.all(color: SiberTema.textMuted)),
                             child: Row(
                               children: [
                                 Container(
-                                  padding: const EdgeInsets.all(12),
+                                  padding: EdgeInsets.all(12),
                                   decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), shape: BoxShape.circle),
-                                  child: const Icon(Icons.store, color: SiberTema.kuantumCyan, size: 24),
+                                  child: Icon(Icons.store, color: SiberTema.kuantumCyan, size: 24),
                                 ),
-                                const SizedBox(width: 16),
+                                SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("HEDEF FİRMA", style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-                                      const SizedBox(height: 4),
-                                      Text(widget.firmaAdi.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                                      SizedBox(height: 4),
+                                      Text(widget.firmaAdi.toUpperCase(), style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                                     ],
                                   ),
                                 ),
@@ -205,11 +206,11 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 40),
+                      SizedBox(height: 40),
 
                       // 2. ETKİLEŞİMLİ YILDIZ RADARI
-                      const Text("HİZMET KALİTESİNİ MÜHÜRLE", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-                      const SizedBox(height: 24),
+                      Text("HİZMET KALİTESİNİ MÜHÜRLE", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                      SizedBox(height: 24),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -217,7 +218,7 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
                           return IconButton(
                             iconSize: 48,
                             icon: AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 300),
+                              duration: Duration(milliseconds: 300),
                               transitionBuilder: (Widget child, Animation<double> animation) {
                                 return ScaleTransition(scale: animation, child: child);
                               },
@@ -231,11 +232,11 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
                           );
                         }),
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
 
                       // 3. DİNAMİK PUAN METNİ
                       Container(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        padding: EdgeInsets.symmetric(vertical: 12),
                         decoration: BoxDecoration(color: _verilenPuan < 3 ? SiberTema.kanKirmizi.withOpacity(0.1) : SiberTema.altinSari.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: _verilenPuan < 3 ? SiberTema.kanKirmizi.withOpacity(0.5) : SiberTema.altinSari.withOpacity(0.5))),
                         child: Text(
                           _puanMetniGetir(),
@@ -243,11 +244,11 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
                           style: TextStyle(color: _verilenPuan < 3 ? SiberTema.kanKirmizi : SiberTema.altinSari, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir'),
                         ),
                       ),
-                      const SizedBox(height: 48),
+                      SizedBox(height: 48),
 
                       // 4. DETAYLI İSTİHBARAT (YORUM) KUTUSU
-                      const Text("SİBER İSTİHBARAT RAPORU (YORUM)", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-                      const SizedBox(height: 12),
+                      Text("SİBER İSTİHBARAT RAPORU (YORUM)", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                      SizedBox(height: 12),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: BackdropFilter(
@@ -257,19 +258,19 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
                             child: TextField(
                               controller: _yorumController,
                               maxLines: 5,
-                              style: const TextStyle(color: SiberTema.textMain, fontSize: 13, height: 1.5, fontFamily: 'Avenir'),
+                              style: TextStyle(color: SiberTema.textMain, fontSize: 13, height: 1.5, fontFamily: 'Avenir'),
                               decoration: InputDecoration(
                                 hintText: "Firmanın işlemi ve hizmet kalitesi hakkında detaylı bilgi verin...",
                                 hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
                                 border: InputBorder.none,
-                                contentPadding: const EdgeInsets.all(20),
-                                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 1.5)),
+                                contentPadding: EdgeInsets.all(20),
+                                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: SiberTema.kuantumCyan, width: 1.5)),
                               ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 40),
+                      SizedBox(height: 40),
 
                       // 5. ATEŞLEME BUTONU
                       SizedBox(
@@ -278,11 +279,11 @@ class _YorumYapScreenState extends State<YorumYapScreen> {
                           style: SiberTema.kuantumButonStili(),
                           onPressed: _isProcessing ? null : _yorumuGonder,
                           icon: _isProcessing
-                              ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
-                              : const Icon(Icons.shield, size: 24, color: SiberTema.oledBlack),
+                              ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
+                              : Icon(Icons.shield, size: 24, color: SiberTema.oledBlack),
                           label: Text(
                             _isProcessing ? "İSTİHBARAT İLETİLİYOR..." : "ANKARA MERKEZ'E GÖNDER",
-                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, color: SiberTema.oledBlack, fontFamily: 'Avenir'),
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, color: SiberTema.oledBlack, fontFamily: 'Avenir'),
                           ),
                         ),
                       ),

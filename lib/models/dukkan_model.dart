@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// 🦅 OTODNA KUANTUM ESNAF ABONELİK VE LİMİT MOTORU
 /// Bu model, esnafların (dükkanların) sisteme katılımını, limitlerini, puanlamasını,
@@ -68,9 +68,9 @@ class Dukkan {
     this.ustalikBelgesiUrl,
     this.evrakOnayDurumu = 'bekliyor',
     this.evrakRedNedeni,
-    this.verilenHizmetler = const ["Genel Servis"],
-    this.hizmetAracTipleri = const [],
-    this.uzmanMarkaGruplari = const [],
+    this.verilenHizmetler = ["Genel Servis"],
+    this.hizmetAracTipleri = [],
+    this.uzmanMarkaGruplari = [],
     this.puan = 5.0,
     this.aktifMi = true,
     this.rozet = "Bronz",

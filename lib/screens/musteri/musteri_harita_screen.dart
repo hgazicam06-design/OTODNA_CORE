@@ -1,10 +1,11 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MusteriHaritaScreen extends StatefulWidget {
   final String? ilkAramaKelimesi; // Keşfet ekranından gelen kelime
 
-  const MusteriHaritaScreen({super.key, this.ilkAramaKelimesi});
+  MusteriHaritaScreen({super.key, this.ilkAramaKelimesi});
 
   @override
   State<MusteriHaritaScreen> createState() => _MusteriHaritaScreenState();
@@ -12,11 +13,11 @@ class MusteriHaritaScreen extends StatefulWidget {
 
 class _MusteriHaritaScreenState extends State<MusteriHaritaScreen> {
   // 🏢 FİLDİŞİ SEDEF PALET
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color surfaceColor = Colors.white;
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMuted = const Color(0xFF64748B);
-  final Color textMain = const Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
+  final Color textMain = Color(0xFF1E293B);
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   late TextEditingController _aramaController;
@@ -50,9 +51,9 @@ class _MusteriHaritaScreenState extends State<MusteriHaritaScreen> {
         children: [
           // 💎 ARAMA ÇUBUĞU (KUANTUM FİLTRESİ)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                   color: surfaceColor,
                   borderRadius: BorderRadius.circular(20),
@@ -77,7 +78,7 @@ class _MusteriHaritaScreenState extends State<MusteriHaritaScreen> {
                   )
                       : null,
                   border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                  contentPadding: EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
             ),
@@ -121,8 +122,8 @@ class _MusteriHaritaScreenState extends State<MusteriHaritaScreen> {
                       if (ustalar.isEmpty) return Center(child: Text("Aradığınız kritere uygun usta bulunamadı.", style: TextStyle(color: textMuted, fontSize: 12, fontWeight: FontWeight.bold)));
 
                       return ListView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                          physics: const BouncingScrollPhysics(),
+                          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                          physics: BouncingScrollPhysics(),
                           itemCount: ustalar.length,
                           itemBuilder: (context, index) {
                             var usta = ustalar[index].data() as Map<String, dynamic>;
@@ -133,8 +134,8 @@ class _MusteriHaritaScreenState extends State<MusteriHaritaScreen> {
                             Color kartRengi = isVip ? (rozet == "Murat Plaza" ? primaryTeal : Colors.amber.shade700) : Colors.black12;
 
                             return Container(
-                              margin: const EdgeInsets.only(bottom: 16),
-                              padding: const EdgeInsets.all(20),
+                              margin: EdgeInsets.only(bottom: 16),
+                              padding: EdgeInsets.all(20),
                               decoration: BoxDecoration(
                                   color: surfaceColor,
                                   borderRadius: BorderRadius.circular(24),
@@ -153,17 +154,17 @@ class _MusteriHaritaScreenState extends State<MusteriHaritaScreen> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Container(
-                                                  padding: const EdgeInsets.all(12),
+                                                  padding: EdgeInsets.all(12),
                                                   decoration: BoxDecoration(color: isVip ? kartRengi.withOpacity(0.1) : bgColor, shape: BoxShape.circle, border: Border.all(color: isVip ? kartRengi.withOpacity(0.5) : Colors.black.withOpacity(0.05))),
                                                   child: Icon(Icons.storefront_outlined, color: isVip ? kartRengi : textMuted, size: 20)
                                               ),
-                                              const SizedBox(width: 12),
+                                              SizedBox(width: 12),
                                               Expanded(
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text(usta['ad']?.toString().toUpperCase() ?? 'İSİMSİZ FİRMA', style: TextStyle(color: textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 0.5)),
-                                                    const SizedBox(height: 4),
+                                                    SizedBox(height: 4),
                                                     if (isVip) Text("$rozet İSTASYON".toUpperCase(), style: TextStyle(color: kartRengi, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1))
                                                   ],
                                                 ),
@@ -172,45 +173,45 @@ class _MusteriHaritaScreenState extends State<MusteriHaritaScreen> {
                                         ),
                                       ),
                                       Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                                           decoration: BoxDecoration(color: isVip ? kartRengi.withOpacity(0.1) : bgColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: isVip ? kartRengi.withOpacity(0.3) : Colors.black.withOpacity(0.05))),
                                           child: Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Icon(Icons.star, color: kartRengi, size: 12),
-                                                const SizedBox(width: 4),
+                                                SizedBox(width: 4),
                                                 Text("${usta['puan'] ?? 5.0}", style: TextStyle(color: kartRengi, fontWeight: FontWeight.w900, fontSize: 11))
                                               ]
                                           )
                                       )
                                     ],
                                   ),
-                                  const SizedBox(height: 16),
+                                  SizedBox(height: 16),
                                   Text(usta['firma_tanitimi'] ?? 'OtoDNA Onaylı Yetkili Servis Noktası', maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(color: textMuted, fontSize: 11, height: 1.4)),
-                                  const SizedBox(height: 16),
+                                  SizedBox(height: 16),
 
                                   // Uzmanlık Etiketleri
                                   Wrap(
                                     spacing: 8, runSpacing: 8,
                                     children: (usta['uzmanlik_alt_dallari'] as List<dynamic>? ?? []).take(3).map((uzmanlik) {
                                       return Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                                           decoration: BoxDecoration(color: primaryTeal.withOpacity(0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: primaryTeal.withOpacity(0.2))),
                                           child: Text(uzmanlik.toString().toUpperCase(), style: TextStyle(color: primaryTeal, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1))
                                       );
                                     }).toList(),
                                   ),
 
-                                  const SizedBox(height: 24),
+                                  SizedBox(height: 24),
                                   SizedBox(
                                     width: double.infinity, height: 50,
                                     child: ElevatedButton.icon(
                                       style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
                                       onPressed: () {
-                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${usta['ad']} için Randevu Ekranı Açılıyor...", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: primaryTeal));
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${usta['ad']} için Randevu Ekranı Açılıyor...", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: primaryTeal));
                                       },
-                                      icon: const Icon(Icons.navigation_outlined, size: 18),
-                                      label: const Text("ROTA ÇİZ & RANDEVU AL", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1)),
+                                      icon: Icon(Icons.navigation_outlined, size: 18),
+                                      label: Text("ROTA ÇİZ & RANDEVU AL", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1)),
                                     ),
                                   )
                                 ],

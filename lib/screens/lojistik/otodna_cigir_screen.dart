@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +12,7 @@ import '../../services/siber_lojistik_motoru.dart';
 /// Müşterinin 10 km çapındaki taksileri DNA skoruna ve şoför puanına göre
 /// filtreleyip çağırdığı Kuantum Radar arayüzü.
 class OtoDnaCigirScreen extends StatefulWidget {
-  const OtoDnaCigirScreen({super.key});
+  OtoDnaCigirScreen({super.key});
 
   @override
   State<OtoDnaCigirScreen> createState() => _OtoDnaCigirScreenState();
@@ -19,11 +20,11 @@ class OtoDnaCigirScreen extends StatefulWidget {
 
 class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
   // 🏢 FİLDİŞİ SEDEF PALET
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color surfaceColor = Colors.white;
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMain = const Color(0xFF1E293B);
-  final Color textMuted = const Color(0xFF64748B);
+  final Color textMain = Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
   final Color accentGold = Colors.amber.shade700;
   final Color dangerColor = SiberTema.kanKirmizi;
 
@@ -69,8 +70,8 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
   }
 
   void _rehberiGoster({bool otomatik = false}) {
-    const String baslik = "OTODNA ÇIĞIR (YOLCU RADARI)";
-    const String icerik = "Siber Ulaşım Ağına Hoş Geldiniz.\n\n"
+    String baslik = "OTODNA ÇIĞIR (YOLCU RADARI)";
+    String icerik = "Siber Ulaşım Ağına Hoş Geldiniz.\n\n"
         "Bu ekran 5 KM çapındaki tüm OtoDNA onaylı araçları listeler. Sistem size gitmek istediğiniz yer için 3 farklı Yapay Zeka rotası sunar.\n\n"
         "Şoförle para pazarlığına girmezsiniz. Ekranda gördüğünüz fiyat (Odalar Tarifesi - %2 OtoDNA İndirimi) sabittir. Eğer şoför tarafından rahatsız edilirseniz, 'ENGELLE' butonuna basarak o aracı Kuantum Ağı'ndan silebilirsiniz.";
 
@@ -83,7 +84,7 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
 
   void _siberUyari(String mesaj, Color renk) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+      content: Text(mesaj, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
       backgroundColor: renk,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       behavior: SnackBarBehavior.floating,
@@ -96,7 +97,7 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
     
     _siberUyari("$plaka plakalı araca ÇIĞIR sinyali gönderildi! Yanıt bekleniyor...", primaryTeal);
 
-    await Future.delayed(const Duration(seconds: 3)); // Simülasyon
+    await Future.delayed(Duration(seconds: 3)); // Simülasyon
     
     setState(() => _radarTariyor = false);
     _siberUyari("✅ ŞOFÖR ONAYLADI! Araç konumunuza doğru yola çıktı.", primaryTeal);
@@ -147,8 +148,8 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
               child: _radarTariyor 
                 ? _buildRadarTaramaAnimasyonu()
                 : ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    physics: const BouncingScrollPhysics(),
+                    padding: EdgeInsets.all(16),
+                    physics: BouncingScrollPhysics(),
                     itemCount: gosterilenAraclar.length,
                     itemBuilder: (context, index) {
                       return _buildTaksiKarti(gosterilenAraclar[index]);
@@ -164,7 +165,7 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
   Widget _buildRadarPaneli() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: surfaceColor,
         border: Border(bottom: BorderSide(color: primaryTeal, width: 2)),
@@ -176,12 +177,12 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
           InkWell(
             onTap: () => setState(() => _hedefSecildi = true),
             child: Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
               child: Row(
                 children: [
                   Icon(Icons.location_on, color: primaryTeal, size: 24),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -193,7 +194,7 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
 
           // FİLTRE: Sadece Temiz DNA Raporu
           GestureDetector(
@@ -202,7 +203,7 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
               setState(() => _sadeceTemizDna = !_sadeceTemizDna);
             },
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
                 color: _sadeceTemizDna ? primaryTeal.withOpacity(0.1) : surfaceColor,
                 borderRadius: BorderRadius.circular(12),
@@ -212,7 +213,7 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(_sadeceTemizDna ? Icons.health_and_safety : Icons.health_and_safety_outlined, color: _sadeceTemizDna ? primaryTeal : textMuted, size: 20),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8),
                   Text(
                     "SADECE DNA RAPORU TEMİZ ARAÇLAR", 
                     style: TextStyle(color: _sadeceTemizDna ? primaryTeal : textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1)
@@ -228,24 +229,24 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
 
   Widget _buildAiRotaVeFinansPaneli() {
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: accentGold.withOpacity(0.5)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 10)]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("KUANTUM A.I. ROTASI SEÇİN", style: TextStyle(color: accentGold, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Row(
             children: [
               Expanded(child: _buildRotaSecenek("Hızlı Rota", Icons.speed, true)),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               Expanded(child: _buildRotaSecenek("Güvenli Rota", Icons.health_and_safety, false)),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               Expanded(child: _buildRotaSecenek("Kestirme", Icons.map, false)),
             ],
           ),
-          Padding(padding: const EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white.withOpacity(0.05))),
+          Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white.withOpacity(0.05))),
           
           // FİNANS ÖZETİ
           Row(
@@ -255,7 +256,7 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
               Text("₺${_odaTarifesiFiyati.toStringAsFixed(2)}", style: TextStyle(color: textMuted, fontSize: 12, decoration: TextDecoration.lineThrough)),
             ],
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -263,7 +264,7 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
               Text("- ₺${_otodnaIndirimi.toStringAsFixed(2)}", style: TextStyle(color: primaryTeal, fontSize: 12, fontWeight: FontWeight.bold)),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -271,7 +272,7 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
               Text("₺${_netMusteriFiyati.toStringAsFixed(2)}", style: TextStyle(color: primaryTeal, fontSize: 24, fontWeight: FontWeight.w900)),
             ],
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Text("* Şoför hizmet faturasını (%20 KDV) yolculuk sonu kesecektir.", style: TextStyle(color: textMuted.withOpacity(0.8), fontSize: 9)),
         ],
       ),
@@ -282,7 +283,7 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
     return GestureDetector(
       onTap: () => setState(() => _seciliRota = isim),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           color: _seciliRota == isim ? accentGold.withOpacity(0.1) : bgColor,
           borderRadius: BorderRadius.circular(12),
@@ -291,7 +292,7 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
         child: Column(
           children: [
             Icon(ikon, color: _seciliRota == isim ? accentGold : textMuted, size: 20),
-            const SizedBox(height: 6),
+            SizedBox(height: 6),
             Text(isim, style: TextStyle(color: _seciliRota == isim ? accentGold : textMuted, fontSize: 10, fontWeight: FontWeight.w900)),
           ],
         ),
@@ -308,9 +309,9 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
             width: 80, height: 80,
             child: CircularProgressIndicator(color: primaryTeal, strokeWidth: 2),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
           Text("SİNYAL MERKEZE İLETİLİYOR...", style: TextStyle(color: primaryTeal, fontWeight: FontWeight.bold, letterSpacing: 2)),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text("Şoförün onay vermesi bekleniyor", style: TextStyle(color: textMuted, fontSize: 11)),
         ],
       ),
@@ -325,7 +326,7 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
     Color anaRenk = isVIP ? accentGold : (isRiskli ? dangerColor : primaryTeal);
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(16),
@@ -335,7 +336,7 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             child: Column(
               children: [
                 // PLAKA VE ROZET
@@ -343,40 +344,40 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4), border: Border.all(color: Colors.white, width: 2)),
-                      child: Text(taksi['plaka'] ?? "", style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                      child: Text(taksi['plaka'] ?? "", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                     ),
                     if (isVIP)
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(color: accentGold.withOpacity(0.1), borderRadius: BorderRadius.circular(20), border: Border.all(color: accentGold)),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.star, color: accentGold, size: 12),
-                            const SizedBox(width: 4),
+                            SizedBox(width: 4),
                             Text("ALTIN ŞOFÖR", style: TextStyle(color: accentGold, fontSize: 9, fontWeight: FontWeight.w900)),
                           ],
                         ),
                       )
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
 
                 // ŞOFÖR ADI (ŞİFRELİ) VE DURAK
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(Icons.person, color: anaRenk, size: 40),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(taksi['soforAdi'] ?? "Bilinmiyor", style: TextStyle(color: textMain, fontSize: 16, fontWeight: FontWeight.w900)),
                           Text("${taksi['arac']} • ${taksi['mesafe']} KM Uzakta", style: TextStyle(color: textMuted, fontSize: 12)),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4),
                           Text("Bağlı Durak: ${taksi['durakAdi'] ?? 'Bağımsız'}", style: TextStyle(color: primaryTeal, fontSize: 10, fontWeight: FontWeight.bold)),
                         ],
                       ),
@@ -388,16 +389,16 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.star, color: Colors.amber, size: 14),
-                            const SizedBox(width: 4),
+                            Icon(Icons.star, color: Colors.amber, size: 14),
+                            SizedBox(width: 4),
                             Text("${taksi['yildiz'] ?? '5.0'}", style: TextStyle(color: textMain, fontSize: 14, fontWeight: FontWeight.bold)),
                           ],
                         ),
-                        const SizedBox(height: 2),
+                        SizedBox(height: 2),
                         Text("(${taksi['yorumSayisi'] ?? 0} Yorum)", style: TextStyle(color: textMuted, fontSize: 9)),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                          padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                           decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(8)),
                           child: Text("Çığır: ${taksi['puan']}", style: TextStyle(color: anaRenk, fontSize: 10, fontWeight: FontWeight.bold)),
                         )
@@ -418,7 +419,7 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
                   child: InkWell(
                     onTap: () => _durakBaskaninaMesajAt(taksi['durakAdi'] ?? 'Bilinmeyen Durak'),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      padding: EdgeInsets.symmetric(vertical: 14),
                       child: Center(child: Text("DURAKLA GÖRÜŞ", style: TextStyle(color: textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1))),
                     ),
                   )
@@ -430,7 +431,7 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
                       _siberUyari("Şoför Engellendi. Kuantum Ağı'nda size bir daha görünmeyecek.", dangerColor);
                     },
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      padding: EdgeInsets.symmetric(vertical: 14),
                       child: Center(child: Text("ENGELLE", style: TextStyle(color: dangerColor, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1))),
                     ),
                   ),
@@ -446,15 +447,15 @@ class _OtoDnaCigirScreenState extends State<OtoDnaCigirScreen> {
                       }
                       if (!_radarTariyor) _taksiCagir(taksi['plaka']);
                     },
-                    borderRadius: const BorderRadius.only(bottomRight: Radius.circular(16)),
+                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(16)),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      decoration: BoxDecoration(color: anaRenk.withOpacity(0.1), borderRadius: const BorderRadius.only(bottomRight: Radius.circular(16))),
+                      padding: EdgeInsets.symmetric(vertical: 14),
+                      decoration: BoxDecoration(color: anaRenk.withOpacity(0.1), borderRadius: BorderRadius.only(bottomRight: Radius.circular(16))),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.cell_tower, color: anaRenk, size: 16),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8),
                           Text("₺${_netMusteriFiyati.toStringAsFixed(0)} İLE ÇAĞIR", style: TextStyle(color: anaRenk, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1)),
                         ],
                       ),

@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/kullanici/sos_mekanizmasi.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class SiberAkilliSOSButonu extends StatefulWidget {
   final String saseNo; // Hangi aracın yardıma ihtiyacı var?
   final String qrAlanBayiId; // Aracı sisteme kaydeden asıl bayi
 
-  const SiberAkilliSOSButonu({
+  SiberAkilliSOSButonu({
     super.key,
     required this.kullaniciId,
     required this.saseNo,
@@ -40,7 +41,7 @@ class _SiberAkilliSOSButonuState extends State<SiberAkilliSOSButonu> {
     HapticFeedback.lightImpact(); // Dokunma hissi başlar
     developer.log("⚠️ S.O.S TETİKLENDİ: 5 Saniyelik güvenlik filtresi aşılıyor...");
 
-    _timer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+    _timer = Timer.periodic(Duration(milliseconds: 50), (timer) {
       setState(() {
         if (_deger < 1.0) {
           _deger += 0.01; // 50ms * 100 = 5000ms (5 Saniye)
@@ -126,11 +127,11 @@ class _SiberAkilliSOSButonuState extends State<SiberAkilliSOSButonu> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
+            SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
           ],
         ),
-        duration: const Duration(seconds: 5),
+        duration: Duration(seconds: 5),
       ),
     );
   }
@@ -160,7 +161,7 @@ class _SiberAkilliSOSButonuState extends State<SiberAkilliSOSButonu> {
               ),
               // 🔴 ANA SİBER BUTON
               AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
+                duration: Duration(milliseconds: 300),
                 width: _deger > 0 ? 190 + (_deger * 10) : 180, // Basılı tuttukça büyür
                 height: _deger > 0 ? 190 + (_deger * 10) : 180,
                 decoration: BoxDecoration(
@@ -183,7 +184,7 @@ class _SiberAkilliSOSButonuState extends State<SiberAkilliSOSButonu> {
                       color: _sosGonderildi ? SiberTema.kuantumCyan : Colors.white,
                       size: 60,
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     Text(
                       _sosGonderildi ? "EKİPLER\nYOLDA" : "S.O.S\nATEŞLE",
                       textAlign: TextAlign.center,
@@ -195,8 +196,8 @@ class _SiberAkilliSOSButonuState extends State<SiberAkilliSOSButonu> {
                       ),
                     ),
                     if (!_sosGonderildi) ...[
-                      const SizedBox(height: 8),
-                      const Text(
+                      SizedBox(height: 8),
+                      Text(
                         "5 SN BASILI TUTUN",
                         style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900),
                       ),
@@ -208,19 +209,19 @@ class _SiberAkilliSOSButonuState extends State<SiberAkilliSOSButonu> {
           ),
         ),
 
-        const SizedBox(height: 40),
+        SizedBox(height: 40),
 
         // 📜 KARARGAH KURALLARI VE BİLGİLENDİRME
         if (_sosGonderildi)
           Container(
-            padding: const EdgeInsets.all(16),
-            margin: const EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.all(16),
+            margin: EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
               color: SiberTema.kuantumCyan.withOpacity(0.05),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3)),
             ),
-            child: const Text(
+            child: Text(
               "SİBER ONAY: Admin 30 dakika içinde sizinle iletişime geçecektir. Lütfen güvenli bir alanda bekleyin.",
               textAlign: TextAlign.center,
               style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 12, height: 1.5, letterSpacing: 0.5),
@@ -228,14 +229,14 @@ class _SiberAkilliSOSButonuState extends State<SiberAkilliSOSButonu> {
           )
         else
           Container(
-            padding: const EdgeInsets.all(16),
-            margin: const EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.all(16),
+            margin: EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
               color: SiberTema.matGrey.withOpacity(0.8),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: SiberTema.textMuted),
             ),
-            child: const Column(
+            child: Column(
               children: [
                 Text("DİKKAT: ASILSIZ İHBAR CEZASI", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1)),
                 SizedBox(height: 8),

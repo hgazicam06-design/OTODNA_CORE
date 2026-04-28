@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
@@ -17,28 +17,28 @@ class ForumMainPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
-        title: const Text(
+        title: Text(
             "OtoDNA Sosyal Garaj",
             style: TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold, letterSpacing: 1.5) // Kuantum Turkuazı
         ),
-        iconTheme: const IconThemeData(color: Color(0xFF00FFC2)),
+        iconTheme: IconThemeData(color: Color(0xFF00FFC2)),
       ),
       // 📡 SİBER RADAR: Firebase'den canlı veri akışı (Maket Yok!)
       body: StreamBuilder<QuerySnapshot>(
         stream: _db.collection('sosyal_garaj').orderBy('tarih', descending: true).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return const Center(child: Text("SİBER AĞ ÇÖKTÜ!", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)));
+            return Center(child: Text("SİBER AĞ ÇÖKTÜ!", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(color: Color(0xFF00FFC2)));
+            return Center(child: CircularProgressIndicator(color: Color(0xFF00FFC2)));
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text("KARARGAH GARAJI ŞU AN BOŞ", style: TextStyle(color: Colors.white54, letterSpacing: 2)));
+            return Center(child: Text("KARARGAH GARAJI ŞU AN BOŞ", style: TextStyle(color: Colors.white54, letterSpacing: 2)));
           }
 
           return ListView.builder(
-            physics: const BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               return _forumPostCard(snapshot.data!.docs[index]);
@@ -48,13 +48,13 @@ class ForumMainPage extends StatelessWidget {
       ),
       // 🚀 Kuantum Ateşleme Butonu
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xFF00FFC2), // Neon Turkuaz
+        backgroundColor: Color(0xFF00FFC2), // Neon Turkuaz
         elevation: 10,
         onPressed: () {
           developer.log("SİBER HAREKAT: Yeni Soru Sorma Mühimmatı hazırlandı!");
           // Navigator.push ile hedef ekrana yönlendirilecek
         },
-        child: const Icon(Icons.add_comment, color: Colors.black, size: 28),
+        child: Icon(Icons.add_comment, color: Colors.black, size: 28),
       ),
     );
   }
@@ -71,36 +71,36 @@ class ForumMainPage extends StatelessWidget {
     bool ustaCevapladi = data['usta_cevapladi'] ?? false;
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12), // 🌫️ Siber Bulanıklık
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.03), // Cam Zemin
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: const Color(0xFF00FFC2).withValues(alpha: 0.3), width: 1.5), // Turkuaz Çerçeve
+              border: Border.all(color: Color(0xFF00FFC2).withValues(alpha: 0.3), width: 1.5), // Turkuaz Çerçeve
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                     grup.toUpperCase(),
-                    style: const TextStyle(color: Color(0xFF00FFC2), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)
+                    style: TextStyle(color: Color(0xFF00FFC2), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Text(
                     baslik,
-                    style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)
+                    style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Text(
                     icerik,
-                    style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.4)
+                    style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.4)
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.0),
                   child: Divider(color: Colors.white24, thickness: 1),
                 ),
@@ -110,27 +110,27 @@ class ForumMainPage extends StatelessWidget {
                     // 🤝 Aynı Dert Butonu
                     TextButton.icon(
                       style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
                       onPressed: () {
                         developer.log("SİBER ETKİLEŞİM: 'Benimle Aynı' sinyali fırlatıldı.");
                         // SİBER NOT: Burada Firebase Update (Atomik Artış) tetiklenecek
                       },
-                      icon: const Icon(Icons.handshake_outlined, size: 20, color: Color(0xFF00FFC2)),
-                      label: Text("Benimle Aynı ($ayniDert)", style: const TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold)),
+                      icon: Icon(Icons.handshake_outlined, size: 20, color: Color(0xFF00FFC2)),
+                      label: Text("Benimle Aynı ($ayniDert)", style: TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold)),
                     ),
 
                     // ✅ Siber Usta Onayı (Şartlı Gösterim)
                     if (ustaCevapladi)
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(
                           color: Colors.greenAccent.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(color: Colors.greenAccent.withValues(alpha: 0.5)),
                         ),
-                        child: const Row(
+                        child: Row(
                           children: [
                             Icon(Icons.verified_user_outlined, color: Colors.greenAccent, size: 14),
                             SizedBox(width: 4),

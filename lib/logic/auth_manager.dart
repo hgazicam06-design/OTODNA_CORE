@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -76,7 +77,7 @@ class AuthManager {
 
           // Siber Karargah Giriş Efekti
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content: Text(
                   "Siber Komutan Gazi, Karargaha Hoş Geldiniz! 🦅",
                   style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Avenir')
@@ -90,7 +91,7 @@ class AuthManager {
           // 🚀 YÖNLENDİRME FÜZESİ ATEŞLENDİ: YÖNETİM KULESİNE NAKİL
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const AdminGlobalPanel())
+              MaterialPageRoute(builder: (context) => AdminGlobalPanel())
           );
 
         } else {

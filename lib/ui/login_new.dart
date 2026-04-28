@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // 🚀 KARARGAH LOGLAMASI İÇİN EKLENDİ
 import 'dart:developer' as developer;
@@ -6,7 +6,7 @@ import 'dart:developer' as developer;
 /// 🛡️ KUANTUM ANA GİRİŞ KAPISI (SiberLoginTerminali)
 /// OtoDNA sistemine giriş yapmak için Firebase Auth kullanan, OLED Siyah tasarımlı Kuantum Terminali.
 class LoginNew extends StatefulWidget {
-  const LoginNew({super.key});
+  LoginNew({super.key});
 
   @override
   State<LoginNew> createState() => _LoginNewState();
@@ -81,7 +81,7 @@ class _LoginNewState extends State<LoginNew> {
         backgroundColor: Colors.redAccent, // Kan Kırmızı İhlal Rengi
         content: Text(
           "$baslik: $mesaj",
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1.2),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1.2),
         ),
         behavior: SnackBarBehavior.floating,
       ),
@@ -99,16 +99,16 @@ class _LoginNewState extends State<LoginNew> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF000000), // 🌑 TAM OLED SİYAHI (Karargah Kuralı)
+      backgroundColor: Color(0xFF000000), // 🌑 TAM OLED SİYAHI (Karargah Kuralı)
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0),
+          padding: EdgeInsets.symmetric(horizontal: 32.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // 1. 🇹🇷 YERLİ VE MİLLİ İBARESİ
-              const SizedBox(height: 20),
-              const Row(
+              SizedBox(height: 20),
+              Row(
                 children: [
                   Icon(Icons.flag_outlined, color: Colors.redAccent, size: 22),
                   SizedBox(width: 10),
@@ -119,7 +119,7 @@ class _LoginNewState extends State<LoginNew> {
                 ],
               ),
 
-              const Spacer(flex: 2),
+              Spacer(flex: 2),
 
               // 2. 🛡️ DEVRE KARTLI MERKEZ LOGO
               Center(
@@ -128,12 +128,12 @@ class _LoginNewState extends State<LoginNew> {
                     Image.asset(
                       "assets/images/otodna_logo_yeni.png",
                       width: MediaQuery.of(context).size.width * 0.55,
-                      errorBuilder: (context, error, stackTrace) => const Icon(
+                      errorBuilder: (context, error, stackTrace) => Icon(
                           Icons.security, size: 100, color: Color(0xFF00FFC2)
                       ), // Logo yoksa siber kalkan göster
                     ),
-                    const SizedBox(height: 24),
-                    const Text(
+                    SizedBox(height: 24),
+                    Text(
                       "ARACIN DİJİTAL KİMLİĞİ",
                       style: TextStyle(
                         color: Color(0xFF00FFC2), // Kuantum Turkuazı
@@ -146,7 +146,7 @@ class _LoginNewState extends State<LoginNew> {
                 ),
               ),
 
-              const Spacer(flex: 3),
+              Spacer(flex: 3),
 
               // 3. ⌨️ SİBER GİRİŞ TERMİNALLERİ (TEXTFIELDS)
               _buildSiberInput(
@@ -154,7 +154,7 @@ class _LoginNewState extends State<LoginNew> {
                 hintText: "GAZİ ID / E-POSTA",
                 icon: Icons.badge_outlined,
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               _buildSiberInput(
                 controller: _masterKeyController,
                 hintText: "MASTER KEY (ŞİFRE)",
@@ -162,14 +162,14 @@ class _LoginNewState extends State<LoginNew> {
                 isPassword: true,
               ),
 
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
 
               // 4. 🚀 ATEŞLEME BUTONU (SİBER CAM EFEKTİ VE NEON)
               SizedBox(
                 width: double.infinity,
                 height: 60,
                 child: _sistemMesgulMu
-                    ? const Center(
+                    ? Center(
                   child: CircularProgressIndicator(
                     color: Color(0xFF00FFC2),
                     strokeWidth: 3,
@@ -177,16 +177,16 @@ class _LoginNewState extends State<LoginNew> {
                 )
                     : ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00FFC2), // Kuantum Turkuazı
+                    backgroundColor: Color(0xFF00FFC2), // Kuantum Turkuazı
                     foregroundColor: Colors.black, // Yazı rengi
                     elevation: 10,
-                    shadowColor: const Color(0xFF00FFC2).withValues(alpha: 0.5),
+                    shadowColor: Color(0xFF00FFC2).withValues(alpha: 0.5),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                   onPressed: _kuantumKapilariniAc,
-                  child: const Text(
+                  child: Text(
                     "SİSTEME GİRİŞ YAP",
                     style: TextStyle(
                       fontWeight: FontWeight.w900,
@@ -197,7 +197,7 @@ class _LoginNewState extends State<LoginNew> {
                 ),
               ),
 
-              const Spacer(flex: 2),
+              Spacer(flex: 2),
             ],
           ),
         ),
@@ -214,20 +214,20 @@ class _LoginNewState extends State<LoginNew> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF111111), // Mat Koyu Gri (Glassmorphism hissiyatı)
+        color: Color(0xFF111111), // Mat Koyu Gri (Glassmorphism hissiyatı)
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFF00FFC2).withValues(alpha: 0.3), width: 1.5),
+        border: Border.all(color: Color(0xFF00FFC2).withValues(alpha: 0.3), width: 1.5),
       ),
       child: TextField(
         controller: controller,
         obscureText: isPassword,
-        style: const TextStyle(color: Colors.white, fontSize: 16, letterSpacing: 1.2),
+        style: TextStyle(color: Colors.white, fontSize: 16, letterSpacing: 1.2),
         decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: const Color(0xFF00FFC2), size: 22),
+          prefixIcon: Icon(icon, color: Color(0xFF00FFC2), size: 22),
           hintText: hintText,
-          hintStyle: const TextStyle(color: Colors.white30, letterSpacing: 2, fontSize: 12),
+          hintStyle: TextStyle(color: Colors.white30, letterSpacing: 2, fontSize: 12),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 18),
+          contentPadding: EdgeInsets.symmetric(vertical: 18),
         ),
       ),
     );

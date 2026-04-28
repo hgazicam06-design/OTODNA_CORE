@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +8,7 @@ import '../../core/siber_tema.dart';
 import '../../models/car_ad_model.dart';
 
 class SiberIlanVerTerminali extends StatefulWidget {
-  const SiberIlanVerTerminali({super.key});
+  SiberIlanVerTerminali({super.key});
 
   @override
   State<SiberIlanVerTerminali> createState() => _SiberIlanVerTerminaliState();
@@ -15,12 +16,12 @@ class SiberIlanVerTerminali extends StatefulWidget {
 
 class _SiberIlanVerTerminaliState extends State<SiberIlanVerTerminali> {
   // 🏢 FİLDİŞİ SEDEF PALET
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color surfaceColor = Colors.white;
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMain = const Color(0xFF1E293B);
-  final Color textMuted = const Color(0xFF64748B);
-  static const Color siberGold = SiberTema.siberGold;
+  final Color textMain = Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
+  static Color siberGold = SiberTema.siberGold;
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -36,7 +37,7 @@ class _SiberIlanVerTerminaliState extends State<SiberIlanVerTerminali> {
 
   Future<void> _ilaniKarargahaGonder() async {
     if (_markaModelController.text.isEmpty || _fiyatController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Lütfen tüm zorunlu alanları doldurun.", style: TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Lütfen tüm zorunlu alanları doldurun.", style: TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi));
       return;
     }
 
@@ -86,12 +87,12 @@ class _SiberIlanVerTerminaliState extends State<SiberIlanVerTerminali> {
       await batch.commit();
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("🚀 İlan Kuantum Pazaryerinde Yayınlandı!", style: TextStyle(color: SiberTema.textMain)), backgroundColor: primaryTeal));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🚀 İlan Kuantum Pazaryerinde Yayınlandı!", style: TextStyle(color: SiberTema.textMain)), backgroundColor: primaryTeal));
         context.pop(); // Vitrine Geri Dön
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Ağ Çöktü: $e", style: const TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Ağ Çöktü: $e", style: TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi));
       }
     } finally {
       if (mounted) setState(() => _isProcessing = false);
@@ -108,28 +109,28 @@ class _SiberIlanVerTerminaliState extends State<SiberIlanVerTerminali> {
             _buildSiberAppBar(),
             Expanded(
               child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.all(24),
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.all(24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildNeonInput("Marka & Model (Örn: BMW 320i M Sport)", _markaModelController, Icons.directions_car),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     _buildNeonInput("Satış Fiyatı (₺)", _fiyatController, Icons.attach_money, isNumeric: true),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     _buildNeonInput("Araç Hakkında İstihbarat (Açıklama)", _aciklamaController, Icons.description, maxLines: 3),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: 32),
                     Text("SİBER GÜVENLİK AYARLARI", style: TextStyle(color: textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     
                     _buildKaporaSwitch(),
                     if (_isSecureDeposit) ...[
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       _buildNeonInput("Blokaj Edilecek Kapora Bedeli (₺)", _kaporaController, Icons.lock_outline, isNumeric: true),
                     ],
                     
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     _buildOtoDNASwitch(),
                   ],
                 ),
@@ -144,17 +145,17 @@ class _SiberIlanVerTerminaliState extends State<SiberIlanVerTerminali> {
 
   Widget _buildSiberAppBar() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       decoration: BoxDecoration(color: bgColor, border: Border(bottom: BorderSide(color: Colors.white.withOpacity(0.05)))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
             onTap: () => context.pop(),
-            child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), shape: BoxShape.circle), child: Icon(Icons.arrow_back_ios_new, color: textMain, size: 18)),
+            child: Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), shape: BoxShape.circle), child: Icon(Icons.arrow_back_ios_new, color: textMain, size: 18)),
           ),
           Text('İ L A N   T E R M İ N A L İ', style: TextStyle(color: textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'Avenir')),
-          Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: siberGold.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: siberGold.withOpacity(0.5))), child: const Icon(Icons.publish, color: siberGold, size: 18)),
+          Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: siberGold.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: siberGold.withOpacity(0.5))), child: Icon(Icons.publish, color: siberGold, size: 18)),
         ],
       ),
     );
@@ -162,7 +163,7 @@ class _SiberIlanVerTerminaliState extends State<SiberIlanVerTerminali> {
 
   Widget _buildKaporaSwitch() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -188,7 +189,7 @@ class _SiberIlanVerTerminaliState extends State<SiberIlanVerTerminali> {
 
   Widget _buildOtoDNASwitch() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(color: primaryTeal.withOpacity(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: primaryTeal.withOpacity(0.3))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -225,7 +226,7 @@ class _SiberIlanVerTerminaliState extends State<SiberIlanVerTerminali> {
           hintText: hint,
           hintStyle: TextStyle(color: textMuted.withOpacity(0.5), fontSize: 12, letterSpacing: 1),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         ),
       ),
     );
@@ -233,7 +234,7 @@ class _SiberIlanVerTerminaliState extends State<SiberIlanVerTerminali> {
 
   Widget _buildIlanVerButonu() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(color: bgColor, border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05)))),
       child: SizedBox(
         width: double.infinity,
@@ -247,8 +248,8 @@ class _SiberIlanVerTerminaliState extends State<SiberIlanVerTerminali> {
           ),
           onPressed: _isProcessing ? null : _ilaniKarargahaGonder,
           child: _isProcessing 
-              ? const CircularProgressIndicator(color: Colors.white)
-              : const Text("AĞA YAYINLA", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+              ? CircularProgressIndicator(color: Colors.white)
+              : Text("AĞA YAYINLA", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
         ),
       ),
     );

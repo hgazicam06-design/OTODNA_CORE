@@ -1,4 +1,4 @@
-// lib/widgets/premium_rozet_widget.dart
+﻿// lib/widgets/premium_rozet_widget.dart
 import 'package:flutter/material.dart';
 
 class PremiumRozet extends StatelessWidget {
@@ -6,7 +6,7 @@ class PremiumRozet extends StatelessWidget {
   final double boyut;
   final bool pariltiAktif;
 
-  const PremiumRozet({
+  PremiumRozet({
     super.key,
     required this.rozetTipi,
     this.boyut = 48.0,
@@ -21,19 +21,19 @@ class PremiumRozet extends StatelessWidget {
     // ── ROZET RENK PALETİ VE KADEMELER ──
     switch (rozetTipi) {
       case "Altın":
-        gradientColors = [const Color(0xFFF9D423), const Color(0xFFFF4E50)]; // Parlak Altın - Bakır Altın geçişi
+        gradientColors = [Color(0xFFF9D423), Color(0xFFFF4E50)]; // Parlak Altın - Bakır Altın geçişi
         merkezIkon = Icons.verified;
         break;
       case "Gümüş":
-        gradientColors = [const Color(0xFFE0EAFC), const Color(0xFFCFDEF3)]; // Gümüş Platin
+        gradientColors = [Color(0xFFE0EAFC), Color(0xFFCFDEF3)]; // Gümüş Platin
         merkezIkon = Icons.workspace_premium;
         break;
       case "Bronz":
-        gradientColors = [const Color(0xFFCD7F32), const Color(0xFF8B4513)]; // Paslı/Oksit Bronz
+        gradientColors = [Color(0xFFCD7F32), Color(0xFF8B4513)]; // Paslı/Oksit Bronz
         merkezIkon = Icons.shield;
         break;
       case "Blacklist":
-        gradientColors = [const Color(0xFF111111), const Color(0xFF434343)]; // Karbon Siyah
+        gradientColors = [Color(0xFF111111), Color(0xFF434343)]; // Karbon Siyah
         merkezIkon = Icons.gpp_bad; // Çarpı Kalkan
         break;
       default: // "Boş"

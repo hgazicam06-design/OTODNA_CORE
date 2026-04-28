@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/bayi_izleme.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,7 +14,7 @@ import '../core/responsive_kalkan.dart';
 class BayiDashboard extends StatefulWidget {
   final String bayiId;
 
-  const BayiDashboard({super.key, required this.bayiId});
+  BayiDashboard({super.key, required this.bayiId});
 
   @override
   State<BayiDashboard> createState() => _BayiDashboardState();
@@ -27,7 +28,7 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
   void initState() {
     super.initState();
     // 📡 Sürekli Dönen Siber Radar Animasyonu (Zırhlandı: Memory Leak Engellendi)
-    _radarController = AnimationController(vsync: this, duration: const Duration(seconds: 4))..repeat();
+    _radarController = AnimationController(vsync: this, duration: Duration(seconds: 4))..repeat();
   }
 
   @override
@@ -43,10 +44,10 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("KUANTUM BAYİ TERMİNALİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13, fontFamily: 'Avenir')),
+          title: Text("KUANTUM BAYİ TERMİNALİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13, fontFamily: 'Avenir')),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: Column(
           children: [
@@ -64,10 +65,10 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
 
                 // Sinyal Varsa Kırmızı Alarm, Yoksa Sakin Radar
                 return AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
+                  duration: Duration(milliseconds: 500),
                   height: 200,
                   width: double.infinity,
-                  margin: const EdgeInsets.all(16),
+                  margin: EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: aktifSosSayisi > 0 ? SiberTema.kanKirmizi.withOpacity(0.1) : SiberTema.matGrey,
                     borderRadius: BorderRadius.circular(16),
@@ -84,11 +85,11 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
             // ── 📊 2. GÜNLÜK İSTİHBARAT PANOSU (DİĞER MODÜLLER) ──
             Expanded(
               child: ListView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 children: [
-                  const Text("SİBER İSTİHBARAT ÖZETİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-                  const SizedBox(height: 12),
+                  Text("SİBER İSTİHBARAT ÖZETİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                  SizedBox(height: 12),
 
                   _buildCanliIstatistikKarti(
                     koleksiyon: 'ariza_kayitlari',
@@ -99,7 +100,7 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
                     renk: Colors.amberAccent,
                   ),
 
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
 
                   _buildCanliIstatistikKarti(
                     koleksiyon: 'ariza_kayitlari',
@@ -136,15 +137,15 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
                   border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5)),
                   gradient: SweepGradient(
                     colors: [Colors.transparent, SiberTema.kuantumCyan.withOpacity(0.8)],
-                    stops: const [0.5, 1.0],
+                    stops: [0.5, 1.0],
                   ),
                 ),
               ),
             );
           },
         ),
-        const SizedBox(height: 16),
-        const Text("RADAR TEMİZ. YAKINDA S.O.S SİNYALİ YOK.", style: TextStyle(color: SiberTema.kuantumCyan, letterSpacing: 1, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+        SizedBox(height: 16),
+        Text("RADAR TEMİZ. YAKINDA S.O.S SİNYALİ YOK.", style: TextStyle(color: SiberTema.kuantumCyan, letterSpacing: 1, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
       ],
     );
   }
@@ -154,17 +155,17 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           decoration: BoxDecoration(shape: BoxShape.circle, color: SiberTema.kanKirmizi.withOpacity(0.2)),
-          child: const Icon(Icons.warning_amber_rounded, color: SiberTema.kanKirmizi, size: 50),
+          child: Icon(Icons.warning_amber_rounded, color: SiberTema.kanKirmizi, size: 50),
         ),
-        const SizedBox(height: 16),
-        Text("🚨 $sinyalSayisi AKTİF S.O.S SİNYALİ 🚨", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
-        const SizedBox(height: 8),
+        SizedBox(height: 16),
+        Text("🚨 $sinyalSayisi AKTİF S.O.S SİNYALİ 🚨", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
+        SizedBox(height: 8),
         ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kanKirmizi, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
           onPressed: () => developer.log("SİBER BİLGİ: S.O.S Müdahale ekranına yönlendiriliyor..."),
-          child: const Text("MÜDAHALE ET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+          child: Text("MÜDAHALE ET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
         )
       ],
     );
@@ -180,11 +181,11 @@ class _BayiDashboardState extends State<BayiDashboard> with SingleTickerProvider
         return Container(
           decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(12), border: Border.all(color: renk.withOpacity(0.3))),
           child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             leading: Icon(ikon, color: renk, size: 32),
-            title: Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 11, fontFamily: 'Avenir')),
+            title: Text(baslik, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 11, fontFamily: 'Avenir')),
             trailing: Container(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(12),
               decoration: BoxDecoration(color: renk.withOpacity(0.1), shape: BoxShape.circle),
               child: Text(adet, style: TextStyle(color: renk, fontWeight: FontWeight.w900, fontSize: 16, fontFamily: 'Avenir')),
             ),

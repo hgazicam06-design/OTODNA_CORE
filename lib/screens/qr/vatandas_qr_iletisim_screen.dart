@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io'; // IP ve Cihaz bilgisi için (Web'de farklı kütüphane gerekebilir)
@@ -12,7 +13,7 @@ class VatandasQrIletisimScreen extends StatefulWidget {
   final String hedefSahipId;
   final String hedefSahipAdSoyad;
 
-  const VatandasQrIletisimScreen({
+  VatandasQrIletisimScreen({
     super.key,
     required this.hedefPlaka,
     required this.hedefSahipId,
@@ -25,11 +26,11 @@ class VatandasQrIletisimScreen extends StatefulWidget {
 
 class _VatandasQrIletisimScreenState extends State<VatandasQrIletisimScreen> {
   // 🏢 FİLDİŞİ SEDEF PALET
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color surfaceColor = Colors.white;
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMain = const Color(0xFF1E293B);
-  final Color textMuted = const Color(0xFF64748B);
+  final Color textMain = Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
   final Color dangerColor = SiberTema.kanKirmizi;
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -108,7 +109,7 @@ class _VatandasQrIletisimScreenState extends State<VatandasQrIletisimScreen> {
   void _siberHata(String mesaj) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: dangerColor,
-        content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold))
+        content: Text(mesaj, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold))
     ));
   }
 
@@ -126,12 +127,12 @@ class _VatandasQrIletisimScreenState extends State<VatandasQrIletisimScreen> {
             title: Text("OTO-İHBAR TERMİNALİ", style: TextStyle(color: primaryTeal, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2))
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           child: Column(
             children: [
               // 🪪 ARAÇ KİMLİK KARTI
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                     color: surfaceColor,
                     borderRadius: BorderRadius.circular(20),
@@ -146,13 +147,13 @@ class _VatandasQrIletisimScreenState extends State<VatandasQrIletisimScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
 
               // 🔘 HIZLI İHLAL BUTONLARI
               GridView.builder(
                 shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 12, mainAxisSpacing: 12, childAspectRatio: 2.5),
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 12, mainAxisSpacing: 12, childAspectRatio: 2.5),
                 itemCount: _ihlalButonlari.length,
                 itemBuilder: (context, index) {
                   var item = _ihlalButonlari[index];
@@ -170,7 +171,7 @@ class _VatandasQrIletisimScreenState extends State<VatandasQrIletisimScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(item['icon'], color: secili ? item['renk'] : textMuted, size: 20),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8),
                           Text(item['baslik'], style: TextStyle(color: secili ? item['renk'] : textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
                         ],
                       ),
@@ -178,7 +179,7 @@ class _VatandasQrIletisimScreenState extends State<VatandasQrIletisimScreen> {
                   );
                 },
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               // ✍️ ÖZEL MESAJ ALANI
               Container(
@@ -191,11 +192,11 @@ class _VatandasQrIletisimScreenState extends State<VatandasQrIletisimScreen> {
                     hintText: "Araç sahibine not bırakın...",
                     hintStyle: TextStyle(color: textMuted.withOpacity(0.5), fontSize: 12),
                     border: InputBorder.none,
-                    contentPadding: const EdgeInsets.all(16)
+                    contentPadding: EdgeInsets.all(16)
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
 
               // 🚀 GÖNDER VE DURUM TAKİBİ
               SizedBox(
@@ -209,12 +210,12 @@ class _VatandasQrIletisimScreenState extends State<VatandasQrIletisimScreen> {
                   ),
                   onPressed: _isSending ? null : _sinyalFirlat,
                   child: _isSending
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text("ANONİM BİLDİRİM GÖNDER", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+                      ? CircularProgressIndicator(color: Colors.white)
+                      : Text("ANONİM BİLDİRİM GÖNDER", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
                 ),
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               // ✅ DURUM RADARI (TİK SİSTEMİ)
               if (_bildirimGonderildi)
@@ -224,7 +225,7 @@ class _VatandasQrIletisimScreenState extends State<VatandasQrIletisimScreen> {
                     Text("DURUM: ", style: TextStyle(color: textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
                     _buildTikIcon(Icons.done, _bildirimGonderildi), // Tek Tik
                     _buildTikIcon(Icons.done_all, _bildirimUlasti), // Çift Tik
-                    const SizedBox(width: 10),
+                    SizedBox(width: 10),
                     if (_bildirimOkundu) Text("OKUNDU", style: TextStyle(color: primaryTeal, fontSize: 10, fontWeight: FontWeight.w900)),
                   ],
                 ),

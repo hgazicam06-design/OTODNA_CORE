@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class DijitalMuayeneTerminali extends StatefulWidget {
   final String aracId;
   final String plaka;
 
-  const DijitalMuayeneTerminali({
+  DijitalMuayeneTerminali({
     super.key,
     required this.aracId,
     required this.plaka,
@@ -27,11 +28,11 @@ class DijitalMuayeneTerminali extends StatefulWidget {
 
 class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
   // 🏢 FİLDİŞİ SEDEF PALET
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color surfaceColor = Colors.white;
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMain = const Color(0xFF1E293B);
-  final Color textMuted = const Color(0xFF64748B);
+  final Color textMain = Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
   final Color dangerColor = SiberTema.kanKirmizi;
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -155,10 +156,10 @@ class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
 
   void _siberUyariVer(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
+      content: Text(mesaj, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
       backgroundColor: isError ? dangerColor : primaryTeal,
       behavior: SnackBarBehavior.floating,
-      margin: const EdgeInsets.all(20),
+      margin: EdgeInsets.all(20),
     ));
   }
 
@@ -176,7 +177,7 @@ class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
           title: Text("DİJİTAL MUAYENE", style: TextStyle(color: textMain, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 2)),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 16),
+              padding: EdgeInsets.only(right: 16),
               child: Center(child: Text(widget.plaka, style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, fontSize: 14))),
             )
           ],
@@ -185,7 +186,7 @@ class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
           children: [
             Expanded(
               child: ListView.builder(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20),
                 itemCount: _kontrolListesi.length,
                 itemBuilder: (context, index) {
                   String parca = _kontrolListesi[index];
@@ -195,7 +196,7 @@ class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               child: SizedBox(
                 width: double.infinity,
                 height: 65,
@@ -207,8 +208,8 @@ class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
                   ),
                   onPressed: _isMuhurleniyor ? null : _raporuKarargahaGonder,
                   child: _isMuhurleniyor
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text("RAPORU MATRIX'E GÖNDER", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+                      ? CircularProgressIndicator(color: Colors.white)
+                      : Text("RAPORU MATRIX'E GÖNDER", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
                 ),
               ),
             )
@@ -222,8 +223,8 @@ class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
     Color statusColor = durum == 0 ? Colors.black.withOpacity(0.1) : (durum == 1 ? primaryTeal : dangerColor);
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(20),
@@ -234,11 +235,11 @@ class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(parca.toUpperCase(), style: TextStyle(color: textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
           Row(
             children: [
               _statusAction(Icons.close, dangerColor, durum == -1, () => _kanitYukleVeOnayla(parca, true)),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               _statusAction(Icons.check, primaryTeal, durum == 1, () => _kanitYukleVeOnayla(parca, false)),
             ],
           )
@@ -253,7 +254,7 @@ class _DijitalMuayeneTerminaliState extends State<DijitalMuayeneTerminali> {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: EdgeInsets.symmetric(vertical: 16),
           decoration: BoxDecoration(
             color: active ? color.withOpacity(0.1) : surfaceColor,
             borderRadius: BorderRadius.circular(12),

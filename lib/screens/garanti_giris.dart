@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +13,7 @@ class GarantiBelirlemeEkrani extends StatefulWidget {
   final String islemId;
   final String bayiId;
 
-  const GarantiBelirlemeEkrani({
+  GarantiBelirlemeEkrani({
     super.key,
     required this.aracId,
     required this.islemId,
@@ -28,7 +29,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
   bool _isSaving = false;
   String _aiOnerisi = "Analiz ediliyor...";
 
-  static const Color _aiOrange = Color(0xFFFF9100); // AI Analiz Turuncusu (Kehribar/Güvenlik Rengi)
+  static Color _aiOrange = Color(0xFFFF9100); // AI Analiz Turuncusu (Kehribar/Güvenlik Rengi)
 
   @override
   void initState() {
@@ -141,17 +142,17 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("DİJİTAL GARANTİ MÜHÜRLEME", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          title: Text("DİJİTAL GARANTİ MÜHÜRLEME", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
           centerTitle: true,
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1),
+            preferredSize: Size.fromHeight(1),
             child: Container(color: SiberTema.kuantumCyan.withOpacity(0.3), height: 1),
           ),
         ),
         body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(24),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -159,20 +160,20 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
               Row(
                 children: [
                   _build7DNeonIkon(Icons.verified_user, SiberTema.kuantumCyan),
-                  const SizedBox(width: 16),
-                  const Text("SİSTEM ONAYI: İşlem Tamamlandı", style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                  SizedBox(width: 16),
+                  Text("SİSTEM ONAYI: İşlem Tamamlandı", style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                 ],
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               // 2. AI TELEMETRİ ANALİZ NOTU (7D Donanımsal Ekran)
               _build7DAiTelemetriPaneli(),
 
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
 
               // 3. MÜHÜRLENECEK SÜRE GİRİŞİ (7D İç Gölgeli Ekran)
-              const Text("GARANTİ SÜRESİNİ ONAYLAYIN (VEYA DÜZENLEYİN)", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 10, fontFamily: 'Avenir')),
-              const SizedBox(height: 16),
+              Text("GARANTİ SÜRESİNİ ONAYLAYIN (VEYA DÜZENLEYİN)", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 10, fontFamily: 'Avenir')),
+              SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(
                     color: SiberTema.oledBlack, // Derin Siyah Ekran Hissi
@@ -186,18 +187,18 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
                 ),
                 child: TextField(
                   controller: _garantiController,
-                  style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
+                  style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
                   decoration: InputDecoration(
                     hintText: "Örn: 12 Ay / 20.000 KM",
                     hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 16, fontFamily: 'Avenir'),
-                    prefixIcon: const Icon(Icons.shield, color: SiberTema.kuantumCyan, size: 28),
+                    prefixIcon: Icon(Icons.shield, color: SiberTema.kuantumCyan, size: 28),
                     border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 24),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 50),
+              SizedBox(height: 50),
 
               // 4. MÜHÜRLEME BUTONU (7D Merkezi Neon Buton)
               SizedBox(
@@ -207,11 +208,11 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
                   style: SiberTema.kuantumButonStili(),
                   onPressed: _isSaving ? null : _garantiyiKuantumAgaMuhurle,
                   icon: _isSaving
-                      ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
-                      : const Icon(Icons.fingerprint, size: 28, color: SiberTema.oledBlack),
+                      ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
+                      : Icon(Icons.fingerprint, size: 28, color: SiberTema.oledBlack),
                   label: Text(
                       _isSaving ? "AĞA YAZILIYOR..." : "GARANTİYİ MÜHÜRLE VE TESLİM ET",
-                      style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5, fontFamily: 'Avenir', color: SiberTema.oledBlack)
+                      style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5, fontFamily: 'Avenir', color: SiberTema.oledBlack)
                   ),
                 ),
               ),
@@ -227,7 +228,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
   // 🎇 7D LED İkon Parlaması
   Widget _build7DNeonIkon(IconData icon, Color renk) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.5),
         shape: BoxShape.circle,
@@ -241,11 +242,11 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
   // 📺 7D AI TELEMETRİ EKRANI (Donanımsal Titanyum Kasa)
   Widget _build7DAiTelemetriPaneli() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           // Fırçalanmış Metal / Karbon Kasa Hissi
-          gradient: const LinearGradient(
+          gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [Color(0xFF2A2D34), Color(0xFF141518), Color(0xFF0A0A0C)],
@@ -253,7 +254,7 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
           ),
           border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
           boxShadow: [
-            BoxShadow(color: Colors.white.withOpacity(0.8), blurRadius: 15, offset: const Offset(0, 8)), // Kasa Derinliği
+            BoxShadow(color: Colors.white.withOpacity(0.8), blurRadius: 15, offset: Offset(0, 8)), // Kasa Derinliği
           ]
       ),
       child: Column(
@@ -262,22 +263,22 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
           Row(
             children: [
               _build7DNeonIkon(Icons.memory, _aiOrange), // AI Çekirdeği
-              const SizedBox(width: 12),
-              const Text("KUANTUM A.I. TELEMETRİ ANALİZİ", style: TextStyle(color: _aiOrange, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 11, fontFamily: 'Avenir')),
+              SizedBox(width: 12),
+              Text("KUANTUM A.I. TELEMETRİ ANALİZİ", style: TextStyle(color: _aiOrange, fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 11, fontFamily: 'Avenir')),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Text(
             "Araç kullanıcısının geçmiş arazi şartları (Asfalt/Zorlu Arazi) ve kullanım alışkanlıkları incelenmiştir. Sistem, riski minimize etmek için aşağıdaki süreyi önermektedir.",
             style: TextStyle(color: SiberTema.textMain.withOpacity(0.8), fontSize: 12, height: 1.5, fontFamily: 'Avenir'),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
 
           // 📟 AI Sonuç Ekranı
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             decoration: BoxDecoration(
-                color: const Color(0xFF1A0A00), // Koyu Turuncu-Siyah CRT Ekran
+                color: Color(0xFF1A0A00), // Koyu Turuncu-Siyah CRT Ekran
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: _aiOrange.withOpacity(0.4), width: 1.5),
                 // SİBER DÜZELTME: inset: true kaldırıldı!
@@ -289,8 +290,8 @@ class _GarantiBelirlemeEkraniState extends State<GarantiBelirlemeEkrani> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Önerilen Güvenli Süre:", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
-                Text(_aiOnerisi, style: const TextStyle(color: _aiOrange, fontWeight: FontWeight.w900, fontSize: 15, fontFamily: 'Avenir', shadows: [Shadow(color: _aiOrange, blurRadius: 8)])),
+                Text("Önerilen Güvenli Süre:", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontFamily: 'Avenir', fontWeight: FontWeight.bold)),
+                Text(_aiOnerisi, style: TextStyle(color: _aiOrange, fontWeight: FontWeight.w900, fontSize: 15, fontFamily: 'Avenir', shadows: [Shadow(color: _aiOrange, blurRadius: 8)])),
               ],
             ),
           )

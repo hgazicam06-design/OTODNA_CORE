@@ -1,4 +1,4 @@
-// lib/widgets/acil_yardim.dart
+﻿// lib/widgets/acil_yardim.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +12,7 @@ class SiberSosButonu extends StatefulWidget {
   final String saseNo;
   final String qrOlusturanBayiId;
 
-  const SiberSosButonu({
+  SiberSosButonu({
     super.key,
     required this.kullaniciId,
     required this.saseNo,
@@ -39,7 +39,7 @@ class _SiberSosButonuState extends State<SiberSosButonu> with SingleTickerProvid
 
     developer.log("🚨 S.O.S PROTOKOLÜ: Füze ateşlemesi başlatıldı. 5 saniye bekleniyor...");
 
-    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+    _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
       setState(() {
         if (_progress < 1.0) {
           _progress += 0.02; // 50 adım * 100ms = 5000ms (5 Saniye)
@@ -89,7 +89,7 @@ class _SiberSosButonuState extends State<SiberSosButonu> with SingleTickerProvid
         'durum': 'YENI_SINYAL',
         'zaman_damgasi': FieldValue.serverTimestamp(),
         // Adminin 30 dk kuralı için zamanlayıcı mühür
-        'admin_mudahale_son_tarih': DateTime.now().add(const Duration(minutes: 30)).toIso8601String(),
+        'admin_mudahale_son_tarih': DateTime.now().add(Duration(minutes: 30)).toIso8601String(),
         'asisiz_ihbar_mi': false,
       });
 
@@ -116,7 +116,7 @@ class _SiberSosButonuState extends State<SiberSosButonu> with SingleTickerProvid
 
         // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: Kullanıcıya Kırmızı Alarm Ver
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               backgroundColor: Colors.redAccent,
               content: Text(
                   "SİNYAL GÖNDERİLEMEDİ! İNTERNET BAĞLANTINIZI KONTROL EDİP TEKRAR DENEYİN.",
@@ -149,7 +149,7 @@ class _SiberSosButonuState extends State<SiberSosButonu> with SingleTickerProvid
             children: [
               // Arka plan neon parlaması
               AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
+                duration: Duration(milliseconds: 300),
                 width: _isPressing ? 180 : 150,
                 height: _isPressing ? 180 : 150,
                 decoration: BoxDecoration(
@@ -170,14 +170,14 @@ class _SiberSosButonuState extends State<SiberSosButonu> with SingleTickerProvid
                 child: CircularProgressIndicator(
                   value: _progress,
                   strokeWidth: 8,
-                  color: const Color(0xFF00FFC2), // Kuantum Turkuazı dolum efekti
+                  color: Color(0xFF00FFC2), // Kuantum Turkuazı dolum efekti
                   backgroundColor: Colors.white10,
                 ),
               ),
               // Acil Durum Çekirdeği
               AnimatedScale(
                 scale: _isPressing ? 0.9 : 1.0,
-                duration: const Duration(milliseconds: 200),
+                duration: Duration(milliseconds: 200),
                 child: Container(
                   width: 130,
                   height: 130,
@@ -195,23 +195,23 @@ class _SiberSosButonuState extends State<SiberSosButonu> with SingleTickerProvid
               ),
             ],
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: 30),
 
           // ── 📝 ASKERİ BİLGİLENDİRME METİNLERİ ──
           Text(
               _isSent ? "SİNYAL KARARGAHA İLETİLDİ!" : "YARDIM İÇİN 5 SN BASILI TUTUN",
               style: TextStyle(
-                color: _isSent ? const Color(0xFF00FFC2) : Colors.white,
+                color: _isSent ? Color(0xFF00FFC2) : Colors.white,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 2,
                 fontSize: 16,
               )
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
 
           // Etik Uyarı Metni (Asılsız İhbar Sistemi)
           if (!_isSent)
-            const Text(
+            Text(
               "DİKKAT: Asılsız ihbarlar ceza puanı (Sarı Üyelik)\nve sistemden men edilme ile sonuçlanır.",
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.5, letterSpacing: 1),

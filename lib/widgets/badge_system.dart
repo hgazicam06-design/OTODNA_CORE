@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 class BadgeSystem extends StatelessWidget {
   final int rating; // 1 ile 5 arası yıldız puanı
   final String? blacklistReason; // Kara liste sebebi
 
   // super.key eklendi, performans için yapıcı metod const yapıldı (mümkünse)
-  const BadgeSystem({
+  BadgeSystem({
     super.key,
     required this.rating,
     this.blacklistReason,
@@ -30,23 +30,23 @@ class BadgeSystem extends StatelessWidget {
             _badgeChip(Icons.star, Colors.black, "KARA LİSTE", Colors.white),
             if (blacklistReason != null && blacklistReason!.isNotEmpty)
               Padding(
-                padding: const EdgeInsets.only(top: 4.0),
+                padding: EdgeInsets.only(top: 4.0),
                 child: Text(
                   "Sebep: $blacklistReason",
-                  style: const TextStyle(color: Colors.red, fontSize: 11, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.red, fontSize: 11, fontWeight: FontWeight.bold),
                 ),
               ),
           ],
         );
       default:
       // Performans için boş Container yerine SizedBox.shrink() kullanmak daha iyidir
-        return const SizedBox.shrink();
+        return SizedBox.shrink();
     }
   }
 
   Widget _badgeChip(IconData icon, Color bgColor, String label, Color textColor) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(12),
@@ -56,7 +56,7 @@ class BadgeSystem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 16, color: textColor),
-          const SizedBox(width: 4),
+          SizedBox(width: 4),
           Text(
             label,
             style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 12),

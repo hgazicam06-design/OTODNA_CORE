@@ -1,4 +1,4 @@
-// lib/screens/kullanici/market_ana_sayfa.dart
+﻿// lib/screens/kullanici/market_ana_sayfa.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,13 +9,13 @@ import '../../../../core/responsive_kalkan.dart';
 /// 🛡️ PLAZA GLOBAL MARKET VİTRİNİ (SiberMarketAnaSayfa)
 /// Firebase'den canlı ürünleri çeker, her bayiyi kendi şanlı markasıyla sergiler ve %12 kesinti kuralını uygular.
 class SiberMarketAnaSayfa extends StatelessWidget {
-  const SiberMarketAnaSayfa({super.key});
+  SiberMarketAnaSayfa({super.key});
 
   @override
   Widget build(BuildContext context) {
     final Color primaryTeal = Colors.teal.shade700;
-    const Color bgColor = Color(0xFFFAFAFC);
-    const Color textColor = Color(0xFF1E293B);
+    Color bgColor = Color(0xFFFAFAFC);
+    Color textColor = Color(0xFF1E293B);
 
     return ResponsiveKalkan(
       isOledBackground: false,
@@ -38,15 +38,15 @@ class SiberMarketAnaSayfa extends StatelessWidget {
             }
 
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Center(
+              return Center(
                 child: Text("PLAZA BİLGİ: Vitrinde henüz ürün bulunmuyor.", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
               );
             }
 
             return GridView.builder(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.all(16),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.all(16),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: 0.62,
                   crossAxisSpacing: 16,
@@ -92,7 +92,7 @@ class SiberMarketAnaSayfa extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
           boxShadow: [
-            BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5)),
+            BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: Offset(0, 5)),
           ]
       ),
       child: Column(
@@ -104,7 +104,7 @@ class SiberMarketAnaSayfa extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: primaryTeal.withValues(alpha: 0.05),
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: Icon(Icons.precision_manufacturing_outlined, size: 60, color: primaryTeal.withValues(alpha: 0.5)),
             ),
@@ -112,7 +112,7 @@ class SiberMarketAnaSayfa extends StatelessWidget {
 
           // ÜRÜN BİLGİLERİ VE ROZET
           Padding(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -120,19 +120,19 @@ class SiberMarketAnaSayfa extends StatelessWidget {
                 Row(
                   children: [
                     Icon(rozet['ikon'], size: 14, color: rozet['renk']),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4),
                     Expanded(child: Text(vitrinSaticiAdi, style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: rozet['renk'], letterSpacing: 1, fontFamily: 'Avenir'), overflow: TextOverflow.ellipsis)),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
 
                 // ÜRÜN ADI
-                Text(urun['ad'] ?? "Bilinmeyen Ürün", maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Color(0xFF1E293B), fontWeight: FontWeight.bold, fontSize: 12, height: 1.2, fontFamily: 'Avenir')),
-                const SizedBox(height: 8),
+                Text(urun['ad'] ?? "Bilinmeyen Ürün", maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(color: Color(0xFF1E293B), fontWeight: FontWeight.bold, fontSize: 12, height: 1.2, fontFamily: 'Avenir')),
+                SizedBox(height: 8),
 
                 // FİYAT
                 Text("₺${fiyat.toStringAsFixed(2)}", style: TextStyle(color: primaryTeal, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
 
                 // SİBER SATIN AL BUTONU
                 SizedBox(
@@ -151,7 +151,7 @@ class SiberMarketAnaSayfa extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       elevation: 0,
                     ),
-                    child: const Text("SEPETE EKLE", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1, fontFamily: 'Avenir')),
+                    child: Text("SEPETE EKLE", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1, fontFamily: 'Avenir')),
                   ),
                 )
               ],

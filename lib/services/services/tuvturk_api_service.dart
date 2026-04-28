@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
 /// 🛡️ KUANTUM TÜVTÜRK VE DEVLET AĞLARI ENTEGRASYON MOTORU
@@ -7,8 +7,8 @@ class TuvturkSiberAgServisi {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // 💎 SİBER GÜVENLİK: Resmi API Uç Noktaları ve Kalkanlar
-  static const String _tuvturkApiUrl = "https://api.tuvturk.com.tr/v1/siber-ag";
-  static const String _guvenlikAnahtari = "OTO_DNA_SECRET_KEY_1071";
+  static String _tuvturkApiUrl = "https://api.tuvturk.com.tr/v1/siber-ag";
+  static String _guvenlikAnahtari = "OTO_DNA_SECRET_KEY_1071";
 
   // ── 🚔 1. E-DEVLET / GİB / SBM ÖN KONTROL RADARI ─────────────────────────
   static Future<Map<String, bool>> onKontrolSorgula(String plaka) async {

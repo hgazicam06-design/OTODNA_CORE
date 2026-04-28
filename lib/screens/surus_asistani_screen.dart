@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +11,7 @@ class SurusAsistaniScreen extends StatefulWidget {
   final String aracId;
   final String plaka;
 
-  const SurusAsistaniScreen({
+  SurusAsistaniScreen({
     super.key,
     required this.aracId,
     required this.plaka,
@@ -112,22 +113,22 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
           title: Column(
             children: [
               Text("SÜRÜŞ ASİSTANI", style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
-              Text(widget.plaka, style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+              Text(widget.plaka, style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
             ],
           ),
           centerTitle: true,
         ),
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(image: AssetImage('assets/images/radar_grid.png'), fit: BoxFit.cover, opacity: 0.05),
           ),
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(24.0),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.all(24.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -137,7 +138,7 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                     child: Container(
-                      padding: const EdgeInsets.all(24),
+                      padding: EdgeInsets.all(24),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.03),
                         borderRadius: BorderRadius.circular(24),
@@ -149,31 +150,31 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
                           Row(
                             children: [
                               Icon(Icons.route, color: SiberTema.kuantumCyan, size: 28),
-                              const SizedBox(width: 12),
-                              const Text("ROTA VE MALİYET", style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                              SizedBox(width: 12),
+                              Text("ROTA VE MALİYET", style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                             ],
                           ),
-                          const SizedBox(height: 24),
+                          SizedBox(height: 24),
 
                           Row(
                             children: [
                               Expanded(child: _buildSiberGirdi("Nereden?", Icons.my_location, _neredenCtrl, TextInputType.text)),
-                              const SizedBox(width: 12),
+                              SizedBox(width: 12),
                               Expanded(child: _buildSiberGirdi("Nereye?", Icons.flag, _nereyeCtrl, TextInputType.text)),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16),
                           Row(
                             children: [
                               Expanded(child: _buildSiberGirdi("Mesafe (KM)", Icons.add_road, _mesafeKmCtrl, TextInputType.number)),
-                              const SizedBox(width: 12),
+                              SizedBox(width: 12),
                               Expanded(child: _buildSiberGirdi("Litre Fiyatı (₺)", Icons.local_gas_station, _litreFiyatiCtrl, TextInputType.number)),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16),
                           _buildSiberGirdi("Ort. Tüketim (L/100km)", Icons.speed, _yakitTuketimiCtrl, TextInputType.number),
 
-                          const SizedBox(height: 24),
+                          SizedBox(height: 24),
 
                           // HESAPLAMA EKRANI VE BUTON
                           Row(
@@ -183,24 +184,24 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text("TOPLAM MALİYET", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
-                                  Text("₺${_hesaplananMaliyet.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 28, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                                  Text("₺${_hesaplananMaliyet.toStringAsFixed(2)}", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 28, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                                 ],
                               ),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: SiberTema.kuantumCyan.withOpacity(0.1),
                                   foregroundColor: SiberTema.kuantumCyan,
-                                  side: const BorderSide(color: SiberTema.kuantumCyan, width: 2),
-                                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                                  side: BorderSide(color: SiberTema.kuantumCyan, width: 2),
+                                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                 ),
                                 onPressed: _maliyetiHesapla,
-                                child: const Text("HESAPLA", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir', letterSpacing: 1)),
+                                child: Text("HESAPLA", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir', letterSpacing: 1)),
                               ),
                             ],
                           ),
 
-                          const SizedBox(height: 24),
+                          SizedBox(height: 24),
 
                           // KARARGAHA İŞLE BUTONU
                           SizedBox(
@@ -209,8 +210,8 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
                               style: SiberTema.kuantumButonStili(),
                               onPressed: (_hesaplananMaliyet > 0 && !_isHarcamaHesaplaniyor) ? _seyahatiKarargahaIsle : null,
                               child: _isHarcamaHesaplaniyor
-                                  ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
-                                  : const Text("SEYAHATİ KARARGAHA MÜHÜRLE", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
+                                  ? SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
+                                  : Text("SEYAHATİ KARARGAHA MÜHÜRLE", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
                             ),
                           )
                         ],
@@ -219,26 +220,26 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 32),
-                const Padding(
+                SizedBox(height: 32),
+                Padding(
                   padding: EdgeInsets.only(left: 8.0),
                   child: Text("SON SEYAHAT KAYITLARI", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
 
                 // CANLI SEYAHAT VERİLERİ (FIREBASE STREAM)
                 StreamBuilder<QuerySnapshot>(
                   stream: _db.collection('seyahat_gecmisi').where('arac_id', isEqualTo: widget.aracId).orderBy('tarih', descending: true).limit(5).snapshots(),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
-                    if (snapshot.hasError) return const Center(child: Text("Siber Ağa Ulaşılamıyor.", style: TextStyle(color: SiberTema.kanKirmizi)));
+                    if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+                    if (snapshot.hasError) return Center(child: Text("Siber Ağa Ulaşılamıyor.", style: TextStyle(color: SiberTema.kanKirmizi)));
 
                     final seyahatler = snapshot.data?.docs ?? [];
 
                     if (seyahatler.isEmpty) {
                       return Center(
                         child: Container(
-                          padding: const EdgeInsets.all(24),
+                          padding: EdgeInsets.all(24),
                           decoration: BoxDecoration(color: Colors.white.withOpacity(0.02), borderRadius: BorderRadius.circular(16)),
                           child: Text("Henüz Kuantum ağına mühürlenmiş bir seyahat bulunmuyor.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontFamily: 'Avenir')),
                         ),
@@ -247,15 +248,15 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
 
                     return ListView.builder(
                       shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: seyahatler.length,
                       itemBuilder: (context, index) {
                         final veri = seyahatler[index].data() as Map<String, dynamic>;
                         final tarih = (veri['tarih'] as Timestamp?)?.toDate() ?? DateTime.now();
 
                         return Container(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          padding: const EdgeInsets.all(16),
+                          margin: EdgeInsets.only(bottom: 12),
+                          padding: EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.03),
                             borderRadius: BorderRadius.circular(16),
@@ -264,22 +265,22 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
                           child: Row(
                             children: [
                               Container(
-                                padding: const EdgeInsets.all(10),
+                                padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), shape: BoxShape.circle),
-                                child: const Icon(Icons.swap_calls, color: SiberTema.kuantumCyan),
+                                child: Icon(Icons.swap_calls, color: SiberTema.kuantumCyan),
                               ),
-                              const SizedBox(width: 16),
+                              SizedBox(width: 16),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${veri['nereden']} ➔ ${veri['nereye']}", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir', fontSize: 13)),
-                                    const SizedBox(height: 4),
+                                    Text("${veri['nereden']} ➔ ${veri['nereye']}", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir', fontSize: 13)),
+                                    SizedBox(height: 4),
                                     Text("${veri['mesafe_km']} KM | ${tarih.day}.${tarih.month}.${tarih.year}", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 10, fontFamily: 'Avenir')),
                                   ],
                                 ),
                               ),
-                              Text("₺${veri['toplam_maliyet'].toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontFamily: 'Avenir', fontSize: 14)),
+                              Text("₺${veri['toplam_maliyet'].toStringAsFixed(2)}", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontFamily: 'Avenir', fontSize: 14)),
                             ],
                           ),
                         );
@@ -287,7 +288,7 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
                     );
                   },
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
               ],
             ),
           ),
@@ -301,16 +302,16 @@ class _SurusAsistaniScreenState extends State<SurusAsistaniScreen> {
     return TextField(
       controller: kontrolcu,
       keyboardType: klavye,
-      style: const TextStyle(color: SiberTema.textMain, fontFamily: 'Avenir', fontWeight: FontWeight.bold, fontSize: 12),
+      style: TextStyle(color: SiberTema.textMain, fontFamily: 'Avenir', fontWeight: FontWeight.bold, fontSize: 12),
       decoration: InputDecoration(
         labelText: baslik,
         labelStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontFamily: 'Avenir', fontSize: 11),
         prefixIcon: Icon(ikon, color: SiberTema.kuantumCyan, size: 18),
         filled: true,
         fillColor: Colors.black.withOpacity(0.5),
-        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.1))),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 2)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kuantumCyan, width: 2)),
       ),
     );
   }

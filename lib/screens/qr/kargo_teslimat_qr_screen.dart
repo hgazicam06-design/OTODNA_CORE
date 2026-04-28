@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,7 @@ import '../../core/siber_tema.dart';
 class KargoTeslimatQrScreen extends StatefulWidget {
   final String kullaniciId; // Kamerayı açan alıcının Karargah kimliği
 
-  const KargoTeslimatQrScreen({super.key, required this.kullaniciId});
+  KargoTeslimatQrScreen({super.key, required this.kullaniciId});
 
   @override
   State<KargoTeslimatQrScreen> createState() => _KargoTeslimatQrScreenState();
@@ -19,10 +20,10 @@ class KargoTeslimatQrScreen extends StatefulWidget {
 
 class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
   // 🏢 FİLDİŞİ SEDEF PALET
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMain = const Color(0xFF1E293B);
-  final Color textMuted = const Color(0xFF64748B);
+  final Color textMain = Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   bool _islemSuruyor = false;
@@ -86,7 +87,7 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
 
       if (mounted) {
         _siberUyariGoster("KİMLİK EŞLEŞTİ VE QR İMHA EDİLDİ\nÜrün teslim alındı. 15 günlük güvenceniz aktif.", primaryTeal);
-        Future.delayed(const Duration(seconds: 2), () {
+        Future.delayed(Duration(seconds: 2), () {
           if (mounted) Navigator.pop(context);
         });
       }
@@ -95,7 +96,7 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
       HapticFeedback.heavyImpact();
       if (mounted) {
         _siberUyariGoster("SİSTEM REDDETTİ: ${e.toString().replaceAll("Exception:", "").trim()}", SiberTema.kanKirmizi);
-        Future.delayed(const Duration(seconds: 2), () {
+        Future.delayed(Duration(seconds: 2), () {
           if (mounted) setState(() => _islemSuruyor = false);
         });
       }
@@ -105,7 +106,7 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
   void _siberUyariGoster(String mesaj, Color renk) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+      content: Text(mesaj, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
       backgroundColor: renk,
       behavior: SnackBarBehavior.floating,
     ));
@@ -149,7 +150,7 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
           Positioned(
             bottom: 40, left: 20, right: 20,
             child: Container(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.9),
                 borderRadius: BorderRadius.circular(24),
@@ -159,9 +160,9 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
               child: Column(
                 children: [
                   Icon(Icons.fingerprint, color: primaryTeal, size: 48),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   Text("DOĞRULAMA BEKLENİYOR", style: TextStyle(color: textMain, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 12)),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Text(
                     "Kargonun üzerindeki QR kod sadece siparişi veren Karargah hesabı ile eşleşir. Onay anında sistem güncellenir.",
                     textAlign: TextAlign.center,
@@ -181,7 +182,7 @@ class _KargoTeslimatQrScreenState extends State<KargoTeslimatQrScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CircularProgressIndicator(color: primaryTeal, strokeWidth: 4),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
                     Text("KİMLİK DOĞRULANIYOR...", style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, letterSpacing: 2)),
                   ],
                 ),

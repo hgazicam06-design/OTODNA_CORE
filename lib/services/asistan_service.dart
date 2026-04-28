@@ -1,4 +1,4 @@
-import 'package:google_generative_ai/google_generative_ai.dart';
+﻿import 'package:google_generative_ai/google_generative_ai.dart';
 import 'dart:developer' as developer;
 
 /// 🛡️ KUANTUM ASİSTAN: OtoDNA AI (Gemini Destekli)
@@ -68,7 +68,7 @@ Geçerli <hedef> Kodları (Sadece Bunları Kullan):
   // ── 🧠 Ana Sorgu ve Cevaplama Motoru ───────────────────────────────────────
   Future<AsistanCevap> sor(String soru) async {
     if (!_hazir) {
-      return const AsistanCevap(
+      return AsistanCevap(
           metin: 'SİBER BAĞLANTI KOPTU: Asistan şu an Ankara Merkeze ulaşamıyor. Lütfen Kuantum Ağını kontrol edin.',
           yonlendirme: null);
     }
@@ -154,5 +154,5 @@ class AsistanCevap {
   final String metin;
   final String? yonlendirme; // Null ise yönlendirme yok
 
-  const AsistanCevap({required this.metin, this.yonlendirme});
+  AsistanCevap({required this.metin, this.yonlendirme});
 }

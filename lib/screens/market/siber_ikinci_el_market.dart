@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +9,7 @@ import '../../models/car_ad_model.dart';
 // import 'siber_ilan_ver_terminali.dart'; // go_router handle edecek
 
 class SiberIkinciElMarket extends StatefulWidget {
-  const SiberIkinciElMarket({super.key});
+  SiberIkinciElMarket({super.key});
 
   @override
   State<SiberIkinciElMarket> createState() => _SiberIkinciElMarketState();
@@ -16,12 +17,12 @@ class SiberIkinciElMarket extends StatefulWidget {
 
 class _SiberIkinciElMarketState extends State<SiberIkinciElMarket> {
   // 🏢 FİLDİŞİ SEDEF PALET
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color surfaceColor = Colors.white;
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMain = const Color(0xFF1E293B);
-  final Color textMuted = const Color(0xFF64748B);
-  static const Color siberGold = SiberTema.siberGold;
+  final Color textMain = Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
+  static Color siberGold = SiberTema.siberGold;
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -44,17 +45,17 @@ class _SiberIkinciElMarketState extends State<SiberIkinciElMarket> {
 
   Widget _buildSiberAppBar() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       decoration: BoxDecoration(color: bgColor, border: Border(bottom: BorderSide(color: Colors.white.withOpacity(0.05)))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
             onTap: () => context.pop(), // Back button works with context.pop
-            child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), shape: BoxShape.circle), child: Icon(Icons.arrow_back_ios_new, color: textMain, size: 18)),
+            child: Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), shape: BoxShape.circle), child: Icon(Icons.arrow_back_ios_new, color: textMain, size: 18)),
           ),
           Text('K U A N T U M   G A L E R İ', style: TextStyle(color: textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'Avenir')),
-          Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: primaryTeal.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: primaryTeal.withOpacity(0.3))), child: Icon(Icons.storefront, color: primaryTeal, size: 18)),
+          Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: primaryTeal.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: primaryTeal.withOpacity(0.3))), child: Icon(Icons.storefront, color: primaryTeal, size: 18)),
         ],
       ),
     );
@@ -62,12 +63,12 @@ class _SiberIkinciElMarketState extends State<SiberIkinciElMarket> {
 
   Widget _buildAramaVeFiltreKalkani() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       child: Row(
         children: [
           Expanded(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]),
               child: TextField(
                 style: TextStyle(color: textMain, fontSize: 13, fontFamily: 'Avenir'),
@@ -80,9 +81,9 @@ class _SiberIkinciElMarketState extends State<SiberIkinciElMarket> {
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12),
           Container(
-            padding: const EdgeInsets.all(14),
+            padding: EdgeInsets.all(14),
             decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: primaryTeal.withOpacity(0.3)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]),
             child: Icon(Icons.tune, color: primaryTeal, size: 20),
           )
@@ -107,8 +108,8 @@ class _SiberIkinciElMarketState extends State<SiberIkinciElMarket> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.auto_awesome_mosaic_outlined, size: 64, color: Colors.white12),
-                const SizedBox(height: 16),
+                Icon(Icons.auto_awesome_mosaic_outlined, size: 64, color: Colors.white12),
+                SizedBox(height: 16),
                 Text("VİTRİN BOŞ", style: TextStyle(color: textMuted, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
               ],
             ),
@@ -116,8 +117,8 @@ class _SiberIkinciElMarketState extends State<SiberIkinciElMarket> {
         }
 
         return ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           itemCount: snapshot.data!.docs.length,
           itemBuilder: (context, index) {
             CarAd ad = CarAd.fromFirestore(snapshot.data!.docs[index]);
@@ -140,7 +141,7 @@ class _SiberIkinciElMarketState extends State<SiberIkinciElMarket> {
         context.push('/ilan_detay', extra: ad);
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
+        margin: EdgeInsets.only(bottom: 12),
         height: 120, // Sabit liste yüksekliği
         decoration: BoxDecoration(
           color: surfaceColor,
@@ -152,7 +153,7 @@ class _SiberIkinciElMarketState extends State<SiberIkinciElMarket> {
           children: [
             // SOL: GÖRSEL ALANI
             ClipRRect(
-              borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), bottomLeft: Radius.circular(16)),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(16), bottomLeft: Radius.circular(16)),
               child: SizedBox(
                 width: 140,
                 height: 120,
@@ -170,7 +171,7 @@ class _SiberIkinciElMarketState extends State<SiberIkinciElMarket> {
             // SAĞ: DETAYLAR
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -185,10 +186,10 @@ class _SiberIkinciElMarketState extends State<SiberIkinciElMarket> {
                         Text(formatliFiyat, style: TextStyle(color: primaryTeal, fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                         if (ad.isSecureDeposit)
                           Container(
-                            margin: const EdgeInsets.only(top: 4),
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            margin: EdgeInsets.only(top: 4),
+                            padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(color: siberGold.withOpacity(0.1), borderRadius: BorderRadius.circular(4), border: Border.all(color: siberGold.withOpacity(0.3))),
-                            child: const Text("GÜVENLİ KAPORA", style: TextStyle(color: siberGold, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 0.5)),
+                            child: Text("GÜVENLİ KAPORA", style: TextStyle(color: siberGold, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 0.5)),
                           )
                       ],
                     ),
@@ -214,7 +215,7 @@ class _SiberIkinciElMarketState extends State<SiberIkinciElMarket> {
 
   Widget _buildYeniIlanTerminalButonu() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(color: bgColor, border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05)))),
       child: SizedBox(
         width: double.infinity,
@@ -229,8 +230,8 @@ class _SiberIkinciElMarketState extends State<SiberIkinciElMarket> {
           onPressed: () {
             context.push('/ilan_ver_terminali');
           },
-          icon: const Icon(Icons.add, size: 18),
-          label: const Text("KARARGAHA İLAN GİR", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          icon: Icon(Icons.add, size: 18),
+          label: Text("KARARGAHA İLAN GİR", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
         ),
       ),
     );

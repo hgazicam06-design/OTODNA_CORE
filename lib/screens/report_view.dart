@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 
 import 'package:qr_flutter/qr_flutter.dart'; // 🚀 SİBER UYARI: pubspec.yaml'da qr_flutter ekli olmalı!
@@ -10,15 +11,15 @@ class SiberQrOnayAlani extends StatelessWidget {
 
 
 
-  const SiberQrOnayAlani({super.key, required this.raporId});
+  SiberQrOnayAlani({super.key, required this.raporId});
 
 
 
 // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET
 
-  static const Color surfaceColor = Color(0xFF111111);
+  static Color surfaceColor = Color(0xFF111111);
 
-  static const Color primaryCyan = Color(0xFF00FFC2);
+  static Color primaryCyan = Color(0xFF00FFC2);
 
 
 
@@ -28,7 +29,7 @@ class SiberQrOnayAlani extends StatelessWidget {
 
     return Container(
 
-      padding: const EdgeInsets.all(32),
+      padding: EdgeInsets.all(32),
 
       decoration: BoxDecoration(
 
@@ -66,7 +67,7 @@ class SiberQrOnayAlani extends StatelessWidget {
 
           Container(
 
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
 
             decoration: BoxDecoration(
 
@@ -100,13 +101,13 @@ class SiberQrOnayAlani extends StatelessWidget {
 
           ),
 
-          const SizedBox(height: 32),
+          SizedBox(height: 32),
 
 
 
 // 🛡️ BİLGİLENDİRME PANELİ
 
-          const Text(
+          Text(
 
             "SİBER MÜHÜR DOĞRULAMA",
 
@@ -126,7 +127,7 @@ class SiberQrOnayAlani extends StatelessWidget {
 
           ),
 
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
 
           Text(
 
@@ -134,7 +135,7 @@ class SiberQrOnayAlani extends StatelessWidget {
 
             textAlign: TextAlign.center,
 
-            style: const TextStyle(
+            style: TextStyle(
 
               color: SiberTema.textMuted,
 
@@ -148,7 +149,7 @@ class SiberQrOnayAlani extends StatelessWidget {
 
           ),
 
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
 
 
 
@@ -162,7 +163,7 @@ class SiberQrOnayAlani extends StatelessWidget {
 
               Icon(Icons.verified_user, color: primaryCyan.withOpacity(0.8), size: 16),
 
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
 
               Text(
 

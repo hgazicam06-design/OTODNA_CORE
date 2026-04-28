@@ -36,6 +36,15 @@ import '../../screens/kullanici/tuvturk_randevu_screen.dart';
 import '../../screens/kullanici/yedek_parca_market_screen.dart';
 import '../../screens/kullanici/yol_bilgisayari_screen.dart';
 import '../../screens/kurumsal/kurumsal_baglayicilar_screen.dart';
+import '../../screens/settings/uygulama_ayarlari_screen.dart';
+import '../../screens/settings/hukuki_metinler_screen.dart';
+import '../../screens/kullanici/siber_profil_ayarlari.dart';
+import '../../screens/kullanici/siber_bildirim_merkezi_screen.dart';
+import '../../bayi/personel_yonetim_ekrani.dart';
+import '../../usta_paneli/is_emri_detay_screen.dart';
+import '../../yonetim_kulesi/siber_istihbarat_loglari.dart';
+import '../../yonetim_kulesi/karaliste_yonetim_terminali.dart';
+import '../../yonetim_kulesi/komisyon_ayar_paneli.dart';
 
 // Mevcut SiberRouter Yolları (Home & Dashboard)
 import '../../screens/home_screen.dart';
@@ -68,29 +77,29 @@ class SiberRouter {
       // 🦅 ANA KARARGAH (Sivil Giriş Ekranı - Aslında Auth Gate)
       GoRoute(
         path: '/',
-        builder: (context, state) => const OtoDnaAuthGate(),
+        builder: (context, state) => OtoDnaAuthGate(),
       ),
       GoRoute(
         path: '/login',
-        builder: (context, state) => const LoginScreen(),
+        builder: (context, state) => LoginScreen(),
       ),
       GoRoute(
         path: '/dil_secimi',
-        builder: (context, state) => const DilSecimTerminali(),
+        builder: (context, state) => DilSecimTerminali(),
       ),
 
       // ── ANA KOKPİTLER VE PANELLER ──
       GoRoute(
         path: '/kokpit',
-        builder: (context, state) => const SiberKokpitScreen(),
+        builder: (context, state) => SiberKokpitScreen(),
       ),
       GoRoute(
         path: '/super_admin',
-        builder: (context, state) => const SuperAdminScreen(),
+        builder: (context, state) => SuperAdminScreen(),
       ),
       GoRoute(
         path: '/usta_paneli',
-        builder: (context, state) => const UstaPanelScreen(),
+        builder: (context, state) => UstaPanelScreen(),
       ),
       GoRoute(
         path: '/bayi_merkez',
@@ -110,11 +119,11 @@ class SiberRouter {
       // ── ARAÇ VE BİLGİ MERKEZLERİ ──
       GoRoute(
         path: '/arac_kayit',
-        builder: (context, state) => const AracKayitScreen(),
+        builder: (context, state) => AracKayitScreen(),
       ),
       GoRoute(
         path: '/siber_goz',
-        builder: (context, state) => const SiberGozTerminali(),
+        builder: (context, state) => SiberGozTerminali(),
       ),
       GoRoute(
         path: '/sorgu_sonuc',
@@ -140,23 +149,23 @@ class SiberRouter {
       // ── TİCARET VE FİNANS AĞI ──
       GoRoute(
         path: '/market',
-        builder: (context, state) => const SiberMarketVitrini(),
+        builder: (context, state) => SiberMarketVitrini(),
       ),
       GoRoute(
         path: '/oto_market',
-        builder: (context, state) => const OtoMarketScreen(),
+        builder: (context, state) => OtoMarketScreen(),
       ),
       GoRoute(
         path: '/sepet',
-        builder: (context, state) => const SiberSepetEkrani(),
+        builder: (context, state) => SiberSepetEkrani(),
       ),
       GoRoute(
         path: '/ilan_ver',
-        builder: (context, state) => const YedekParcaIlanVerScreen(),
+        builder: (context, state) => YedekParcaIlanVerScreen(),
       ),
       GoRoute(
         path: '/cuzdan',
-        builder: (context, state) => const WalletScreen(),
+        builder: (context, state) => WalletScreen(),
       ),
       GoRoute(
         path: '/yedek_parca_vitrini',
@@ -171,7 +180,7 @@ class SiberRouter {
       // ── SİBER İLETİŞİM VE DESTEK TÜNELLERİ ──
       GoRoute(
         path: '/sohbet_listesi',
-        builder: (context, state) => const SohbetListesiScreen(),
+        builder: (context, state) => SohbetListesiScreen(),
       ),
       GoRoute(
         path: '/sohbet_ekrani',
@@ -185,11 +194,11 @@ class SiberRouter {
       ),
       GoRoute(
         path: '/usta_arama',
-        builder: (context, state) => const UstaAramaScreen(),
+        builder: (context, state) => UstaAramaScreen(),
       ),
       GoRoute(
         path: '/destek',
-        builder: (context, state) => const SupportScreen(),
+        builder: (context, state) => SupportScreen(),
       ),
       GoRoute(
         path: '/yorum_yap',
@@ -206,43 +215,85 @@ class SiberRouter {
       // ── ACİL DURUM VE S.O.S PROTOKOLLERİ ──
       GoRoute(
         path: '/sos_merkezi',
-        builder: (context, state) => const SosProtokoluScreen(),
+        builder: (context, state) => SosProtokoluScreen(),
       ),
       GoRoute(
         path: '/siber_sos',
-        builder: (context, state) => const SiberSosMerkeziScreen(),
+        builder: (context, state) => SiberSosMerkeziScreen(),
       ),
 
       // ── YENİ KUANTUM EKRANLARI ──
       GoRoute(
         path: '/siber_radar',
-        builder: (context, state) => const SiberRadarScreen(),
+        builder: (context, state) => SiberRadarScreen(),
       ),
       GoRoute(
         path: '/tuvturk_randevu',
-        builder: (context, state) => const TuvturkRandevuScreen(),
+        builder: (context, state) => TuvturkRandevuScreen(),
       ),
       GoRoute(
         path: '/yedek_parca_ag',
-        builder: (context, state) => const YedekParcaMarketScreen(),
+        builder: (context, state) => YedekParcaMarketScreen(),
       ),
       GoRoute(
         path: '/yol_bilgisayari',
-        builder: (context, state) => const YolBilgisayariScreen(),
+        builder: (context, state) => YolBilgisayariScreen(),
       ),
       GoRoute(
         path: '/kurumsal_baglayicilar',
-        builder: (context, state) => const KurumsalBaglayicilarScreen(),
+        builder: (context, state) => KurumsalBaglayicilarScreen(),
+      ),
+      GoRoute(
+        path: '/uygulama_ayarlari',
+        builder: (context, state) => UygulamaAyarlariScreen(),
+      ),
+      GoRoute(
+        path: '/hukuki_metinler',
+        builder: (context, state) => HukukiMetinlerScreen(),
+      ),
+      GoRoute(
+        path: '/siber_profil_ayarlari',
+        builder: (context, state) => SiberProfilAyarlariScreen(),
+      ),
+      GoRoute(
+        path: '/bildirim_merkezi',
+        builder: (context, state) => SiberBildirimMerkeziScreen(),
+      ),
+      GoRoute(
+        path: '/personel_yonetimi',
+        builder: (context, state) {
+          final bayiId = state.extra as String? ?? '';
+          return PersonelYonetimEkrani(bayiId: bayiId);
+        },
+      ),
+      GoRoute(
+        path: '/is_emri_detay',
+        builder: (context, state) {
+          final isEmriId = state.extra as String? ?? 'BILINMEYEN';
+          return IsEmriDetayScreen(isEmriId: isEmriId);
+        },
+      ),
+      GoRoute(
+        path: '/siber_istihbarat_loglari',
+        builder: (context, state) => SiberIstihbaratLoglari(),
+      ),
+      GoRoute(
+        path: '/karaliste_yonetimi',
+        builder: (context, state) => KaralisteYonetimTerminali(),
+      ),
+      GoRoute(
+        path: '/komisyon_ayarlari',
+        builder: (context, state) => KomisyonAyarPaneli(),
       ),
 
       // ── EKSTRA (Eski siber_router'dan kalanlar) ──
       GoRoute(
         path: '/home',
-        builder: (context, state) => const HomeScreen(),
+        builder: (context, state) => HomeScreen(),
       ),
       GoRoute(
         path: '/bayi-paneli',
-        builder: (context, state) => const DealerDashboard(),
+        builder: (context, state) => DealerDashboard(),
       ),
 
       // ── 💎 YENİ FİLDİŞİ SEDEF VE PLAZA ROTALARI ──
@@ -255,15 +306,15 @@ class SiberRouter {
       ),
       GoRoute(
         path: '/musteri_garaj',
-        builder: (context, state) => const MusteriGarajScreen(),
+        builder: (context, state) => MusteriGarajScreen(),
       ),
       GoRoute(
         path: '/qr_kimlik',
-        builder: (context, state) => const QrKimlikScreen(),
+        builder: (context, state) => QrKimlikScreen(),
       ),
       GoRoute(
         path: '/home_page_design',
-        builder: (context, state) => const HomePageDesign(),
+        builder: (context, state) => HomePageDesign(),
       ),
       GoRoute(
         path: '/kargo_qr',
@@ -274,7 +325,7 @@ class SiberRouter {
       ),
       GoRoute(
         path: '/qr_matbaa',
-        builder: (context, state) => const QrMatbaaScreen(),
+        builder: (context, state) => QrMatbaaScreen(),
       ),
       // 🌐 WEB DEEP LINK: Vatandaşın normal kamerasıyla okutacağı QR URL'i
       GoRoute(
@@ -292,7 +343,7 @@ class SiberRouter {
       ),
       GoRoute(
         path: '/ikinci_el_market',
-        builder: (context, state) => const SiberIkinciElMarket(),
+        builder: (context, state) => SiberIkinciElMarket(),
       ),
       GoRoute(
         path: '/ilan_detay',
@@ -303,7 +354,7 @@ class SiberRouter {
       ),
       GoRoute(
         path: '/ilan_ver_terminali',
-        builder: (context, state) => const SiberIlanVerTerminali(),
+        builder: (context, state) => SiberIlanVerTerminali(),
       ),
       GoRoute(
         path: '/dijital_muayene',
@@ -317,40 +368,40 @@ class SiberRouter {
       ),
       GoRoute(
         path: '/cigir_yolcu',
-        builder: (context, state) => const OtoDnaCigirScreen(),
+        builder: (context, state) => OtoDnaCigirScreen(),
       ),
       GoRoute(
         path: '/surucu_kokpiti',
-        builder: (context, state) => const SurucuKokpitiScreen(),
+        builder: (context, state) => SurucuKokpitiScreen(),
       ),
     ],
     // ⚠️ KOORDİNAT HATASI (404) DURUMUNDA DEVREYE GİREN SİBER KALKAN
     errorBuilder: (context, state) => Scaffold(
-      backgroundColor: const Color(0xFFFDFBF7),
+      backgroundColor: Color(0xFFFDFBF7),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error_outline, color: Colors.redAccent, size: 80),
-            const SizedBox(height: 20),
+            Icon(Icons.error_outline, color: Colors.redAccent, size: 80),
+            SizedBox(height: 20),
             Text(
               "SİBER İHLAL: ROTA BULUNAMADI\n(${state.uri.toString()})",
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.redAccent,
                 fontWeight: FontWeight.w900,
                 fontFamily: 'Avenir',
                 letterSpacing: 2,
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.teal.shade700,
                 foregroundColor: Colors.white,
               ),
               onPressed: () => context.go('/'),
-              child: const Text("MERKEZE DÖN", style: TextStyle(fontWeight: FontWeight.bold)),
+              child: Text("MERKEZE DÖN", style: TextStyle(fontWeight: FontWeight.bold)),
             )
           ],
         ),

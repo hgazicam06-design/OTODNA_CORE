@@ -1,4 +1,4 @@
-import 'dart:developer' as developer;
+﻿import 'dart:developer' as developer;
 import 'city_service.dart'; // Şehir verilerini asıl kaynağından çekmek için
 
 /// 🛡️ KÜRESEL KARARGAH YÖNETİCİSİ (GlobalYonetici)
@@ -8,7 +8,7 @@ class GlobalYonetici {
   static String _aktifUlke = "TÜRKİYE";
 
   // 💰 KÜRESEL FİNANS BİRİMLERİ (Kuantum Para Birimi Sözlüğü)
-  static const Map<String, String> _paraBirimleri = {
+  static Map<String, String> _paraBirimleri = {
     "TÜRKİYE": "₺",
     "ALMANYA": "€",
     "İNGİLTERE": "£",

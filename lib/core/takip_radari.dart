@@ -1,4 +1,4 @@
-// lib/core/takip_radari.dart
+﻿// lib/core/takip_radari.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
@@ -19,13 +19,13 @@ class SiberTakipRadari {
 
     try {
       // Standart Karargah Kuralı: 6 Ay veya +10.000 KM (Hangisi önce dolarsa)
-      DateTime gelecekKontrolTarihi = DateTime.now().add(const Duration(days: 180));
+      DateTime gelecekKontrolTarihi = DateTime.now().add(Duration(days: 180));
       int hedefKm = mevcutKm + 10000;
 
       // 🧠 Kuantum Zekası: Eğer araç 10 yaşından büyükse radarı sıklaştır! (3 Ay veya 5.000 KM)
       if (aracYasi > 10) {
         developer.log("⚠️ YAŞLI ARAÇ TESPİTİ: Takip radarı 3 Ay / 5.000 KM'ye daraltıldı.");
-        gelecekKontrolTarihi = DateTime.now().add(const Duration(days: 90));
+        gelecekKontrolTarihi = DateTime.now().add(Duration(days: 90));
         hedefKm = mevcutKm + 5000;
       }
 

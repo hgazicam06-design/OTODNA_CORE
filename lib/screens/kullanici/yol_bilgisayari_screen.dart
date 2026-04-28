@@ -1,7 +1,8 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 
 class YolBilgisayariScreen extends StatefulWidget {
-  const YolBilgisayariScreen({super.key});
+  YolBilgisayariScreen({super.key});
 
   @override
   State<YolBilgisayariScreen> createState() => _YolBilgisayariScreenState();
@@ -27,23 +28,23 @@ class _YolBilgisayariScreenState extends State<YolBilgisayariScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF111111),
+        backgroundColor: Color(0xFF111111),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Colors.deepOrangeAccent.withOpacity(0.5))),
-        contentPadding: const EdgeInsets.all(32),
+        contentPadding: EdgeInsets.all(32),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(padding: const EdgeInsets.all(20), decoration: BoxDecoration(color: Colors.deepOrangeAccent.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: Colors.deepOrangeAccent.withOpacity(0.5))), child: const Icon(Icons.toll_outlined, color: Colors.deepOrangeAccent, size: 48)),
-            const SizedBox(height: 24),
-            const Text("BAKİYE YÜKLEME", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
-            const SizedBox(height: 12),
-            const Text("Kayıtlı Kripto Cüzdanınızdan HGS hesabınıza 500 ₺ yüklenecektir. Onaylıyor musunuz?", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
-            const SizedBox(height: 32),
+            Container(padding: EdgeInsets.all(20), decoration: BoxDecoration(color: Colors.deepOrangeAccent.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: Colors.deepOrangeAccent.withOpacity(0.5))), child: Icon(Icons.toll_outlined, color: Colors.deepOrangeAccent, size: 48)),
+            SizedBox(height: 24),
+            Text("BAKİYE YÜKLEME", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
+            SizedBox(height: 12),
+            Text("Kayıtlı Kripto Cüzdanınızdan HGS hesabınıza 500 ₺ yüklenecektir. Onaylıyor musunuz?", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
+            SizedBox(height: 32),
             Row(
               children: [
-                Expanded(child: TextButton(onPressed: () => Navigator.pop(context), child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)))),
-                const SizedBox(width: 12),
-                Expanded(child: ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: Colors.deepOrangeAccent, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))), onPressed: () { setState(() => _hgsBakiye += 500.0); Navigator.pop(context); ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('HGS Bakiyesi Ağa Mühürlendi! ✅', style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: Colors.deepOrangeAccent)); }, child: const Text("ONAYLA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1))))
+                Expanded(child: TextButton(onPressed: () => Navigator.pop(context), child: Text("İPTAL", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)))),
+                SizedBox(width: 12),
+                Expanded(child: ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: Colors.deepOrangeAccent, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))), onPressed: () { setState(() => _hgsBakiye += 500.0); Navigator.pop(context); ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('HGS Bakiyesi Ağa Mühürlendi! ✅', style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: Colors.deepOrangeAccent)); }, child: Text("ONAYLA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1))))
               ],
             )
           ],
@@ -80,13 +81,13 @@ class _YolBilgisayariScreenState extends State<YolBilgisayariScreen> {
       backgroundColor: bgColor,
       appBar: AppBar(
           backgroundColor: Colors.transparent, elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text('K O K P İ T   M E R K E Z İ', style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3)),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text('K O K P İ T   M E R K E Z İ', style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3)),
           centerTitle: true
       ),
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -94,7 +95,7 @@ class _YolBilgisayariScreenState extends State<YolBilgisayariScreen> {
             // 🏷️ 1. HGS CÜZDANI (Premium Dijital Kart)
             // ==========================================
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               decoration: BoxDecoration(
                   gradient: LinearGradient(colors: [Colors.deepOrangeAccent.withOpacity(0.9), Colors.orangeAccent.withOpacity(0.6)], begin: Alignment.topLeft, end: Alignment.bottomRight),
                   borderRadius: BorderRadius.circular(32),
@@ -102,30 +103,30 @@ class _YolBilgisayariScreenState extends State<YolBilgisayariScreen> {
               ),
               child: Row(
                 children: [
-                  Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), shape: BoxShape.circle), child: const Icon(Icons.sensors_outlined, color: SiberTema.kuantumCyan, size: 36)),
-                  const SizedBox(width: 20),
+                  Container(padding: EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), shape: BoxShape.circle), child: Icon(Icons.sensors_outlined, color: SiberTema.kuantumCyan, size: 36)),
+                  SizedBox(width: 20),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("HGS KUANTUM BAKİYE", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
-                        const SizedBox(height: 8),
-                        Text("₺ ${_hgsBakiye.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.textMain, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -1)),
+                        Text("HGS KUANTUM BAKİYE", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                        SizedBox(height: 8),
+                        Text("₺ ${_hgsBakiye.toStringAsFixed(2)}", style: TextStyle(color: SiberTema.textMain, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -1)),
                       ],
                     ),
                   ),
                   GestureDetector(
                     onTap: _hgsYukle,
                     child: Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(16)),
-                      child: const Icon(Icons.add, color: SiberTema.kuantumCyan, size: 24),
+                      child: Icon(Icons.add, color: SiberTema.kuantumCyan, size: 24),
                     ),
                   )
                 ],
               ),
             ),
-            const SizedBox(height: 48),
+            SizedBox(height: 48),
 
             // ==========================================
             // 2. ARAÇ TİPİ SEÇİCİ (Demo İçin)
@@ -136,33 +137,33 @@ class _YolBilgisayariScreenState extends State<YolBilgisayariScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("SİBER MOTOR TİPİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                    const SizedBox(height: 6),
+                    Text("SİBER MOTOR TİPİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                    SizedBox(height: 6),
                     Text(_isElektrikli ? "OtoDNA EV Modu Aktif" : "İçten Yanmalı Mod Aktif", style: TextStyle(color: _isElektrikli ? primaryCyan : Colors.orangeAccent, fontSize: 12, fontWeight: FontWeight.bold)),
                   ],
                 ),
                 Switch(value: _isElektrikli, activeColor: primaryCyan, inactiveThumbColor: Colors.orangeAccent, inactiveTrackColor: Colors.orangeAccent.withOpacity(0.2), onChanged: (val) => setState(() => _isElektrikli = val)),
               ],
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
 
             // ==========================================
             // 🔋 3. ELEKTRİKLİ ARAÇ (EV) SİBER MENZİL MOTORU
             // ==========================================
             if (_isElektrikli) ...[
               Container(
-                width: double.infinity, padding: const EdgeInsets.all(32),
+                width: double.infinity, padding: EdgeInsets.all(32),
                 decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(32), border: Border.all(color: primaryCyan.withOpacity(0.3), width: 1.5), boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.05), blurRadius: 30)]),
                 child: Column(
                   children: [
-                    const Icon(Icons.electric_car_outlined, color: primaryCyan, size: 48),
-                    const SizedBox(height: 16),
-                    const Text("AI DESTEKLİ GERÇEK MENZİL", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                    const SizedBox(height: 12),
-                    Text("${_gercekMenzilHesapla()} KM", style: const TextStyle(color: SiberTema.textMain, fontSize: 56, fontWeight: FontWeight.w900, letterSpacing: -2)),
-                    const SizedBox(height: 24),
-                    const Divider(color: SiberTema.textMuted),
-                    const SizedBox(height: 24),
+                    Icon(Icons.electric_car_outlined, color: primaryCyan, size: 48),
+                    SizedBox(height: 16),
+                    Text("AI DESTEKLİ GERÇEK MENZİL", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                    SizedBox(height: 12),
+                    Text("${_gercekMenzilHesapla()} KM", style: TextStyle(color: SiberTema.textMain, fontSize: 56, fontWeight: FontWeight.w900, letterSpacing: -2)),
+                    SizedBox(height: 24),
+                    Divider(color: SiberTema.textMuted),
+                    SizedBox(height: 24),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -171,24 +172,24 @@ class _YolBilgisayariScreenState extends State<YolBilgisayariScreen> {
                         _buildVeriSutunu("ŞARJ DURUMU", "%${_anlikSarjYuzdesi.toInt()}", primaryCyan),
                       ],
                     ),
-                    const SizedBox(height: 40),
-                    const Text("ŞARJ SİMÜLASYONU", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 40),
+                    Text("ŞARJ SİMÜLASYONU", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                    SizedBox(height: 8),
                     SliderTheme(
-                      data: SliderThemeData(trackHeight: 2, thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8), overlayShape: const RoundSliderOverlayShape(overlayRadius: 16), activeTrackColor: primaryCyan, inactiveTrackColor: Colors.white.withOpacity(0.1), thumbColor: primaryCyan),
+                      data: SliderThemeData(trackHeight: 2, thumbShape: RoundSliderThumbShape(enabledThumbRadius: 8), overlayShape: RoundSliderOverlayShape(overlayRadius: 16), activeTrackColor: primaryCyan, inactiveTrackColor: Colors.white.withOpacity(0.1), thumbColor: primaryCyan),
                       child: Slider(value: _anlikSarjYuzdesi, min: 0, max: 100, onChanged: (val) => setState(() => _anlikSarjYuzdesi = val)),
                     )
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               SizedBox(
                   width: double.infinity, height: 56,
                   child: OutlinedButton.icon(
                       style: OutlinedButton.styleFrom(side: BorderSide(color: primaryCyan.withOpacity(0.5)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                       onPressed: () {},
-                      icon: const Icon(Icons.ev_station_outlined, color: primaryCyan, size: 20),
-                      label: const Text("EN YAKIN ŞARJ İSTASYONU", style: TextStyle(color: primaryCyan, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1))
+                      icon: Icon(Icons.ev_station_outlined, color: primaryCyan, size: 20),
+                      label: Text("EN YAKIN ŞARJ İSTASYONU", style: TextStyle(color: primaryCyan, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1))
                   )
               ),
             ]
@@ -198,57 +199,57 @@ class _YolBilgisayariScreenState extends State<YolBilgisayariScreen> {
             // ==========================================
             else ...[
               Container(
-                width: double.infinity, padding: const EdgeInsets.all(32),
+                width: double.infinity, padding: EdgeInsets.all(32),
                 decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(32), border: Border.all(color: Colors.orangeAccent.withOpacity(0.3), width: 1.5), boxShadow: [BoxShadow(color: Colors.orangeAccent.withOpacity(0.05), blurRadius: 30)]),
                 child: Column(
                   children: [
-                    const Icon(Icons.local_gas_station_outlined, color: Colors.orangeAccent, size: 48),
-                    const SizedBox(height: 16),
-                    const Text("ORTALAMA TÜKETİM (100 KM)", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                    const SizedBox(height: 12),
-                    Text(_ortalamaTuketim, style: const TextStyle(color: SiberTema.textMain, fontSize: 56, fontWeight: FontWeight.w900, letterSpacing: -2)),
-                    const SizedBox(height: 32),
+                    Icon(Icons.local_gas_station_outlined, color: Colors.orangeAccent, size: 48),
+                    SizedBox(height: 16),
+                    Text("ORTALAMA TÜKETİM (100 KM)", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                    SizedBox(height: 12),
+                    Text(_ortalamaTuketim, style: TextStyle(color: SiberTema.textMain, fontSize: 56, fontWeight: FontWeight.w900, letterSpacing: -2)),
+                    SizedBox(height: 32),
                     Row(
                       children: [
                         Expanded(
                             child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4), decoration: BoxDecoration(color: const Color(0xFF000000), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
-                                child: TextField(controller: _litreController, keyboardType: TextInputType.number, style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold), decoration: const InputDecoration(hintText: 'Litre', hintStyle: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.normal), border: InputBorder.none))
+                                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4), decoration: BoxDecoration(color: Color(0xFF000000), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
+                                child: TextField(controller: _litreController, keyboardType: TextInputType.number, style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold), decoration: InputDecoration(hintText: 'Litre', hintStyle: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.normal), border: InputBorder.none))
                             )
                         ),
-                        const SizedBox(width: 16),
+                        SizedBox(width: 16),
                         Expanded(
                             child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4), decoration: BoxDecoration(color: const Color(0xFF000000), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
-                                child: TextField(controller: _kmController, keyboardType: TextInputType.number, style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold), decoration: const InputDecoration(hintText: 'KM', hintStyle: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.normal), border: InputBorder.none))
+                                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4), decoration: BoxDecoration(color: Color(0xFF000000), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
+                                child: TextField(controller: _kmController, keyboardType: TextInputType.number, style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold), decoration: InputDecoration(hintText: 'KM', hintStyle: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.normal), border: InputBorder.none))
                             )
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
                     SizedBox(
                         width: double.infinity, height: 50,
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(backgroundColor: Colors.orangeAccent, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
                             onPressed: _yakitHesapla,
-                            child: const Text("TÜKETİMİ HESAPLA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1))
+                            child: Text("TÜKETİMİ HESAPLA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1))
                         )
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               SizedBox(
                   width: double.infinity, height: 56,
                   child: OutlinedButton.icon(
                       style: OutlinedButton.styleFrom(side: BorderSide(color: Colors.orangeAccent.withOpacity(0.5)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                       onPressed: () {},
-                      icon: const Icon(Icons.map_outlined, color: Colors.orangeAccent, size: 20),
-                      label: const Text("EN UCUZ İSTASYONLAR", style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1))
+                      icon: Icon(Icons.map_outlined, color: Colors.orangeAccent, size: 20),
+                      label: Text("EN UCUZ İSTASYONLAR", style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1))
                   )
               ),
             ],
-            const SizedBox(height: 80),
+            SizedBox(height: 80),
           ],
         ),
       ),
@@ -259,8 +260,8 @@ class _YolBilgisayariScreenState extends State<YolBilgisayariScreen> {
   Widget _buildVeriSutunu(String baslik, String deger, Color renk) {
     return Column(
         children: [
-          Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
-          const SizedBox(height: 8),
+          Text(baslik, style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
+          SizedBox(height: 8),
           Text(deger, style: TextStyle(color: renk, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: -0.5))
         ]
     );

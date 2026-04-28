@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,7 +6,7 @@ import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 
 class SiberIstihbaratMerkeziScreen extends StatefulWidget {
-  const SiberIstihbaratMerkeziScreen({super.key});
+  SiberIstihbaratMerkeziScreen({super.key});
 
   @override
   State<SiberIstihbaratMerkeziScreen> createState() => _SiberIstihbaratMerkeziScreenState();
@@ -34,9 +35,9 @@ class _SiberIstihbaratMerkeziScreenState extends State<SiberIstihbaratMerkeziScr
         appBar: AppBar(
           backgroundColor: Colors.black.withOpacity(0.8),
           elevation: 0,
-          title: const Text("SİBER İSTİHBARAT AĞI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14)),
+          title: Text("SİBER İSTİHBARAT AĞI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14)),
           centerTitle: true,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: Column(
           children: [
@@ -46,7 +47,7 @@ class _SiberIstihbaratMerkeziScreenState extends State<SiberIstihbaratMerkeziScr
             // Terminal Log Akışı
             Expanded(
               child: Container(
-                margin: const EdgeInsets.all(16),
+                margin: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(16),
@@ -71,8 +72,8 @@ class _SiberIstihbaratMerkeziScreenState extends State<SiberIstihbaratMerkeziScr
   Widget _buildFiltrePaneli() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      physics: BouncingScrollPhysics(),
       child: Row(
         children: _kategoriler.map((kat) {
           final isSelected = _seciliKategori == kat;
@@ -80,9 +81,9 @@ class _SiberIstihbaratMerkeziScreenState extends State<SiberIstihbaratMerkeziScr
           return GestureDetector(
             onTap: () => setState(() => _seciliKategori = kat),
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              margin: const EdgeInsets.only(right: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              duration: Duration(milliseconds: 300),
+              margin: EdgeInsets.only(right: 8),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 color: isSelected ? renk.withOpacity(0.2) : Colors.transparent,
                 borderRadius: BorderRadius.circular(20),
@@ -117,18 +118,18 @@ class _SiberIstihbaratMerkeziScreenState extends State<SiberIstihbaratMerkeziScr
       stream: query.snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+          return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
         }
 
         final docs = snapshot.data?.docs ?? [];
 
         if (docs.isEmpty) {
-          return const Center(child: Text("> RADAR TEMİZ...", style: TextStyle(color: SiberTema.kuantumCyan, fontFamily: 'Courier', fontWeight: FontWeight.bold)));
+          return Center(child: Text("> RADAR TEMİZ...", style: TextStyle(color: SiberTema.kuantumCyan, fontFamily: 'Courier', fontWeight: FontWeight.bold)));
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
-          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.all(16),
+          physics: BouncingScrollPhysics(),
           itemCount: docs.length,
           itemBuilder: (context, index) {
             final data = docs[index].data() as Map<String, dynamic>;
@@ -143,8 +144,8 @@ class _SiberIstihbaratMerkeziScreenState extends State<SiberIstihbaratMerkeziScr
             final bool isKritik = seviye == 'KRİTİK';
 
             return Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(12),
+              margin: EdgeInsets.only(bottom: 12),
+              padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: isKritik ? SiberTema.kanKirmizi.withOpacity(0.1) : Colors.black45,
                 borderRadius: BorderRadius.circular(8),
@@ -159,20 +160,20 @@ class _SiberIstihbaratMerkeziScreenState extends State<SiberIstihbaratMerkeziScr
                       Row(
                         children: [
                           Icon(Icons.terminal, color: isKritik ? SiberTema.kanKirmizi : renk, size: 14),
-                          const SizedBox(width: 8),
-                          Text("[$saat] HEDEF@$hedefId", style: const TextStyle(color: SiberTema.textMuted, fontFamily: 'Courier', fontSize: 10, fontWeight: FontWeight.bold)),
+                          SizedBox(width: 8),
+                          Text("[$saat] HEDEF@$hedefId", style: TextStyle(color: SiberTema.textMuted, fontFamily: 'Courier', fontSize: 10, fontWeight: FontWeight.bold)),
                         ],
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(color: isKritik ? SiberTema.kanKirmizi.withOpacity(0.2) : renk.withOpacity(0.2), borderRadius: BorderRadius.circular(4)),
                         child: Text(isKritik ? "KRİTİK ALARM" : kategori, style: TextStyle(color: isKritik ? SiberTema.kanKirmizi : renk, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 1)),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Text("> [$seviye] OTO_DNA_RADAR", style: TextStyle(color: isKritik ? SiberTema.kanKirmizi : renk, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Courier')),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Text(mesaj, style: TextStyle(color: isKritik ? Colors.white : Colors.white70, fontSize: 11, fontFamily: 'Courier', fontWeight: isKritik ? FontWeight.bold : FontWeight.normal)),
                 ],
               ),

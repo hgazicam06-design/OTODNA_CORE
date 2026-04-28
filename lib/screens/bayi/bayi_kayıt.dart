@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/bayi_kayit.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +14,7 @@ import '../core/responsive_kalkan.dart';
 class BayiKayitFormu extends StatefulWidget {
   final String ustaId; // Kayıt olan ustanın geçici kimliği (Auth'tan gelir)
 
-  const BayiKayitFormu({super.key, required this.ustaId});
+  BayiKayitFormu({super.key, required this.ustaId});
 
   @override
   State<BayiKayitFormu> createState() => _BayiKayitFormuState();
@@ -112,8 +113,8 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+            SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
           ],
         ),
       ),
@@ -127,18 +128,18 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("BAYİ KAYIT & SÖZLEŞME", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14)),
+          title: Text("BAYİ KAYIT & SÖZLEŞME", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14)),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: ListView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(20),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.all(20),
           children: [
             // 1. UZMANLIK SEÇİMİ
-            const Text("ATÖLYE UZMANLIK ALANLARINIZI SEÇİN", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900)),
-            const SizedBox(height: 12),
+            Text("ATÖLYE UZMANLIK ALANLARINIZI SEÇİN", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900)),
+            SizedBox(height: 12),
             Container(
               decoration: BoxDecoration(
                 color: SiberTema.matGrey.withOpacity(0.8),
@@ -152,7 +153,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                     value: _uzmanliklar[key],
                     activeColor: SiberTema.kuantumCyan,
                     checkColor: Colors.black,
-                    side: const BorderSide(color: Colors.white30),
+                    side: BorderSide(color: Colors.white30),
                     onChanged: (bool? val) {
                       HapticFeedback.selectionClick();
                       setState(() => _uzmanliklar[key] = val!);
@@ -162,20 +163,20 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
               ),
             ),
 
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
 
             // 2. OTODNA SİBER İMECE SÖZLEŞMESİ
-            const Text("YASAL PROTOKOL", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900)),
-            const SizedBox(height: 8),
+            Text("YASAL PROTOKOL", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900)),
+            SizedBox(height: 8),
             Container(
               height: 180,
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: SiberTema.kanKirmizi.withOpacity(0.05),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.5), width: 1.5),
               ),
-              child: const SingleChildScrollView(
+              child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Text(
                   "OTODNA SİBER İMECE SÖZLEŞMESİ:\n\n"
@@ -188,7 +189,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
               ),
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
 
             // 3. ONAY MEKANİZMASI
             Container(
@@ -214,16 +215,16 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
               ),
             ),
 
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
 
             // 4. MÜHÜRLEME BUTONU
             SizedBox(
               height: 60,
               child: _islemSuruyor
-                  ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                  ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                   : ElevatedButton.icon(
-                icon: const Icon(Icons.security, color: Colors.white, size: 24),
-                label: const Text("SİSTEME KAYDOL VE MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                icon: Icon(Icons.security, color: Colors.white, size: 24),
+                label: Text("SİSTEME KAYDOL VE MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _sozlesmeOnay ? SiberTema.kuantumCyan : Colors.white10,
                   foregroundColor: _sozlesmeOnay ? Colors.black : Colors.white30,
@@ -234,7 +235,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                 onPressed: _sozlesmeOnay ? _kayitTamamla : null,
               ),
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
           ],
         ),
       ),

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// 🦅 OTODNA KUANTUM BRANŞ TANIMLARI
@@ -16,12 +16,12 @@ class ServiceCategory {
   final bool aktifMi;    // Admin panelinden pasifize edilebilirlik
   final int siralama;    // Ekranda gösterim önceliği
 
-  const ServiceCategory({
+  ServiceCategory({
     this.id,
     required this.title,
     required this.iconName,
     required this.hexColor,
-    this.uyumluAracTipleri = const [],
+    this.uyumluAracTipleri = [],
     this.hizmetTuru = 'Genel',
     this.aktifMi = true,
     this.siralama = 0,

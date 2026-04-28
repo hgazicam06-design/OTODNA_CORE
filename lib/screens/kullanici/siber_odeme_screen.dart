@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/siber_odeme_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +12,7 @@ class SiberOdemeScreen extends StatefulWidget {
   final double odenecekTutar;
   final String? islemAciklamasi;
 
-  const SiberOdemeScreen({super.key, required this.odenecekTutar, this.islemAciklamasi});
+  SiberOdemeScreen({super.key, required this.odenecekTutar, this.islemAciklamasi});
 
   @override
   State<SiberOdemeScreen> createState() => _SiberOdemeScreenState();
@@ -30,8 +31,8 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
   bool _isProcessing = false;
 
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textColor = const Color(0xFF1E293B);
-  final Color bgColor = const Color(0xFFFAFAFC);
+  final Color textColor = Color(0xFF1E293B);
+  final Color bgColor = Color(0xFFFAFAFC);
   final Color dangerColor = Colors.redAccent;
 
   @override
@@ -55,7 +56,7 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(mesaj, style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           ],
         ),
@@ -80,7 +81,7 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
 
     try {
       // 1. IYZICO SİMÜLASYONU (Ağa istek atılıyormuş gibi bekleme)
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(Duration(seconds: 2));
 
       // 2. FİREBASE WRITEBATCH - %12 PLAZA KESİNTİSİ
       double brutTutar = widget.odenecekTutar;
@@ -133,26 +134,26 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
-        contentPadding: const EdgeInsets.all(32),
+        contentPadding: EdgeInsets.all(32),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               decoration: BoxDecoration(color: Colors.green.withValues(alpha: 0.1), shape: BoxShape.circle, border: Border.all(color: Colors.green.shade700, width: 2), boxShadow: [BoxShadow(color: Colors.green.withValues(alpha: 0.1), blurRadius: 20)]),
               child: Icon(Icons.check_circle_outline, color: Colors.green.shade700, size: 48),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
             Text("İŞLEM ONAYLANDI", style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-            const SizedBox(height: 12),
-            Text("₺${widget.odenecekTutar} başarıyla tahsil edildi. Fatura cüzdanınıza eklendi.", textAlign: TextAlign.center, style: const TextStyle(color: Colors.white54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-            const SizedBox(height: 32),
+            SizedBox(height: 12),
+            Text("₺${widget.odenecekTutar} başarıyla tahsil edildi. Fatura cüzdanınıza eklendi.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            SizedBox(height: 32),
             SizedBox(
               width: double.infinity, height: 56,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                 onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
-                child: const Text("ANA MERKEZE DÖN", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1, fontFamily: 'Avenir')),
+                child: Text("ANA MERKEZE DÖN", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1, fontFamily: 'Avenir')),
               ),
             )
           ],
@@ -178,8 +179,8 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -187,56 +188,56 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
                 // 1. ÖZET KARTI
                 // =================================================================
                 Container(
-                  width: double.infinity, padding: const EdgeInsets.all(32),
+                  width: double.infinity, padding: EdgeInsets.all(32),
                   decoration: BoxDecoration(
                       color: primaryTeal,
                       borderRadius: BorderRadius.circular(32),
-                      boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.2), blurRadius: 40, spreadRadius: 5, offset: const Offset(0, 10))],
+                      boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.2), blurRadius: 40, spreadRadius: 5, offset: Offset(0, 10))],
                       gradient: LinearGradient(colors: [primaryTeal, Colors.teal.shade500], begin: Alignment.topLeft, end: Alignment.bottomRight)
                   ),
                   child: Column(
                     children: [
-                      const Text("ÖDENECEK TOPLAM TUTAR", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-                      const SizedBox(height: 12),
-                      Text("₺${widget.odenecekTutar.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.textMain, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: -1, fontFamily: 'Avenir')),
+                      Text("ÖDENECEK TOPLAM TUTAR", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                      SizedBox(height: 12),
+                      Text("₺${widget.odenecekTutar.toStringAsFixed(2)}", style: TextStyle(color: SiberTema.textMain, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: -1, fontFamily: 'Avenir')),
                     ],
                   ),
                 ),
-                const SizedBox(height: 48),
+                SizedBox(height: 48),
 
                 // =================================================================
                 // 2. KART BİLGİLERİ (Premium Input)
                 // =================================================================
-                const Text("KART BİLGİLERİ", style: TextStyle(color: Colors.white45, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-                const SizedBox(height: 16),
+                Text("KART BİLGİLERİ", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                SizedBox(height: 16),
 
                 _buildTextField(hint: "Kart Üzerindeki İsim", icon: Icons.person_outline, controller: _isimController),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 _buildTextField(hint: "Kart Numarası", icon: Icons.credit_card_outlined, isNumber: true, controller: _kartNoController),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
 
                 Row(
                   children: [
                     Expanded(child: _buildTextField(hint: "AA / YY", icon: Icons.calendar_month_outlined, isNumber: false, controller: _ayYilController)),
-                    const SizedBox(width: 16),
+                    SizedBox(width: 16),
                     Expanded(child: _buildTextField(hint: "CVV", icon: Icons.lock_outline, isNumber: true, isObscure: true, controller: _cvvController)),
                   ],
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
 
                 // IYZICO Güvencesi Bildirimi
                 Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))]),
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: Offset(0, 4))]),
                   child: Row(
                     children: [
                       Icon(Icons.shield_outlined, color: primaryTeal, size: 24),
-                      const SizedBox(width: 16),
-                      const Expanded(child: Text("İşleminiz Iyzico ve OtoDNA güvencesiyle 256-bit şifrelenmektedir.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
+                      SizedBox(width: 16),
+                      Expanded(child: Text("İşleminiz Iyzico ve OtoDNA güvencesiyle 256-bit şifrelenmektedir.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
                     ],
                   ),
                 ),
-                const SizedBox(height: 48),
+                SizedBox(height: 48),
 
                 // =================================================================
                 // 3. DEVASA ÖDEME BUTONU
@@ -246,13 +247,13 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                     onPressed: _isProcessing ? null : _iyzicoOdemeyiTamamla,
-                    icon: _isProcessing ? const SizedBox() : const Icon(Icons.fingerprint, color: SiberTema.kuantumCyan, size: 24),
+                    icon: _isProcessing ? SizedBox() : Icon(Icons.fingerprint, color: SiberTema.kuantumCyan, size: 24),
                     label: _isProcessing
-                        ? const SizedBox(height: 24, width: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                        : const Text("GÜVENLİ AĞ İLE ÖDE", style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                        ? SizedBox(height: 24, width: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                        : Text("GÜVENLİ AĞ İLE ÖDE", style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                   ),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
               ],
             ),
           ),
@@ -264,12 +265,12 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
   // 💎 YARDIMCI TEXTFIELD
   Widget _buildTextField({required String hint, required IconData icon, bool isNumber = false, bool isObscure = false, required TextEditingController controller}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-          boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))]
+          boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: Offset(0, 5))]
       ),
       child: TextField(
         controller: controller,
@@ -278,12 +279,12 @@ class _SiberOdemeScreenState extends State<SiberOdemeScreen> {
         style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.white38, fontWeight: FontWeight.bold, letterSpacing: 0, fontFamily: 'Avenir'),
+          hintStyle: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold, letterSpacing: 0, fontFamily: 'Avenir'),
           prefixIcon: Padding(
-            padding: const EdgeInsets.only(right: 12.0),
+            padding: EdgeInsets.only(right: 12.0),
             child: Icon(icon, color: primaryTeal, size: 20),
           ),
-          prefixIconConstraints: const BoxConstraints(minWidth: 40),
+          prefixIconConstraints: BoxConstraints(minWidth: 40),
           border: InputBorder.none,
         ),
       ),

@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
@@ -13,7 +14,7 @@ import '../../models/dukkan_model.dart';
 /// 🏢 SİBER ESNAF KAYIT (ONBOARDING) EKRANI
 /// Trendyol usulü güvenli dükkan kaydı ve evrak yükleme arayüzü.
 class SiberEsnafKayitScreen extends StatefulWidget {
-  const SiberEsnafKayitScreen({super.key});
+  SiberEsnafKayitScreen({super.key});
 
   @override
   State<SiberEsnafKayitScreen> createState() => _SiberEsnafKayitScreenState();
@@ -64,7 +65,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
       backgroundColor: Colors.black87,
       shape: RoundedRectangleBorder(side: BorderSide(color: renk), borderRadius: BorderRadius.circular(8)),
       behavior: SnackBarBehavior.floating,
-      duration: const Duration(seconds: 3),
+      duration: Duration(seconds: 3),
     ));
   }
 
@@ -161,7 +162,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
 
       _siberUyari("EVRAKLAR KARARGAHA GÖNDERİLDİ! Onay süreci başladı.", SiberTema.kuantumCyan);
       
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(Duration(seconds: 2));
       if (mounted) {
         Navigator.of(context).pop(); // Geri dön
       }
@@ -182,9 +183,9 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
         appBar: AppBar(
           backgroundColor: Colors.black.withOpacity(0.8),
           elevation: 0,
-          title: const Text("🛡️ SİBER GARAJ KAYDI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          title: Text("🛡️ SİBER GARAJ KAYDI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: _buildCyberStepper(),
       ),
@@ -194,7 +195,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
   Widget _buildCyberStepper() {
     return Theme(
       data: Theme.of(context).copyWith(
-        colorScheme: const ColorScheme.dark(
+        colorScheme: ColorScheme.dark(
           primary: SiberTema.kuantumCyan,
           surface: SiberTema.matGrey,
         ),
@@ -204,10 +205,10 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
         onStepContinue: _ileriGit,
         onStepCancel: _geriGit,
         type: StepperType.vertical,
-        physics: const BouncingScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         controlsBuilder: (context, details) {
           return Padding(
-            padding: const EdgeInsets.only(top: 24),
+            padding: EdgeInsets.only(top: 24),
             child: Row(
               children: [
                 Expanded(
@@ -216,19 +217,19 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: SiberTema.kuantumCyan,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
                     child: _islemSuruyor 
-                        ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                        : Text(_currentStep == 2 ? "KAYDI KARARGAHA İLET" : "İLERİ", style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+                        ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                        : Text(_currentStep == 2 ? "KAYDI KARARGAHA İLET" : "İLERİ", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
                   ),
                 ),
                 if (_currentStep > 0) ...[
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   TextButton(
                     onPressed: _islemSuruyor ? null : details.onStepCancel,
-                    child: const Text("GERİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)),
+                    child: Text("GERİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)),
                   ),
                 ]
               ],
@@ -247,20 +248,20 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
   // ── ADIM 1: FİRMA VE İLETİŞİM ──
   Step _buildAdim1() {
     return Step(
-      title: const Text("Firma & İletişim Zırhı", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontSize: 16)),
+      title: Text("Firma & İletişim Zırhı", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontSize: 16)),
       content: _buildGlassContainer(
         child: Form(
           key: _formKey,
           child: Column(
             children: [
-              const Text("Müşterilerin size ulaşacağı resmi bilgileri girin.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
-              const SizedBox(height: 20),
+              Text("Müşterilerin size ulaşacağı resmi bilgileri girin.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+              SizedBox(height: 20),
               _buildSiberTextField("Dükkan / Firma Adı", Icons.store_rounded, _firmaAdCtrl, zorunlu: true),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               _buildSiberTextField("Firma Yetkilisi Ad-Soyad", Icons.person_rounded, _yetkiliAdCtrl, zorunlu: true),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               _buildSiberTextField("Sabit İş Telefonu", Icons.phone_rounded, _isTelCtrl, type: TextInputType.phone),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               _buildSiberTextField("WhatsApp Destek Hattı", Icons.chat_rounded, _wpTelCtrl, type: TextInputType.phone, zorunlu: true),
             ],
           ),
@@ -274,34 +275,34 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
   // ── ADIM 2: KUANTUM KONUM ──
   Step _buildAdim2() {
     return Step(
-      title: const Text("Kuantum Konum (4 Katman)", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontSize: 16)),
+      title: Text("Kuantum Konum (4 Katman)", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontSize: 16)),
       content: _buildGlassContainer(
         child: Column(
           children: [
-            const Text("Milisaniyelik harita aramalarında bulunabilmeniz için tam konumunuz.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
-            const SizedBox(height: 20),
+            Text("Milisaniyelik harita aramalarında bulunabilmeniz için tam konumunuz.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+            SizedBox(height: 20),
             
             _buildSiberDropdown("Ülke", ulkeler, _secilenUlke, (v) {
               setState(() { _secilenUlke = v; _secilenBolge = null; _secilenSehir = null; _secilenIlce = null; });
             }),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             _buildSiberDropdown("Bölge", _secilenUlke != null ? bolgeler : [], _secilenBolge, (v) {
               setState(() { _secilenBolge = v; _secilenSehir = null; _secilenIlce = null; });
             }),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             _buildSiberDropdown("Şehir", _secilenBolge != null ? sehirler[_secilenBolge!] ?? [] : [], _secilenSehir, (v) {
               setState(() { _secilenSehir = v; _secilenIlce = null; });
             }),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             _buildSiberDropdown("İlçe (Mikro-İstihbarat)", _secilenSehir != null ? ilceler[_secilenSehir!] ?? [] : [], _secilenIlce, (v) {
               setState(() { _secilenIlce = v; });
             }),
             
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(12),
               decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Row(
+              child: Row(
                 children: [
                   Icon(Icons.location_on_rounded, color: SiberTema.kuantumCyan, size: 24),
                   SizedBox(width: 12),
@@ -320,25 +321,25 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
   // ── ADIM 3: KARANLIK ODA (EVRAKLAR) ──
   Step _buildAdim3() {
     return Step(
-      title: const Text("Karanlık Oda & Evrak Onayı", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold, fontSize: 16)),
+      title: Text("Karanlık Oda & Evrak Onayı", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold, fontSize: 16)),
       content: _buildGlassContainer(
         borderColor: SiberTema.kanKirmizi.withOpacity(0.5),
         child: Column(
           children: [
-            const Text("DİKKAT: Yükleyeceğiniz evraklar SADECE Kuantum Karargahı (Admin) tarafından görülür. Müşterilere ASLA açık değildir.", 
+            Text("DİKKAT: Yükleyeceğiniz evraklar SADECE Kuantum Karargahı (Admin) tarafından görülür. Müşterilere ASLA açık değildir.", 
                 style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 12, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             Row(
               children: [
                 Expanded(child: _buildResimSeciciBox("Vergi Levhası (Zorunlu)", _vergiLevhasi, true)),
-                const SizedBox(width: 12),
+                SizedBox(width: 12),
                 Expanded(child: _buildResimSeciciBox("Ustalık Belgesi (Opsiyonel)", _ustalikBelgesi, false)),
               ],
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
             // ⚖️ ADLİ PROTOKOL
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(12),
               decoration: BoxDecoration(color: SiberTema.kanKirmizi.withOpacity(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.3))),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -352,7 +353,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
                       onChanged: (val) => setState(() => _adliProtokolOnay = val ?? false),
                     ),
                   ),
-                  const Expanded(
+                  Expanded(
                     child: Padding(
                       padding: EdgeInsets.only(top: 12),
                       child: Text(
@@ -375,7 +376,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
   Widget _buildGlassContainer({required Widget child, Color? borderColor}) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.03),
         borderRadius: BorderRadius.circular(16),
@@ -389,7 +390,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
   Widget _buildSiberTextField(String hint, IconData icon, TextEditingController controller, {TextInputType type = TextInputType.text, bool zorunlu = false}) {
     return TextFormField(
       controller: controller,
-      style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w600),
+      style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w600),
       keyboardType: type,
       validator: (value) {
         if (zorunlu && (value == null || value.trim().isEmpty)) return "Bu alan zorunludur.";
@@ -397,14 +398,14 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
       },
       decoration: InputDecoration(
         labelText: hint + (zorunlu ? " *" : ""),
-        labelStyle: const TextStyle(color: SiberTema.textMuted),
+        labelStyle: TextStyle(color: SiberTema.textMuted),
         prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
         filled: true,
         fillColor: Colors.black45,
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.textMuted)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
-        errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kanKirmizi)),
-        focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kanKirmizi)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.textMuted)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kuantumCyan)),
+        errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kanKirmizi)),
+        focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kanKirmizi)),
       ),
     );
   }
@@ -412,17 +413,17 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
   Widget _buildSiberDropdown(String label, List<String> items, String? currentValue, Function(String?) onChanged) {
     return DropdownButtonFormField<String>(
       value: currentValue,
-      items: items.map((e) => DropdownMenuItem(value: e, child: Text(e, style: const TextStyle(color: SiberTema.textMain)))).toList(),
+      items: items.map((e) => DropdownMenuItem(value: e, child: Text(e, style: TextStyle(color: SiberTema.textMain)))).toList(),
       onChanged: items.isEmpty ? null : onChanged,
       dropdownColor: Colors.black87,
-      icon: const Icon(Icons.arrow_drop_down, color: SiberTema.kuantumCyan),
+      icon: Icon(Icons.arrow_drop_down, color: SiberTema.kuantumCyan),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: SiberTema.textMuted),
+        labelStyle: TextStyle(color: SiberTema.textMuted),
         filled: true,
         fillColor: Colors.black45,
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.textMuted)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.textMuted)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kuantumCyan)),
       ),
     );
   }
@@ -452,7 +453,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
       child: Container(
         height: 120,
         decoration: BoxDecoration(
-          color: Colors.white45,
+          color: Colors.white54,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: resimFile != null ? SiberTema.kuantumCyan : Colors.white24, width: 1.5),
         ),
@@ -464,7 +465,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
               color: resimFile != null ? SiberTema.kuantumCyan : Colors.white38, 
               size: 36
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Text(
               resimFile != null ? "YÜKLENDİ" : baslik, 
               style: TextStyle(
@@ -475,7 +476,7 @@ class _SiberEsnafKayitScreenState extends State<SiberEsnafKayitScreen> {
               textAlign: TextAlign.center,
             ),
             if (resimFile != null)
-               const Padding(
+               Padding(
                  padding: EdgeInsets.only(top: 4.0),
                  child: Text("Değiştirmek için dokun", style: TextStyle(color: SiberTema.textMuted, fontSize: 8)),
                ),

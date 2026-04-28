@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +10,7 @@ import '../core/responsive_kalkan.dart';
 
 class AracDnaRaporuScreen extends StatefulWidget {
   final String plaka;
-  const AracDnaRaporuScreen({super.key, required this.plaka});
+  AracDnaRaporuScreen({super.key, required this.plaka});
 
   @override
   State<AracDnaRaporuScreen> createState() => _AracDnaRaporuScreenState();
@@ -42,7 +43,7 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
           backgroundColor: SiberTema.oledBlack,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan),
+            icon: Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan),
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
@@ -62,8 +63,8 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
             indicatorWeight: 3,
             labelColor: SiberTema.kuantumCyan,
             unselectedLabelColor: Colors.white54,
-            labelStyle: const TextStyle(fontWeight: FontWeight.w900, fontSize: 11, fontFamily: 'Avenir', letterSpacing: 1),
-            tabs: const [
+            labelStyle: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, fontFamily: 'Avenir', letterSpacing: 1),
+            tabs: [
               Tab(text: "SİCİL & KİMLİK", icon: Icon(Icons.fingerprint, size: 20)),
               Tab(text: "EKSPERTİZ", icon: Icon(Icons.analytics, size: 20)),
               Tab(text: "REVİZYON", icon: Icon(Icons.history, size: 20)),
@@ -71,7 +72,7 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
           ),
         ),
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/images/radar_grid.png'),
               fit: BoxFit.cover,
@@ -80,7 +81,7 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
           ),
           child: TabBarView(
             controller: _tabController,
-            physics: const BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             children: [
               _buildSicilVeKimlikSayfasi(), // Sayfa 1: Kimlik & İstihbarat
               _buildEkspertizSayfasi(),     // Sayfa 2: Mekanik & Kaporta Testi
@@ -97,7 +98,7 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
     return StreamBuilder<QuerySnapshot>(
       stream: _db.collection('araclar').where('plaka', isEqualTo: widget.plaka).limit(1).snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+        if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return _buildSiberUyari("ARACA AİT SİCİL BULUNAMADI.");
 
         var aracData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
@@ -107,12 +108,12 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
         Color skorRengi = dnaSkoru >= 80 ? SiberTema.kuantumCyan : (dnaSkoru >= 60 ? Colors.orange : SiberTema.kanKirmizi);
 
         return ListView(
-          padding: const EdgeInsets.all(20),
-          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.all(20),
+          physics: BouncingScrollPhysics(),
           children: [
             // KİMLİK KARTI
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -132,16 +133,16 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(widget.plaka, style: const TextStyle(color: SiberTema.textMain, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                            const SizedBox(height: 4),
+                            Text(widget.plaka, style: TextStyle(color: SiberTema.textMain, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                            SizedBox(height: 4),
                             Text(aracData['model'] ?? 'Bilinmeyen Model', style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 14)),
-                            const SizedBox(height: 8),
-                            Text("ŞASE: $saseNo", style: const TextStyle(color: SiberTema.altinSari, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                            SizedBox(height: 8),
+                            Text("ŞASE: $saseNo", style: TextStyle(color: SiberTema.altinSari, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
                           ],
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(color: skorRengi.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: skorRengi)),
                         child: Column(
                           children: [
@@ -152,10 +153,10 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: EdgeInsets.symmetric(vertical: 12),
                     decoration: BoxDecoration(
                       color: isRiskli ? SiberTema.kanKirmizi.withOpacity(0.2) : SiberTema.kuantumCyan.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
@@ -165,7 +166,7 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(isRiskli ? Icons.warning_amber_rounded : Icons.verified_user, color: isRiskli ? SiberTema.kanKirmizi : SiberTema.kuantumCyan, size: 18),
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8),
                         Text(isRiskli ? "TRAFİĞE ÇIKIŞI RİSKLİ" : "KARARGAH ONAYLI", style: TextStyle(color: isRiskli ? SiberTema.kanKirmizi : SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
                       ],
                     ),
@@ -173,18 +174,18 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
                 ],
               ),
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
             _buildPanelBaslik("SİBER İSTİHBARAT: ŞEHİR & PLAKA GEÇMİŞİ", Icons.travel_explore),
             StreamBuilder<QuerySnapshot>(
               stream: _db.collection('arac_gecmisi').where('plaka', isEqualTo: widget.plaka).orderBy('tarih', descending: true).snapshots(),
               builder: (context, gecmisSnapshot) {
-                if (gecmisSnapshot.connectionState == ConnectionState.waiting) return const Padding(padding: EdgeInsets.all(20), child: Center(child: CircularProgressIndicator(color: SiberTema.altinSari)));
+                if (gecmisSnapshot.connectionState == ConnectionState.waiting) return Padding(padding: EdgeInsets.all(20), child: Center(child: CircularProgressIndicator(color: SiberTema.altinSari)));
                 final gecmisList = gecmisSnapshot.data?.docs ?? [];
 
                 if (gecmisList.isEmpty) {
                   return Container(
-                    margin: const EdgeInsets.only(top: 12),
-                    padding: const EdgeInsets.all(16),
+                    margin: EdgeInsets.only(top: 12),
+                    padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.3), borderRadius: BorderRadius.circular(12)),
                     child: Text("Karargah kayıtlarında henüz bir plaka/il değişikliği bulunmuyor.", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 12)),
                   );
@@ -199,20 +200,20 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
                     String tarihStr = tarih != null ? DateFormat('dd.MM.yyyy').format(tarih.toDate()) : '';
 
                     return Container(
-                      margin: const EdgeInsets.only(top: 12),
-                      padding: const EdgeInsets.all(16),
+                      margin: EdgeInsets.only(top: 12),
+                      padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.5), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white.withOpacity(0.1))),
                       child: Row(
                         children: [
                           Icon(tur.contains('Plaka') ? Icons.pin : Icons.location_city, color: SiberTema.altinSari, size: 24),
-                          const SizedBox(width: 16),
+                          SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(tur, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 12)),
-                                const SizedBox(height: 4),
-                                Text(detay, style: const TextStyle(color: SiberTema.altinSari, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1)),
+                                Text(tur, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 12)),
+                                SizedBox(height: 4),
+                                Text(detay, style: TextStyle(color: SiberTema.altinSari, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1)),
                               ],
                             ),
                           ),
@@ -235,7 +236,7 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
     return StreamBuilder<QuerySnapshot>(
       stream: _db.collection('ekspertiz_raporlari').where('plaka', isEqualTo: widget.plaka).orderBy('rapor_tarihi', descending: true).limit(1).snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+        if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return _buildSiberUyari("ARACA AİT DETAYLI EKSPERTİZ RAPORU BULUNMUYOR.");
 
         var rapor = snapshot.data!.docs.first.data() as Map<String, dynamic>;
@@ -245,22 +246,22 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
         List<dynamic> kaportaListesi = rapor['kaporta_degisenler'] ?? [];
 
         return ListView(
-          padding: const EdgeInsets.all(20),
-          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.all(20),
+          physics: BouncingScrollPhysics(),
           children: [
             _buildPanelBaslik("DİNAMOMETRE & TEST SONUÇLARI", Icons.speed),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             _buildTestBar("Motor Performansı (Dyno)", motorYuzde, SiberTema.kuantumCyan),
             _buildTestBar("Fren Verimliliği & Sapma", frenYuzde, Colors.orange),
             _buildTestBar("Süspansiyon Sağlamlığı", suspansiyonYuzde, SiberTema.altinSari),
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
             _buildPanelBaslik("KAPORTA & ŞASE ANALİZİ", Icons.car_crash),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             kaportaListesi.isEmpty
                 ? Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5))),
-              child: const Row(
+              child: Row(
                 children: [
                   Icon(Icons.verified, color: SiberTema.kuantumCyan),
                   SizedBox(width: 12),
@@ -273,14 +274,14 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
                 bool isDegisen = parca.toString().toLowerCase().contains("değişen");
                 Color pColor = isDegisen ? SiberTema.kanKirmizi : Colors.orange;
                 return Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.all(12),
+                  margin: EdgeInsets.only(bottom: 8),
+                  padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(color: pColor.withOpacity(0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: pColor.withOpacity(0.5))),
                   child: Row(
                     children: [
                       Icon(isDegisen ? Icons.warning : Icons.brush, color: pColor, size: 16),
-                      const SizedBox(width: 12),
-                      Text(parca.toString(), style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 12)),
+                      SizedBox(width: 12),
+                      Text(parca.toString(), style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 12)),
                     ],
                   ),
                 );
@@ -294,7 +295,7 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
 
   Widget _buildTestBar(String baslik, double yuzde, Color renk) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
+      padding: EdgeInsets.only(bottom: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -305,7 +306,7 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
               Text("%${yuzde.toInt()}", style: TextStyle(color: renk, fontSize: 14, fontWeight: FontWeight.w900)),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(
@@ -325,13 +326,13 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
     return StreamBuilder<QuerySnapshot>(
       stream: _db.collection('islem_kayitlari').where('plaka', isEqualTo: widget.plaka).orderBy('islem_tarihi', descending: true).snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.altinSari));
+        if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: SiberTema.altinSari));
         final islemler = snapshot.data?.docs ?? [];
         if (islemler.isEmpty) return _buildSiberUyari("BU ARACA AİT MEGA REVİZYON KAYDI BULUNMUYOR.");
 
         return ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(20),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.all(20),
           itemCount: islemler.length,
           itemBuilder: (context, index) {
             var islem = islemler[index].data() as Map<String, dynamic>;
@@ -341,7 +342,7 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
             double maliyet = (islem['toplam_maliyet'] ?? 0).toDouble();
 
             return Container(
-              margin: const EdgeInsets.only(bottom: 24),
+              margin: EdgeInsets.only(bottom: 24),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -351,10 +352,10 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
                       if (index != islemler.length - 1) Container(width: 2, height: 100, color: SiberTema.kuantumCyan.withOpacity(0.3)),
                     ],
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16),
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.6), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -363,20 +364,20 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(islemTarihi, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 10, fontWeight: FontWeight.bold)),
-                              Text("₺${maliyet.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.w900)),
+                              Text("₺${maliyet.toStringAsFixed(2)}", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.w900)),
                             ],
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: 12),
                           ...parcalar.map((p) {
                             var parcaData = p as Map<String, dynamic>;
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
+                              padding: EdgeInsets.only(bottom: 8.0),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.build_circle, color: SiberTema.kuantumCyan, size: 14),
-                                  const SizedBox(width: 8),
+                                  Icon(Icons.build_circle, color: SiberTema.kuantumCyan, size: 14),
+                                  SizedBox(width: 8),
                                   Expanded(child: Text(parcaData['parca_adi'] ?? 'Parça', style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontSize: 12))),
-                                  if (parcaData['gorsel_url'] != null) const Icon(Icons.image, color: SiberTema.altinSari, size: 14)
+                                  if (parcaData['gorsel_url'] != null) Icon(Icons.image, color: SiberTema.altinSari, size: 14)
                                 ],
                               ),
                             );
@@ -398,7 +399,7 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
     return Row(
       children: [
         Icon(ikon, color: SiberTema.kuantumCyan, size: 18),
-        const SizedBox(width: 8),
+        SizedBox(width: 8),
         Text(baslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.7), fontWeight: FontWeight.w800, letterSpacing: 1.5, fontSize: 11)),
       ],
     );
@@ -407,12 +408,12 @@ class _AracDnaRaporuScreenState extends State<AracDnaRaporuScreen> with SingleTi
   Widget _buildSiberUyari(String mesaj) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: EdgeInsets.all(32.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.radar, size: 48, color: Colors.white.withOpacity(0.2)),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             Text(mesaj, textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
           ],
         ),

@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -8,7 +9,7 @@ import '../core/turkiye_haritasi.dart';
 import '../services/corporate_region_manager.dart'; // Kurumsal Yetki ve Bölge Motoru
 
 class KullaniciYonetimScreen extends StatefulWidget {
-  const KullaniciYonetimScreen({super.key});
+  KullaniciYonetimScreen({super.key});
 
   @override
   State<KullaniciYonetimScreen> createState() => _KullaniciYonetimScreenState();
@@ -69,9 +70,9 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
                   ),
                   title: Row(
                     children: [
-                      const Icon(Icons.military_tech, color: SiberTema.kuantumCyan),
-                      const SizedBox(width: 8),
-                      Text("RÜTBE ATAMASI: $isim", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 14, letterSpacing: 1)),
+                      Icon(Icons.military_tech, color: SiberTema.kuantumCyan),
+                      SizedBox(width: 8),
+                      Text("RÜTBE ATAMASI: $isim", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 14, letterSpacing: 1)),
                     ],
                   ),
                   content: Column(
@@ -79,11 +80,11 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Bu personele Bölge Komutanlığı yetkisi verilecek.", style: TextStyle(color: SiberTema.textMain.withOpacity(0.7), fontSize: 12)),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
                       Text("SORUMLU BÖLGE SEÇİN:", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.8), fontSize: 10, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        padding: EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
                           color: SiberTema.oledBlack,
                           borderRadius: BorderRadius.circular(8),
@@ -95,8 +96,8 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
                             dropdownColor: SiberTema.oledBlack,
                             hint: Text("Bölge Seçiniz", style: TextStyle(color: SiberTema.textMain.withOpacity(0.3), fontSize: 13)),
                             value: seciliBolge,
-                            icon: const Icon(Icons.arrow_drop_down, color: SiberTema.kuantumCyan),
-                            items: TurkiyeHaritasi.bolgeler.map((bolge) => DropdownMenuItem(value: bolge, child: Text(bolge, style: const TextStyle(color: SiberTema.textMain)))).toList(),
+                            icon: Icon(Icons.arrow_drop_down, color: SiberTema.kuantumCyan),
+                            items: TurkiyeHaritasi.bolgeler.map((bolge) => DropdownMenuItem(value: bolge, child: Text(bolge, style: TextStyle(color: SiberTema.textMain)))).toList(),
                             onChanged: (val) => setStateDialog(() => seciliBolge = val),
                           ),
                         ),
@@ -133,8 +134,8 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
                           if (mounted) setState(() => _isProcessing = false);
                         }
                       },
-                      icon: const Icon(Icons.check_circle, size: 16),
-                      label: const Text("MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+                      icon: Icon(Icons.check_circle, size: 16),
+                      label: Text("MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
                     ),
                   ],
                 );
@@ -150,7 +151,7 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
         content: Row(
           children: [
             Icon(icon ?? (isError ? Icons.warning_amber_rounded : Icons.security), color: isError ? Colors.white : SiberTema.oledBlack, size: 20),
-            const SizedBox(width: 12),
+            SizedBox(width: 12),
             Expanded(child: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.bold, letterSpacing: 0.5))),
           ],
         ),
@@ -170,7 +171,7 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.shield, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          leading: IconButton(icon: Icon(Icons.shield, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
           title: Text("PERSONEL & YETKİ MERKEZİ", style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontWeight: FontWeight.w800, fontSize: 14, letterSpacing: 2)),
           centerTitle: true,
           bottom: TabBar(
@@ -179,8 +180,8 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
             indicatorWeight: 3,
             labelColor: SiberTema.kuantumCyan,
             unselectedLabelColor: Colors.white.withOpacity(0.4),
-            labelStyle: const TextStyle(fontWeight: FontWeight.w800, letterSpacing: 1, fontSize: 12),
-            tabs: const [
+            labelStyle: TextStyle(fontWeight: FontWeight.w800, letterSpacing: 1, fontSize: 12),
+            tabs: [
               Tab(text: "AKTİF YÖNETİCİLER", icon: Icon(Icons.military_tech)),
               Tab(text: "STANDART PERSONEL", icon: Icon(Icons.people_alt_outlined)),
             ],
@@ -190,7 +191,7 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
           children: [
             TabBarView(
               controller: _tabController,
-              physics: const BouncingScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               children: [
                 _buildAktifKomutanlarSekmesi(),
                 _buildStandartKullanicilarSekmesi(),
@@ -199,7 +200,7 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
             if (_isProcessing)
               Container(
                 color: Colors.white.withOpacity(0.7),
-                child: const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3)),
+                child: Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3)),
               ),
           ],
         ),
@@ -212,14 +213,14 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
     return StreamBuilder<QuerySnapshot>(
       stream: _db.collection('kullanicilar').where('rol', isEqualTo: 'bolge_yoneticisi').snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+        if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
 
         final docs = snapshot.data?.docs ?? [];
         if (docs.isEmpty) return _buildBosDurum("SAHADA AKTİF YÖNETİCİ BULUNAMADI");
 
         return ListView.builder(
-          padding: const EdgeInsets.all(20),
-          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.all(20),
+          physics: BouncingScrollPhysics(),
           itemCount: docs.length,
           itemBuilder: (context, index) {
             final data = docs[index].data() as Map<String, dynamic>;
@@ -228,24 +229,24 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
             final bolge = data['sorumlu_bolge'] ?? 'Bilinmeyen Bölge';
 
             return Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(16),
+              margin: EdgeInsets.only(bottom: 12),
+              padding: EdgeInsets.all(16),
               decoration: SiberTema.siberCamDekorasyonu(renk: SiberTema.kuantumCyan),
               child: Row(
                 children: [
-                  const Icon(Icons.military_tech, color: SiberTema.kuantumCyan, size: 28),
-                  const SizedBox(width: 16),
+                  Icon(Icons.military_tech, color: SiberTema.kuantumCyan, size: 28),
+                  SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(isim, style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900)),
-                        Text("Sorumlu: $bolge Bölgesi", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 11, fontWeight: FontWeight.bold)),
+                        Text(isim, style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900)),
+                        Text("Sorumlu: $bolge Bölgesi", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 11, fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.remove_circle_outline, color: SiberTema.kanKirmizi),
+                    icon: Icon(Icons.remove_circle_outline, color: SiberTema.kanKirmizi),
                     onPressed: () => _komutanliktanIhracEt(id, isim),
                   )
                 ],
@@ -262,14 +263,14 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
     return StreamBuilder<QuerySnapshot>(
       stream: _db.collection('kullanicilar').where('rol', isEqualTo: 'kullanici').snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+        if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
 
         final docs = snapshot.data?.docs ?? [];
         if (docs.isEmpty) return _buildBosDurum("STANDART PERSONEL BULUNAMADI");
 
         return ListView.builder(
-          padding: const EdgeInsets.all(20),
-          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.all(20),
+          physics: BouncingScrollPhysics(),
           itemCount: docs.length,
           itemBuilder: (context, index) {
             final data = docs[index].data() as Map<String, dynamic>;
@@ -278,8 +279,8 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
             final email = data['email'] ?? 'E-Posta Yok';
 
             return Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(16),
+              margin: EdgeInsets.only(bottom: 12),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: SiberTema.matGrey,
                 borderRadius: BorderRadius.circular(12),
@@ -287,13 +288,13 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.person_outline, color: SiberTema.textMuted, size: 24),
-                  const SizedBox(width: 16),
+                  Icon(Icons.person_outline, color: SiberTema.textMuted, size: 24),
+                  SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(isim, style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w700)),
+                        Text(isim, style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w700)),
                         Text(email, style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 11)),
                       ],
                     ),
@@ -304,7 +305,7 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     ),
                     onPressed: () => _komutanAtaDialogAc(id, isim),
-                    child: const Text("YETKİ VER", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900)),
+                    child: Text("YETKİ VER", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900)),
                   )
                 ],
               ),
@@ -321,7 +322,7 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.radar, size: 64, color: SiberTema.kuantumCyan.withOpacity(0.2)),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Text(mesaj, style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 12, letterSpacing: 2, fontWeight: FontWeight.bold)),
         ],
       ),

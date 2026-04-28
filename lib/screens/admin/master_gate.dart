@@ -1,4 +1,4 @@
-// lib/admin/master_gate.dart
+﻿// lib/admin/master_gate.dart
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +11,7 @@ import 'package:otodna/core/responsive_kalkan.dart';
 import 'package:otodna/screens/admin/hq_command_center.dart';
 
 class MasterGateScreen extends StatefulWidget {
-  const MasterGateScreen({super.key});
+  MasterGateScreen({super.key});
 
   @override
   State<MasterGateScreen> createState() => _MasterGateScreenState();
@@ -26,7 +26,7 @@ class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerPr
   @override
   void initState() {
     super.initState();
-    _pulseController = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat(reverse: true);
+    _pulseController = AnimationController(vsync: this, duration: Duration(seconds: 2))..repeat(reverse: true);
     _emailController.text = "admin@otodna.com"; // Test için kolaylık
   }
 
@@ -68,7 +68,7 @@ class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerPr
       _siberUyari("SİBER AĞ ONAYLANDI. Karargaha Geçiliyor... 🦅", SiberTema.kuantumCyan);
 
       // 🔥 Başarılı girişte DOĞRUDAN Asıl Karargaha (HqCommandCenter) yönlendir!
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HqCommandCenterScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HqCommandCenterScreen()));
 
     } on FirebaseAuthException catch (e) {
       String hataMesaji = "KUANTUM KİLİDİ AÇILAMADI!";
@@ -114,8 +114,8 @@ class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerPr
         backgroundColor: Colors.transparent, // Arka plan ana uygulama rengiyle aynı (OLED Siyah)
         body: Center(
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(32.0),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.all(32.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -124,24 +124,24 @@ class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerPr
                     animation: _pulseController,
                     builder: (context, child) {
                       return Container(
-                        padding: const EdgeInsets.all(32),
+                        padding: EdgeInsets.all(32),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: SiberTema.oledBlack,
                           border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5 + (_pulseController.value * 0.5)), width: 2),
                           boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.2 * _pulseController.value), blurRadius: 40, spreadRadius: 10)],
                         ),
-                        child: const Icon(Icons.security, color: SiberTema.kuantumCyan, size: 80), // İkon devasa boyuta çıkarıldı!
+                        child: Icon(Icons.security, color: SiberTema.kuantumCyan, size: 80), // İkon devasa boyuta çıkarıldı!
                       );
                     }
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: 32),
 
                 // 2. BAŞLIKLAR
-                const Text("MASTER GATE", style: TextStyle(color: SiberTema.textMain, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: 6)),
-                const SizedBox(height: 8),
+                Text("MASTER GATE", style: TextStyle(color: SiberTema.textMain, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: 6)),
+                SizedBox(height: 8),
                 Text("OtoDNA Kuantum Karargahı Giriş Protokolü", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.7), fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
-                const SizedBox(height: 48),
+                SizedBox(height: 48),
 
                 // 3. CAM EFEKTLİ GİRİŞ FORMU
                 _buildCamEfektliKutu(
@@ -153,7 +153,7 @@ class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerPr
                         icon: Icons.alternate_email,
                         isObscure: false,
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       _buildSiberTextField(
                         controller: _passwordController,
                         hint: "Kuantum Şifresi",
@@ -164,7 +164,7 @@ class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerPr
                   ),
                 ),
 
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
 
                 // 4. BAĞLANTI BUTONU
                 SizedBox(
@@ -174,19 +174,19 @@ class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerPr
                     style: SiberTema.kuantumButonStili(),
                     onPressed: _isLoading ? null : _agaBaglan,
                     icon: _isLoading
-                        ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
-                        : const Icon(Icons.fingerprint, color: SiberTema.oledBlack, size: 28),
+                        ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
+                        : Icon(Icons.fingerprint, color: SiberTema.oledBlack, size: 28),
                     label: Text(
                         _isLoading ? "MÜHÜR DOĞRULANIYOR..." : "AĞA BAĞLAN VE GİRİŞ YAP",
-                        style: const TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 2)
+                        style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 2)
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 30),
-                const Icon(Icons.lock_outline, color: SiberTema.textMuted, size: 16),
-                const SizedBox(height: 8),
-                const Text("256-Bit Kuantum Şifreleme Aktif", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 1)),
+                SizedBox(height: 30),
+                Icon(Icons.lock_outline, color: SiberTema.textMuted, size: 16),
+                SizedBox(height: 8),
+                Text("256-Bit Kuantum Şifreleme Aktif", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 1)),
               ],
             ),
           ),
@@ -211,9 +211,9 @@ class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerPr
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.white30, letterSpacing: 1, fontSize: 13),
+          hintStyle: TextStyle(color: Colors.white30, letterSpacing: 1, fontSize: 13),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
         ),
       ),
     );
@@ -225,7 +225,7 @@ class _MasterGateScreenState extends State<MasterGateScreen> with SingleTickerPr
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
         child: Container(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           decoration: BoxDecoration(
             color: SiberTema.matGrey.withOpacity(0.5),
             borderRadius: BorderRadius.circular(20),

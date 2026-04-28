@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +10,7 @@ import '../../models/car_ad_model.dart';
 class SiberIlanDetayScreen extends StatefulWidget {
   final CarAd ad;
 
-  const SiberIlanDetayScreen({super.key, required this.ad});
+  SiberIlanDetayScreen({super.key, required this.ad});
 
   @override
   State<SiberIlanDetayScreen> createState() => _SiberIlanDetayScreenState();
@@ -17,13 +18,13 @@ class SiberIlanDetayScreen extends StatefulWidget {
 
 class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
   // 🏢 FİLDİŞİ SEDEF PALET
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color surfaceColor = Colors.white;
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMain = const Color(0xFF1E293B);
-  final Color textMuted = const Color(0xFF64748B);
-  static const Color siberGold = SiberTema.siberGold;
-  static const Color dangerColor = SiberTema.kanKirmizi;
+  final Color textMain = Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
+  static Color siberGold = SiberTema.siberGold;
+  static Color dangerColor = SiberTema.kanKirmizi;
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -33,7 +34,7 @@ class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
   Future<void> _kuantumKaporaYatir() async {
     User? user = _auth.currentUser;
     if (user == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Siber Kimliğiniz doğrulanamadı. Giriş yapmalısınız.", style: TextStyle(color: SiberTema.textMain)), backgroundColor: dangerColor));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Siber Kimliğiniz doğrulanamadı. Giriş yapmalısınız.", style: TextStyle(color: SiberTema.textMain)), backgroundColor: dangerColor));
       return;
     }
 
@@ -46,9 +47,9 @@ class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: siberGold.withOpacity(0.5))),
         title: Row(
           children: [
-            const Icon(Icons.lock_outline, color: siberGold),
-            const SizedBox(width: 8),
-            Text("Siber Havuz Blokajı", style: TextStyle(color: siberGold.shade700, fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            Icon(Icons.lock_outline, color: siberGold),
+            SizedBox(width: 8),
+            Text("Siber Havuz Blokajı", style: TextStyle(color: siberGold, fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           ],
         ),
         content: Text(
@@ -60,7 +61,7 @@ class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: siberGold, foregroundColor: Colors.white),
             onPressed: () => Navigator.pop(context, true),
-            child: const Text("KAPORAYI KİLİTLE", style: TextStyle(fontWeight: FontWeight.bold)),
+            child: Text("KAPORAYI KİLİTLE", style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -90,12 +91,12 @@ class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
         await batch.commit();
 
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("✅ ARAÇ REZERVE EDİLDİ! Kapora havuza kilitlendi.", style: TextStyle(color: SiberTema.textMain)), backgroundColor: primaryTeal));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("✅ ARAÇ REZERVE EDİLDİ! Kapora havuza kilitlendi.", style: TextStyle(color: SiberTema.textMain)), backgroundColor: primaryTeal));
           context.pop(); // Vitrine geri dön
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Ağ Çöktü: $e", style: const TextStyle(color: SiberTema.textMain)), backgroundColor: dangerColor));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Ağ Çöktü: $e", style: TextStyle(color: SiberTema.textMain)), backgroundColor: dangerColor));
         }
       } finally {
         if (mounted) setState(() => _isReserving = false);
@@ -139,17 +140,17 @@ class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
                 _buildSiberAppBar(),
                 Expanded(
                   child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.only(top: 200, left: 24, right: 24, bottom: 100),
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.only(top: 200, left: 24, right: 24, bottom: 100),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildBaslikVeFiyat(formatliFiyat),
-                        const SizedBox(height: 24),
+                        SizedBox(height: 24),
                         _buildGuvenlikKalkani(),
-                        const SizedBox(height: 32),
+                        SizedBox(height: 32),
                         Text("İSTİHBARAT DETAYI", style: TextStyle(color: textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
-                        const SizedBox(height: 12),
+                        SizedBox(height: 12),
                         Text(widget.ad.description, style: TextStyle(color: textMain, fontSize: 14, height: 1.5, fontFamily: 'Avenir')),
                       ],
                     ),
@@ -168,7 +169,7 @@ class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
 
   Widget _buildSiberAppBar() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -178,7 +179,7 @@ class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
               borderRadius: BorderRadius.circular(24),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.white.withOpacity(0.8), shape: BoxShape.circle), child: Icon(Icons.arrow_back_ios_new, color: textMain, size: 18)),
+                child: Container(padding: EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.white.withOpacity(0.8), shape: BoxShape.circle), child: Icon(Icons.arrow_back_ios_new, color: textMain, size: 18)),
               ),
             ),
           ),
@@ -186,7 +187,7 @@ class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
             borderRadius: BorderRadius.circular(24),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.white.withOpacity(0.8), shape: BoxShape.circle), child: Icon(Icons.favorite_border, color: textMain, size: 18)),
+              child: Container(padding: EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.white.withOpacity(0.8), shape: BoxShape.circle), child: Icon(Icons.favorite_border, color: textMain, size: 18)),
             ),
           ),
         ],
@@ -207,26 +208,26 @@ class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
             ),
             if (widget.ad.otodnaReferansliMi)
               Container(
-                margin: const EdgeInsets.only(left: 16),
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                margin: EdgeInsets.only(left: 16),
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(color: primaryTeal.withOpacity(0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: primaryTeal.withOpacity(0.5))),
                 child: Row(
                   children: [
                     Icon(Icons.verified, color: primaryTeal, size: 14),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4),
                     Text("ONAYLI", style: TextStyle(color: primaryTeal, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                   ],
                 ),
               )
           ],
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         Text(fiyat, style: TextStyle(color: primaryTeal, fontSize: 32, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Row(
           children: [
             Icon(Icons.storefront, color: textMuted, size: 14),
-            const SizedBox(width: 6),
+            SizedBox(width: 6),
             Text(widget.ad.saticiAdi, style: TextStyle(color: textMuted, fontSize: 12, fontFamily: 'Avenir')),
           ],
         )
@@ -236,7 +237,7 @@ class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
 
   Widget _buildGuvenlikKalkani() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(20),
@@ -246,17 +247,17 @@ class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12),
             decoration: BoxDecoration(color: siberGold.withOpacity(0.1), shape: BoxShape.circle),
-            child: const Icon(Icons.shield_outlined, color: siberGold, size: 24),
+            child: Icon(Icons.shield_outlined, color: siberGold, size: 24),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("SİBER KAPORA GÜVENCESİ", style: TextStyle(color: siberGold.shade700, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-                const SizedBox(height: 4),
+                Text("SİBER KAPORA GÜVENCESİ", style: TextStyle(color: siberGold, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                SizedBox(height: 4),
                 Text(
                   widget.ad.isSecureDeposit 
                     ? "Satıcı bu aracı Karargah Havuzu güvencesine açtı. Kaporanız araç size geçene kadar OtoDNA sisteminde kilitli kalır." 
@@ -276,8 +277,8 @@ class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20).copyWith(bottom: MediaQuery.of(context).padding.bottom + 20),
-          decoration: BoxDecoration(color: Colors.white.withOpacity(0.9), border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05))), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 20, offset: const Offset(0, -5))]),
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20).copyWith(bottom: MediaQuery.of(context).padding.bottom + 20),
+          decoration: BoxDecoration(color: Colors.white.withOpacity(0.9), border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05))), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 20, offset: Offset(0, -5))]),
           child: Row(
             children: [
               Column(
@@ -285,11 +286,11 @@ class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text("KAPORA BEDELİ", style: TextStyle(color: textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Text("₺${widget.ad.kaporaBedeli.toStringAsFixed(0)}", style: TextStyle(color: textMain, fontSize: 20, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                 ],
               ),
-              const SizedBox(width: 24),
+              SizedBox(width: 24),
               Expanded(
                 child: SizedBox(
                   height: 56,
@@ -302,7 +303,7 @@ class _SiberIlanDetayScreenState extends State<SiberIlanDetayScreen> {
                     ),
                     onPressed: (widget.ad.isSecureDeposit && !_isReserving) ? _kuantumKaporaYatir : null,
                     child: _isReserving
-                      ? const CircularProgressIndicator(color: Colors.white)
+                      ? CircularProgressIndicator(color: Colors.white)
                       : Text(
                           widget.ad.isSecureDeposit ? "GÜVENLİ REZERVE ET" : "KORUMA YOK", 
                           style: TextStyle(color: widget.ad.isSecureDeposit ? Colors.black : Colors.black38, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')

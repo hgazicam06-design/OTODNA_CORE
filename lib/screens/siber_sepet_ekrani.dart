@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/siber_sepet_ekrani.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +13,7 @@ import '../core/responsive_kalkan.dart';
 /// 🛡️ KUANTUM SEPET VE FİNANS GEÇİDİ
 /// Kullanıcının sepetini Firebase'den canlı okur ve siparişi Matrix'e mühürler.
 class SiberSepetEkrani extends StatefulWidget {
-  const SiberSepetEkrani({super.key});
+  SiberSepetEkrani({super.key});
 
   @override
   State<SiberSepetEkrani> createState() => _SiberSepetEkraniState();
@@ -102,7 +103,7 @@ class _SiberSepetEkraniState extends State<SiberSepetEkrani> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+            Text(mesaj, style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
           ],
         ),
       ),
@@ -114,7 +115,7 @@ class _SiberSepetEkraniState extends State<SiberSepetEkrani> {
     User? currentUser = _auth.currentUser;
 
     if (currentUser == null) {
-      return const ResponsiveKalkan(
+      return ResponsiveKalkan(
         child: Scaffold(
           body: Center(child: Text("SİBER İHLAL: Kimlik tespit edilemedi!", style: TextStyle(color: SiberTema.kanKirmizi))),
         ),
@@ -125,16 +126,16 @@ class _SiberSepetEkraniState extends State<SiberSepetEkrani> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("KUANTUM SEPET", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          title: Text("KUANTUM SEPET", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2)),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
+            icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
             onPressed: () => Navigator.pop(context),
           ),
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: _db.collection('kullanicilar').doc(currentUser.uid).collection('sepet').snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+            if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
 
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
               return Center(
@@ -142,8 +143,8 @@ class _SiberSepetEkraniState extends State<SiberSepetEkrani> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.remove_shopping_cart, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 80),
-                    const SizedBox(height: 16),
-                    const Text("SEPETİNİZ BOŞ", style: TextStyle(color: SiberTema.textMuted, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                    SizedBox(height: 16),
+                    Text("SEPETİNİZ BOŞ", style: TextStyle(color: SiberTema.textMuted, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)),
                   ],
                 ),
               );
@@ -161,34 +162,34 @@ class _SiberSepetEkraniState extends State<SiberSepetEkrani> {
               children: [
                 Expanded(
                   child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.all(16),
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.all(16),
                     itemCount: sepetUrunleri.length,
                     itemBuilder: (context, index) {
                       var doc = sepetUrunleri[index];
                       var urun = doc.data() as Map<String, dynamic>;
 
                       return Container(
-                        margin: const EdgeInsets.only(bottom: 12),
+                        margin: EdgeInsets.only(bottom: 12),
                         decoration: BoxDecoration(
                           color: SiberTema.matGrey,
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(color: SiberTema.textMuted),
                         ),
                         child: ListTile(
-                          contentPadding: const EdgeInsets.all(12),
+                          contentPadding: EdgeInsets.all(12),
                           leading: Container(
                             width: 60,
-                            decoration: BoxDecoration(color: Colors.white26, borderRadius: BorderRadius.circular(8)),
-                            child: const Icon(Icons.inventory_2, color: SiberTema.kuantumCyan),
+                            decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(8)),
+                            child: Icon(Icons.inventory_2, color: SiberTema.kuantumCyan),
                           ),
-                          title: Text(urun['ad'] ?? "Bilinmeyen Ürün", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 14)),
+                          title: Text(urun['ad'] ?? "Bilinmeyen Ürün", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 14)),
                           subtitle: Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: Text("₺${urun['fiyat']} x ${urun['adet'] ?? 1}", style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 16)),
+                            padding: EdgeInsets.only(top: 8),
+                            child: Text("₺${urun['fiyat']} x ${urun['adet'] ?? 1}", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 16)),
                           ),
                           trailing: IconButton(
-                            icon: const Icon(Icons.delete_outline, color: SiberTema.kanKirmizi),
+                            icon: Icon(Icons.delete_outline, color: SiberTema.kanKirmizi),
                             onPressed: () => _urunuSepettenSil(doc.id),
                           ),
                         ),
@@ -199,28 +200,28 @@ class _SiberSepetEkraniState extends State<SiberSepetEkrani> {
 
                 // ── 💰 ALT ÖDEME PANELİ (Siber Cam Efektli) ──
                 SiberTema.siberCamKalkan(
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(24),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text("TOPLAM GÜÇ:", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                          Text("₺${toplamTutar.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900)),
+                          Text("TOPLAM GÜÇ:", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                          Text("₺${toplamTutar.toStringAsFixed(2)}", style: TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900)),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
                       SizedBox(
                         width: double.infinity,
                         height: 55,
                         child: _islemSuruyor
-                            ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                            ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                             : ElevatedButton.icon(
                           style: SiberTema.kuantumButonStili(),
                           onPressed: () => _siparisiAtesle(sepetUrunleri, toplamTutar),
-                          icon: const Icon(Icons.security, color: SiberTema.oledBlack),
-                          label: const Text("HAVUZ HESABINA AKTAR VE ONAYLA"),
+                          icon: Icon(Icons.security, color: SiberTema.oledBlack),
+                          label: Text("HAVUZ HESABINA AKTAR VE ONAYLA"),
                         ),
                       ),
                     ],

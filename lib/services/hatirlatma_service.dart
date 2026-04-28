@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:developer' as developer;
 import '../models/arac_model.dart'; // Model dosyanın yolu doğru kalmalı
@@ -11,8 +11,8 @@ class HatirlatmaService {
   // ── ⏱️ SİBER ZAMANLAYICI ALGORİTMASI ──────────────────────────────────────
   /// Karargah Kuralı: Bitişe 15 gün, 7 gün ve 0 gün (aynı gün) kala radar sinyali fırlatılır.
   static List<DateTime> _hatirlatmaZamanlari(DateTime bitis) => [
-    bitis.subtract(const Duration(days: 15)),
-    bitis.subtract(const Duration(days: 7)),
+    bitis.subtract(Duration(days: 15)),
+    bitis.subtract(Duration(days: 7)),
     bitis,
   ];
 

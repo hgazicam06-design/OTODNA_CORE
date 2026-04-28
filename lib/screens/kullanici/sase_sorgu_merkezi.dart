@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/kullanici/sase_sorgu_merkezi.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +10,7 @@ import '../../services/dis_ekspertiz_entegrasyon.dart';
 /// 🛡️ PLAZA ŞASE SORGU VE SİCİL MERKEZİ
 /// Şase numarası girilen aracın OtoDNA ve Global (Google Hub) verilerini birleştirip mühürlü rapor sunar.
 class SiberSaseSorguMerkezi extends StatefulWidget {
-  const SiberSaseSorguMerkezi({super.key});
+  SiberSaseSorguMerkezi({super.key});
 
   @override
   State<SiberSaseSorguMerkezi> createState() => _SiberSaseSorguMerkeziState();
@@ -24,8 +25,8 @@ class _SiberSaseSorguMerkeziState extends State<SiberSaseSorguMerkezi> {
 
   final Color primaryTeal = Colors.teal.shade700;
   final Color dangerColor = Colors.redAccent;
-  final Color textColor = const Color(0xFF1E293B);
-  final Color bgColor = const Color(0xFFFAFAFC);
+  final Color textColor = Color(0xFF1E293B);
+  final Color bgColor = Color(0xFFFAFAFC);
 
   // ── 📡 DERİN TARAMA PROTOKOLÜ (OTODNA + GOOGLE HUB) ──
   Future<void> _derinTaramaBaslat() async {
@@ -91,25 +92,25 @@ class _SiberSaseSorguMerkeziState extends State<SiberSaseSorguMerkezi> {
           iconTheme: IconThemeData(color: primaryTeal),
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           child: Column(
             children: [
               // 🔍 SORGU PANELİ
               Container(
-                padding: const EdgeInsets.all(24),
+                padding: EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-                  boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))]
+                  boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 15, offset: Offset(0, 5))]
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("ŞASE NUMARASI (VIN)", style: TextStyle(color: Colors.white45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-                    const SizedBox(height: 16),
+                    Text("ŞASE NUMARASI (VIN)", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                    SizedBox(height: 16),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                       decoration: BoxDecoration(
                         color: bgColor,
                         borderRadius: BorderRadius.circular(16),
@@ -120,13 +121,13 @@ class _SiberSaseSorguMerkeziState extends State<SiberSaseSorguMerkezi> {
                         style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2, fontFamily: 'monospace'),
                         decoration: InputDecoration(
                           hintText: "WBA123XXXXXXXXXXX",
-                          hintStyle: const TextStyle(color: Colors.white26, fontSize: 14),
+                          hintStyle: TextStyle(color: Colors.white24, fontSize: 14),
                           border: InputBorder.none,
                           suffixIcon: Icon(Icons.fingerprint, color: primaryTeal),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
                     SizedBox(
                       width: double.infinity,
                       height: 56,
@@ -140,15 +141,15 @@ class _SiberSaseSorguMerkeziState extends State<SiberSaseSorguMerkezi> {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                         ),
                         onPressed: _derinTaramaBaslat,
-                        icon: const Icon(Icons.radar, color: Colors.white),
-                        label: const Text("GLOBAL DNA TARAMASI BAŞLAT", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12, fontFamily: 'Avenir')),
+                        icon: Icon(Icons.radar, color: Colors.white),
+                        label: Text("GLOBAL DNA TARAMASI BAŞLAT", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12, fontFamily: 'Avenir')),
                       ),
                     )
                   ],
                 ),
               ),
 
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
 
               // 📊 SONUÇ RADARI
               if (_bulunanVeri != null)
@@ -164,30 +165,30 @@ class _SiberSaseSorguMerkeziState extends State<SiberSaseSorguMerkezi> {
 
   Widget _buildSonucPaneli() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: primaryTeal.withValues(alpha: 0.3)),
-        boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, 10))]
+        boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.05), blurRadius: 20, offset: Offset(0, 10))]
       ),
       child: Column(
         children: [
           Row(
             children: [
               Icon(Icons.check_circle, color: primaryTeal, size: 24),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Text("ARAÇ DNA'SI TESPİT EDİLDİ", style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, fontSize: 13, fontFamily: 'Avenir', letterSpacing: 1)),
             ],
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: EdgeInsets.symmetric(vertical: 20),
             child: Divider(color: Colors.white.withValues(alpha: 0.05), height: 1),
           ),
           _buildVeriSatiri("Marka/Model", _bulunanVeri!['marka_model'] ?? "Global Veri"),
           _buildVeriSatiri("Son Kilometre", "${_bulunanVeri!['kilometre'] ?? '---'} KM"),
           _buildVeriSatiri("OtoDNA Geçmişi", _bulunanVeri!['servis_sayisi']?.toString() ?? "Dış Kaynaklı Veri"),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
 
           // 🚀 AKSİYON: DETAYLI MÜHÜRLÜ RAPORA GİT
           SizedBox(
@@ -213,11 +214,11 @@ class _SiberSaseSorguMerkeziState extends State<SiberSaseSorguMerkezi> {
 
   Widget _buildVeriSatiri(String etiket, String deger) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(etiket, style: const TextStyle(color: Colors.white45, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+          Text(etiket, style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           Text(deger, style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'Avenir')),
         ],
       ),
@@ -227,16 +228,16 @@ class _SiberSaseSorguMerkeziState extends State<SiberSaseSorguMerkezi> {
   Widget _buildBosSinyalPaneli() {
     return Column(
       children: [
-        const SizedBox(height: 60),
+        SizedBox(height: 60),
         Container(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.02), shape: BoxShape.circle),
-          child: const Icon(Icons.satellite_alt, color: Colors.white12, size: 60)
+          child: Icon(Icons.satellite_alt, color: Colors.white12, size: 60)
         ),
-        const SizedBox(height: 24),
-        const Text("SİSTEM HAZIR BEKLİYOR", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-        const SizedBox(height: 12),
-        const Padding(
+        SizedBox(height: 24),
+        Text("SİSTEM HAZIR BEKLİYOR", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+        SizedBox(height: 12),
+        Padding(
           padding: EdgeInsets.symmetric(horizontal: 32),
           child: Text("Şase numarası girerek aracın tüm geçmişini global ağlardan çekebilirsiniz.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir', height: 1.5)),
         ),

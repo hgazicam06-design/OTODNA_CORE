@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,7 +18,7 @@ import '../services/kuantum_pdf_motoru.dart';
 /// [2026-03-28] GÜNCELLEME: %100 Gerçek Firebase Batch ve Siber Cam Efektli Arayüz
 class MegaRevizyonScreen extends StatefulWidget {
   final String plaka;
-  const MegaRevizyonScreen({super.key, required this.plaka});
+  MegaRevizyonScreen({super.key, required this.plaka});
 
   @override
   State<MegaRevizyonScreen> createState() => _MegaRevizyonScreenState();
@@ -177,7 +178,7 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
 
   void _siberUyari(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12, fontFamily: 'Avenir')),
+      content: Text(mesaj, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12, fontFamily: 'Avenir')),
       backgroundColor: isError ? SiberTema.kritikRed : SiberTema.kuantumCyan,
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -193,8 +194,8 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
       filled: true,
       fillColor: Colors.black,
       enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.1))),
-      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 2)),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kuantumCyan, width: 2)),
+      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     );
   }
 
@@ -207,8 +208,8 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: Text("MEGA REVİZYON: ${widget.plaka}", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 16, fontFamily: 'Avenir')),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          title: Text("MEGA REVİZYON: ${widget.plaka}", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 16, fontFamily: 'Avenir')),
           actions: [
             IconButton(
               icon: Icon(Icons.document_scanner, color: _isOcrScanning ? SiberTema.kritikRed : SiberTema.altinSari),
@@ -221,7 +222,7 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
             _buildAracTipiSelector(),
             Expanded(
               child: _isOcrScanning
-                  ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                  ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                   : _buildParcaListesi(),
             ),
             _buildMuhurleButonu(),
@@ -234,18 +235,18 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
   Widget _buildAracTipiSelector() {
     return Container(
       height: 60,
-      margin: const EdgeInsets.symmetric(vertical: 16),
+      margin: EdgeInsets.symmetric(vertical: 16),
       child: ListView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 16),
         children: _paketler.keys.map((tip) {
-          if (_paketler[tip]!.isEmpty && tip == 'OCR Fatura Parçaları') return const SizedBox.shrink();
+          if (_paketler[tip]!.isEmpty && tip == 'OCR Fatura Parçaları') return SizedBox.shrink();
           bool active = _seciliAracTipi == tip;
           return GestureDetector(
             onTap: () => setState(() { _seciliAracTipi = tip; _secilenParcalar.clear(); }),
             child: Container(
-              margin: const EdgeInsets.only(right: 12),
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              margin: EdgeInsets.only(right: 12),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
                 color: active ? SiberTema.kuantumCyan.withOpacity(0.1) : Colors.white.withOpacity(0.02),
                 borderRadius: BorderRadius.circular(30),
@@ -263,13 +264,13 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
   Widget _buildParcaListesi() {
     final list = _paketler[_seciliAracTipi] ?? [];
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       itemCount: list.length,
       itemBuilder: (context, index) {
         final parca = list[index];
         bool selected = _secilenParcalar.containsKey(parca);
         return Container(
-          margin: const EdgeInsets.only(bottom: 12),
+          margin: EdgeInsets.only(bottom: 12),
           decoration: BoxDecoration(
             color: selected ? Colors.white.withOpacity(0.05) : Colors.white.withOpacity(0.01),
             borderRadius: BorderRadius.circular(16),
@@ -282,7 +283,7 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
             },
             leading: Icon(selected ? Icons.check_circle : Icons.circle_outlined, color: selected ? SiberTema.kuantumCyan : Colors.white10),
             title: Text(parca, style: TextStyle(color: selected ? Colors.white : Colors.white38, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-            childrenPadding: const EdgeInsets.all(16),
+            childrenPadding: EdgeInsets.all(16),
             iconColor: SiberTema.kuantumCyan,
             collapsedIconColor: Colors.white54,
             children: [
@@ -292,11 +293,11 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
                     child: TextField(
                       keyboardType: TextInputType.number,
                       onChanged: (val) => _fiyatGuncelle(parca, val),
-                      style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+                      style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                       decoration: _siberInputDecor("Maliyet (₺)", Icons.payments_outlined),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   IconButton(
                     icon: Icon(Icons.camera_alt, color: _secilenParcalar[parca]?['gorsel'] != null ? SiberTema.kuantumCyan : Colors.white24),
                     onPressed: () => _gorselSec(parca, ImageSource.camera),
@@ -312,7 +313,7 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
 
   Widget _buildMuhurleButonu() {
     return Padding(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       child: GestureDetector(
         onTap: _isProcessing ? null : _agaMuhurle,
         child: Container(
@@ -320,12 +321,12 @@ class _MegaRevizyonScreenState extends State<MegaRevizyonScreen> {
           decoration: BoxDecoration(
             gradient: LinearGradient(colors: [SiberTema.kuantumCyan, SiberTema.kuantumCyan.withOpacity(0.7)]),
             borderRadius: BorderRadius.circular(20),
-            boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.3), blurRadius: 20, offset: const Offset(0, 10))],
+            boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.3), blurRadius: 20, offset: Offset(0, 10))],
           ),
           child: Center(
             child: _isProcessing
-                ? const CircularProgressIndicator(color: Colors.white)
-                : const Row(
+                ? CircularProgressIndicator(color: Colors.white)
+                : Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.fingerprint, color: Colors.white, size: 30),

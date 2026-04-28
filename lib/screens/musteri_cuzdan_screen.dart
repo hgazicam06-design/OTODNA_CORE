@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +11,7 @@ import 'finans/siber_odeme_gecidi_screen.dart';
 
 /// 🦅 SİBER GARAJ VE ABONELİK KOKPİTİ (B2C SAAS MOTORU)
 class MusteriCuzdanScreen extends StatefulWidget {
-  const MusteriCuzdanScreen({super.key});
+  MusteriCuzdanScreen({super.key});
 
   @override
   State<MusteriCuzdanScreen> createState() => _MusteriCuzdanScreenState();
@@ -116,30 +117,30 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
       context: context,
       backgroundColor: Colors.black,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         side: BorderSide(color: SiberTema.sariAltin, width: 2),
       ),
       builder: (context) {
         return Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: EdgeInsets.all(24.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.star_rounded, color: SiberTema.sariAltin, size: 64),
-              const SizedBox(height: 16),
-              const Text("GARAJ KOTASI DOLDU", style: TextStyle(color: SiberTema.sariAltin, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)),
-              const SizedBox(height: 8),
-              const Text("Kuruluş Kampanyası: %66'ya varan İNDİRİM FIRSATIYLA filonuzu genişletin!", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 13, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 32),
+              Icon(Icons.star_rounded, color: SiberTema.sariAltin, size: 64),
+              SizedBox(height: 16),
+              Text("GARAJ KOTASI DOLDU", style: TextStyle(color: SiberTema.sariAltin, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)),
+              SizedBox(height: 8),
+              Text("Kuruluş Kampanyası: %66'ya varan İNDİRİM FIRSATIYLA filonuzu genişletin!", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 13, fontWeight: FontWeight.bold)),
+              SizedBox(height: 32),
               
               // İndirimli Paketler (Eski fiyat * 3 = Çizili fiyat)
               _buildPaketKarti("Ultra", "Maksimum 10 Araç", 597.00, 199.00),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _buildPaketKarti("Ultra Pro", "Maksimum 20 Araç", 1497.00, 499.00),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _buildPaketKarti("Ultra Premium", "Sınırsız Araç ve Belge", 2997.00, 999.00, isPremium: true),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
             ],
           ),
         );
@@ -155,7 +156,7 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
         _paketYukselt(paketAdi, indirimliFiyat);
       },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: SiberTema.matGrey,
           borderRadius: BorderRadius.circular(16),
@@ -171,25 +172,25 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
                 Row(
                   children: [
                     Text(paketAdi, style: TextStyle(color: anaRenk, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1)),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(color: SiberTema.kanKirmizi, borderRadius: BorderRadius.circular(4)),
-                      child: const Text("KAMPANYA", style: TextStyle(color: SiberTema.textMain, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                      child: Text("KAMPANYA", style: TextStyle(color: SiberTema.textMain, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
                     )
                   ],
                 ),
-                const SizedBox(height: 4),
-                Text(ozellik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+                SizedBox(height: 4),
+                Text(ozellik, style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
               ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text("${eskiFiyat.toInt()} ₺", style: const TextStyle(color: SiberTema.textMuted, decoration: TextDecoration.lineThrough, fontSize: 12, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 2),
+                Text("${eskiFiyat.toInt()} ₺", style: TextStyle(color: SiberTema.textMuted, decoration: TextDecoration.lineThrough, fontSize: 12, fontWeight: FontWeight.bold)),
+                SizedBox(height: 2),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(color: anaRenk.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
                   child: Text("${indirimliFiyat.toInt()} ₺", style: TextStyle(color: anaRenk, fontWeight: FontWeight.w900, fontSize: 16)),
                 ),
@@ -210,12 +211,12 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
         appBar: AppBar(
           backgroundColor: Colors.black.withOpacity(0.8),
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("SİBER GARAJ & CÜZDAN", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2, fontFamily: 'Avenir')),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text("SİBER GARAJ & CÜZDAN", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
           actions: [
             IconButton(
-              icon: const Icon(Icons.help_outline_rounded, color: SiberTema.kuantumCyan),
+              icon: Icon(Icons.help_outline_rounded, color: SiberTema.kuantumCyan),
               tooltip: "Siber Rehber (Nasıl Çalışır?)",
               onPressed: _siberRehberiAc,
             )
@@ -224,7 +225,7 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
         body: Column(
           children: [
             _buildGarajBilgiPaneli(),
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               child: Divider(color: SiberTema.textMuted, thickness: 1),
             ),
@@ -237,8 +238,8 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
           onPressed: _yeniAracEkle,
           backgroundColor: SiberTema.kuantumCyan,
           foregroundColor: Colors.white,
-          icon: const Icon(Icons.add_circle_outline),
-          label: const Text("YENİ ARAÇ EKLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+          icon: Icon(Icons.add_circle_outline),
+          label: Text("YENİ ARAÇ EKLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
         ),
       ),
     );
@@ -250,8 +251,8 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
     if (dolulukOrani > 1) dolulukOrani = 1.0;
 
     return Container(
-      margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.all(24),
+      margin: EdgeInsets.all(20),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: SiberTema.matGrey.withOpacity(0.5),
         borderRadius: BorderRadius.circular(24),
@@ -263,7 +264,7 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("GÜNCEL PAKET", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
@@ -272,21 +273,21 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(color: SiberTema.sariAltin.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.sariAltin.withOpacity(0.5))),
-                child: Text(_abonelikTipi.toUpperCase(), style: const TextStyle(color: SiberTema.sariAltin, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2)),
+                child: Text(_abonelikTipi.toUpperCase(), style: TextStyle(color: SiberTema.sariAltin, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2)),
               )
             ],
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Garaj Kapasitesi", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 12)),
-              Text("${_araclar.length} / ${_abonelikTipi == 'Ultra Premium' ? '∞' : _aracLimiti}", style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontSize: 16)),
+              Text("${_araclar.length} / ${_abonelikTipi == 'Ultra Premium' ? '∞' : _aracLimiti}", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontSize: 16)),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: LinearProgressIndicator(
@@ -304,15 +305,15 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
   // ── ARAÇ (QR) LİSTESİ ──
   Widget _buildAracListesi() {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      physics: BouncingScrollPhysics(),
       itemCount: _araclar.length,
       itemBuilder: (context, index) {
         final arac = _araclar[index];
         final bool bildirimVar = arac['bildirim_sayisi'] > 0;
 
         return Container(
-          margin: const EdgeInsets.only(bottom: 16),
+          margin: EdgeInsets.only(bottom: 16),
           decoration: BoxDecoration(
             color: SiberTema.matGrey,
             borderRadius: BorderRadius.circular(20),
@@ -322,35 +323,35 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
           child: ExpansionTile(
             collapsedIconColor: Colors.white54,
             iconColor: SiberTema.kuantumCyan,
-            tilePadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             leading: Stack(
               clipBehavior: Clip.none,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), shape: BoxShape.circle),
-                  child: const Icon(Icons.directions_car_rounded, color: SiberTema.kuantumCyan, size: 24),
+                  child: Icon(Icons.directions_car_rounded, color: SiberTema.kuantumCyan, size: 24),
                 ),
                 if (bildirimVar)
                   Positioned(
                     right: -4,
                     top: -4,
                     child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(color: SiberTema.kanKirmizi, shape: BoxShape.circle),
-                      child: Text("${arac['bildirim_sayisi']}", style: const TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.bold)),
+                      padding: EdgeInsets.all(6),
+                      decoration: BoxDecoration(color: SiberTema.kanKirmizi, shape: BoxShape.circle),
+                      child: Text("${arac['bildirim_sayisi']}", style: TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.bold)),
                     ),
                   )
               ],
             ),
-            title: Text(arac['plaka'], style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 18, letterSpacing: 1)),
-            subtitle: Text("${arac['marka']} • Şasi: ${arac['sase']}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11)),
+            title: Text(arac['plaka'], style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 18, letterSpacing: 1)),
+            subtitle: Text("${arac['marka']} • Şasi: ${arac['sase']}", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
             children: [
               Container(
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
                   border: Border(top: BorderSide(color: SiberTema.textMuted)),
-                  color: Colors.white26,
+                  color: Colors.white24,
                 ),
                 child: Row(
                   children: [
@@ -362,26 +363,26 @@ class _MusteriCuzdanScreenState extends State<MusteriCuzdanScreen> {
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: SiberTema.kuantumCyan, width: 2),
                       ),
-                      child: const Center(
+                      child: Center(
                         child: Icon(Icons.qr_code_2, size: 80, color: Colors.white),
                       ),
                     ),
-                    const SizedBox(width: 20),
+                    SizedBox(width: 20),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("KUANTUM QR MÜHRÜ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
-                          const SizedBox(height: 8),
-                          const Text("Aracınızın camına yapıştıracağınız evrensel bildirim kodu. Okutulduğunda sadece bu araca uyarı gelir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.4)),
-                          const SizedBox(height: 12),
+                          Text("KUANTUM QR MÜHRÜ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                          SizedBox(height: 8),
+                          Text("Aracınızın camına yapıştıracağınız evrensel bildirim kodu. Okutulduğunda sadece bu araca uyarı gelir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.4)),
+                          SizedBox(height: 12),
                           OutlinedButton.icon(
                             onPressed: () => _siberUyari("Siber Cüzdandan QR Indiriliyor...", SiberTema.kuantumCyan),
-                            icon: const Icon(Icons.download_rounded, size: 16),
-                            label: const Text("QR'I İNDİR", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
+                            icon: Icon(Icons.download_rounded, size: 16),
+                            label: Text("QR'I İNDİR", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: SiberTema.kuantumCyan,
-                              side: const BorderSide(color: SiberTema.kuantumCyan),
+                              side: BorderSide(color: SiberTema.kuantumCyan),
                             ),
                           )
                         ],

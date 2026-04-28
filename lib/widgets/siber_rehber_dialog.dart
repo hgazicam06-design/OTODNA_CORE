@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -76,9 +77,9 @@ class _SiberRehberDialogWidgetState extends State<_SiberRehberDialogWidget> {
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.all(20),
+      insetPadding: EdgeInsets.all(20),
       child: Container(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.95),
           borderRadius: BorderRadius.circular(24),
@@ -88,10 +89,10 @@ class _SiberRehberDialogWidgetState extends State<_SiberRehberDialogWidget> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.info_outline_rounded, color: SiberTema.kuantumCyan, size: 56),
-            const SizedBox(height: 16),
-            Text(widget.baslik, textAlign: TextAlign.center, style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            const Padding(
+            Icon(Icons.info_outline_rounded, color: SiberTema.kuantumCyan, size: 56),
+            SizedBox(height: 16),
+            Text(widget.baslik, textAlign: TextAlign.center, style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+            Padding(
               padding: EdgeInsets.symmetric(vertical: 16),
               child: Divider(color: Colors.white12, thickness: 1),
             ),
@@ -99,22 +100,22 @@ class _SiberRehberDialogWidgetState extends State<_SiberRehberDialogWidget> {
             // İÇERİK METNİ (Salt Okunur ve Kaydırılabilir)
             Flexible(
               child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
+                physics: BouncingScrollPhysics(),
                 child: Text(
                   widget.icerik,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.6, fontWeight: FontWeight.w500),
+                  style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.6, fontWeight: FontWeight.w500),
                 ),
               ),
             ),
             
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             
             // "BİR DAHA GÖSTERME" CHECKBOX'I
             GestureDetector(
               onTap: () => setState(() => _birDahaGosterme = !_birDahaGosterme),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.05),
                   borderRadius: BorderRadius.circular(12),
@@ -124,13 +125,13 @@ class _SiberRehberDialogWidgetState extends State<_SiberRehberDialogWidget> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(_birDahaGosterme ? Icons.check_box_rounded : Icons.check_box_outline_blank_rounded, color: _birDahaGosterme ? SiberTema.kuantumCyan : Colors.white38, size: 20),
-                    const SizedBox(width: 8),
-                    const Text("Bu paneli bir daha gösterme", style: TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold)),
+                    SizedBox(width: 8),
+                    Text("Bu paneli bir daha gösterme", style: TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             
             // ONAY BUTONU
             SizedBox(
@@ -143,7 +144,7 @@ class _SiberRehberDialogWidgetState extends State<_SiberRehberDialogWidget> {
                   foregroundColor: Colors.black,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                child: const Text("ANLADIM, DEVAM ET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 14)),
+                child: Text("ANLADIM, DEVAM ET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, fontSize: 14)),
               ),
             )
           ],

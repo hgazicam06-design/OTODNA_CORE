@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,20 +9,20 @@ import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
 // 🏢 ULTRA PROFESYONEL KURUMSAL PALET
-const Color bgColor = Color(0xFFF4F6F8);
-const Color surfaceColor = Colors.white;
-const Color primaryTeal = Color(0xFF005A64);
-const Color secondaryTeal = Color(0xFF009688);
-const Color textMain = Color(0xFF1E293B);
-const Color textMuted = Color(0xFF64748B);
-const Color dangerColor = Color(0xFFD32F2F);
+Color bgColor = Color(0xFFF4F6F8);
+Color surfaceColor = Colors.white;
+Color primaryTeal = Color(0xFF005A64);
+Color secondaryTeal = Color(0xFF009688);
+Color textMain = Color(0xFF1E293B);
+Color textMuted = Color(0xFF64748B);
+Color dangerColor = Color(0xFFD32F2F);
 
 class AppointmentScreen extends StatefulWidget {
   final String bayiId;
   final String bayiIsmi;
   final String aracId;
 
-  const AppointmentScreen({
+  AppointmentScreen({
     super.key,
     required this.bayiId,
     required this.bayiIsmi,
@@ -82,7 +83,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('${widget.bayiIsmi.toUpperCase()} KUANTUM AĞINA MÜHÜRLENDİ! 🦅',
-              style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+              style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           backgroundColor: primaryTeal,
         ),
       );
@@ -93,7 +94,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     } catch (e) {
       setState(() => _isProcessing = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('SİBER İSTİHBARAT HATASI: $e', style: const TextStyle(fontFamily: 'Avenir')), backgroundColor: dangerColor),
+        SnackBar(content: Text('SİBER İSTİHBARAT HATASI: $e', style: TextStyle(fontFamily: 'Avenir')), backgroundColor: dangerColor),
       );
     }
   }
@@ -108,52 +109,52 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
           backgroundColor: surfaceColor,
           elevation: 0,
           leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20),
+              icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20),
               onPressed: () => Navigator.pop(context)
           ),
-          title: const Text('R A N D E V U   M Ü H R Ü',
+          title: Text('R A N D E V U   M Ü H R Ü',
               style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3, fontFamily: 'Avenir')),
           centerTitle: true,
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1.0),
+            preferredSize: Size.fromHeight(1.0),
             child: Container(color: Colors.white.withOpacity(0.05), height: 1.0),
           ),
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
               // 1. SİBER ADALET İKONU (Animasyonlu Efekt)
               _buildSiberGavel(),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
 
               // 2. TUTAR VE BAŞLIK
-              const Text(
+              Text(
                 "SİBER GÜVENCE BEDELİ",
                 style: TextStyle(color: textMuted, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               Text(
                 "₺${caymaBedeli.toStringAsFixed(0)}",
-                style: const TextStyle(color: textMain, fontSize: 56, fontWeight: FontWeight.w900, letterSpacing: -2, fontFamily: 'Avenir'),
+                style: TextStyle(color: textMain, fontSize: 56, fontWeight: FontWeight.w900, letterSpacing: -2, fontFamily: 'Avenir'),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               Text(
                 "${widget.bayiIsmi} randevusunu Kuantum Ağına mühürlemek ve işlem sırasını rezerve etmek için yukarıdaki güvence bedeli bloke edilecektir.",
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: textMuted, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+                style: TextStyle(color: textMuted, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
 
               // 3. İHLAL PROTOKOLÜ UYARISI
               _buildIhlalKalkani(),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
 
               // 4. GÜVENLİ MÜHÜRLEME BUTONU
               _buildMuhurleButton(),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
             ],
           ),
         ),
@@ -163,38 +164,38 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   Widget _buildSiberGavel() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: surfaceColor,
         shape: BoxShape.circle,
-        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 20, offset: const Offset(0, 10))],
+        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 20, offset: Offset(0, 10))],
       ),
-      child: const Icon(Icons.gavel_rounded, size: 64, color: primaryTeal),
+      child: Icon(Icons.gavel_rounded, size: 64, color: primaryTeal),
     );
   }
 
   Widget _buildIhlalKalkani() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: dangerColor.withOpacity(0.2)),
-        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 4))],
+        boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10, offset: Offset(0, 4))],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: dangerColor.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.warning_amber_rounded, color: dangerColor, size: 24),
+            child: Icon(Icons.warning_amber_rounded, color: dangerColor, size: 24),
           ),
-          const SizedBox(width: 16),
-          const Expanded(
+          SizedBox(width: 16),
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -229,11 +230,11 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
         ),
         onPressed: _isProcessing ? null : _odemeVeMuhurlemeBaslat,
         icon: _isProcessing
-            ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-            : const Icon(Icons.lock_outline, size: 24),
+            ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+            : Icon(Icons.lock_outline, size: 24),
         label: Text(
           _isProcessing ? "AĞA BAĞLANILIYOR..." : "₺200 ÖDE VE MÜHÜRLE",
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
         ),
       ),
     );

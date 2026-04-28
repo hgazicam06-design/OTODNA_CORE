@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 class SiberBildirimMerkeziScreen extends StatefulWidget {
-  const SiberBildirimMerkeziScreen({super.key});
+  SiberBildirimMerkeziScreen({super.key});
 
   @override
   State<SiberBildirimMerkeziScreen> createState() => _SiberBildirimMerkeziScreenState();
@@ -58,8 +58,8 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
   ];
 
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textColor = const Color(0xFF1E293B);
-  final Color bgColor = const Color(0xFFFAFAFC);
+  final Color textColor = Color(0xFF1E293B);
+  final Color bgColor = Color(0xFFFAFAFC);
   final Color surfaceColor = Colors.white;
 
   // 💎 GERÇEKÇİ SİLME ANİMASYONU VE MANTIĞI
@@ -85,13 +85,13 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
         backgroundColor: Colors.white,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: renk, width: 2)),
-        duration: const Duration(seconds: 2),
+        duration: Duration(seconds: 2),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(mesaj, style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           ],
         ),
@@ -120,7 +120,7 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
               tooltip: "Tümünü Okundu İşaretle",
               onPressed: _tumunuOkunduIsaretle,
             ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8),
         ],
       ),
       body: Column(
@@ -128,14 +128,14 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
         children: [
           // 1. ÜST BİLGİ PANELİ
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Akış", style: TextStyle(color: textColor, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
                 if (okunmamisSayisi > 0)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                         color: primaryTeal.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
@@ -151,8 +151,8 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
             child: _bildirimler.isEmpty
                 ? _buildEmptyState() 
                 : ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
               itemCount: _bildirimler.length,
               itemBuilder: (context, index) {
                 var bildirim = _bildirimler[index];
@@ -164,36 +164,36 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
                   direction: DismissDirection.endToStart,
                   onDismissed: (direction) => _bildirimiSil(bildirim['id']),
                   background: Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    padding: const EdgeInsets.only(right: 24),
+                    margin: EdgeInsets.only(bottom: 16),
+                    padding: EdgeInsets.only(right: 24),
                     alignment: Alignment.centerRight,
                     decoration: BoxDecoration(
                         color: Colors.redAccent.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: Colors.redAccent.withValues(alpha: 0.3))
                     ),
-                    child: const Icon(Icons.delete_outline, color: Colors.redAccent, size: 28),
+                    child: Icon(Icons.delete_outline, color: Colors.redAccent, size: 28),
                   ),
                   child: GestureDetector(
                     onTap: () {
                       if (isUnread) setState(() => bildirim['okunduMu'] = true);
                     },
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      margin: const EdgeInsets.only(bottom: 16),
-                      padding: const EdgeInsets.all(20),
+                      duration: Duration(milliseconds: 300),
+                      margin: EdgeInsets.only(bottom: 16),
+                      padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: isUnread ? primaryTeal.withValues(alpha: 0.05) : surfaceColor,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: isUnread ? primaryTeal.withValues(alpha: 0.3) : Colors.black.withValues(alpha: 0.05)),
-                        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))],
+                        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: Offset(0, 5))],
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Sol İkon Kutusu
                           Container(
-                            padding: const EdgeInsets.all(14),
+                            padding: EdgeInsets.all(14),
                             decoration: BoxDecoration(
                               color: isUnread ? bildirim['renk'].withValues(alpha: 0.1) : bgColor,
                               shape: BoxShape.circle,
@@ -201,7 +201,7 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
                             ),
                             child: Icon(bildirim['ikon'], color: isUnread ? bildirim['renk'] : Colors.black38, size: 24),
                           ),
-                          const SizedBox(width: 16),
+                          SizedBox(width: 16),
 
                           // Orta Metin Alanı
                           Expanded(
@@ -209,9 +209,9 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(bildirim['baslik'], style: TextStyle(color: isUnread ? textColor : Colors.black87, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
-                                const SizedBox(height: 6),
+                                SizedBox(height: 6),
                                 Text(bildirim['mesaj'], style: TextStyle(color: isUnread ? Colors.black87 : Colors.black54, fontSize: 12, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-                                const SizedBox(height: 12),
+                                SizedBox(height: 12),
                                 Text(bildirim['zaman'].toUpperCase(), style: TextStyle(color: isUnread ? primaryTeal : Colors.black38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                               ],
                             ),
@@ -221,7 +221,7 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
                           if (isUnread)
                             Container(
                               width: 10, height: 10,
-                              margin: const EdgeInsets.only(top: 6, left: 8),
+                              margin: EdgeInsets.only(top: 6, left: 8),
                               decoration: BoxDecoration(
                                   color: primaryTeal,
                                   shape: BoxShape.circle,
@@ -248,18 +248,18 @@ class _SiberBildirimMerkeziScreenState extends State<SiberBildirimMerkeziScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(32),
+            padding: EdgeInsets.all(32),
             decoration: BoxDecoration(
                 color: bgColor,
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
             ),
-            child: const Icon(Icons.notifications_off_outlined, color: Colors.white26, size: 64),
+            child: Icon(Icons.notifications_off_outlined, color: Colors.white24, size: 64),
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: 32),
           Text("BİLDİRİM YOK", style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-          const SizedBox(height: 12),
-          const Text("Şu an için okunmamış veya\nbekleyen bir bildirim bulunmuyor.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+          SizedBox(height: 12),
+          Text("Şu an için okunmamış veya\nbekleyen bir bildirim bulunmuyor.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         ],
       ),
     );

@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +10,7 @@ import '../core/responsive_kalkan.dart';
 /// 🦅 OTODNA BİLDİRİM TERMİNALİ - V3 (ZIRHLI)
 /// Vatandaşların veya Adminlerin ağ üzerinden sinyal fırlattığı merkez üssü.
 class OtoDNABildirimEkrani extends StatefulWidget {
-  const OtoDNABildirimEkrani({super.key});
+  OtoDNABildirimEkrani({super.key});
 
   @override
   State<OtoDNABildirimEkrani> createState() => _OtoDNABildirimEkraniState();
@@ -142,7 +143,7 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
   void _uyariGoster(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white, fontSize: 12, letterSpacing: 1)),
+        content: Text(mesaj, style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white, fontSize: 12, letterSpacing: 1)),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -159,9 +160,9 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
         appBar: _buildAppBar(),
         body: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1000),
+            constraints: BoxConstraints(maxWidth: 1000),
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24.0),
+              padding: EdgeInsets.all(24.0),
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   if (constraints.maxWidth > 800) {
@@ -184,14 +185,14 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
       elevation: 0,
       centerTitle: true,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
+        icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
         onPressed: () => Navigator.pop(context),
       ),
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.security, color: SiberTema.kuantumCyan, size: 18),
-          const SizedBox(width: 12),
+          Icon(Icons.security, color: SiberTema.kuantumCyan, size: 18),
+          SizedBox(width: 12),
           Text(
             'SİBER İLETİŞİM KULESİ',
             style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2),
@@ -210,12 +211,12 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
           child: Column(
             children: [
               _buildQrGirisKarti(),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
               _buildKayitDavetiKarti(),
             ],
           ),
         ),
-        const SizedBox(width: 24),
+        SizedBox(width: 24),
         Expanded(
           flex: 4,
           child: _buildGaziYetkisiKarti(),
@@ -228,9 +229,9 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
     return Column(
       children: [
         _buildQrGirisKarti(),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
         _buildGaziYetkisiKarti(),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
         _buildKayitDavetiKarti(),
       ],
     );
@@ -243,23 +244,23 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
         children: [
           Row(
             children: [
-              const Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 30),
-              const SizedBox(width: 16),
-              const Text("HIZLI SİNYAL RADARI", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900)),
+              Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 30),
+              SizedBox(width: 16),
+              Text("HIZLI SİNYAL RADARI", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900)),
             ],
           ),
-          const SizedBox(height: 24),
-          const Text(
+          SizedBox(height: 24),
+          Text(
             "Hedef aracın siber kimliğini (QR Kodu) girerek araç sahibine anonim bir 'Müdahale Çağrısı' bırakın.",
             style: TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
           _buildSiberTextField(
             controller: _qrController,
             hint: "QR KODUNU BURAYA MÜHÜRLE (Örn: ARAC-123)",
             icon: Icons.qr_code_scanner,
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: 32),
           SizedBox(
             width: double.infinity,
             height: 60,
@@ -267,9 +268,9 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
               onPressed: _isProcessing ? null : bildirimGonder,
               style: SiberTema.kuantumButonStili(renk: SiberTema.kuantumCyan),
               icon: _isProcessing
-                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                  : const Icon(Icons.send_rounded, color: Colors.white),
-              label: Text(_isProcessing ? "İŞLENİYOR..." : "SİNYALİ ATEŞLE", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900)),
+                  ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                  : Icon(Icons.send_rounded, color: Colors.white),
+              label: Text(_isProcessing ? "İŞLENİYOR..." : "SİNYALİ ATEŞLE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900)),
             ),
           ),
         ],
@@ -286,13 +287,13 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
       ),
       child: TextField(
         controller: controller,
-        style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, letterSpacing: 1.5),
+        style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, letterSpacing: 1.5),
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: SiberTema.textMuted),
           hintText: hint,
-          hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold),
+          hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.all(18),
+          contentPadding: EdgeInsets.all(18),
         ),
       ),
     );
@@ -301,7 +302,7 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
   Widget _buildKayitDavetiKarti() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: SiberTema.matGrey.withOpacity(0.05),
         borderRadius: BorderRadius.circular(20),
@@ -309,11 +310,11 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
       ),
       child: Column(
         children: [
-          const Icon(Icons.fingerprint, color: SiberTema.textMuted, size: 40),
-          const SizedBox(height: 16),
-          const Text("ARACINI AĞA KAYDET", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
-          const SizedBox(height: 8),
-          const Text(
+          Icon(Icons.fingerprint, color: SiberTema.textMuted, size: 40),
+          SizedBox(height: 16),
+          Text("ARACINI AĞA KAYDET", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
+          SizedBox(height: 8),
+          Text(
             "Siz de aracınızı koruma altına almak ve QR bildirimleri almak için Profil > Araçlarım sekmesinden DNA kaydı yapabilirsiniz.",
             textAlign: TextAlign.center,
             style: TextStyle(color: SiberTema.textMuted, fontSize: 9, height: 1.4),
@@ -331,18 +332,18 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
         child: Column(
           children: [
             Icon(Icons.admin_panel_settings, color: _isAdmin ? SiberTema.kanKirmizi : Colors.white24, size: 50),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             Text(
                 "KOMUTA MERKEZİ",
                 style: TextStyle(color: _isAdmin ? SiberTema.kanKirmizi : Colors.white38, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)
             ),
-            const SizedBox(height: 12),
-            const Text(
+            SizedBox(height: 12),
+            Text(
               "BU ALAN SADECE SİBER KOMUTAN YETKİSİYLE ERİŞİLEBİLİR. TÜM TÜRKİYE GENELİNE ANLIK PUSH NOTIFICATION GÖNDERİLİR.",
               textAlign: TextAlign.center,
               style: TextStyle(color: SiberTema.textMuted, fontSize: 10, height: 1.5, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
             SizedBox(
               width: double.infinity,
               height: 65,
@@ -352,7 +353,7 @@ class _OtoDNABildirimEkraniState extends State<OtoDNABildirimEkrani> {
                 icon: Icon(_isAdmin ? Icons.rocket_launch : Icons.lock, color: Colors.white),
                 label: Text(
                     _isGlobalProcessing ? "ATEŞLENİYOR..." : (_isAdmin ? "TÜM AĞA DUYURU YAP" : "ERİŞİM ENGELLENDİ"),
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900)
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900)
                 ),
               ),
             ),

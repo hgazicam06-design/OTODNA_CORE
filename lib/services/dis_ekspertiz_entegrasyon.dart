@@ -1,4 +1,4 @@
-// lib/services/dis_ekspertiz_entegrasyon.dart
+﻿// lib/services/dis_ekspertiz_entegrasyon.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
@@ -70,7 +70,7 @@ class DisEkspertizServisi {
     // Örnek: var response = await http.get(Uri.parse('https://api.vin-decoder.com/$saseNo?key=$_globalApiKey'));
 
     // Karargah testi için 2 saniyelik sahte gecikme (Ağ simülasyonu)
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 2));
 
     // Şase 11 haneden büyükse (Standart bir VIN formatındaysa) sahte bir veri döndür
     if (saseNo.length >= 11) {

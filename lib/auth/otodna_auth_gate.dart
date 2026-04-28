@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/auth/otodna_auth_gate.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,7 +22,7 @@ import '../bayi/belge_dogrulama.dart';
 
 /// 🛡️ KUANTUM GİRİŞ KAPISI VE RÜTBE YÖNLENDİRİCİSİ (RIVERPOD DESTEKLİ)
 class OtoDnaAuthGate extends ConsumerWidget {
-  const OtoDnaAuthGate({super.key});
+  OtoDnaAuthGate({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,7 +37,7 @@ class OtoDnaAuthGate extends ConsumerWidget {
         data: (user) {
           // Eğer kullanıcı hiç giriş yapmamışsa Zırhlı LoginScreen'e fırlat!
           if (user == null) {
-            return const LoginScreen();
+            return LoginScreen();
           }
 
           // 🛡️ 2. KARARGAH SİCİL MOTORUNU DİNLE
@@ -87,7 +88,7 @@ class OtoDnaAuthGate extends ConsumerWidget {
 
               // 🧠 KUANTUM YÖNLENDİRME MERKEZİ (Özgür Kullanım Protokolü)
               if (role == "ADMIN" || role == "BOLGE_KOMUTANI" || role == "SUPER_ADMIN" || role == "BASKAN") {
-                return const SuperAdminScreen();
+                return SuperAdminScreen();
               } else if (role == "BAYI") {
                 // 🛡️ SİBER ZIRH: Bayi belgelerini Karargaha mühürledi mi?
                 bool belgelerYuklendi = userData['belgeler_yuklendi'] ?? false;
@@ -97,9 +98,9 @@ class OtoDnaAuthGate extends ConsumerWidget {
                   return BayiMerkezi(bayiId: user.uid);
                 }
               } else if (role == "USTA") {
-                return const UstaPanelScreen();
+                return UstaPanelScreen();
               } else {
-                return const HomeScreen();
+                return HomeScreen();
               }
             },
           );
@@ -125,34 +126,34 @@ class _KuantumYuklemeEkrani extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
                 boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), blurRadius: 20, spreadRadius: 5)],
               ),
-              child: const Icon(Icons.shield_outlined, size: 56, color: SiberTema.kuantumCyan),
+              child: Icon(Icons.shield_outlined, size: 56, color: SiberTema.kuantumCyan),
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
 
-            const Text(
+            Text(
               'OtoDNA',
               style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: Colors.white, fontFamily: 'Avenir', letterSpacing: 4.0),
             ),
-            const SizedBox(height: 8),
-            const Text(
+            SizedBox(height: 8),
+            Text(
               'SİBER KARARGAH BAĞLANTISI',
               style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: SiberTema.kuantumCyan, fontFamily: 'Avenir', letterSpacing: 3.0),
             ),
 
-            const SizedBox(height: 64),
+            SizedBox(height: 64),
 
-            const SizedBox(
+            SizedBox(
               width: 32,
               height: 32,
               child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2.5),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
 
             Text(
               mesaj,
@@ -177,43 +178,43 @@ class _KaraListeEkrani extends StatelessWidget {
       backgroundColor: SiberTema.oledBlack,
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.all(32),
+                padding: EdgeInsets.all(32),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(color: SiberTema.kanKirmizi, width: 2),
                   boxShadow: [BoxShadow(color: SiberTema.kanKirmizi.withOpacity(0.2), blurRadius: 40, spreadRadius: 10)],
                 ),
-                child: const Icon(Icons.block, size: 70, color: SiberTema.kanKirmizi),
+                child: Icon(Icons.block, size: 70, color: SiberTema.kanKirmizi),
               ),
-              const SizedBox(height: 40),
-              const Text(
+              SizedBox(height: 40),
+              Text(
                 'SİSTEM ERİŞİMİ REDDEDİLDİ',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: SiberTema.kanKirmizi, fontFamily: 'Avenir', letterSpacing: 2.0),
               ),
-              const SizedBox(height: 16),
-              const Text(
+              SizedBox(height: 16),
+              Text(
                 'Siber Sicilinizde tespit edilen ihlaller nedeniyle Kuantum Ağına erişiminiz kalıcı olarak engellenmiştir. (BLACK STAR MÜHRÜ)',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white70, fontFamily: 'Avenir', height: 1.5),
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: SiberTema.kanKirmizi.withOpacity(0.1),
                   foregroundColor: SiberTema.kanKirmizi,
-                  side: const BorderSide(color: SiberTema.kanKirmizi),
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  side: BorderSide(color: SiberTema.kanKirmizi),
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 onPressed: () => FirebaseAuth.instance.signOut(),
-                icon: const Icon(Icons.power_settings_new),
-                label: const Text("BAĞLANTIYI KES", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                icon: Icon(Icons.power_settings_new),
+                label: Text("BAĞLANTIYI KES", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
               )
             ],
           ),

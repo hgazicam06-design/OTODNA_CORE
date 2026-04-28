@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:developer' as developer;
@@ -9,7 +9,7 @@ class BayiSOSMudahalePaneli extends StatefulWidget {
   final String sinyalId; // Firebase sos_sinyalleri doc ID
   final String bayiId;   // Müdahale eden bayinin ID'si
 
-  const BayiSOSMudahalePaneli({super.key, required this.sinyalId, required this.bayiId});
+  BayiSOSMudahalePaneli({super.key, required this.sinyalId, required this.bayiId});
 
   @override
   State<BayiSOSMudahalePaneli> createState() => _BayiSOSMudahalePaneliState();
@@ -20,10 +20,10 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
   bool _mudahaleEdiliyor = false;
 
   // ── 🎨 KARARGAH TASARIM DOKTRİNİ ──
-  static const Color _oledBlack = Color(0xFF000000);
-  static const Color _matGrey = Color(0xFF111111);
-  static const Color _kuantumCyan = Color(0xFF00FFC2);
-  static const Color _kanKirmizi = Colors.redAccent;
+  static Color _oledBlack = Color(0xFF000000);
+  static Color _matGrey = Color(0xFF111111);
+  static Color _kuantumCyan = Color(0xFF00FFC2);
+  static Color _kanKirmizi = Colors.redAccent;
 
   // ── 📞 FİZİKSEL ARAMA VE NAVİGASYON MOTORLARI ──
   Future<void> _telefonAra(String numara) async {
@@ -115,8 +115,8 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: Colors.white70, fontSize: 12)),
           ],
         ),
       ),
@@ -128,10 +128,10 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
     return Scaffold(
       backgroundColor: _oledBlack,
       appBar: AppBar(
-        title: const Text("ACİL DURUM MÜDAHALE", style: TextStyle(color: _kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 16)),
+        title: Text("ACİL DURUM MÜDAHALE", style: TextStyle(color: _kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 16)),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: _kanKirmizi),
+        iconTheme: IconThemeData(color: _kanKirmizi),
         centerTitle: true,
       ),
       body: FutureBuilder<DocumentSnapshot>(
@@ -139,11 +139,11 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
         future: _db.collection('sos_alarmlari').doc(widget.sinyalId).get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(color: _kanKirmizi));
+            return Center(child: CircularProgressIndicator(color: _kanKirmizi));
           }
 
           if (!snapshot.hasData || !snapshot.data!.exists) {
-            return const Center(child: Text("SİNYAL KAYIP VEYA İPTAL EDİLMİŞ.", style: TextStyle(color: _kanKirmizi, fontWeight: FontWeight.bold, letterSpacing: 1.5)));
+            return Center(child: Text("SİNYAL KAYIP VEYA İPTAL EDİLMİŞ.", style: TextStyle(color: _kanKirmizi, fontWeight: FontWeight.bold, letterSpacing: 1.5)));
           }
 
           var sinyalVerisi = snapshot.data!.data() as Map<String, dynamic>;
@@ -156,13 +156,13 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
 
           return SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // ── 🚨 1. SİBER İSTİHBARAT KARTI ──
                   Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: _kanKirmizi.withOpacity(0.05),
                       borderRadius: BorderRadius.circular(16),
@@ -174,44 +174,44 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.radar, color: _kanKirmizi, size: 30),
-                            const SizedBox(width: 12),
+                            Icon(Icons.radar, color: _kanKirmizi, size: 30),
+                            SizedBox(width: 12),
                             Expanded(
                               child: Text(
                                   "ARAÇ (DNA): $saseNo",
-                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1)
+                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1)
                               ),
                             ),
                             if (musteriTelefon.isNotEmpty)
                               IconButton(
-                                icon: const Icon(Icons.phone_in_talk, color: _kuantumCyan),
+                                icon: Icon(Icons.phone_in_talk, color: _kuantumCyan),
                                 onPressed: () => _telefonAra(musteriTelefon),
                               )
                           ],
                         ),
-                        const Divider(color: Colors.white24, height: 30),
+                        Divider(color: Colors.white24, height: 30),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(Icons.location_on_outlined, color: Colors.white54, size: 20),
-                            const SizedBox(width: 8),
+                            Icon(Icons.location_on_outlined, color: Colors.white54, size: 20),
+                            SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                   konumAdresi,
-                                  style: const TextStyle(color: Colors.white70, fontSize: 12, height: 1.5, letterSpacing: 1)
+                                  style: TextStyle(color: Colors.white70, fontSize: 12, height: 1.5, letterSpacing: 1)
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16),
                         // RADAR YÖNLENDİRME (NAVİGASYON)
                         SizedBox(
                           width: double.infinity,
                           child: OutlinedButton.icon(
-                            icon: const Icon(Icons.explore_outlined, color: _kuantumCyan),
-                            label: const Text("RADARLA BÖLGEYE GİT", style: TextStyle(color: _kuantumCyan, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                            icon: Icon(Icons.explore_outlined, color: _kuantumCyan),
+                            label: Text("RADARLA BÖLGEYE GİT", style: TextStyle(color: _kuantumCyan, fontWeight: FontWeight.bold, letterSpacing: 1)),
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: _kuantumCyan),
+                              side: BorderSide(color: _kuantumCyan),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                             ),
                             onPressed: () => _haritadaAc(enlem, boylam),
@@ -221,11 +221,11 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
                     ),
                   ),
 
-                  const SizedBox(height: 30),
+                  SizedBox(height: 30),
 
                   // ── 📞 2. RESMİ YARDIM BİRİMLERİ ──
-                  const Text("RESMİ YARDIM BİRİMLERİ", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 12),
+                  Text("RESMİ YARDIM BİRİMLERİ", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 12),
 
                   _buildAcilButon(
                     label: "112 ACİL (AMBULANS / İTFAİYE)",
@@ -233,7 +233,7 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
                     renk: _kanKirmizi,
                     onTap: () => _telefonAra("112"),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   _buildAcilButon(
                     label: "EMNİYET / TRAFİK POLİSİ",
                     icon: Icons.local_police_outlined,
@@ -241,18 +241,18 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
                     onTap: () => _telefonAra("155"),
                   ),
 
-                  const Spacer(),
+                  Spacer(),
 
                   // ── 🚀 3. OTODNA YOL YARDIM MÜDAHALESİ ──
                   SizedBox(
                     width: double.infinity,
                     height: 65,
                     child: _mudahaleEdiliyor
-                        ? const Center(child: CircularProgressIndicator(color: Colors.orangeAccent))
+                        ? Center(child: CircularProgressIndicator(color: Colors.orangeAccent))
                         : ElevatedButton.icon(
                       onPressed: () => _yolYardimFirlat(saseNo),
-                      icon: const Icon(Icons.car_crash_outlined, color: Colors.black, size: 28),
-                      label: const Text("OTODNA YOL YARDIM GÖNDER", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 14)),
+                      icon: Icon(Icons.car_crash_outlined, color: Colors.black, size: 28),
+                      label: Text("OTODNA YOL YARDIM GÖNDER", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 14)),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orangeAccent, // Yol Yardım Rengi
                         foregroundColor: Colors.black,
@@ -262,7 +262,7 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                 ],
               ),
             ),
@@ -278,7 +278,7 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         decoration: BoxDecoration(
           color: _matGrey,
           borderRadius: BorderRadius.circular(12),
@@ -287,11 +287,11 @@ class _BayiSOSMudahalePaneliState extends State<BayiSOSMudahalePaneli> {
         child: Row(
           children: [
             Icon(icon, color: renk, size: 28),
-            const SizedBox(width: 16),
+            SizedBox(width: 16),
             Expanded(
-              child: Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 12)),
+              child: Text(label, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 12)),
             ),
-            const Icon(Icons.call_outlined, color: Colors.greenAccent, size: 24),
+            Icon(Icons.call_outlined, color: Colors.greenAccent, size: 24),
           ],
         ),
       ),

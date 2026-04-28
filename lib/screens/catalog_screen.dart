@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +10,7 @@ import '../core/responsive_kalkan.dart';
 /// 🦅 OTODNA SİBER KATALOG VE TEDARİK VİTRİNİ
 /// Küresel parçaları çeker ve anında Siber Sepet'e mühürler.
 class CatalogScreen extends StatefulWidget {
-  const CatalogScreen({super.key});
+  CatalogScreen({super.key});
 
   @override
   State<CatalogScreen> createState() => _CatalogScreenState();
@@ -61,7 +62,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white)),
+        content: Text(mesaj, style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white)),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -79,20 +80,20 @@ class _CatalogScreenState extends State<CatalogScreen> {
           elevation: 0,
           centerTitle: true,
           leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
+              icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
               onPressed: () => Navigator.pop(context)
           ),
-          title: const Text("SİBER KATALOG", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 2)),
+          title: Text("SİBER KATALOG", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 2)),
         ),
         body: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1200),
+            constraints: BoxConstraints(maxWidth: 1200),
             child: StreamBuilder<QuerySnapshot>(
               // Doğrudan Kuantum Ağından verileri çekiyoruz
               stream: _db.collection('yedek_parcalar').orderBy('tarih', descending: true).limit(50).snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+                  return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -100,8 +101,8 @@ class _CatalogScreenState extends State<CatalogScreen> {
                 }
 
                 return GridView.builder(
-                  padding: const EdgeInsets.all(24),
-                  physics: const BouncingScrollPhysics(),
+                  padding: EdgeInsets.all(24),
+                  physics: BouncingScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 250,
                     childAspectRatio: 0.65,
@@ -129,10 +130,10 @@ class _CatalogScreenState extends State<CatalogScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.radar, color: SiberTema.kuantumCyan.withOpacity(0.1), size: 80),
-          const SizedBox(height: 24),
-          const Text("VİTRİN BOŞ", style: TextStyle(color: SiberTema.textMuted, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 4)),
-          const SizedBox(height: 8),
-          const Text("Sisteme henüz donanım eklenmemiş.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
+          SizedBox(height: 24),
+          Text("VİTRİN BOŞ", style: TextStyle(color: SiberTema.textMuted, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 4)),
+          SizedBox(height: 8),
+          Text("Sisteme henüz donanım eklenmemiş.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
         ],
       ),
     );
@@ -156,8 +157,8 @@ class _CatalogScreenState extends State<CatalogScreen> {
           Expanded(
             flex: 4,
             child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white26,
+              decoration: BoxDecoration(
+                color: Colors.white24,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: Stack(
@@ -166,9 +167,9 @@ class _CatalogScreenState extends State<CatalogScreen> {
                   Positioned(
                     top: 8, right: 8,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(4)),
-                      child: const Text("KARARGAH ONAYLI", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 7, fontWeight: FontWeight.w900)),
+                      child: Text("KARARGAH ONAYLI", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 7, fontWeight: FontWeight.w900)),
                     ),
                   )
                 ],
@@ -180,7 +181,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
           Expanded(
             flex: 5,
             child: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -188,16 +189,16 @@ class _CatalogScreenState extends State<CatalogScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(marka.toUpperCase(), style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-                      const SizedBox(height: 4),
-                      Text(ad.toUpperCase(), maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, height: 1.3)),
+                      Text(marka.toUpperCase(), style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                      SizedBox(height: 4),
+                      Text(ad.toUpperCase(), maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, height: 1.3)),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("₺${fiyat.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
-                      const SizedBox(height: 8),
+                      Text("₺${fiyat.toStringAsFixed(2)}", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
+                      SizedBox(height: 8),
                       SizedBox(
                         width: double.infinity,
                         height: 36,
@@ -209,7 +210,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                             elevation: 0,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                           ),
-                          child: const Text("SEPETE AT", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                          child: Text("SEPETE AT", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
                         ),
                       )
                     ],

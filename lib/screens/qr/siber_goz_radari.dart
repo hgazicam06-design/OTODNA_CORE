@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,7 @@ import '../../../core/siber_tema.dart';
 /// 🦅 SİBER GÖZ RADARI
 /// Kuantum Ağındaki QR kodlarını (Araç DNA, Kargo, Bayi) tarayan ve otonom karar veren ünite.
 class SiberGozRadari extends StatefulWidget {
-  const SiberGozRadari({super.key});
+  SiberGozRadari({super.key});
 
   @override
   State<SiberGozRadari> createState() => _SiberGozRadariState();
@@ -17,11 +18,11 @@ class SiberGozRadari extends StatefulWidget {
 
 class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProviderStateMixin {
   // 🏢 FİLDİŞİ SEDEF PALET
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color surfaceColor = Colors.white;
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMain = const Color(0xFF1E293B);
-  final Color textMuted = const Color(0xFF64748B);
+  final Color textMain = Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
   final Color dangerColor = SiberTema.kanKirmizi;
 
   late MobileScannerController _cameraController;
@@ -40,7 +41,7 @@ class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProvid
     // Radar tarama çizgisi animasyonu
     _animationController = AnimationController(
         vsync: this,
-        duration: const Duration(seconds: 2)
+        duration: Duration(seconds: 2)
     )..repeat(reverse: true);
   }
 
@@ -76,7 +77,7 @@ class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProvid
       }
 
       // İşlemden sonra otonom olarak önceki ekrana kodu döndürür
-      Future.delayed(const Duration(seconds: 1), () {
+      Future.delayed(Duration(seconds: 1), () {
         if (mounted) context.pop(tarananKod);
       });
     }
@@ -91,7 +92,7 @@ class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProvid
           mesaj,
           style: TextStyle(color: metinRenk, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')
       ),
-      duration: const Duration(seconds: 2),
+      duration: Duration(seconds: 2),
     ));
   }
 
@@ -113,7 +114,7 @@ class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProvid
             child: Stack(
               children: [
                 Container(
-                  decoration: const BoxDecoration(color: Colors.transparent),
+                  decoration: BoxDecoration(color: Colors.transparent),
                   child: Align(
                     alignment: Alignment.center,
                     child: Container(
@@ -175,7 +176,7 @@ class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProvid
               children: [
                 IconButton(
                     icon: Container(
-                        padding: const EdgeInsets.all(10),
+                        padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(color: surfaceColor, shape: BoxShape.circle, border: Border.all(color: Colors.white.withOpacity(0.05)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 10)]),
                         child: Icon(Icons.arrow_back_ios_new, color: textMain, size: 18)
                     ),
@@ -184,7 +185,7 @@ class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProvid
                 Text('SİBER GÖZ AKTİF', style: TextStyle(color: textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 3)),
                 IconButton(
                     icon: Container(
-                        padding: const EdgeInsets.all(10),
+                        padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                             color: _isTorchOn ? primaryTeal.withOpacity(0.1) : surfaceColor,
                             shape: BoxShape.circle,
@@ -208,7 +209,7 @@ class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProvid
             child: Column(
               children: [
                 Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
                         color: surfaceColor,
                         shape: BoxShape.circle,
@@ -217,7 +218,7 @@ class _SiberGozRadariState extends State<SiberGozRadari> with SingleTickerProvid
                     ),
                     child: Icon(Icons.center_focus_strong_outlined, color: _isScanned ? primaryTeal : textMuted, size: 36)
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 Text(
                     _isScanned ? 'HEDEF ANALİZ EDİLİYOR...' : 'SİBER GENETİK KODU (QR) HİZALAYIN',
                     style: TextStyle(color: _isScanned ? primaryTeal : textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)

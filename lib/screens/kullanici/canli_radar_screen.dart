@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 class CanliRadarScreen extends StatefulWidget {
-  const CanliRadarScreen({super.key});
+  CanliRadarScreen({super.key});
 
   @override
   State<CanliRadarScreen> createState() => _CanliRadarScreenState();
@@ -30,14 +30,14 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
   @override
   void initState() {
     super.initState();
-    _pulseController = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat(reverse: true);
+    _pulseController = AnimationController(vsync: this, duration: Duration(seconds: 2))..repeat(reverse: true);
     _sistemiBaslat();
   }
 
   void _sistemiBaslat() async {
     await _flutterTts.setLanguage("tr-TR");
     await _flutterTts.setSpeechRate(0.5);
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(Duration(milliseconds: 500));
     _flutterTts.speak("Oto DNA canlı radar aktif. Hedefe 18 kilometre kaldı. İleride, 1 nokta 2 kilometre sonra hız radarı tespit edildi. Güvenli sürüşler komutan.");
   }
 
@@ -53,10 +53,10 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
     showModalBottomSheet(
       context: context, backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         decoration: BoxDecoration(
             color: Colors.white, // Plaza Kart Rengi
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
             border: Border.all(color: Colors.teal.shade700.withValues(alpha: 0.3)),
             boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20)]
         ),
@@ -64,9 +64,9 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.teal.shade700.withValues(alpha: 0.5), borderRadius: BorderRadius.circular(10))),
-            const SizedBox(height: 24),
-            const Text("AĞA BİLDİRİM YAP", style: TextStyle(color: Color(0xFF1E293B), fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
+            Text("AĞA BİLDİRİM YAP", style: TextStyle(color: Color(0xFF1E293B), fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+            SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -75,7 +75,7 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
                 _buildBildirimButonu(Icons.warning, "Tehlike", Colors.amber.shade700),
               ],
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
           ],
         ),
       ),
@@ -89,12 +89,12 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$text bildirimi merkeze iletildi! Teşekkürler.'), backgroundColor: color));
       },
       child: Container(
-        width: 100, padding: const EdgeInsets.symmetric(vertical: 20),
+        width: 100, padding: EdgeInsets.symmetric(vertical: 20),
         decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: color.withValues(alpha: 0.3)), boxShadow: [BoxShadow(color: color.withValues(alpha: 0.05), blurRadius: 15)]),
         child: Column(
             children: [
-              Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: color.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(icon, color: color, size: 28)),
-              const SizedBox(height: 12),
+              Container(padding: EdgeInsets.all(12), decoration: BoxDecoration(color: color.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(icon, color: color, size: 28)),
+              SizedBox(height: 12),
               Text(text, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1, fontFamily: 'Avenir'))
             ]
         ),
@@ -157,31 +157,31 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
               children: [
                 // ÜST BAR: Hedef ve Arama
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: Row(
                     children: [
                       Container(decoration: BoxDecoration(color: cardColor, shape: BoxShape.circle, boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 8)]), child: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryTeal, size: 20), onPressed: () => Navigator.pop(context))),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                           decoration: BoxDecoration(color: cardColor.withValues(alpha: 0.9), borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 10)]),
                           child: Row(
                             children: [
                               Icon(Icons.radar, color: primaryTeal, size: 18),
-                              const SizedBox(width: 12),
+                              SizedBox(width: 12),
                               Expanded(child: Text(_hedef, style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 13, letterSpacing: 1, fontFamily: 'Avenir'), overflow: TextOverflow.ellipsis)),
                             ],
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12),
                       GestureDetector(
                         onTap: () {
                           _flutterTts.speak("Sizi dinliyorum. Nereye gitmek istersiniz?");
                         },
                         child: Container(
-                            padding: const EdgeInsets.all(12),
+                            padding: EdgeInsets.all(12),
                             decoration: BoxDecoration(color: cardColor, shape: BoxShape.circle, border: Border.all(color: primaryTeal.withValues(alpha: 0.2)), boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.1), blurRadius: 10)]),
                             child: Icon(Icons.mic, color: primaryTeal, size: 22)
                         ),
@@ -194,7 +194,7 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
                 Align(
                   alignment: Alignment.centerRight,
                   child: Container(
-                    width: 220, margin: const EdgeInsets.only(right: 16, top: 12),
+                    width: 220, margin: EdgeInsets.only(right: 16, top: 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: _rotaOlaylari.map((olay) => _buildKucukOlayKarti(olay)).toList(),
@@ -202,32 +202,32 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
                   ),
                 ),
 
-                const Spacer(),
+                Spacer(),
 
                 // BİLDİRİM YAP BUTONU (Waze Mantığı - Orange/Teal)
                 Align(
                   alignment: Alignment.centerRight,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 20, bottom: 20),
+                    padding: EdgeInsets.only(right: 20, bottom: 20),
                     child: FloatingActionButton(
                       backgroundColor: cardColor,
                       elevation: 8,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: Colors.orange.withValues(alpha: 0.5))),
                       heroTag: "bildir",
                       onPressed: _olayBildir,
-                      child: const Icon(Icons.add_alert, color: Colors.orange, size: 28),
+                      child: Icon(Icons.add_alert, color: Colors.orange, size: 28),
                     ),
                   ),
                 ),
 
                 // ALT PANEL: Hız Göstergesi ve Varış Bilgileri (Plaza Camı)
                 Container(
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(24),
                   decoration: BoxDecoration(
                       color: cardColor,
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                       border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
-                      boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, -5))]
+                      boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 20, offset: Offset(0, -5))]
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -236,10 +236,10 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
                       // Hız Göstergesi (Plaza Temiz Çember)
                       Column(
                         children: [
-                          Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.redAccent, width: 2.5), color: cardColor), child: Text("$_hizSiniri", style: const TextStyle(color: Colors.redAccent, fontSize: 14, fontWeight: FontWeight.bold))),
-                          const SizedBox(height: 8),
+                          Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.redAccent, width: 2.5), color: cardColor), child: Text("$_hizSiniri", style: TextStyle(color: Colors.redAccent, fontSize: 14, fontWeight: FontWeight.bold))),
+                          SizedBox(height: 8),
                           Text("$_anlikHiz", style: TextStyle(color: _anlikHiz > _hizSiniri ? Colors.redAccent : primaryTeal, fontSize: 42, fontWeight: FontWeight.w900, height: 1, fontFamily: 'Avenir')),
-                          const Text("KM/S", style: TextStyle(color: Colors.white38, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+                          Text("KM/S", style: TextStyle(color: Colors.white38, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
                         ],
                       ),
 
@@ -247,16 +247,16 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const Text("VARIŞ SÜRESİ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
-                          Text(_kalanSure, style: const TextStyle(color: Colors.green, fontSize: 28, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-                          const SizedBox(height: 4),
+                          Text("VARIŞ SÜRESİ", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                          Text(_kalanSure, style: TextStyle(color: Colors.green, fontSize: 28, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                          SizedBox(height: 4),
                           Text("Mesafe: $_kalanMesafe", style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-                          const SizedBox(height: 12),
+                          SizedBox(height: 12),
                           ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent.withValues(alpha: 0.1), elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: Colors.redAccent.withValues(alpha: 0.5)))),
                             onPressed: () => Navigator.pop(context),
-                            icon: const Icon(Icons.close, color: Colors.redAccent, size: 16),
-                            label: const Text("ROTADAN ÇIK", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 11, letterSpacing: 1, fontFamily: 'Avenir')),
+                            icon: Icon(Icons.close, color: Colors.redAccent, size: 16),
+                            label: Text("ROTADAN ÇIK", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 11, letterSpacing: 1, fontFamily: 'Avenir')),
                           )
                         ],
                       )
@@ -274,7 +274,7 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
   // Harita Üzerindeki İkonlar (Temiz Beyaz Arka Plan)
   Widget _buildHaritaMarker(IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: EdgeInsets.all(8),
       decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle, border: Border.all(color: color, width: 2), boxShadow: [BoxShadow(color: color.withValues(alpha: 0.2), blurRadius: 10)]),
       child: Icon(icon, color: color, size: 20),
     );
@@ -283,18 +283,18 @@ class _CanliRadarScreenState extends State<CanliRadarScreen> with TickerProvider
   // Sağ Üstte Çıkan Yaklaşan Olay Kartları (Plaza Beyazı)
   Widget _buildKucukOlayKarti(Map<String, dynamic> olay) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8), padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      margin: EdgeInsets.only(bottom: 8), padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.95), borderRadius: BorderRadius.circular(12), border: Border.all(color: olay['renk'].withValues(alpha: 0.3)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 8)]),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(olay['ikon'], color: olay['renk'], size: 18),
-          const SizedBox(width: 10),
+          SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(olay['baslik'], style: const TextStyle(color: Color(0xFF1E293B), fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-              const SizedBox(height: 2),
+              Text(olay['baslik'], style: TextStyle(color: Color(0xFF1E293B), fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+              SizedBox(height: 2),
               Text(olay['mesafe'], style: TextStyle(color: olay['renk'], fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
             ],
           )

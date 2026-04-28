@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/dil_secim_terminali.dart
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
 class DilSecimTerminali extends StatefulWidget {
-  const DilSecimTerminali({super.key});
+  DilSecimTerminali({super.key});
 
   @override
   State<DilSecimTerminali> createState() => _DilSecimTerminaliState();
@@ -68,7 +69,7 @@ class _DilSecimTerminaliState extends State<DilSecimTerminali> {
       _siberUyariVer("SİSTEM DİLİ GÜNCELLENDİ!", false);
 
       // İşlem bitince ekranı kapat
-      Future.delayed(const Duration(seconds: 1), () {
+      Future.delayed(Duration(seconds: 1), () {
         if (mounted) Navigator.pop(context);
       });
 
@@ -83,7 +84,7 @@ class _DilSecimTerminaliState extends State<DilSecimTerminali> {
   void _siberUyariVer(String mesaj, bool isError) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir', fontSize: 11)),
+        content: Text(mesaj, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir', fontSize: 11)),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan.withOpacity(0.9),
         behavior: SnackBarBehavior.floating,
       ),
@@ -99,8 +100,8 @@ class _DilSecimTerminaliState extends State<DilSecimTerminali> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("KÜRESEL DİL TERMİNALİ", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          title: Text("KÜRESEL DİL TERMİNALİ", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
           centerTitle: true,
         ),
         body: Column(
@@ -108,12 +109,12 @@ class _DilSecimTerminaliState extends State<DilSecimTerminali> {
             // 🛡️ BİLGİ BANDI
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
               decoration: BoxDecoration(
                 border: Border(bottom: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1)),
                 color: SiberTema.oledBlack,
               ),
-              child: const Row(
+              child: Row(
                 children: [
                   Icon(Icons.language, color: SiberTema.kuantumCyan, size: 16),
                   SizedBox(width: 8),
@@ -125,8 +126,8 @@ class _DilSecimTerminaliState extends State<DilSecimTerminali> {
             // 🌍 LİSTE
             Expanded(
               child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.all(16),
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.all(16),
                 itemCount: _siberDiller.length,
                 itemBuilder: (context, index) {
                   final dil = _siberDiller[index];
@@ -135,8 +136,8 @@ class _DilSecimTerminaliState extends State<DilSecimTerminali> {
                   return GestureDetector(
                     onTap: () => setState(() => _seciliDilKodu = dil['kod']!),
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      margin: const EdgeInsets.only(bottom: 12),
+                      duration: Duration(milliseconds: 300),
+                      margin: EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
                         color: isSelected ? SiberTema.kuantumCyan.withOpacity(0.1) : SiberTema.matGrey.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(16),
@@ -148,23 +149,23 @@ class _DilSecimTerminaliState extends State<DilSecimTerminali> {
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                             child: Row(
                               children: [
-                                Text(dil['bayrak']!, style: const TextStyle(fontSize: 24)),
-                                const SizedBox(width: 16),
+                                Text(dil['bayrak']!, style: TextStyle(fontSize: 24)),
+                                SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(dil['isim']!, style: TextStyle(color: isSelected ? SiberTema.kuantumCyan : Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-                                      const SizedBox(height: 4),
+                                      SizedBox(height: 4),
                                       Text(dil['alt_isim']!, style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
                                     ],
                                   ),
                                 ),
                                 if (isSelected)
-                                  const Icon(Icons.check_circle, color: SiberTema.kuantumCyan, size: 24)
+                                  Icon(Icons.check_circle, color: SiberTema.kuantumCyan, size: 24)
                                 else
                                   Icon(Icons.circle_outlined, color: Colors.white.withOpacity(0.2), size: 24),
                               ],
@@ -180,7 +181,7 @@ class _DilSecimTerminaliState extends State<DilSecimTerminali> {
 
             // 🚀 MÜHÜRLE BUTONU
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               child: SizedBox(
                 width: double.infinity,
                 height: 56,
@@ -194,11 +195,11 @@ class _DilSecimTerminaliState extends State<DilSecimTerminali> {
                   ),
                   onPressed: _isProcessing ? null : _dilTercihiniMuhurle,
                   icon: _isProcessing
-                      ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
-                      : const Icon(Icons.fingerprint, size: 20),
+                      ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
+                      : Icon(Icons.fingerprint, size: 20),
                   label: Text(
                       _isProcessing ? "MÜHÜRLENİYOR..." : "DİL TERCİHİNİ MÜHÜRLE",
-                      style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5, fontFamily: 'Avenir')
+                      style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5, fontFamily: 'Avenir')
                   ),
                 ),
               ),

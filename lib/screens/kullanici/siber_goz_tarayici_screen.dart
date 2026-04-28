@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'arac_iletisim_screen.dart';
 
 class SiberGozTarayiciScreen extends StatefulWidget {
-  const SiberGozTarayiciScreen({super.key});
+  SiberGozTarayiciScreen({super.key});
 
   @override
   State<SiberGozTarayiciScreen> createState() => _SiberGozTarayiciScreenState();
@@ -21,7 +21,7 @@ class _SiberGozTarayiciScreenState extends State<SiberGozTarayiciScreen> with Si
 
   final Color primaryTeal = Colors.teal.shade700;
   final Color dangerColor = Colors.redAccent;
-  final Color textColor = const Color(0xFF1E293B);
+  final Color textColor = Color(0xFF1E293B);
 
   // TEST İÇİN ROL SEÇİCİ
   String _aktifRol = "Vatandaş";
@@ -30,7 +30,7 @@ class _SiberGozTarayiciScreenState extends State<SiberGozTarayiciScreen> with Si
   void initState() {
     super.initState();
     _scannerController = MobileScannerController(detectionSpeed: DetectionSpeed.normal);
-    _laserController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1200));
+    _laserController = AnimationController(vsync: this, duration: Duration(milliseconds: 1200));
     _laserController.repeat(reverse: true);
     _asistaniBaslat();
   }
@@ -87,27 +87,27 @@ class _SiberGozTarayiciScreenState extends State<SiberGozTarayiciScreen> with Si
         isScrollControlled: true,
         builder: (context) {
           return Container(
-            padding: const EdgeInsets.all(32.0),
+            padding: EdgeInsets.all(32.0),
             decoration: BoxDecoration(
                 color: Colors.white, 
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-                boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 40, offset: const Offset(0, -10))]
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+                boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 40, offset: Offset(0, -10))]
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(width: 40, height: 5, decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10))),
-                const SizedBox(height: 32),
+                SizedBox(height: 32),
                 Container(
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(24),
                   decoration: BoxDecoration(color: renk.withValues(alpha: 0.1), shape: BoxShape.circle, border: Border.all(color: renk.withValues(alpha: 0.3))),
                   child: Icon(Icons.verified_user_outlined, color: renk, size: 48),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 Text(baslik, style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-                const SizedBox(height: 16),
-                Text(icerik, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-                const SizedBox(height: 40),
+                SizedBox(height: 16),
+                Text(icerik, textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                SizedBox(height: 40),
                 SizedBox(
                     width: double.infinity, height: 56,
                     child: ElevatedButton(
@@ -116,7 +116,7 @@ class _SiberGozTarayiciScreenState extends State<SiberGozTarayiciScreen> with Si
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))
                         ),
                         onPressed: () { Navigator.pop(context); _taramaSifirla(); },
-                        child: const Text("ANALİZE DEVAM ET", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1, fontFamily: 'Avenir'))
+                        child: Text("ANALİZE DEVAM ET", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1, fontFamily: 'Avenir'))
                     )
                 )
               ],
@@ -206,13 +206,13 @@ class _SiberGozTarayiciScreenState extends State<SiberGozTarayiciScreen> with Si
                 GestureDetector(
                   onTap: () => Navigator.pop(context),
                   child: Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle, boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 10)]),
                     child: Icon(Icons.close, color: textColor, size: 20),
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                   decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 10)]),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
@@ -235,10 +235,10 @@ class _SiberGozTarayiciScreenState extends State<SiberGozTarayiciScreen> with Si
             child: Column(
               children: [
                 AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
+                  duration: Duration(milliseconds: 300),
                   child: Container(
                     key: ValueKey(_lazerKilitlendi),
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
@@ -251,9 +251,9 @@ class _SiberGozTarayiciScreenState extends State<SiberGozTarayiciScreen> with Si
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),

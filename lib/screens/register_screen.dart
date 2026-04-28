@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +10,7 @@ import '../core/responsive_kalkan.dart';
 /// 🦅 OTO DNA KAYIT VE ATOMİK İSTİHBARAT MOTORU
 /// [2026-03-28] GÜNCELLEME: KURUMSAL BAŞVURU SİNYALİ VE BATCH YAZMA
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  RegisterScreen({super.key});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -103,7 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (!mounted) return;
       _siberMesajGoster(_isKullanici ? "AĞA KATILIM BAŞARILI! 🦅" : "BAŞVURU MERKEZE İLETİLDİ! ONAY BEKLENİYOR 🦅");
 
-      Future.delayed(const Duration(seconds: 2), () {
+      Future.delayed(Duration(seconds: 2), () {
         if (mounted) Navigator.pop(context);
       });
 
@@ -121,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _siberMesajGoster(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 1)),
+        content: Text(mesaj, style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 1)),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -143,21 +144,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         body: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 500),
+            constraints: BoxConstraints(maxWidth: 500),
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-              physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+              physics: BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text("AĞA KATIL", style: TextStyle(color: activeAccent, fontSize: 36, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                  const SizedBox(height: 8),
-                  const Text("OtoDNA Kuantum Ekosistemine entegre olun.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                  const SizedBox(height: 40),
+                  SizedBox(height: 8),
+                  Text("OtoDNA Kuantum Ekosistemine entegre olun.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                  SizedBox(height: 40),
 
                   // 1. KULLANICI / FİRMA SEÇİM ZIRHI
                   Container(
-                    padding: const EdgeInsets.all(6),
+                    padding: EdgeInsets.all(6),
                     decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.1), borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withOpacity(0.05))),
                     child: Row(
                       children: [
@@ -166,22 +167,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40),
 
                   // 2. DİNAMİK FORMLAR
                   _buildKayitField(_isimController, _isKullanici ? "AD SOYAD" : "FİRMA UNVANI", Icons.person_outline, activeAccent),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   _buildKayitField(_emailController, "SİBER E-POSTA", Icons.alternate_email, activeAccent, isEmail: true),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   _buildKayitField(_telefonController, "TELEFON NUMARASI", Icons.phone_android, activeAccent, isPhone: true),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   _buildKayitField(_sifreController, "KUANTUM ŞİFRESİ", Icons.lock_outline, activeAccent, isPassword: true),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
 
                   // 3. KURUMSAL ONAY
                   if (!_isKullanici) ...[
                     _buildKurumsalOnay(activeAccent),
-                    const SizedBox(height: 32),
+                    SizedBox(height: 32),
                   ],
 
                   // 4. ATEŞLEME BUTONU
@@ -196,11 +197,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       onPressed: _isProcessing ? null : _kayitProtokolunuBaslat,
                       icon: _isProcessing
-                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
-                          : const Icon(Icons.power_settings_new, size: 24),
+                          ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
+                          : Icon(Icons.power_settings_new, size: 24),
                       label: Text(
                           _isProcessing ? "MÜHÜRLENİYOR..." : "HESAP OLUŞTUR",
-                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2)
+                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2)
                       ),
                     ),
                   ),
@@ -218,8 +219,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: GestureDetector(
         onTap: onTap,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          duration: Duration(milliseconds: 300),
+          padding: EdgeInsets.symmetric(vertical: 16),
           decoration: BoxDecoration(
             color: isActive ? color.withOpacity(0.15) : Colors.transparent,
             borderRadius: BorderRadius.circular(16),
@@ -238,13 +239,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         controller: controller,
         obscureText: isPassword,
         keyboardType: isPhone ? TextInputType.phone : (isEmail ? TextInputType.emailAddress : TextInputType.text),
-        style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1),
+        style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1),
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: SiberTema.textMuted, size: 20),
           hintText: hint,
-          hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
+          hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
           focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: accent, width: 1.5)),
         ),
       ),
@@ -253,7 +254,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget _buildKurumsalOnay(Color accent) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(color: accent.withOpacity(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: accent.withOpacity(0.3))),
       child: Row(
         children: [
@@ -263,7 +264,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             checkColor: SiberTema.oledBlack,
             onChanged: (value) => setState(() => _garantiSozlesmesiKabul = value!),
           ),
-          const Expanded(
+          Expanded(
             child: Text("OtoDNA Ulusal Çapraz Garanti Sözleşmesi şartlarını ve %12 Finansal Kesinti Protokolünü kabul ediyorum.", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, height: 1.5)),
           ),
         ],

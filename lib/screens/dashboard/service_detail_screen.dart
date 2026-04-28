@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +18,7 @@ class OfferItem {
 class ServiceDetailScreen extends StatefulWidget {
   final String raporId; // Firebase'deki rapor dökümanı ID'si
 
-  const ServiceDetailScreen({super.key, required this.raporId});
+  ServiceDetailScreen({super.key, required this.raporId});
 
   @override
   _ServiceDetailScreenState createState() => _ServiceDetailScreenState();
@@ -104,7 +105,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   // 🚀 FİREBASE ATOMİK TEKLİF MÜHÜRLEME MOTORU
   Future<void> _teklifiMuhurleVeGonder() async {
     if (_currentOffer.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Boş teklif gönderilemez!', style: TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Boş teklif gönderilemez!', style: TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi));
       return;
     }
 
@@ -138,11 +139,11 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
       await batch.commit();
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Teklif Faturası (PDF) Mühürlendi ve İletildi! 📲', style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Teklif Faturası (PDF) Mühürlendi ve İletildi! 📲', style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Mühürleme Hatası: $e', style: const TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Mühürleme Hatası: $e', style: TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi));
       }
     } finally {
       if (mounted) setState(() => _isSending = false);
@@ -160,61 +161,61 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text(_dealerName.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
+        title: Text(_dealerName.toUpperCase(), style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
         backgroundColor: bgColor,
         elevation: 0,
         centerTitle: true,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan), onPressed: () => Navigator.pop(context)),
-        actions: [IconButton(icon: const Icon(Icons.share, color: primaryCyan), onPressed: () {})],
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryCyan), onPressed: () => Navigator.pop(context)),
+        actions: [IconButton(icon: Icon(Icons.share, color: primaryCyan), onPressed: () {})],
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: primaryCyan))
+          ? Center(child: CircularProgressIndicator(color: primaryCyan))
           : _raporData == null
-          ? const Center(child: Text("Siber Rapor Okunamadı!", style: TextStyle(color: Colors.redAccent)))
+          ? Center(child: Text("Siber Rapor Okunamadı!", style: TextStyle(color: Colors.redAccent)))
           : SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.all(16),
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // ÜST BAŞLIK (FORM TİPİ)
             _buildHeaderSection(cardColor, primaryCyan),
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
 
-            const Row(
+            Row(
               children: [
                 Icon(Icons.handyman, color: primaryCyan, size: 20),
                 SizedBox(width: 8),
                 Text("ARAÇ KONTROL ŞEMASI", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: SiberTema.textMain, letterSpacing: 1)),
               ],
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
 
             // ÇİFT TİKLİ LİSTE (Firebase Verisi)
             ListView.builder(
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+              physics: NeverScrollableScrollPhysics(),
               itemCount: _checkItems.length,
               itemBuilder: (context, index) => _buildDoubleCheckRow(index, cardColor, primaryCyan),
             ),
 
-            const SizedBox(height: 30),
-            const Row(
+            SizedBox(height: 30),
+            Row(
               children: [
                 Icon(Icons.request_quote, color: Colors.amber, size: 20),
                 SizedBox(width: 8),
                 Text("FİYAT TEKLİFİ (TASLAK)", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.amber, letterSpacing: 1)),
               ],
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
 
             // HIZLI PAKET BUTONU
             GestureDetector(
               onTap: _addPeriodicPackage,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(color: Colors.amber.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.amber)),
-                child: const Row(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(Icons.bolt, color: Colors.amber), SizedBox(width: 8),
@@ -223,25 +224,25 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             // TEKLİF TABLOSU
             _buildOfferTable(cardColor, primaryCyan),
 
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
 
             // YAZDIRMA BUTONLARI
             _buildActionButtons(primaryCyan),
 
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             Center(
               child: Text(
                 "Bu döküman $brandName sisteminden üretilmiştir. Geçerliliği OtoDNA Mührü ile sabittir.",
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 10, color: SiberTema.textMuted, fontStyle: FontStyle.italic),
+                style: TextStyle(fontSize: 10, color: SiberTema.textMuted, fontStyle: FontStyle.italic),
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
           ],
         ),
       ),
@@ -258,7 +259,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
           color: cardColor,
           borderRadius: BorderRadius.circular(16),
@@ -268,19 +269,19 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Icon(Icons.verified, color: Color(0xFF00FFC2), size: 40),
-          const SizedBox(height: 12),
-          Text(_dealerName.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
-          const SizedBox(height: 4),
+          Icon(Icons.verified, color: Color(0xFF00FFC2), size: 40),
+          SizedBox(height: 12),
+          Text(_dealerName.toUpperCase(), style: TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+          SizedBox(height: 4),
           Text("YETKİLİ SERVİS DİJİTAL BİLGİ FORMU", style: TextStyle(color: primaryCyan, fontSize: 11, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 20),
-          const Divider(color: SiberTema.textMuted),
-          const SizedBox(height: 12),
+          SizedBox(height: 20),
+          Divider(color: SiberTema.textMuted),
+          SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(children: [const Icon(Icons.directions_car, color: SiberTema.textMuted, size: 16), const SizedBox(width: 8), Text("Plaka: $plaka", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 14))]),
-              Row(children: [const Icon(Icons.calendar_month, color: SiberTema.textMuted, size: 16), const SizedBox(width: 8), Text(tarih, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12))]),
+              Row(children: [Icon(Icons.directions_car, color: SiberTema.textMuted, size: 16), SizedBox(width: 8), Text("Plaka: $plaka", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 14))]),
+              Row(children: [Icon(Icons.calendar_month, color: SiberTema.textMuted, size: 16), SizedBox(width: 8), Text(tarih, style: TextStyle(color: SiberTema.textMuted, fontSize: 12))]),
             ],
           )
         ],
@@ -292,8 +293,8 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     bool isRisk = _checkItems[index]["isRisk"] ?? false;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
           color: cardColor,
           borderRadius: BorderRadius.circular(12),
@@ -326,11 +327,11 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                 value: val,
                 activeColor: checkColor,
                 checkColor: Colors.black,
-                side: const BorderSide(color: SiberTema.textMuted),
+                side: BorderSide(color: SiberTema.textMuted),
                 onChanged: (v) => onSub(v!)
             ),
           ),
-          Text(label, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
+          Text(label, style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
         ],
       ),
     );
@@ -339,9 +340,9 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   Widget _buildOfferTable(Color cardColor, Color primaryCyan) {
     if (_currentOffer.isEmpty) {
       return Container(
-        width: double.infinity, padding: const EdgeInsets.all(20),
+        width: double.infinity, padding: EdgeInsets.all(20),
         decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.textMuted)),
-        child: const Text("Henüz teklif faturası oluşturulmadı.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted)),
+        child: Text("Henüz teklif faturası oluşturulmadı.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted)),
       );
     }
 
@@ -356,24 +357,24 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
             child: DataTable(
               headingRowColor: MaterialStateProperty.all(primaryCyan.withOpacity(0.1)),
               columnSpacing: 20,
-              columns: const [
+              columns: [
                 DataColumn(label: Text("İşlem / Parça", style: TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold))),
                 DataColumn(label: Text("Fiyat", style: TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold))),
               ],
               rows: _currentOffer.map((item) => DataRow(cells: [
-                DataCell(Text(item.description, style: const TextStyle(color: SiberTema.textMain, fontSize: 12))),
-                DataCell(Text("₺${item.unitPrice}", style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold))),
+                DataCell(Text(item.description, style: TextStyle(color: SiberTema.textMain, fontSize: 12))),
+                DataCell(Text("₺${item.unitPrice}", style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold))),
               ])).toList(),
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(color: Colors.white26, borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))),
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("TOPLAM TUTAR:", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
-                Text("₺$totalAmount", style: const TextStyle(color: Colors.amber, fontSize: 18, fontWeight: FontWeight.bold)),
+                Text("TOPLAM TUTAR:", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
+                Text("₺$totalAmount", style: TextStyle(color: Colors.amber, fontSize: 18, fontWeight: FontWeight.bold)),
               ],
             ),
           )
@@ -388,20 +389,20 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
       children: [
         Expanded(
           child: ElevatedButton.icon(
-            icon: const Icon(Icons.print, color: Color(0xFF0F172A)),
-            label: const Text("Yazdır", style: TextStyle(color: Color(0xFF0F172A), fontWeight: FontWeight.bold)),
-            style: ElevatedButton.styleFrom(backgroundColor: primaryCyan, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+            icon: Icon(Icons.print, color: Color(0xFF0F172A)),
+            label: Text("Yazdır", style: TextStyle(color: Color(0xFF0F172A), fontWeight: FontWeight.bold)),
+            style: ElevatedButton.styleFrom(backgroundColor: primaryCyan, padding: EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Siber Yazıcıya Gönderiliyor... 🖨️')));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Siber Yazıcıya Gönderiliyor... 🖨️')));
             },
           ),
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12),
         Expanded(
           child: ElevatedButton.icon(
-            icon: _isSending ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : const Icon(Icons.picture_as_pdf, color: Colors.white),
-            label: Text(_isSending ? "MÜHÜRLENİYOR..." : "PDF Teklif", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.orange[800], padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+            icon: _isSending ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : Icon(Icons.picture_as_pdf, color: Colors.white),
+            label: Text(_isSending ? "MÜHÜRLENİYOR..." : "PDF Teklif", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.orange[800], padding: EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
             onPressed: _isSending ? null : _teklifiMuhurleVeGonder,
           ),
         ),

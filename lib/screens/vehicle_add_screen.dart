@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,7 @@ import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
 class VehicleAddScreen extends StatefulWidget {
-  const VehicleAddScreen({super.key});
+  VehicleAddScreen({super.key});
 
   @override
   State<VehicleAddScreen> createState() => _VehicleAddScreenState();
@@ -58,7 +59,7 @@ class _VehicleAddScreenState extends State<VehicleAddScreen> {
 
       _siberUyariGoster("ARAÇ DNA'SI BAŞARIYLA KUANTUM AĞINA MÜHÜRLENDİ! 🦅", isError: false);
 
-      Future.delayed(const Duration(seconds: 1), () {
+      Future.delayed(Duration(seconds: 1), () {
         if (mounted) Navigator.pop(context); // Terminali Kapat
       });
 
@@ -89,43 +90,43 @@ class _VehicleAddScreenState extends State<VehicleAddScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("ARAÇ DNA KODLAMA", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text("ARAÇ DNA KODLAMA", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
         ),
         body: SafeArea(
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 500), // 🖥️ Web / Double Teyp Kalkanı
+              constraints: BoxConstraints(maxWidth: 500), // 🖥️ Web / Double Teyp Kalkanı
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24.0),
-                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsets.all(24.0),
+                physics: BouncingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // 1. SİBER BARKOD GÖRSELİ
                     Center(
                       child: Container(
-                        padding: const EdgeInsets.all(24),
+                        padding: EdgeInsets.all(24),
                         decoration: BoxDecoration(
                           color: SiberTema.matGrey.withOpacity(0.8),
                           shape: BoxShape.circle,
                           border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 2),
                           boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.15), blurRadius: 40, spreadRadius: 10)],
                         ),
-                        child: const Icon(Icons.qr_code_scanner, color: SiberTema.kuantumCyan, size: 64),
+                        child: Icon(Icons.qr_code_scanner, color: SiberTema.kuantumCyan, size: 64),
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    SizedBox(height: 32),
 
-                    const Text("SİSTEME ARAÇ ENTEGRE ET", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-                    const SizedBox(height: 12),
+                    Text("SİSTEME ARAÇ ENTEGRE ET", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                    SizedBox(height: 12),
                     Text(
                       "OtoDNA Kuantum Ağına yeni bir araç mühürlemek için donanım kimliğini (17 Haneli VIN) giriniz.",
                       textAlign: TextAlign.center,
                       style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, height: 1.5, letterSpacing: 1, fontFamily: 'Avenir'),
                     ),
-                    const SizedBox(height: 48),
+                    SizedBox(height: 48),
 
                     // 2. PLAKA GİRİŞ TERMİNALİ
                     _buildKuantumInput(
@@ -134,7 +135,7 @@ class _VehicleAddScreenState extends State<VehicleAddScreen> {
                       icon: Icons.directions_car,
                       maxLength: 10,
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
 
                     // 3. ŞASE (VIN) GİRİŞ TERMİNALİ
                     _buildKuantumInput(
@@ -143,7 +144,7 @@ class _VehicleAddScreenState extends State<VehicleAddScreen> {
                       icon: Icons.memory,
                       maxLength: 17,
                     ),
-                    const SizedBox(height: 48),
+                    SizedBox(height: 48),
 
                     // 4. ATEŞLEME BUTONU
                     SizedBox(
@@ -152,11 +153,11 @@ class _VehicleAddScreenState extends State<VehicleAddScreen> {
                         style: SiberTema.kuantumButonStili(),
                         onPressed: _isProcessing ? null : _araciTanimla,
                         icon: _isProcessing
-                            ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
-                            : const Icon(Icons.radar, size: 24, color: SiberTema.oledBlack),
+                            ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
+                            : Icon(Icons.radar, size: 24, color: SiberTema.oledBlack),
                         label: Text(
                           _isProcessing ? "DNA SORGULANIYOR..." : "ARACI KUANTUM AĞINA MÜHÜRLE",
-                          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5, color: SiberTema.oledBlack, fontFamily: 'Avenir'),
+                          style: TextStyle(fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5, color: SiberTema.oledBlack, fontFamily: 'Avenir'),
                         ),
                       ),
                     ),
@@ -189,17 +190,17 @@ class _VehicleAddScreenState extends State<VehicleAddScreen> {
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9 ]')), // Sadece harf, rakam ve boşluk (Özel karakter yasak)
             ],
-            style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
+            style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
             decoration: InputDecoration(
               counterText: "", // Alt kısımdaki "17/17" yazısını gizler
               prefixIcon: Icon(icon, color: SiberTema.textMuted, size: 20),
               hintText: hint,
               hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'),
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+              contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 1.5),
+                borderSide: BorderSide(color: SiberTema.kuantumCyan, width: 1.5),
               ),
             ),
           ),

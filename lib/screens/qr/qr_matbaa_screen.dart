@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +11,7 @@ import '../../../services/qr_engine_service.dart';
 /// 🦅 QR MATBAA MERKEZİ
 /// Araçların üzerine yapıştırılacak fiziksel OtoDNA etiketlerini kriptografik olarak üretir.
 class QrMatbaaScreen extends StatefulWidget {
-  const QrMatbaaScreen({super.key});
+  QrMatbaaScreen({super.key});
 
   @override
   State<QrMatbaaScreen> createState() => _QrMatbaaScreenState();
@@ -18,10 +19,10 @@ class QrMatbaaScreen extends StatefulWidget {
 
 class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
   // 🏢 FİLDİŞİ SEDEF PALET
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMain = const Color(0xFF1E293B);
-  final Color textMuted = const Color(0xFF64748B);
+  final Color textMain = Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final User? _currentUser = FirebaseAuth.instance.currentUser;
@@ -73,7 +74,7 @@ class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
   void _siberUyari(String mesaj, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(
+      content: Text(mesaj, style: TextStyle(
           color: SiberTema.textMain,
           fontWeight: FontWeight.w900,
           fontFamily: 'Avenir'
@@ -109,34 +110,34 @@ class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
           child: Column(
             children: [
               Text(
                   "FİZİKSEL ARAÇ ETİKETİ BASIMI",
                   style: TextStyle(color: textMuted, fontWeight: FontWeight.bold, letterSpacing: 1.2, fontSize: 12)
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
 
               // 📸 HOLOGRAFİK QR GÖSTERGE ALANI
               AnimatedSwitcher(
-                duration: const Duration(milliseconds: 600),
+                duration: Duration(milliseconds: 600),
                 child: _qrData == null
                     ? Container(
-                  key: const ValueKey(1),
+                  key: ValueKey(1),
                   height: 260, width: 260,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(32),
-                      border: Border.all(color: Colors.white12, style: BorderStyle.dash, width: 2),
+                      border: Border.all(color: Colors.white12, style: BorderStyle.solid, width: 2),
                       boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.qr_code_2_rounded, color: Colors.white12, size: 80),
-                      const SizedBox(height: 16),
+                      Icon(Icons.qr_code_2_rounded, color: Colors.white12, size: 80),
+                      SizedBox(height: 16),
                       Text(
                           "Siber Kimlik\nAnalizi Bekleniyor",
                           textAlign: TextAlign.center,
@@ -146,8 +147,8 @@ class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
                   ),
                 )
                     : Container(
-                    key: const ValueKey(2),
-                    padding: const EdgeInsets.all(20),
+                    key: ValueKey(2),
+                    padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(32),
@@ -159,7 +160,7 @@ class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
                     child: QREngineService.buildSiberQRCode(_qrData!)
                 ),
               ),
-              const SizedBox(height: 48),
+              SizedBox(height: 48),
 
               // 🖋️ PLAKA GİRİŞ TERMİNALİ
               Container(
@@ -169,20 +170,20 @@ class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
                   border: Border.all(color: Colors.white.withOpacity(0.05)),
                   boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                 child: TextField(
                   controller: _plateController,
                   textCapitalization: TextCapitalization.characters,
                   style: TextStyle(color: primaryTeal, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 5),
                   textAlign: TextAlign.center,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: "PLAKA / ŞASE",
                     hintStyle: TextStyle(color: Colors.white12, fontSize: 18, letterSpacing: 2),
                     border: InputBorder.none,
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
 
               // ⚡ AKSİYON BUTONLARI
               SizedBox(
@@ -195,15 +196,15 @@ class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
                     elevation: 0,
                   ),
                   onPressed: _isGenerating ? null : _qrKodUretVeMuhrle,
-                  icon: _isGenerating ? const SizedBox() : const Icon(Icons.bolt_rounded, size: 28),
+                  icon: _isGenerating ? SizedBox() : Icon(Icons.bolt_rounded, size: 28),
                   label: _isGenerating
-                      ? const SizedBox(height: 24, width: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3))
-                      : const Text('KRİPTOLU QR ÜRET', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 1.5)),
+                      ? SizedBox(height: 24, width: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3))
+                      : Text('KRİPTOLU QR ÜRET', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 1.5)),
                 ),
               ),
 
               if (_qrData != null) ...[
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity, height: 60,
                   child: OutlinedButton.icon(
@@ -221,7 +222,7 @@ class _QrMatbaaScreenState extends State<QrMatbaaScreen> {
                 ),
               ],
 
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
               Text(
                 "UYARI: Üretilen kodlar tek kullanımlıktır ve sistem tarafından takip edilir.",
                 textAlign: TextAlign.center,

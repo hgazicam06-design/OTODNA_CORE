@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +10,7 @@ import '../core/responsive_kalkan.dart';
 import 'sohbet_ekrani.dart'; // Bir önceki kurduğumuz Kuantum Sansürlü Tünel
 
 class SohbetListesiScreen extends StatefulWidget {
-  const SohbetListesiScreen({super.key});
+  SohbetListesiScreen({super.key});
 
   @override
   State<SohbetListesiScreen> createState() => _SohbetListesiScreenState();
@@ -52,24 +53,24 @@ class _SohbetListesiScreenState extends State<SohbetListesiScreen> {
           elevation: 1,
           shadowColor: SiberTema.kuantumCyan.withOpacity(0.3),
           leading: IconButton(
-            icon: const Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 22),
+            icon: Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 22),
             onPressed: () => Navigator.pop(context),
           ),
-          title: const Text(
+          title: Text(
             "SİBER İLETİŞİM AĞI",
             style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
           ),
           centerTitle: true,
         ),
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(image: AssetImage('assets/images/radar_grid.png'), fit: BoxFit.cover, opacity: 0.05),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: EdgeInsets.all(20.0),
                 child: Text("AKTİF KUANTUM TÜNELLERİ", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.8), fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
               ),
               Expanded(
@@ -81,18 +82,18 @@ class _SohbetListesiScreenState extends State<SohbetListesiScreen> {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3));
+                      return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3));
                     }
                     if (snapshot.hasError) {
-                      return Center(child: Text("Siber Ağ Çöktü: ${snapshot.error}", style: const TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)));
+                      return Center(child: Text("Siber Ağ Çöktü: ${snapshot.error}", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)));
                     }
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                       return _buildBosDurum();
                     }
 
                     return ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      physics: BouncingScrollPhysics(),
+                      padding: EdgeInsets.symmetric(horizontal: 16),
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
                         var odaVerisi = snapshot.data!.docs[index].data() as Map<String, dynamic>;
@@ -134,7 +135,7 @@ class _SohbetListesiScreenState extends State<SohbetListesiScreen> {
 
   Widget _buildSohbetKarti(String karsiId, String isim, String sonMesaj, String zaman, bool sansurluMu) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: 16),
       child: InkWell(
         onTap: () {
           if (karsiId.isNotEmpty) {
@@ -152,7 +153,7 @@ class _SohbetListesiScreenState extends State<SohbetListesiScreen> {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
             child: Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: sansurluMu ? SiberTema.kanKirmizi.withOpacity(0.05) : SiberTema.matGrey.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(16),
@@ -183,7 +184,7 @@ class _SohbetListesiScreenState extends State<SohbetListesiScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16),
 
                   // 📝 MESAJ DETAYLARI
                   Expanded(
@@ -194,12 +195,12 @@ class _SohbetListesiScreenState extends State<SohbetListesiScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              child: Text(isim, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                              child: Text(isim, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                             ),
                             Text(zaman, style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 11, fontWeight: FontWeight.w600)),
                           ],
                         ),
-                        const SizedBox(height: 6),
+                        SizedBox(height: 6),
                         Text(
                           sonMesaj,
                           maxLines: 1,
@@ -229,9 +230,9 @@ class _SohbetListesiScreenState extends State<SohbetListesiScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.forum_outlined, color: SiberTema.kuantumCyan.withOpacity(0.2), size: 60),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Text("SİBER AĞ TEMİZ", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text("Henüz açık bir iletişim tüneliniz bulunmuyor.", style: TextStyle(color: SiberTema.textMain.withOpacity(0.3), fontSize: 12, fontFamily: 'Avenir')),
         ],
       ),

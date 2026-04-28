@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../lojistik/otodna_cigir_screen.dart'; // MÜŞTERİ TAKSİ ÇAĞIRMA KÖPRÜSÜ
 
 class HomeVitrin extends StatefulWidget {
-  const HomeVitrin({super.key});
+  HomeVitrin({super.key});
 
   @override
   State<HomeVitrin> createState() => _HomeVitrinState();
@@ -15,21 +16,21 @@ class _HomeVitrinState extends State<HomeVitrin> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final User? _currentUser = FirebaseAuth.instance.currentUser;
 
-  final Color bgColor = const Color(0xFF0F172A);
-  final Color primaryCyan = const Color(0xFF00FFC2);
-  final Color cardColor = const Color(0xFF1E293B);
+  final Color bgColor = Color(0xFF0F172A);
+  final Color primaryCyan = Color(0xFF00FFC2);
+  final Color cardColor = Color(0xFF1E293B);
 
   void _siberUyari(String mesaj) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+      content: Text(mesaj, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
       backgroundColor: primaryCyan,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_currentUser == null) return Container(color: bgColor, child: const Center(child: Text("Kimlik Hatası!")));
+    if (_currentUser == null) return Container(color: bgColor, child: Center(child: Text("Kimlik Hatası!")));
 
     return Container(
       decoration: BoxDecoration(
@@ -40,15 +41,15 @@ class _HomeVitrinState extends State<HomeVitrin> {
         ),
       ),
       child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         child: Column(
           children: [
             _buildHeroSection(), // Canlı Hoşgeldin ve Araç Bilgisi
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             _buildQuickActions(), // Hızlı İkonlar
             _buildSectionTitle("OtoDNA Tavsiyesi (Altın Mühürlüler)"),
             _buildFeaturedFirms(), // Firebase'den VIP Bayi Çekimi
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
           ],
         ),
       ),
@@ -60,7 +61,7 @@ class _HomeVitrinState extends State<HomeVitrin> {
   // =====================================================================
   Widget _buildHeroSection() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -74,17 +75,17 @@ class _HomeVitrinState extends State<HomeVitrin> {
                 }
                 return Text(
                     "Hoş geldin, ${isim.split(' ').first}",
-                    style: const TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: 1)
+                    style: TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: 1)
                 );
               }
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
 
           // ARAÇ DURUMU ÇEKİMİ
           StreamBuilder<QuerySnapshot>(
               stream: _db.collection('araclar').where('sahibiUid', isEqualTo: _currentUser!.uid).limit(1).snapshots(),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) return const CircularProgressIndicator();
+                if (snapshot.connectionState == ConnectionState.waiting) return CircularProgressIndicator();
 
                 bool aracVar = snapshot.hasData && snapshot.data!.docs.isNotEmpty;
                 String plaka = "ARAÇ YOK";
@@ -106,7 +107,7 @@ class _HomeVitrinState extends State<HomeVitrin> {
                 }
 
                 return Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     color: durumRengi.withOpacity(0.05),
@@ -115,18 +116,18 @@ class _HomeVitrinState extends State<HomeVitrin> {
                   child: Row(
                     children: [
                       Icon(Icons.directions_car, color: durumRengi, size: 40),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("Aktif Araç Yuvasi", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
-                          const SizedBox(height: 4),
-                          Text(plaka, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 1.5)),
+                          Text("Aktif Araç Yuvasi", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+                          SizedBox(height: 4),
+                          Text(plaka, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 1.5)),
                         ],
                       ),
-                      const Spacer(),
+                      Spacer(),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(color: durumRengi.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
                         child: Text(durumMetni, style: TextStyle(color: durumRengi, fontWeight: FontWeight.bold, fontSize: 11)),
                       ),
@@ -150,7 +151,7 @@ class _HomeVitrinState extends State<HomeVitrin> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _actionItem(Icons.local_taxi, "Taksi Çığır", primaryCyan, () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => const OtoDnaCigirScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => OtoDnaCigirScreen()));
           }),
           _actionItem(Icons.tire_repair, "Lastik", Colors.blueGrey, () => _siberUyari("Siber Lastik Radarı Açılıyor...")),
           _actionItem(Icons.battery_charging_full, "Akü & EV", primaryCyan, () => _siberUyari("Elektrik/Akü İstasyonları Aranıyor...")),
@@ -166,12 +167,12 @@ class _HomeVitrinState extends State<HomeVitrin> {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(color: color.withOpacity(0.15), shape: BoxShape.circle, border: Border.all(color: color.withOpacity(0.3))),
             child: Icon(icon, color: color, size: 24),
           ),
-          const SizedBox(height: 8),
-          Text(label, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
+          SizedBox(height: 8),
+          Text(label, style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
         ],
       ),
     );
@@ -183,19 +184,19 @@ class _HomeVitrinState extends State<HomeVitrin> {
   Widget _buildFeaturedFirms() {
     return Container(
       height: 230,
-      padding: const EdgeInsets.only(left: 20),
+      padding: EdgeInsets.only(left: 20),
       child: StreamBuilder<QuerySnapshot>(
         // Firebase'den yalnızca VIP (Altın) olan bayileri çekiyoruz
           stream: _db.collection('kullanicilar').where('rol', isEqualTo: 'bayi').where('is_vip', isEqualTo: true).snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator());
-            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Center(child: Text("Şu an bölgenizde VIP bayi bulunmuyor.", style: TextStyle(color: SiberTema.textMuted)));
+            if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return Center(child: Text("Şu an bölgenizde VIP bayi bulunmuyor.", style: TextStyle(color: SiberTema.textMuted)));
 
             var vipFirmalar = snapshot.data!.docs;
 
             return ListView.builder(
               scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               itemCount: vipFirmalar.length,
               itemBuilder: (context, index) {
                 var firma = vipFirmalar[index].data() as Map<String, dynamic>;
@@ -204,7 +205,7 @@ class _HomeVitrinState extends State<HomeVitrin> {
 
                 return Container(
                   width: 170,
-                  margin: const EdgeInsets.only(right: 16, bottom: 10),
+                  margin: EdgeInsets.only(right: 16, bottom: 10),
                   decoration: BoxDecoration(
                       color: cardColor,
                       borderRadius: BorderRadius.circular(16),
@@ -215,36 +216,36 @@ class _HomeVitrinState extends State<HomeVitrin> {
                     children: [
                       // Firma Görseli (Simülasyon)
                       ClipRRect(
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
                         child: Container(
                             height: 100,
                             width: double.infinity,
                             color: bgColor,
-                            child: const Icon(Icons.store, color: Colors.amber, size: 50)
+                            child: Icon(Icons.store, color: Colors.amber, size: 50)
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(12),
+                        padding: EdgeInsets.all(12),
                         child: Column(
                           children: [
-                            Text(firmaAdi, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13)),
-                            const SizedBox(height: 8),
+                            Text(firmaAdi, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13)),
+                            SizedBox(height: 8),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(Icons.stars, color: Colors.amber, size: 16),
-                                const SizedBox(width: 4),
-                                Text("ALTIN ROZET | $puan", style: const TextStyle(color: Colors.amber, fontSize: 10, fontWeight: FontWeight.bold)),
+                                Icon(Icons.stars, color: Colors.amber, size: 16),
+                                SizedBox(width: 4),
+                                Text("ALTIN ROZET | $puan", style: TextStyle(color: Colors.amber, fontSize: 10, fontWeight: FontWeight.bold)),
                               ],
                             ),
-                            const SizedBox(height: 12),
+                            SizedBox(height: 12),
                             SizedBox(
                               height: 30,
                               width: double.infinity,
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(backgroundColor: primaryCyan, padding: EdgeInsets.zero, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
                                   onPressed: () => _siberUyari("$firmaAdi için randevu alınıyor..."),
-                                  child: const Text("Randevu Al", style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold))
+                                  child: Text("Randevu Al", style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold))
                               ),
                             )
                           ],
@@ -262,10 +263,10 @@ class _HomeVitrinState extends State<HomeVitrin> {
 
   Widget _buildSectionTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       child: Align(
           alignment: Alignment.centerLeft,
-          child: Text(title, style: const TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.w600, letterSpacing: 1.2))
+          child: Text(title, style: TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.w600, letterSpacing: 1.2))
       ),
     );
   }

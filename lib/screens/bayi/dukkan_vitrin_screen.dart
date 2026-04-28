@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/bayi/dukkan_vitrin_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,7 @@ import '../../core/responsive_kalkan.dart';
 class DukkanVitrinScreen extends StatelessWidget {
   final String bayiId;
 
-  const DukkanVitrinScreen({super.key, required this.bayiId});
+  DukkanVitrinScreen({super.key, required this.bayiId});
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +23,16 @@ class DukkanVitrinScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: const Text("FİRMA VİTRİNİ", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
+          title: Text("FİRMA VİTRİNİ", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
           centerTitle: true,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18), onPressed: () => Navigator.pop(context)),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18), onPressed: () => Navigator.pop(context)),
         ),
         body: StreamBuilder<DocumentSnapshot>(
           // 📡 FİREBASE CANLI RADAR BAĞLANTISI (Kuantum Standart Tablo: kullanicilar)
           stream: FirebaseFirestore.instance.collection('kullanicilar').doc(bayiId).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+              return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
             }
             if (!snapshot.hasData || !snapshot.data!.exists) {
               return _buildHataEkrani("SİBER İHLAL: FİRMA BULUNAMADI!");
@@ -46,20 +47,20 @@ class DukkanVitrinScreen extends StatelessWidget {
             bool isKaraListe = yildizSayisi <= 1 || rozet.toUpperCase() == "KARA LİSTE" || rozet.toUpperCase() == "BLACKLIST";
 
             return SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.all(24),
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.all(24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // 🛑 EĞER FİRMA KARA LİSTEDEYSE DEV UYARI BANDI ÇIKAR
                   if (isKaraListe) _buildKaraListeDamgasi(),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
 
                   // ── FİRMA KİMLİK KARTI ──
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(24),
+                    padding: EdgeInsets.all(24),
                     decoration: BoxDecoration(
                       color: isKaraListe ? SiberTema.kanKirmizi.withOpacity(0.05) : SiberTema.matGrey,
                       borderRadius: BorderRadius.circular(20),
@@ -78,7 +79,7 @@ class DukkanVitrinScreen extends StatelessWidget {
                             color: isKaraListe ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
                             size: 60
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16),
                         Text(
                           firmaAdi.toUpperCase(),
                           textAlign: TextAlign.center,
@@ -90,7 +91,7 @@ class DukkanVitrinScreen extends StatelessWidget {
                               fontFamily: 'Avenir'
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(height: 12),
                         // 🌟 YILDIZ VE ROZET SİSTEMİ
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -100,9 +101,9 @@ class DukkanVitrinScreen extends StatelessWidget {
                               color: isKaraListe ? SiberTema.kanKirmizi : SiberTema.altinSari,
                               size: 20,
                             )),
-                            const SizedBox(width: 12),
+                            SizedBox(width: 12),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                               decoration: BoxDecoration(
                                 color: isKaraListe ? SiberTema.kanKirmizi : SiberTema.siberGold.withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(8),
@@ -123,7 +124,7 @@ class DukkanVitrinScreen extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
 
                   // ── İŞLEM BUTONLARI (KARA LİSTEDEYSE KİLİTLENİR VEYA UYARI VERİR) ──
                   if (!isKaraListe) ...[
@@ -135,9 +136,9 @@ class DukkanVitrinScreen extends StatelessWidget {
                         'hedef_id': bayiId,
                         'tarih': FieldValue.serverTimestamp(),
                       });
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Randevu talebi Karargaha ve bayiye iletildi!", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Randevu talebi Karargaha ve bayiye iletildi!", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan));
                     }),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     _buildSiberButon("S.O.S YARDIM ÇAĞIR", Icons.sos, SiberTema.altinSari, () {
                       WriteBatch batch = FirebaseFirestore.instance.batch();
                       
@@ -161,19 +162,19 @@ class DukkanVitrinScreen extends StatelessWidget {
                       });
                       
                       batch.commit();
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("S.O.S Sinyali Fırlatıldı! Ekip yola çıkıyor!", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kanKirmizi));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("S.O.S Sinyali Fırlatıldı! Ekip yola çıkıyor!", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kanKirmizi));
                     }),
                   ] else ...[
                     // KARA LİSTE FİRMASINDA BUTONLAR PASİFTİR VEYA FARKLI ÇALIŞIR
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.02),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: SiberTema.textMuted)
                       ),
-                      child: const Text(
+                      child: Text(
                         "SİBER KİLİT: Bu firma Karargah kurallarını ihlal ettiği için sistem üzerinden yeni işlem veya randevu kabul edemez. Sadece geçmiş kayıtları görüntülenebilir.",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold, height: 1.5, fontFamily: 'Avenir'),
@@ -193,13 +194,13 @@ class DukkanVitrinScreen extends StatelessWidget {
   Widget _buildKaraListeDamgasi() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: SiberTema.kanKirmizi.withOpacity(0.1),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: SiberTema.kanKirmizi, width: 2),
       ),
-      child: const Column(
+      child: Column(
         children: [
           Icon(Icons.gavel_rounded, color: SiberTema.kanKirmizi, size: 40),
           SizedBox(height: 12),
@@ -229,7 +230,7 @@ class DukkanVitrinScreen extends StatelessWidget {
           elevation: 0,
         ),
         icon: Icon(icon, size: 20),
-        label: Text(text, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5, fontFamily: 'Avenir')),
+        label: Text(text, style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5, fontFamily: 'Avenir')),
         onPressed: onTap,
       ),
     );
@@ -237,7 +238,7 @@ class DukkanVitrinScreen extends StatelessWidget {
 
   Widget _buildHataEkrani(String mesaj) {
     return Center(
-      child: Text(mesaj, style: const TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+      child: Text(mesaj, style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
     );
   }
 }

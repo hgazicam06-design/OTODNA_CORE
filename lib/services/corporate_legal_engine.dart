@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 import '../models/adli_rapor_model.dart';
 
@@ -136,7 +136,7 @@ class CorporateLegalEngine {
     developer.log("OTODNA BİLGİ: Bilirkişi analizi başlatıldı...");
     
     // Gerçek sistemde Gemini/AI çağrısı yapılır, burada 3 sn mock bekliyoruz.
-    await Future.delayed(const Duration(seconds: 3)); 
+    await Future.delayed(Duration(seconds: 3)); 
 
     bool parcaOrijinalMi = tedarikciKodu.toUpperCase().startsWith("ORG");
     

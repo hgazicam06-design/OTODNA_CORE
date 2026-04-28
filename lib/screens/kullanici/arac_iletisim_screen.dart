@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 
 class AracIletisimScreen extends StatefulWidget {
   final String plaka;
-  const AracIletisimScreen({super.key, required this.plaka});
+  AracIletisimScreen({super.key, required this.plaka});
 
   @override
   State<AracIletisimScreen> createState() => _AracIletisimScreenState();
@@ -24,10 +25,10 @@ class _AracIletisimScreenState extends State<AracIletisimScreen> {
   String _aracMarkaModel = "OtoDNA Aracı";
 
   // 🏢 PLAZA KALİTESİ PALET (Açık, Ferah ve Lüks)
-  final Color bgColor = const Color(0xFFFAFAFC);
+  final Color bgColor = Color(0xFFFAFAFC);
   final Color surfaceColor = Colors.white;
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textColor = const Color(0xFF1E293B);
+  final Color textColor = Color(0xFF1E293B);
   final Color subTextColor = Colors.black54;
 
   @override
@@ -99,7 +100,7 @@ class _AracIletisimScreenState extends State<AracIletisimScreen> {
         await _mesajGonder("📷 Görsel Kanıt", fotoLink: link);
       } catch (e) {
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Görsel yüklenemedi.", style: TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.redAccent));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Görsel yüklenemedi.", style: TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.redAccent));
       } finally {
         setState(() => _isSendingFoto = false);
       }
@@ -121,7 +122,7 @@ class _AracIletisimScreenState extends State<AracIletisimScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text("${widget.plaka} • $_aracMarkaModel", style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 0.5, fontFamily: 'Avenir')),
-            const SizedBox(height: 2),
+            SizedBox(height: 2),
             Text("Kriptolu Bağlantı: $_sahipIsmi", style: TextStyle(color: primaryTeal, fontSize: 11, fontWeight: FontWeight.w600, fontFamily: 'Avenir')),
           ],
         ),
@@ -139,11 +140,11 @@ class _AracIletisimScreenState extends State<AracIletisimScreen> {
         children: [
           // ZARİF BİLDİRİM ÇİPLERİ
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 12),
+            padding: EdgeInsets.symmetric(vertical: 12),
             decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05)))),
             child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16),
-              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal, padding: EdgeInsets.symmetric(horizontal: 16),
+              physics: BouncingScrollPhysics(),
               child: Row(
                 children: [
                   _buildHizliButon("Hatalı Park", Icons.warning_amber_rounded),
@@ -169,7 +170,7 @@ class _AracIletisimScreenState extends State<AracIletisimScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.lock_outline, color: Colors.white12, size: 48),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16),
                           Text("Uçtan Uca Şifreli Bağlantı.\nAraç sahibine anonim olarak ulaşın.", textAlign: TextAlign.center, style: TextStyle(color: subTextColor, fontSize: 13, height: 1.5, fontFamily: 'Avenir')),
                         ],
                       )
@@ -177,7 +178,7 @@ class _AracIletisimScreenState extends State<AracIletisimScreen> {
                 }
 
                 return ListView.builder(
-                  reverse: true, physics: const BouncingScrollPhysics(), padding: const EdgeInsets.all(20), itemCount: mesajlar.length,
+                  reverse: true, physics: BouncingScrollPhysics(), padding: EdgeInsets.all(20), itemCount: mesajlar.length,
                   itemBuilder: (context, index) {
                     var mData = mesajlar[index].data() as Map<String, dynamic>;
                     bool benimMesajim = mData['gonderen_id'] == 'anonim_vatandas_1';
@@ -193,15 +194,15 @@ class _AracIletisimScreenState extends State<AracIletisimScreen> {
                     return Align(
                       alignment: benimMesajim ? Alignment.centerRight : Alignment.centerLeft,
                       child: Container(
-                        margin: const EdgeInsets.only(bottom: 12), padding: const EdgeInsets.all(12),
+                        margin: EdgeInsets.only(bottom: 12), padding: EdgeInsets.all(12),
                         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
                         decoration: BoxDecoration(
                           color: benimMesajim ? primaryTeal : surfaceColor,
-                          boxShadow: benimMesajim ? [BoxShadow(color: primaryTeal.withValues(alpha: 0.2), blurRadius: 8, offset: const Offset(0, 4))] : [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 8, offset: const Offset(0, 4))],
+                          boxShadow: benimMesajim ? [BoxShadow(color: primaryTeal.withValues(alpha: 0.2), blurRadius: 8, offset: Offset(0, 4))] : [BoxShadow(color: Colors.white.withValues(alpha: 0.05), blurRadius: 8, offset: Offset(0, 4))],
                           borderRadius: BorderRadius.only(
-                              topLeft: const Radius.circular(16), topRight: const Radius.circular(16),
-                              bottomLeft: benimMesajim ? const Radius.circular(16) : const Radius.circular(4),
-                              bottomRight: benimMesajim ? const Radius.circular(4) : const Radius.circular(16)
+                              topLeft: Radius.circular(16), topRight: Radius.circular(16),
+                              bottomLeft: benimMesajim ? Radius.circular(16) : Radius.circular(4),
+                              bottomRight: benimMesajim ? Radius.circular(4) : Radius.circular(16)
                           ),
                           border: benimMesajim ? null : Border.all(color: Colors.white.withValues(alpha: 0.05), width: 1),
                         ),
@@ -210,7 +211,7 @@ class _AracIletisimScreenState extends State<AracIletisimScreen> {
                           children: [
                             if (fotoLink != null)
                               Padding(
-                                padding: const EdgeInsets.only(bottom: 8),
+                                padding: EdgeInsets.only(bottom: 8),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
                                   child: Image.network(fotoLink, width: 200, height: 200, fit: BoxFit.cover),
@@ -218,14 +219,14 @@ class _AracIletisimScreenState extends State<AracIletisimScreen> {
                               ),
                             if (mData['mesaj'].toString().isNotEmpty)
                               Padding(
-                                padding: const EdgeInsets.only(bottom: 4),
+                                padding: EdgeInsets.only(bottom: 4),
                                 child: Text(mData['mesaj'], style: TextStyle(color: benimMesajim ? Colors.white : textColor, fontSize: 14, letterSpacing: 0.3, fontFamily: 'Avenir', fontWeight: FontWeight.w500)),
                               ),
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(saatYazisi, style: TextStyle(color: benimMesajim ? Colors.white70 : Colors.black38, fontSize: 10, fontFamily: 'Avenir')),
-                                const SizedBox(width: 6),
+                                SizedBox(width: 6),
                                 if (benimMesajim) _buildTikIkonu(durum),
                               ],
                             )
@@ -241,37 +242,37 @@ class _AracIletisimScreenState extends State<AracIletisimScreen> {
 
           // MESAJ GİRİŞ ALANI
           if (_isBlocked)
-            Container(padding: const EdgeInsets.all(16), width: double.infinity, color: Colors.redAccent.withValues(alpha: 0.1), child: const Text("Bağlantı Reddedildi", textAlign: TextAlign.center, style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, letterSpacing: 1)))
+            Container(padding: EdgeInsets.all(16), width: double.infinity, color: Colors.redAccent.withValues(alpha: 0.1), child: Text("Bağlantı Reddedildi", textAlign: TextAlign.center, style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, letterSpacing: 1)))
           else
             SafeArea(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(color: bgColor, border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05)))),
                 child: Row(
                   children: [
                     GestureDetector(
                       onTap: _isSendingFoto ? null : _fotografCekVeGonder,
                       child: Container(
-                          padding: const EdgeInsets.all(10),
+                          padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(color: surfaceColor, shape: BoxShape.circle, border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 5)]),
-                          child: _isSendingFoto ? SizedBox(width: 18, height: 18, child: CircularProgressIndicator(color: primaryTeal, strokeWidth: 2)) : const Icon(Icons.camera_alt_outlined, color: Colors.white54, size: 20)
+                          child: _isSendingFoto ? SizedBox(width: 18, height: 18, child: CircularProgressIndicator(color: primaryTeal, strokeWidth: 2)) : Icon(Icons.camera_alt_outlined, color: Colors.white54, size: 20)
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     Expanded(
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: EdgeInsets.symmetric(horizontal: 16),
                         decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 5)]),
                         child: TextField(controller: _mesajController, style: TextStyle(color: textColor, fontSize: 14, fontFamily: 'Avenir', fontWeight: FontWeight.w500), decoration: InputDecoration(hintText: "Mesajınızı yazın...", hintStyle: TextStyle(color: Colors.white38, fontSize: 13, fontFamily: 'Avenir'), border: InputBorder.none)),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     GestureDetector(
                       onTap: () => _mesajGonder(_mesajController.text),
                       child: Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(color: primaryTeal, shape: BoxShape.circle, boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.3), blurRadius: 8, offset: const Offset(0, 4))]),
-                          child: const Icon(Icons.send_rounded, color: SiberTema.kuantumCyan, size: 18)
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(color: primaryTeal, shape: BoxShape.circle, boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.3), blurRadius: 8, offset: Offset(0, 4))]),
+                          child: Icon(Icons.send_rounded, color: SiberTema.kuantumCyan, size: 18)
                       ),
                     )
                   ],
@@ -288,12 +289,12 @@ class _AracIletisimScreenState extends State<AracIletisimScreen> {
       onTap: () => _mesajGonder(metin),
       borderRadius: BorderRadius.circular(20),
       child: Container(
-        margin: const EdgeInsets.only(right: 8), padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: EdgeInsets.only(right: 8), padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 4)]),
         child: Row(
           children: [
             Icon(ikon, color: Colors.white54, size: 14),
-            const SizedBox(width: 6),
+            SizedBox(width: 6),
             Text(metin, style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.w600, fontFamily: 'Avenir')),
           ],
         ),
@@ -302,8 +303,8 @@ class _AracIletisimScreenState extends State<AracIletisimScreen> {
   }
 
   Widget _buildTikIkonu(int durum) {
-    if (durum == 0) return const Icon(Icons.check, color: SiberTema.textMuted, size: 12);
-    if (durum == 1) return const Icon(Icons.done_all, color: SiberTema.textMuted, size: 12);
-    return const Icon(Icons.done_all, color: SiberTema.kuantumCyan, size: 12); // Okundu (Beyaz renk, çünkü arka plan teal)
+    if (durum == 0) return Icon(Icons.check, color: SiberTema.textMuted, size: 12);
+    if (durum == 1) return Icon(Icons.done_all, color: SiberTema.textMuted, size: 12);
+    return Icon(Icons.done_all, color: SiberTema.kuantumCyan, size: 12); // Okundu (Beyaz renk, çünkü arka plan teal)
   }
 }

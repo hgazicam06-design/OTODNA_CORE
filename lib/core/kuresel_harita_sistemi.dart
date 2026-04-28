@@ -1,17 +1,17 @@
-// lib/core/kuresel_harita_sistemi.dart
+﻿// lib/core/kuresel_harita_sistemi.dart
 
 /// 🗺️ OTODNA KÜRESEL COĞRAFİ VERİ VE KONUM PROTOKOLÜ (V4 - ZIRHLI)
 /// 4 Kademeli (Ülke -> Bölge/Eyalet -> Şehir -> İlçe) İstihbarat Motoru.
 /// Ankara/Türkiye merkez üssü üzerinden tüm dünya operasyonlarını yönetir.
 class KureselHaritaSistemi {
   // 🇹🇷 KARARGAH MERKEZ ÜSSÜ (HQ)
-  static const String globalMerkezUlkemiz = "Türkiye";
-  static const String globalMerkezSehir = "Ankara";
+  static String globalMerkezUlkemiz = "Türkiye";
+  static String globalMerkezSehir = "Ankara";
 
   // ---------------------------------------------------------
   // 🧠 KÜRESEL KUANTUM MATRİSİ (4 KADEMELİ VERİ AĞI)
   // ---------------------------------------------------------
-  static const Map<String, Map<String, Map<String, List<String>>>> _kureselMatris = {
+  static Map<String, Map<String, Map<String, List<String>>>> _kureselMatris = {
     "Türkiye": {
       "İç Anadolu Bölgesi": {
         "Ankara": ["Akyurt", "Altındağ", "Çankaya", "Keçiören", "Yenimahalle", "Mamak", "Sincan", "Etimesgut", "Gölbaşı"],

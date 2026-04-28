@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +10,7 @@ import '../core/responsive_kalkan.dart';
 /// 🦅 OTO DNA SİBER SİNYAL MERKEZİ - BİLDİRİM VE TAKİP RADARI
 /// [2026-03-28] GÜNCELLEME: ATOMİK BATCH MÜHÜRLEME SİSTEMİ
 class NotificationsScreen extends StatefulWidget {
-  const NotificationsScreen({super.key});
+  NotificationsScreen({super.key});
 
   @override
   State<NotificationsScreen> createState() => _NotificationsScreenState();
@@ -52,7 +53,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white)),
+        content: Text(mesaj, style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white)),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -62,7 +63,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
     if (_user == null) {
-      return const Scaffold(
+      return Scaffold(
         backgroundColor: SiberTema.oledBlack,
         body: Center(child: Text("SİBER İHLAL: KİMLİK BULUNAMADI!", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900))),
       );
@@ -75,12 +76,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("SİBER SİNYAL MERKEZİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2)),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text("SİBER SİNYAL MERKEZİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2)),
           centerTitle: true,
           actions: [
             IconButton(
-              icon: const Icon(Icons.done_all, color: SiberTema.kuantumCyan),
+              icon: Icon(Icons.done_all, color: SiberTema.kuantumCyan),
               onPressed: _tumuOkunduIsaretle,
               tooltip: "TÜMÜNÜ MÜHÜRLE",
             )
@@ -88,7 +89,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ),
         body: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 800),
+            constraints: BoxConstraints(maxWidth: 800),
             child: StreamBuilder<QuerySnapshot>(
               stream: _db.collection('kullanicilar')
                   .doc(_user!.uid)
@@ -97,7 +98,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+                  return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -105,8 +106,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 }
 
                 return ListView.builder(
-                  padding: const EdgeInsets.all(24),
-                  physics: const BouncingScrollPhysics(),
+                  padding: EdgeInsets.all(24),
+                  physics: BouncingScrollPhysics(),
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     var doc = snapshot.data!.docs[index];
@@ -134,8 +135,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.radar, color: SiberTema.kuantumCyan.withOpacity(0.1), size: 100),
-          const SizedBox(height: 24),
-          const Text("RADAR TEMİZ", style: TextStyle(color: SiberTema.textMuted, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 4)),
+          SizedBox(height: 24),
+          Text("RADAR TEMİZ", style: TextStyle(color: SiberTema.textMuted, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 4)),
         ],
       ),
     );
@@ -160,8 +161,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       },
       borderRadius: BorderRadius.circular(20),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(24),
+        margin: EdgeInsets.only(bottom: 16),
+        padding: EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: okundu ? SiberTema.matGrey.withOpacity(0.05) : SiberTema.kuantumCyan.withOpacity(0.05),
           borderRadius: BorderRadius.circular(20),
@@ -171,17 +172,17 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(12),
               decoration: BoxDecoration(color: iconColor.withOpacity(0.1), shape: BoxShape.circle),
               child: Icon(icon, color: iconColor, size: 24),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(baslik.toUpperCase(), style: TextStyle(color: okundu ? Colors.white70 : Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1)),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Text(mesaj, style: TextStyle(color: okundu ? Colors.white24 : Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, height: 1.4)),
                 ],
               ),
@@ -189,7 +190,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             if (!okundu)
               Container(
                 width: 8, height: 8,
-                decoration: const BoxDecoration(color: SiberTema.kuantumCyan, shape: BoxShape.circle, boxShadow: [BoxShadow(color: SiberTema.kuantumCyan, blurRadius: 8)]),
+                decoration: BoxDecoration(color: SiberTema.kuantumCyan, shape: BoxShape.circle, boxShadow: [BoxShadow(color: SiberTema.kuantumCyan, blurRadius: 8)]),
               )
           ],
         ),

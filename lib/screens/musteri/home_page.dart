@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart'; // YENİ: GoRouter entegrasyonu
 
 class HomePageDesign extends StatefulWidget {
-  const HomePageDesign({super.key});
+  HomePageDesign({super.key});
 
   @override
   State<HomePageDesign> createState() => _HomePageDesignState();
@@ -11,11 +11,11 @@ class HomePageDesign extends StatefulWidget {
 
 class _HomePageDesignState extends State<HomePageDesign> {
   // 🏢 FİLDİŞİ SEDEF PALET
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color surfaceColor = Colors.white;
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMain = const Color(0xFF1E293B);
-  final Color textMuted = const Color(0xFF64748B);
+  final Color textMain = Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -34,30 +34,30 @@ class _HomePageDesignState extends State<HomePageDesign> {
         centerTitle: true,
         actions: [
           Container(
-            margin: const EdgeInsets.only(right: 16),
-            padding: const EdgeInsets.all(8),
+            margin: EdgeInsets.only(right: 16),
+            padding: EdgeInsets.all(8),
             decoration: BoxDecoration(color: surfaceColor, shape: BoxShape.circle, border: Border.all(color: Colors.white.withOpacity(0.05))),
             child: Icon(Icons.notifications_none_outlined, color: textMuted, size: 20),
           )
         ],
       ),
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildSearchBar(),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             _buildCategoryGrid(),
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
 
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              padding: EdgeInsets.symmetric(horizontal: 24.0),
               child: Text("SİBER AĞ VİTRİNİ", style: TextStyle(color: textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             _buildFeaturedFirms(),
-            const SizedBox(height: 80),
+            SizedBox(height: 80),
           ],
         ),
       ),
@@ -67,7 +67,7 @@ class _HomePageDesignState extends State<HomePageDesign> {
   // 💎 1. MİNİMALİST ARAMA ÇUBUĞU
   Widget _buildSearchBar() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+      padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
       child: Container(
         decoration: BoxDecoration(
             color: surfaceColor,
@@ -84,12 +84,12 @@ class _HomePageDesignState extends State<HomePageDesign> {
             hintStyle: TextStyle(color: textMuted.withOpacity(0.5), fontSize: 13),
             prefixIcon: Icon(Icons.search, color: textMuted, size: 20),
             suffixIcon: Container(
-                margin: const EdgeInsets.all(8),
+                margin: EdgeInsets.all(8),
                 decoration: BoxDecoration(color: primaryTeal.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
                 child: Icon(Icons.qr_code_scanner_outlined, color: primaryTeal, size: 18)
             ),
             border: InputBorder.none,
-            contentPadding: const EdgeInsets.symmetric(vertical: 16),
+            contentPadding: EdgeInsets.symmetric(vertical: 16),
           ),
         ),
       ),
@@ -100,9 +100,9 @@ class _HomePageDesignState extends State<HomePageDesign> {
   Widget _buildCategoryGrid() {
     return GridView.count(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       crossAxisCount: 4,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       children: [
         _categoryIcon(Icons.tire_repair_outlined, "LASTİK", Colors.blueGrey, "Lastik"),
         _categoryIcon(Icons.battery_charging_full_outlined, "AKÜ / EV", primaryTeal, "Akü"),
@@ -119,7 +119,7 @@ class _HomePageDesignState extends State<HomePageDesign> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(14),
+            padding: EdgeInsets.all(14),
             decoration: BoxDecoration(
                 color: surfaceColor,
                 shape: BoxShape.circle,
@@ -128,7 +128,7 @@ class _HomePageDesignState extends State<HomePageDesign> {
             ),
             child: Icon(icon, color: color, size: 22),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Text(label, style: TextStyle(color: textMuted, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
         ],
       ),
@@ -149,8 +149,8 @@ class _HomePageDesignState extends State<HomePageDesign> {
 
             return ListView.builder(
               scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 24),
               itemCount: vipUstalar.length,
               itemBuilder: (context, index) {
                 var ustaData = vipUstalar[index].data() as Map<String, dynamic>;
@@ -163,8 +163,8 @@ class _HomePageDesignState extends State<HomePageDesign> {
 
                 return Container(
                   width: 170,
-                  margin: const EdgeInsets.only(right: 16),
-                  padding: const EdgeInsets.all(20),
+                  margin: EdgeInsets.only(right: 16),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                       color: surfaceColor,
                       borderRadius: BorderRadius.circular(24),
@@ -175,11 +175,11 @@ class _HomePageDesignState extends State<HomePageDesign> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(color: kartRengi.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: kartRengi.withOpacity(0.5))),
                         child: Icon(Icons.storefront_outlined, color: kartRengi, size: 28),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
                       Text(
                         firmaAdi.toUpperCase(),
                         textAlign: TextAlign.center,
@@ -187,22 +187,22 @@ class _HomePageDesignState extends State<HomePageDesign> {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(color: textMain, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 0.5),
                       ),
-                      const Spacer(),
+                      Spacer(),
 
                       // Puan ve Rozet Çipleri
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(color: kartRengi.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: kartRengi.withOpacity(0.3))),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.star, color: kartRengi, size: 12),
-                            const SizedBox(width: 4),
+                            SizedBox(width: 4),
                             Text(puan.toStringAsFixed(1), style: TextStyle(color: kartRengi, fontWeight: FontWeight.w900, fontSize: 11)),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
                       Text("$rozet İSTASYON".toUpperCase(), style: TextStyle(color: kartRengi.withOpacity(0.8), fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
                     ],
                   ),

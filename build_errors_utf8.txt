@@ -1,0 +1,1051 @@
+﻿Running Gradle task 'assembleDebug'...                          
+flutter : lib/screens/market/siber_ilan_detay_screen.dart:51:75: Error: The getter 'shade700' isn't defined for the typ
+e 'Color'.
+At line:1 char:37
++ ... :\Gelistirme\bin" ; flutter build apk --debug > build_errors.txt 2>&1
++                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (lib/screens/mar...e type 'Color'.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ - 'Color' is from 'dart:ui'.
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'shade700'.
+            Text("Siber Havuz Blokaj─▒", style: TextStyle(color: siberGold.shade700, fontSize: 16, fontWeight: FontWeig
+ht.bold, fontFamily: 'Avenir')),
+                                                                          ^^^^^^^^
+lib/screens/market/siber_ilan_detay_screen.dart:258:82: Error: The getter 'shade700' isn't defined for the type 'Color'
+.
+ - 'Color' is from 'dart:ui'.
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'shade700'.
+                Text("S─░BER KAPORA G├£VENCES─░", style: TextStyle(color: siberGold.shade700, fontSize: 11, fontWeight:
+ FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                                                                                 ^^^^^^^^
+lib/screens/qr/qr_matbaa_screen.dart:132:84: Error: Member not found: 'dash'.
+                      border: Border.all(color: Colors.white12, style: BorderStyle.dash, width: 2),
+                                                                                   ^^^^
+lib/screens/musteri/musteri_garaj_screen.dart:52:156: Error: Not a constant expression.
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Ara├ğ Ekleme Terminali Ba┼şl
+at─▒l─▒yor...", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: primaryTeal
+));
+                                                                                          ^^^^^^^^^
+lib/screens/musteri/musteri_harita_screen.dart:210:186: Error: Not a constant expression.
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${usta['ad']
+} i├ğin Randevu Ekran─▒ A├ğ─▒l─▒yor...", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)
+), backgroundColor: primaryTeal));
+                                                                                          ^^^^^^^^^
+lib/market/oto_market_screen.dart:54:87: Error: Method invocation is not a constant expression.
+      return Row(children: [const Icon(Icons.star_border_rounded, color: Colors.white.withValues(alpha: 0.38), size: 14
+), const SizedBox(width: 6), Text(saticiAdi.toUpperCase(), style: const TextStyle(color: Colors.white.withValues(alpha:
+ 0.54), fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir'))]);
+                                                                                      ^^^^^^^^^^
+lib/market/oto_market_screen.dart:54:222: Error: Method invocation is not a constant expression.
+      return Row(children: [const Icon(Icons.star_border_rounded, color: Colors.white.withValues(alpha: 0.38), size: 14
+), const SizedBox(width: 6), Text(saticiAdi.toUpperCase(), style: const TextStyle(color: Colors.white.withValues(alpha:
+ 0.54), fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir'))]);
+                                                                                          ^^^^^^^^^^
+lib/market/oto_market_screen.dart:185:451: Error: Method invocation is not a constant expression.
+              Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: primaryCyan.withOpacity(0.0
+5), borderRadius: BorderRadius.circular(16), border: Border.all(color: primaryCyan.withOpacity(0.2))), child: const Row
+(children: [Icon(Icons.shield_outlined, color: primaryCyan, size: 20), SizedBox(width: 12), Expanded(child: Text("Birey
+sel ve Kurumsal t├╝m sat─▒c─▒lar OtoDNA g├╝vencesindedir.", style: TextStyle(color: Colors.white.withValues(alpha: 0.54
+), fontSize: 10, fontWeight: FontWeight.bold, height: 1.4, fontFamily: 'Avenir')))]))
+                                                                                          ^^^^^^^^^^
+lib/market/oto_market_screen.dart:197:170: Error: Method invocation is not a constant expression.
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Center(child: Text("Siber a─şda par├ğa
+ bulunmuyor.", style: TextStyle(color: Colors.white.withValues(alpha: 0.38), fontWeight: FontWeight.bold, fontFamily: '
+Avenir')));
+                                                                                          ^^^^^^^^^^
+lib/market/oto_market_screen.dart:238:459: Error: Method invocation is not a constant expression.
+          child: Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: siberGold.withOpacity(0.
+05), borderRadius: BorderRadius.circular(16), border: Border.all(color: siberGold.withOpacity(0.2))), child: const Row(
+children: [Icon(Icons.diamond_outlined, color: siberGold, size: 20), SizedBox(width: 12), Expanded(child: Text("OtoDNA 
+Onayl─▒ (VIP) Ara├ğlar Kuantum algoritmas─▒yla ├╝stte g├Âsterilir.", style: TextStyle(color: Colors.white.withValues(al
+pha: 0.54), fontSize: 10, fontWeight: FontWeight.bold, height: 1.4, fontFamily: 'Avenir')))])),
+                                                                                          ^^^^^^^^^^
+lib/market/oto_market_screen.dart:245:173: Error: Method invocation is not a constant expression.
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Center(child: Text("Siber galeride ara
+├ğ bulunmuyor.", style: TextStyle(color: Colors.white.withValues(alpha: 0.38), fontWeight: FontWeight.bold, fontFamily:
+ 'Avenir')));
+                                                                                          ^^^^^^^^^^
+lib/market/oto_market_screen.dart:288:72: Error: Method invocation is not a constant expression.
+              prefixIcon: const Icon(Icons.search, color: Colors.white.withValues(alpha: 0.38), size: 20),
+                                                                       ^^^^^^^^^^
+lib/market/oto_market_screen.dart:378:72: Error: Method invocation is not a constant expression.
+                Text(detay, style: const TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 11, fontWeigh
+t: FontWeight.bold, fontFamily: 'Avenir')),
+                                                                       ^^^^^^^^^^
+lib/market/oto_market_screen.dart:407:300: Error: Method invocation is not a constant expression.
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text("S─░BER ─░LAN TERM─░NAL─░", 
+style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'
+)), IconButton(icon: const Icon(Icons.close, color: Colors.white.withValues(alpha: 0.54)), onPressed: () => Navigator.p
+op(ctx))]),
+                                                                                          ^^^^^^^^^^
+lib/market/oto_market_screen.dart:436:303: Error: Method invocation is not a constant expression.
+            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(baslik, style: const T
+extStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), const SizedBox(height:
+ 8), Text(altBaslik, style: const TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 11, height: 1.4, fon
+tFamily: 'Avenir'))])),
+                                                                                          ^^^^^^^^^^
+lib/market/urun_giris_terminali.dart:195:111: Error: Method invocation is not a constant expression.
+                  child: Text(_selectedFile!.path.split('/').last, style: const TextStyle(color: Colors.white.withValue
+s(alpha: 0.54), fontSize: 10, fontFamily: 'Avenir')),
+                                                                                          ^^^^^^^^^^
+lib/market/urun_detay_screen.dart:185:90: Error: Method invocation is not a constant expression.
+              const Text("4.9 (128 De─şerlendirme)", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), font
+Size: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                                                                         ^^^^^^^^^^
+lib/market/urun_detay_screen.dart:202:94: Error: Method invocation is not a constant expression.
+          SizedBox(width: 80, child: Text(baslik, style: const TextStyle(color: Colors.white.withValues(alpha: 0.38), f
+ontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
+                                                                                          ^^^^^^^^^^
+lib/market/urun_detay_screen.dart:203:64: Error: Method invocation is not a constant expression.
+          const Text(":", style: TextStyle(color: Colors.white.withValues(alpha: 0.38))),
+                                                               ^^^^^^^^^^
+lib/market/urun_detay_screen.dart:225:79: Error: Method invocation is not a constant expression.
+          const Text("TOPLAM KDV DAH─░L", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 12, f
+ontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                                                                              ^^^^^^^^^^
+lib/market/urun_detay_screen.dart:235:61: Error: Method invocation is not a constant expression.
+                Icon(Icons.credit_card, color: Colors.white.withValues(alpha: 0.54), size: 16),
+                                                            ^^^^^^^^^^
+lib/market/urun_detay_screen.dart:345:94: Error: Method invocation is not a constant expression.
+          Text(text, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white.withValues(alpha: 0.54), f
+ontSize: 9, fontWeight: FontWeight.bold, height: 1.3, fontFamily: 'Avenir')),
+                                                                                          ^^^^^^^^^^
+lib/market/urun_detay_screen.dart:382:80: Error: Method invocation is not a constant expression.
+                child: Text(icerik, style: const TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 12, h
+eight: 1.5, fontFamily: 'Avenir')),
+                                                                               ^^^^^^^^^^
+lib/market/urun_detay_screen.dart:454:85: Error: Method invocation is not a constant expression.
+                    const Text("Toplam Tutar", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 
+10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                                                                    ^^^^^^^^^^
+lib/market/siber_sepet_screen.dart:70:123: Error: Method invocation is not a constant expression.
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text("─░PTAL", style: TextStyle(color: Colors.wh
+ite.withValues(alpha: 0.38)))),
+                                                                                          ^^^^^^^^^^
+lib/market/siber_sepet_screen.dart:103:118: Error: Method invocation is not a constant expression.
+                      ? const Center(child: Text("Sepetiniz Siber Bo┼şlukta ­şîî", style: TextStyle(color: Colors.white
+.withValues(alpha: 0.38), fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'Avenir')))
+                                                                                          ^^^^^^^^^^
+lib/market/siber_sepet_screen.dart:146:84: Error: Method invocation is not a constant expression.
+              }, icon: const Icon(Icons.delete_sweep_outlined, color: Colors.white.withValues(alpha: 0.54))),
+                                                                                   ^^^^^^^^^^
+lib/market/siber_sepet_screen.dart:203:83: Error: Method invocation is not a constant expression.
+                  Text(urun['satici'], style: const TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 10
+, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                                                                  ^^^^^^^^^^
+lib/market/siber_sepet_screen.dart:217:166: Error: Method invocation is not a constant expression.
+                            InkWell(onTap: () => _adetAzalt(index), child: const Padding(padding: EdgeInsets.all(8.0), 
+child: Icon(Icons.remove, color: Colors.white.withValues(alpha: 0.54), size: 16))),
+                                                                                          ^^^^^^^^^^
+lib/market/siber_sepet_screen.dart:251:93: Error: Method invocation is not a constant expression.
+                  const Text("Ara Toplam (KDV Dahil)", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), fo
+ntSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                                                                          ^^^^^^^^^^
+lib/market/siber_sepet_screen.dart:259:77: Error: Method invocation is not a constant expression.
+                  Text("Kargo Tutar─▒", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 12, fon
+tWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                                                            ^^^^^^^^^^
+lib/screens/home_screen.dart:151:52: Error: Method invocation is not a constant expression.
+              style: TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 10, letterSpacing: 3, fontWeight:
+ FontWeight.bold, fontFamily: 'Avenir')),
+                                                   ^^^^^^^^^^
+lib/screens/kullanici/dijital_lpg_ruhsati_screen.dart:36:83: Error: Method invocation is not a constant expression.
+              const Text("MONTAJ DETAYLARI", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 12
+, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                                                                                  ^^^^^^^^^^
+lib/screens/kullanici/dijital_lpg_ruhsati_screen.dart:43:82: Error: Method invocation is not a constant expression.
+              const Text("MEDYA KANITLARI", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 12,
+ fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                                                                                 ^^^^^^^^^^
+lib/screens/kullanici/dijital_lpg_ruhsati_screen.dart:75:189: Error: Method invocation is not a constant expression.
+          const Text("Bu arac─▒n montaj─▒ yetkili Karargah bayisi taraf─▒ndan yap─▒lm─▒┼ş ve blokzincir a─ş─▒na m├╝h├╝r
+lenmi┼ştir.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 11, 
+height: 1.5, fontFamily: 'Avenir')),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/dijital_lpg_ruhsati_screen.dart:93:67: Error: Method invocation is not a constant expression.
+          Text(baslik, style: const TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 13, fontFamily: 'A
+venir')),
+                                                                  ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:117:212: Error: Method invocation is not a constant expression.
+                    TextField(controller: isimController, style: const TextStyle(color: Color(0xFF1E293B)), decoration:
+ InputDecoration(labelText: "Ustan─▒n ─░smi", labelStyle: const TextStyle(color: Colors.white.withValues(alpha: 0.54)),
+ enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focusedBorder: UnderlineInpu
+tBorder(borderSide: BorderSide(color: Colors.teal.shade700)))),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:119:98: Error: Method invocation is not a constant expression.
+                    const Text("Usta Cinsiyeti (Ses Tonu)", style: TextStyle(color: Colors.white.withValues(alpha: 0.54
+), fontSize: 12, fontWeight: FontWeight.bold)),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:127:101: Error: Method invocation is not a constant expression.
+                    const Text("Konu┼şma H─▒z─▒ (0 ile 1 aras─▒)", style: TextStyle(color: Colors.white.withValues(alph
+a: 0.54), fontSize: 12, fontWeight: FontWeight.bold)),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:133:133: Error: Method invocation is not a constant expression.
+                TextButton(onPressed: () => Navigator.pop(context), child: const Text("─░ptal", style: TextStyle(color:
+ Colors.white.withValues(alpha: 0.54)))),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:335:493: Error: Method invocation is not a constant expression.
+            Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: cardColor, borderRadius: Bord
+erRadius.circular(16), border: Border.all(color: primaryTeal.withValues(alpha: 0.2)), boxShadow: [BoxShadow(color: Colo
+rs.white.withValues(alpha: 0.03), blurRadius: 15)]), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, chil
+dren: [Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Text("─░┼şlem Saati:", style: TextStyle(co
+lor: Colors.white.withValues(alpha: 0.54), fontSize: 12, fontWeight: FontWeight.bold)), Text("2 Saat Sonra Kal─▒c─▒ Kil
+it", style: TextStyle(color: primaryTeal, fontSize: 10))]), Text(saatFormatli, style: TextStyle(color: textColor, fontS
+ize: 28, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))])),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:340:576: Error: Member not found: 'white26'.
+              Expanded(flex: 2, child: Container(padding: const EdgeInsets.symmetric(horizontal: 16), decoration: BoxDe
+coration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(a
+lpha: 0.05))), child: TextField(controller: _plakaController, textCapitalization: TextCapitalization.characters, style:
+ TextStyle(color: textColor, fontWeight: FontWeight.bold, letterSpacing: 1), decoration: InputDecoration(icon: Icon(Ico
+ns.pin, color: primaryTeal, size: 20), hintText: "Plaka", hintStyle: const TextStyle(color: Colors.white26, letterSpaci
+ng: 0), border: InputBorder.none)))),
+                                                                                          ^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:363:141: Error: Method invocation is not a constant expression.
+                        if (gosterilecekGecmis.isEmpty) const Text("Se├ğili tarihte i┼şlem bulunamad─▒.", style: TextSt
+yle(color: Colors.white.withValues(alpha: 0.54), fontSize: 12)),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:375:384: Error: Member not found: 'white87'.
+                                    if (bakimlar.isNotEmpty) ...bakimlar.map((b) => Padding(padding: const EdgeInsets.o
+nly(bottom: 6), child: Row(children: [Icon(b['durum'] == true ? Icons.check_circle : Icons.cancel, color: b['durum'] ==
+ true ? Colors.green : Colors.redAccent, size: 14), const SizedBox(width: 6), Expanded(child: Text(b['ad'], style: cons
+t TextStyle(color: Colors.white87, fontSize: 11)))]) )),
+                                                                                          ^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:377:106: Error: Method invocation is not a constant expression.
+                                    Text(data['detay'] ?? "", style: const TextStyle(color: Colors.white.withValues(alp
+ha: 0.54), fontSize: 11, fontStyle: FontStyle.italic)),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:396:93: Error: Method invocation is not a constant expression.
+                const Text("YETK─░L─░ SERV─░S PROTOKOL├£", style: TextStyle(color: Colors.white.withValues(alpha: 0.54)
+, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1.5)),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:439:203: Error: Method invocation is not a constant expression.
+                                        Row(children: [Icon(Icons.av_timer, color: primaryTeal, size: 18), const SizedB
+ox(width: 8), const Text("De─şi┼şim\nAral─▒─ş─▒:", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSi
+ze: 10, fontWeight: FontWeight.bold)), const SizedBox(width: 12), Expanded(child: TextField(onChanged: (v) => parca['km
+Siniri'] = v, keyboardType: TextInputType.number, style: TextStyle(color: primaryTeal, fontSize: 13, fontWeight: FontWe
+ight.bold), decoration: InputDecoration(isDense: true, hintText: parca['kmSiniri'], hintStyle: const TextStyle(color: C
+olors.white26), labelText: "KM", labelStyle: const TextStyle(color: Colors.white.withValues(alpha: 0.38), fontSize: 10)
+, enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focusedBorder: UnderlineInp
+utBorder(borderSide: BorderSide(color: primaryTeal))))), const SizedBox(width: 12), Expanded(child: TextField(onChanged
+: (v) => parca['yilSiniri'] = v, keyboardType: TextInputType.number, style: TextStyle(color: primaryTeal, fontSize: 13,
+ fontWeight: FontWeight.bold), decoration: InputDecoration(isDense: true, hintText: parca['yilSiniri'], hintStyle: cons
+t TextStyle(color: Colors.white26), labelText: "YIL", labelStyle: const TextStyle(color: Colors.white.withValues(alpha:
+ 0.38), fontSize: 10), enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focuse
+dBorder: UnderlineInputBorder(borderSide: BorderSide(color: primaryTeal))))) ]),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:439:597: Error: Member not found: 'white26'.
+                                        Row(children: [Icon(Icons.av_timer, color: primaryTeal, size: 18), const SizedB
+ox(width: 8), const Text("De─şi┼şim\nAral─▒─ş─▒:", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSi
+ze: 10, fontWeight: FontWeight.bold)), const SizedBox(width: 12), Expanded(child: TextField(onChanged: (v) => parca['km
+Siniri'] = v, keyboardType: TextInputType.number, style: TextStyle(color: primaryTeal, fontSize: 13, fontWeight: FontWe
+ight.bold), decoration: InputDecoration(isDense: true, hintText: parca['kmSiniri'], hintStyle: const TextStyle(color: C
+olors.white26), labelText: "KM", labelStyle: const TextStyle(color: Colors.white.withValues(alpha: 0.38), fontSize: 10)
+, enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focusedBorder: UnderlineInp
+utBorder(borderSide: BorderSide(color: primaryTeal))))), const SizedBox(width: 12), Expanded(child: TextField(onChanged
+: (v) => parca['yilSiniri'] = v, keyboardType: TextInputType.number, style: TextStyle(color: primaryTeal, fontSize: 13,
+ fontWeight: FontWeight.bold), decoration: InputDecoration(isDense: true, hintText: parca['yilSiniri'], hintStyle: cons
+t TextStyle(color: Colors.white26), labelText: "YIL", labelStyle: const TextStyle(color: Colors.white.withValues(alpha:
+ 0.38), fontSize: 10), enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focuse
+dBorder: UnderlineInputBorder(borderSide: BorderSide(color: primaryTeal))))) ]),
+                                                                                          ^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:439:672: Error: Method invocation is not a constant expression.
+                                        Row(children: [Icon(Icons.av_timer, color: primaryTeal, size: 18), const SizedB
+ox(width: 8), const Text("De─şi┼şim\nAral─▒─ş─▒:", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSi
+ze: 10, fontWeight: FontWeight.bold)), const SizedBox(width: 12), Expanded(child: TextField(onChanged: (v) => parca['km
+Siniri'] = v, keyboardType: TextInputType.number, style: TextStyle(color: primaryTeal, fontSize: 13, fontWeight: FontWe
+ight.bold), decoration: InputDecoration(isDense: true, hintText: parca['kmSiniri'], hintStyle: const TextStyle(color: C
+olors.white26), labelText: "KM", labelStyle: const TextStyle(color: Colors.white.withValues(alpha: 0.38), fontSize: 10)
+, enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focusedBorder: UnderlineInp
+utBorder(borderSide: BorderSide(color: primaryTeal))))), const SizedBox(width: 12), Expanded(child: TextField(onChanged
+: (v) => parca['yilSiniri'] = v, keyboardType: TextInputType.number, style: TextStyle(color: primaryTeal, fontSize: 13,
+ fontWeight: FontWeight.bold), decoration: InputDecoration(isDense: true, hintText: parca['yilSiniri'], hintStyle: cons
+t TextStyle(color: Colors.white26), labelText: "YIL", labelStyle: const TextStyle(color: Colors.white.withValues(alpha:
+ 0.38), fontSize: 10), enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focuse
+dBorder: UnderlineInputBorder(borderSide: BorderSide(color: primaryTeal))))) ]),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:439:1212: Error: Member not found: 'white26'.
+                                        Row(children: [Icon(Icons.av_timer, color: primaryTeal, size: 18), const SizedB
+ox(width: 8), const Text("De─şi┼şim\nAral─▒─ş─▒:", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSi
+ze: 10, fontWeight: FontWeight.bold)), const SizedBox(width: 12), Expanded(child: TextField(onChanged: (v) => parca['km
+Siniri'] = v, keyboardType: TextInputType.number, style: TextStyle(color: primaryTeal, fontSize: 13, fontWeight: FontWe
+ight.bold), decoration: InputDecoration(isDense: true, hintText: parca['kmSiniri'], hintStyle: const TextStyle(color: C
+olors.white26), labelText: "KM", labelStyle: const TextStyle(color: Colors.white.withValues(alpha: 0.38), fontSize: 10)
+, enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focusedBorder: UnderlineInp
+utBorder(borderSide: BorderSide(color: primaryTeal))))), const SizedBox(width: 12), Expanded(child: TextField(onChanged
+: (v) => parca['yilSiniri'] = v, keyboardType: TextInputType.number, style: TextStyle(color: primaryTeal, fontSize: 13,
+ fontWeight: FontWeight.bold), decoration: InputDecoration(isDense: true, hintText: parca['yilSiniri'], hintStyle: cons
+t TextStyle(color: Colors.white26), labelText: "YIL", labelStyle: const TextStyle(color: Colors.white.withValues(alpha:
+ 0.38), fontSize: 10), enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focuse
+dBorder: UnderlineInputBorder(borderSide: BorderSide(color: primaryTeal))))) ]),
+                                                                                          ^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:439:1288: Error: Method invocation is not a constant expression.
+                                        Row(children: [Icon(Icons.av_timer, color: primaryTeal, size: 18), const SizedB
+ox(width: 8), const Text("De─şi┼şim\nAral─▒─ş─▒:", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSi
+ze: 10, fontWeight: FontWeight.bold)), const SizedBox(width: 12), Expanded(child: TextField(onChanged: (v) => parca['km
+Siniri'] = v, keyboardType: TextInputType.number, style: TextStyle(color: primaryTeal, fontSize: 13, fontWeight: FontWe
+ight.bold), decoration: InputDecoration(isDense: true, hintText: parca['kmSiniri'], hintStyle: const TextStyle(color: C
+olors.white26), labelText: "KM", labelStyle: const TextStyle(color: Colors.white.withValues(alpha: 0.38), fontSize: 10)
+, enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focusedBorder: UnderlineInp
+utBorder(borderSide: BorderSide(color: primaryTeal))))), const SizedBox(width: 12), Expanded(child: TextField(onChanged
+: (v) => parca['yilSiniri'] = v, keyboardType: TextInputType.number, style: TextStyle(color: primaryTeal, fontSize: 13,
+ fontWeight: FontWeight.bold), decoration: InputDecoration(isDense: true, hintText: parca['yilSiniri'], hintStyle: cons
+t TextStyle(color: Colors.white26), labelText: "YIL", labelStyle: const TextStyle(color: Colors.white.withValues(alpha:
+ 0.38), fontSize: 10), enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focuse
+dBorder: UnderlineInputBorder(borderSide: BorderSide(color: primaryTeal))))) ]),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:442:411: Error: Member not found: 'white26'.
+                                          Row(children: [const Icon(Icons.water_drop, color: Colors.orange, size: 18), 
+const SizedBox(width: 8), Expanded(child: TextField(onChanged: (v) => parca['viskozite'] = v, style: const TextStyle(co
+lor: Colors.orange, fontSize: 13, fontWeight: FontWeight.bold), decoration: const InputDecoration(isDense: true, hintTe
+xt: "├ûrn: 5W-30", hintStyle: TextStyle(color: Colors.white26), labelText: "Viskozite", labelStyle: TextStyle(color: Co
+lors.white.withValues(alpha: 0.38), fontSize: 10), enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Co
+lors.white12)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.orange))))), const SizedBox(wi
+dth: 12), Expanded(child: TextField(onChanged: (v) => parca['marka'] = v, style: const TextStyle(color: Colors.orange, 
+fontSize: 13, fontWeight: FontWeight.bold), decoration: const InputDecoration(isDense: true, hintText: "├ûrn: Castrol",
+ hintStyle: TextStyle(color: Colors.white26), labelText: "Marka", labelStyle: TextStyle(color: Colors.white.withValues(
+alpha: 0.38), fontSize: 10), enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focuse
+dBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.orange))))) ])
+                                                                                          ^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:442:487: Error: Method invocation is not a constant expression.
+                                          Row(children: [const Icon(Icons.water_drop, color: Colors.orange, size: 18), 
+const SizedBox(width: 8), Expanded(child: TextField(onChanged: (v) => parca['viskozite'] = v, style: const TextStyle(co
+lor: Colors.orange, fontSize: 13, fontWeight: FontWeight.bold), decoration: const InputDecoration(isDense: true, hintTe
+xt: "├ûrn: 5W-30", hintStyle: TextStyle(color: Colors.white26), labelText: "Viskozite", labelStyle: TextStyle(color: Co
+lors.white.withValues(alpha: 0.38), fontSize: 10), enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Co
+lors.white12)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.orange))))), const SizedBox(wi
+dth: 12), Expanded(child: TextField(onChanged: (v) => parca['marka'] = v, style: const TextStyle(color: Colors.orange, 
+fontSize: 13, fontWeight: FontWeight.bold), decoration: const InputDecoration(isDense: true, hintText: "├ûrn: Castrol",
+ hintStyle: TextStyle(color: Colors.white26), labelText: "Marka", labelStyle: TextStyle(color: Colors.white.withValues(
+alpha: 0.38), fontSize: 10), enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focuse
+dBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.orange))))) ])
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:442:987: Error: Member not found: 'white26'.
+                                          Row(children: [const Icon(Icons.water_drop, color: Colors.orange, size: 18), 
+const SizedBox(width: 8), Expanded(child: TextField(onChanged: (v) => parca['viskozite'] = v, style: const TextStyle(co
+lor: Colors.orange, fontSize: 13, fontWeight: FontWeight.bold), decoration: const InputDecoration(isDense: true, hintTe
+xt: "├ûrn: 5W-30", hintStyle: TextStyle(color: Colors.white26), labelText: "Viskozite", labelStyle: TextStyle(color: Co
+lors.white.withValues(alpha: 0.38), fontSize: 10), enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Co
+lors.white12)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.orange))))), const SizedBox(wi
+dth: 12), Expanded(child: TextField(onChanged: (v) => parca['marka'] = v, style: const TextStyle(color: Colors.orange, 
+fontSize: 13, fontWeight: FontWeight.bold), decoration: const InputDecoration(isDense: true, hintText: "├ûrn: Castrol",
+ hintStyle: TextStyle(color: Colors.white26), labelText: "Marka", labelStyle: TextStyle(color: Colors.white.withValues(
+alpha: 0.38), fontSize: 10), enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focuse
+dBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.orange))))) ])
+                                                                                          ^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:442:1059: Error: Method invocation is not a constant expression.
+                                          Row(children: [const Icon(Icons.water_drop, color: Colors.orange, size: 18), 
+const SizedBox(width: 8), Expanded(child: TextField(onChanged: (v) => parca['viskozite'] = v, style: const TextStyle(co
+lor: Colors.orange, fontSize: 13, fontWeight: FontWeight.bold), decoration: const InputDecoration(isDense: true, hintTe
+xt: "├ûrn: 5W-30", hintStyle: TextStyle(color: Colors.white26), labelText: "Viskozite", labelStyle: TextStyle(color: Co
+lors.white.withValues(alpha: 0.38), fontSize: 10), enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Co
+lors.white12)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.orange))))), const SizedBox(wi
+dth: 12), Expanded(child: TextField(onChanged: (v) => parca['marka'] = v, style: const TextStyle(color: Colors.orange, 
+fontSize: 13, fontWeight: FontWeight.bold), decoration: const InputDecoration(isDense: true, hintText: "├ûrn: Castrol",
+ hintStyle: TextStyle(color: Colors.white26), labelText: "Marka", labelStyle: TextStyle(color: Colors.white.withValues(
+alpha: 0.38), fontSize: 10), enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)), focuse
+dBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.orange))))) ])
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:485:70: Error: Method invocation is not a constant expression.
+                            Icon(Icons.settings, color: Colors.white.withValues(alpha: 0.54), size: 12),
+                                                                     ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:487:82: Error: Method invocation is not a constant expression.
+                            Text("Ayarlar", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 10,
+ fontWeight: FontWeight.bold)),
+                                                                                 ^^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:501:181: Error: Member not found: 'white26'.
+                      decoration: InputDecoration(hintText: "$_ustaIsmi sizi dinliyor komutan─▒m...\n(Mikrofona bas─▒p 
+konu┼şun veya yaz─▒n)", hintStyle: const TextStyle(color: Colors.white26, fontSize: 12), border: InputBorder.none),
+                                                                                          ^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:526:89: Error: Not a constant expression.
+                          Text("S─░STEME KALICI OLARAK M├£H├£RLE", style: TextStyle(color: SiberTema.textMain, fontWeig
+ht: FontWeight.w900, fontSize: 15, letterSpacing: 1.5)),
+                                                                                        ^^^^^^^^^
+lib/screens/kullanici/ariza_bildirim_screen.dart:528:84: Error: Not a constant expression.
+                          Text("(Bu i┼şlem geri al─▒namaz)", style: TextStyle(color: SiberTema.textMuted, fontSize: 10,
+ fontWeight: FontWeight.bold))
+                                                                                   ^^^^^^^^^
+lib/screens/kullanici/canli_radar_screen.dart:242:83: Error: Method invocation is not a constant expression.
+                          const Text("KM/S", style: TextStyle(color: Colors.white.withValues(alpha: 0.38), fontSize: 12
+, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+                                                                                  ^^^^^^^^^^
+lib/screens/kullanici/canli_radar_screen.dart:250:91: Error: Method invocation is not a constant expression.
+                          const Text("VARI┼Ş S├£RES─░", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), f
+ontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/dijital_servis_screen.dart:27:160: Error: Method invocation is not a constant expression.
+        content: const Text("Kameran─▒z ├╝zerinden ar─▒zal─▒ par├ğay─▒ veya OEM kodunu taratarak k├╝resel a─şda e┼şle┼ş
+me aray─▒n.", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 13, height: 1.5, fontFamily: 'Ave
+nir')),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/dijital_servis_screen.dart:29:127: Error: Method invocation is not a constant expression.
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("─░ptal", style: TextStyle(color: Color
+s.white.withValues(alpha: 0.38), fontFamily: 'Avenir'))),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/dijital_servis_screen.dart:34:137: Error: Not a constant expression.
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text('Lens Aktif Ediliyor...', style: 
+TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.teal.shade700));
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/dijital_servis_screen.dart:55:119: Error: Method invocation is not a constant expression.
+            const Text("Bu par├ğan─▒n dijital geneti─şine i┼şlenecek i┼şlemi se├ğin.", style: TextStyle(color: Colors.w
+hite.withValues(alpha: 0.54), fontSize: 13, fontFamily: 'Avenir')),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/dijital_servis_screen.dart:73:139: Error: Not a constant expression.
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text('Kamera A├ğ─▒l─▒yor...', st
+yle: TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.teal.shade700));
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/dijital_servis_screen.dart:149:114: Error: Method invocation is not a constant expression.
+                          const Text("Ar─▒zal─▒ OEM kodunu kameraya okutun.", style: TextStyle(color: Colors.white.with
+Values(alpha: 0.54), fontSize: 12, fontFamily: 'Avenir')),
+                                                                                          ^^^^^^^^^^
+lib/screens/kullanici/dijital_servis_screen.dart:200:89: Error: Member not found: 'white87'.
+                                title: Text(parca, style: const TextStyle(color: Colors.white87, fontSize: 13, fontWeig
+ht: FontWeight.w600, fontFamily: 'Avenir')),
+                                                                                        ^^^^^^^
+lib/screens/kullanici/arac_kayit_screen.dart:27:148: Error: Not a constant expression.
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Plaka, Marka ve Fiyat zorunlu alanlard─▒
+r.", style: TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.redAccent));
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/arac_kayit_screen.dart:53:138: Error: Not a constant expression.
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Ara├ğ sisteme ba┼şar─▒yla i┼şlendi.", st
+yle: TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.teal.shade700));
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/arac_kayit_screen.dart:153:69: Error: Method invocation is not a constant expression.
+                    labelStyle: const TextStyle(color: Colors.white.withValues(alpha: 0.38), fontSize: 13, fontFamily: 
+'Avenir'),
+                                                                    ^^^^^^^^^^
+lib/screens/kullanici/arac_kayit_screen.dart:214:59: Error: Method invocation is not a constant expression.
+          labelStyle: const TextStyle(color: Colors.white.withValues(alpha: 0.38), fontSize: 14, fontFamily: 'Avenir'),
+                                                          ^^^^^^^^^^
+lib/screens/kurumsal/kurumsal_baglayicilar_screen.dart:22:145: Error: Not a constant expression.
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$servisAdi ba─şlant─▒s─▒ a─şdan kopar─▒ld─▒.",
+ style: const TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.redAccent));
+                                                                                          ^^^^^^^^^
+lib/screens/kurumsal/kurumsal_baglayicilar_screen.dart:39:94: Error: Not a constant expression.
+            Text("$servisAdi Enterprise API'si Bekleniyor...", style: const TextStyle(color: SiberTema.textMain, fontWe
+ight: FontWeight.bold, fontSize: 13)),
+                                                                                          ^^^^^^^^^
+lib/screens/kurumsal/kurumsal_baglayicilar_screen.dart:41:90: Error: Not a constant expression.
+            const Text("Gemini OAuth 2.0 Anahtar─▒ Do─şrulan─▒yor", style: TextStyle(color: SiberTema.textMuted, fontSi
+ze: 11)),
+                                                                                         ^^^^^^^^^
+lib/screens/kurumsal/kurumsal_baglayicilar_screen.dart:62:36: Error: Method invocation is not a constant expression.
+    const textMuted = Colors.white.withValues(alpha: 0.54);
+                                   ^^^^^^^^^^
+lib/screens/kurumsal/kurumsal_baglayicilar_screen.dart:157:94: Error: The getter 'SiberTema' isn't defined for the type
+ '_KurumsalBaglayicilarScreenState'.
+ - '_KurumsalBaglayicilarScreenState' is from 'package:otodna/screens/kurumsal/kurumsal_baglayicilar_screen.dart' ('lib
+/screens/kurumsal/kurumsal_baglayicilar_screen.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'SiberTema'.
+                  Text("Gemini AI API altyap─▒s─▒ ile korunmaktad─▒r.", style: TextStyle(color: SiberTema.textMain.with
+Opacity(0.3), fontSize: 11)),
+                                                                                          ^^^^^^^^^
+lib/screens/kurumsal/kurumsal_baglayicilar_screen.dart:206:56: Error: Not a constant expression.
+          Text(aciklama, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
+                                                       ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:38:66: Error: Not a constant expression.
+            const Text("BAK─░YE Y├£KLEME", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWe
+ight.w900, letterSpacing: 1)),
+                                                                 ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:40:164: Error: Not a constant expression.
+            const Text("Kay─▒tl─▒ Kripto C├╝zdan─▒n─▒zdan HGS hesab─▒n─▒za 500 Ôé║ y├╝klenecektir. Onayl─▒yor musunuz?"
+, textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:44:136: Error: Not a constant expression.
+                Expanded(child: TextButton(onPressed: () => Navigator.pop(context), child: const Text("─░PTAL", style: 
+TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)))),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:46:447: Error: Not a constant expression.
+                Expanded(child: ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: Colors.deepOrangeAccent
+, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+ onPressed: () { setState(() => _hgsBakiye += 500.0); Navigator.pop(context); ScaffoldMessenger.of(context).showSnackBa
+r(const SnackBar(content: Text('HGS Bakiyesi A─şa M├╝h├╝rlendi! Ô£à', style: TextStyle(color: SiberTema.textMain, fontW
+eight: FontWeight.bold)), backgroundColor: Colors.deepOrangeAccent)); }, child: const Text("ONAYLA", style: TextStyle(f
+ontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1))))
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:83:81: Error: Not a constant expression.
+          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPre
+ssed: () => Navigator.pop(context)),
+                                                                                ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:84:84: Error: Not a constant expression.
+          title: const Text('K O K P ─░ T   M E R K E Z ─░', style: TextStyle(color: SiberTema.textMuted, fontWeight: F
+ontWeight.w900, fontSize: 11, letterSpacing: 3)),
+                                                                                   ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:105:202: Error: Not a constant expression.
+                  Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.white.withOpacit
+y(0.2), shape: BoxShape.circle), child: const Icon(Icons.sensors_outlined, color: SiberTema.kuantumCyan, size: 36)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:111:82: Error: Not a constant expression.
+                        const Text("HGS KUANTUM BAK─░YE", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fo
+ntWeight: FontWeight.w900, letterSpacing: 1)),
+                                                                                 ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:113:98: Error: Not a constant expression.
+                        Text("Ôé║ ${_hgsBakiye.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.textMain, 
+fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -1)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:122:59: Error: Not a constant expression.
+                      child: const Icon(Icons.add, color: SiberTema.kuantumCyan, size: 24),
+                                                          ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:139:76: Error: Not a constant expression.
+                    const Text("S─░BER MOTOR T─░P─░", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWe
+ight: FontWeight.w900, letterSpacing: 2)),
+                                                                           ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:160:85: Error: Not a constant expression.
+                    const Text("AI DESTEKL─░ GER├çEK MENZ─░L", style: TextStyle(color: SiberTema.textMuted, fontSize: 1
+0, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                                                                                    ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:162:88: Error: Not a constant expression.
+                    Text("${_gercekMenzilHesapla()} KM", style: const TextStyle(color: SiberTema.textMain, fontSize: 56
+, fontWeight: FontWeight.w900, letterSpacing: -2)),
+                                                                                       ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:164:42: Error: Not a constant expression.
+                    const Divider(color: SiberTema.textMuted),
+                                         ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:175:76: Error: Not a constant expression.
+                    const Text("┼ŞARJ S─░M├£LASYONU", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWei
+ght: FontWeight.w900, letterSpacing: 2)),
+                                                                           ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:207:85: Error: Not a constant expression.
+                    const Text("ORTALAMA T├£KET─░M (100 KM)", style: TextStyle(color: SiberTema.textMuted, fontSize: 10
+, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                                                                                    ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:209:74: Error: Not a constant expression.
+                    Text(_ortalamaTuketim, style: const TextStyle(color: SiberTema.textMain, fontSize: 56, fontWeight: 
+FontWeight.w900, letterSpacing: -2)),
+                                                                         ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:216:146: Error: Not a constant expression.
+                                child: TextField(controller: _litreController, keyboardType: TextInputType.number, styl
+e: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold), decoration: const InputDecora
+tion(hintText: 'Litre', hintStyle: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.normal), border: InputB
+order.none))
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:216:291: Error: Not a constant expression.
+                                child: TextField(controller: _litreController, keyboardType: TextInputType.number, styl
+e: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold), decoration: const InputDecora
+tion(hintText: 'Litre', hintStyle: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.normal), border: InputB
+order.none))
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:223:143: Error: Not a constant expression.
+                                child: TextField(controller: _kmController, keyboardType: TextInputType.number, style: 
+const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold), decoration: const InputDecoratio
+n(hintText: 'KM', hintStyle: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.normal), border: InputBorder.
+none))
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:223:285: Error: Not a constant expression.
+                                child: TextField(controller: _kmController, keyboardType: TextInputType.number, style: 
+const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold), decoration: const InputDecoratio
+n(hintText: 'KM', hintStyle: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.normal), border: InputBorder.
+none))
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/yol_bilgisayari_screen.dart:262:54: Error: Not a constant expression.
+          Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, let
+terSpacing: 1)),
+                                                     ^^^^^^^^^
+lib/screens/kullanici/yedek_parca_market_screen.dart:100:79: Error: Not a constant expression.
+        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPress
+ed: () => Navigator.pop(context)),
+                                                                              ^^^^^^^^^
+lib/screens/kullanici/yedek_parca_market_screen.dart:101:84: Error: Not a constant expression.
+        title: const Text("Y E D E K   P A R ├ç A   A ─Ş I", style: TextStyle(color: SiberTema.textMuted, fontWeight: F
+ontWeight.w900, fontSize: 11, letterSpacing: 3)),
+                                                                                   ^^^^^^^^^
+lib/screens/kullanici/yedek_parca_market_screen.dart:117:47: Error: Not a constant expression.
+                style: const TextStyle(color: SiberTema.textMain, fontSize: 14),
+                                              ^^^^^^^^^
+lib/screens/kullanici/yedek_parca_market_screen.dart:119:59: Error: Not a constant expression.
+                    icon: const Icon(Icons.search, color: SiberTema.textMuted, size: 20),
+                                                          ^^^^^^^^^
+lib/screens/kullanici/yedek_parca_market_screen.dart:169:113: Error: Not a constant expression.
+                ? const Center(child: Text("Siber a─şda bu kategoride veri bulunamad─▒.", style: TextStyle(color: Siber
+Tema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)))
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/yedek_parca_market_screen.dart:211:107: Error: Not a constant expression.
+                                  child: Text(parca['marka'].toUpperCase(), style: const TextStyle(color: SiberTema.tex
+tMuted, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/yedek_parca_market_screen.dart:231:129: Error: Not a constant expression.
+                                  Text(parca['ad'], maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyl
+e(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w600, letterSpacing: -0.5, height: 1.4)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/yedek_parca_market_screen.dart:233:136: Error: Not a constant expression.
+                                  Text(parca['uyumluluk'], maxLines: 1, overflow: TextOverflow.ellipsis, style: const T
+extStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/yedek_parca_market_screen.dart:240:111: Error: Not a constant expression.
+                                  Text("Ôé║${parca['fiyat'].toStringAsFixed(2)}", style: const TextStyle(color: SiberTe
+ma.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: -1)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/yedek_parca_market_screen.dart:121:49: Error: The getter 'SiberTema' isn't defined for the type '
+_YedekParcaMarketScreenState'.
+ - '_YedekParcaMarketScreenState' is from 'package:otodna/screens/kullanici/yedek_parca_market_screen.dart' ('lib/scree
+ns/kullanici/yedek_parca_market_screen.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'SiberTema'.
+                    hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 13),
+                                                ^^^^^^^^^
+lib/screens/kullanici/yedek_parca_market_screen.dart:204:89: Error: The getter 'SiberTema' isn't defined for the type '
+_YedekParcaMarketScreenState'.
+ - '_YedekParcaMarketScreenState' is from 'package:otodna/screens/kullanici/yedek_parca_market_screen.dart' ('lib/scree
+ns/kullanici/yedek_parca_market_screen.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'SiberTema'.
+                              Center(child: Icon(parca['gorsel_ikon'], size: 56, color: SiberTema.textMuted)),
+                                                                                        ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:48:153: Error: Not a constant expression.
+          content: Text("A─Ş UYARISI: ├ûdenmemi┼ş borcunuz (HGS) bulunmaktad─▒r! ─░┼şlem bloke edildi.", style: TextSty
+le(fontWeight: FontWeight.bold, color: SiberTema.textMain)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:71:69: Error: Not a constant expression.
+            const Text("RANDEVU ONAYLANDI", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontW
+eight.w900, letterSpacing: 1)),
+                                                                    ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:73:226: Error: Not a constant expression.
+            Text("$_seciliArac plakal─▒ arac─▒n─▒z i├ğin $_seciliTarih saat $_seciliSaat konumuna randevunuz Kuantum A─
+ş─▒ ├╝zerinden T├£VT├£RK'e ┼şifrelenerek iletilmi┼ştir.", textAlign: TextAlign.center, style: const TextStyle(color: Si
+berTema.textMuted, fontSize: 12, height: 1.5)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:100:79: Error: Not a constant expression.
+        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPress
+ed: () => Navigator.pop(context)),
+                                                                              ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:101:82: Error: Not a constant expression.
+        title: const Text("R E S M ─░   ─░ ┼Ş L E M L E R", style: TextStyle(color: SiberTema.textMuted, fontWeight: Fo
+ntWeight.w900, fontSize: 11, letterSpacing: 3)),
+                                                                                 ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:139:77: Error: Not a constant expression.
+                      const Text("ARA├ç & ─░STASYON", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWe
+ight: FontWeight.w900, letterSpacing: 2)),
+                                                                            ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:146:110: Error: Not a constant expression.
+                            const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.
+textMuted)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:148:110: Error: Not a constant expression.
+                            const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.
+textMuted)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:155:77: Error: Not a constant expression.
+                      const Text("ZAMAN ├ç─░ZELGES─░", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontW
+eight: FontWeight.w900, letterSpacing: 2)),
+                                                                            ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:159:452: Error: Not a constant expression.
+                          Expanded(child: Container(padding: const EdgeInsets.all(20), decoration: BoxDecoration(color:
+ surfaceColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withOpacity(0.05))), chi
+ld: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Icon(Icons.calendar_month_outlined, color: pr
+imaryCyan, size: 20), const SizedBox(height: 12), const Text("TAR─░H", style: TextStyle(color: SiberTema.textMuted, fon
+tSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)), const SizedBox(height: 4), Text(_seciliTarih.split("ÔÇó")[0]
+.trim(), style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900))]))),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:159:632: Error: Not a constant expression.
+                          Expanded(child: Container(padding: const EdgeInsets.all(20), decoration: BoxDecoration(color:
+ surfaceColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withOpacity(0.05))), chi
+ld: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Icon(Icons.calendar_month_outlined, color: pr
+imaryCyan, size: 20), const SizedBox(height: 12), const Text("TAR─░H", style: TextStyle(color: SiberTema.textMuted, fon
+tSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)), const SizedBox(height: 4), Text(_seciliTarih.split("ÔÇó")[0]
+.trim(), style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900))]))),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:161:448: Error: Not a constant expression.
+                          Expanded(child: Container(padding: const EdgeInsets.all(20), decoration: BoxDecoration(color:
+ surfaceColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withOpacity(0.05))), chi
+ld: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Icon(Icons.access_time_outlined, color: prima
+ryCyan, size: 20), const SizedBox(height: 12), const Text("SAAT", style: TextStyle(color: SiberTema.textMuted, fontSize
+: 9, fontWeight: FontWeight.bold, letterSpacing: 1)), const SizedBox(height: 4), Text(_seciliSaat, style: const TextSty
+le(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900))]))),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:161:606: Error: Not a constant expression.
+                          Expanded(child: Container(padding: const EdgeInsets.all(20), decoration: BoxDecoration(color:
+ surfaceColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withOpacity(0.05))), chi
+ld: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Icon(Icons.access_time_outlined, color: prima
+ryCyan, size: 20), const SizedBox(height: 12), const Text("SAAT", style: TextStyle(color: SiberTema.textMuted, fontSize
+: 9, fontWeight: FontWeight.bold, letterSpacing: 1)), const SizedBox(height: 4), Text(_seciliSaat, style: const TextSty
+le(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900))]))),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:166:85: Error: Not a constant expression.
+                      const Text("AI ├ûN KONTROL PROTOKOL├£", style: TextStyle(color: SiberTema.textMuted, fontSize: 10
+, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                                                                                    ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:173:149: Error: Not a constant expression.
+                            const Text("Veriler Kuantum A─ş─▒ ├╝zerinden ├ğekildi. K─▒rm─▒z─▒ uyar─▒lar muayeneye kesin
+ engeldir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.5)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:225:79: Error: Not a constant expression.
+                            Text("GE├çERL─░L─░K TAR─░H─░", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, f
+ontWeight: FontWeight.w900, letterSpacing: 2)),
+                                                                              ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:227:73: Error: Not a constant expression.
+                            Text("15 A─ŞU 2026", style: TextStyle(color: SiberTema.textMain, fontSize: 28, fontWeight: 
+FontWeight.w900, letterSpacing: 1)),
+                                                                        ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:234:79: Error: Not a constant expression.
+                      const Text("YETK─░L─░ MERKEZLER", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, font
+Weight: FontWeight.w900, letterSpacing: 2)),
+                                                                              ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:263:77: Error: Not a constant expression.
+                      const Text("BASIM B─░LG─░LER─░", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontW
+eight: FontWeight.w900, letterSpacing: 2)),
+                                                                            ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:270:110: Error: Not a constant expression.
+                            const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.
+textMuted)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:277:80: Error: Not a constant expression.
+                      const Text("AI EVRAK DO─ŞRULAMA", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, font
+Weight: FontWeight.w900, letterSpacing: 2)),
+                                                                               ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:290:108: Error: Not a constant expression.
+                              const Text("Yapay zeka ┼şasiyi otomatik e┼şle┼ştirir.", style: TextStyle(color: SiberTema
+.textMuted, fontSize: 11)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:301:188: Error: Not a constant expression.
+                          onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Tal
+ep ┼Şof├Ârler Odas─▒ Sistemine ─░letildi! ­şû¿´©Å", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.
+bold)), backgroundColor: Colors.green)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:181:91: Error: The getter 'SiberTema' isn't defined for the type '_Tu
+vturkRandevuScreenState'.
+ - '_TuvturkRandevuScreenState' is from 'package:otodna/screens/kullanici/tuvturk_randevu_screen.dart' ('lib/screens/ku
+llanici/tuvturk_randevu_screen.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'SiberTema'.
+                                  Expanded(child: Text(entry.key, style: TextStyle(color: SiberTema.textMain, fontSize:
+ 12, fontWeight: FontWeight.bold, decoration: entry.value ? TextDecoration.none : TextDecoration.underline, decorationC
+olor: Colors.redAccent))),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:327:58: Error: Not a constant expression.
+              Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold
+, letterSpacing: 0.5)), const SizedBox(height: 4),
+                                                         ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:328:57: Error: Not a constant expression.
+              Text(deger, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold))
+,
+                                                        ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:332:66: Error: Not a constant expression.
+        if (yonOlsun) const Icon(Icons.arrow_forward_ios, color: SiberTema.textMuted, size: 14),
+                                                                 ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:322:27: Error: The getter 'SiberTema' isn't defined for the type '_Tu
+vturkRandevuScreenState'.
+ - '_TuvturkRandevuScreenState' is from 'package:otodna/screens/kullanici/tuvturk_randevu_screen.dart' ('lib/screens/ku
+llanici/tuvturk_randevu_screen.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'SiberTema'.
+        Icon(ikon, color: SiberTema.textMuted, size: 20), const SizedBox(width: 16),
+                          ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:351:62: Error: Not a constant expression.
+                    Text(isim, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w
+600, letterSpacing: -0.5)),
+                                                             ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:356:59: Error: Not a constant expression.
+                Text(konum, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10)),
+                                                          ^^^^^^^^^
+lib/screens/kullanici/tuvturk_randevu_screen.dart:363:57: Error: Not a constant expression.
+              Text(fiyat, style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900))
+,
+                                                        ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:74:228: Error: Not a constant expression.
+            const Text("S.O.S talebiniz ├ğevrimd─▒┼ş─▒ kuyru─şa al─▒nd─▒.\n\n─░nternet ba─şlant─▒s─▒ sa─şland─▒─ş─▒ ilk
+ milisaniyede konumunuz Kuantum Merkezine otomatik f─▒rlat─▒lacakt─▒r.", textAlign: TextAlign.center, style: TextStyle(
+color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:101:150: Error: Not a constant expression.
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Arama ba┼şlat─▒lamad─▒! ─░zinleri kontro
+l edin.", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: Colors.redAccent)
+);
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:112:125: Error: Not a constant expression.
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("SMS ba┼şlat─▒lamad─▒!", style: TextStyle
+(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: Colors.redAccent));
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:128:79: Error: Not a constant expression.
+        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPress
+ed: () => Navigator.pop(context)),
+                                                                              ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:129:84: Error: Not a constant expression.
+        title: const Text("G ├£ V E N L ─░ K   D U V A R I", style: TextStyle(color: SiberTema.textMuted, fontWeight: F
+ontWeight.w900, fontSize: 11, letterSpacing: 3)),
+                                                                                   ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:153:101: Error: Not a constant expression.
+                  const Text("Yard─▒m ├ğa─ş─▒rmak i├ğin 5 saniye bas─▒l─▒ tutun.", style: TextStyle(color: SiberTema.te
+xtMuted, fontSize: 11)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:190:122: Error: Not a constant expression.
+                                Text("${(5 - (_basiliTutmaController.value * 5)).ceil()}", style: const TextStyle(color
+: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900))
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:205:77: Error: Not a constant expression.
+                            const Icon(Icons.satellite_alt_outlined, color: SiberTema.textMuted, size: 18),
+                                                                            ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:211:99: Error: Not a constant expression.
+                                    const Text("SON TESP─░T ED─░LEN KONUM", style: TextStyle(color: SiberTema.textMuted
+, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:213:85: Error: Not a constant expression.
+                                    Text(_anlikKonum, style: const TextStyle(color: SiberTema.textMain, fontSize: 11, f
+ontWeight: FontWeight.bold)),
+                                                                                    ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:252:75: Error: Not a constant expression.
+            const Text("BAY─░ / ─░┼ŞLETME ┼Ş─░KAYET─░", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, font
+Weight: FontWeight.w900, letterSpacing: 2)),
+                                                                          ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:260:190: Error: Not a constant expression.
+                  const Text("K├Ât├╝ niyetli oldu─şunu d├╝┼ş├╝nd├╝─ş├╝n├╝z bayinin veya ustan─▒n QR kodunu okutarak do─
+şrudan Kuantum Merkezine ┼şikayet dosyas─▒ a├ğabilirsiniz.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12,
+ height: 1.5)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:279:73: Error: Not a constant expression.
+            const Text("G├£VENL─░K & KARA L─░STE", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeigh
+t: FontWeight.w900, letterSpacing: 2)),
+                                                                        ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:287:107: Error: Not a constant expression.
+                  const Text("Siber a─ş─▒n─▒za eri┼şmesini engelledi─şiniz hesaplar:", style: TextStyle(color: SiberTem
+a.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:297:172: Error: Not a constant expression.
+                        Row(children: [const Icon(Icons.block_outlined, color: dangerColor, size: 16), const SizedBox(w
+idth: 12), Text(isim, style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold, lett
+erSpacing: 0.5))]),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:299:166: Error: Not a constant expression.
+                            onTap: () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$isim engel
+i kald─▒r─▒ld─▒.", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)), backgroundColor: Co
+lors.greenAccent)),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:300:81: Error: Not a constant expression.
+                            child: const Text("KALDIR", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, font
+Weight: FontWeight.w900, letterSpacing: 1))
+                                                                                ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:305:100: Error: Not a constant expression.
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted)
+),
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:314:59: Error: Not a constant expression.
+                                  style: TextStyle(color: SiberTema.textMain, fontSize: 13),
+                                                          ^^^^^^^^^
+lib/screens/kullanici/siber_sos_merkezi_screen.dart:315:116: Error: Not a constant expression.
+                                  decoration: InputDecoration(hintText: "ID Girin...", hintStyle: TextStyle(color: Sibe
+rTema.textMuted, fontSize: 12), border: InputBorder.none)
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/siber_radar_screen.dart:63:165: Error: Not a constant expression.
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Uydu ba─şlant─▒s─▒ kurulamad─▒ (Google
+ Haritalar a├ğ─▒lamad─▒).", style: TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.redAccent));
+                                                                                          ^^^^^^^^^
+lib/screens/kullanici/siber_radar_screen.dart:79:79: Error: Not a constant expression.
+        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPress
+ed: () => Navigator.pop(context)),
+                                                                              ^^^^^^^^^
+lib/screens/kullanici/siber_radar_screen.dart:80:80: Error: Not a constant expression.
+        title: const Text("K U A N T U M   R A D A R", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWei
+ght.w900, fontSize: 11, letterSpacing: 3)),
+                                                                               ^^^^^^^^^
+lib/screens/kullanici/siber_radar_screen.dart:96:80: Error: Not a constant expression.
+                    Text("├çap: 50 KM ÔÇó B├Âlge: Ankara", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, f
+ontWeight: FontWeight.bold, letterSpacing: 0.5)),
+                                                                               ^^^^^^^^^
+lib/screens/kullanici/siber_radar_screen.dart:169:87: Error: Not a constant expression.
+                  const Text("Sinyal Tespit Edilen Noktalar", style: TextStyle(color: SiberTema.textMain, fontSize: 16,
+ fontWeight: FontWeight.w600, letterSpacing: -0.5)),
+                                                                                      ^^^^^^^^^
+lib/screens/kullanici/siber_radar_screen.dart:167:98: Error: The getter 'SiberTema' isn't defined for the type '_SiberR
+adarScreenState'.
+ - '_SiberRadarScreenState' is from 'package:otodna/screens/kullanici/siber_radar_screen.dart' ('lib/screens/kullanici/
+siber_radar_screen.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'SiberTema'.
+                  Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: SiberTema.textMuted, b
+orderRadius: BorderRadius.circular(10)))),
+                                                                                          ^^^^^^^^^
+lib/screens/siber_goz_terminali.dart:175:57: Error: Method invocation is not a constant expression.
+        boxShadow: const [BoxShadow(color: Colors.white.withValues(alpha: 0.54), blurRadius: 20, offset: Offset(0, 10))
+],
+                                                        ^^^^^^^^^^
+lib/bayi/bayi_merkez.dart:209:78: Error: Method invocation is not a constant expression.
+          const Text("S─░BER SEPET BO┼Ş", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), letterSpacing: 
+2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                                                                             ^^^^^^^^^^
+lib/bayi/bayi_merkez.dart:234:87: Error: Method invocation is not a constant expression.
+                const Text("S─░PAR─░┼Ş BULUNAMADI", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), lette
+rSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                                                                                      ^^^^^^^^^^
+lib/bayi/bayi_merkez.dart:280:67: Error: Method invocation is not a constant expression.
+            Text(urun, style: const TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 11, fontFamily: 'A
+venir')),
+                                                                  ^^^^^^^^^^
+lib/bayi/bayi_merkez.dart:350:95: Error: Method invocation is not a constant expression.
+                    const Text("NET ├çEK─░LEB─░L─░R BAK─░YE", style: TextStyle(color: Colors.white.withValues(alpha: 0.
+54), fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                                                                          ^^^^^^^^^^
+lib/screens/support_screen.dart:110:59: Error: Not a constant expression.
+            Text("S─░NYAL ALINDI", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w90
+0, letterSpacing: 1)),
+                                                          ^^^^^^^^^
+lib/screens/support_screen.dart:115:35: Error: Not a constant expression.
+          style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, height: 1.5),
+                                  ^^^^^^^^^
+lib/screens/support_screen.dart:139:74: Error: Not a constant expression.
+        title: const Text("MERKEZ DESTEK HATTI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight:
+ FontWeight.w900, letterSpacing: 2)),
+                                                                         ^^^^^^^^^
+lib/screens/support_screen.dart:156:80: Error: Not a constant expression.
+                  const Text("S─░BER SORUN KATEGOR─░S─░", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fo
+ntWeight: FontWeight.w900, letterSpacing: 2)),
+                                                                               ^^^^^^^^^
+lib/screens/support_screen.dart:164:53: Error: Not a constant expression.
+                      style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold),
+                                                    ^^^^^^^^^
+lib/screens/support_screen.dart:179:83: Error: Not a constant expression.
+                  const Text("DETAYLI ─░ST─░HBARAT RAPORU", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, 
+fontWeight: FontWeight.w900, letterSpacing: 2)),
+                                                                                  ^^^^^^^^^
+lib/screens/support_screen.dart:186:53: Error: Not a constant expression.
+                      style: const TextStyle(color: SiberTema.textMain, fontSize: 13, height: 1.5),
+                                                    ^^^^^^^^^
+lib/screens/support_screen.dart:159:135: Error: The getter 'SiberTema' isn't defined for the type '_SupportScreenState'
+.
+ - '_SupportScreenState' is from 'package:otodna/screens/support_screen.dart' ('lib/screens/support_screen.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'SiberTema'.
+                    decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Bor
+der.all(color: SiberTema.textMuted)),
+                                                                                          ^^^^^^^^^
+lib/screens/support_screen.dart:182:135: Error: The getter 'SiberTema' isn't defined for the type '_SupportScreenState'
+.
+ - '_SupportScreenState' is from 'package:otodna/screens/support_screen.dart' ('lib/screens/support_screen.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'SiberTema'.
+                    decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Bor
+der.all(color: SiberTema.textMuted)),
+                                                                                          ^^^^^^^^^
+lib/screens/support_screen.dart:189:53: Error: The getter 'SiberTema' isn't defined for the type '_SupportScreenState'.
+ - '_SupportScreenState' is from 'package:otodna/screens/support_screen.dart' ('lib/screens/support_screen.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'SiberTema'.
+                        hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 11, fontWeight: Font
+Weight.w900, letterSpacing: 1),
+                                                    ^^^^^^^^^
+lib/screens/support_screen.dart:253:43: Error: Not a constant expression.
+                  style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, height: 1.5),
+                                          ^^^^^^^^^
+lib/core/siber_lokasyon_motoru.dart:52:90: Error: Method invocation is not a constant expression.
+              const Text("K├£RESEL LOKASYON RADARI", style: TextStyle(color: Colors.white.withValues(alpha: 0.54), font
+Size: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                                                                                         ^^^^^^^^^^
+lib/core/siber_lokasyon_motoru.dart:82:88: Error: Method invocation is not a constant expression.
+          const Text("OPERASYON B├ûLGES─░ / ┼ŞEH─░R", style: TextStyle(color: Colors.white.withValues(alpha: 0.38), fon
+tSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                                                                                       ^^^^^^^^^^
+lib/screens/sos_protokolu_screen.dart:191:52: Error: Not a constant expression.
+                    const Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 60),
+                                                   ^^^^^^^^^
+lib/screens/sos_protokolu_screen.dart:193:74: Error: Not a constant expression.
+                    const Text("S─░NYAL YAYINDA", style: TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight:
+ FontWeight.w900, letterSpacing: 4, fontFamily: 'Avenir')),
+                                                                         ^^^^^^^^^
+lib/screens/sos_protokolu_screen.dart:135:73: Error: The getter 'SiberTema' isn't defined for the type '_SosProtokoluSc
+reenState'.
+ - '_SosProtokoluScreenState' is from 'package:otodna/screens/sos_protokolu_screen.dart' ('lib/screens/sos_protokolu_sc
+reen.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'SiberTema'.
+                    Text("5 SAN─░YE BASILI TUT", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize:
+ 16, fontWeight: FontWeight.w900, letterSpacing: 4, fontFamily: 'Avenir')),
+                                                                        ^^^^^^^^^
+lib/screens/sos_protokolu_screen.dart:187:190: Error: The getter 'SiberTema' isn't defined for the type '_SosProtokoluS
+creenState'.
+ - '_SosProtokoluScreenState' is from 'package:otodna/screens/sos_protokolu_screen.dart' ('lib/screens/sos_protokolu_sc
+reen.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'SiberTema'.
+                      child: Text("As─▒ls─▒z ihbarlar OtoDNA Karargah─▒ taraf─▒ndan tespit edilir ve sistemden ihrac─▒n
+─▒za neden olabilir.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain.withOpacity(0.3), fontSi
+ze: 10, fontFamily: 'Avenir', height: 1.5)),
+                                                                                          ^^^^^^^^^
+lib/screens/sos_protokolu_screen.dart:242:65: Error: The getter 'SiberTema' isn't defined for the type '_SosProtokoluSc
+reenState'.
+ - '_SosProtokoluScreenState' is from 'package:otodna/screens/sos_protokolu_screen.dart' ('lib/screens/sos_protokolu_sc
+reen.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'SiberTema'.
+                        Text(altBaslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 10, font
+Family: 'Avenir')),
+                                                                ^^^^^^^^^
+lib/screens/siber_sepet_ekrani.dart:182:69: Error: Member not found: 'white26'.
+                            decoration: BoxDecoration(color: Colors.white26, borderRadius: BorderRadius.circular(8)),
+                                                                    ^^^^^^^
+lib/screens/siber_market_vitrini.dart:250:41: Error: Member not found: 'white26'.
+                          color: Colors.white26,
+                                        ^^^^^^^
+lib/screens/siber_kokpit_screen.dart:28:113: Error: Not a constant expression.
+      return const Scaffold(body: Center(child: Text("S─░BER ─░HLAL: Kimlik Bulunamad─▒.", style: TextStyle(color: Sibe
+rTema.textMain))));
+                                                                                          ^^^^^^^^^
+lib/screens/siber_kokpit_screen.dart:58:82: Error: Not a constant expression.
+                          const Text("OtoDNA ├çevrimi├ği", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fo
+ntWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                                                                                 ^^^^^^^^^
+lib/screens/siber_kokpit_screen.dart:123:59: Error: Not a constant expression.
+                    child: Icon(Icons.sos_rounded, color: SiberTema.kuantumCyan, size: 40),
+                                                          ^^^^^^^^^
+lib/screens/siber_kokpit_screen.dart:155:71: Error: Not a constant expression.
+                  const Text("GARAJINIZ BO┼Ş", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: Fo
+ntWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                                                                      ^^^^^^^^^
+lib/screens/siber_kokpit_screen.dart:157:157: Error: The getter 'SiberTema' isn't defined for the type '_SiberKokpitScr
+eenState'.
+ - '_SiberKokpitScreenState' is from 'package:otodna/screens/siber_kokpit_screen.dart' ('lib/screens/siber_kokpit_scree
+n.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'SiberTema'.
+                  Text("OtoDNA'n─▒n Kuantum g├╝c├╝nden faydalanmak i├ğin arac─▒n─▒z─▒ sisteme entegre edin.", textAlign
+: TextAlign.center, style: TextStyle(color: SiberTema.textMain.withOpacity(0.6), height: 1.5, fontFamily: 'Avenir')),
+                                                                                          ^^^^^^^^^
+lib/screens/siber_kokpit_screen.dart:211:87: Error: Not a constant expression.
+                      Text(dnaSkoru.toStringAsFixed(0), style: const TextStyle(color: SiberTema.textMain, fontSize: 48,
+ fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                                                                                      ^^^^^^^^^
+lib/screens/siber_kokpit_screen.dart:220:55: Error: Not a constant expression.
+            Text(plaka, style: const TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900, le
+tterSpacing: 3, fontFamily: 'Avenir')),
+                                                      ^^^^^^^^^
+lib/screens/siber_kokpit_screen.dart:221:59: Error: The getter 'SiberTema' isn't defined for the type '_SiberKokpitScre
+enState'.
+ - '_SiberKokpitScreenState' is from 'package:otodna/screens/siber_kokpit_screen.dart' ('lib/screens/siber_kokpit_scree
+n.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'SiberTema'.
+            Text("$marka $model", style: TextStyle(color: SiberTema.textMain.withOpacity(0.6), fontSize: 14, fontFamily
+: 'Avenir')),
+                                                          ^^^^^^^^^
+lib/screens/siber_kokpit_screen.dart:264:60: Error: Not a constant expression.
+                Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w90
+0, letterSpacing: 1, fontFamily: 'Avenir')),
+                                                           ^^^^^^^^^
+lib/screens/siber_kokpit_screen.dart:266:57: Error: The getter 'SiberTema' isn't defined for the type '_SiberKokpitScre
+enState'.
+ - '_SiberKokpitScreenState' is from 'package:otodna/screens/siber_kokpit_screen.dart' ('lib/screens/siber_kokpit_scree
+n.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'SiberTema'.
+                Text(altBaslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 10, fontFamily: 
+'Avenir')),
+                                                        ^^^^^^^^^
+lib/screens/login_screen.dart:211:95: Error: Method invocation is not a constant expression.
+                    child: const Text("┼Şifremi Unuttum", style: TextStyle(color: Colors.white.withValues(alpha: 0.54),
+ fontSize: 13, fontWeight: FontWeight.w600, fontFamily: 'Avenir', decoration: TextDecoration.underline)),
+                                                                                          ^^^^^^^^^^
+lib/screens/login_screen.dart:240:64: Error: Method invocation is not a constant expression.
+                    style: const TextStyle(color: Colors.white.withValues(alpha: 0.54), fontSize: 14, fontFamily: 'Aven
+ir'),
+                                                               ^^^^^^^^^^
+lib/screens/login_screen.dart:273:62: Error: Method invocation is not a constant expression.
+              const Icon(Icons.language, color: Colors.white.withValues(alpha: 0.45), size: 16),
+                                                             ^^^^^^^^^^
+lib/screens/login_screen.dart:278:68: Error: Method invocation is not a constant expression.
+          icon: const Icon(Icons.help_outline, color: Colors.white.withValues(alpha: 0.54)),
+                                                                   ^^^^^^^^^^
+lib/screens/login_screen.dart:302:58: Error: Method invocation is not a constant expression.
+          hintStyle: const TextStyle(color: Colors.white.withValues(alpha: 0.38), fontSize: 14, fontFamily: 'Avenir'),
+                                                         ^^^^^^^^^^
+Target kernel_snapshot_program failed: Exception
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileFlutterBuildDebug'.
+> Process 'command 'C:\Gelistirme\bin\flutter.bat'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 24s
+Running Gradle task 'assembleDebug'...                             25,4s
+Gradle task assembleDebug failed with exit code 1

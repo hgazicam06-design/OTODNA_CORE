@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/bayi/urun_ekleme_formu.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +15,7 @@ class SiberUrunEklemeFormu extends StatefulWidget {
   final String bayiId; // Ürünü yükleyen bayinin Karargah kimliği
   final String bayiAdi; // Bayinin Vitrinde Görünecek Kendi Adı!
 
-  const SiberUrunEklemeFormu({super.key, required this.bayiId, required this.bayiAdi});
+  SiberUrunEklemeFormu({super.key, required this.bayiId, required this.bayiAdi});
 
   @override
   State<SiberUrunEklemeFormu> createState() => _SiberUrunEklemeFormuState();
@@ -125,8 +126,8 @@ class _SiberUrunEklemeFormuState extends State<SiberUrunEklemeFormu> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
+            SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
@@ -150,46 +151,46 @@ class _SiberUrunEklemeFormuState extends State<SiberUrunEklemeFormu> {
       child: Scaffold(
         backgroundColor: Colors.transparent, // Arka plan kalkan tarafından siyah siber boyanacak
         appBar: AppBar(
-          title: const Text("YENİ ÜRÜN FIRLAT", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
+          title: Text("YENİ ÜRÜN FIRLAT", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: Form(
           key: _formKey,
           child: ListView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(24),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.all(24),
             children: [
               // 1. SİBER BİLGİ PANELİ
               SiberTema.siberCamKalkan(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
                 child: Row(
                   children: [
-                    const Icon(Icons.storefront, color: SiberTema.kuantumCyan, size: 28),
-                    const SizedBox(width: 12),
-                    Expanded(child: Text("Yüklediğiniz ürünler OtoDNA Global Market vitrininde Karargahın güvencesiyle [${widget.bayiAdi}] bayrağı altında satılacaktır.", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold))),
+                    Icon(Icons.storefront, color: SiberTema.kuantumCyan, size: 28),
+                    SizedBox(width: 12),
+                    Expanded(child: Text("Yüklediğiniz ürünler OtoDNA Global Market vitrininde Karargahın güvencesiyle [${widget.bayiAdi}] bayrağı altında satılacaktır.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.5, letterSpacing: 0.5, fontWeight: FontWeight.bold))),
                   ],
                 ),
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: 30),
 
               // 2. TEKNİK BİLGİLER
               _buildSiberBaslik("ÜRÜN İSTİHBARATI"),
               _buildSiberGirdiAlan("Ürün Adı", "Örn: Kuantum Fren Balatası", Icons.inventory, _adCtrl, zorunlu: true),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(child: _buildSiberGirdiAlan("Siber Kod (SKU)", "Barkod", Icons.qr_code, _skuCtrl)),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Expanded(child: _buildSiberGirdiAlan("Stok Adedi", "10", Icons.layers, _adetCtrl, isNumber: true, zorunlu: true)),
                 ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
 
               // Kategori Dropdown (Siber Cam Zırhlı)
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                 decoration: BoxDecoration(
                     color: SiberTema.matGrey.withOpacity(0.8),
                     borderRadius: BorderRadius.circular(12),
@@ -199,35 +200,35 @@ class _SiberUrunEklemeFormuState extends State<SiberUrunEklemeFormu> {
                   child: DropdownButton<String>(
                     isExpanded: true,
                     dropdownColor: SiberTema.matGrey,
-                    icon: const Icon(Icons.keyboard_arrow_down, color: SiberTema.kuantumCyan),
-                    hint: const Text("Kategori Seçin", style: TextStyle(color: Colors.white30, fontSize: 13, fontWeight: FontWeight.bold)),
+                    icon: Icon(Icons.keyboard_arrow_down, color: SiberTema.kuantumCyan),
+                    hint: Text("Kategori Seçin", style: TextStyle(color: Colors.white30, fontSize: 13, fontWeight: FontWeight.bold)),
                     value: _secilenKategori,
-                    style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900),
+                    style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900),
                     items: ["Mekanik & Motor", "Şase & Alt Takım", "Elektrik & Yazılım", "Kaporta & Estetik", "Sarf Malzeme"].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
                     onChanged: (v) => setState(() => _secilenKategori = v),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 30),
+              SizedBox(height: 30),
 
               // 3. FİYATLANDIRMA
               _buildSiberBaslik("VİTRİN FİYATI"),
               _buildSiberGirdiAlan("Ürün Satış Fiyatı (₺)", "0.00", Icons.attach_money, _fiyatCtrl, isNumber: true, zorunlu: true),
 
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
 
               // 4. ATEŞLEME BUTONU
               SizedBox(
                 height: 60,
                 width: double.infinity,
                 child: _islemSuruyor
-                    ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                    ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                     : ElevatedButton.icon(
                   style: SiberTema.kuantumButonStili(),
                   onPressed: _urunuPiyasayaFirlat,
-                  icon: const Icon(Icons.rocket_launch, color: SiberTema.oledBlack, size: 24),
-                  label: const Text("ÜRÜNÜ VİTRİNE ÇIKAR", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, color: SiberTema.oledBlack)),
+                  icon: Icon(Icons.rocket_launch, color: SiberTema.oledBlack, size: 24),
+                  label: Text("ÜRÜNÜ VİTRİNE ÇIKAR", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, color: SiberTema.oledBlack)),
                 ),
               ),
             ],
@@ -240,8 +241,8 @@ class _SiberUrunEklemeFormuState extends State<SiberUrunEklemeFormu> {
   // ── 🔧 ARAYÜZ YARDIMCILARI ──
   Widget _buildSiberBaslik(String baslik) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
+      padding: EdgeInsets.only(bottom: 12),
+      child: Text(baslik, style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
     );
   }
 
@@ -259,15 +260,15 @@ class _SiberUrunEklemeFormuState extends State<SiberUrunEklemeFormu> {
           if (value == null || value.trim().isEmpty) return '*';
           return null;
         } : null,
-        style: const TextStyle(color: SiberTema.textMain, fontSize: 14, letterSpacing: 1, fontWeight: FontWeight.w900),
+        style: TextStyle(color: SiberTema.textMain, fontSize: 14, letterSpacing: 1, fontWeight: FontWeight.w900),
         decoration: InputDecoration(
           prefixIcon: Icon(ikon, color: SiberTema.kuantumCyan, size: 20),
           labelText: baslik,
-          labelStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold),
+          labelStyle: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold),
           hintText: ipucu,
-          hintStyle: const TextStyle(color: Colors.white30, fontSize: 12),
+          hintStyle: TextStyle(color: Colors.white30, fontSize: 12),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,7 +29,7 @@ void main() async {
     );
     
     // 🦇 YERALTI RADARI: Çevrimdışı Bellek (Offline Persistence) Aktif Ediliyor
-    FirebaseFirestore.instance.settings = const Settings(
+    FirebaseFirestore.instance.settings = Settings(
       persistenceEnabled: true,
       cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
     );
@@ -40,14 +41,14 @@ void main() async {
 
   // ProviderScope ile tüm uygulamayı siber ağa bağlıyoruz
   runApp(
-    const ProviderScope(
+    ProviderScope(
       child: OtoDNA(),
     ),
   );
 }
 
 class OtoDNA extends StatelessWidget {
-  const OtoDNA({super.key});
+  OtoDNA({super.key});
 
   @override
   Widget build(BuildContext context) {

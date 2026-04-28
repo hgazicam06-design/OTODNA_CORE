@@ -1,4 +1,4 @@
-// lib/firebase_options.dart
+﻿// lib/firebase_options.dart
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
@@ -17,7 +17,7 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
+  static FirebaseOptions web = FirebaseOptions(
     apiKey: "AIzaSy_GECICI_SİBER_ANAHTAR_123456",
     appId: "1:605026201993:web:7218ad6403197ec839f158",
     messagingSenderId: "605026201993",
@@ -26,7 +26,7 @@ class DefaultFirebaseOptions {
     storageBucket: "otodna-c3747.appspot.com",
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
+  static FirebaseOptions android = FirebaseOptions(
     apiKey: "AIzaSy_GECICI_ANDROID_ANAHTARI_7890",
     appId: "1:605026201993:android:farkli_id_buraya",
     messagingSenderId: "605026201993",
@@ -34,7 +34,7 @@ class DefaultFirebaseOptions {
     storageBucket: "otodna-c3747.appspot.com",
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
+  static FirebaseOptions ios = FirebaseOptions(
     apiKey: "AIzaSy_GECICI_IOS_ANAHTARI_5555",
     appId: "1:605026201993:ios:farkli_id_buraya",
     messagingSenderId: "605026201993",

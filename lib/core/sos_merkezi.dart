@@ -1,4 +1,4 @@
-// lib/core/sos_merkezi.dart
+﻿// lib/core/sos_merkezi.dart
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
@@ -50,7 +50,7 @@ class SiberSosMerkezi {
       await batch.commit(); // Füzeleri gönder!
 
       // ── ⚠️ 15. DAKİKA: EN YAKIN BAYİYE DEVİR ──
-      _timer15Dk = Timer(const Duration(minutes: 15), () async {
+      _timer15Dk = Timer(Duration(minutes: 15), () async {
         if (!_isCozuldu) {
           developer.log("⚠️ 15. DAKİKA: Asıl bayi müdahale etmedi! En yakın bayi radarına aktarılıyor.");
 
@@ -62,7 +62,7 @@ class SiberSosMerkezi {
       });
 
       // ── 🚨 30. DAKİKA: KARARGAH (GAZİ) MÜDAHALESİ ──
-      _timer30Dk = Timer(const Duration(minutes: 30), () async {
+      _timer30Dk = Timer(Duration(minutes: 30), () async {
         if (!_isCozuldu) {
           developer.log("🚨 KRİTİK İHLAL: 30 Dakikadır cevap yok! Sistem doğrudan Merkez Karargaha (Gazi'ye) devrediliyor.");
 

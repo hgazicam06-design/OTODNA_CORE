@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import '../../core/responsive_kalkan.dart';
 
@@ -5,7 +6,7 @@ import '../../core/responsive_kalkan.dart';
 // import 'ilan_ver_ekspertiz_screen.dart';
 
 class IlanVerAracSecimScreen extends StatefulWidget {
-  const IlanVerAracSecimScreen({super.key});
+  IlanVerAracSecimScreen({super.key});
 
   @override
   State<IlanVerAracSecimScreen> createState() => _IlanVerAracSecimScreenState();
@@ -44,19 +45,19 @@ class _IlanVerAracSecimScreenState extends State<IlanVerAracSecimScreen> {
 
   void _sonrakiAdim() {
     if (_secilenMarka == null || _secilenModel == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Lütfen Marka ve Model seçiniz.', style: TextStyle(color: SiberTema.textMain, fontFamily: 'Avenir')), backgroundColor: Colors.redAccent));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Lütfen Marka ve Model seçiniz.', style: TextStyle(color: SiberTema.textMain, fontFamily: 'Avenir')), backgroundColor: Colors.redAccent));
       return;
     }
-    // Navigator.push(context, MaterialPageRoute(builder: (context) => const IlanVerEkspertizScreen()));
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text('Araç Genetiği Onaylandı. Adım 2\'ye Geçiliyor...', style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), backgroundColor: Colors.teal.shade700));
+    // Navigator.push(context, MaterialPageRoute(builder: (context) => IlanVerEkspertizScreen()));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Araç Genetiği Onaylandı. Adım 2\'ye Geçiliyor...', style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')), backgroundColor: Colors.teal.shade700));
   }
 
   @override
   Widget build(BuildContext context) {
     // 🏢 PLAZA KALİTESİ PALET
     final Color primaryTeal = Colors.teal.shade700;
-    const Color bgColor = Color(0xFFFAFAFC);
-    const Color textColor = Color(0xFF1E293B);
+    Color bgColor = Color(0xFFFAFAFC);
+    Color textColor = Color(0xFF1E293B);
 
     return ResponsiveKalkan(
       isOledBackground: false,
@@ -75,15 +76,15 @@ class _IlanVerAracSecimScreenState extends State<IlanVerAracSecimScreen> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Araç Seçimi", style: TextStyle(color: textColor, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -1, fontFamily: 'Avenir')),
-                    const SizedBox(height: 8),
-                    const Text("Sisteme kaydedilecek aracın temel genetik bilgilerini seçin.", style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-                    const SizedBox(height: 40),
+                    SizedBox(height: 8),
+                    Text("Sisteme kaydedilecek aracın temel genetik bilgilerini seçin.", style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                    SizedBox(height: 40),
 
                     // =========================================================
                     // PLAZA DROPDOWN SEÇİCİLER
@@ -103,7 +104,7 @@ class _IlanVerAracSecimScreenState extends State<IlanVerAracSecimScreen> {
                       primaryTeal: primaryTeal,
                       textColor: textColor,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
 
                     _buildPremiumDropdown(
                       baslik: "Model",
@@ -116,7 +117,7 @@ class _IlanVerAracSecimScreenState extends State<IlanVerAracSecimScreen> {
                       primaryTeal: primaryTeal,
                       textColor: textColor,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
 
                     Row(
                       children: [
@@ -131,10 +132,10 @@ class _IlanVerAracSecimScreenState extends State<IlanVerAracSecimScreen> {
                             textColor: textColor,
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        SizedBox(width: 16),
                         Expanded(
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                             decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 5)]),
                             child: TextField(
                               controller: _kullanimKmController,
@@ -143,7 +144,7 @@ class _IlanVerAracSecimScreenState extends State<IlanVerAracSecimScreen> {
                               decoration: InputDecoration(
                                 icon: Icon(Icons.speed_outlined, color: primaryTeal, size: 20),
                                 labelText: "Kilometre",
-                                labelStyle: const TextStyle(color: Colors.white45, fontSize: 13, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
+                                labelStyle: TextStyle(color: Colors.white54, fontSize: 13, fontFamily: 'Avenir', fontWeight: FontWeight.bold),
                                 border: InputBorder.none,
                                 floatingLabelBehavior: FloatingLabelBehavior.always,
                               ),
@@ -152,39 +153,39 @@ class _IlanVerAracSecimScreenState extends State<IlanVerAracSecimScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 40),
+                    SizedBox(height: 40),
 
                     // =========================================================
                     // OTODNA SENKRONİZASYON (TOGGLE)
                     // =========================================================
                     Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(color: _otodnaSenkronizasyon ? primaryTeal.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.05), width: _otodnaSenkronizasyon ? 2 : 1),
                           boxShadow: [
                             if (_otodnaSenkronizasyon)
-                              BoxShadow(color: primaryTeal.withValues(alpha: 0.1), blurRadius: 15, offset: const Offset(0, 5))
+                              BoxShadow(color: primaryTeal.withValues(alpha: 0.1), blurRadius: 15, offset: Offset(0, 5))
                             else
-                              BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))
+                              BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: Offset(0, 5))
                           ]
                       ),
                       child: Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(12),
+                            padding: EdgeInsets.all(12),
                             decoration: BoxDecoration(color: _otodnaSenkronizasyon ? primaryTeal.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05), shape: BoxShape.circle),
                             child: Icon(Icons.security, color: _otodnaSenkronizasyon ? primaryTeal : Colors.black38, size: 24),
                           ),
-                          const SizedBox(width: 16),
+                          SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("OtoDNA Ağ Senkronizasyonu", style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-                                const SizedBox(height: 4),
-                                const Text("Aracınızı Kuantum Ağına mühürleyerek güven değerini artırın.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                SizedBox(height: 4),
+                                Text("Aracınızı Kuantum Ağına mühürleyerek güven değerini artırın.", style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                               ],
                             ),
                           ),
@@ -202,24 +203,24 @@ class _IlanVerAracSecimScreenState extends State<IlanVerAracSecimScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 40),
+                    SizedBox(height: 40),
 
                     // =========================================================
                     // DİNAMİK FİYAT HESAPLAYICI
                     // =========================================================
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(32),
+                      padding: EdgeInsets.all(32),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: primaryTeal.withValues(alpha: 0.3)),
-                        boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, 10))]
+                        boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.05), blurRadius: 20, offset: Offset(0, 10))]
                       ),
                       child: Column(
                         children: [
-                          const Text("Sistem Tarafından Önerilen Değer", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
-                          const SizedBox(height: 8),
+                          Text("Sistem Tarafından Önerilen Değer", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+                          SizedBox(height: 8),
                           Text(
                               "₺${_hesaplananFiyat.toStringAsFixed(0)}",
                               style: TextStyle(color: primaryTeal, fontSize: 40, fontWeight: FontWeight.w900, letterSpacing: -1, fontFamily: 'Avenir')
@@ -228,7 +229,7 @@ class _IlanVerAracSecimScreenState extends State<IlanVerAracSecimScreen> {
                       )
                     ),
 
-                    const SizedBox(height: 40),
+                    SizedBox(height: 40),
                   ],
                 ),
               ),
@@ -238,11 +239,11 @@ class _IlanVerAracSecimScreenState extends State<IlanVerAracSecimScreen> {
             // SABİT ALT BUTON ALANI
             // =========================================================
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
-                boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
+                boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: Offset(0, -5))]
               ),
               child: SafeArea(
                 child: SizedBox(
@@ -256,7 +257,7 @@ class _IlanVerAracSecimScreenState extends State<IlanVerAracSecimScreen> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     ),
                     onPressed: _sonrakiAdim,
-                    child: const Text("SONRAKİ ADIM", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                    child: Text("SONRAKİ ADIM", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5, fontFamily: 'Avenir')),
                   ),
                 ),
               ),
@@ -270,7 +271,7 @@ class _IlanVerAracSecimScreenState extends State<IlanVerAracSecimScreen> {
   // 💎 PLAZA MİMARİSİ: ŞIK VE SADE AÇILIR MENÜ (DROPDOWN)
   Widget _buildPremiumDropdown({required String baslik, required String? deger, required List<String> liste, required Function(String?) onChanged, required IconData ikon, required Color primaryTeal, required Color textColor}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -280,14 +281,14 @@ class _IlanVerAracSecimScreenState extends State<IlanVerAracSecimScreen> {
       child: Row(
         children: [
           Icon(ikon, color: primaryTeal, size: 20),
-          const SizedBox(width: 16),
+          SizedBox(width: 16),
           Expanded(
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 dropdownColor: Colors.white,
                 isExpanded: true,
                 value: deger,
-                hint: Text(baslik, style: const TextStyle(color: Colors.white45, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                hint: Text(baslik, style: TextStyle(color: Colors.white54, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                 icon: Icon(Icons.keyboard_arrow_down, color: primaryTeal),
                 style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
                 items: liste.map((String item) {

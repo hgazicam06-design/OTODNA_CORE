@@ -1,4 +1,4 @@
-// lib/services/siber_kalfa_servisi.dart
+﻿// lib/services/siber_kalfa_servisi.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
@@ -15,7 +15,7 @@ class SiberKalfaServisi {
       // veya TensorFlow tabanlı özel bir Python sunucusuna gönderilir.
       // Biz Karargah laboratuvarında AI'ın yapacağı analizi simüle edip veritabanına mühürlüyoruz.
 
-      await Future.delayed(const Duration(seconds: 3)); // AI Analiz Süresi
+      await Future.delayed(Duration(seconds: 3)); // AI Analiz Süresi
 
       // Yapay Zekanın veri kütüphanesinden bulduğu olası arızalar
       List<Map<String, dynamic>> aiTahminleri = [

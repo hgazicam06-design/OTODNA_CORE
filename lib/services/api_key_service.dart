@@ -1,4 +1,4 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+﻿import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:developer' as developer;
 
 /// 🛡️ KUANTUM KASA: API anahtarlarını donanım seviyesinde (Keystore/Keychain) şifreler.
@@ -10,7 +10,7 @@ class ApiKeyService {
     iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock), // Apple Kalkanı
   );
 
-  static const String _geminiKey = 'gemini_api_key';
+  static String _geminiKey = 'gemini_api_key';
 
   // ── Gemini API Key İstihbarat Protokolleri ────────────────────────────────────────
 

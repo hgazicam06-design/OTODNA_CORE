@@ -1,4 +1,4 @@
-import 'dart:developer' as developer;
+﻿import 'dart:developer' as developer;
 
 /// 🛡️ KUANTUM MERKEZİ DIŞ İSTİHBARAT SERVİSİ (GoogleHubService)
 /// OtoDNA ağına daha önce dahil olmamış araçların orijinal fabrika verilerini
@@ -50,7 +50,7 @@ class GoogleHubService {
     developer.log("SİBER RADAR: 🌐 $girilenSase için Google Hub istihbarat motoru ateşlendi...");
 
     // Terminal Komutu Gecikmesi (API'ye istek atıyormuşuz gibi 1.5 saniye bekler)
-    await Future.delayed(const Duration(milliseconds: 1500));
+    await Future.delayed(Duration(milliseconds: 1500));
 
     // GİRİLEN ŞASEYİ VERİTABANINDA ARA (Algoritma)
     Map<String, dynamic>? bulunanArac;

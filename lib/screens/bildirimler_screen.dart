@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class BildirimlerScreen extends StatelessWidget {
   final String saseNo;
   final String plaka;
 
-  const BildirimlerScreen({super.key, required this.saseNo, required this.plaka});
+  BildirimlerScreen({super.key, required this.saseNo, required this.plaka});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class BildirimlerScreen extends StatelessWidget {
         appBar: _buildSiberAppBar(context, db),
         body: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1000),
+            constraints: BoxConstraints(maxWidth: 1000),
             child: StreamBuilder<QuerySnapshot>(
               stream: db
                   .collection('vehicles')
@@ -35,7 +36,7 @@ class BildirimlerScreen extends StatelessWidget {
                   .snapshots(),
               builder: (context, snap) {
                 if (snap.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2));
+                  return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2));
                 }
 
                 final docs = snap.data?.docs ?? [];
@@ -45,8 +46,8 @@ class BildirimlerScreen extends StatelessWidget {
                 }
 
                 return ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                  physics: BouncingScrollPhysics(),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 24),
                   itemCount: docs.length,
                   itemBuilder: (context, i) {
                     final doc = docs[i];
@@ -69,23 +70,23 @@ class BildirimlerScreen extends StatelessWidget {
       elevation: 0,
       centerTitle: false,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
+        icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
         onPressed: () => Navigator.pop(context),
       ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('AĞ BİLDİRİMLERİ', style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          Text('AĞ BİLDİRİMLERİ', style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2)),
           Text('HEDEF: ${plaka.toUpperCase()}', style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.7), fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'monospace')),
         ],
       ),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 16),
+          padding: EdgeInsets.only(right: 16),
           child: TextButton.icon(
             onPressed: () => _tumunuOnayla(context, db),
-            icon: const Icon(Icons.done_all, color: SiberTema.kuantumCyan, size: 18),
-            label: const Text('ONAYLA', style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900)),
+            icon: Icon(Icons.done_all, color: SiberTema.kuantumCyan, size: 18),
+            label: Text('ONAYLA', style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900)),
           ),
         ),
       ],
@@ -106,7 +107,7 @@ class BildirimlerScreen extends StatelessWidget {
 
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text("TÜM SİNYALLER ARŞİVLENDİ VE MÜHÜRLENDİ.", style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white)),
           backgroundColor: SiberTema.kuantumCyan,
           behavior: SnackBarBehavior.floating,
@@ -137,12 +138,12 @@ class BildirimlerScreen extends StatelessWidget {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
+        margin: EdgeInsets.only(bottom: 16),
         child: SiberTema.siberCamKalkan(
           child: Row(
             children: [
               _buildTipIcon(tip, okundu),
-              const SizedBox(width: 20),
+              SizedBox(width: 20),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,7 +156,7 @@ class BildirimlerScreen extends StatelessWidget {
                         if (!okundu)
                           Container(
                               width: 8, height: 8,
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                   color: SiberTema.kuantumCyan,
                                   shape: BoxShape.circle,
                                   boxShadow: [BoxShadow(color: SiberTema.kuantumCyan, blurRadius: 4)]
@@ -163,20 +164,20 @@ class BildirimlerScreen extends StatelessWidget {
                           ),
                       ],
                     ),
-                    const SizedBox(height: 6),
-                    Text(mesaj, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.4)),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 6),
+                    Text(mesaj, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.4)),
+                    SizedBox(height: 12),
                     Row(
                       children: [
                         Icon(Icons.access_time_rounded, size: 10, color: SiberTema.kuantumCyan.withOpacity(0.5)),
-                        const SizedBox(width: 6),
+                        SizedBox(width: 6),
                         Text(ts != null ? _formatSiberTarih(ts.toDate()) : 'ZAMAN DAMGASI YOK', style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.5), fontSize: 9, fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: 10),
               Icon(Icons.arrow_forward_ios_rounded, color: Colors.white.withOpacity(0.1), size: 14),
             ],
           ),
@@ -213,10 +214,10 @@ class BildirimlerScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.radar_rounded, color: Colors.white.withOpacity(0.05), size: 80),
-          const SizedBox(height: 24),
-          const Text('RADAR TEMİZ', style: TextStyle(color: SiberTema.textMuted, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 4)),
-          const SizedBox(height: 8),
-          const Text('Henüz bir siber sinyal tespit edilmedi.', style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
+          SizedBox(height: 24),
+          Text('RADAR TEMİZ', style: TextStyle(color: SiberTema.textMuted, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 4)),
+          SizedBox(height: 8),
+          Text('Henüz bir siber sinyal tespit edilmedi.', style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
         ],
       ),
     );

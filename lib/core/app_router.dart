@@ -1,4 +1,4 @@
-// lib/core/app_router.dart
+﻿// lib/core/app_router.dart
 import 'package:flutter/material.dart';
 
 // 🔥 SİBER TERMİNALLERİN KÖPRÜLERİ
@@ -36,19 +36,19 @@ class KuantumRota {
     switch (settings.name) {
     // ── ANA GÜVENLİK VE GİRİŞ KAPILARI ──
       case '/':
-        return MaterialPageRoute(builder: (_) => const OtoDnaAuthGate());
+        return MaterialPageRoute(builder: (_) => OtoDnaAuthGate());
       case '/login':
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
+        return MaterialPageRoute(builder: (_) => LoginScreen());
       case '/dil_secimi': // ✅ SİBER DİL KÖPRÜSÜ AKTİF EDİLDİ
-        return MaterialPageRoute(builder: (_) => const DilSecimTerminali());
+        return MaterialPageRoute(builder: (_) => DilSecimTerminali());
 
     // ── ANA KOKPİTLER VE PANELLER ──
       case '/kokpit':
-        return MaterialPageRoute(builder: (_) => const SiberKokpitScreen());
+        return MaterialPageRoute(builder: (_) => SiberKokpitScreen());
       case '/super_admin':
-        return MaterialPageRoute(builder: (_) => const SuperAdminScreen());
+        return MaterialPageRoute(builder: (_) => SuperAdminScreen());
       case '/usta_paneli':
-        return MaterialPageRoute(builder: (_) => const UstaPanelScreen());
+        return MaterialPageRoute(builder: (_) => UstaPanelScreen());
       case '/bayi_merkez':
         return MaterialPageRoute(
           builder: (_) => BayiMerkezi(bayiId: args['bayiId'] ?? ''),
@@ -60,9 +60,9 @@ class KuantumRota {
 
     // ── ARAÇ VE BİLGİ MERKEZLERİ ──
       case '/arac_kayit':
-        return MaterialPageRoute(builder: (_) => const AracKayitScreen());
+        return MaterialPageRoute(builder: (_) => AracKayitScreen());
       case '/siber_goz':
-        return MaterialPageRoute(builder: (_) => const SiberGozTerminali());
+        return MaterialPageRoute(builder: (_) => SiberGozTerminali());
       case '/sorgu_sonuc':
         return MaterialPageRoute(
           builder: (_) => SorguSonucSayfasi(
@@ -80,13 +80,13 @@ class KuantumRota {
 
     // ── TİCARET VE FİNANS AĞI ──
       case '/market':
-        return MaterialPageRoute(builder: (_) => const SiberMarketVitrini());
+        return MaterialPageRoute(builder: (_) => SiberMarketVitrini());
       case '/sepet':
-        return MaterialPageRoute(builder: (_) => const SiberSepetEkrani());
+        return MaterialPageRoute(builder: (_) => SiberSepetEkrani());
       case '/ilan_ver':
-        return MaterialPageRoute(builder: (_) => const YedekParcaIlanVerScreen());
+        return MaterialPageRoute(builder: (_) => YedekParcaIlanVerScreen());
       case '/cuzdan':
-        return MaterialPageRoute(builder: (_) => const WalletScreen());
+        return MaterialPageRoute(builder: (_) => WalletScreen());
       case '/yedek_parca_vitrini':
         return MaterialPageRoute(
           builder: (_) => YedekParcaVitriniScreen(
@@ -96,7 +96,7 @@ class KuantumRota {
 
     // ── SİBER İLETİŞİM VE DESTEK TÜNELLERİ ──
       case '/sohbet_listesi':
-        return MaterialPageRoute(builder: (_) => const SohbetListesiScreen());
+        return MaterialPageRoute(builder: (_) => SohbetListesiScreen());
       case '/sohbet_ekrani':
         return MaterialPageRoute(
           builder: (_) => SohbetEkrani(
@@ -105,9 +105,9 @@ class KuantumRota {
           ),
         );
       case '/usta_arama':
-        return MaterialPageRoute(builder: (_) => const UstaAramaScreen());
+        return MaterialPageRoute(builder: (_) => UstaAramaScreen());
       case '/destek':
-        return MaterialPageRoute(builder: (_) => const SupportScreen());
+        return MaterialPageRoute(builder: (_) => SupportScreen());
       case '/yorum_yap':
         return MaterialPageRoute(
           builder: (_) => YorumYapScreen(
@@ -119,7 +119,7 @@ class KuantumRota {
 
     // ── ACİL DURUM VE S.O.S PROTOKOLLERİ ──
       case '/sos_merkezi':
-        return MaterialPageRoute(builder: (_) => const SosProtokoluScreen());
+        return MaterialPageRoute(builder: (_) => SosProtokoluScreen());
 
     // ── SİBER İHLAL (BİLİNMEYEN ROTA) KALKANI ──
       default:
@@ -129,7 +129,7 @@ class KuantumRota {
             body: Center(
               child: Text(
                 "SİBER İHLAL: ROTA BULUNAMADI (${settings.name})",
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.redAccent,
                   fontWeight: FontWeight.w900,
                   fontFamily: 'Avenir',

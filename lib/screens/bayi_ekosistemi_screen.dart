@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,7 +11,7 @@ import '../core/responsive_kalkan.dart';
 import '../services/takip_radari.dart';
 
 class BayiEkosistemiScreen extends StatefulWidget {
-  const BayiEkosistemiScreen({super.key});
+  BayiEkosistemiScreen({super.key});
 
   @override
   State<BayiEkosistemiScreen> createState() => _BayiEkosistemiScreenState();
@@ -143,8 +144,8 @@ class _BayiEkosistemiScreenState extends State<BayiEkosistemiScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.shield, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("DİJİTAL REFERANS MERKEZİ", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2)),
+          leading: IconButton(icon: Icon(Icons.shield, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          title: Text("DİJİTAL REFERANS MERKEZİ", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2)),
           centerTitle: true,
         ),
         body: Stack(
@@ -153,13 +154,13 @@ class _BayiEkosistemiScreenState extends State<BayiEkosistemiScreen> {
               children: [
                 // ── 1. ARAÇ KİMLİK GİRİŞİ ──
                 Padding(
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(24),
                   child: SiberTema.siberCamKalkan(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: TextField(
                       controller: _aracIdController,
-                      style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, letterSpacing: 3),
-                      decoration: const InputDecoration(
+                      style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, letterSpacing: 3),
+                      decoration: InputDecoration(
                         hintText: "PLAKA VEYA ŞASE GİRİN",
                         hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 12),
                         border: InputBorder.none,
@@ -172,15 +173,15 @@ class _BayiEkosistemiScreenState extends State<BayiEkosistemiScreen> {
                 // ── 2. KONTROL LİSTESİ ──
                 Expanded(
                   child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: EdgeInsets.symmetric(horizontal: 24),
                     itemCount: _kritikParcalar.length,
                     itemBuilder: (context, index) {
                       String parca = _kritikParcalar[index];
                       bool? durum = _parcaDurumlari[parca];
 
                       return Container(
-                        margin: const EdgeInsets.only(bottom: 16),
-                        padding: const EdgeInsets.all(20),
+                        margin: EdgeInsets.only(bottom: 16),
+                        padding: EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           color: SiberTema.matGrey.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(20),
@@ -194,11 +195,11 @@ class _BayiEkosistemiScreenState extends State<BayiEkosistemiScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(parca, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w800, fontSize: 14)),
+                                Text(parca, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w800, fontSize: 14)),
                                 if (durum != null) Icon(durum ? Icons.verified : Icons.gpp_bad, color: durum ? SiberTema.kuantumCyan : SiberTema.kanKirmizi),
                               ],
                             ),
-                            const SizedBox(height: 20),
+                            SizedBox(height: 20),
                             Row(
                               children: [
                                 _islemButonu(
@@ -207,7 +208,7 @@ class _BayiEkosistemiScreenState extends State<BayiEkosistemiScreen> {
                                   renk: SiberTema.kanKirmizi,
                                   aktif: durum == false,
                                 ),
-                                const SizedBox(width: 12),
+                                SizedBox(width: 12),
                                 _islemButonu(
                                   onTap: () => _yesilTikAt(parca),
                                   icon: Icons.camera_enhance,
@@ -228,8 +229,8 @@ class _BayiEkosistemiScreenState extends State<BayiEkosistemiScreen> {
 
             if (_isProcessing)
               Container(
-                color: Colors.white87,
-                child: const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)),
+                color: Colors.white70,
+                child: Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)),
               ),
           ],
         ),
@@ -253,7 +254,7 @@ class _BayiEkosistemiScreenState extends State<BayiEkosistemiScreen> {
             children: [
               Icon(icon, color: renk, size: 20),
               if (ekstraIcon != null) ...[
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Icon(ekstraIcon, color: renk, size: 20),
               ],
             ],

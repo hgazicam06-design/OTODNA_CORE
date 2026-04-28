@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/siber_tema.dart';
@@ -13,7 +14,7 @@ import '../../core/responsive_kalkan.dart';
 class WebMainLayout extends StatefulWidget {
   // Varsayılan olarak gösterilecek ekran (Örn: Firma Paneli)
   final Widget initialChild;
-  const WebMainLayout({super.key, required this.initialChild});
+  WebMainLayout({super.key, required this.initialChild});
 
   @override
   State<WebMainLayout> createState() => _WebMainLayoutState();
@@ -73,8 +74,8 @@ class _WebMainLayoutState extends State<WebMainLayout> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.radar, color: primaryCyan, size: 40),
-                      const SizedBox(height: 8),
-                      const Text(
+                      SizedBox(height: 8),
+                      Text(
                         "OtoDNA WEB",
                         style: TextStyle(color: SiberTema.textMain, fontSize: 22, fontWeight: FontWeight.bold, letterSpacing: 2),
                       ),
@@ -82,36 +83,36 @@ class _WebMainLayoutState extends State<WebMainLayout> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
 
                 // 2. MENÜ ELEMANLARI
                 _buildMenuItem(Icons.dashboard, "Ana Karargah", 0, () {
-                  // TODO: _changeScreen(const FirmaPaneliScreen(), 0);
+                  // TODO: _changeScreen(FirmaPaneliScreen(), 0);
                   print("Firma Paneline Geç");
                 }),
                 _buildMenuItem(Icons.precision_manufacturing, "Araç Kabul & Ekspertiz", 1, () {
-                  // TODO: _changeScreen(const GercekAracKayitTerminali(), 1);
+                  // TODO: _changeScreen(GercekAracKayitTerminali(), 1);
                   print("Ekspertiz Ekranına Geç");
                 }),
                 _buildMenuItem(Icons.inventory_2, "Siber Katalog (Yedek Parça)", 2, () {
-                  // TODO: _changeScreen(const UrunKatalogScreen(), 2);
+                  // TODO: _changeScreen(UrunKatalogScreen(), 2);
                   print("Katalog Ekranına Geç");
                 }),
                 _buildMenuItem(Icons.local_shipping, "Kargo & Güvenli Havuz", 3, () {
-                  // TODO: _changeScreen(const KargoQrKilitScreen(), 3);
+                  // TODO: _changeScreen(KargoQrKilitScreen(), 3);
                   print("Kargo Ekranına Geç");
                 }),
                 _buildMenuItem(Icons.account_balance_wallet, "Finans & B2B Uzlaşma", 4, () {
                   print("Finans Ekranına Geç");
                 }),
 
-                const Spacer(), // Ayarları en alta iter
+                Spacer(), // Ayarları en alta iter
 
                 // 3. AYARLAR VE ÇIKIŞ
-                const Divider(color: SiberTema.textMuted),
+                Divider(color: SiberTema.textMuted),
                 _buildMenuItem(Icons.settings, "Sistem Ayarları", 5, () {}),
                 _buildMenuItem(Icons.logout, "Güvenli Çıkış", 6, () {}, isLogout: true),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
               ],
             ),
           ),
@@ -123,7 +124,7 @@ class _WebMainLayoutState extends State<WebMainLayout> {
             child: Container(
               color: bgColor,
               child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
+                duration: Duration(milliseconds: 300),
                 transitionBuilder: (Widget child, Animation<double> animation) {
                   return FadeTransition(opacity: animation, child: child);
                 },
@@ -153,7 +154,7 @@ class _WebMainLayoutState extends State<WebMainLayout> {
         },
         hoverColor: primaryCyan.withOpacity(0.1),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           decoration: BoxDecoration(
             border: Border(
                 left: BorderSide(
@@ -166,7 +167,7 @@ class _WebMainLayoutState extends State<WebMainLayout> {
           child: Row(
             children: [
               Icon(icon, color: itemColor, size: 22),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               Expanded(
                 child: Text(
                   title,

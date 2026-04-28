@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/bayi/usta_akustik_radar_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,7 @@ import '../../services/siber_kalfa_servisi.dart';
 
 class UstaAkustikRadarScreen extends StatefulWidget {
   final String ustaId;
-  const UstaAkustikRadarScreen({super.key, required this.ustaId});
+  UstaAkustikRadarScreen({super.key, required this.ustaId});
 
   @override
   State<UstaAkustikRadarScreen> createState() => _UstaAkustikRadarScreenState();
@@ -58,17 +59,17 @@ class _UstaAkustikRadarScreenState extends State<UstaAkustikRadarScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: SiberTema.matGrey,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: SiberTema.kuantumCyan)),
-        title: const Text("SİBER TEŞHİS VE TEKLİF", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900)),
+        title: Text("SİBER TEŞHİS VE TEKLİF", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(controller: teshisCtrl, style: const TextStyle(color: SiberTema.textMain), maxLines: 3, decoration: const InputDecoration(hintText: "Usta Yorumu...", hintStyle: TextStyle(color: SiberTema.textMuted))),
-            const SizedBox(height: 10),
-            TextField(controller: fiyatCtrl, style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold), keyboardType: TextInputType.number, decoration: const InputDecoration(hintText: "Tahmini Maliyet (₺)", hintStyle: TextStyle(color: SiberTema.textMuted))),
+            TextField(controller: teshisCtrl, style: TextStyle(color: SiberTema.textMain), maxLines: 3, decoration: InputDecoration(hintText: "Usta Yorumu...", hintStyle: TextStyle(color: SiberTema.textMuted))),
+            SizedBox(height: 10),
+            TextField(controller: fiyatCtrl, style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold), keyboardType: TextInputType.number, decoration: InputDecoration(hintText: "Tahmini Maliyet (₺)", hintStyle: TextStyle(color: SiberTema.textMuted))),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted))),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text("İPTAL", style: TextStyle(color: SiberTema.textMuted))),
           ElevatedButton(
             style: SiberTema.kuantumButonStili(),
             onPressed: () async {
@@ -106,9 +107,9 @@ class _UstaAkustikRadarScreenState extends State<UstaAkustikRadarScreen> {
               });
 
               await batch.commit();
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Teşhis Karargaha mühürlendi!"), backgroundColor: SiberTema.kuantumCyan));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Teşhis Karargaha mühürlendi!"), backgroundColor: SiberTema.kuantumCyan));
             },
-            child: const Text("MÜŞTERİYE FIRLAT", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)),
+            child: Text("MÜŞTERİYE FIRLAT", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)),
           )
         ],
       ),
@@ -122,19 +123,19 @@ class _UstaAkustikRadarScreenState extends State<UstaAkustikRadarScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("AKUSTİK RADAR VE SİBER KALFA", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5)),
+          title: Text("AKUSTİK RADAR VE SİBER KALFA", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5)),
           backgroundColor: Colors.transparent,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: StreamBuilder<QuerySnapshot>(
           // Sadece bekleyen sesleri dinle
           stream: _db.collection('akustik_analizler').where('durum', isEqualTo: 'USTA_DINLEMESI_BEKLIYOR').orderBy('yuklenme_tarihi', descending: true).snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
-            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return const Center(child: Text("RADAR TEMİZ. Bekleyen ses analizi yok.", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)));
+            if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) return Center(child: Text("RADAR TEMİZ. Bekleyen ses analizi yok.", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)));
 
             return ListView.builder(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 var veri = snapshot.data!.docs[index].data() as Map<String, dynamic>;
@@ -147,8 +148,8 @@ class _UstaAkustikRadarScreenState extends State<UstaAkustikRadarScreen> {
                 }
 
                 return Container(
-                  margin: const EdgeInsets.only(bottom: 20),
-                  padding: const EdgeInsets.all(20),
+                  margin: EdgeInsets.only(bottom: 20),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: SiberTema.matGrey.withOpacity(0.8),
                     borderRadius: BorderRadius.circular(16),
@@ -163,52 +164,52 @@ class _UstaAkustikRadarScreenState extends State<UstaAkustikRadarScreen> {
                           GestureDetector(
                             onTap: () => _sesiCalDurdur(veri['ses_url'], analizId),
                             child: Container(
-                              padding: const EdgeInsets.all(16),
+                              padding: EdgeInsets.all(16),
                               decoration: BoxDecoration(color: (_calinanKayitId == analizId && _isPlay) ? SiberTema.kanKirmizi : SiberTema.kuantumCyan.withOpacity(0.1), shape: BoxShape.circle),
                               child: Icon((_calinanKayitId == analizId && _isPlay) ? Icons.pause : Icons.play_arrow, color: (_calinanKayitId == analizId && _isPlay) ? Colors.white : SiberTema.kuantumCyan, size: 32),
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text("MÜŞTERİ NOTU", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
-                                const SizedBox(height: 4),
-                                Text(veri['ariza_notu'] ?? "Not girilmemiş.", style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
+                                Text("MÜŞTERİ NOTU", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                                SizedBox(height: 4),
+                                Text(veri['ariza_notu'] ?? "Not girilmemiş.", style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
-                      const Divider(color: SiberTema.textMuted),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 20),
+                      Divider(color: SiberTema.textMuted),
+                      SizedBox(height: 10),
 
                       // 2. SİBER KALFA (YAPAY ZEKA) RAPORU
                       if (!aiTamamlandi)
-                        const Row(children: [CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2), SizedBox(width: 12), Text("Siber Kalfa sesi analiz ediyor...", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 12))])
+                        Row(children: [CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2), SizedBox(width: 12), Text("Siber Kalfa sesi analiz ediyor...", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 12))])
                       else ...[
-                        const Row(
+                        Row(
                           children: [
                             Icon(Icons.psychology, color: Colors.amberAccent, size: 20),
                             SizedBox(width: 8),
                             Text("SİBER KALFA (AI) RAPORU:", style: TextStyle(color: Colors.amberAccent, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1)),
                           ],
                         ),
-                        const SizedBox(height: 10),
-                        Text(veri['kalfa_notu'] ?? "", style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontStyle: FontStyle.italic)),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10),
+                        Text(veri['kalfa_notu'] ?? "", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontStyle: FontStyle.italic)),
+                        SizedBox(height: 10),
                         // Eşleşme Oranları Çubuğu
                         ...List.generate((veri['ai_tahminleri'] as List).length, (i) {
                           var tahmin = veri['ai_tahminleri'][i];
                           return Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
+                            padding: EdgeInsets.only(bottom: 8),
                             child: Row(
                               children: [
-                                Expanded(flex: 3, child: Text(tahmin['ariza'], style: const TextStyle(color: SiberTema.textMain, fontSize: 11))),
+                                Expanded(flex: 3, child: Text(tahmin['ariza'], style: TextStyle(color: SiberTema.textMain, fontSize: 11))),
                                 Expanded(flex: 2, child: LinearProgressIndicator(value: tahmin['eslesme_orani'] / 100, backgroundColor: Colors.white12, color: tahmin['eslesme_orani'] > 70 ? SiberTema.kanKirmizi : SiberTema.kuantumCyan)),
-                                const SizedBox(width: 8),
+                                SizedBox(width: 8),
                                 Text("%${tahmin['eslesme_orani']}", style: TextStyle(color: tahmin['eslesme_orani'] > 70 ? SiberTema.kanKirmizi : SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontSize: 11)),
                               ],
                             ),
@@ -216,7 +217,7 @@ class _UstaAkustikRadarScreenState extends State<UstaAkustikRadarScreen> {
                         }),
                       ],
 
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
 
                       // 3. USTA MÜDAHALE BUTONU
                       SizedBox(
@@ -225,8 +226,8 @@ class _UstaAkustikRadarScreenState extends State<UstaAkustikRadarScreen> {
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, foregroundColor: SiberTema.oledBlack, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
                           onPressed: () => _teshisGonder(analizId, veri['kullanici_id']),
-                          icon: const Icon(Icons.send_rounded, size: 20),
-                          label: const Text("TEŞHİS KOY VE FİYAT VER", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+                          icon: Icon(Icons.send_rounded, size: 20),
+                          label: Text("TEŞHİS KOY VE FİYAT VER", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
                         ),
                       )
                     ],

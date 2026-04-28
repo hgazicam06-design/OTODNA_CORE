@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +11,7 @@ import '../core/responsive_kalkan.dart';
 /// 🦅 SİBER SEPET TERMİNALİ (V2.0 - ZIRHLI)
 /// OtoDNA ekosistemindeki tüm donanım ve hizmet alımlarının finansal çıkış kapısı.
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+  CartScreen({super.key});
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -19,7 +20,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   // 🌑 SİBER RENK PALETİ (TESLA/CYBERPUNK)
   final Color bgColor = SiberTema.oledBlack;
-  final Color surfaceColor = const Color(0xFF111111);
+  final Color surfaceColor = Color(0xFF111111);
   final Color primaryCyan = SiberTema.kuantumCyan;
   final Color dangerColor = Colors.redAccent;
 
@@ -108,10 +109,10 @@ class _CartScreenState extends State<CartScreen> {
       elevation: 0,
       centerTitle: true,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18),
+        icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18),
         onPressed: () => Navigator.pop(context),
       ),
-      title: const Text(
+      title: Text(
         'S İ B E R   S E P E T',
         style: TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 4),
       ),
@@ -133,8 +134,8 @@ class _CartScreenState extends State<CartScreen> {
           children: [
             Expanded(
               child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 itemCount: docs.length,
                 itemBuilder: (context, index) {
                   final doc = docs[index];
@@ -156,8 +157,8 @@ class _CartScreenState extends State<CartScreen> {
     final adet = (data['adet'] ?? 1).toInt();
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: surfaceColor.withOpacity(0.5),
         borderRadius: BorderRadius.circular(16),
@@ -174,13 +175,13 @@ class _CartScreenState extends State<CartScreen> {
             ),
             child: Icon(Icons.settings_input_component_rounded, color: primaryCyan, size: 20),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(ad.toString().toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.w800, letterSpacing: 1)),
-                const SizedBox(height: 6),
+                Text(ad.toString().toUpperCase(), style: TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.w800, letterSpacing: 1)),
+                SizedBox(height: 6),
                 Text('₺${fiyat.toStringAsFixed(2)}', style: TextStyle(color: primaryCyan, fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
               ],
             ),
@@ -201,7 +202,7 @@ class _CartScreenState extends State<CartScreen> {
       child: Row(
         children: [
           _buildActionButton(Icons.remove, () => _adetGuncelle(docRef, adet, -1)),
-          Text('$adet', style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'monospace')),
+          Text('$adet', style: TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'monospace')),
           _buildActionButton(Icons.add, () => _adetGuncelle(docRef, adet, 1), isCyan: true),
         ],
       ),
@@ -212,7 +213,7 @@ class _CartScreenState extends State<CartScreen> {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         child: Icon(icon, color: isCyan ? primaryCyan : Colors.white38, size: 14),
       ),
     );
@@ -229,7 +230,7 @@ class _CartScreenState extends State<CartScreen> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          padding: const EdgeInsets.fromLTRB(24, 20, 24, 30),
+          padding: EdgeInsets.fromLTRB(24, 20, 24, 30),
           decoration: BoxDecoration(
             color: surfaceColor.withOpacity(0.8),
             border: Border(top: BorderSide(color: primaryCyan.withOpacity(0.2))),
@@ -237,19 +238,19 @@ class _CartScreenState extends State<CartScreen> {
           child: Column(
             children: [
               _buildFinansSatir('ARA TOPLAM', '₺${toplamTutar.toStringAsFixed(2)}'),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               _buildFinansSatir('KARARGAH PAYI (%12)', '₺${(toplamTutar * 0.12).toStringAsFixed(2)}', isSmall: true),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted)),
+              Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted)),
               _buildFinansSatir('GENEL TOPLAM', '₺${toplamTutar.toStringAsFixed(2)}', isBold: true),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
               SizedBox(
                 width: double.infinity, height: 55,
                 child: ElevatedButton(
                   onPressed: _isProcessing ? null : () => _odemeProtokolunuBaslat(docs, toplamTutar),
                   style: SiberTema.kuantumButonStili(),
                   child: _isProcessing
-                      ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
-                      : const Text('GÜVENLİ ÖDEMEYİ BAŞLAT', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5)),
+                      ? CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
+                      : Text('GÜVENLİ ÖDEMEYİ BAŞLAT', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5)),
                 ),
               ),
             ],
@@ -273,7 +274,7 @@ class _CartScreenState extends State<CartScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: isError ? dangerColor : primaryCyan,
-        content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 11)),
+        content: Text(mesaj, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 11)),
       ),
     );
   }
@@ -284,8 +285,8 @@ class _CartScreenState extends State<CartScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.shopping_cart_outlined, color: SiberTema.textMuted, size: 60),
-          const SizedBox(height: 16),
-          const Text('SİBER KASANIZ BOŞ', style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          SizedBox(height: 16),
+          Text('SİBER KASANIZ BOŞ', style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2)),
         ],
       ),
     );

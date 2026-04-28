@@ -1,4 +1,4 @@
-// lib/screens/kullanici/dijital_torpido_screen.dart
+﻿// lib/screens/kullanici/dijital_torpido_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,7 +13,7 @@ class SiberDijitalTorpidoScreen extends StatefulWidget {
   final String plaka;
   final String kullaniciId;
 
-  const SiberDijitalTorpidoScreen({
+  SiberDijitalTorpidoScreen({
     super.key,
     required this.aracId,
     required this.plaka,
@@ -31,8 +31,8 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
 
   // 🏢 PLAZA KALİTESİ PALET
   final Color primaryTeal = Colors.teal.shade700;
-  final Color bgColor = const Color(0xFFFAFAFC);
-  final Color textColor = const Color(0xFF1E293B);
+  final Color bgColor = Color(0xFFFAFAFC);
+  final Color textColor = Color(0xFF1E293B);
   final Color dangerColor = Colors.redAccent;
   final Color warningColor = Colors.orange;
 
@@ -58,10 +58,10 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           border: Border(top: BorderSide(color: primaryTeal.withValues(alpha: 0.3), width: 2)),
           boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.1), blurRadius: 20)]
         ),
@@ -70,19 +70,19 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)))),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             Text("[$belgeTuru] YÜKLE", style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-            const SizedBox(height: 8),
-            const Text("Belgenin orijinalini düz bir zemine koyarak fotoğrafını çekin veya arşivden seçin.", style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-            const SizedBox(height: 32),
+            SizedBox(height: 8),
+            Text("Belgenin orijinalini düz bir zemine koyarak fotoğrafını çekin veya arşivden seçin.", style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            SizedBox(height: 32),
             Row(
               children: [
                 Expanded(child: _buildModalButonu(Icons.camera_alt_outlined, "Kamera", () => _yuklemeyiBaslat(belgeTuru, ImageSource.camera))),
-                const SizedBox(width: 16),
+                SizedBox(width: 16),
                 Expanded(child: _buildModalButonu(Icons.photo_library_outlined, "Galeri", () => _yuklemeyiBaslat(belgeTuru, ImageSource.gallery))),
               ],
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
           ],
         ),
       ),
@@ -100,20 +100,20 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
         title: Row(
           children: [
             Icon(Icons.radar, color: primaryTeal),
-            const SizedBox(width: 8),
+            SizedBox(width: 8),
             Expanded(child: Text("OtoDNA Denetim Ağı", style: TextStyle(color: textColor, fontSize: 16, fontFamily: 'Avenir', fontWeight: FontWeight.bold))),
           ],
         ),
-        content: Text("Ağ üzerinden '$islemTuru' kayıtları canlı olarak denetleniyor. Plakanız (${widget.plaka}) ve Karayolları/EGM veritabanı eşleştiriliyor. Devam edilsin mi?", style: const TextStyle(color: Colors.white54, fontSize: 13, height: 1.5, fontFamily: 'Avenir')),
+        content: Text("Ağ üzerinden '$islemTuru' kayıtları canlı olarak denetleniyor. Plakanız (${widget.plaka}) ve Karayolları/EGM veritabanı eşleştiriliyor. Devam edilsin mi?", style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.5, fontFamily: 'Avenir')),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İptal", style: TextStyle(color: Colors.white38, fontFamily: 'Avenir'))),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text("İptal", style: TextStyle(color: Colors.white38, fontFamily: 'Avenir'))),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white, elevation: 0),
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$islemTuru sorgulanıyor... Lütfen bekleyin.'), backgroundColor: primaryTeal));
             },
-            child: const Text("Taramayı Başlat", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            child: Text("Taramayı Başlat", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           ),
         ],
       ),
@@ -135,7 +135,7 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(sonuc['mesaj'], style: const TextStyle(fontWeight: FontWeight.w900)),
+        content: Text(sonuc['mesaj'], style: TextStyle(fontWeight: FontWeight.w900)),
         backgroundColor: sonuc['basarili'] ? primaryTeal : dangerColor,
       ));
     }
@@ -146,7 +146,7 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
@@ -155,8 +155,8 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
         ),
         child: Column(
           children: [
-            Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(icon, color: primaryTeal, size: 28)),
-            const SizedBox(height: 12),
+            Container(padding: EdgeInsets.all(12), decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(icon, color: primaryTeal, size: 28)),
+            SizedBox(height: 12),
             Text(text, style: TextStyle(color: textColor, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1, fontFamily: 'Avenir'))
           ],
         ),
@@ -185,7 +185,7 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
           centerTitle: true,
         ),
         body: _islemSuruyor
-            ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [CircularProgressIndicator(color: primaryTeal), const SizedBox(height: 16), Text("DİJİTAL KASAYA ŞİFRELENİYOR...", style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))]))
+            ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [CircularProgressIndicator(color: primaryTeal), SizedBox(height: 16), Text("DİJİTAL KASAYA ŞİFRELENİYOR...", style: TextStyle(color: primaryTeal, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))]))
             : StreamBuilder<DocumentSnapshot>(
           // 📡 GERÇEK VERİ AKIŞI: Firebase'den aracın belgeleri dinleniyor
           stream: _db.collection('araclar').doc(widget.aracId).snapshots(),
@@ -198,16 +198,16 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
             List<dynamic> garantiBelgeleri = aracVerisi['garanti_belgeleri'] ?? [];
 
             return ListView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               children: [
                 // 1. ZIRH UYARISI
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 24),
+                  padding: EdgeInsets.only(bottom: 24),
                   child: Row(
                     children: [
                       Icon(Icons.lock_outline, color: primaryTeal, size: 16),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       Expanded(child: Text("Tüm evraklarınız 256-Bit Şifreleme ile güvendedir.", style: TextStyle(color: primaryTeal, fontSize: 11, letterSpacing: 0.5, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
                     ],
                   ),
@@ -216,11 +216,11 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                 // 2. OTODNA GARANTİ MÜHÜRLERİ
                 if (garantiBelgeleri.isNotEmpty) ...[
                   Text("🛡️ OTODNA GARANTİLİ PARÇALAR", style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   ...garantiBelgeleri.map((garanti) {
                     return Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      padding: const EdgeInsets.all(16),
+                      margin: EdgeInsets.only(bottom: 12),
+                      padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
@@ -237,37 +237,37 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                               Icon(Icons.verified, color: primaryTeal, size: 20),
                             ],
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: 8),
                           Row(
                             children: [
-                              const Icon(Icons.business, color: Colors.white54, size: 14),
-                              const SizedBox(width: 6),
-                              Text(garanti['firma_unvani'], style: const TextStyle(color: Colors.white87, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                              Icon(Icons.business, color: Colors.white54, size: 14),
+                              SizedBox(width: 6),
+                              Text(garanti['firma_unvani'], style: TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                             ],
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4),
                           Row(
                             children: [
-                              const Icon(Icons.qr_code, color: Colors.white54, size: 14),
-                              const SizedBox(width: 6),
-                              Text("OEM: ${garanti['oem_kodu']}", style: const TextStyle(color: Colors.white87, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                              Icon(Icons.qr_code, color: Colors.white54, size: 14),
+                              SizedBox(width: 6),
+                              Text("OEM: ${garanti['oem_kodu']}", style: TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                             ],
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: 12),
                           Divider(color: Colors.white.withValues(alpha: 0.05), height: 1),
-                          const SizedBox(height: 12),
+                          SizedBox(height: 12),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("OTODNA DİJİTAL MÜHRÜ AKTİF", style: TextStyle(color: primaryTeal, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                               OutlinedButton(
                                 onPressed: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Garanti Sertifikası PDF Olarak İndiriliyor..."), backgroundColor: primaryTeal));
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Garanti Sertifikası PDF Olarak İndiriliyor..."), backgroundColor: primaryTeal));
                                 },
                                 style: OutlinedButton.styleFrom(
                                   side: BorderSide(color: primaryTeal),
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-                                  minimumSize: const Size(0, 30)
+                                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                                  minimumSize: Size(0, 30)
                                 ),
                                 child: Text("SERTİFİKA", style: TextStyle(color: primaryTeal, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                               )
@@ -277,16 +277,16 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                       ),
                     );
                   }),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                 ],
 
                 // 3. FİNANS VE GİDER YÖNETİMİ (YAKIT, CEZA, HGS)
                 Text("FİNANS & GİDER YÖNETİMİ", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 ..._finansVeGiderler.map((giderSistemi) {
                   return Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    padding: const EdgeInsets.all(20),
+                    margin: EdgeInsets.only(bottom: 16),
+                    padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
@@ -298,25 +298,25 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: warningColor.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(giderSistemi['ikon'], color: warningColor, size: 28)),
-                            const SizedBox(width: 16),
+                            Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: warningColor.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(giderSistemi['ikon'], color: warningColor, size: 28)),
+                            SizedBox(width: 16),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(giderSistemi['tur'], style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 0.5, fontFamily: 'Avenir')),
-                                  const SizedBox(height: 4),
-                                  Text(giderSistemi['kurum'], style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                  SizedBox(height: 4),
+                                  Text(giderSistemi['kurum'], style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                                 ],
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("Canlı Ağ Denetimi", style: TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                            Text("Canlı Ağ Denetimi", style: TextStyle(color: Colors.white38, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                             InkWell(
                               onTap: () {
                                 if(giderSistemi['islem'] == "YÜKLE/ANALİZ ET") {
@@ -327,7 +327,7 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                               },
                               borderRadius: BorderRadius.circular(8),
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                 decoration: BoxDecoration(
                                     color: warningColor.withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(8),
@@ -342,11 +342,11 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                     ),
                   );
                 }),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
 
                 // 4. ZORUNLU EVRAKLAR
-                const Text("ZORUNLU ARAÇ EVRAKLARI", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-                const SizedBox(height: 12),
+                Text("ZORUNLU ARAÇ EVRAKLARI", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                SizedBox(height: 12),
                 ..._zorunluEvraklar.map((evrakSablonu) {
 
                 // Belge Firebase'de var mı diye kontrol et
@@ -361,8 +361,8 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                 IconData durumIkonu = isEksik ? Icons.warning_amber_rounded : Icons.verified_user;
 
                 return Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  padding: const EdgeInsets.all(20),
+                  margin: EdgeInsets.only(bottom: 16),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
@@ -377,15 +377,15 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: durumRengi.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(evrakSablonu['ikon'], color: durumRengi, size: 28)),
-                          const SizedBox(width: 16),
+                          Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: durumRengi.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(evrakSablonu['ikon'], color: durumRengi, size: 28)),
+                          SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(evrakSablonu['tur'], style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 0.5, fontFamily: 'Avenir')),
-                                const SizedBox(height: 4),
-                                Text(evrakSablonu['kurum'], style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                SizedBox(height: 4),
+                                Text(evrakSablonu['kurum'], style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                               ],
                             ),
                           ),
@@ -393,13 +393,13 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Icon(durumIkonu, color: durumRengi, size: 16),
-                              const SizedBox(height: 4),
+                              SizedBox(height: 4),
                               Text(durumMetni, style: TextStyle(color: durumRengi, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                             ],
                           )
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -411,12 +411,12 @@ class _SiberDijitalTorpidoScreenState extends State<SiberDijitalTorpidoScreen> {
                               if (isEksik) {
                                 _belgeYukleMotoru(evrakSablonu['tur']);
                               } else {
-                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Belge Görüntüleniyor...'), backgroundColor: Colors.white));
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Belge Görüntüleniyor...'), backgroundColor: Colors.white));
                               }
                             },
                             borderRadius: BorderRadius.circular(8),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                               decoration: BoxDecoration(
                                   color: durumRengi.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(8),

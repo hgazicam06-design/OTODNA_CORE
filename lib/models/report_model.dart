@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
@@ -98,7 +98,7 @@ class OtoDNAReport {
 class TeknikRaporKart extends StatelessWidget {
   final OtoDNAReport rapor;
 
-  const TeknikRaporKart({super.key, required this.rapor});
+  TeknikRaporKart({super.key, required this.rapor});
 
   // Kuantum Renk Paleti
   static const _neonTurkuaz = Color(0xFF00FFCC);
@@ -111,7 +111,7 @@ class TeknikRaporKart extends StatelessWidget {
     String tarihStr = DateFormat('dd.MM.yyyy').format(rapor.ekspertizTarihi);
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(
         color: _siberKartRengi,
         borderRadius: BorderRadius.circular(20),
@@ -133,14 +133,14 @@ class TeknikRaporKart extends StatelessWidget {
           children: [
             // 🛡️ ÜST PANEL: DURUM MÜHÜRÜ
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               color: alarm ? Colors.redAccent.withOpacity(0.2) : _neonTurkuaz.withOpacity(0.1),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     "RAPOR #${rapor.raporNo}",
-                    style: const TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 12),
+                    style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 12),
                   ),
                   Row(
                     children: [
@@ -149,7 +149,7 @@ class TeknikRaporKart extends StatelessWidget {
                         color: alarm ? Colors.redAccent : _neonTurkuaz,
                         size: 18,
                       ),
-                      const SizedBox(width: 5),
+                      SizedBox(width: 5),
                       Text(
                         alarm ? "KRİTİK RİSK" : "DNA ONAYLI",
                         style: TextStyle(
@@ -166,7 +166,7 @@ class TeknikRaporKart extends StatelessWidget {
 
             // 🚘 ANA VERİ ALANI
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               child: Row(
                 children: [
                   Expanded(
@@ -175,9 +175,9 @@ class TeknikRaporKart extends StatelessWidget {
                       children: [
                         Text(
                           rapor.saseNo,
-                          style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 2),
+                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 2),
                         ),
-                        const SizedBox(height: 5),
+                        SizedBox(height: 5),
                         Text(
                           "Bayi: ${rapor.bayiAdi}",
                           style: TextStyle(color: Colors.grey[400], fontSize: 13),
@@ -194,11 +194,11 @@ class TeknikRaporKart extends StatelessWidget {
               ),
             ),
 
-            const Divider(color: Colors.white10, height: 1),
+            Divider(color: Colors.white10, height: 1),
 
             // 🛠️ KAPORTA ANALİZ RADARI (Dinamik Wrap)
             Padding(
-              padding: const EdgeInsets.all(15),
+              padding: EdgeInsets.all(15),
               child: Wrap(
                 spacing: 8,
                 runSpacing: 8,
@@ -213,14 +213,14 @@ class TeknikRaporKart extends StatelessWidget {
 
   Widget _buildMotorSkoru(int skor, bool isAlarm) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(color: isAlarm ? Colors.redAccent : _neonTurkuaz, width: 2),
       ),
       child: Column(
         children: [
-          const Text("MOTOR", style: TextStyle(color: Colors.white70, fontSize: 8, fontWeight: FontWeight.bold)),
+          Text("MOTOR", style: TextStyle(color: Colors.white70, fontSize: 8, fontWeight: FontWeight.bold)),
           Text("%$skor", style: TextStyle(color: isAlarm ? Colors.redAccent : _neonTurkuaz, fontSize: 20, fontWeight: FontWeight.black)),
         ],
       ),
@@ -236,7 +236,7 @@ class TeknikRaporKart extends StatelessWidget {
     else durumRenk = Colors.white54;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: durumRenk.withOpacity(0.1),
         borderRadius: BorderRadius.circular(10),

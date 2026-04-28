@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +13,7 @@ import '../../models/adli_rapor_model.dart';
 class SiberMahkemeScreen extends StatefulWidget {
   final String ustaUid;
 
-  const SiberMahkemeScreen({super.key, required this.ustaUid});
+  SiberMahkemeScreen({super.key, required this.ustaUid});
 
   @override
   State<SiberMahkemeScreen> createState() => _SiberMahkemeScreenState();
@@ -20,11 +21,11 @@ class SiberMahkemeScreen extends StatefulWidget {
 
 class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTickerProviderStateMixin {
   // 🏢 FİLDİŞİ SEDEF PALET
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color surfaceColor = Colors.white;
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMain = const Color(0xFF1E293B);
-  final Color textMuted = const Color(0xFF64748B);
+  final Color textMain = Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
   final Color dangerColor = SiberTema.kanKirmizi;
 
   late TabController _tabController;
@@ -116,7 +117,7 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(mesaj, style: TextStyle(color: textMain, fontSize: 12, fontFamily: 'Avenir')),
           ],
         ),
@@ -141,8 +142,8 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
             indicatorWeight: 3,
             labelColor: textMain,
             unselectedLabelColor: textMuted,
-            labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
-            tabs: const [
+            labelStyle: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+            tabs: [
               Tab(icon: Icon(Icons.gavel_rounded), text: "KUSUR HAKEMLİĞİ"),
               Tab(icon: Icon(Icons.car_crash_rounded), text: "DEĞER KAYBI"),
             ],
@@ -156,12 +157,12 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
   // ── 📝 OLAY YERİ İNCELEME FORMU (GİRİŞ EKRANI) ──
   Widget _buildKriminalForm() {
     return ListView(
-      padding: const EdgeInsets.all(24),
-      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.all(24),
+      physics: BouncingScrollPhysics(),
       children: [
         // Siber Mahkeme Uyarı Kalkanı
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: dangerColor.withOpacity(0.05),
             borderRadius: BorderRadius.circular(16),
@@ -170,7 +171,7 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
           child: Row(
             children: [
               Icon(Icons.warning_amber_rounded, color: dangerColor, size: 30),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(
                 child: Text(
                   "DİKKAT: Sisteme yükleyeceğiniz dijital kanıtlar (foto, video, sensör verisi) Mahkemede delil olarak kullanılacaktır. Asılsız beyan Usta DNA puanını sıfırlar.",
@@ -180,7 +181,7 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
             ],
           ),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
 
         // Araç ve Parça Kimliği
         Container(
@@ -193,11 +194,11 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
               labelStyle: TextStyle(color: textMuted),
               prefixIcon: Icon(Icons.directions_car, color: primaryTeal),
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16)
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16)
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         Container(
           decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]),
           child: TextField(
@@ -208,15 +209,15 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
               labelStyle: TextStyle(color: textMuted, fontSize: 12),
               prefixIcon: Icon(Icons.qr_code_scanner, color: primaryTeal),
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16)
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16)
             ),
           ),
         ),
-        const SizedBox(height: 32),
+        SizedBox(height: 32),
 
         // Kanıt Yükleme Paneli
         Text("DİJİTAL DELİL (KANIT) DOSYALARI", style: TextStyle(color: textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         Container(
           decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
           child: Column(
@@ -244,7 +245,7 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
             ],
           )
         ),
-        const SizedBox(height: 32),
+        SizedBox(height: 32),
 
         // Yasal Uyarı Zırhı
         Container(
@@ -261,7 +262,7 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
             onChanged: (v) => setState(() => _yasalUyariKabul = v!),
           ),
         ),
-        const SizedBox(height: 32),
+        SizedBox(height: 32),
 
         // Mühürleme Butonu
         SizedBox(
@@ -270,8 +271,8 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
               ? Center(child: CircularProgressIndicator(color: dangerColor))
               : ElevatedButton.icon(
                   onPressed: _yasalUyariKabul ? _adliRaporUret : null,
-                  icon: const Icon(Icons.precision_manufacturing, color: Colors.white),
-                  label: const Text("SİBER BİLİRKİŞİ RAPORU ÜRET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                  icon: Icon(Icons.precision_manufacturing, color: Colors.white),
+                  label: Text("SİBER BİLİRKİŞİ RAPORU ÜRET", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _yasalUyariKabul ? dangerColor : Colors.black12,
                     foregroundColor: Colors.white,
@@ -287,14 +288,14 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
   // ── 📄 HÜKÜM EKRANI (AI RAPORU SONUCU) ──
   Widget _buildRaporGorunumu() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
-      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.all(24),
+      physics: BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
             child: Container(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: _uretilenRapor!.kusurOraniUsta == 0 ? primaryTeal.withOpacity(0.1) : dangerColor.withOpacity(0.1),
                 shape: BoxShape.circle
@@ -306,7 +307,7 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
               ),
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
           Center(
             child: Text(
               _uretilenRapor!.kusurOraniUsta == 0 ? "USTA KUSURSUZ (AKLANDI)" : "USTA KUSURLU",
@@ -319,11 +320,11 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
               ),
             ),
           ),
-          const SizedBox(height: 40),
+          SizedBox(height: 40),
 
           // Kusur Oranları
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withOpacity(0.05)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 20)]),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -334,13 +335,13 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
               ],
             ),
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: 32),
 
           // AI Gerekçesi
           Text("SİBER BİLİRKİŞİ (AI) GEREKÇELİ KARARI", style: TextStyle(color: textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: surfaceColor,
               borderRadius: BorderRadius.circular(20),
@@ -352,7 +353,7 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
               style: TextStyle(color: textMain, fontSize: 13, height: 1.6, fontWeight: FontWeight.w500, fontFamily: 'Avenir'),
             ),
           ),
-          const SizedBox(height: 40),
+          SizedBox(height: 40),
           
           // PDF İndirme Butonu (Mock)
           SizedBox(
@@ -370,7 +371,7 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Center(
             child: TextButton(
               onPressed: () => setState(() => _uretilenRapor = null),
@@ -401,7 +402,7 @@ class _SiberMahkemeScreenState extends State<SiberMahkemeScreen> with SingleTick
             Text("%$oran", style: TextStyle(color: textMain, fontWeight: FontWeight.w900, fontSize: 16)),
           ],
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         Text(baslik, style: TextStyle(color: textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
       ],
     );

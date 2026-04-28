@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,7 +7,7 @@ import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 
 class LpgMontajTerminali extends StatefulWidget {
-  const LpgMontajTerminali({super.key});
+  LpgMontajTerminali({super.key});
 
   @override
   State<LpgMontajTerminali> createState() => _LpgMontajTerminaliState();
@@ -31,7 +32,7 @@ class _LpgMontajTerminaliState extends State<LpgMontajTerminali> {
     });
     
     // Yükleme simülasyonu
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 2));
     
     setState(() {
       if (tur == "Manifold") _isUploadingManifold = false;
@@ -45,7 +46,7 @@ class _LpgMontajTerminaliState extends State<LpgMontajTerminali> {
 
   Future<void> _montajiMuhurle() async {
     if (_saseNoCtrl.text.isEmpty || _kitMarkaCtrl.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Lütfen zorunlu alanları doldurun."), backgroundColor: SiberTema.kanKirmizi));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Lütfen zorunlu alanları doldurun."), backgroundColor: SiberTema.kanKirmizi));
       return;
     }
 
@@ -81,7 +82,7 @@ class _LpgMontajTerminaliState extends State<LpgMontajTerminali> {
       await batch.commit();
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('LPG Montajı Adli Olarak Mühürlendi! 🛡️', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.siberGold));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('LPG Montajı Adli Olarak Mühürlendi! 🛡️', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.siberGold));
         Navigator.pop(context);
       }
     } catch (e) {
@@ -102,35 +103,35 @@ class _LpgMontajTerminaliState extends State<LpgMontajTerminali> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18), onPressed: () => Navigator.pop(context)),
-          title: const Text("SİBER MONTAJ TERMİNALİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2, fontFamily: 'Avenir')),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18), onPressed: () => Navigator.pop(context)),
+          title: Text("SİBER MONTAJ TERMİNALİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(24),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildUyariKarti(),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
               
-              const Text("ARAÇ & KİT BİLGİLERİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
-              const SizedBox(height: 16),
+              Text("ARAÇ & KİT BİLGİLERİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+              SizedBox(height: 16),
               _buildTextField(_saseNoCtrl, "Şase No", Icons.directions_car),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _buildTextField(_kitMarkaCtrl, "LPG Kit Markası (Örn: Prins, Atiker)", Icons.precision_manufacturing),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _buildTextField(_ecuVersionCtrl, "ECU Yazılım Versiyonu (Opsiyonel)", Icons.memory),
               
-              const SizedBox(height: 32),
-              const Text("MEDYA KANITLARI (ZORUNLU)", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
-              const SizedBox(height: 16),
+              SizedBox(height: 32),
+              Text("MEDYA KANITLARI (ZORUNLU)", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+              SizedBox(height: 16),
               _buildMedyaKarti("Manifold Delim Fotoğrafı", _isUploadingManifold, () => _fotoYukle("Manifold")),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _buildMedyaKarti("Sızdırmazlık Testi Videosu", _isUploadingSizdirmazlik, () => _fotoYukle("Sızdırmazlık")),
 
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
               SizedBox(
                 width: double.infinity,
                 height: 56,
@@ -138,11 +139,11 @@ class _LpgMontajTerminaliState extends State<LpgMontajTerminali> {
                   onPressed: _isSealing ? null : _montajiMuhurle,
                   style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
                   child: _isSealing 
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text("ATOMİK OLARAK MÜHÜRLE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1, fontFamily: 'Avenir')),
+                      ? CircularProgressIndicator(color: Colors.white)
+                      : Text("ATOMİK OLARAK MÜHÜRLE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1, fontFamily: 'Avenir')),
                 ),
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
             ],
           ),
         ),
@@ -152,9 +153,9 @@ class _LpgMontajTerminaliState extends State<LpgMontajTerminali> {
 
   Widget _buildUyariKarti() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(color: SiberTema.siberGold.withOpacity(0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.siberGold.withOpacity(0.5))),
-      child: const Row(
+      child: Row(
         children: [
           Icon(Icons.shield, color: SiberTema.siberGold, size: 28),
           SizedBox(width: 16),
@@ -167,15 +168,15 @@ class _LpgMontajTerminaliState extends State<LpgMontajTerminali> {
   Widget _buildTextField(TextEditingController ctrl, String hint, IconData ikon) {
     return TextField(
       controller: ctrl,
-      style: const TextStyle(color: SiberTema.textMain),
+      style: TextStyle(color: SiberTema.textMain),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 13),
+        hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 13),
         prefixIcon: Icon(ikon, color: SiberTema.kuantumCyan, size: 20),
         filled: true,
         fillColor: Colors.white.withOpacity(0.02),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.textMuted)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.textMuted)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kuantumCyan)),
       ),
     );
   }
@@ -185,9 +186,9 @@ class _LpgMontajTerminaliState extends State<LpgMontajTerminali> {
       onTap: isUploading ? null : onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         decoration: BoxDecoration(
-          color: Colors.white45,
+          color: Colors.white54,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), style: BorderStyle.solid),
         ),
@@ -196,12 +197,12 @@ class _LpgMontajTerminaliState extends State<LpgMontajTerminali> {
           children: [
             Row(
               children: [
-                const Icon(Icons.cloud_upload_outlined, color: SiberTema.kuantumCyan, size: 24),
-                const SizedBox(width: 16),
-                Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
+                Icon(Icons.cloud_upload_outlined, color: SiberTema.kuantumCyan, size: 24),
+                SizedBox(width: 16),
+                Text(baslik, style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
               ],
             ),
-            if (isUploading) const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2))
+            if (isUploading) SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2))
           ],
         ),
       ),

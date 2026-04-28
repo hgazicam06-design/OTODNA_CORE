@@ -1,10 +1,11 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 /// 🦅 OTODNA SİBER GİRİŞ PROTOKOLÜ (OTP)
 /// [2026-03-28] GÜNCELLEME: Firebase Gerçek Zamanlı SMS Doğrulama Motoru
 class LoginOTPScreen extends StatefulWidget {
-  const LoginOTPScreen({super.key});
+  LoginOTPScreen({super.key});
 
   @override
   State<LoginOTPScreen> createState() => _LoginOTPScreenState();
@@ -12,10 +13,10 @@ class LoginOTPScreen extends StatefulWidget {
 
 class _LoginOTPScreenState extends State<LoginOTPScreen> {
   // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET
-  static const Color bgColor = Color(0xFF000000);
-  static const Color surfaceColor = Color(0xFF111111);
-  static const Color primaryCyan = Color(0xFF00FFC2);
-  static const Color dangerColor = Colors.redAccent;
+  static Color bgColor = Color(0xFF000000);
+  static Color surfaceColor = Color(0xFF111111);
+  static Color primaryCyan = Color(0xFF00FFC2);
+  static Color dangerColor = Colors.redAccent;
 
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _smsController = TextEditingController();
@@ -113,7 +114,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
   void _uyariGoster(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, color: Colors.white, fontSize: 11)),
+        content: Text(mesaj, style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1, color: Colors.white, fontSize: 11)),
         backgroundColor: isError ? dangerColor : primaryCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -128,17 +129,17 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan, size: 20),
+          icon: Icon(Icons.arrow_back_ios_new, color: primaryCyan, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(32.0),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.all(32.0),
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 450),
+              constraints: BoxConstraints(maxWidth: 450),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -146,21 +147,21 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
                   // 🛡️ SİBER LOGO
                   Center(
                     child: Container(
-                      padding: const EdgeInsets.all(24),
+                      padding: EdgeInsets.all(24),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: surfaceColor,
                         border: Border.all(color: primaryCyan.withOpacity(0.5), width: 2),
                         boxShadow: [BoxShadow(color: primaryCyan.withOpacity(0.15), blurRadius: 40, spreadRadius: 10)],
                       ),
-                      child: const Icon(Icons.security, color: primaryCyan, size: 72),
+                      child: Icon(Icons.security, color: primaryCyan, size: 72),
                     ),
                   ),
-                  const SizedBox(height: 32),
-                  const Text("SİBER GÜVENLİK", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 4)),
-                  const SizedBox(height: 8),
-                  const Text("ANKARA MERKEZ DİSTRİBÜTÖRLÜK ONAYI", textAlign: TextAlign.center, style: TextStyle(color: primaryCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-                  const SizedBox(height: 48),
+                  SizedBox(height: 32),
+                  Text("SİBER GÜVENLİK", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 4)),
+                  SizedBox(height: 8),
+                  Text("ANKARA MERKEZ DİSTRİBÜTÖRLÜK ONAYI", textAlign: TextAlign.center, style: TextStyle(color: primaryCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                  SizedBox(height: 48),
 
                   // 📞 TELEFON GİRİŞ ALANI
                   _buildSiberTextField(
@@ -173,7 +174,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
 
                   // 💬 SMS KODU GİRİŞ ALANI
                   if (_otpGonderildi) ...[
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     _buildSiberTextField(
                       controller: _smsController,
                       icon: Icons.vibration,
@@ -183,7 +184,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
                     ),
                   ],
 
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40),
 
                   // 🚀 ATEŞLEME BUTONU
                   SizedBox(
@@ -199,22 +200,22 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
                           ? null
                           : (_otpGonderildi ? _koduDogrula : _kodGonder),
                       icon: _isProcessing
-                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                          ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                           : Icon(_otpGonderildi ? Icons.verified_user : Icons.send, size: 24),
                       label: Text(
                           _isProcessing
                               ? "AĞA BAĞLANILIYOR..."
                               : (_otpGonderildi ? "MÜHRÜ AÇ VE GİRİŞ YAP" : "OTP SİNYALİ GÖNDER"),
-                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5)
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5)
                       ),
                     ),
                   ),
 
                   if (_otpGonderildi && !_isProcessing) ...[
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
                     TextButton(
                       onPressed: () => setState(() => _otpGonderildi = false),
-                      child: const Text("SİNYAL ALINAMADI (YENİDEN GÖNDER)", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                      child: Text("SİNYAL ALINAMADI (YENİDEN GÖNDER)", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
                     )
                   ]
                 ],
@@ -251,8 +252,8 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
           hintText: hint,
           hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: primaryCyan, width: 1.5)),
+          contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: primaryCyan, width: 1.5)),
         ),
       ),
     );

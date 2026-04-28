@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/siber_ai_tarayici.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +11,7 @@ import '../core/siber_tema.dart';
 /// 🛡️ SİBER AI PLAKA VE ŞASE TARAYICI (ML Kit)
 /// Kameradan okunan metinleri anlık analiz edip plaka/şase formatında olanları yakalar.
 class SiberAiTarayici extends StatefulWidget {
-  const SiberAiTarayici({super.key});
+  SiberAiTarayici({super.key});
 
   @override
   State<SiberAiTarayici> createState() => _SiberAiTarayiciState();
@@ -58,7 +59,7 @@ class _SiberAiTarayiciState extends State<SiberAiTarayici> {
 
   void _hataVer(String mesaj) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: SiberTema.kanKirmizi, content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.bold))));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: SiberTema.kanKirmizi, content: Text(mesaj, style: TextStyle(fontWeight: FontWeight.bold))));
   }
 
   Future<void> _processCameraImage(CameraImage image) async {
@@ -149,10 +150,10 @@ class _SiberAiTarayiciState extends State<SiberAiTarayici> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text("AI OTONOM TARAYICI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13, fontFamily: 'Avenir')),
+        title: Text("AI OTONOM TARAYICI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13, fontFamily: 'Avenir')),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+        iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
       ),
       body: Column(
         children: [
@@ -172,54 +173,54 @@ class _SiberAiTarayiciState extends State<SiberAiTarayici> {
                           border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 2),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text("PLAKA VEYA ŞASEYİ\nBURAYA HİZALAYIN", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, shadows: [Shadow(color: Colors.white, blurRadius: 4)])),
                         ),
                       )
                     ],
                   )
-                : const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)),
+                : Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)),
           ),
           
           // ⌨️ MANUEL GİRİŞ YEDEĞİ
           Expanded(
             flex: 1,
             child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: const BoxDecoration(
+              padding: EdgeInsets.all(24),
+              decoration: BoxDecoration(
                 color: SiberTema.matGrey,
                 border: Border(top: BorderSide(color: SiberTema.kuantumCyan, width: 2)),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("VEYA MANUEL GİRİŞ YAPIN", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
-                  const SizedBox(height: 12),
+                  Text("VEYA MANUEL GİRİŞ YAPIN", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                  SizedBox(height: 12),
                   Row(
                     children: [
                       Expanded(
                         child: TextField(
                           controller: _manuelPlakaCtrl,
-                          style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 2),
+                          style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 2),
                           textCapitalization: TextCapitalization.characters,
                           decoration: InputDecoration(
                             hintText: "34ABC123 VEYA ŞASE",
-                            hintStyle: const TextStyle(color: SiberTema.textMuted),
+                            hintStyle: TextStyle(color: SiberTema.textMuted),
                             filled: true,
                             fillColor: Colors.black,
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12),
                       ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                        style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
                         onPressed: () {
                           if (_manuelPlakaCtrl.text.isNotEmpty) {
                             _kabulEtVeKapat(_manuelPlakaCtrl.text.trim().toUpperCase());
                           }
                         },
-                        child: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18),
+                        child: Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18),
                       ),
                     ],
                   )

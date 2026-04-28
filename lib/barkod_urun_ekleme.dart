@@ -1,4 +1,4 @@
-// lib/screens/barkod_urun_ekleme.dart
+﻿// lib/screens/barkod_urun_ekleme.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Siber Titreşim (Haptic) için eklendi
 import 'package:qr_flutter/qr_flutter.dart';
@@ -10,7 +10,7 @@ import 'dart:developer' as developer;
 class BarkodUrunEkleme extends StatefulWidget {
   final String bayiId; // Ürünü ekleyen firmanın Karargah kimliği
 
-  const BarkodUrunEkleme({super.key, required this.bayiId});
+  BarkodUrunEkleme({super.key, required this.bayiId});
 
   @override
   State<BarkodUrunEkleme> createState() => _BarkodUrunEklemeState();
@@ -32,9 +32,9 @@ class _BarkodUrunEklemeState extends State<BarkodUrunEkleme> {
   bool _islemSuruyor = false;
 
   // ── 🎨 KARARGAH TASARIM DOKTRİNİ ──
-  static const Color _oledBlack = Color(0xFF000000);
-  static const Color _matGrey = Color(0xFF111111);
-  static const Color _kuantumCyan = Color(0xFF00FFC2);
+  static Color _oledBlack = Color(0xFF000000);
+  static Color _matGrey = Color(0xFF111111);
+  static Color _kuantumCyan = Color(0xFF00FFC2);
 
   // ── ⚙️ DİNAMİK BARKOD VE FİNANS MOTORU ──
   void _hesaplaVeBarkodUret() {
@@ -125,8 +125,8 @@ class _BarkodUrunEklemeState extends State<BarkodUrunEkleme> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: Colors.white70, fontSize: 12)),
           ],
         ),
       ),
@@ -145,21 +145,21 @@ class _BarkodUrunEklemeState extends State<BarkodUrunEkleme> {
     return Scaffold(
       backgroundColor: _oledBlack,
       appBar: AppBar(
-        title: const Text("ÜRÜN & BARKOD MERKEZİ", style: TextStyle(color: _kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 16)),
+        title: Text("ÜRÜN & BARKOD MERKEZİ", style: TextStyle(color: _kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 16)),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: _kuantumCyan),
+        iconTheme: IconThemeData(color: _kuantumCyan),
       ),
       body: SafeArea(
         child: Form(
           key: _formKey,
           child: ListView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             children: [
               // 1. ÜRÜN BİLGİSİ GİRİŞİ (Siber TextField)
-              const Text("ÜRÜN / HİZMET ADI", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
+              Text("ÜRÜN / HİZMET ADI", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold)),
+              SizedBox(height: 8),
               _buildSiberInput(
                 controller: _urunAdiCtrl,
                 hintText: "Örn: Bosh Fren Balatası",
@@ -167,11 +167,11 @@ class _BarkodUrunEklemeState extends State<BarkodUrunEkleme> {
                 onChanged: (v) => _hesaplaVeBarkodUret(),
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
 
               // 2. FİYAT GİRİŞİ
-              const Text("MÜŞTERİ SATIŞ FİYATI (TL)", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
+              Text("MÜŞTERİ SATIŞ FİYATI (TL)", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold)),
+              SizedBox(height: 8),
               _buildSiberInput(
                 controller: _fiyatCtrl,
                 hintText: "Örn: 2500",
@@ -180,12 +180,12 @@ class _BarkodUrunEklemeState extends State<BarkodUrunEkleme> {
                 onChanged: (v) => _hesaplaVeBarkodUret(),
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               // 3. 💰 OTOMATİK FİNANS HESAPLAYICI (Kuantum Pano)
               AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                padding: const EdgeInsets.all(20),
+                duration: Duration(milliseconds: 300),
+                padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: _matGrey,
                   borderRadius: BorderRadius.circular(16),
@@ -196,32 +196,32 @@ class _BarkodUrunEklemeState extends State<BarkodUrunEkleme> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.currency_exchange, color: _kuantumCyan, size: 20),
-                        const SizedBox(width: 8),
-                        Text("SİBER FİNANS ANALİZİ (%${(_uygulananKesintiOrani * 100).toInt()})", style: const TextStyle(color: _kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                        Icon(Icons.currency_exchange, color: _kuantumCyan, size: 20),
+                        SizedBox(width: 8),
+                        Text("SİBER FİNANS ANALİZİ (%${(_uygulananKesintiOrani * 100).toInt()})", style: TextStyle(color: _kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                       ],
                     ),
-                    const Divider(color: Colors.white24, height: 30),
+                    Divider(color: Colors.white24, height: 30),
                     _bilgiSatiri("KASANIZA GİRECEK (NET):", "₺${_bayiHakedisi.toStringAsFixed(2)}", Colors.white),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     _bilgiSatiri("OTODNA KESİNTİSİ:", "₺${_otodnaPayi.toStringAsFixed(2)}", Colors.redAccent),
-                    const Divider(color: Colors.white24, height: 30),
+                    Divider(color: Colors.white24, height: 30),
                     _bilgiSatiri("MÜŞTERİ ÖDEYECEK:", "₺${_musteriSatisFiyati.toStringAsFixed(2)}", _kuantumCyan, isBold: true, isLarge: true),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 30),
+              SizedBox(height: 30),
 
               // 4. 🖨️ BARKOD ÖNİZLEME (Hologram)
               if (_barkodVerisi.isNotEmpty)
                 Center(
                   child: Column(
                     children: [
-                      const Text("SİBER ÜRÜN MÜHRÜ (QR KOD)", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
-                      const SizedBox(height: 16),
+                      Text("SİBER ÜRÜN MÜHRÜ (QR KOD)", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                      SizedBox(height: 16),
                       Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           color: Colors.white, // QR Kod okuyucular için beyaz arka plan şarttır
                           borderRadius: BorderRadius.circular(12),
@@ -233,22 +233,22 @@ class _BarkodUrunEklemeState extends State<BarkodUrunEkleme> {
                           backgroundColor: Colors.white,
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      Text("BARKOD ID: $_barkodVerisi", style: const TextStyle(fontSize: 9, color: Colors.white30, letterSpacing: 1)),
+                      SizedBox(height: 16),
+                      Text("BARKOD ID: $_barkodVerisi", style: TextStyle(fontSize: 9, color: Colors.white30, letterSpacing: 1)),
                     ],
                   ),
                 ),
 
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
 
               // 5. 🚀 KARARGAHA FIRLATMA BUTONU
               SizedBox(
                 height: 60,
                 child: _islemSuruyor
-                    ? const Center(child: CircularProgressIndicator(color: _kuantumCyan))
+                    ? Center(child: CircularProgressIndicator(color: _kuantumCyan))
                     : ElevatedButton.icon(
-                  icon: const Icon(Icons.rocket_launch, color: Colors.black, size: 24),
-                  label: const Text("ÜRÜNÜ VE BARKODU YAYINLA", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 14)),
+                  icon: Icon(Icons.rocket_launch, color: Colors.black, size: 24),
+                  label: Text("ÜRÜNÜ VE BARKODU YAYINLA", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 14)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _kuantumCyan,
                     foregroundColor: Colors.black,
@@ -259,7 +259,7 @@ class _BarkodUrunEklemeState extends State<BarkodUrunEkleme> {
                   onPressed: _urunuMarketeFirlat,
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
             ],
           ),
         ),
@@ -283,16 +283,16 @@ class _BarkodUrunEklemeState extends State<BarkodUrunEkleme> {
       ),
       child: TextFormField(
         controller: controller,
-        keyboardType: isNumber ? const TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
-        style: const TextStyle(color: Colors.white, fontSize: 16, letterSpacing: 1),
+        keyboardType: isNumber ? TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
+        style: TextStyle(color: Colors.white, fontSize: 16, letterSpacing: 1),
         onChanged: onChanged,
         validator: (value) => value == null || value.isEmpty ? "Bu alan zorunludur" : null,
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: _kuantumCyan, size: 22),
           hintText: hintText,
-          hintStyle: const TextStyle(color: Colors.white30, letterSpacing: 1, fontSize: 12),
+          hintStyle: TextStyle(color: Colors.white30, letterSpacing: 1, fontSize: 12),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 18),
+          contentPadding: EdgeInsets.symmetric(vertical: 18),
         ),
       ),
     );

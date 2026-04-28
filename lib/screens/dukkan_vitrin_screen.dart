@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -9,17 +10,17 @@ class DukkanVitrinScreen extends StatelessWidget {
   final String dukkanId;
   final String dukkanAdi; // Her bayi kendi gerçek ismiyle burada yer alır.
 
-  const DukkanVitrinScreen({
+  DukkanVitrinScreen({
     super.key,
     required this.dukkanId,
     required this.dukkanAdi
   });
 
   // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET
-  static const Color bgColor = Color(0xFF000000);
-  static const Color surfaceColor = Color(0xFF111111);
-  static const Color primaryCyan = Color(0xFF00FFC2);
-  static const Color dangerColor = Colors.redAccent;
+  static Color bgColor = Color(0xFF000000);
+  static Color surfaceColor = Color(0xFF111111);
+  static Color primaryCyan = Color(0xFF00FFC2);
+  static Color dangerColor = Colors.redAccent;
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +37,21 @@ class DukkanVitrinScreen extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
+            icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
             onPressed: () => Navigator.pop(context),
           ),
           title: Column(
             children: [
-              const Text('S İ B E R   V İ T R İ N', style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 3)),
-              const SizedBox(height: 2),
+              Text('S İ B E R   V İ T R İ N', style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 3)),
+              SizedBox(height: 2),
               // 🛡️ ŞEFFAFLIK PROTOKOLÜ: Hiçbir maskeleme yok, bayi adı doğrudan basılıyor.
-              Text(dukkanAdi.toUpperCase(), style: const TextStyle(color: primaryCyan, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 2)),
+              Text(dukkanAdi.toUpperCase(), style: TextStyle(color: primaryCyan, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 2)),
             ],
           ),
         ),
         body: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1400),
+            constraints: BoxConstraints(maxWidth: 1400),
             child: Column(
               children: [
                 _buildSiberDukkanHeader(dukkanAdi),
@@ -63,7 +64,7 @@ class DukkanVitrinScreen extends StatelessWidget {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator(color: primaryCyan, strokeWidth: 2));
+                        return Center(child: CircularProgressIndicator(color: primaryCyan, strokeWidth: 2));
                       }
 
                       if (snapshot.hasError) {
@@ -77,8 +78,8 @@ class DukkanVitrinScreen extends StatelessWidget {
                       }
 
                       return GridView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.all(24),
+                        physics: BouncingScrollPhysics(),
+                        padding: EdgeInsets.all(24),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: crossAxisCount,
                           crossAxisSpacing: 16,
@@ -105,8 +106,8 @@ class DukkanVitrinScreen extends StatelessWidget {
   // 💎 DÜKKAN MÜHRÜ: Bayi Öz Kimliği
   Widget _buildSiberDukkanHeader(String ad) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(24, 16, 24, 16),
-      padding: const EdgeInsets.all(24),
+      margin: EdgeInsets.fromLTRB(24, 16, 24, 16),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(24),
@@ -116,28 +117,28 @@ class DukkanVitrinScreen extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: bgColor,
               shape: BoxShape.circle,
               border: Border.all(color: primaryCyan.withOpacity(0.5)),
             ),
-            child: const Icon(Icons.account_balance_outlined, color: primaryCyan, size: 32),
+            child: Icon(Icons.account_balance_outlined, color: primaryCyan, size: 32),
           ),
-          const SizedBox(width: 20),
+          SizedBox(width: 20),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.verified_user_outlined, color: primaryCyan, size: 14),
-                    const SizedBox(width: 6),
-                    const Text("OTODNA RESMİ TEDARİK NOKTASI", style: TextStyle(color: primaryCyan, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                    Icon(Icons.verified_user_outlined, color: primaryCyan, size: 14),
+                    SizedBox(width: 6),
+                    Text("OTODNA RESMİ TEDARİK NOKTASI", style: TextStyle(color: primaryCyan, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 2)),
                   ],
                 ),
-                const SizedBox(height: 8),
-                Text(ad.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                SizedBox(height: 8),
+                Text(ad.toUpperCase(), style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1)),
               ],
             ),
           ),
@@ -172,21 +173,21 @@ class DukkanVitrinScreen extends StatelessWidget {
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                 color: bgColor,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: gorselUrl != null && gorselUrl.isNotEmpty
                   ? Image.network(
                 gorselUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (c, e, s) => const Icon(Icons.broken_image_outlined, color: SiberTema.textMuted, size: 40),
+                errorBuilder: (c, e, s) => Icon(Icons.broken_image_outlined, color: SiberTema.textMuted, size: 40),
               )
-                  : const Icon(Icons.settings_input_hdmi_outlined, color: SiberTema.textMuted, size: 40),
+                  : Icon(Icons.settings_input_hdmi_outlined, color: SiberTema.textMuted, size: 40),
             ),
           ),
           Expanded(
             flex: 2,
             child: Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: EdgeInsets.all(12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -195,7 +196,7 @@ class DukkanVitrinScreen extends StatelessWidget {
                     ad.toString().toUpperCase(),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.w900, height: 1.3),
+                    style: TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.w900, height: 1.3),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,7 +205,7 @@ class DukkanVitrinScreen extends StatelessWidget {
                         "₺${guncelFiyat.toStringAsFixed(2)}",
                         style: TextStyle(color: stokDurumu ? primaryCyan : Colors.white38, fontSize: 15, fontWeight: FontWeight.w900, fontFamily: 'monospace'),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -235,11 +236,11 @@ class DukkanVitrinScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          padding: const EdgeInsets.all(32),
+          padding: EdgeInsets.all(32),
           decoration: BoxDecoration(shape: BoxShape.circle, color: surfaceColor, border: Border.all(color: renk.withOpacity(0.3))),
           child: Icon(icon, color: renk, size: 48),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
         Text(mesaj, style: TextStyle(color: renk, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2)),
       ],
     );

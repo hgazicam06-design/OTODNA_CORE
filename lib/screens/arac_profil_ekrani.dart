@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/arac_profil_ekrani.dart
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ import '../core/responsive_kalkan.dart';
 class AracProfilEkrani extends StatefulWidget {
   final String saseNo; // Radardan gelen kripto şase numarası
 
-  const AracProfilEkrani({super.key, required this.saseNo});
+  AracProfilEkrani({super.key, required this.saseNo});
 
   @override
   State<AracProfilEkrani> createState() => _AracProfilEkraniState();
@@ -30,9 +31,9 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: const Text("SİBER SİCİL RAPORU", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14)),
+          title: Text("SİBER SİCİL RAPORU", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14)),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
+            icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
             onPressed: () => Navigator.pop(context),
           ),
           centerTitle: true,
@@ -42,7 +43,7 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
           stream: _db.collection('arac_kimlikleri').doc(widget.saseNo).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2));
+              return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2));
             }
 
             if (!snapshot.hasData || !snapshot.data!.exists) {
@@ -58,30 +59,30 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
             String markaModel = (aracData['marka_model'] ?? "Bilinmeyen Kasa").toString().toUpperCase();
 
             return SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // 1. OTONOM DNA SKOR RADARI (Görsel İşçilik: Kuantum Halka)
                   _buildKuantumSkorRadari(dnaSkoru, muayeneDurumu),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
 
                   // 2. KİMLİK BİLGİLERİ (Siber Cam Kalkanı)
                   _buildBilgiKapsulu(aracData, plaka, markaModel),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
 
                   // 3. GEÇMİŞ İHLALLER VE BAKIMLAR (Canlı İstihbarat Akışı)
-                  const Row(
+                  Row(
                     children: [
                       Icon(Icons.history_edu_rounded, color: SiberTema.kuantumCyan, size: 18),
                       SizedBox(width: 10),
                       Text("SİBER BAKIM GEÇMİŞİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 10)),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   _buildGecmisIslemlerListesi(),
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40),
                 ],
               ),
             );
@@ -94,11 +95,11 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
   // --- 📡 SİBER BİLGİ KAPSÜLÜ ---
   Widget _buildBilgiKapsulu(Map<String, dynamic> data, String plaka, String markaModel) {
     return SiberTema.siberCamKalkan(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       child: Column(
         children: [
           _buildSiberSatir("KAYITLI PLAKA", plaka, isBuyuk: true),
-          const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted, thickness: 1)),
+          Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted, thickness: 1)),
           _buildSiberSatir("MARKA / MODEL", markaModel),
           _buildSiberSatir("KRİPTO ŞASE NO", widget.saseNo),
           _buildSiberSatir(
@@ -117,14 +118,14 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
   Widget _buildKritikIhlalEkrani() {
     return Center(
       child: SiberTema.siberCamKalkan(
-        padding: const EdgeInsets.all(32),
+        padding: EdgeInsets.all(32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.gavel_rounded, color: SiberTema.kanKirmizi, size: 64),
-            const SizedBox(height: 20),
-            const Text("SİCİL KAYDI YOK!", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2)),
-            const SizedBox(height: 12),
+            Icon(Icons.gavel_rounded, color: SiberTema.kanKirmizi, size: 64),
+            SizedBox(height: 20),
+            Text("SİCİL KAYDI YOK!", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2)),
+            SizedBox(height: 12),
             Text(
               "Şase: ${widget.saseNo}\n\nBu araç henüz Kuantum Ağına entegre edilmemiş veya sahte şase girişi tespit edildi.",
               textAlign: TextAlign.center,
@@ -154,7 +155,7 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
         // Ana Radar
         Container(
           width: 160, height: 160,
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: SiberTema.oledBlack,
@@ -164,10 +165,10 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text("$skor", style: TextStyle(color: skorRengi, fontSize: 48, fontWeight: FontWeight.w900, letterSpacing: -2)),
-              const Text("DNA SKORU", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 10),
+              Text("DNA SKORU", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
+              SizedBox(height: 10),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
                     color: skorRengi.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
@@ -184,11 +185,11 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
 
   Widget _buildSiberSatir(String etiket, String deger, {bool isBuyuk = false}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(etiket, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+          Text(etiket, style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
           Flexible(
             child: Text(
                 deger,
@@ -214,18 +215,18 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
           .orderBy('olusturulma_zaman_damgasi', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) return const SizedBox();
+        if (snapshot.connectionState == ConnectionState.waiting) return SizedBox();
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(32),
+            padding: EdgeInsets.all(32),
             decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.02),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: SiberTema.textMuted)
             ),
-            child: const Column(
+            child: Column(
               children: [
                 Icon(Icons.layers_clear_outlined, color: SiberTema.textMuted, size: 32),
                 SizedBox(height: 12),
@@ -237,7 +238,7 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
 
         return ListView.builder(
           shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+          physics: NeverScrollableScrollPhysics(),
           itemCount: snapshot.data!.docs.length,
           itemBuilder: (context, index) {
             var islem = snapshot.data!.docs[index].data() as Map<String, dynamic>;
@@ -245,8 +246,8 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
             Color durumRenk = tamamlandi ? SiberTema.kuantumCyan : SiberTema.altinSari;
 
             return Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(16),
+              margin: EdgeInsets.only(bottom: 12),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: SiberTema.matGrey.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(16),
@@ -255,17 +256,17 @@ class _AracProfilEkraniState extends State<AracProfilEkrani> {
               child: Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(color: durumRenk.withOpacity(0.1), shape: BoxShape.circle),
                     child: Icon(tamamlandi ? Icons.verified_user_outlined : Icons.pending_outlined, color: durumRenk, size: 20),
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(islem['islem_adi'] ?? "GENEL KONTROL", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 0.5)),
-                        const SizedBox(height: 4),
+                        Text(islem['islem_adi'] ?? "GENEL KONTROL", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 0.5)),
+                        SizedBox(height: 4),
                         Text(
                             "KM: ${islem['baslangic_km'] ?? '---'}  |  BAYİ: ${islem['bayi_isim'] ?? 'MERKEZ'}",
                             style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 10, fontWeight: FontWeight.bold)

@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
 /// 🌊 SİBER MEGA PARÇA MOTORU (Şelale Arama Sistemi)
@@ -14,7 +14,7 @@ class SiberMegaParcaMotoru {
   /// Kameradan gelen fotoğrafı tarayıp içindeki yedek parça listesini çıkarır.
   Future<List<String>> ocrIleListeyiCikar(String imagePath) async {
     // Gerçekte burada Google ML Kit Text Recognition veya Cloud Vision API kullanılır.
-    await Future.delayed(const Duration(seconds: 2)); // AI analiz süresi simülasyonu
+    await Future.delayed(Duration(seconds: 2)); // AI analiz süresi simülasyonu
     
     return [
       "Ön Fren Disk Takımı",

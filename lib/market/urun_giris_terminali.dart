@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -9,7 +10,7 @@ import 'dart:ui';
 import '../../core/siber_tema.dart'; // 🚀 SİBER KÖPRÜ
 
 class UrunGirisTerminali extends StatefulWidget {
-  const UrunGirisTerminali({super.key});
+  UrunGirisTerminali({super.key});
 
   @override
   State<UrunGirisTerminali> createState() => _UrunGirisTerminaliState();
@@ -17,8 +18,8 @@ class UrunGirisTerminali extends StatefulWidget {
 
 class _UrunGirisTerminaliState extends State<UrunGirisTerminali> {
   // 🌑 SİBER RENK PALETİ (SiberTema'dan besleniyor)
-  static const Color primaryCyan = SiberTema.kuantumCyan;
-  static const Color neonPink = SiberTema.kanKirmizi; // Veya Neon Pembe eklenebilir
+  static Color primaryCyan = SiberTema.kuantumCyan;
+  static Color neonPink = SiberTema.kanKirmizi; // Veya Neon Pembe eklenebilir
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _adController = TextEditingController();
@@ -95,7 +96,7 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> {
 
   void _siberMesaj(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+      content: Text(mesaj, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
       backgroundColor: isError ? neonPink : primaryCyan,
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -118,29 +119,29 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> {
                 _buildSiberAppBar(),
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(24),
-                    physics: const BouncingScrollPhysics(),
+                    padding: EdgeInsets.all(24),
+                    physics: BouncingScrollPhysics(),
                     child: Form(
                       key: _formKey,
                       child: Column(
                         children: [
                           _buildDosyaYuklemePaneli(),
-                          const SizedBox(height: 24),
+                          SizedBox(height: 24),
                           _buildInput("Ürün Adı", _adController, Icons.shopping_bag_outlined),
                           _buildInput("Birim Fiyat (₺)", _fiyatController, Icons.monetization_on_outlined, isNumber: true),
                           _buildInput("Stok Adedi", _stokController, Icons.inventory_outlined, isNumber: true),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16),
                           _buildSiberPanel(
                             color: primaryCyan.withOpacity(0.1),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text("KARARGAH PAYI (%12):", style: TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-                                Text("${_karargahPayi.toStringAsFixed(2)} ₺", style: const TextStyle(color: primaryCyan, fontSize: 20, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                                Text("KARARGAH PAYI (%12):", style: TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                                Text("${_karargahPayi.toStringAsFixed(2)} ₺", style: TextStyle(color: primaryCyan, fontSize: 20, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                               ],
                             ),
                           ),
-                          const SizedBox(height: 32),
+                          SizedBox(height: 32),
                           _buildAteslemeButonu(),
                         ],
                       ),
@@ -160,16 +161,16 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          decoration: BoxDecoration(color: Colors.black.withOpacity(0.4), border: const Border(bottom: BorderSide(color: Colors.white10))),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          decoration: BoxDecoration(color: Colors.black.withOpacity(0.4), border: Border(bottom: BorderSide(color: Colors.white10))),
           child: Row(
             children: [
               GestureDetector(
                 onTap: () => Navigator.pop(context),
-                child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), shape: BoxShape.circle), child: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 18)),
+                child: Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), shape: BoxShape.circle), child: Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 18)),
               ),
-              const Expanded(child: Center(child: Text('TEDARİK TERMİNALİ V2', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'Avenir')))),
-              const SizedBox(width: 40), // Ortalama dengesi için
+              Expanded(child: Center(child: Text('TEDARİK TERMİNALİ V2', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'Avenir')))),
+              SizedBox(width: 40), // Ortalama dengesi için
             ],
           ),
         ),
@@ -183,16 +184,16 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> {
         onTap: _dosyaSec,
         child: Container(
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 24),
+          padding: EdgeInsets.symmetric(vertical: 24),
           child: Column(
             children: [
               Icon(Icons.picture_as_pdf_outlined, color: _selectedFile == null ? primaryCyan : neonPink, size: 48),
-              const SizedBox(height: 16),
-              Text(_selectedFile == null ? "PDF VEYA GÖRSEL YÜKLE" : "DOSYA SİBER AĞA ALINDI", style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+              SizedBox(height: 16),
+              Text(_selectedFile == null ? "PDF VEYA GÖRSEL YÜKLE" : "DOSYA SİBER AĞA ALINDI", style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
               if (_selectedFile != null)
                 Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Text(_selectedFile!.path.split('/').last, style: const TextStyle(color: Colors.white54, fontSize: 10, fontFamily: 'Avenir')),
+                  padding: EdgeInsets.only(top: 8),
+                  child: Text(_selectedFile!.path.split('/').last, style: TextStyle(color: Colors.white54, fontSize: 10, fontFamily: 'Avenir')),
                 )
             ],
           ),
@@ -207,7 +208,7 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: color ?? Colors.white.withOpacity(0.05),
             borderRadius: BorderRadius.circular(20),
@@ -221,7 +222,7 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> {
 
   Widget _buildInput(String hint, TextEditingController controller, IconData icon, {bool isNumber = false}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: 16),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: BackdropFilter(
@@ -229,17 +230,17 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> {
           child: TextFormField(
             controller: controller,
             keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-            style: const TextStyle(color: Colors.white, fontFamily: 'Avenir', fontSize: 14),
+            style: TextStyle(color: Colors.white, fontFamily: 'Avenir', fontSize: 14),
             onChanged: (_) => setState(() {}),
             decoration: InputDecoration(
               prefixIcon: Icon(icon, color: primaryCyan, size: 20),
               hintText: hint,
-              hintStyle: const TextStyle(color: Colors.white24, fontFamily: 'Avenir', fontSize: 13),
+              hintStyle: TextStyle(color: Colors.white24, fontFamily: 'Avenir', fontSize: 13),
               filled: true,
               fillColor: Colors.white.withOpacity(0.05),
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: Colors.white10)),
-              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: primaryCyan)),
+              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Colors.white10)),
+              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: primaryCyan)),
             ),
             validator: (v) => v!.isEmpty ? "ZORUNLU ALAN" : null,
           ),
@@ -261,8 +262,8 @@ class _UrunGirisTerminaliState extends State<UrunGirisTerminali> {
         ),
         onPressed: _isProcessing ? null : _sistemeMuhurle,
         child: _isProcessing 
-          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2)) 
-          : const Text("SİSTEME MÜHÜRLE", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir', fontSize: 12)),
+          ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2)) 
+          : Text("SİSTEME MÜHÜRLE", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir', fontSize: 12)),
       ),
     );
   }

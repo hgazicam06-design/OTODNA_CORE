@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:developer' as developer;
@@ -154,7 +154,7 @@ class OcrSonuc {
   final bool kesin;
   final DateTime? tarih;
 
-  const OcrSonuc({
+  OcrSonuc({
     required this.deger,
     required this.tur,
     required this.hamMetin,

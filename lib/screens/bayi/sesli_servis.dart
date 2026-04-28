@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/bayi/sesli_servis.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +18,7 @@ class SiberSesliOnayMerkezi extends StatefulWidget {
   final String ustaAdi; // Sesli asistanın hitap edeceği isim
   final String islemId; // Onaylanacak işlemin kimliği
 
-  const SiberSesliOnayMerkezi({
+  SiberSesliOnayMerkezi({
     super.key,
     required this.ustaId,
     required this.ustaAdi,
@@ -135,7 +136,7 @@ class _SiberSesliOnayMerkeziState extends State<SiberSesliOnayMerkezi> {
       if (mounted) {
         _siberUyariGoster("SESLİ MÜHÜR ONAYLANDI", "İşlem başarıyla Karargah veritabanına işlendi.", SiberTema.kuantumCyan);
         // SİBER NOT: Burada rapor sayfasına veya ana ekrana dönülür
-        Future.delayed(const Duration(seconds: 2), () {
+        Future.delayed(Duration(seconds: 2), () {
           if (mounted) Navigator.pop(context);
         });
       }
@@ -161,8 +162,8 @@ class _SiberSesliOnayMerkeziState extends State<SiberSesliOnayMerkezi> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
+            SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
@@ -176,21 +177,21 @@ class _SiberSesliOnayMerkeziState extends State<SiberSesliOnayMerkezi> {
       child: Scaffold(
         backgroundColor: Colors.transparent, // Kalkan aydınlatması arkadan gelsin
         appBar: AppBar(
-          title: const Text("SİBER SESLİ ONAY", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
+          title: Text("SİBER SESLİ ONAY", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: SafeArea(
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: EdgeInsets.all(24.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // 🎙️ RADAR ANİMASYONU VE İKON
                   Container(
-                    padding: const EdgeInsets.all(40),
+                    padding: EdgeInsets.all(40),
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: _isListening ? SiberTema.kanKirmizi.withOpacity(0.1) : SiberTema.kuantumCyan.withOpacity(0.05),
@@ -205,12 +206,12 @@ class _SiberSesliOnayMerkeziState extends State<SiberSesliOnayMerkezi> {
                         size: 80
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40),
 
                   // 🗣️ ALGILANAN SES EKRANI
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(20),
+                    padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: SiberTema.matGrey.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(16),
@@ -218,8 +219,8 @@ class _SiberSesliOnayMerkeziState extends State<SiberSesliOnayMerkezi> {
                     ),
                     child: Column(
                       children: [
-                        const Text("ALINAN SİBER KOMUT:", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
-                        const SizedBox(height: 12),
+                        Text("ALINAN SİBER KOMUT:", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
+                        SizedBox(height: 12),
                         Text(
                             _ustaYaniti,
                             textAlign: TextAlign.center,
@@ -233,11 +234,11 @@ class _SiberSesliOnayMerkeziState extends State<SiberSesliOnayMerkezi> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40),
 
                   // 🚀 ATEŞLEME BUTONU VEYA YÜKLENİYOR
                   if (_islemSuruyor)
-                    const Column(
+                    Column(
                       children: [
                         CircularProgressIndicator(color: SiberTema.kuantumCyan),
                         SizedBox(height: 16),

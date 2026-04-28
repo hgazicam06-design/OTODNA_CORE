@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -7,7 +8,7 @@ import '../core/responsive_kalkan.dart';
 import '../core/turkiye_haritasi.dart';
 
 class BayiYonetimMerkeziScreen extends StatefulWidget {
-  const BayiYonetimMerkeziScreen({super.key});
+  BayiYonetimMerkeziScreen({super.key});
 
   @override
   State<BayiYonetimMerkeziScreen> createState() => _BayiYonetimMerkeziScreenState();
@@ -156,12 +157,12 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.radar, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          leading: IconButton(icon: Icon(Icons.radar, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
           title: Text("DİSTRİBÜTÖR AĞI KURULUMU", style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontWeight: FontWeight.w800, fontSize: 14, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
         ),
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/images/radar_grid.png'),
               fit: BoxFit.cover,
@@ -171,8 +172,8 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
           child: Form(
             key: _formKey,
             child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.all(24.0),
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.all(24.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -182,7 +183,7 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
                   _buildSiberTextField("Yetkili Kişi Ad Soyad", Icons.person_outline, _yetkiliKisiController),
                   _buildSiberTextField("İletişim Numarası", Icons.phone_android, _telefonController, isNumber: true),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                   _buildBolumBasligi("LOKASYON & BÖLGE PROTOKOLÜ"),
 
                   _buildDropdownContainer(
@@ -210,7 +211,7 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
 
                   _buildSiberTextField("Tam Açık Adres...", Icons.location_on_outlined, _tamAdresController, isMultiline: true),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                   _buildBolumBasligi("ŞEFFAF VİTRİN VE HİZMET AĞI"),
 
                   _buildDropdownContainer(
@@ -225,8 +226,8 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
 
                   if (_seciliUzmanlik == 'Diğer (Yeni İşlem Ekle)') ...[
                     Container(
-                      padding: const EdgeInsets.all(16),
-                      margin: const EdgeInsets.only(bottom: 16),
+                      padding: EdgeInsets.all(16),
+                      margin: EdgeInsets.only(bottom: 16),
                       decoration: BoxDecoration(
                           color: SiberTema.kanKirmizi.withOpacity(0.05),
                           border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.3)),
@@ -235,14 +236,14 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Row(
+                          Row(
                             children: [
                               Icon(Icons.security, color: SiberTema.kanKirmizi, size: 18),
                               SizedBox(width: 8),
                               Text("ADMİN ONAYI GEREKİYOR", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 12, fontWeight: FontWeight.w800, fontFamily: 'Avenir')),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16),
                           _buildSiberTextField("Önermek İstediğiniz Özel İşlemi Yazın...", Icons.add_task, _yeniIslemController),
                         ],
                       ),
@@ -250,7 +251,7 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
                   ],
 
                   Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 12),
+                    padding: EdgeInsets.only(top: 8, bottom: 12),
                     child: Text("Hizmet Verilen Araç Grupları:", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.8), fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                   ),
                   Wrap(
@@ -280,7 +281,7 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
                       );
                     }).toList(),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
 
                   _buildSiberTextField(
                       "Çalışma şekliniz ve hizmet detaylarınız...",
@@ -289,10 +290,10 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
                       isMultiline: true
                   ),
 
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40),
 
                   _buildOnayButonu(),
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40),
                 ],
               ),
             ),
@@ -304,11 +305,11 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
 
   Widget _buildBolumBasligi(String baslik) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: 16),
       child: Row(
         children: [
           Container(width: 4, height: 16, color: SiberTema.kuantumCyan),
-          const SizedBox(width: 10),
+          SizedBox(width: 10),
           Text(baslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.7), fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
         ],
       ),
@@ -317,7 +318,7 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
 
   Widget _buildSiberTextField(String hint, IconData icon, TextEditingController controller, {bool isNumber = false, bool isMultiline = false}) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: SiberTema.matGrey.withOpacity(0.2),
         borderRadius: BorderRadius.circular(16),
@@ -327,13 +328,13 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : (isMultiline ? TextInputType.multiline : TextInputType.text),
         maxLines: isMultiline ? 4 : 1,
-        style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+        style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
           hintText: hint,
           hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 12),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.all(20),
+          contentPadding: EdgeInsets.all(20),
         ),
         validator: (value) => value == null || value.trim().isEmpty ? "Zorunlu Alan" : null,
       ),
@@ -342,8 +343,8 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
 
   Widget _buildDropdownContainer({required String hint, required IconData icon, required String? value, required List<String> items, required void Function(String?)? onChanged}) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      margin: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
         color: SiberTema.matGrey.withOpacity(0.2),
         borderRadius: BorderRadius.circular(16),
@@ -353,10 +354,10 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
         child: DropdownButton<String>(
           isExpanded: true,
           dropdownColor: SiberTema.oledBlack,
-          icon: const Icon(Icons.arrow_drop_down_circle, color: SiberTema.kuantumCyan, size: 20),
+          icon: Icon(Icons.arrow_drop_down_circle, color: SiberTema.kuantumCyan, size: 20),
           hint: Text(hint, style: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 12, fontWeight: FontWeight.bold)),
           value: value,
-          items: items.map((String item) => DropdownMenuItem<String>(value: item, child: Text(item, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)))).toList(),
+          items: items.map((String item) => DropdownMenuItem<String>(value: item, child: Text(item, style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)))).toList(),
           onChanged: onChanged,
         ),
       ),
@@ -367,7 +368,7 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
     return GestureDetector(
       onTap: _isSaving ? null : _bayiyiAgaKaydet,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
+        duration: Duration(milliseconds: 150),
         width: double.infinity,
         height: 65,
         decoration: BoxDecoration(
@@ -378,17 +379,17 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
           ),
           borderRadius: BorderRadius.circular(20),
           boxShadow: _isSaving ? [] : [
-            BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.2), blurRadius: 20, offset: const Offset(0, 10)),
+            BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.2), blurRadius: 20, offset: Offset(0, 10)),
           ],
         ),
         child: Center(
           child: _isSaving
-              ? const CircularProgressIndicator(color: SiberTema.oledBlack)
+              ? CircularProgressIndicator(color: SiberTema.oledBlack)
               : Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.shield_outlined, color: SiberTema.oledBlack, size: 24),
-              const SizedBox(width: 12),
+              Icon(Icons.shield_outlined, color: SiberTema.oledBlack, size: 24),
+              SizedBox(width: 12),
               Text(
                 "BAYİYİ AĞA MÜHÜRLE",
                 style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2),

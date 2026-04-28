@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/admin/admin_global_panel.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +9,7 @@ import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 
 class AdminGlobalPanel extends StatefulWidget {
-  const AdminGlobalPanel({super.key});
+  AdminGlobalPanel({super.key});
 
   @override
   State<AdminGlobalPanel> createState() => _AdminGlobalPanelState();
@@ -73,7 +74,7 @@ class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.redAccent,
-              content: const Text("SİBER İHLAL: Bağlantı kurulamadı!", style: TextStyle(fontWeight: FontWeight.bold)),
+              content: Text("SİBER İHLAL: Bağlantı kurulamadı!", style: TextStyle(fontWeight: FontWeight.bold)),
             )
         );
       }
@@ -92,10 +93,10 @@ class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+              icon: Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
               onPressed: () => Navigator.pop(context)
           ),
-          title: const Text(
+          title: Text(
               'G L O B A L   S İ B E R   A Ğ',
               style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3, fontFamily: 'Avenir')
           ),
@@ -106,7 +107,7 @@ class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
           children: [
             _buildRadarHeader(),
             _buildSectionTitle(),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             _buildGlobalNetworkList(),
           ],
         ),
@@ -117,10 +118,10 @@ class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
 
   Widget _buildRadarHeader() {
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(24.0),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: _surfaceColor,
           borderRadius: BorderRadius.circular(24),
@@ -129,12 +130,12 @@ class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(color: _cyberBlack, shape: BoxShape.circle, border: Border.all(color: _primaryCyan.withOpacity(0.5))),
               child: Icon(Icons.radar, color: _primaryCyan, size: 32),
             ),
-            const SizedBox(width: 24),
-            const Expanded(
+            SizedBox(width: 24),
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -151,7 +152,7 @@ class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
   }
 
   Widget _buildSectionTitle() {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24),
       child: Text("AKTİF ÜLKE VE BÖLGELER", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
     );
@@ -170,10 +171,10 @@ class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.satellite_alt_outlined, color: Colors.white24, size: 48),
-                  const SizedBox(height: 16),
-                  const Text("UYDU SİNYALİ YOK", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, letterSpacing: 2)),
-                  const SizedBox(height: 8),
+                  Icon(Icons.satellite_alt_outlined, color: Colors.white24, size: 48),
+                  SizedBox(height: 16),
+                  Text("UYDU SİNYALİ YOK", style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                  SizedBox(height: 8),
                   Text("Henüz küresel bir ağ oluşturulmadı.", style: TextStyle(color: _primaryCyan.withOpacity(0.5), fontSize: 10)),
                 ],
               ),
@@ -181,7 +182,7 @@ class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
           }
 
           return ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: 24),
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               var veri = snapshot.data!.docs[index].data() as Map<String, dynamic>;
@@ -202,7 +203,7 @@ class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
   Widget _buildBottomAction() {
     return SafeArea(
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         decoration: BoxDecoration(color: _surfaceColor, border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05)))),
         child: SizedBox(
           height: 60,
@@ -210,9 +211,9 @@ class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
             style: SiberTema.kuantumButonStili(outlined: true),
             onPressed: _isProcessing ? null : _yeniUlkeAgaEkle,
             icon: _isProcessing
-                ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: SiberTema.oledBlack))
-                : const Icon(Icons.add_location_alt_outlined, size: 20),
-            label: Text(_isProcessing ? "MÜHÜRLENİYOR..." : "YENİ ÜLKE / BÖLGE İSKELETİ OLUŞTUR", style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: SiberTema.oledBlack))
+                : Icon(Icons.add_location_alt_outlined, size: 20),
+            label: Text(_isProcessing ? "MÜHÜRLENİYOR..." : "YENİ ÜLKE / BÖLGE İSKELETİ OLUŞTUR", style: TextStyle(fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
           ),
         ),
       ),
@@ -221,8 +222,8 @@ class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
 
   Widget _buildUlkeKarti(String kod, String ulke, String detay, String durum, Color renk) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(20),
+      margin: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: _surfaceColor,
         borderRadius: BorderRadius.circular(20),
@@ -236,18 +237,18 @@ class _AdminGlobalPanelState extends State<AdminGlobalPanel> {
             decoration: BoxDecoration(color: _cyberBlack, borderRadius: BorderRadius.circular(16), border: Border.all(color: renk.withOpacity(0.3))),
             child: Text(kod.toUpperCase(), style: TextStyle(color: renk, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(ulke.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-                Text(detay, style: const TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                Text(ulke.toUpperCase(), style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                Text(detay, style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
               ],
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(color: renk.withOpacity(0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: renk.withOpacity(0.5))),
             child: Text(durum, style: TextStyle(color: renk, fontSize: 9, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           ),

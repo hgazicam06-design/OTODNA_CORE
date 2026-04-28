@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -7,7 +8,7 @@ import '../../core/responsive_kalkan.dart';
 import '../../services/siber_istihbarat_log_motoru.dart';
 
 class BayiBasvuruMerkeziScreen extends StatefulWidget {
-  const BayiBasvuruMerkeziScreen({super.key});
+  BayiBasvuruMerkeziScreen({super.key});
 
   @override
   State<BayiBasvuruMerkeziScreen> createState() => _BayiBasvuruMerkeziScreenState();
@@ -45,27 +46,27 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
+            icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
             onPressed: () => Navigator.pop(context),
           ),
-          title: const Text('B A Y İ   B A Ş V U R U   M E R K E Z İ',
+          title: Text('B A Y İ   B A Ş V U R U   M E R K E Z İ',
               style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2)),
           centerTitle: true,
           actions: [
             Container(
-              margin: const EdgeInsets.only(right: 16),
-              padding: const EdgeInsets.all(8),
+              margin: EdgeInsets.only(right: 16),
+              padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
                   color: SiberTema.kanKirmizi.withOpacity(0.1),
                   shape: BoxShape.circle,
                   border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.5))),
-              child: const Icon(Icons.security, color: SiberTema.kanKirmizi, size: 16),
+              child: Icon(Icons.security, color: SiberTema.kanKirmizi, size: 16),
             )
           ],
         ),
         body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(24.0),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -81,7 +82,7 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
                         Expanded(
                             child: _buildAdminStat("TÜRKİYE CİRO AĞI", "₺\${data['ciro']?.toStringAsFixed(0)}",
                                 Colors.white, Icons.account_balance_wallet_outlined)),
-                        const SizedBox(width: 16),
+                        SizedBox(width: 16),
                         Expanded(
                             child: _buildAdminStat("SİBER KÂR (%12)", "₺\${data['kar']?.toStringAsFixed(0)}",
                                 SiberTema.kuantumCyan, Icons.diamond_outlined)),
@@ -89,7 +90,7 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
                     );
                   }
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
 
               // =================================================================
               // 2. ONAY BEKLEYEN BAYİLER
@@ -97,18 +98,18 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
               Row(
                 children: [
                   Icon(Icons.hourglass_top, color: Colors.white.withOpacity(0.3), size: 20),
-                  const SizedBox(width: 12),
-                  const Text("ONAY BEKLEYEN BAYİ BAŞVURULARI",
+                  SizedBox(width: 12),
+                  Text("ONAY BEKLEYEN BAYİ BAŞVURULARI",
                       style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                 ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
 
               StreamBuilder<QuerySnapshot>(
                   stream: _db.collection('bayi_basvurulari').where('durum', isEqualTo: 'Bekliyor').snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator(color: SiberTema.kuantumCyan)));
+                      return Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator(color: SiberTema.kuantumCyan)));
                     }
 
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -126,13 +127,13 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
                       }).toList(),
                     );
                   }),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
 
               // =================================================================
               // 3. GLOBAL HARİTA VE DENETİM BUTONU
               // =================================================================
               _buildGlobalMapButton(context),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
             ],
           ),
         ),
@@ -143,12 +144,12 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
   Widget _buildEmptyState() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(40),
+      padding: EdgeInsets.all(40),
       decoration: BoxDecoration(
           color: SiberTema.matGrey.withOpacity(0.1),
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: Colors.white.withOpacity(0.05))),
-      child: const Column(
+      child: Column(
         children: [
           Icon(Icons.radar, color: SiberTema.textMuted, size: 50),
           SizedBox(height: 16),
@@ -161,7 +162,7 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
 
   Widget _buildAdminStat(String title, String val, Color color, IconData icon) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: SiberTema.matGrey.withOpacity(0.1),
         borderRadius: BorderRadius.circular(24),
@@ -172,9 +173,9 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icon, color: color, size: 20),
-          const SizedBox(height: 16),
-          Text(title, style: const TextStyle(color: SiberTema.textMuted, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
-          const SizedBox(height: 6),
+          SizedBox(height: 16),
+          Text(title, style: TextStyle(color: SiberTema.textMuted, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
+          SizedBox(height: 6),
           Text(val, style: TextStyle(color: color, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: -1)),
         ],
       ),
@@ -183,8 +184,8 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
 
   Widget _buildApprovalItem(String isim, String bolge, String durum, String docId) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: SiberTema.matGrey.withOpacity(0.1),
         borderRadius: BorderRadius.circular(20),
@@ -194,15 +195,15 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
         children: [
           CircleAvatar(
             backgroundColor: SiberTema.kuantumCyan.withOpacity(0.1),
-            child: const Icon(Icons.business_center, color: SiberTema.kuantumCyan, size: 18),
+            child: Icon(Icons.business_center, color: SiberTema.kuantumCyan, size: 18),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(isim.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900)),
-                Text(bolge.toUpperCase(), style: const TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold)),
+                Text(isim.toUpperCase(), style: TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900)),
+                Text(bolge.toUpperCase(), style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
@@ -211,10 +212,10 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
               backgroundColor: SiberTema.kuantumCyan,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             ),
             onPressed: () => _muhurle(docId, isim),
-            child: const Text("MÜHÜRLE", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900)),
+            child: Text("MÜHÜRLE", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900)),
           ),
         ],
       ),
@@ -257,9 +258,9 @@ class _BayiBasvuruMerkeziScreenState extends State<BayiBasvuruMerkeziScreen> {
         border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3)),
       ),
       child: InkWell(
-        onTap: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("GLOBAL HARİTA AKTİF EDİLİYOR..."))),
+        onTap: () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("GLOBAL HARİTA AKTİF EDİLİYOR..."))),
         borderRadius: BorderRadius.circular(16),
-        child: const Center(
+        child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

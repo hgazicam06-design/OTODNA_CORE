@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
@@ -24,7 +24,7 @@ class CorporateAIEngine {
   static final stt.SpeechToText _speechToText = stt.SpeechToText();
   
   // Kurumsal API Anahtarı (Production'da .env'den alınmalıdır)
-  static const String _geminiApiKey = 'KARARGAH_API_ANAHTARINI_BURAYA_GIRIN';
+  static String _geminiApiKey = 'KARARGAH_API_ANAHTARINI_BURAYA_GIRIN';
 
   // =======================================================================
   // 1. GÖRSEL YAPAY ZEKA: PARÇA TANIMA (GEMİNİ)
@@ -33,7 +33,7 @@ class CorporateAIEngine {
     try {
       if (_geminiApiKey == 'KARARGAH_API_ANAHTARINI_BURAYA_GIRIN') {
         debugPrint("OTODNA BİLGİ: Gemini API anahtarı eksik, simülasyon çalıştırılıyor.");
-        await Future.delayed(const Duration(seconds: 2));
+        await Future.delayed(Duration(seconds: 2));
         return {
           "parca_adi": "Ön Tampon",
           "marka": "FIAT Egea",
@@ -152,7 +152,7 @@ class CorporateAIEngine {
           },
         );
 
-        Future.delayed(const Duration(seconds: 5), () {
+        Future.delayed(Duration(seconds: 5), () {
           if (!completer.isCompleted) {
             _speechToText.stop();
             completer.completeError("Ses algılanamadı, mikrofon kapatıldı.");

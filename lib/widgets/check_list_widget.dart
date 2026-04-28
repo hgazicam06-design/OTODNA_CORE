@@ -1,4 +1,4 @@
-// lib/widgets/check_list_widget.dart
+﻿// lib/widgets/check_list_widget.dart
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart'; // 🚀 SİBER GÖZ (GERÇEK KAMERA) ENTEGRE EDİLDİ
 import 'dart:ui';
@@ -12,7 +12,7 @@ class SiberCheckList extends StatefulWidget {
   final Function(Map<String, bool>) onDegisim; // Değişimleri ana ekrana fırlatır
   final Function(String anahtar, String resimYolu)? onKanitYuklendi; // Firebase Storage için resmi fırlatır
 
-  const SiberCheckList({
+  SiberCheckList({
     super.key,
     required this.baslangicKontrolleri,
     this.zorunluKanitAktifMi = false,
@@ -29,9 +29,9 @@ class _SiberCheckListState extends State<SiberCheckList> {
   final ImagePicker _siberKamera = ImagePicker(); // Karargah Kamerası
 
   // ── 🎨 KARARGAH TASARIM DOKTRİNİ ──
-  static const Color _matGrey = Color(0xFF111111);
-  static const Color _kuantumCyan = Color(0xFF00FFC2);
-  static const Color _alertOrange = Colors.orangeAccent;
+  static Color _matGrey = Color(0xFF111111);
+  static Color _kuantumCyan = Color(0xFF00FFC2);
+  static Color _alertOrange = Colors.orangeAccent;
 
   @override
   void initState() {
@@ -110,7 +110,7 @@ class _SiberCheckListState extends State<SiberCheckList> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: const Color(0xFF0A0A0A),
+        backgroundColor: Color(0xFF0A0A0A),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)),
         content: Column(
@@ -118,8 +118,8 @@ class _SiberCheckListState extends State<SiberCheckList> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: Colors.white70, fontSize: 12)),
           ],
         ),
       ),
@@ -133,8 +133,8 @@ class _SiberCheckListState extends State<SiberCheckList> {
         bool isOnayli = _kontroller[key] ?? false;
 
         return AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          margin: const EdgeInsets.only(bottom: 12),
+          duration: Duration(milliseconds: 300),
+          margin: EdgeInsets.only(bottom: 12),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: BackdropFilter(
@@ -149,7 +149,7 @@ class _SiberCheckListState extends State<SiberCheckList> {
                   ),
                 ),
                 child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   title: Text(
                     key.toUpperCase(),
                     style: TextStyle(
@@ -160,14 +160,14 @@ class _SiberCheckListState extends State<SiberCheckList> {
                     ),
                   ),
                   subtitle: (widget.zorunluKanitAktifMi && !isOnayli)
-                      ? const Text("📸 ONAY İÇİN KANIT ZORUNLUDUR", style: TextStyle(color: _alertOrange, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1))
+                      ? Text("📸 ONAY İÇİN KANIT ZORUNLUDUR", style: TextStyle(color: _alertOrange, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1))
                       : null,
                   trailing: InkWell(
                     onTap: () => _durumDegistirVeKanitIste(key, isOnayli),
                     borderRadius: BorderRadius.circular(8),
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      padding: const EdgeInsets.all(4),
+                      duration: Duration(milliseconds: 200),
+                      padding: EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         color: isOnayli ? _kuantumCyan : Colors.black45,
                         borderRadius: BorderRadius.circular(8),

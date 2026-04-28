@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -21,7 +22,7 @@ class EkspertizKokpitiScreen extends StatefulWidget {
   final String cityId;
   final String districtId;
 
-  const EkspertizKokpitiScreen({
+  EkspertizKokpitiScreen({
     super.key,
     required this.aracId,
     required this.saseNo,
@@ -66,7 +67,7 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
   Future<void> _fotografYukleSimulasyonu(String parcaAdi) async {
     _siberUyariVer("Kamera Açılıyor... Hasar tespit ediliyor.", false);
     HapticFeedback.lightImpact();
-    await Future.delayed(const Duration(seconds: 1)); 
+    await Future.delayed(Duration(seconds: 1)); 
     setState(() {
       _kontrolListesi[parcaAdi]!['fotoUrl'] = 'https://siberkarargah.com/kanit/hasar_${DateTime.now().millisecondsSinceEpoch}.jpg';
     });
@@ -115,7 +116,7 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
       );
 
       // TODO: Firebase'e Yazma İşlemi (rapor.toMap())
-      await Future.delayed(const Duration(seconds: 2)); // DB Simülasyonu
+      await Future.delayed(Duration(seconds: 2)); // DB Simülasyonu
 
       if (!kritikHataVarMi) {
         _siberUyariVer("DİJİTAL REFERANS (DNA) OLUŞTURULDU VE MÜHÜRLENDİ! 🦅", false);
@@ -154,8 +155,8 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
         appBar: AppBar(
           backgroundColor: Colors.black.withOpacity(0.8),
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("🧬 DNA EKSPERTİZ TERMINALİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13, fontFamily: 'Avenir')),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          title: Text("🧬 DNA EKSPERTİZ TERMINALİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13, fontFamily: 'Avenir')),
           centerTitle: true,
         ),
         body: Column(
@@ -163,20 +164,20 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
             // SİBER İSTİHBARAT RADAR BAŞLIĞI
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-              decoration: const BoxDecoration(
+              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+              decoration: BoxDecoration(
                 border: Border(bottom: BorderSide(color: SiberTema.textMuted, width: 1)),
                 color: SiberTema.matGrey,
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.location_on, color: SiberTema.kanKirmizi, size: 16),
-                  const SizedBox(width: 8),
-                  Text("Adli Konum: ${widget.cityId} / ${widget.districtId}", style: const TextStyle(color: SiberTema.kanKirmizi, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                  const Spacer(),
-                  const Icon(Icons.memory, color: SiberTema.kuantumCyan, size: 16),
-                  const SizedBox(width: 8),
-                  Text("%$_hesaplananMotorSkoru", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.w900)),
+                  Icon(Icons.location_on, color: SiberTema.kanKirmizi, size: 16),
+                  SizedBox(width: 8),
+                  Text("Adli Konum: ${widget.cityId} / ${widget.districtId}", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                  Spacer(),
+                  Icon(Icons.memory, color: SiberTema.kuantumCyan, size: 16),
+                  SizedBox(width: 8),
+                  Text("%$_hesaplananMotorSkoru", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.w900)),
                 ],
               ),
             ),
@@ -184,8 +185,8 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
             // KONTROL LİSTESİ
             Expanded(
               child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.all(16),
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.all(16),
                 itemCount: _kontrolListesi.length,
                 itemBuilder: (context, index) {
                   String parcaAdi = _kontrolListesi.keys.elementAt(index);
@@ -197,43 +198,43 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
 
             // 💰 KUANTUM FİNANS BİLANÇOSU (ŞEFFAF KOMİSYON)
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.white,
-                border: const Border(top: BorderSide(color: SiberTema.sariAltin, width: 2)),
+                border: Border(top: BorderSide(color: SiberTema.sariAltin, width: 2)),
               ),
               child: Column(
                 children: [
                   Row(
                     children: [
-                      const Expanded(child: Text("Ekspertiz Ücreti (TL):", style: TextStyle(color: SiberTema.textMuted, fontSize: 12))),
+                      Expanded(child: Text("Ekspertiz Ücreti (TL):", style: TextStyle(color: SiberTema.textMuted, fontSize: 12))),
                       SizedBox(
                         width: 100,
                         child: TextField(
                           controller: _ekspertizUcretiCtrl,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.right,
-                          style: const TextStyle(color: SiberTema.sariAltin, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: SiberTema.sariAltin, fontWeight: FontWeight.bold),
                           onChanged: (val) => setState(() {}),
-                          decoration: const InputDecoration(isDense: true, enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: SiberTema.textMuted))),
+                          decoration: InputDecoration(isDense: true, enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: SiberTema.textMuted))),
                         ),
                       )
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text("OtoDNA Payı (Gazi Kasası):", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
-                      Text("-${_gaziPayi.toStringAsFixed(2)} ₺", style: const TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)),
+                      Text("OtoDNA Payı (Gazi Kasası):", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+                      Text("-${_gaziPayi.toStringAsFixed(2)} ₺", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)),
                     ],
                   ),
-                  const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: Divider(color: SiberTema.textMuted, height: 1)),
+                  Padding(padding: EdgeInsets.symmetric(vertical: 8), child: Divider(color: SiberTema.textMuted, height: 1)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text("ESNAF NET HAKEDİŞİ:", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.bold)),
-                      Text("${_bayiHakedisi.toStringAsFixed(2)} ₺", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 18, fontWeight: FontWeight.w900)),
+                      Text("ESNAF NET HAKEDİŞİ:", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.bold)),
+                      Text("${_bayiHakedisi.toStringAsFixed(2)} ₺", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 18, fontWeight: FontWeight.w900)),
                     ],
                   ),
                 ],
@@ -242,7 +243,7 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
 
             // ONAY BUTONU
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               color: SiberTema.matGrey,
               child: SizedBox(
                 width: double.infinity,
@@ -254,8 +255,8 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
                   onPressed: _isSaving ? null : _ekspertiziKuantumAgaMuhurle,
-                  icon: _isSaving ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : const Icon(Icons.fingerprint, size: 20),
-                  label: Text(_isSaving ? "MÜHÜRLENİYOR..." : "DNA RAPORUNU AĞA İŞLE", style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                  icon: _isSaving ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : Icon(Icons.fingerprint, size: 20),
+                  label: Text(_isSaving ? "MÜHÜRLENİYOR..." : "DNA RAPORUNU AĞA İŞLE", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5, fontFamily: 'Avenir')),
                 ),
               ),
             ),
@@ -271,8 +272,8 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
     bool fotoYuklendi = detay['fotoUrl'] != null;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      margin: EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: SiberTema.matGrey.withOpacity(0.8),
         borderRadius: BorderRadius.circular(8),
@@ -289,8 +290,8 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
             GestureDetector(
               onTap: () => _fotografYukleSimulasyonu(parcaAdi),
               child: Container(
-                margin: const EdgeInsets.only(right: 12),
-                padding: const EdgeInsets.all(6),
+                margin: EdgeInsets.only(right: 12),
+                padding: EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: fotoYuklendi ? SiberTema.kuantumCyan.withOpacity(0.1) : SiberTema.altinSari.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(6),
@@ -310,7 +311,7 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
               });
             },
             child: Container(
-              padding: const EdgeInsets.all(6),
+              padding: EdgeInsets.all(6),
               decoration: BoxDecoration(
                 color: isSaglam ? SiberTema.kuantumCyan.withOpacity(0.15) : Colors.transparent,
                 borderRadius: BorderRadius.circular(6),
@@ -319,13 +320,13 @@ class _EkspertizKokpitiScreenState extends State<EkspertizKokpitiScreen> {
               child: Icon(Icons.check, color: isSaglam ? SiberTema.kuantumCyan : Colors.white30, size: 20),
             ),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8),
 
           // Kırmızı X
           GestureDetector(
             onTap: () => setState(() => _kontrolListesi[parcaAdi]!['durum'] = 'arizali'),
             child: Container(
-              padding: const EdgeInsets.all(6),
+              padding: EdgeInsets.all(6),
               decoration: BoxDecoration(
                 color: isArizali ? SiberTema.kanKirmizi.withOpacity(0.15) : Colors.transparent,
                 borderRadius: BorderRadius.circular(6),

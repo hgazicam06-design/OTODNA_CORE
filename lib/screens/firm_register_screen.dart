@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -5,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 /// [2026-03-28] GÜNCELLEME: Her bayi kendi ismiyle ağa katılır.
 /// Mutlak Gazi Finans Protokolü (%12) sisteme gömülmüştür.
 class FirmRegisterScreen extends StatefulWidget {
-  const FirmRegisterScreen({super.key});
+  FirmRegisterScreen({super.key});
 
   @override
   State<FirmRegisterScreen> createState() => _FirmRegisterScreenState();
@@ -13,10 +14,10 @@ class FirmRegisterScreen extends StatefulWidget {
 
 class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
   // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET
-  static const Color bgColor = Color(0xFF000000);
-  static const Color surfaceColor = Color(0xFF111111);
-  static const Color primaryCyan = Color(0xFF00FFC2);
-  static const Color dangerColor = Colors.redAccent;
+  static Color bgColor = Color(0xFF000000);
+  static Color surfaceColor = Color(0xFF111111);
+  static Color primaryCyan = Color(0xFF00FFC2);
+  static Color dangerColor = Colors.redAccent;
 
   final _formKey = GlobalKey<FormState>();
   final _firmaAdiCtrl = TextEditingController();
@@ -34,16 +35,16 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
     setState(() => _isLocationScanning = true);
 
     // Gerçekte geolocator paketiyle koordinat çekilecek
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 2));
 
     if (!mounted) return;
     setState(() {
       _konumVerisi = "ANKARA, İVEDİK OSB (KOORDİNAT MÜHÜRLENDİ)";
-      _secilenKoordinat = const GeoPoint(39.967, 32.748);
+      _secilenKoordinat = GeoPoint(39.967, 32.748);
       _isLocationScanning = false;
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("GPS RADARI: Konum Kilitlendi 🦅",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: primaryCyan));
@@ -54,7 +55,7 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     if (_secilenKoordinat == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("SİBER İHLAL: Lütfen önce konum mühürleyin!",
               style: TextStyle(fontWeight: FontWeight.bold)),
           backgroundColor: dangerColor));
@@ -84,7 +85,7 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
       });
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("BAŞVURU SİBER AĞA MÜHÜRLENDİ!",
               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
           backgroundColor: primaryCyan));
@@ -93,7 +94,7 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("AĞ HATASI: $e",
-              style: const TextStyle(fontWeight: FontWeight.bold)),
+              style: TextStyle(fontWeight: FontWeight.bold)),
           backgroundColor: dangerColor));
     } finally {
       if (mounted) setState(() => _isProcessing = false);
@@ -118,33 +119,33 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
+            icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
             onPressed: () => Navigator.pop(context)),
-        title: const Text('B A Y İ   A Ğ I   K A Y I T   T E R M İ N A L İ',
+        title: Text('B A Y İ   A Ğ I   K A Y I T   T E R M İ N A L İ',
             style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 3)),
       ),
       body: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 800),
+          constraints: BoxConstraints(maxWidth: 800),
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(32),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.all(32),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   _buildHeader(),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
 
                   _buildSiberTextField(_firmaAdiCtrl, "FİRMA ÖZ ADI (ÖR: DOĞAN OTO)", Icons.business_outlined),
                   _buildSiberTextField(_yetkiliCtrl, "YETKİLİ AD SOYAD", Icons.person_outline),
                   _buildSiberTextField(_sehirCtrl, "ŞEHİR", Icons.map_outlined),
                   _buildSiberTextField(_vergiNoCtrl, "VERGİ NO", Icons.assignment_ind_outlined, isNumber: true),
 
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
                   _buildKonumRadari(),
-                  const SizedBox(height: 48),
+                  SizedBox(height: 48),
 
                   SizedBox(
                     height: 64,
@@ -156,16 +157,16 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       ),
                       icon: _isProcessing
-                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                          : const Icon(Icons.lock_open_rounded, size: 24),
+                          ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                          : Icon(Icons.lock_open_rounded, size: 24),
                       label: Text(
                         _isProcessing ? "AĞA YÜKLENİYOR..." : "KENDİ İSMİMLE SİBER AĞA KATIL",
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  const Text(
+                  SizedBox(height: 20),
+                  Text(
                     "NOT: OTODNA Gazi Protokolü Gereği %12 Karargah Payı Sisteme Gömülüdür.",
                     textAlign: TextAlign.center,
                     style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold),
@@ -183,26 +184,26 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: primaryCyan.withOpacity(0.3)), color: primaryCyan.withOpacity(0.05)),
-          child: const Icon(Icons.shield_outlined, color: primaryCyan, size: 48),
+          child: Icon(Icons.shield_outlined, color: primaryCyan, size: 48),
         ),
-        const SizedBox(height: 24),
-        const Text("OTODNA TİCARİ İSTİHBARAT AĞI", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
-        const SizedBox(height: 12),
-        const Text("Dükkanınızı kendi markanızla kuantum ağına bağlayın.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
+        SizedBox(height: 24),
+        Text("OTODNA TİCARİ İSTİHBARAT AĞI", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
+        SizedBox(height: 12),
+        Text("Dükkanınızı kendi markanızla kuantum ağına bağlayın.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
       ],
     );
   }
 
   Widget _buildSiberTextField(TextEditingController controller, String hint, IconData icon, {bool isNumber = false}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: 16),
       child: TextFormField(
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
         textCapitalization: TextCapitalization.characters,
-        style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold),
+        style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold),
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 11, fontWeight: FontWeight.bold),
@@ -210,7 +211,7 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
           filled: true,
           fillColor: surfaceColor,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: primaryCyan, width: 1.5)),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: primaryCyan, width: 1.5)),
         ),
         validator: (value) => value!.isEmpty ? 'ZORUNLU ALAN EKSİK' : null,
       ),
@@ -220,7 +221,7 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
   Widget _buildKonumRadari() {
     bool konumBulundu = _secilenKoordinat != null;
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(24),
@@ -231,25 +232,25 @@ class _FirmRegisterScreenState extends State<FirmRegisterScreen> {
           Row(
             children: [
               Icon(Icons.radar, color: konumBulundu ? primaryCyan : dangerColor, size: 20),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Text("İŞ YERİ SİBER KOORDİNATI", style: TextStyle(color: konumBulundu ? primaryCyan : dangerColor, fontSize: 11, fontWeight: FontWeight.w900)),
             ],
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(12)),
             child: Text(_konumVerisi, textAlign: TextAlign.center, style: TextStyle(color: konumBulundu ? Colors.white : Colors.white38, fontSize: 10, fontFamily: 'monospace')),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
             child: OutlinedButton.icon(
               onPressed: _isLocationScanning ? null : _konumuMudurle,
-              style: OutlinedButton.styleFrom(foregroundColor: primaryCyan, side: const BorderSide(color: primaryCyan)),
-              icon: const Icon(Icons.my_location, size: 18),
-              label: Text(konumBulundu ? "KONUMU YENİDEN TARA" : "UYDU BAĞLANTISI KUR", style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w900)),
+              style: OutlinedButton.styleFrom(foregroundColor: primaryCyan, side: BorderSide(color: primaryCyan)),
+              icon: Icon(Icons.my_location, size: 18),
+              label: Text(konumBulundu ? "KONUMU YENİDEN TARA" : "UYDU BAĞLANTISI KUR", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900)),
             ),
           ),
         ],

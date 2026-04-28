@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -6,7 +7,7 @@ import '../../../core/siber_tema.dart';
 import '../../../core/responsive_kalkan.dart';
 
 class BolgeKomutaMerkeziScreen extends StatefulWidget {
-  const BolgeKomutaMerkeziScreen({super.key});
+  BolgeKomutaMerkeziScreen({super.key});
 
   @override
   State<BolgeKomutaMerkeziScreen> createState() => _BolgeKomutaMerkeziScreenState();
@@ -31,9 +32,9 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
+              icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
               onPressed: () => Navigator.pop(context)),
-          title: const Text('G L O B A L   D E N E T İ M',
+          title: Text('G L O B A L   D E N E T İ M',
               style: TextStyle(
                   color: SiberTema.textMuted,
                   fontWeight: FontWeight.w900,
@@ -43,10 +44,10 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
           centerTitle: true,
           actions: [
             Container(
-              margin: const EdgeInsets.only(right: 16),
-              padding: const EdgeInsets.all(8),
+              margin: EdgeInsets.only(right: 16),
+              padding: EdgeInsets.all(8),
               decoration: BoxDecoration(color: primaryCyan.withOpacity(0.1), shape: BoxShape.circle),
-              child: const Icon(Icons.radar, color: primaryCyan, size: 18),
+              child: Icon(Icons.radar, color: primaryCyan, size: 18),
             )
           ],
         ),
@@ -87,7 +88,7 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
                 // 1. SİBER ÜLKE SEÇİCİ (Kuantum Sekmeler)
                 // =================================================================
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                   child: Container(
                     height: 56,
                     decoration: BoxDecoration(
@@ -107,34 +108,34 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
                 // 2. İSTATİSTİK ÖZET KARTLARI (Canlı Veri Dinleyici)
                 // =================================================================
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: EdgeInsets.symmetric(horizontal: 24),
                   child: Row(
                     children: [
                       Expanded(child: _buildBilgiKarti("TOPLAM MÜHÜR", "\$toplamMuhur", primaryCyan, Icons.verified_user_outlined)),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16),
                       Expanded(child: _buildBilgiKarti("AKTİF BAYİ AĞI", "\$aktifBayiSayisi", Colors.blueAccent, Icons.share_location_outlined)),
                     ],
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: 32),
 
                 // =================================================================
                 // 3. BÖLGE BAZLI ANALİZ BAŞLIĞI
                 // =================================================================
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: EdgeInsets.symmetric(horizontal: 24),
                   child: Row(
                     children: [
                       Icon(Icons.hub_outlined, color: Colors.white.withOpacity(0.3), size: 20),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("\$_secilenUlke BÖLGE DAĞILIMI",
-                                style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1)),
-                            const SizedBox(height: 4),
-                            const Text("Kuantum Ağı Üzerindeki Canlı Mühür Yoğunluğu",
+                                style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                            SizedBox(height: 4),
+                            Text("Kuantum Ağı Üzerindeki Canlı Mühür Yoğunluğu",
                                 style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
                           ],
                         ),
@@ -142,7 +143,7 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
 
                 // =================================================================
                 // 4. DİNAMİK BÖLGE LİSTESİ (FİREBASE CANLI AKIŞ)
@@ -158,8 +159,8 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
                               ),
                             )
                           : ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                              physics: BouncingScrollPhysics(),
+                              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                               itemCount: siraliBolgeler.length,
                               itemBuilder: (context, index) {
                                 return _buildBolgeSatiri(siraliBolgeler[index].key, siraliBolgeler[index].value);
@@ -189,7 +190,7 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(ikon, color: isSelected ? primaryCyan : Colors.white38, size: 16),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               Text(ulkeAdi, style: TextStyle(color: isSelected ? primaryCyan : Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)),
             ],
           ),
@@ -200,7 +201,7 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
 
   Widget _buildBilgiKarti(String baslik, String deger, Color renk, IconData ikon) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(20),
@@ -217,7 +218,7 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
               Icon(ikon, color: renk, size: 16),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Text(deger, style: TextStyle(color: renk, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: -1)),
         ],
       ),
@@ -226,23 +227,23 @@ class _BolgeKomutaMerkeziScreenState extends State<BolgeKomutaMerkeziScreen> {
 
   Widget _buildBolgeSatiri(String bolgeAdi, int muhurSayisi) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      margin: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(color: primaryCyan.withOpacity(0.05), borderRadius: BorderRadius.circular(10), border: Border.all(color: primaryCyan.withOpacity(0.2))),
-            child: const Icon(Icons.my_location_outlined, color: primaryCyan, size: 16),
+            child: Icon(Icons.my_location_outlined, color: primaryCyan, size: 16),
           ),
-          const SizedBox(width: 16),
-          Expanded(child: Text(bolgeAdi, style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.5))),
+          SizedBox(width: 16),
+          Expanded(child: Text(bolgeAdi, style: TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.5))),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(muhurSayisi.toString(), style: TextStyle(color: primaryCyan, fontSize: 18, fontWeight: FontWeight.w900)),
-              const Text("MÜHÜR", style: TextStyle(color: SiberTema.textMuted, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
+              Text("MÜHÜR", style: TextStyle(color: SiberTema.textMuted, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
             ],
           )
         ],

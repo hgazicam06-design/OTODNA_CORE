@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:ui';
 import 'dart:developer' as developer;
@@ -190,13 +190,13 @@ class _KuantumSecimEkraniState extends State<_KuantumSecimEkrani> {
       filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8), // Siber Cam Zırhı
       child: Container(
         height: MediaQuery.of(context).size.height * 0.85,
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         decoration: BoxDecoration(
-            color: const Color(0xFF000000).withOpacity(0.9), // OLED Siyah
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-            border: const Border(top: BorderSide(color: Color(0xFF00FFC2), width: 2)), // Neon Çizgi
+            color: Color(0xFF000000).withOpacity(0.9), // OLED Siyah
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            border: Border(top: BorderSide(color: Color(0xFF00FFC2), width: 2)), // Neon Çizgi
             boxShadow: [
-              BoxShadow(color: const Color(0xFF00FFC2).withOpacity(0.1), blurRadius: 20, spreadRadius: 5)
+              BoxShadow(color: Color(0xFF00FFC2).withOpacity(0.1), blurRadius: 20, spreadRadius: 5)
             ]
         ),
         child: Column(
@@ -206,67 +206,67 @@ class _KuantumSecimEkraniState extends State<_KuantumSecimEkrani> {
               children: [
                 if (_secimAdimi > 0)
                   IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF00FFC2)),
+                    icon: Icon(Icons.arrow_back_ios, color: Color(0xFF00FFC2)),
                     onPressed: _adimGeri,
                   ),
                 Expanded(
                     child: Text(
                         _baslik,
                         textAlign: _secimAdimi == 0 ? TextAlign.center : TextAlign.left,
-                        style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1.5)
+                        style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1.5)
                     )
                 ),
                 IconButton(
-                  icon: const Icon(Icons.close, color: Colors.white54),
+                  icon: Icon(Icons.close, color: Colors.white54),
                   onPressed: () => Navigator.pop(context),
                 )
               ],
             ),
-            const Divider(color: Colors.white24, height: 24),
+            Divider(color: Colors.white24, height: 24),
 
             // 🔍 GERÇEK ZAMANLI SİBER ARAMA MOTORU
             TextField(
-              style: const TextStyle(color: Colors.white, letterSpacing: 1),
+              style: TextStyle(color: Colors.white, letterSpacing: 1),
               decoration: InputDecoration(
                 hintText: "LİSTEDE ARA...",
-                hintStyle: const TextStyle(color: Colors.white38, letterSpacing: 1.5, fontSize: 12),
-                prefixIcon: const Icon(Icons.search, color: Color(0xFF00FFC2)),
-                filled: true, fillColor: const Color(0xFF111111),
-                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white10)),
-                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF00FFC2))),
+                hintStyle: TextStyle(color: Colors.white38, letterSpacing: 1.5, fontSize: 12),
+                prefixIcon: Icon(Icons.search, color: Color(0xFF00FFC2)),
+                filled: true, fillColor: Color(0xFF111111),
+                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white10)),
+                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Color(0xFF00FFC2))),
               ),
               onChanged: _siberFiltre, // Canlı Filtre Aktif
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             // Seçim Listesi (Şelale Akışı)
             Expanded(
               child: _sorgulaniyor
-                  ? const Center(child: CircularProgressIndicator(color: Color(0xFF00FFC2)))
+                  ? Center(child: CircularProgressIndicator(color: Color(0xFF00FFC2)))
                   : ListView.builder(
-                physics: const BouncingScrollPhysics(),
+                physics: BouncingScrollPhysics(),
                 itemCount: _guncelListe.length,
                 itemBuilder: (context, index) {
                   String eleman = _guncelListe[index];
                   return InkWell(
                     onTap: () => _adimIleri(eleman),
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      margin: const EdgeInsets.only(bottom: 10),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                      duration: Duration(milliseconds: 200),
+                      margin: EdgeInsets.only(bottom: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                       decoration: BoxDecoration(
-                          color: const Color(0xFF111111),
+                          color: Color(0xFF111111),
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: const Color(0xFF00FFC2).withOpacity(0.2)),
-                          boxShadow: [BoxShadow(color: const Color(0xFF00FFC2).withOpacity(0.02), blurRadius: 5)]
+                          border: Border.all(color: Color(0xFF00FFC2).withOpacity(0.2)),
+                          boxShadow: [BoxShadow(color: Color(0xFF00FFC2).withOpacity(0.02), blurRadius: 5)]
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(child: Text(eleman, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 1))),
+                          Expanded(child: Text(eleman, style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 1))),
                           Icon(
                             _secimAdimi == 3 ? Icons.check_circle : Icons.chevron_right,
-                            color: _secimAdimi == 3 ? const Color(0xFF00FFC2) : Colors.white38,
+                            color: _secimAdimi == 3 ? Color(0xFF00FFC2) : Colors.white38,
                             size: 20,
                           )
                         ],

@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +9,7 @@ import '../../core/responsive_kalkan.dart';
 import '../../services/siber_istihbarat_log_motoru.dart'; // 👁️ İSTİHBARAT AĞI KÖPRÜSÜ
 
 class BayiItibarMerkeziScreen extends StatefulWidget {
-  const BayiItibarMerkeziScreen({super.key});
+  BayiItibarMerkeziScreen({super.key});
 
   @override
   State<BayiItibarMerkeziScreen> createState() => _BayiItibarMerkeziScreenState();
@@ -66,7 +67,7 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
       content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
       backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
       behavior: SnackBarBehavior.floating,
-      duration: const Duration(seconds: 2),
+      duration: Duration(seconds: 2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: isError ? Colors.white24 : Colors.black12)),
     ));
   }
@@ -82,7 +83,7 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
 
   Widget _rozetKutusu(IconData icon, Color color, String text, {bool isBlacklist = false}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
         color: isBlacklist ? SiberTema.kanKirmizi.withOpacity(0.1) : color.withOpacity(0.05),
         borderRadius: BorderRadius.circular(30),
@@ -95,7 +96,7 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, color: isBlacklist ? SiberTema.kanKirmizi : color, size: 14),
-          const SizedBox(width: 8),
+          SizedBox(width: 8),
           Text(text, style: TextStyle(color: isBlacklist ? SiberTema.kanKirmizi : color, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
         ],
       ),
@@ -110,7 +111,7 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
         onTap: onTap,
         borderRadius: BorderRadius.circular(50),
         child: Container(
-          padding: const EdgeInsets.all(12),
+          padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: SiberTema.matGrey.withOpacity(0.2),
@@ -131,15 +132,15 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("İTİBAR KOMUTA MERKEZİ", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 3)),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text("İTİBAR KOMUTA MERKEZİ", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 3)),
           centerTitle: true,
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: _db.collection('bayiler').orderBy('puan', descending: true).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+              return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
             }
 
             final bayiler = snapshot.data?.docs ?? [];
@@ -148,8 +149,8 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
             }
 
             return ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-              physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+              physics: BouncingScrollPhysics(),
               itemCount: bayiler.length,
               itemBuilder: (context, index) {
                 final doc = bayiler[index];
@@ -159,12 +160,12 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
                 final bool isKara = data['kara_liste'] ?? false;
 
                 return Container(
-                  margin: const EdgeInsets.only(bottom: 24),
+                  margin: EdgeInsets.only(bottom: 24),
                   decoration: SiberTema.siberCamKalkan(
                     borderColor: isKara ? SiberTema.kanKirmizi.withOpacity(0.5) : Colors.white10,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(24),
+                    padding: EdgeInsets.all(24),
                     child: Column(
                       children: [
                         Row(
@@ -175,7 +176,7 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(firma.toUpperCase(), style: TextStyle(color: isKara ? SiberTema.kanKirmizi : Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
-                                  const SizedBox(height: 4),
+                                  SizedBox(height: 4),
                                   Text("BAYİ ID: ${doc.id.substring(0, 8)}...", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
                                 ],
                               ),
@@ -183,7 +184,7 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
                             _buildRozet(puan),
                           ],
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.symmetric(vertical: 20),
                           child: Divider(color: SiberTema.textMuted, height: 1),
                         ),
@@ -194,7 +195,7 @@ class _BayiItibarMerkeziScreenState extends State<BayiItibarMerkeziScreen> {
                             Column(
                               children: [
                                 Text("GÜNCEL SKOR", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                                const SizedBox(height: 6),
+                                SizedBox(height: 6),
                                 Text(puan.toStringAsFixed(1), style: TextStyle(color: isKara ? SiberTema.kanKirmizi : SiberTema.kuantumCyan, fontSize: 28, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                               ],
                             ),

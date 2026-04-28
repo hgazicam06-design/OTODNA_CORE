@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/bayi/usta_denetim.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +18,7 @@ class SiberUstaDenetimSayfasi extends StatefulWidget {
   final String ustaId; // Ekranı kullanan ustanın Karargah kimliği
   final String ustaAdi; // Sesli asistanın hitap edeceği ustanın ismi
 
-  const SiberUstaDenetimSayfasi({
+  SiberUstaDenetimSayfasi({
     super.key,
     required this.talepId,
     required this.ustaId,
@@ -185,7 +186,7 @@ class _SiberUstaDenetimSayfasiState extends State<SiberUstaDenetimSayfasi> {
 
       if (mounted) {
         _siberUyariGoster("BAYİ ONAYI GERÇEKLEŞTİ", "Sistem Karargaha kaydedildi.", SiberTema.kuantumCyan);
-        Future.delayed(const Duration(seconds: 3), () {
+        Future.delayed(Duration(seconds: 3), () {
           if (mounted) Navigator.pop(context);
         });
       }
@@ -211,8 +212,8 @@ class _SiberUstaDenetimSayfasiState extends State<SiberUstaDenetimSayfasi> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
+            SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
@@ -226,20 +227,20 @@ class _SiberUstaDenetimSayfasiState extends State<SiberUstaDenetimSayfasi> {
       child: Scaffold(
         backgroundColor: Colors.transparent, // Kalkan arkadan aydınlatsun
         appBar: AppBar(
-          title: const Text("USTA DENETİM VE ASİSTAN", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
+          title: Text("USTA DENETİM VE ASİSTAN", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: EdgeInsets.all(24.0),
             child: Column(
               children: [
                 // 📋 MÜŞTERİ TALEBİ PANELİ (Siber Cam)
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                       color: SiberTema.matGrey.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(16),
@@ -251,36 +252,36 @@ class _SiberUstaDenetimSayfasiState extends State<SiberUstaDenetimSayfasi> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                      Row(
                         children: [
                           Icon(Icons.description_outlined, color: SiberTema.kuantumCyan, size: 20),
                           SizedBox(width: 8),
                           Text("GÜNCEL İŞLEM LİSTESİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.w900)),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       Wrap(
                         spacing: 8,
                         runSpacing: 8,
                         children: _yapilacaklar.map((islem) => Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                           decoration: BoxDecoration(
                               color: SiberTema.kuantumCyan.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5))
                           ),
-                          child: Text(islem.toString(), style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 0.5)),
+                          child: Text(islem.toString(), style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 0.5)),
                         )).toList(),
                       ),
                     ],
                   ),
                 ),
 
-                const Spacer(),
+                Spacer(),
 
                 // 🎙️ SİBER RADAR VE MESAJ EKRANI
                 Container(
-                  padding: const EdgeInsets.all(30),
+                  padding: EdgeInsets.all(30),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: _isListening ? SiberTema.kanKirmizi.withOpacity(0.1) : SiberTema.matGrey.withOpacity(0.8),
@@ -295,7 +296,7 @@ class _SiberUstaDenetimSayfasiState extends State<SiberUstaDenetimSayfasi> {
                       color: _isListening ? SiberTema.kanKirmizi : Colors.white24
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 Text(
                     _ekranMesaji,
                     textAlign: TextAlign.center,
@@ -308,11 +309,11 @@ class _SiberUstaDenetimSayfasiState extends State<SiberUstaDenetimSayfasi> {
                     )
                 ),
 
-                const Spacer(),
+                Spacer(),
 
                 // 🚀 KOMUTA DÜĞMELERİ
                 if (_islemSuruyor)
-                  const Column(
+                  Column(
                     children: [
                       CircularProgressIndicator(color: SiberTema.kuantumCyan),
                       SizedBox(height: 16),
@@ -325,17 +326,17 @@ class _SiberUstaDenetimSayfasiState extends State<SiberUstaDenetimSayfasi> {
                       Expanded(
                         child: OutlinedButton.icon(
                           onPressed: _raporuOku,
-                          icon: const Icon(Icons.volume_up_outlined, size: 18, color: Colors.white),
-                          label: const Text("DİNLE", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12)),
+                          icon: Icon(Icons.volume_up_outlined, size: 18, color: Colors.white),
+                          label: Text("DİNLE", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 12)),
                           style: OutlinedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 18),
-                              side: const BorderSide(color: SiberTema.textMuted),
+                              padding: EdgeInsets.symmetric(vertical: 18),
+                              side: BorderSide(color: SiberTema.textMuted),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                               backgroundColor: SiberTema.matGrey.withOpacity(0.5)
                           ),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16),
                       Expanded(
                         flex: 2,
                         child: ElevatedButton.icon(
@@ -346,7 +347,7 @@ class _SiberUstaDenetimSayfasiState extends State<SiberUstaDenetimSayfasi> {
                           icon: Icon(_isListening ? Icons.stop : Icons.settings_voice, color: SiberTema.oledBlack, size: 20),
                           label: Text(_isListening ? "DURDUR" : "KOMUT VER / ONAYLA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1, color: SiberTema.oledBlack)),
                           style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 18),
+                            padding: EdgeInsets.symmetric(vertical: 18),
                             backgroundColor: _isListening ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
                             foregroundColor: SiberTema.oledBlack,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

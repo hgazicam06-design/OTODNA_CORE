@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,7 @@ import '../core/responsive_kalkan.dart';
 import '../core/otodna_mega_protocol.dart'; // Gazi Protokolü Entegrasyonu
 
 class KademeliIlanTerminali extends StatefulWidget {
-  const KademeliIlanTerminali({super.key});
+  KademeliIlanTerminali({super.key});
 
   @override
   State<KademeliIlanTerminali> createState() => _KademeliIlanTerminaliState();
@@ -151,7 +152,7 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
 
   void _siberUyariVer(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 12, fontFamily: 'monospace')),
+      content: Text(mesaj, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 12, fontFamily: 'monospace')),
       backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
       behavior: SnackBarBehavior.floating,
     ));
@@ -159,7 +160,7 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
 
   @override
   Widget build(BuildContext context) {
-    if (_veriYukleniyor) return const Scaffold(backgroundColor: SiberTema.oledBlack, body: Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)));
+    if (_veriYukleniyor) return Scaffold(backgroundColor: SiberTema.oledBlack, body: Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)));
 
     return ResponsiveKalkan(
       isOledBackground: false,
@@ -168,8 +169,8 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("İLAN TERMİNALİ V4", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'monospace')),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          title: Text("İLAN TERMİNALİ V4", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'monospace')),
           centerTitle: true,
         ),
         body: Stack(
@@ -179,7 +180,7 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
                 _buildLimitKalkan(),
                 Expanded(
                   child: Theme(
-                    data: Theme.of(context).copyWith(colorScheme: const ColorScheme.dark(primary: SiberTema.kuantumCyan)),
+                    data: Theme.of(context).copyWith(colorScheme: ColorScheme.dark(primary: SiberTema.kuantumCyan)),
                     child: Stepper(
                       type: StepperType.vertical,
                       currentStep: _guncelAdim,
@@ -196,7 +197,7 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
                 ),
               ],
             ),
-            if (_isProcessing) Container(color: Colors.white54, child: const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))),
+            if (_isProcessing) Container(color: Colors.white54, child: Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))),
           ],
         ),
       ),
@@ -205,8 +206,8 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
 
   Widget _buildLimitKalkan() {
     return Container(
-      margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.all(15),
+      margin: EdgeInsets.all(20),
+      padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: _limitAsildiMi ? SiberTema.kanKirmizi.withOpacity(0.1) : SiberTema.kuantumCyan.withOpacity(0.05),
         borderRadius: BorderRadius.circular(15),
@@ -215,7 +216,7 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("PAKET: $_kullaniciPaketi", style: const TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+          Text("PAKET: $_kullaniciPaketi", style: TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
           Text("LİMİT: $_kullaniciIlanSayisi / ${_paketLimitleri[_kullaniciPaketi] == 999999 ? '∞' : _paketLimitleri[_kullaniciPaketi]}",
               style: TextStyle(color: _limitAsildiMi ? SiberTema.kanKirmizi : SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 12)),
         ],
@@ -225,12 +226,12 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
 
   Step _buildStepKimlik() {
     return Step(
-      title: const Text("KİMLİK VERİLERİ", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+      title: Text("KİMLİK VERİLERİ", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
       isActive: _guncelAdim >= 0,
       content: Column(
         children: [
           _siberInput("İLAN BAŞLIĞI", _baslikController),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           _siberInput("OEM / PARÇA KODU", _parcaKoduController),
         ],
       ),
@@ -239,16 +240,16 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
 
   Step _buildStepGorsel() {
     return Step(
-      title: const Text("GÖRSEL KANIT", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+      title: Text("GÖRSEL KANIT", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
       isActive: _guncelAdim >= 1,
       content: Column(
         children: [
           if (_secilenGorsel != null) Image.file(_secilenGorsel!, height: 100, fit: BoxFit.cover),
           Row(
             children: [
-              Expanded(child: OutlinedButton(onPressed: () => _gorselSec(ImageSource.camera), child: const Text("KAMERA"))),
-              const SizedBox(width: 10),
-              Expanded(child: OutlinedButton(onPressed: () => _gorselSec(ImageSource.gallery), child: const Text("GALERİ"))),
+              Expanded(child: OutlinedButton(onPressed: () => _gorselSec(ImageSource.camera), child: Text("KAMERA"))),
+              SizedBox(width: 10),
+              Expanded(child: OutlinedButton(onPressed: () => _gorselSec(ImageSource.gallery), child: Text("GALERİ"))),
             ],
           ),
         ],
@@ -258,12 +259,12 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
 
   Step _buildStepFinans() {
     return Step(
-      title: const Text("FİNANS VE MÜHÜR", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+      title: Text("FİNANS VE MÜHÜR", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
       isActive: _guncelAdim >= 2,
       content: Column(
         children: [
           _siberInput("HAM FİYAT (₺)", _fiyatController, isNumeric: true),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           _siberInput("DETAYLI AÇIKLAMA", _aciklamaController, lines: 3),
         ],
       ),
@@ -272,24 +273,24 @@ class _KademeliIlanTerminaliState extends State<KademeliIlanTerminali> {
 
   Widget _siberInput(String label, TextEditingController ctrl, {bool isNumeric = false, int lines = 1}) {
     return SiberTema.siberCamKalkan(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: EdgeInsets.symmetric(horizontal: 15),
       child: TextField(
         controller: ctrl,
         maxLines: lines,
         keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
-        style: const TextStyle(color: SiberTema.textMain, fontSize: 12),
-        decoration: InputDecoration(labelText: label, labelStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 10), border: InputBorder.none),
+        style: TextStyle(color: SiberTema.textMain, fontSize: 12),
+        decoration: InputDecoration(labelText: label, labelStyle: TextStyle(color: SiberTema.textMuted, fontSize: 10), border: InputBorder.none),
       ),
     );
   }
 
   Widget _buildStepperKontrol(ControlsDetails details) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20),
+      padding: EdgeInsets.only(top: 20),
       child: Row(
         children: [
           Expanded(child: ElevatedButton(onPressed: details.onContinue, child: Text(_guncelAdim == 2 ? "MÜHÜRLE" : "İLERLE"))),
-          if (_guncelAdim > 0) ...[const SizedBox(width: 10), Expanded(child: OutlinedButton(onPressed: details.onCancel, child: const Text("GERİ")))],
+          if (_guncelAdim > 0) ...[SizedBox(width: 10), Expanded(child: OutlinedButton(onPressed: details.onCancel, child: Text("GERİ")))],
         ],
       ),
     );

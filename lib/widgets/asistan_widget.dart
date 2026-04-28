@@ -11,7 +11,7 @@ class AsistanWidget extends StatefulWidget {
   final String ekran;
   final AsistanService asistan;
 
-  const AsistanWidget({
+  AsistanWidget({
     super.key,
     required this.ekran,
     required this.asistan,
@@ -45,7 +45,7 @@ class _AsistanWidgetState extends State<AsistanWidget> with SingleTickerProvider
     super.initState();
     _pulseCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: Duration(seconds: 2),
     )..repeat(reverse: true);
     _pulseAnim = Tween(begin: 0.9, end: 1.1).animate(CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOut));
 
@@ -141,7 +141,7 @@ class _AsistanWidgetState extends State<AsistanWidget> with SingleTickerProvider
       if (_scrollCtrl.hasClients) {
         _scrollCtrl.animateTo(
           _scrollCtrl.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
+          duration: Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
       }
@@ -159,7 +159,7 @@ class _AsistanWidgetState extends State<AsistanWidget> with SingleTickerProvider
         mainAxisSize: MainAxisSize.min,
         children: [
           if (_acik) _buildPanel(),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           _buildBalonButon(),
         ],
       ),
@@ -213,9 +213,9 @@ class _AsistanWidgetState extends State<AsistanWidget> with SingleTickerProvider
   );
 
   Widget _buildPanelBaslik() => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+    padding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
     decoration: BoxDecoration(
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       gradient: LinearGradient(
         colors: [_cyan.withOpacity(0.15), _dark],
         begin: Alignment.topLeft,
@@ -230,23 +230,23 @@ class _AsistanWidgetState extends State<AsistanWidget> with SingleTickerProvider
           color: _cyan.withOpacity(0.2),
           border: Border.all(color: _cyan.withOpacity(0.5)),
         ),
-        child: const Icon(Icons.smart_toy_rounded, color: _cyan, size: 18),
+        child: Icon(Icons.smart_toy_rounded, color: _cyan, size: 18),
       ),
-      const SizedBox(width: 10),
+      SizedBox(width: 10),
       Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('OtoDNA AI Asistan', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
+            Text('OtoDNA AI Asistan', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
             Row(
                 children: [
-                  Container(width: 6, height: 6, decoration: const BoxDecoration(shape: BoxShape.circle, color: _cyan)),
-                  const SizedBox(width: 4),
+                  Container(width: 6, height: 6, decoration: BoxDecoration(shape: BoxShape.circle, color: _cyan)),
+                  SizedBox(width: 4),
                   Text('Kuantum Ağına Bağlı', style: TextStyle(color: _cyan.withOpacity(0.8), fontSize: 9, fontWeight: FontWeight.bold)),
                 ]
             ),
           ]
       ),
-      const Spacer(),
+      Spacer(),
       GestureDetector(
         onTap: () {
           widget.asistan.sifirla();
@@ -260,8 +260,8 @@ class _AsistanWidgetState extends State<AsistanWidget> with SingleTickerProvider
 
   Widget _buildMesajlar() => ListView.builder(
     controller: _scrollCtrl,
-    physics: const BouncingScrollPhysics(),
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+    physics: BouncingScrollPhysics(),
+    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
     itemCount: _mesajlar.length + (_yukleniyor ? 1 : 0),
     itemBuilder: (_, i) {
       if (i == _mesajlar.length) return _buildYukleniyor();
@@ -271,30 +271,30 @@ class _AsistanWidgetState extends State<AsistanWidget> with SingleTickerProvider
 
   Widget _buildMesajBalonu(AsistanMesaj m) {
     bool isErrorMsg = m.metin.contains("SİBER BAĞLANTI HATASI");
-    Color borderColor = m.kullanici ? _cyan.withOpacity(0.3) : (isErrorMsg ? _alertRed.withOpacity(0.5) : const Color(0xFF2A2A3A));
-    Color bgColor = m.kullanici ? _cyan.withOpacity(0.15) : (isErrorMsg ? _alertRed.withOpacity(0.1) : const Color(0xFF1A1A25));
+    Color borderColor = m.kullanici ? _cyan.withOpacity(0.3) : (isErrorMsg ? _alertRed.withOpacity(0.5) : Color(0xFF2A2A3A));
+    Color bgColor = m.kullanici ? _cyan.withOpacity(0.15) : (isErrorMsg ? _alertRed.withOpacity(0.1) : Color(0xFF1A1A25));
 
     return Align(
       alignment: m.kullanici ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        constraints: const BoxConstraints(maxWidth: 240),
-        margin: const EdgeInsets.only(bottom: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        constraints: BoxConstraints(maxWidth: 240),
+        margin: EdgeInsets.only(bottom: 10),
+        padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14).copyWith(
-            bottomRight: m.kullanici ? const Radius.circular(4) : null,
-            bottomLeft: !m.kullanici ? const Radius.circular(4) : null,
+            bottomRight: m.kullanici ? Radius.circular(4) : null,
+            bottomLeft: !m.kullanici ? Radius.circular(4) : null,
           ),
           color: bgColor,
           border: Border.all(color: borderColor),
         ),
         child: m.kullanici
-            ? Text(m.metin, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600))
+            ? Text(m.metin, style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600))
             : MarkdownBody(
           data: m.metin,
           styleSheet: MarkdownStyleSheet(
             p: TextStyle(color: isErrorMsg ? _alertRed : Colors.white, fontSize: 12, height: 1.5),
-            strong: const TextStyle(color: _cyan, fontWeight: FontWeight.w900, fontSize: 12),
+            strong: TextStyle(color: _cyan, fontWeight: FontWeight.w900, fontSize: 12),
             listBullet: TextStyle(color: _cyan.withOpacity(0.8), fontSize: 12),
           ),
         ),
@@ -305,15 +305,15 @@ class _AsistanWidgetState extends State<AsistanWidget> with SingleTickerProvider
   Widget _buildYukleniyor() => Align(
     alignment: Alignment.centerLeft,
     child: Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      margin: EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: const Color(0xFF1A1A25),
-        border: Border.all(color: const Color(0xFF2A2A3A)),
+        color: Color(0xFF1A1A25),
+        border: Border.all(color: Color(0xFF2A2A3A)),
       ),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
-        _nokta(0), const SizedBox(width: 4), _nokta(1), const SizedBox(width: 4), _nokta(2),
+        _nokta(0), SizedBox(width: 4), _nokta(1), SizedBox(width: 4), _nokta(2),
       ]),
     ),
   );
@@ -324,20 +324,20 @@ class _AsistanWidgetState extends State<AsistanWidget> with SingleTickerProvider
     curve: Curves.easeInOut,
     builder: (_, v, __) => Opacity(
       opacity: v,
-      child: Container(width: 6, height: 6, decoration: const BoxDecoration(shape: BoxShape.circle, color: _cyan)),
+      child: Container(width: 6, height: 6, decoration: BoxDecoration(shape: BoxShape.circle, color: _cyan)),
     ),
   );
 
   Widget _buildGirisAlan() => Container(
-    padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-    decoration: const BoxDecoration(
+    padding: EdgeInsets.fromLTRB(12, 10, 12, 12),
+    decoration: BoxDecoration(
       border: Border(top: BorderSide(color: Color(0xFF1E1E2E))),
     ),
     child: Row(children: [
       Expanded(
         child: TextField(
           controller: _mesajCtrl,
-          style: const TextStyle(color: Colors.white, fontSize: 13),
+          style: TextStyle(color: Colors.white, fontSize: 13),
           maxLines: null, // Dinamik yükseklik için
           keyboardType: TextInputType.multiline,
           textInputAction: TextInputAction.send,
@@ -346,15 +346,15 @@ class _AsistanWidgetState extends State<AsistanWidget> with SingleTickerProvider
             hintText: 'Karargaha bir şey sor...',
             hintStyle: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 12),
             filled: true,
-            fillColor: const Color(0xFF0E0E18),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF1E1E2E))),
-            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF1E1E2E))),
+            fillColor: Color(0xFF0E0E18),
+            contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Color(0xFF1E1E2E))),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Color(0xFF1E1E2E))),
             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: _cyan.withOpacity(0.5))),
           ),
         ),
       ),
-      const SizedBox(width: 10),
+      SizedBox(width: 10),
       GestureDetector(
         onTap: _yukleniyor ? null : _gonder,
         child: Container(

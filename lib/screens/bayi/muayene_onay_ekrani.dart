@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +13,7 @@ class MuayeneOnayEkrani extends ConsumerStatefulWidget {
   final Map<String, int> islenenKontrolListesi; // 0: Bekliyor, 1: ✅, 2: ❌
   final int yeniDnaSkoru;
 
-  const MuayeneOnayEkrani({
+  MuayeneOnayEkrani({
     super.key,
     required this.plakaID,
     required this.islenenKontrolListesi,
@@ -44,7 +45,7 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
     super.initState();
     _micAnimation = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: 1000),
     )..repeat(reverse: true);
 
     // Gelen 0, 1, 2 verilerini arayüzün anlayacağı (null, true, false) formatına çevir
@@ -78,7 +79,7 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
     });
 
     // TODO: TTS (Text-To-Speech) ve STT paketleri eklendiğinde gerçek motor devreye girecek
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(Duration(seconds: 2), () {
       if (!mounted) return;
       _aiSesiOynat("Ustam, kontrol verilerini aldım. Aracın yeni DNA skoru ${widget.yeniDnaSkoru} olacak. Mühürlüyor muyuz?");
     });
@@ -89,7 +90,7 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
       _aiMesaj = metin;
     });
 
-    Future.delayed(const Duration(seconds: 4), () {
+    Future.delayed(Duration(seconds: 4), () {
       if (!mounted) return;
       setState(() {
         _isListening = false;
@@ -142,7 +143,7 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
 
       if (mounted) {
         _showSnackBar("Dijital Mühür Vuruldu! Araç Ağa İşlendi. ✅");
-        Future.delayed(const Duration(seconds: 2), () {
+        Future.delayed(Duration(seconds: 2), () {
           if (mounted) {
             // İki ekran geriye (Ana Karargaha) dön
             Navigator.popUntil(context, (route) => route.isFirst);
@@ -172,11 +173,11 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
               'OTO REFERANS ONAYI',
               style: TextStyle(color: primaryCyan, fontSize: 14, fontWeight: FontWeight.w800, letterSpacing: 1.5),
             ),
-            Text('Araç: ${widget.plakaID}', style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+            Text('Araç: ${widget.plakaID}', style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
           ],
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -186,15 +187,15 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
             // Kontrol Listesi Özeti (Salt Okunur - Değişiklik terminalde yapıldı)
             Expanded(
               child: ListView.builder(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20),
                 itemCount: _gorselKontrolListesi.length,
                 itemBuilder: (context, index) {
                   String key = _gorselKontrolListesi.keys.elementAt(index);
                   bool? durum = _gorselKontrolListesi[key];
 
                   return Container(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.all(16),
+                    margin: EdgeInsets.only(bottom: 12),
+                    padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: surfaceColor,
                       borderRadius: BorderRadius.circular(16),
@@ -210,7 +211,7 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
                         Expanded(
                           child: Text(
                             key,
-                            style: const TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.w600),
+                            style: TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.w600),
                           ),
                         ),
                         // Onay Ekranı olduğu için butonlar pasif, sadece durum gösterilir
@@ -228,20 +229,20 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
 
             // AI ASİSTAN KONSOLU (Sanayinin Dijital Çırağı)
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: surfaceColor,
-                borderRadius: const BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-                border: const Border(top: BorderSide(color: SiberTema.textMuted)),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                border: Border(top: BorderSide(color: SiberTema.textMuted)),
                 boxShadow: [
-                  BoxShadow(color: primaryCyan.withOpacity(0.05), blurRadius: 20, offset: const Offset(0, -5)),
+                  BoxShadow(color: primaryCyan.withOpacity(0.05), blurRadius: 20, offset: Offset(0, -5)),
                 ],
               ),
               child: Column(
                 children: [
                   // AI Geri Bildirim Metni
                   AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
+                    duration: Duration(milliseconds: 300),
                     child: Text(
                       _aiMesaj,
                       key: ValueKey(_aiMesaj),
@@ -249,7 +250,7 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
                       style: TextStyle(color: _isListening ? primaryCyan : Colors.white70, fontSize: 14, fontStyle: FontStyle.italic),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
 
                   // Sesli Komut Mikrofonu veya Kaydediliyor İkonu
                   GestureDetector(
@@ -258,7 +259,7 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
                       animation: _micAnimation,
                       builder: (context, child) {
                         return Container(
-                          padding: const EdgeInsets.all(20),
+                          padding: EdgeInsets.all(20),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: (_isListening || _isSaving) ? primaryCyan.withOpacity(0.2) : surfaceColor,
@@ -271,7 +272,7 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
                             ] : [],
                           ),
                           child: _isSaving
-                              ? const CircularProgressIndicator(color: primaryCyan)
+                              ? CircularProgressIndicator(color: primaryCyan)
                               : Icon(
                             _isListening ? Icons.graphic_eq : Icons.mic,
                             color: _isListening ? primaryCyan : Colors.white54,
@@ -281,7 +282,7 @@ class _MuayeneOnayEkraniState extends ConsumerState<MuayeneOnayEkrani> with Sing
                       },
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Text(
                     _isSaving ? 'KUANTUM AĞINA İŞLENİYOR...' : (_isListening ? 'SESLİ KOMUT BEKLENİYOR...' : 'ASİSTANA SESLEN (VEYA DOKUN)'),
                     style: TextStyle(color: (_isListening || _isSaving) ? primaryCyan : Colors.white38, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5),

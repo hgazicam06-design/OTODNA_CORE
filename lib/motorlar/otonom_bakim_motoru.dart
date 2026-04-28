@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
@@ -15,7 +16,7 @@ import '../models/chronic_issue_model.dart';
 class OtonomBakimMotoru extends StatefulWidget {
   final String saseNo;
 
-  const OtonomBakimMotoru({super.key, required this.saseNo});
+  OtonomBakimMotoru({super.key, required this.saseNo});
 
   @override
   State<OtonomBakimMotoru> createState() => _OtonomBakimMotoruState();
@@ -126,10 +127,10 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 50),
-              const SizedBox(height: 20),
-              const CircularProgressIndicator(color: SiberTema.kuantumCyan),
-              const SizedBox(height: 20),
+              Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 50),
+              SizedBox(height: 20),
+              CircularProgressIndicator(color: SiberTema.kuantumCyan),
+              SizedBox(height: 20),
               Text("DNA SİCİLİ TARANIYOR...", style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.8), letterSpacing: 2, fontWeight: FontWeight.bold, fontSize: 12)),
             ],
           ),
@@ -158,21 +159,21 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("KUANTUM BAKIM RADARI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13)),
+          title: Text("KUANTUM BAKIM RADARI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13)),
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
         body: ListView(
-          padding: const EdgeInsets.all(20),
-          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.all(20),
+          physics: BouncingScrollPhysics(),
           children: [
             // ── 🏎️ ARAÇ DNA ÖZETİ ──
             _buildAracDnaPaneli(),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
 
             // ── ⏱️ OTONOM TAHMİN MATRİSİ ──
-            const Text("YAPAY ZEKA TAHMİN MATRİSİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
-            const SizedBox(height: 12),
+            Text("YAPAY ZEKA TAHMİN MATRİSİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+            SizedBox(height: 12),
             _buildTahminKarti(
               "PERİYODİK BAKIM (YAĞ & FİLTRE)", 
               kalanKm10k == 0 ? "ACİL BAKIM GEREKLİ!" : "Tahmini Süre: $tahminiGun10k Gün Sonra", 
@@ -180,7 +181,7 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
               10000, 
               kalanKm10k == 0 ? SiberTema.kanKirmizi : SiberTema.kuantumCyan
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             _buildTahminKarti(
               "AĞIR BAKIM (ŞANZIMAN vb.)", 
               kalanKm50k < 5000 ? "Ağır Bakıma Çok Yaklaştınız" : "Sistem Normal İlerliyor", 
@@ -188,7 +189,7 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
               50000, 
               kalanKm50k < 5000 ? Colors.amberAccent : Colors.white54
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             _buildTahminKarti(
               "TRİGER KONTROLÜ (${_motorTipi})", 
               _motorTipi == "KAYIŞ" && kalanTrigerKm < 5000 ? "Kopma Riski Yaklaşıyor! Şakası Yok!" : "Zincir/Kayış Ömrü Güvende", 
@@ -197,14 +198,14 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
               kalanTrigerKm < 5000 ? SiberTema.kanKirmizi : SiberTema.altinSari
             ),
 
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
 
             // ── 🚨 KRONİK ARIZA RADARI (CHRONIC CLUB) ──
             if (_kronikArizalar.isNotEmpty) ...[
-              const Text("KRONİK HATA RADARI (CHRONIC CLUB)", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
-              const SizedBox(height: 12),
+              Text("KRONİK HATA RADARI (CHRONIC CLUB)", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+              SizedBox(height: 12),
               ..._kronikArizalar.map((issue) => _buildKronikArizaUyarisi(issue)).toList(),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
             ],
 
             // ── 💰 OTODNA REKLAM VE TEDARİK AĞI (Para Kazanma Noktamız) ──
@@ -213,7 +214,7 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
             
             if (kalanTrigerKm <= 10000) // Trigere az kaldıysa pahalı sepet!
               Padding(
-                padding: const EdgeInsets.only(top: 16),
+                padding: EdgeInsets.only(top: 16),
                 child: _buildSponsorluUrunKarti("Orijinal Triger Seti + Devirdaim Pompası", "8.500", "Motoru kurtarmanın tam zamanı."),
               )
           ],
@@ -225,7 +226,7 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
   // ── 🔧 ARAÇ DNA BİLGİ KAPSÜLÜ ──
   Widget _buildAracDnaPaneli() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: SiberTema.matGrey,
         borderRadius: BorderRadius.circular(16),
@@ -236,16 +237,16 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("GÜNCEL KİLOMETRE", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
-              Text("$_guncelKm KM", style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
+              Text("GÜNCEL KİLOMETRE", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+              Text("$_guncelKm KM", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
             ],
           ),
-          const Divider(color: Colors.white10, height: 24),
+          Divider(color: Colors.white10, height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("AYLIK ORTALAMA KULLANIM", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
-              Text("$_aylikOrtalamaKm KM / AY", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.w900)),
+              Text("AYLIK ORTALAMA KULLANIM", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+              Text("$_aylikOrtalamaKm KM / AY", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.w900)),
             ],
           ),
         ],
@@ -257,8 +258,8 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
   Widget _buildKronikArizaUyarisi(ChronicIssueModel issue) {
     Color cardColor = issue.severity == 'red' ? SiberTema.kanKirmizi : Colors.amber;
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: cardColor.withOpacity(0.05),
         borderRadius: BorderRadius.circular(12),
@@ -270,17 +271,17 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
           Row(
             children: [
               Icon(Icons.warning_amber_rounded, color: cardColor, size: 20),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               Expanded(child: Text(issue.issueTitle.toUpperCase(), style: TextStyle(color: cardColor, fontSize: 13, fontWeight: FontWeight.bold))),
             ],
           ),
-          const SizedBox(height: 8),
-          Text(issue.symptoms, style: const TextStyle(color: Colors.white70, fontSize: 12)),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
+          Text(issue.symptoms, style: TextStyle(color: Colors.white70, fontSize: 12)),
+          SizedBox(height: 8),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(4)),
-            child: Text("BİLİRKİŞİ ÇÖZÜMÜ: ${issue.remedy}", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold)),
+            child: Text("BİLİRKİŞİ ÇÖZÜMÜ: ${issue.remedy}", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold)),
           )
         ],
       ),
@@ -294,7 +295,7 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
     if (yuzde < 0) yuzde = 0;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white.withOpacity(0.05))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -303,12 +304,12 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(child: Text(baslik, style: TextStyle(color: renk, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1))),
-              Text("$kalanKm KM KALDI", style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
+              Text("$kalanKm KM KALDI", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
             ],
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: 6),
           Text(altBaslik, style: TextStyle(color: renk == SiberTema.kanKirmizi ? SiberTema.kanKirmizi : Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           LinearProgressIndicator(value: yuzde, backgroundColor: Colors.white10, color: renk, minHeight: 6, borderRadius: BorderRadius.circular(3)),
         ],
       ),
@@ -318,7 +319,7 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
   // ── 💰 OTODNA TEDARİK & REKLAM (GERÇEK GELİR MODELİ) ──
   Widget _buildSponsorluUrunKarti(String urunAdi, String fiyat, String aciklama) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: SiberTema.kuantumCyan.withOpacity(0.05),
         borderRadius: BorderRadius.circular(16),
@@ -330,16 +331,16 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
         children: [
           Row(
             children: [
-              const Icon(Icons.shopping_cart, color: SiberTema.kuantumCyan, size: 18),
-              const SizedBox(width: 8),
-              Text("SİBER TEDARİK ÖNERİSİ", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+              Icon(Icons.shopping_cart, color: SiberTema.kuantumCyan, size: 18),
+              SizedBox(width: 8),
+              Text("SİBER TEDARİK ÖNERİSİ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
             ],
           ),
-          const SizedBox(height: 12),
-          Text(urunAdi, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 4),
-          Text("$aciklama Fabrika standartlarına %100 uygun.", style: const TextStyle(color: Colors.white54, fontSize: 11)),
-          const SizedBox(height: 16),
+          SizedBox(height: 12),
+          Text(urunAdi, style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+          SizedBox(height: 4),
+          Text("$aciklama Fabrika standartlarına %100 uygun.", style: TextStyle(color: Colors.white54, fontSize: 11)),
+          SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -352,7 +353,7 @@ class _OtonomBakimMotoruState extends State<OtonomBakimMotoru> {
                 developer.log("SİBER SATIŞ: $urunAdi satışı tetiklendi. OtoDNA komisyonu kazandı.");
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$urunAdi SEPETE EKLENDİ! 🛒", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan));
               },
-              child: Text("SİSTEMDEN SİPARİŞ VER (₺$fiyat)", style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0.5)),
+              child: Text("SİSTEMDEN SİPARİŞ VER (₺$fiyat)", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0.5)),
             ),
           )
         ],

@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +11,7 @@ class DijitalGarajScreen extends StatefulWidget {
   final String aracId;
   final String plaka;
 
-  const DijitalGarajScreen({
+  DijitalGarajScreen({
     super.key,
     required this.aracId,
     required this.plaka,
@@ -92,11 +93,11 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
         return Padding(
           padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
               child: Container(
-                padding: const EdgeInsets.all(24),
+                padding: EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: SiberTema.oledBlack.withOpacity(0.9),
                   border: Border(top: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 1.5)),
@@ -105,13 +106,13 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(width: 40, height: 4, decoration: BoxDecoration(color: SiberTema.textMuted, borderRadius: BorderRadius.circular(10))),
-                    const SizedBox(height: 24),
-                    const Text("YENİ BAKIM & HARCAMA MÜHRÜ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
+                    Text("YENİ BAKIM & HARCAMA MÜHRÜ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                    SizedBox(height: 24),
                     _buildSiberGirdi("Harcama Tutarı (TL)", Icons.currency_lira, _bakimTutarCtrl, TextInputType.number),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     _buildSiberGirdi("İşlem Detayı", Icons.settings_suggest, _bakimNotuCtrl, TextInputType.text),
-                    const SizedBox(height: 32),
+                    SizedBox(height: 32),
                     SizedBox(
                       width: double.infinity,
                       height: 55,
@@ -119,11 +120,11 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
                         style: SiberTema.kuantumButonStili(),
                         onPressed: _isSaving ? null : _bakimMesaiseEkle,
                         child: _isSaving
-                            ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
-                            : const Text("KARARGAHA İŞLE VE KAYDET", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                            ? SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 3))
+                            : Text("KARARGAHA İŞLE VE KAYDET", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1)),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                   ],
                 ),
               ),
@@ -139,7 +140,7 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
       content: Text(mesaj, style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.w900, fontSize: 12)),
       backgroundColor: isError ? Colors.redAccent : SiberTema.kuantumCyan,
       behavior: SnackBarBehavior.floating,
-      duration: const Duration(seconds: 3),
+      duration: Duration(seconds: 3),
     ));
   }
 
@@ -152,31 +153,31 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: Text(widget.plaka, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 3)),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text(widget.plaka, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 3)),
           centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: SiberTema.kuantumCyan,
           onPressed: _bakimPaneliniAc,
-          icon: const Icon(Icons.add_moderator, color: SiberTema.oledBlack),
-          label: const Text("BAKIM İŞLE", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1)),
+          icon: Icon(Icons.add_moderator, color: SiberTema.oledBlack),
+          label: Text("BAKIM İŞLE", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1)),
         ),
         body: Column(
           children: [
             // ÜST STRATEJİK KARTLAR
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               child: Row(
                 children: [
                   _buildSiberMenuKarti(Icons.auto_stories, "TORPİDO", "Siber Evraklar", () {}),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16),
                   _buildSiberMenuKarti(Icons.qr_code_scanner, "DNA SKORU", "Güvenlik Analizi", () {}),
                 ],
               ),
             ),
 
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -192,7 +193,7 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
                     .orderBy('tarih', descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+                  if (!snapshot.hasData) return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
 
                   final bakimlar = snapshot.data!.docs;
 
@@ -201,15 +202,15 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
                   }
 
                   return ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     itemCount: bakimlar.length,
                     itemBuilder: (context, index) {
                       final veri = bakimlar[index].data() as Map<String, dynamic>;
                       final DateTime tarih = (veri['tarih'] as Timestamp?)?.toDate() ?? DateTime.now();
 
                       return Container(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        padding: const EdgeInsets.all(16),
+                        margin: EdgeInsets.only(bottom: 12),
+                        padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.02),
                           borderRadius: BorderRadius.circular(16),
@@ -218,18 +219,18 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
                         child: Row(
                           children: [
                             Icon(Icons.verified, color: SiberTema.kuantumCyan.withOpacity(0.5), size: 20),
-                            const SizedBox(width: 16),
+                            SizedBox(width: 16),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(veri['islem_notu'] ?? 'BAKIM KAYDI', style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13)),
-                                  const SizedBox(height: 4),
+                                  Text(veri['islem_notu'] ?? 'BAKIM KAYDI', style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13)),
+                                  SizedBox(height: 4),
                                   Text("${tarih.day}.${tarih.month}.${tarih.year} | ${veri['bayi_referansi']}", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900)),
                                 ],
                               ),
                             ),
-                            Text("₺${veri['tutar']}", style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 15)),
+                            Text("₺${veri['tutar']}", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 15)),
                           ],
                         ),
                       );
@@ -249,7 +250,7 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.03),
             borderRadius: BorderRadius.circular(20),
@@ -259,9 +260,9 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(ikon, color: SiberTema.kuantumCyan, size: 24),
-              const SizedBox(height: 12),
-              Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1)),
-              Text(altBaslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
+              SizedBox(height: 12),
+              Text(baslik, style: TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1)),
+              Text(altBaslik, style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
             ],
           ),
         ),
@@ -273,15 +274,15 @@ class _DijitalGarajScreenState extends State<DijitalGarajScreen> {
     return TextField(
       controller: controller,
       keyboardType: type,
-      style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold),
+      style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 12),
+        labelStyle: TextStyle(color: SiberTema.textMuted, fontSize: 12),
         prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
         filled: true,
         fillColor: Colors.white.withOpacity(0.05),
         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Colors.white.withOpacity(0.1))),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: SiberTema.kuantumCyan)),
       ),
     );
   }

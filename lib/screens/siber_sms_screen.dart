@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +8,7 @@ import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
 class SiberSmsScreen extends StatefulWidget {
-  const SiberSmsScreen({super.key});
+  SiberSmsScreen({super.key});
 
   @override
   State<SiberSmsScreen> createState() => _SiberSmsScreenState();
@@ -43,7 +44,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
     try {
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: phoneNumber,
-        timeout: const Duration(seconds: 60),
+        timeout: Duration(seconds: 60),
 
         // 1. Durum: Android'de bazen kod sormadan otomatik doğrular
         verificationCompleted: (PhoneAuthCredential credential) async {
@@ -136,7 +137,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
             fontFamily: 'Avenir', // 🛠️ DÜZELTİLDİ: Özel font adı yerine standart Avenir
           ),
         ),
-        duration: const Duration(seconds: 4),
+        duration: Duration(seconds: 4),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
@@ -153,14 +154,14 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
+            icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
             onPressed: () => Navigator.pop(context),
           ),
         ),
         body: Center(
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -178,14 +179,14 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
                     _codeSent ? Icons.mark_email_read_rounded : Icons.phonelink_ring_rounded,
                     color: SiberTema.kuantumCyan,
                     size: 40,
-                    shadows: const [Shadow(color: SiberTema.kuantumCyan, blurRadius: 10)], // İkon parlaması
+                    shadows: [Shadow(color: SiberTema.kuantumCyan, blurRadius: 10)], // İkon parlaması
                   ),
                 ),
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
 
                 Text(
                   _codeSent ? "KUANTUM ŞİFRESİ" : "SİBER DOĞRULAMA",
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: SiberTema.textMain,
                     fontSize: 26,
                     fontWeight: FontWeight.w900,
@@ -193,7 +194,7 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
                     fontFamily: 'Avenir', // 🛠️ DÜZELTİLDİ
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Text(
                   _codeSent
                       ? "Telefonunuza gönderilen 6 haneli siber güvenlik kodunu girin."
@@ -206,16 +207,16 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
                     fontFamily: 'Avenir', // 🛠️ DÜZELTİLDİ
                   ),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
 
                 // 🔥 3D SİBER FORM ALANI
                 Container(
-                  padding: const EdgeInsets.all(24.0),
+                  padding: EdgeInsets.all(24.0),
                   decoration: BoxDecoration(
                     color: SiberTema.matGrey.withOpacity(0.5),
                     border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
                     borderRadius: BorderRadius.circular(24),
-                    boxShadow: const [BoxShadow(color: Colors.white54, blurRadius: 20, offset: Offset(0, 10))], // 🛠️ DÜZELTİLDİ: Katmanlı Derinlik
+                    boxShadow: [BoxShadow(color: Colors.white54, blurRadius: 20, offset: Offset(0, 10))], // 🛠️ DÜZELTİLDİ: Katmanlı Derinlik
                   ),
                   child: Column(
                     children: [
@@ -226,16 +227,16 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
                           hint: "+90 5XX XXX XX XX",
                           keyboardType: TextInputType.phone,
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: 30),
                         SizedBox(
                           width: double.infinity,
                           height: 55,
                           child: _isLoading
-                              ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3))
+                              ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3))
                               : ElevatedButton(
                             onPressed: _telefonuDogrulaBaslat,
                             style: SiberTema.kuantumButonStili(), // 🔥 3D Buton
-                            child: const Text(
+                            child: Text(
                               "KOD GÖNDER",
                               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir', color: SiberTema.oledBlack), // 🛠️ DÜZELTİLDİ
                             ),
@@ -249,16 +250,16 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
                           keyboardType: TextInputType.number,
                           maxLength: 6,
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: 30),
                         SizedBox(
                           width: double.infinity,
                           height: 55,
                           child: _isLoading
-                              ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3))
+                              ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3))
                               : ElevatedButton(
                             onPressed: _koduDogrula,
                             style: SiberTema.kuantumButonStili(), // 🔥 3D Buton
-                            child: const Text(
+                            child: Text(
                               "DOĞRULA VE BAĞLAN",
                               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir', color: SiberTema.oledBlack), // 🛠️ DÜZELTİLDİ
                             ),
@@ -287,22 +288,22 @@ class _SiberSmsScreenState extends State<SiberSmsScreen> {
       controller: controller,
       keyboardType: keyboardType,
       maxLength: maxLength,
-      style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontFamily: 'Avenir', letterSpacing: 1.5, fontWeight: FontWeight.bold), // 🛠️ DÜZELTİLDİ
+      style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontFamily: 'Avenir', letterSpacing: 1.5, fontWeight: FontWeight.bold), // 🛠️ DÜZELTİLDİ
       decoration: InputDecoration(
         counterText: "", // maxLength yazısını gizler
         prefixIcon: Icon(icon, color: SiberTema.textMuted, size: 22),
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.white30, fontSize: 14, fontFamily: 'Avenir', letterSpacing: 1), // 🛠️ DÜZELTİLDİ
+        hintStyle: TextStyle(color: Colors.white30, fontSize: 14, fontFamily: 'Avenir', letterSpacing: 1), // 🛠️ DÜZELTİLDİ
         filled: true,
         fillColor: SiberTema.oledBlack, // Derin Siyah
-        contentPadding: const EdgeInsets.symmetric(vertical: 20),
+        contentPadding: EdgeInsets.symmetric(vertical: 20),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(color: Colors.white.withOpacity(0.05), width: 1.5),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 2),
+          borderSide: BorderSide(color: SiberTema.kuantumCyan, width: 2),
         ),
       ),
     );

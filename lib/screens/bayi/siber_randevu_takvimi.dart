@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +13,7 @@ import '../../core/responsive_kalkan.dart';
 /// 🛡️ KUANTUM RANDEVU RADARI VE TAKVİM MOTORU
 /// Bayinin günlük randevularını canlı (Stream) takip ettiği ve yönettiği siber terminal.
 class SiberRandevuTakvimi extends StatefulWidget {
-  const SiberRandevuTakvimi({super.key});
+  SiberRandevuTakvimi({super.key});
 
   @override
   State<SiberRandevuTakvimi> createState() => _SiberRandevuTakvimiState();
@@ -102,8 +103,8 @@ class _SiberRandevuTakvimiState extends State<SiberRandevuTakvimi> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontFamily: 'Avenir')),
+            SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -119,19 +120,19 @@ class _SiberRandevuTakvimiState extends State<SiberRandevuTakvimi> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("KUANTUM RANDEVU RADARI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
+          title: Text("KUANTUM RANDEVU RADARI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: Column(
           children: [
             // ── 📅 1. YATAY TARİH KAYDIRICISI ──
             _buildTarihSecici(),
 
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Container(width: double.infinity, height: 1, color: Colors.white.withOpacity(0.05)),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
 
             // ── 📡 2. CANLI SAAT MATRİSİ (FIREBASE STREAM) ──
             Expanded(
@@ -142,7 +143,7 @@ class _SiberRandevuTakvimiState extends State<SiberRandevuTakvimi> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+                    return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
                   }
 
                   // Dolu saatleri ve doküman ID'lerini bir haritada topla
@@ -161,9 +162,9 @@ class _SiberRandevuTakvimiState extends State<SiberRandevuTakvimi> {
                   return Stack(
                     children: [
                       GridView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.all(20),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        physics: BouncingScrollPhysics(),
+                        padding: EdgeInsets.all(20),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           childAspectRatio: 2.2,
                           crossAxisSpacing: 16,
@@ -184,7 +185,7 @@ class _SiberRandevuTakvimiState extends State<SiberRandevuTakvimi> {
                       if (_isProcessing)
                         Container(
                           color: Colors.white.withOpacity(0.5),
-                          child: const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)),
+                          child: Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)),
                         )
                     ],
                   );
@@ -204,8 +205,8 @@ class _SiberRandevuTakvimiState extends State<SiberRandevuTakvimi> {
       height: 90,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 16),
         itemCount: 30, // Gelecek 30 günü göster
         itemBuilder: (context, index) {
           DateTime gun = bugun.add(Duration(days: index));
@@ -214,8 +215,8 @@ class _SiberRandevuTakvimiState extends State<SiberRandevuTakvimi> {
           return GestureDetector(
             onTap: () => _tarihDegistir(gun),
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              margin: const EdgeInsets.only(right: 12),
+              duration: Duration(milliseconds: 300),
+              margin: EdgeInsets.only(right: 12),
               width: 70,
               decoration: BoxDecoration(
                 color: isSelected ? SiberTema.kuantumCyan.withOpacity(0.15) : SiberTema.matGrey,
@@ -230,7 +231,7 @@ class _SiberRandevuTakvimiState extends State<SiberRandevuTakvimi> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(DateFormat('MMM').format(gun).toUpperCase(), style: TextStyle(color: isSelected ? SiberTema.kuantumCyan : Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Text(gun.day.toString(), style: TextStyle(color: isSelected ? Colors.white : Colors.white70, fontSize: 22, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
                 ],
               ),
@@ -250,7 +251,7 @@ class _SiberRandevuTakvimiState extends State<SiberRandevuTakvimi> {
     return GestureDetector(
       onTap: () => _randevuSaatiniYonet(saat, isDolu, docId),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
+        duration: Duration(milliseconds: 300),
         decoration: BoxDecoration(
           color: bgColor,
           borderRadius: BorderRadius.circular(12),
@@ -261,7 +262,7 @@ class _SiberRandevuTakvimiState extends State<SiberRandevuTakvimi> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(saat, style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'monospace', letterSpacing: 1)),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(
               isDolu ? (plaka.isNotEmpty ? plaka : "KAPALI") : "MÜSAİT",
               style: TextStyle(color: isDolu ? SiberTema.kritikRed : SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir', letterSpacing: 1),

@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'siber_bakim_karnesi_screen.dart'; // Karnesi için geçiş
 import 'siber_arac_kayit_terminali.dart'; // Kayıt terminaline geçiş
 
 class SiberDnaRadarScreen extends StatefulWidget {
-  const SiberDnaRadarScreen({super.key});
+  SiberDnaRadarScreen({super.key});
 
   @override
   State<SiberDnaRadarScreen> createState() => _SiberDnaRadarScreenState();
@@ -15,8 +15,8 @@ class _SiberDnaRadarScreenState extends State<SiberDnaRadarScreen> {
   final Color primaryTeal = Colors.teal.shade700;
   final Color dangerColor = Colors.redAccent;
   final Color warningColor = Colors.orange;
-  final Color textColor = const Color(0xFF1E293B);
-  final Color bgColor = const Color(0xFFFAFAFC);
+  final Color textColor = Color(0xFF1E293B);
+  final Color bgColor = Color(0xFFFAFAFC);
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -37,8 +37,8 @@ class _SiberDnaRadarScreenState extends State<SiberDnaRadarScreen> {
         centerTitle: true,
         actions: [
           Container(
-            margin: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
-            padding: const EdgeInsets.all(8),
+            margin: EdgeInsets.only(right: 16, top: 8, bottom: 8),
+            padding: EdgeInsets.all(8),
             decoration: BoxDecoration(color: primaryTeal.withValues(alpha: 0.1), shape: BoxShape.circle),
             child: Icon(Icons.radar, color: primaryTeal, size: 18)
           )
@@ -71,8 +71,8 @@ class _SiberDnaRadarScreenState extends State<SiberDnaRadarScreen> {
         }
 
         return ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(24),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.all(24),
           itemCount: snapshot.data!.docs.length,
           itemBuilder: (context, index) {
             var data = snapshot.data!.docs[index].data() as Map<String, dynamic>;
@@ -89,14 +89,14 @@ class _SiberDnaRadarScreenState extends State<SiberDnaRadarScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(32),
+            padding: EdgeInsets.all(32),
             decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle, border: Border.all(color: Colors.white.withValues(alpha: 0.05)), boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 20)]),
-            child: const Icon(Icons.blur_on, color: Colors.white26, size: 64),
+            child: Icon(Icons.blur_on, color: Colors.white24, size: 64),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
           Text("GARAJ BOŞ", style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-          const SizedBox(height: 8),
-          const Text("Sisteme kayıtlı bir aracınız bulunmuyor.", style: TextStyle(color: Colors.white45, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+          SizedBox(height: 8),
+          Text("Sisteme kayıtlı bir aracınız bulunmuyor.", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         ],
       ),
     );
@@ -121,7 +121,7 @@ class _SiberDnaRadarScreenState extends State<SiberDnaRadarScreen> {
         Navigator.push(context, MaterialPageRoute(builder: (_) => SiberBakimKarnesiScreen(plaka: plaka, markaModel: "$marka $model", saseNo: saseNo)));
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 24),
+        margin: EdgeInsets.only(bottom: 24),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(24),
@@ -131,14 +131,14 @@ class _SiberDnaRadarScreenState extends State<SiberDnaRadarScreen> {
               color: kritikHataVarMi ? dangerColor.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.02), 
               blurRadius: 20, 
               spreadRadius: kritikHataVarMi ? 5 : 0,
-              offset: const Offset(0, 5)
+              offset: Offset(0, 5)
             )
           ]
         ),
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               child: Row(
                 children: [
                   // DNA SKORU
@@ -161,13 +161,13 @@ class _SiberDnaRadarScreenState extends State<SiberDnaRadarScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(dnaSkoru.toString(), style: TextStyle(color: skorRengi, fontSize: 24, fontWeight: FontWeight.w900, fontFamily: 'Avenir', height: 1)),
-                            const Text("DNA", style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+                            Text("DNA", style: TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
                           ],
                         )
                       ],
                     ),
                   ),
-                  const SizedBox(width: 24),
+                  SizedBox(width: 24),
 
                   // ARAÇ BİLGİLERİ
                   Expanded(
@@ -175,11 +175,11 @@ class _SiberDnaRadarScreenState extends State<SiberDnaRadarScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(plaka, style: TextStyle(color: textColor, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-                        const SizedBox(height: 4),
-                        Text("$marka $model".toUpperCase(), style: const TextStyle(color: Colors.white45, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-                        const SizedBox(height: 12),
+                        SizedBox(height: 4),
+                        Text("$marka $model".toUpperCase(), style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                        SizedBox(height: 12),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(color: skorRengi.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(6), border: Border.all(color: skorRengi.withValues(alpha: 0.3))),
                           child: Text(durum.toUpperCase(), style: TextStyle(color: skorRengi, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                         ),
@@ -204,11 +204,11 @@ class _SiberDnaRadarScreenState extends State<SiberDnaRadarScreen> {
 
   Widget _buildAltTerminal() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white, 
         border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
-        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, -5))]
+        boxShadow: [BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 10, offset: Offset(0, -5))]
       ),
       child: SizedBox(
         width: double.infinity,
@@ -222,10 +222,10 @@ class _SiberDnaRadarScreenState extends State<SiberDnaRadarScreen> {
             elevation: 0,
           ),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => const SiberAracKayitTerminali()));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => SiberAracKayitTerminali()));
           },
-          icon: const Icon(Icons.add, size: 20),
-          label: const Text("YENİ ARAÇ KAYDET", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+          icon: Icon(Icons.add, size: 20),
+          label: Text("YENİ ARAÇ KAYDET", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
         ),
       ),
     );

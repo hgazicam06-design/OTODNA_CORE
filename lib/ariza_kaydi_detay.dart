@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/ariza_kaydi_detay.dart
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class ArizaKaydiDetay extends StatefulWidget {
   final String saseNo;
   final String ustaId;
 
-  const ArizaKaydiDetay({
+  ArizaKaydiDetay({
     super.key,
     required this.saseNo,
     required this.ustaId,
@@ -235,8 +236,8 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: Colors.white70, fontSize: 12)),
           ],
         ),
       ),
@@ -244,9 +245,9 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
   }
 
   Icon _getSiberIcon(String durum) {
-    if (durum == "ONAYLANDI") return const Icon(Icons.check_circle_outline, color: SiberTema.kuantumCyan, size: 28);
-    if (durum == "RISKLI") return const Icon(Icons.cancel_outlined, color: SiberTema.kanKirmizi, size: 28);
-    return const Icon(Icons.hourglass_empty_outlined, color: Colors.white30, size: 28);
+    if (durum == "ONAYLANDI") return Icon(Icons.check_circle_outline, color: SiberTema.kuantumCyan, size: 28);
+    if (durum == "RISKLI") return Icon(Icons.cancel_outlined, color: SiberTema.kanKirmizi, size: 28);
+    return Icon(Icons.hourglass_empty_outlined, color: Colors.white30, size: 28);
   }
 
   @override
@@ -258,12 +259,12 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
       child: Scaffold(
         backgroundColor: Colors.transparent, // Zırh OLED Siyahı veriyor
         appBar: AppBar(
-          title: const Text('TEKNİK DENETİM MASASI', style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14)),
+          title: Text('TEKNİK DENETİM MASASI', style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14)),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(4.0),
+            preferredSize: Size.fromHeight(4.0),
             child: LinearProgressIndicator(value: ilerleme, backgroundColor: Colors.white10, color: SiberTema.kuantumCyan, minHeight: 4),
           ),
         ),
@@ -271,8 +272,8 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
           children: [
             Expanded(
               child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.all(16),
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.all(16),
                 itemCount: _denetimModulleri.length,
                 itemBuilder: (context, index) {
                   var modul = _denetimModulleri[index];
@@ -281,8 +282,8 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
                   bool isLastikOteli = modul['parca'] == "LASTİK DEĞİŞİMİ & OTEL KAYDI";
 
                   return AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    margin: const EdgeInsets.only(bottom: 12),
+                    duration: Duration(milliseconds: 300),
+                    margin: EdgeInsets.only(bottom: 12),
                     decoration: BoxDecoration(
                       color: SiberTema.matGrey,
                       borderRadius: BorderRadius.circular(12),
@@ -295,21 +296,21 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
                       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
                       child: ExpansionTile(
                         leading: _getSiberIcon(modul['durum']),
-                        title: Text(modul['parca'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 12)),
+                        title: Text(modul['parca'], style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 12)),
                         subtitle: Text("DURUM: ${modul['durum']}", style: TextStyle(color: isOnayli ? SiberTema.kuantumCyan : (isRiskli ? SiberTema.kanKirmizi : Colors.white54), fontSize: 10, letterSpacing: 1)),
                         iconColor: SiberTema.kuantumCyan,
                         collapsedIconColor: Colors.white54,
                         children: [
-                          const Divider(color: Colors.white12, height: 1),
+                          Divider(color: Colors.white12, height: 1),
 
                           // 🛞 ÖZEL MODÜL: LASTİK OTELİ FORMU
                           if (isLastikOteli) ...[
                             Padding(
-                              padding: const EdgeInsets.all(16),
+                              padding: EdgeInsets.all(16),
                               child: Column(
                                 children: [
                                   SwitchListTile(
-                                    title: const Text("Kullanılmış Lastikleri Otele (Depoya) Al", style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                                    title: Text("Kullanılmış Lastikleri Otele (Depoya) Al", style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
                                     value: modul['otel_kaydi_var'] ?? false,
                                     activeColor: SiberTema.kuantumCyan,
                                     onChanged: (val) {
@@ -319,15 +320,15 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
                                     },
                                   ),
                                   if (modul['otel_kaydi_var'] == true) ...[
-                                    const SizedBox(height: 12),
+                                    SizedBox(height: 12),
                                     Row(
                                       children: [
                                         Expanded(
                                           child: DropdownButtonFormField<String>(
                                             dropdownColor: SiberTema.matGrey,
                                             value: modul['lastik_tipi'],
-                                            style: const TextStyle(color: Colors.white, fontSize: 12),
-                                            decoration: const InputDecoration(labelText: "Depolanan Tip", labelStyle: TextStyle(color: SiberTema.kuantumCyan), enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white24)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: SiberTema.kuantumCyan))),
+                                            style: TextStyle(color: Colors.white, fontSize: 12),
+                                            decoration: InputDecoration(labelText: "Depolanan Tip", labelStyle: TextStyle(color: SiberTema.kuantumCyan), enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white24)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: SiberTema.kuantumCyan))),
                                             items: ['YAZLIK', 'KIŞLIK', 'DÖRT MEVSİM'].map((String val) {
                                               return DropdownMenuItem<String>(value: val, child: Text(val));
                                             }).toList(),
@@ -338,13 +339,13 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
                                             },
                                           ),
                                         ),
-                                        const SizedBox(width: 12),
+                                        SizedBox(width: 12),
                                         Expanded(
                                           child: TextFormField(
                                             initialValue: modul['dis_derinligi'],
                                             keyboardType: TextInputType.number,
-                                            style: const TextStyle(color: Colors.white, fontSize: 12),
-                                            decoration: const InputDecoration(labelText: "Diş Derinliği (%)", labelStyle: TextStyle(color: SiberTema.kuantumCyan), enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white24)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: SiberTema.kuantumCyan))),
+                                            style: TextStyle(color: Colors.white, fontSize: 12),
+                                            decoration: InputDecoration(labelText: "Diş Derinliği (%)", labelStyle: TextStyle(color: SiberTema.kuantumCyan), enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white24)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: SiberTema.kuantumCyan))),
                                             onChanged: (val) {
                                               _denetimModulleri[index]['dis_derinligi'] = val;
                                             },
@@ -356,19 +357,19 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
                                 ],
                               ),
                             ),
-                            const Divider(color: Colors.white12, height: 1),
+                            Divider(color: Colors.white12, height: 1),
                           ],
 
                           // 📸 Kanıt Yükleme Satırı
                           ListTile(
                             leading: Icon(modul['kanit'] ? Icons.verified : Icons.camera_alt_outlined, color: modul['kanit'] ? SiberTema.kuantumCyan : SiberTema.altinSari),
                             title: Text(modul['kanit'] ? "ZAMAN DAMGALI KANIT YÜKLENDİ" : "ZAMAN DAMGALI KANIT YÜKLE", style: TextStyle(color: modul['kanit'] ? SiberTema.kuantumCyan : SiberTema.altinSari, fontSize: 11, fontWeight: FontWeight.bold)),
-                            trailing: modul['kanit'] ? null : const Icon(Icons.arrow_forward_ios, color: SiberTema.altinSari, size: 14),
+                            trailing: modul['kanit'] ? null : Icon(Icons.arrow_forward_ios, color: SiberTema.altinSari, size: 14),
                             onTap: () => _zamanDamgaliKanitYukle(index),
                           ),
                           // 🔘 Karar Butonları
                           Padding(
-                            padding: const EdgeInsets.all(16),
+                            padding: EdgeInsets.all(16),
                             child: Row(
                               children: [
                                 Expanded(
@@ -376,26 +377,26 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.transparent,
                                       foregroundColor: SiberTema.kanKirmizi,
-                                      side: const BorderSide(color: SiberTema.kanKirmizi),
+                                      side: BorderSide(color: SiberTema.kanKirmizi),
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                      padding: const EdgeInsets.symmetric(vertical: 12),
+                                      padding: EdgeInsets.symmetric(vertical: 12),
                                     ),
-                                    icon: const Icon(Icons.close),
-                                    label: const Text("KIRMIZI X", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+                                    icon: Icon(Icons.close),
+                                    label: Text("KIRMIZI X", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
                                     onPressed: () => _kirmiziXMudurle(index),
                                   ),
                                 ),
-                                const SizedBox(width: 12),
+                                SizedBox(width: 12),
                                 Expanded(
                                   child: ElevatedButton.icon(
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: modul['kanit'] ? SiberTema.kuantumCyan : Colors.white10,
                                       foregroundColor: modul['kanit'] ? SiberTema.oledBlack : Colors.white30,
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                      padding: const EdgeInsets.symmetric(vertical: 12),
+                                      padding: EdgeInsets.symmetric(vertical: 12),
                                     ),
-                                    icon: const Icon(Icons.check),
-                                    label: const Text("YEŞİL TIK", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+                                    icon: Icon(Icons.check),
+                                    label: Text("YEŞİL TIK", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
                                     onPressed: () => _yesilTikMudurle(index),
                                   ),
                                 ),
@@ -412,16 +413,16 @@ class _ArizaKaydiDetayState extends State<ArizaKaydiDetay> {
 
             // 🚀 Mühürleme Butonu
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               child: SizedBox(
                 width: double.infinity,
                 height: 60,
                 child: _islemSuruyor
-                    ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                    ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                     : ElevatedButton.icon(
                   style: SiberTema.kuantumButonStili(),
-                  icon: const Icon(Icons.security, color: SiberTema.oledBlack, size: 28),
-                  label: const Text("TÜMÜNÜ KARARGAHA MÜHÜRLE", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 12)),
+                  icon: Icon(Icons.security, color: SiberTema.oledBlack, size: 28),
+                  label: Text("TÜMÜNÜ KARARGAHA MÜHÜRLE", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 12)),
                   onPressed: _tumRaporuKapat,
                 ),
               ),

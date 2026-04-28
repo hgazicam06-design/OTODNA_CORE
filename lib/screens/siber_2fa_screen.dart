@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +10,7 @@ import '../core/responsive_kalkan.dart';
 class Siber2FAScreen extends StatefulWidget {
   final MultiFactorResolver resolver;
 
-  const Siber2FAScreen({super.key, required this.resolver});
+  Siber2FAScreen({super.key, required this.resolver});
 
   @override
   State<Siber2FAScreen> createState() => _Siber2FAScreenState();
@@ -117,7 +118,7 @@ class _Siber2FAScreenState extends State<Siber2FAScreen> {
           mesaj,
           style: TextStyle(color: isError ? Colors.white : SiberTema.oledBlack, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
         ),
-        duration: const Duration(seconds: 4),
+        duration: Duration(seconds: 4),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -132,8 +133,8 @@ class _Siber2FAScreenState extends State<Siber2FAScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
-          title: const Text(
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
+          title: Text(
             "SİBER KALKAN: 2FA",
             style: TextStyle(color: SiberTema.kuantumCyan, fontFamily: 'Avenir', fontWeight: FontWeight.w900, letterSpacing: 2),
           ),
@@ -141,31 +142,31 @@ class _Siber2FAScreenState extends State<Siber2FAScreen> {
         ),
         body: Center(
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 24.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.shield_outlined, size: 100, color: SiberTema.kuantumCyan),
-                const SizedBox(height: 24),
-                const Text(
+                Icon(Icons.shield_outlined, size: 100, color: SiberTema.kuantumCyan),
+                SizedBox(height: 24),
+                Text(
                   "KUANTUM DOĞRULAMA",
                   style: TextStyle(color: SiberTema.textMain, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir'),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Text(
                   "Hesabın yüksek güvenlik protokolü ile korunuyor. Operasyonlarına devam etmek için operatöründen gelen SMS kodunu gir.",
                   textAlign: TextAlign.center,
                   style: TextStyle(color: SiberTema.textMain.withOpacity(0.7), fontSize: 12, fontFamily: 'Avenir', height: 1.5),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
 
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
                     child: Container(
-                      padding: const EdgeInsets.all(24.0),
+                      padding: EdgeInsets.all(24.0),
                       decoration: BoxDecoration(
                         color: SiberTema.matGrey.withOpacity(0.6),
                         border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
@@ -177,30 +178,30 @@ class _Siber2FAScreenState extends State<Siber2FAScreen> {
                             controller: _smsController,
                             keyboardType: TextInputType.number,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 10, fontFamily: 'Avenir'),
+                            style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 10, fontFamily: 'Avenir'),
                             decoration: InputDecoration(
                               hintText: "000000",
                               hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), letterSpacing: 10, fontFamily: 'Avenir'),
                               filled: true,
                               fillColor: SiberTema.oledBlack,
-                              contentPadding: const EdgeInsets.symmetric(vertical: 20),
+                              contentPadding: EdgeInsets.symmetric(vertical: 20),
                               enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.3))),
-                              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 2)),
+                              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: SiberTema.kuantumCyan, width: 2)),
                             ),
                           ),
-                          const SizedBox(height: 30),
+                          SizedBox(height: 30),
 
                           SizedBox(
                             width: double.infinity,
                             height: 55,
                             child: _isLoading
-                                ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3))
+                                ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3))
                                 : ElevatedButton(
                               style: SiberTema.kuantumButonStili(),
                               onPressed: _smsSent ? _manuelKodDogrula : _smsGonder,
                               child: Text(
                                 _smsSent ? "ZIRHI AÇ" : "SMS GÖNDER",
-                                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir', color: SiberTema.oledBlack),
+                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir', color: SiberTema.oledBlack),
                               ),
                             ),
                           ),

@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/bayi/onay_merkezi.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +16,7 @@ class SiberOnayVeHesapEkrani extends StatefulWidget {
   final String bayiId; // İşlemi yapan bayi
   final double girilenFiyat; // Satış fiyatı
 
-  const SiberOnayVeHesapEkrani({
+  SiberOnayVeHesapEkrani({
     super.key,
     required this.islemId,
     required this.bayiId,
@@ -108,19 +109,19 @@ class _SiberOnayVeHesapEkraniState extends State<SiberOnayVeHesapEkrani> {
       child: Scaffold(
         backgroundColor: Colors.transparent, // Kalkan aydınlatması arkadan vursun
         appBar: AppBar(
-          title: const Text("FİNANSAL ONAY VE MÜHÜR", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
+          title: Text("FİNANSAL ONAY VE MÜHÜR", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             child: Column(
               children: [
                 // 🎙️ DİJİTAL İMZA KARTI (Siber Cam)
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                       color: SiberTema.matGrey.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(16),
@@ -129,7 +130,7 @@ class _SiberOnayVeHesapEkraniState extends State<SiberOnayVeHesapEkrani> {
                         BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 20, spreadRadius: 2)
                       ]
                   ),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Icon(Icons.fingerprint, color: SiberTema.kuantumCyan, size: 40),
                       SizedBox(width: 16),
@@ -146,7 +147,7 @@ class _SiberOnayVeHesapEkraniState extends State<SiberOnayVeHesapEkrani> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
 
                 // 📊 HESAPLAMA TABLOSU
                 Container(
@@ -158,24 +159,24 @@ class _SiberOnayVeHesapEkraniState extends State<SiberOnayVeHesapEkrani> {
                   child: Column(
                     children: [
                       _buildSiberSatir("Girilen Satış Tutarı", "₺${widget.girilenFiyat.toStringAsFixed(2)}"),
-                      const Divider(color: SiberTema.textMuted, height: 1),
+                      Divider(color: SiberTema.textMuted, height: 1),
                       _buildSiberSatir("Karargah Payı (%12)", "-₺${finans['Karargah_Payi']!.toStringAsFixed(2)}", renk: SiberTema.kanKirmizi),
-                      const Divider(color: SiberTema.textMuted, height: 1, thickness: 1),
+                      Divider(color: SiberTema.textMuted, height: 1, thickness: 1),
                       _buildSiberSatir("BAYİ NET HAKEDİŞİ", "₺${finans['Bayi_Hakedis']!.toStringAsFixed(2)}", renk: SiberTema.kuantumCyan, isBold: true),
                     ],
                   ),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
 
                 // 🚀 MÜHÜRLEME BUTONU
                 SizedBox(
                   height: 60,
                   width: double.infinity,
                   child: _onaylaniyor
-                      ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                      ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                       : ElevatedButton.icon(
-                    icon: const Icon(Icons.verified_user_outlined, color: SiberTema.oledBlack, size: 28),
-                    label: const Text("DİJİTAL MÜHRÜ VUR VE ONAYLA", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, color: SiberTema.oledBlack)),
+                    icon: Icon(Icons.verified_user_outlined, color: SiberTema.oledBlack, size: 28),
+                    label: Text("DİJİTAL MÜHRÜ VUR VE ONAYLA", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, color: SiberTema.oledBlack)),
                     style: SiberTema.kuantumButonStili(),
                     onPressed: () => _dijitalMuhuVur(finans),
                   ),
@@ -191,7 +192,7 @@ class _SiberOnayVeHesapEkraniState extends State<SiberOnayVeHesapEkrani> {
   // Özel Tablo Satırı Widget'ı
   Widget _buildSiberSatir(String etiket, String deger, {Color renk = Colors.white54, bool isBold = false}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

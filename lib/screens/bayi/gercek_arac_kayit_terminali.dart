@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +10,7 @@ import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 
 class GercekAracKayitTerminali extends StatefulWidget {
-  const GercekAracKayitTerminali({super.key});
+  GercekAracKayitTerminali({super.key});
 
   @override
   State<GercekAracKayitTerminali> createState() => _GercekAracKayitTerminaliState();
@@ -45,7 +46,7 @@ class _GercekAracKayitTerminaliState extends State<GercekAracKayitTerminali> {
       lastDate: DateTime.now(),
       builder: (context, child) => Theme(
           data: ThemeData.dark().copyWith(
-              colorScheme: const ColorScheme.dark(
+              colorScheme: ColorScheme.dark(
                   primary: Color(0xFF00FFC2),
                   onPrimary: Colors.black,
                   surface: Color(0xFF1E293B)
@@ -63,7 +64,7 @@ class _GercekAracKayitTerminaliState extends State<GercekAracKayitTerminali> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(msg, style: TextStyle(color: isError ? Colors.white : Colors.black, fontWeight: FontWeight.bold)),
-      backgroundColor: isError ? Colors.redAccent : const Color(0xFF00FFC2),
+      backgroundColor: isError ? Colors.redAccent : Color(0xFF00FFC2),
     ));
   }
 
@@ -74,31 +75,31 @@ class _GercekAracKayitTerminaliState extends State<GercekAracKayitTerminali> {
         barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: const Color(0xFF1E293B),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: Colors.redAccent)),
-            title: const Row(
+            backgroundColor: Color(0xFF1E293B),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.redAccent)),
+            title: Row(
               children: [
                 Icon(Icons.block, color: Colors.redAccent),
                 SizedBox(width: 10),
                 Text("İLAN LİMİTİ DOLDU!", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
               ],
             ),
-            content: const Text(
+            content: Text(
               "Standart paketinizin 10 adet ilan limitini doldurdunuz. Sınırsız ilan eklemek ve OtoDNA Kuantum Ağı'nın VIP ayrıcalıklarından faydalanmak için paketinizi yükseltin.",
               style: TextStyle(color: SiberTema.textMuted),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted)),
+                child: Text("İPTAL", style: TextStyle(color: SiberTema.textMuted)),
               ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2), foregroundColor: Colors.white),
+                style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF00FFC2), foregroundColor: Colors.white),
                 onPressed: () {
                   Navigator.pop(context);
                   // TODO: Ödeme sayfasına (Siber Kasaya) yönlendir!
                 },
-                child: const Text("VIP PAKET AL", style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text("VIP PAKET AL", style: TextStyle(fontWeight: FontWeight.bold)),
               ),
             ],
           );
@@ -255,62 +256,62 @@ class _GercekAracKayitTerminaliState extends State<GercekAracKayitTerminali> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent, elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("Kuantum Kayıt Terminali", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryCyan), onPressed: () => Navigator.pop(context)),
+          title: Text("Kuantum Kayıt Terminali", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
           centerTitle: true,
         ),
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.all(24.0),
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("1. Ruhsat Sahibi / Kullanıcı", style: TextStyle(color: primaryCyan, fontSize: 14, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 12),
-            Row(children: [Expanded(child: _buildInput("Ad", _adController)), const SizedBox(width: 12), Expanded(child: _buildInput("Soyad", _soyadController))]),
-            Row(children: [Expanded(child: _buildInput("İl", _ilController)), const SizedBox(width: 12), Expanded(child: _buildInput("İlçe", _ilceController))]),
+            Text("1. Ruhsat Sahibi / Kullanıcı", style: TextStyle(color: primaryCyan, fontSize: 14, fontWeight: FontWeight.bold)),
+            SizedBox(height: 12),
+            Row(children: [Expanded(child: _buildInput("Ad", _adController)), SizedBox(width: 12), Expanded(child: _buildInput("Soyad", _soyadController))]),
+            Row(children: [Expanded(child: _buildInput("İl", _ilController)), SizedBox(width: 12), Expanded(child: _buildInput("İlçe", _ilceController))]),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text("Doğum Tarihi", style: TextStyle(color: SiberTema.textMuted, fontSize: 13)),
-              subtitle: Text("${_secilenDogumTarihi.day}/${_secilenDogumTarihi.month}/${_secilenDogumTarihi.year}", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
-              trailing: const Icon(Icons.calendar_month, color: primaryCyan),
+              title: Text("Doğum Tarihi", style: TextStyle(color: SiberTema.textMuted, fontSize: 13)),
+              subtitle: Text("${_secilenDogumTarihi.day}/${_secilenDogumTarihi.month}/${_secilenDogumTarihi.year}", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
+              trailing: Icon(Icons.calendar_month, color: primaryCyan),
               onTap: () => _tarihSec(context),
             ),
 
-            const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted)),
-            const Text("2. OtoDNA Araç Kimliği", style: TextStyle(color: primaryCyan, fontSize: 14, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 12),
+            Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted)),
+            Text("2. OtoDNA Araç Kimliği", style: TextStyle(color: primaryCyan, fontSize: 14, fontWeight: FontWeight.bold)),
+            SizedBox(height: 12),
             _buildInput("Plaka (Örn: 34 MTH 139)", _plakaController, isUpper: true),
             _buildInput("Şase No (17 Hane Zorunlu)", _saseNoController, isUpper: true, isMaks17: true),
-            Row(children: [Expanded(child: _buildInput("Marka", _markaController)), const SizedBox(width: 12), Expanded(child: _buildInput("Model", _modelController))]),
+            Row(children: [Expanded(child: _buildInput("Marka", _markaController)), SizedBox(width: 12), Expanded(child: _buildInput("Model", _modelController))]),
             _buildInput("Renk", _renkController),
 
-            const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted)),
-            const Text("3. İlan & Fiyatlandırma (CarAd)", style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 12),
+            Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: SiberTema.textMuted)),
+            Text("3. İlan & Fiyatlandırma (CarAd)", style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+            SizedBox(height: 12),
             _buildInput("Satış Fiyatı (₺)", _fiyatController, isNumber: true),
             _buildInput("Satıcı Açıklaması", _aciklamaController, isMultiLine: true),
 
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: primaryCyan,
-                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    padding: EdgeInsets.symmetric(vertical: 20),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))
                 ),
                 onPressed: _isSaving ? null : _verileriKuantumAgaGonder,
                 icon: _isSaving
-                    ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: bgColor, strokeWidth: 2))
-                    : const Icon(Icons.fingerprint, color: bgColor),
+                    ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: bgColor, strokeWidth: 2))
+                    : Icon(Icons.fingerprint, color: bgColor),
                 label: Text(
                     _isSaving ? "SİSTEME İŞLENİYOR..." : "ARACI VE İLANI YAYINLA",
-                    style: const TextStyle(color: bgColor, fontWeight: FontWeight.bold, fontSize: 16)
+                    style: TextStyle(color: bgColor, fontWeight: FontWeight.bold, fontSize: 16)
                 ),
               ),
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
           ],
         ),
       ),
@@ -320,17 +321,17 @@ class _GercekAracKayitTerminaliState extends State<GercekAracKayitTerminali> {
 
   Widget _buildInput(String hint, TextEditingController controller, {bool isNumber = false, bool isUpper = false, bool isMaks17 = false, bool isMultiLine = false}) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(color: const Color(0xFF1E293B), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.textMuted)),
+      margin: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      decoration: BoxDecoration(color: Color(0xFF1E293B), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.textMuted)),
       child: TextField(
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : (isMultiLine ? TextInputType.multiline : TextInputType.text),
         maxLength: isMaks17 ? 17 : null,
         maxLines: isMultiLine ? 3 : 1,
         textCapitalization: isUpper ? TextCapitalization.characters : TextCapitalization.words,
-        style: const TextStyle(color: SiberTema.textMain),
-        decoration: InputDecoration(counterText: "", hintText: hint, hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 13), border: InputBorder.none),
+        style: TextStyle(color: SiberTema.textMain),
+        decoration: InputDecoration(counterText: "", hintText: hint, hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 13), border: InputBorder.none),
       ),
     );
   }

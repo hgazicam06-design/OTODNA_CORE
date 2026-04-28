@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +9,7 @@ import '../../core/siber_tema.dart';
 import '../../core/responsive_kalkan.dart';
 
 class CarQueryScreen extends StatefulWidget {
-  const CarQueryScreen({super.key});
+  CarQueryScreen({super.key});
 
   @override
   State<CarQueryScreen> createState() => _CarQueryScreenState();
@@ -19,11 +20,11 @@ class _CarQueryScreenState extends State<CarQueryScreen> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // 🏢 FİLDİŞİ SEDEF PALET
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color surfaceColor = Colors.white;
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMain = const Color(0xFF1E293B);
-  final Color textMuted = const Color(0xFF64748B);
+  final Color textMain = Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
   final Color dangerColor = SiberTema.kanKirmizi;
 
   bool _isLoading = false;
@@ -53,7 +54,7 @@ class _CarQueryScreenState extends State<CarQueryScreen> {
       var snapshot = await _db.collection('araclar').where('plaka', isEqualTo: plaka).limit(1).get();
 
       // Gerçekçilik katmak için 1 saniyelik siber tarama efekti
-      await Future.delayed(const Duration(milliseconds: 1000));
+      await Future.delayed(Duration(milliseconds: 1000));
 
       if (snapshot.docs.isNotEmpty) {
         setState(() => _aracData = snapshot.docs.first.data());
@@ -68,7 +69,7 @@ class _CarQueryScreenState extends State<CarQueryScreen> {
 
   void _siberUyari(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+      content: Text(mesaj, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
       backgroundColor: isError ? dangerColor : primaryTeal,
       behavior: SnackBarBehavior.floating,
     ));
@@ -87,12 +88,12 @@ class _CarQueryScreenState extends State<CarQueryScreen> {
           centerTitle: true,
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
           child: Column(
             children: [
               // 1. SİBER PLAKA GİRİŞ TERMİNALİ
               Container(
-                padding: const EdgeInsets.all(24),
+                padding: EdgeInsets.all(24),
                 decoration: BoxDecoration(
                     color: surfaceColor,
                     borderRadius: BorderRadius.circular(24),
@@ -103,7 +104,7 @@ class _CarQueryScreenState extends State<CarQueryScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("HEDEF PLAKA", style: TextStyle(color: textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     TextField(
                       controller: _plateController,
                       textCapitalization: TextCapitalization.characters,
@@ -119,7 +120,7 @@ class _CarQueryScreenState extends State<CarQueryScreen> {
                       ),
                       onSubmitted: (_) => _searchCar(),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
                     SizedBox(
                       width: double.infinity, height: 56,
                       child: ElevatedButton.icon(
@@ -130,14 +131,14 @@ class _CarQueryScreenState extends State<CarQueryScreen> {
                           elevation: 0
                         ),
                         onPressed: _isLoading ? null : _searchCar,
-                        icon: _isLoading ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : const Icon(Icons.search, size: 20, color: Colors.white),
-                        label: Text(_isLoading ? "AĞ TARANIYOR..." : "SİSTEMDE SORGULA", style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                        icon: _isLoading ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : Icon(Icons.search, size: 20, color: Colors.white),
+                        label: Text(_isLoading ? "AĞ TARANIYOR..." : "SİSTEMDE SORGULA", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                       ),
                     )
                   ],
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
 
               // 2. SONUÇ EKRANI (KUANTUM RAPOR)
               Expanded(
@@ -157,7 +158,7 @@ class _CarQueryScreenState extends State<CarQueryScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.policy_outlined, color: textMuted.withOpacity(0.2), size: 80),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             Text("Siber Ağa Bağlı.\nHedef plaka bekleniyor.", textAlign: TextAlign.center, style: TextStyle(color: textMuted, fontSize: 12, fontWeight: FontWeight.bold, height: 1.5, fontFamily: 'Avenir')),
           ],
         ),
@@ -170,7 +171,7 @@ class _CarQueryScreenState extends State<CarQueryScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularProgressIndicator(color: primaryTeal),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             Text("GENETİK VERİ TABANI TARANIYOR...", style: TextStyle(color: primaryTeal, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
           ],
         ),
@@ -180,15 +181,15 @@ class _CarQueryScreenState extends State<CarQueryScreen> {
     if (_aracData == null) {
       return Center(
         child: Container(
-          padding: const EdgeInsets.all(32),
+          padding: EdgeInsets.all(32),
           decoration: BoxDecoration(color: dangerColor.withOpacity(0.05), borderRadius: BorderRadius.circular(24), border: Border.all(color: dangerColor.withOpacity(0.3))),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(Icons.error_outline, color: dangerColor, size: 48),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               Text("KAYIT BULUNAMADI", style: TextStyle(color: dangerColor, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               Text("Bu plaka OtoDNA Siber Ağında mühürlenmemiş. Araç sisteme yabancı.", textAlign: TextAlign.center, style: TextStyle(color: textMuted, fontSize: 11, height: 1.5, fontFamily: 'Avenir')),
             ],
           ),
@@ -207,27 +208,27 @@ class _CarQueryScreenState extends State<CarQueryScreen> {
     bool yagRiskli = _aracData!['son_yag_bakimi_km'] == null || (km - (_aracData!['son_yag_bakimi_km'] as int)) > 10000;
 
     return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
+      physics: BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("SİBER İSTİHBARAT SONUCU", style: TextStyle(color: textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
 
           // ARAÇ KÜNYESİ
           Container(
-            width: double.infinity, padding: const EdgeInsets.all(24),
+            width: double.infinity, padding: EdgeInsets.all(24),
             decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withOpacity(0.05)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]),
             child: Row(
               children: [
-                Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle, border: Border.all(color: primaryTeal.withOpacity(0.3))), child: Icon(Icons.directions_car_outlined, color: primaryTeal, size: 32)),
-                const SizedBox(width: 20),
+                Container(padding: EdgeInsets.all(16), decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle, border: Border.all(color: primaryTeal.withOpacity(0.3))), child: Icon(Icons.directions_car_outlined, color: primaryTeal, size: 32)),
+                SizedBox(width: 20),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("$marka $model".toUpperCase(), style: TextStyle(color: textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: -0.5, fontFamily: 'Avenir')),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4),
                       Text("GÜNCEL KM: $km KM", style: TextStyle(color: primaryTeal, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                     ],
                   ),
@@ -235,17 +236,17 @@ class _CarQueryScreenState extends State<CarQueryScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
 
           // KARA LİSTE KONTROLÜ
           if (isKaraListe)
             Container(
-              margin: const EdgeInsets.only(bottom: 16), padding: const EdgeInsets.all(20),
+              margin: EdgeInsets.only(bottom: 16), padding: EdgeInsets.all(20),
               decoration: BoxDecoration(color: dangerColor.withOpacity(0.1), borderRadius: BorderRadius.circular(20), border: Border.all(color: dangerColor.withOpacity(0.5))),
               child: Row(
                 children: [
                   Icon(Icons.gpp_bad_outlined, color: dangerColor, size: 28),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16),
                   Expanded(child: Text("DİKKAT! BU ARAÇ KARA LİSTEDE. DOLANDIRICILIK VEYA AĞIR HASAR RİSKİ YÜKSEK.", style: TextStyle(color: dangerColor, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, height: 1.5, fontFamily: 'Avenir'))),
                 ],
               ),
@@ -255,11 +256,11 @@ class _CarQueryScreenState extends State<CarQueryScreen> {
           Row(
             children: [
               Expanded(child: _buildAnalizKarti(Icons.build_circle_outlined, "TRİGER\nDURUMU", trigerRiskli ? "RİSKLİ" : "NORMAL", trigerRiskli ? Colors.orange.shade700 : primaryTeal)),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(child: _buildAnalizKarti(Icons.oil_barrel_outlined, "YAĞ\nBAKIMI", yagRiskli ? "SÜRESİ DOLMUŞ" : "GÜNCEL", yagRiskli ? dangerColor : primaryTeal)),
             ],
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: 32),
 
           // AKSİYON BUTONU
           SizedBox(
@@ -278,19 +279,19 @@ class _CarQueryScreenState extends State<CarQueryScreen> {
 
   Widget _buildAnalizKarti(IconData ikon, String baslik, String durum, Color renk) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: renk.withOpacity(0.3)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(color: renk.withOpacity(0.1), shape: BoxShape.circle),
             child: Icon(ikon, color: renk, size: 24),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Text(baslik, style: TextStyle(color: textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1, height: 1.4, fontFamily: 'Avenir')),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(durum, style: TextStyle(color: renk, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 0.5, fontFamily: 'Avenir')),
         ],
       ),

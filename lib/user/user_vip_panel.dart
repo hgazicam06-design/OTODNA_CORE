@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
@@ -15,24 +15,24 @@ class UserVipPanel {
   }) {
     return Container(
       decoration: BoxDecoration(
-          color: const Color(0xFF000000), // OLED Siyah zırh
+          color: Color(0xFF000000), // OLED Siyah zırh
           border: Border(
-            top: BorderSide(color: const Color(0xFF00FFC2).withValues(alpha: 0.4), width: 1.5), // Siber Çizgi
+            top: BorderSide(color: Color(0xFF00FFC2).withValues(alpha: 0.4), width: 1.5), // Siber Çizgi
           ),
           boxShadow: [
-            BoxShadow(color: const Color(0xFF00FFC2).withValues(alpha: 0.05), blurRadius: 15, spreadRadius: 1, offset: const Offset(0, -5))
+            BoxShadow(color: Color(0xFF00FFC2).withValues(alpha: 0.05), blurRadius: 15, spreadRadius: 1, offset: Offset(0, -5))
           ] // 🌫️ Gizli Kuantum Yansıması
       ),
       child: BottomNavigationBar(
-        backgroundColor: const Color(0xFF000000), // Tam OLED Siyahı
+        backgroundColor: Color(0xFF000000), // Tam OLED Siyahı
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
-        selectedItemColor: const Color(0xFF00FFC2), // Kuantum Turkuazı Vurgu
+        selectedItemColor: Color(0xFF00FFC2), // Kuantum Turkuazı Vurgu
         unselectedItemColor: Colors.white38,
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 11),
-        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 10),
+        selectedLabelStyle: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 11),
+        unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 10),
         onTap: onTap,
-        items: const [
+        items: [
           BottomNavigationBarItem(icon: Icon(Icons.home_outlined), activeIcon: Icon(Icons.home), label: "MERKEZ"),
           BottomNavigationBarItem(icon: Icon(Icons.directions_car_outlined), activeIcon: Icon(Icons.directions_car), label: "GALERİ"),
           BottomNavigationBarItem(icon: Icon(Icons.storefront_outlined), activeIcon: Icon(Icons.storefront), label: "MARKET"),

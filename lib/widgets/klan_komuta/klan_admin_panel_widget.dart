@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import '../../models/club_model.dart';
 import '../../core/siber_tema.dart';
@@ -8,7 +9,7 @@ class KlanAdminPanel extends StatelessWidget {
   final VehicleClub kulup;
   final String aktifKullaniciId;
 
-  const KlanAdminPanel({
+  KlanAdminPanel({
     super.key,
     required this.kulup,
     required this.aktifKullaniciId
@@ -17,7 +18,7 @@ class KlanAdminPanel extends StatelessWidget {
   // 🔇 FİREBASE SUSTURMA PROTOKOLÜ
   Future<void> _uyeyiSustur(BuildContext context) async {
     // Firebase entegrasyonu için WriteBatch kullanılacak
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("🚨 SİBER YETKİ: Üye ağdan izole edildi!"),
       backgroundColor: SiberTema.kanKirmizi,
       behavior: SnackBarBehavior.floating,
@@ -27,7 +28,7 @@ class KlanAdminPanel extends StatelessWidget {
   // 📢 KUANTUM DUYURU PROTOKOLÜ
   Future<void> _duyuruYap(BuildContext context) async {
     // Cloud Functions üzerinden Push Notification tetiklenecek
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("📢 DUYURU: Kuantum Ağına yayınlandı!"),
       backgroundColor: SiberTema.kuantumCyan,
       behavior: SnackBarBehavior.floating,
@@ -41,11 +42,11 @@ class KlanAdminPanel extends StatelessWidget {
     bool moderatorMu = kulup.isUserModerator(aktifKullaniciId);
 
     if (!yetkiliMi && !moderatorMu) {
-      return const SizedBox.shrink(); // Yetkisizse gizle
+      return SizedBox.shrink(); // Yetkisizse gizle
     }
 
     return Container(
-      margin: const EdgeInsets.all(12),
+      margin: EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: SiberTema.matGrey,
         borderRadius: BorderRadius.circular(20),
@@ -95,12 +96,12 @@ class KlanAdminPanel extends StatelessWidget {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
         color: SiberTema.kuantumCyan.withOpacity(0.1),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
       ),
-      child: const Row(
+      child: Row(
         children: [
           Icon(Icons.shield_rounded, color: SiberTema.kuantumCyan, size: 20),
           SizedBox(width: 10),
@@ -124,13 +125,13 @@ class KlanAdminPanel extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       leading: Container(
-        padding: const EdgeInsets.all(8),
+        padding: EdgeInsets.all(8),
         decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle),
         child: Icon(icon, color: color, size: 22),
       ),
-      title: Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14)),
-      subtitle: Text(subtitle, style: const TextStyle(color: Colors.white38, fontSize: 11)),
-      trailing: trailing ?? const Icon(Icons.chevron_right_rounded, color: Colors.white12),
+      title: Text(title, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14)),
+      subtitle: Text(subtitle, style: TextStyle(color: Colors.white38, fontSize: 11)),
+      trailing: trailing ?? Icon(Icons.chevron_right_rounded, color: Colors.white12),
     );
   }
 
@@ -138,9 +139,9 @@ class KlanAdminPanel extends StatelessWidget {
 
   Widget _buildBadge(String count) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(color: SiberTema.kanKirmizi, borderRadius: BorderRadius.circular(10)),
-      child: Text(count, style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+      child: Text(count, style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
     );
   }
 }

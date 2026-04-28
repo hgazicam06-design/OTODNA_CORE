@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/core/siber_yetki_kalkani.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +27,7 @@ class SiberYetkiKalkani extends ConsumerWidget {
   final Widget child; // İzin varsa gösterilecek orijinal ekran veya buton
   final bool isButtonMode; // Sadece butonu mu kilitleyeceğiz yoksa tüm ekranı mı?
 
-  const SiberYetkiKalkani({
+  SiberYetkiKalkani({
     super.key,
     required this.islemTuru,
     required this.child,
@@ -38,7 +39,7 @@ class SiberYetkiKalkani extends ConsumerWidget {
     // 1. Karargah Nöbetçisinden adamın sicilini çek (.snapshots sayesinde anlık güncellenir)
     final sicil = ref.watch(siberSicilProvider).value;
 
-    if (sicil == null) return const SizedBox();
+    if (sicil == null) return SizedBox();
 
     // 2. Kullanıcının durumu 'KARA_LISTE' veya 'KISITLI' ise yakala
     bool isKisitli = sicil['hesap_durumu'] == 'KARA_LISTE' || sicil['hesap_durumu'] == 'KISITLI';
@@ -73,7 +74,7 @@ class SiberYetkiKalkani extends ConsumerWidget {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.5), width: 1.5),
       ),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.lock, color: SiberTema.kanKirmizi, size: 20),
@@ -91,14 +92,14 @@ class SiberYetkiKalkani extends ConsumerWidget {
   Widget _buildKilitliEkran() {
     return Center(
       child: Container(
-        padding: const EdgeInsets.all(24),
-        margin: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
+        margin: EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: SiberTema.kanKirmizi.withOpacity(0.05),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: SiberTema.kanKirmizi, width: 2),
         ),
-        child: const Column(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.gavel_rounded, color: SiberTema.kanKirmizi, size: 60),

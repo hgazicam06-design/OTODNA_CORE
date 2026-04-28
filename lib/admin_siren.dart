@@ -1,4 +1,4 @@
-// lib/widgets/admin_siren.dart
+﻿// lib/widgets/admin_siren.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Siber Titreşim (Haptic) için eklendi
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +12,7 @@ class AdminSirenEkrani extends StatefulWidget {
   final String bolgeBilgisi;
   final String saseNo;
 
-  const AdminSirenEkrani({
+  AdminSirenEkrani({
     super.key,
     required this.sinyalId,
     required this.bolgeBilgisi,
@@ -34,7 +34,7 @@ class _AdminSirenEkraniState extends State<AdminSirenEkrani> with SingleTickerPr
     developer.log("🚨 KRİZ MERKEZİ: ${widget.sinyalId} kodlu S.O.S sinyali için sirenler devreye girdi!");
 
     // Siber Parlama Animasyonu (Siyah ve Kan Kırmızı arasında gidip gelir)
-    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 600))..repeat(reverse: true);
+    _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 600))..repeat(reverse: true);
 
     // İlk açılışta Karargahı titret (Kriz Hissiyatı)
     HapticFeedback.heavyImpact();
@@ -88,7 +88,7 @@ class _AdminSirenEkraniState extends State<AdminSirenEkrani> with SingleTickerPr
 
         // 🚨 SESSİZ ÇÖKÜŞ ENGELLENDİ: Admine Kırmızı Alarm Ver
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               backgroundColor: Colors.redAccent,
               content: Text(
                   "SİBER İHLAL: Sinyal Kapatılamadı! İnternet bağlantınızı kontrol edin.",
@@ -108,17 +108,17 @@ class _AdminSirenEkraniState extends State<AdminSirenEkrani> with SingleTickerPr
       builder: (context, child) {
         return Scaffold(
           // Kuantum Alarm Renk Geçişi
-          backgroundColor: Color.lerp(const Color(0xFF000000), Colors.red.shade900, _controller.value),
+          backgroundColor: Color.lerp(Color(0xFF000000), Colors.red.shade900, _controller.value),
           body: SafeArea(
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                padding: EdgeInsets.symmetric(horizontal: 24.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Siber Kalkan İkonu
                     Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white.withOpacity(0.5), width: 3),
@@ -130,22 +130,22 @@ class _AdminSirenEkraniState extends State<AdminSirenEkrani> with SingleTickerPr
                           )
                         ],
                       ),
-                      child: const Icon(Icons.warning_amber_rounded, color: Colors.white, size: 100),
+                      child: Icon(Icons.warning_amber_rounded, color: Colors.white, size: 100),
                     ),
-                    const SizedBox(height: 40),
+                    SizedBox(height: 40),
 
-                    const Text(
+                    Text(
                         "🚨 KRİTİK S.O.S SİNYALİ 🚨",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.w900, letterSpacing: 3)
                     ),
-                    const SizedBox(height: 30),
+                    SizedBox(height: 30),
 
                     // Dinamik İstihbarat Panosu
                     Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF111111).withOpacity(0.8), // Mat Cam Efekti
+                        color: Color(0xFF111111).withOpacity(0.8), // Mat Cam Efekti
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: Colors.redAccent.withOpacity(0.5), width: 2),
                       ),
@@ -153,32 +153,32 @@ class _AdminSirenEkraniState extends State<AdminSirenEkrani> with SingleTickerPr
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildBilgiSatiri(Icons.location_on_outlined, "BÖLGE", widget.bolgeBilgisi),
-                          const Divider(color: Colors.white24, height: 24),
+                          Divider(color: Colors.white24, height: 24),
                           _buildBilgiSatiri(Icons.directions_car_outlined, "ARAÇ (DNA)", widget.saseNo),
                         ],
                       ),
                     ),
 
-                    const SizedBox(height: 50),
+                    SizedBox(height: 50),
 
                     // Siber Müdahale Butonu
                     SizedBox(
                       width: double.infinity,
                       height: 65,
                       child: _mudahaleEdiliyor
-                          ? const Center(child: CircularProgressIndicator(color: Colors.white))
+                          ? Center(child: CircularProgressIndicator(color: Colors.white))
                           : ElevatedButton.icon(
                         onPressed: _kriziSonlandirVeMudahaleEt,
-                        icon: const Icon(Icons.gpp_good_outlined, color: Colors.black, size: 28),
-                        label: const Text(
+                        icon: Icon(Icons.gpp_good_outlined, color: Colors.black, size: 28),
+                        label: Text(
                             "SİRENİ DURDUR VE MÜDAHALE ET",
                             style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5)
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF00FFC2), // Kuantum Turkuazı
+                          backgroundColor: Color(0xFF00FFC2), // Kuantum Turkuazı
                           foregroundColor: Colors.black, // Yazı Rengi
                           elevation: 10,
-                          shadowColor: const Color(0xFF00FFC2).withOpacity(0.5),
+                          shadowColor: Color(0xFF00FFC2).withOpacity(0.5),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),
                       ),
@@ -199,19 +199,19 @@ class _AdminSirenEkraniState extends State<AdminSirenEkrani> with SingleTickerPr
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(ikon, color: Colors.white54, size: 24),
-        const SizedBox(width: 12),
+        SizedBox(width: 12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 baslik.toUpperCase(),
-                style: const TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
               Text(
                 deger,
-                style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1),
+                style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1),
               ),
             ],
           ),

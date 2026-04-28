@@ -1,9 +1,10 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class BayiUzmanlikProfilScreen extends StatefulWidget {
-  const BayiUzmanlikProfilScreen({super.key});
+  BayiUzmanlikProfilScreen({super.key});
 
   @override
   State<BayiUzmanlikProfilScreen> createState() => _BayiUzmanlikProfilScreenState();
@@ -55,7 +56,7 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(msg, style: TextStyle(color: isError ? Colors.white : Colors.black, fontWeight: FontWeight.bold)),
-      backgroundColor: isError ? Colors.redAccent : const Color(0xFF00FFC2),
+      backgroundColor: isError ? Colors.redAccent : Color(0xFF00FFC2),
     ));
   }
 
@@ -98,7 +99,7 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
       _showSnackBar("Siber Uzmanlık Profiliniz Kuantum Ağına Mühürlendi! 🛡️");
 
       // Kayıt başarılı ise ana ekrana veya bir önceki sayfaya fırlat
-      Future.delayed(const Duration(seconds: 2), () {
+      Future.delayed(Duration(seconds: 2), () {
         if (mounted) Navigator.pop(context);
       });
 
@@ -119,40 +120,40 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
       backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: bgColor, elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan), onPressed: () => Navigator.pop(context)),
-        title: const Text("Firma Uzmanlık Radarı", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryCyan), onPressed: () => Navigator.pop(context)),
+        title: Text("Firma Uzmanlık Radarı", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.all(24),
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+            Row(
               children: [
                 Icon(Icons.radar, color: primaryCyan, size: 28),
                 SizedBox(width: 12),
                 Expanded(child: Text("Müşteriler Sizi Nasıl Bulsun?", style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.bold))),
               ],
             ),
-            const SizedBox(height: 8),
-            const Text("OtoDNA arama motorunda (Siber Radar) doğru müşterilerle ve B2B iş ortaklarıyla eşleşmek için uzmanlık alanlarınızı net bir şekilde belirleyin.", style: TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.5)),
-            const SizedBox(height: 32),
+            SizedBox(height: 8),
+            Text("OtoDNA arama motorunda (Siber Radar) doğru müşterilerle ve B2B iş ortaklarıyla eşleşmek için uzmanlık alanlarınızı net bir şekilde belirleyin.", style: TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.5)),
+            SizedBox(height: 32),
 
             // 1. ANA BRANŞ SEÇİMİ (DROPDOWN)
             _buildSectionTitle(Icons.account_tree, "1. Ana İşletme Branşınız"),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   dropdownColor: cardColor,
                   value: _secilenAnaKategori,
                   isExpanded: true,
-                  icon: const Icon(Icons.keyboard_arrow_down, color: primaryCyan),
-                  style: const TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.bold),
+                  icon: Icon(Icons.keyboard_arrow_down, color: primaryCyan),
+                  style: TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.bold),
                   items: _anaKategoriler.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
                   onChanged: (val) {
                     setState(() {
@@ -163,13 +164,13 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
 
             // 2. DİNAMİK ALT UZMANLIKLAR (CHIPS)
             _buildSectionTitle(Icons.precision_manufacturing, "2. Detaylı Hizmetler (Çoklu Seçim)"),
-            const SizedBox(height: 8),
-            const Text("Müşteriler arama çubuğuna 'Torsiyon' veya 'DSG' yazdığında sizin çıkmanızı sağlar.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
-            const SizedBox(height: 12),
+            SizedBox(height: 8),
+            Text("Müşteriler arama çubuğuna 'Torsiyon' veya 'DSG' yazdığında sizin çıkmanızı sağlar.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
+            SizedBox(height: 12),
             Wrap(
               spacing: 8, runSpacing: 8,
               children: _altUzmanlikHavuzu[_secilenAnaKategori]!.map((hizmet) {
@@ -193,11 +194,11 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
                 );
               }).toList(),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
 
             // 3. MARKA BAZLI UZMANLIK
             _buildSectionTitle(Icons.directions_car, "3. Hizmet Verilen Araç Grupları"),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             Wrap(
               spacing: 8, runSpacing: 8,
               children: _markaGruplari.map((marka) {
@@ -226,26 +227,26 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
                 );
               }).toList(),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
 
             // 4. KENDİNİ TANIT (HAKKIMIZDA)
             _buildSectionTitle(Icons.edit_document, "4. Siber Vitrin Açıklaması"),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
               child: TextField(
                 controller: _aciklamaController,
-                style: const TextStyle(color: SiberTema.textMain, fontSize: 14),
+                style: TextStyle(color: SiberTema.textMain, fontSize: 14),
                 maxLines: 4,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: "Müşterilerinize işletmenizin tecrübesinden, kullandığınız teknolojik cihazlardan veya garantili hizmetlerinizden bahsedin...",
                   hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 13, height: 1.5),
                   border: InputBorder.none,
                 ),
               ),
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
 
             // MÜHÜRLE BUTONU
             SizedBox(
@@ -253,18 +254,18 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: primaryCyan,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding: EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     elevation: 10, shadowColor: primaryCyan.withOpacity(0.5)
                 ),
                 onPressed: _isLoading ? null : _uzmanligiKuantumAginaKaydet,
-                icon: _isLoading ? const SizedBox() : const Icon(Icons.save, color: bgColor, size: 24),
+                icon: _isLoading ? SizedBox() : Icon(Icons.save, color: bgColor, size: 24),
                 label: _isLoading
-                    ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: bgColor, strokeWidth: 2))
-                    : const Text("Uzmanlık Profilimi Kuantum Ağına İşle", style: TextStyle(color: bgColor, fontWeight: FontWeight.bold, fontSize: 15, letterSpacing: 0.5)),
+                    ? SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: bgColor, strokeWidth: 2))
+                    : Text("Uzmanlık Profilimi Kuantum Ağına İşle", style: TextStyle(color: bgColor, fontWeight: FontWeight.bold, fontSize: 15, letterSpacing: 0.5)),
               ),
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
           ],
         ),
       ),
@@ -275,8 +276,8 @@ class _BayiUzmanlikProfilScreenState extends State<BayiUzmanlikProfilScreen> {
     return Row(
       children: [
         Icon(icon, color: SiberTema.textMuted, size: 20),
-        const SizedBox(width: 8),
-        Text(title, style: const TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.bold)),
+        SizedBox(width: 8),
+        Text(title, style: TextStyle(color: SiberTema.textMain, fontSize: 15, fontWeight: FontWeight.bold)),
       ],
     );
   }

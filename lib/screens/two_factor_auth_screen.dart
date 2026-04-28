@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -6,7 +7,7 @@ import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
 class TwoFactorAuthScreen extends StatefulWidget {
-  const TwoFactorAuthScreen({super.key});
+  TwoFactorAuthScreen({super.key});
 
   @override
   State<TwoFactorAuthScreen> createState() => _TwoFactorAuthScreenState();
@@ -35,7 +36,7 @@ class _TwoFactorAuthScreenState extends State<TwoFactorAuthScreen> {
 
     try {
       // 1. Karargah Ağına Bağlantı Simülasyonu (İleride Firebase SMS Verify buraya gelecek)
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(Duration(seconds: 2));
 
       if (!mounted) return;
 
@@ -43,7 +44,7 @@ class _TwoFactorAuthScreenState extends State<TwoFactorAuthScreen> {
       if (kod == "1923") {
         _siberUyariVer("KUANTUM KİLİDİ AÇILDI! KARARGAHA GİRİLİYOR... 🦅", isError: false);
 
-        Future.delayed(const Duration(seconds: 1), () {
+        Future.delayed(Duration(seconds: 1), () {
           // TODO: Kendi klasör yapına göre Dashboard veya Home ekranına fırlat:
           // Navigator.pushReplacementNamed(context, '/home');
         });
@@ -76,10 +77,10 @@ class _TwoFactorAuthScreenState extends State<TwoFactorAuthScreen> {
         body: SafeArea(
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 500),
+              constraints: BoxConstraints(maxWidth: 500),
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
-                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
+                physics: BouncingScrollPhysics(),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -87,35 +88,35 @@ class _TwoFactorAuthScreenState extends State<TwoFactorAuthScreen> {
                     // 1. SİBER KİLİT İKONU
                     Center(
                       child: Container(
-                        padding: const EdgeInsets.all(24),
+                        padding: EdgeInsets.all(24),
                         decoration: BoxDecoration(
                           color: SiberTema.matGrey,
                           shape: BoxShape.circle,
                           border: Border.all(color: SiberTema.altinSari.withOpacity(0.5), width: 2),
                           boxShadow: [BoxShadow(color: SiberTema.altinSari.withOpacity(0.15), blurRadius: 40, spreadRadius: 10)],
                         ),
-                        child: const Icon(Icons.vps_line, color: SiberTema.altinSari, size: 72),
+                        child: Icon(Icons.vps_line, color: SiberTema.altinSari, size: 72),
                       ),
                     ),
-                    const SizedBox(height: 40),
+                    SizedBox(height: 40),
 
                     // 2. BAŞLIK VE İSTİHBARAT METNİ
-                    const Text(
+                    Text(
                         "İKİ AŞAMALI DOĞRULAMA",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: SiberTema.textMain, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir')
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     Text(
                         "Ankara Merkez Güvenlik Protokolü gereği lütfen size SMS ile iletilen 4 haneli Kuantum anahtarını giriniz.",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 12, fontWeight: FontWeight.bold, height: 1.5, letterSpacing: 1, fontFamily: 'Avenir')
                     ),
-                    const SizedBox(height: 48),
+                    SizedBox(height: 48),
 
                     // 3. ŞİFRE GİRİŞ TERMİNALİ
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                       decoration: BoxDecoration(
                         color: SiberTema.matGrey,
                         borderRadius: BorderRadius.circular(20),
@@ -128,7 +129,7 @@ class _TwoFactorAuthScreenState extends State<TwoFactorAuthScreen> {
                         keyboardType: TextInputType.number,
                         maxLength: 4,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(letterSpacing: 24, fontSize: 32, fontWeight: FontWeight.w900, color: SiberTema.altinSari, fontFamily: 'Avenir'),
+                        style: TextStyle(letterSpacing: 24, fontSize: 32, fontWeight: FontWeight.w900, color: SiberTema.altinSari, fontFamily: 'Avenir'),
                         decoration: InputDecoration(
                           counterText: "",
                           hintText: "••••",
@@ -138,7 +139,7 @@ class _TwoFactorAuthScreenState extends State<TwoFactorAuthScreen> {
                         onSubmitted: (_) => _isProcessing ? null : _koduDogrula(),
                       ),
                     ),
-                    const SizedBox(height: 48),
+                    SizedBox(height: 48),
 
                     // 4. ATEŞLEME BUTONU
                     SizedBox(
@@ -153,11 +154,11 @@ class _TwoFactorAuthScreenState extends State<TwoFactorAuthScreen> {
                         ),
                         onPressed: _isProcessing ? null : _koduDogrula,
                         icon: _isProcessing
-                            ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
-                            : const Icon(Icons.fingerprint, size: 28),
+                            ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
+                            : Icon(Icons.fingerprint, size: 28),
                         label: Text(
                             _isProcessing ? "AĞ DOĞRULANIYOR..." : "SİSTEME GİRİŞİ MÜHÜRLE",
-                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')
                         ),
                       ),
                     ),

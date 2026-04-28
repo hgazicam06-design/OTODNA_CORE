@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/bayi/kurye_radar_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,7 +14,7 @@ import '../../core/responsive_kalkan.dart';
 class KuryeRadarScreen extends StatefulWidget {
   final String siparisId; // İzlenecek lojistik operasyonunun kimliği
 
-  const KuryeRadarScreen({super.key, required this.siparisId});
+  KuryeRadarScreen({super.key, required this.siparisId});
 
   @override
   State<KuryeRadarScreen> createState() => _KuryeRadarScreenState();
@@ -29,7 +30,7 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
     // 🛰️ Siber Radar Dönüş Animasyonu
     _radarController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3),
+      duration: Duration(seconds: 3),
     )..repeat();
   }
 
@@ -46,17 +47,17 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("SİBER LOJİSTİK RADARI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
+          title: Text("SİBER LOJİSTİK RADARI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13)),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: StreamBuilder<DocumentSnapshot>(
           // 📡 GERÇEK ZAMANLI GPS DİNLEMESİ (Kurye verileri canlı akar)
           stream: _db.collection('lojistik_radari').doc(widget.siparisId).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+              return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
             }
 
             if (!snapshot.hasData || !snapshot.data!.exists) {
@@ -101,7 +102,7 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
                                       shape: BoxShape.circle,
                                       gradient: SweepGradient(
                                         colors: [Colors.transparent, SiberTema.kuantumCyan.withOpacity(0.5)],
-                                        stops: const [0.5, 1.0],
+                                        stops: [0.5, 1.0],
                                       ),
                                     ),
                                   ),
@@ -111,7 +112,7 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
 
                           // Merkez Kurye İkonu
                           Container(
-                            padding: const EdgeInsets.all(20),
+                            padding: EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               color: teslimEdildi ? SiberTema.kuantumCyan : SiberTema.oledBlack,
                               shape: BoxShape.circle,
@@ -132,7 +133,7 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
                   // ⏱️ ZAMAN VE MESAFE PANELİ
                   if (!teslimEdildi)
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      padding: EdgeInsets.symmetric(horizontal: 24),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -143,12 +144,12 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
                       ),
                     ),
 
-                  const SizedBox(height: 30),
+                  SizedBox(height: 30),
 
                   // 🏍️ KURYE BİLGİ KARTI (Siber Cam)
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                    padding: const EdgeInsets.all(20),
+                    margin: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                    padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: SiberTema.matGrey.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(16),
@@ -159,18 +160,18 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
                         Row(
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(12),
+                              padding: EdgeInsets.all(12),
                               decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), shape: BoxShape.circle),
-                              child: const Icon(Icons.person_pin, color: SiberTema.kuantumCyan, size: 28),
+                              child: Icon(Icons.person_pin, color: SiberTema.kuantumCyan, size: 28),
                             ),
-                            const SizedBox(width: 16),
+                            SizedBox(width: 16),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(kuryeAdi, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1)),
-                                  const SizedBox(height: 4),
-                                  Text("PLAKA: $plaka", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                                  Text(kuryeAdi, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1)),
+                                  SizedBox(height: 4),
+                                  Text("PLAKA: $plaka", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
                                 ],
                               ),
                             ),
@@ -181,21 +182,21 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
                                   // SİBER NOT: Burada url_launcher ile kurye aranabilir.
                                   developer.log("📞 KIZIL HAT: Kurye aranıyor...");
                                 },
-                                icon: const Icon(Icons.phone_in_talk, color: SiberTema.kuantumCyan),
+                                icon: Icon(Icons.phone_in_talk, color: SiberTema.kuantumCyan),
                                 style: IconButton.styleFrom(backgroundColor: SiberTema.kuantumCyan.withOpacity(0.1)),
                               )
                           ],
                         ),
-                        const SizedBox(height: 20),
-                        const Divider(color: SiberTema.textMuted),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 20),
+                        Divider(color: SiberTema.textMuted),
+                        SizedBox(height: 16),
 
                         // DURUM ÇUBUĞU
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.info_outline, color: SiberTema.textMuted, size: 16),
-                            const SizedBox(width: 8),
+                            Icon(Icons.info_outline, color: SiberTema.textMuted, size: 16),
+                            SizedBox(width: 8),
                             Text(
                               teslimEdildi ? "OPERASYON TAMAMLANDI" : "HEDEF BÖLGEYE İLERLİYOR...",
                               style: TextStyle(color: teslimEdildi ? SiberTema.kuantumCyan : Colors.white70, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
@@ -205,7 +206,7 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                 ],
               ),
             );
@@ -220,10 +221,10 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
     return Column(
       children: [
         Icon(ikon, color: SiberTema.textMuted, size: 24),
-        const SizedBox(height: 8),
-        Text(deger, style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 1)),
-        const SizedBox(height: 4),
-        Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2)),
+        SizedBox(height: 8),
+        Text(deger, style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 1)),
+        SizedBox(height: 4),
+        Text(baslik, style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2)),
       ],
     );
   }
@@ -233,10 +234,10 @@ class _KuryeRadarScreenState extends State<KuryeRadarScreen> with SingleTickerPr
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.satellite_alt_outlined, color: SiberTema.kanKirmizi, size: 60),
-          const SizedBox(height: 16),
-          const Text("SİNYAL KAYBI", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2)),
-          const SizedBox(height: 8),
+          Icon(Icons.satellite_alt_outlined, color: SiberTema.kanKirmizi, size: 60),
+          SizedBox(height: 16),
+          Text("SİNYAL KAYBI", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2)),
+          SizedBox(height: 8),
           Text("Lojistik radarına ulaşılamıyor veya sipariş tamamlanmış olabilir.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 12)),
         ],
       ),

@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// 🦅 OTODNA KUANTUM CÜZDAN, BİLANÇO VE HAKEDİŞ MOTORU
 /// Bu model, esnafın siber kasasını ve sistemin %12 (veya %30) payını yönetir.
@@ -77,7 +77,7 @@ class OtoDNA_Wallet {
     this.netKarPayi = 0.0,
     this.vergiPayi = 0.0,
     this.esnafHakedis = 0.0,
-    this.gecmisIslemler = const [],
+    this.gecmisIslemler = [],
   });
 
   // 🛡️ SİSTEMİN TOPLAM PAYI (%12 Kuralı: %10 Kâr + %2 Vergi)

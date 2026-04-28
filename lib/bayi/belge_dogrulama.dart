@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/bayi/belge_dogrulama.dart
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ import '../core/responsive_kalkan.dart';
 class BelgeDogrulama extends StatefulWidget {
   final String bayiId; // Belgeleri yükleyen bayinin Karargah kimliği
 
-  const BelgeDogrulama({super.key, required this.bayiId});
+  BelgeDogrulama({super.key, required this.bayiId});
 
   @override
   State<BelgeDogrulama> createState() => _BelgeDogrulamaState();
@@ -140,8 +141,8 @@ class _BelgeDogrulamaState extends State<BelgeDogrulama> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir')),
+            SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -157,34 +158,34 @@ class _BelgeDogrulamaState extends State<BelgeDogrulama> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("RESMİ BELGE ONAY MERKEZİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
+          title: Text("RESMİ BELGE ONAY MERKEZİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _talimatKutusu("SİBER UYARI: Ürün eklemek ve Barkod mühürlemek için resmi belgelerinizi optik tarayıcı ile Karargaha iletin."),
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
 
                 _belgeButonu("HİZMET YETERLİLİK BELGESİ (HYB)", "HYB", _hybDosyasi != null),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 _belgeButonu("İMZA SİRKÜLERİ / VERGİ LEVHASI", "İmza", _imzaDosyasi != null),
 
-                const Spacer(),
+                Spacer(),
 
                 SizedBox(
                   height: 60,
                   width: double.infinity,
                   child: _islemSuruyor
-                      ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                      ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                       : ElevatedButton.icon(
                     icon: Icon(Icons.verified_user_outlined, color: onayaHazir ? Colors.black : Colors.white30),
-                    label: const Text("SATICILIĞI AKTİF ET VE MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 12, fontFamily: 'Avenir')),
+                    label: Text("SATICILIĞI AKTİF ET VE MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 12, fontFamily: 'Avenir')),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: onayaHazir ? SiberTema.kuantumCyan : Colors.white10,
                       foregroundColor: onayaHazir ? Colors.black : Colors.white30,
@@ -205,14 +206,14 @@ class _BelgeDogrulamaState extends State<BelgeDogrulama> {
 
   Widget _belgeButonu(String metin, String tip, bool yuklendiMi) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
+      duration: Duration(milliseconds: 300),
       decoration: BoxDecoration(
         color: SiberTema.matGrey.withOpacity(0.8),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: yuklendiMi ? SiberTema.kuantumCyan : Colors.white24, width: yuklendiMi ? 2 : 1),
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         title: Text(metin, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 11, letterSpacing: 1, fontFamily: 'Avenir')),
         subtitle: Text(yuklendiMi ? "ZAMAN DAMGALI KANIT YÜKLENDİ" : "KAMERAYI AÇMAK İÇİN DOKUNUN",
             style: TextStyle(color: yuklendiMi ? SiberTema.kuantumCyan : Colors.white54, fontSize: 9, letterSpacing: 1, height: 2, fontFamily: 'Avenir')),
@@ -223,7 +224,7 @@ class _BelgeDogrulamaState extends State<BelgeDogrulama> {
   }
 
   Widget _talimatKutusu(String metin) => Container(
-    padding: const EdgeInsets.all(16),
+    padding: EdgeInsets.all(16),
     decoration: BoxDecoration(
         color: Colors.orangeAccent.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
@@ -231,9 +232,9 @@ class _BelgeDogrulamaState extends State<BelgeDogrulama> {
     ),
     child: Row(
       children: [
-        const Icon(Icons.warning_amber_rounded, color: Colors.orangeAccent, size: 30),
-        const SizedBox(width: 12),
-        Expanded(child: Text(metin, style: const TextStyle(color: Colors.white70, fontSize: 10, height: 1.5, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
+        Icon(Icons.warning_amber_rounded, color: Colors.orangeAccent, size: 30),
+        SizedBox(width: 12),
+        Expanded(child: Text(metin, style: TextStyle(color: Colors.white70, fontSize: 10, height: 1.5, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
       ],
     ),
   );

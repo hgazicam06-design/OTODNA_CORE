@@ -1,9 +1,10 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AracKayitStepperScreen extends StatefulWidget {
-  const AracKayitStepperScreen({super.key});
+  AracKayitStepperScreen({super.key});
 
   @override
   State<AracKayitStepperScreen> createState() => _AracKayitStepperScreenState();
@@ -126,7 +127,7 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(msg, style: TextStyle(color: isError ? Colors.white : Colors.black, fontWeight: FontWeight.bold)),
-      backgroundColor: isError ? Colors.redAccent : const Color(0xFF00FFC2),
+      backgroundColor: isError ? Colors.redAccent : Color(0xFF00FFC2),
     ));
   }
 
@@ -137,31 +138,31 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
         barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: const Color(0xFF1E293B),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: Colors.redAccent)),
-            title: const Row(
+            backgroundColor: Color(0xFF1E293B),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.redAccent)),
+            title: Row(
               children: [
                 Icon(Icons.block, color: Colors.redAccent),
                 SizedBox(width: 10),
                 Text("İLAN LİMİTİ DOLDU!", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
               ],
             ),
-            content: const Text(
+            content: Text(
               "Standart paketinizin 10 adet ilan limitini doldurdunuz. Sınırsız ilan eklemek ve OtoDNA Kuantum Ağı'nın VIP ayrıcalıklarından faydalanmak için paketinizi yükseltin.",
               style: TextStyle(color: SiberTema.textMuted),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted)),
+                child: Text("İPTAL", style: TextStyle(color: SiberTema.textMuted)),
               ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00FFC2), foregroundColor: Colors.white),
+                style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF00FFC2), foregroundColor: Colors.white),
                 onPressed: () {
                   Navigator.pop(context);
                   // TODO: Ödeme sayfasına (Siber Kasaya) yönlendir!
                 },
-                child: const Text("VIP PAKET AL", style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text("VIP PAKET AL", style: TextStyle(fontWeight: FontWeight.bold)),
               ),
             ],
           );
@@ -179,17 +180,17 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
       backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: bgColor, elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan), onPressed: () => Navigator.pop(context)),
-        title: const Text("Kuantum İlan Terminali", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: primaryCyan), onPressed: () => Navigator.pop(context)),
+        title: Text("Kuantum İlan Terminali", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 16)),
         centerTitle: true,
       ),
       body: Theme(
         data: ThemeData(
-          colorScheme: const ColorScheme.dark(primary: primaryCyan, surface: bgColor), // background yerine surface
+          colorScheme: ColorScheme.dark(primary: primaryCyan, surface: bgColor), // background yerine surface
           canvasColor: bgColor,
         ),
         child: Stepper(
-          physics: const BouncingScrollPhysics(),
+          physics: BouncingScrollPhysics(),
           currentStep: _aktifAdim,
           onStepTapped: (adim) => setState(() => _aktifAdim = adim),
           onStepContinue: () {
@@ -204,33 +205,33 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
           },
           controlsBuilder: (context, details) {
             return Padding(
-              padding: const EdgeInsets.only(top: 24.0),
+              padding: EdgeInsets.only(top: 24.0),
               child: Row(
                 children: [
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryCyan,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        padding: EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
                       onPressed: _isSaving ? null : details.onStepContinue,
                       child: _isSaving
-                          ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: bgColor, strokeWidth: 2))
-                          : Text(_aktifAdim == 2 ? "AĞA YÜKLE (KAYDET)" : "SONRAKİ ADIM", style: const TextStyle(color: bgColor, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                          ? SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: bgColor, strokeWidth: 2))
+                          : Text(_aktifAdim == 2 ? "AĞA YÜKLE (KAYDET)" : "SONRAKİ ADIM", style: TextStyle(color: bgColor, fontWeight: FontWeight.bold, letterSpacing: 1)),
                     ),
                   ),
-                  if (_aktifAdim > 0) const SizedBox(width: 12),
+                  if (_aktifAdim > 0) SizedBox(width: 12),
                   if (_aktifAdim > 0)
                     Expanded(
                       child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          side: const BorderSide(color: SiberTema.textMuted),
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          side: BorderSide(color: SiberTema.textMuted),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),
                         onPressed: details.onStepCancel,
-                        child: const Text("GERİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)),
+                        child: Text("GERİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)),
                       ),
                     ),
                 ],
@@ -242,7 +243,7 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
             Step(
               isActive: _aktifAdim >= 0,
               state: _aktifAdim > 0 ? StepState.complete : StepState.indexed,
-              title: const Text("Araç Kimliği", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
+              title: Text("Araç Kimliği", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
               content: Column(
                 children: [
                   _buildKuantumInput("Plaka / Şase", Icons.pin, _plakaController, isUppercase: true),
@@ -257,7 +258,7 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
             Step(
               isActive: _aktifAdim >= 1,
               state: _aktifAdim > 1 ? StepState.complete : StepState.indexed,
-              title: const Text("Ekspertiz & Durum", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
+              title: Text("Ekspertiz & Durum", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
               content: Column(
                 children: [
                   _buildKuantumInput("Kilometre", Icons.speed, _kmController, isNumber: true),
@@ -270,20 +271,20 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
             // ADIM 3: SATIŞ
             Step(
               isActive: _aktifAdim >= 2,
-              title: const Text("Satış & Yayın", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
+              title: Text("Satış & Yayın", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
               content: Column(
                 children: [
                   _buildKuantumInput("Satış Fiyatı (₺)", Icons.attach_money, _fiyatController, isNumber: true),
                   _buildKuantumInput("Bayi / Lokasyon", Icons.storefront, _lokasyonController),
                   Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    margin: EdgeInsets.only(bottom: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     decoration: BoxDecoration(color: cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
                     child: TextField(
                       controller: _aciklamaController,
-                      style: const TextStyle(color: SiberTema.textMain),
+                      style: TextStyle(color: SiberTema.textMain),
                       maxLines: 4,
-                      decoration: const InputDecoration(hintText: "Satıcı Açıklaması ve Ekstra Donanımlar...", hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 13), border: InputBorder.none),
+                      decoration: InputDecoration(hintText: "Satıcı Açıklaması ve Ekstra Donanımlar...", hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 13), border: InputBorder.none),
                     ),
                   ),
                 ],
@@ -298,18 +299,18 @@ class _AracKayitStepperScreenState extends State<AracKayitStepperScreen> {
   // YARDIMCI GÖRSEL BİLEŞEN
   Widget _buildKuantumInput(String hint, IconData icon, TextEditingController controller, {bool isNumber = false, bool isUppercase = false}) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(color: const Color(0xFF1E293B), borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
+      margin: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      decoration: BoxDecoration(color: Color(0xFF1E293B), borderRadius: BorderRadius.circular(16), border: Border.all(color: SiberTema.textMuted)),
       child: TextField(
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
         textCapitalization: isUppercase ? TextCapitalization.characters : TextCapitalization.sentences,
-        style: const TextStyle(color: SiberTema.textMain),
+        style: TextStyle(color: SiberTema.textMain),
         decoration: InputDecoration(
-          icon: Icon(icon, color: const Color(0xFF00FFC2), size: 20),
+          icon: Icon(icon, color: Color(0xFF00FFC2), size: 20),
           hintText: hint,
-          hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 13),
+          hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 13),
           border: InputBorder.none,
         ),
       ),

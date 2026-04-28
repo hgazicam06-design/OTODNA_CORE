@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,15 +6,15 @@ import '../../../core/siber_tema.dart'; // 🚀 SİBER KÖPRÜ
 import '../../../core/responsive_kalkan.dart';
 
 class DistributorTerminali extends StatefulWidget {
-  const DistributorTerminali({super.key});
+  DistributorTerminali({super.key});
 
   @override
   State<DistributorTerminali> createState() => _DistributorTerminaliState();
 }
 
 class _DistributorTerminaliState extends State<DistributorTerminali> {
-  static const Color primaryCyan = SiberTema.kuantumCyan;
-  static const Color siberGold = SiberTema.siberGold;
+  static Color primaryCyan = SiberTema.kuantumCyan;
+  static Color siberGold = SiberTema.siberGold;
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   
@@ -36,19 +37,19 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
               _buildSiberAppBar(),
               Expanded(
                 child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.all(24),
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.all(24),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildAvantajPaneli(),
-                        const SizedBox(height: 32),
-                        const Text("B2B SİBER SİPARİŞ AĞI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 32),
+                        Text("B2B SİBER SİPARİŞ AĞI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                        SizedBox(height: 16),
                         _buildAltBayiRadari(),
-                        const SizedBox(height: 32),
-                        const Text("TOPTAN ENVANTER MOTORU", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 32),
+                        Text("TOPTAN ENVANTER MOTORU", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+                        SizedBox(height: 16),
                         _buildTopluUrunGirisKarti(),
                       ],
                     ),
@@ -66,17 +67,17 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          decoration: BoxDecoration(color: Colors.white.withOpacity(0.4), border: const Border(bottom: BorderSide(color: SiberTema.textMuted))),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          decoration: BoxDecoration(color: Colors.white.withOpacity(0.4), border: Border(bottom: BorderSide(color: SiberTema.textMuted))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
                 onTap: () => Navigator.pop(context),
-                child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), shape: BoxShape.circle), child: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18)),
+                child: Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), shape: BoxShape.circle), child: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 18)),
               ),
-              const Text('D İ S T R İ B Ü T Ö R   A Ğ I', style: TextStyle(color: siberGold, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'Avenir')),
-              Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: siberGold.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: siberGold.withOpacity(0.5))), child: const Icon(Icons.hub_outlined, color: siberGold, size: 18)),
+              Text('D İ S T R İ B Ü T Ö R   A Ğ I', style: TextStyle(color: siberGold, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 3, fontFamily: 'Avenir')),
+              Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: siberGold.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: siberGold.withOpacity(0.5))), child: Icon(Icons.hub_outlined, color: siberGold, size: 18)),
             ],
           ),
         ),
@@ -90,7 +91,7 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           decoration: BoxDecoration(
             color: siberGold.withOpacity(0.05),
             borderRadius: BorderRadius.circular(24),
@@ -101,9 +102,9 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
             children: [
               Row(
                 children: [
-                  Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: siberGold.withOpacity(0.1), shape: BoxShape.circle), child: const Icon(Icons.workspace_premium, color: siberGold, size: 24)),
-                  const SizedBox(width: 16),
-                  const Expanded(
+                  Container(padding: EdgeInsets.all(12), decoration: BoxDecoration(color: siberGold.withOpacity(0.1), shape: BoxShape.circle), child: Icon(Icons.workspace_premium, color: siberGold, size: 24)),
+                  SizedBox(width: 16),
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -115,16 +116,16 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
                   )
                 ],
               ),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 20), child: Divider(color: SiberTema.textMuted)),
-              const Row(
+              Padding(padding: EdgeInsets.symmetric(vertical: 20), child: Divider(color: SiberTema.textMuted)),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Standart Karargah Payı", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                   Text("%12", style: TextStyle(color: SiberTema.textMuted, fontSize: 16, fontWeight: FontWeight.bold, decoration: TextDecoration.lineThrough, fontFamily: 'Avenir')),
                 ],
               ),
-              const SizedBox(height: 8),
-              const Row(
+              SizedBox(height: 8),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Distribütör Ayrıcalığı", style: TextStyle(color: siberGold, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
@@ -141,7 +142,7 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
   Widget _buildAltBayiRadari() {
     return ListView.builder(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       itemCount: _altBayiler.length,
       itemBuilder: (context, index) {
         var bayi = _altBayiler[index];
@@ -149,25 +150,25 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
         Color drmRengi = isAktif ? primaryCyan : SiberTema.kanKirmizi;
 
         return Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          padding: const EdgeInsets.all(16),
+          margin: EdgeInsets.only(bottom: 12),
+          padding: EdgeInsets.all(16),
           decoration: BoxDecoration(color: Colors.white.withOpacity(0.02), borderRadius: BorderRadius.circular(16), border: Border.all(color: drmRengi.withOpacity(0.2))),
           child: Row(
             children: [
-              Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: drmRengi.withOpacity(0.1), shape: BoxShape.circle), child: Icon(isAktif ? Icons.store_outlined : Icons.timer_outlined, color: drmRengi, size: 20)),
-              const SizedBox(width: 16),
+              Container(padding: EdgeInsets.all(10), decoration: BoxDecoration(color: drmRengi.withOpacity(0.1), shape: BoxShape.circle), child: Icon(isAktif ? Icons.store_outlined : Icons.timer_outlined, color: drmRengi, size: 20)),
+              SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(bayi['ad'], style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-                    const SizedBox(height: 4),
-                    Text("Aylık Ciro: ₺${(bayi['ciro'] as int).toString()}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 10, fontFamily: 'Avenir')),
+                    Text(bayi['ad'], style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                    SizedBox(height: 4),
+                    Text("Aylık Ciro: ₺${(bayi['ciro'] as int).toString()}", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontFamily: 'Avenir')),
                   ],
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(color: drmRengi.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
                 child: Text(bayi['durum'].toString().toUpperCase(), style: TextStyle(color: drmRengi, fontSize: 9, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
               )
@@ -181,16 +182,16 @@ class _DistributorTerminaliState extends State<DistributorTerminali> {
   Widget _buildTopluUrunGirisKarti() {
     return GestureDetector(
       onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("B2B Çoklu Ekleme Motoru Başlatılıyor...", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("B2B Çoklu Ekleme Motoru Başlatılıyor...", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan));
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: Container(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             decoration: BoxDecoration(color: primaryCyan.withOpacity(0.05), borderRadius: BorderRadius.circular(20), border: Border.all(color: primaryCyan.withOpacity(0.3))),
-            child: const Row(
+            child: Row(
               children: [
                 Icon(Icons.inventory_2_outlined, color: primaryCyan, size: 32),
                 SizedBox(width: 20),

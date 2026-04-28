@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,7 +16,7 @@ import 'arac_dna_raporu_screen.dart';
 import 'global_siber_pazar_screen.dart';
 
 class KullaniciPaneliScreen extends StatefulWidget {
-  const KullaniciPaneliScreen({super.key});
+  KullaniciPaneliScreen({super.key});
 
   @override
   State<KullaniciPaneliScreen> createState() => _KullaniciPaneliScreenState();
@@ -35,7 +36,7 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
 
   void _sosBasladi(TapDownDetails details) {
     setState(() { _isSosPressing = true; _sosProgress = 0.0; });
-    _sosTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+    _sosTimer = Timer.periodic(Duration(milliseconds: 50), (timer) {
       setState(() { _sosProgress += 0.01; });
       if (_sosProgress >= 1.0) {
         timer.cancel();
@@ -117,7 +118,7 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
   void _siberUyariVer(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir', fontSize: 12)),
+          content: Text(mesaj, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir', fontSize: 12)),
           backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -134,11 +135,11 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
         appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            title: const Text("MÜŞTERİ KOKPİTİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2)),
+            title: Text("MÜŞTERİ KOKPİTİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2)),
             centerTitle: true,
             actions: [
               IconButton(
-                  icon: const Icon(Icons.power_settings_new, color: SiberTema.kanKirmizi),
+                  icon: Icon(Icons.power_settings_new, color: SiberTema.kanKirmizi),
                   onPressed: () => FirebaseAuth.instance.signOut(),
                   tooltip: "Ağdan Çık"
               )
@@ -152,23 +153,23 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
                   child: StreamBuilder<QuerySnapshot>(
                     stream: _db.collection('araclar').where('kullanici_id', isEqualTo: _currentUser?.uid).snapshots(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+                      if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
                       final araclar = snapshot.data?.docs ?? [];
                       if (araclar.isEmpty) return _buildBosGarajDurumu();
 
                       return ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.all(20),
+                        physics: BouncingScrollPhysics(),
+                        padding: EdgeInsets.all(20),
                         itemCount: araclar.length + 1,
                         itemBuilder: (context, index) {
                           if (index == araclar.length) {
                             return Padding(
-                              padding: const EdgeInsets.only(top: 10),
+                              padding: EdgeInsets.only(top: 10),
                               child: ElevatedButton.icon(
                                   style: SiberTema.kuantumButonStili(),
                                   onPressed: _isProcessing ? null : _yeniAracEkleOcr,
-                                  icon: const Icon(Icons.document_scanner),
-                                  label: const Text("YENİ ARAÇ MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.bold))
+                                  icon: Icon(Icons.document_scanner),
+                                  label: Text("YENİ ARAÇ MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.bold))
                               ),
                             );
                           }
@@ -185,20 +186,20 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
                     ikon: Icons.storefront,
                     etiket: "GLOBAL SİBER PAZAR (VİTRİN)",
                     renk: SiberTema.kuantumCyan,
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const GlobalSiberPazarScreen()))
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => GlobalSiberPazarScreen()))
                 ),
 
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
 
                 // 🚨 ACİL DURUM S.O.S BUTONU (Gazi Protokolü)
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                   child: GestureDetector(
                     onTapDown: _isProcessing ? null : _sosBasladi,
                     onTapUp: _sosBirakildi,
                     onTapCancel: _sosIptalEdildi,
                     child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 100),
+                        duration: Duration(milliseconds: 100),
                         width: double.infinity,
                         height: 70,
                         decoration: BoxDecoration(
@@ -218,7 +219,7 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Icon(Icons.warning_amber_rounded, color: _isSosPressing ? Colors.white : SiberTema.kanKirmizi),
-                                        const SizedBox(width: 12),
+                                        SizedBox(width: 12),
                                         Text(
                                             _isSosPressing ? "S.O.S TETİKLENİYOR..." : "S.O.S (5 SN BASILI TUT)",
                                             style: TextStyle(color: _isSosPressing ? Colors.white : SiberTema.kanKirmizi, fontWeight: FontWeight.w900, letterSpacing: 1.5)
@@ -236,7 +237,7 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
             if (_isProcessing)
               Container(
                   color: SiberTema.oledBlack.withOpacity(0.8),
-                  child: const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                  child: Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
               ),
           ],
         ),
@@ -247,8 +248,8 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
   Widget _buildAracKarti(String plaka, String model, double dnaSkoru) {
     Color skorRengi = dnaSkoru >= 80 ? SiberTema.kuantumCyan : (dnaSkoru >= 50 ? Colors.orange : SiberTema.kanKirmizi);
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.all(20),
+      margin: EdgeInsets.only(bottom: 20),
+      padding: EdgeInsets.all(20),
       decoration: SiberTema.siberCamDekorasyonu(renk: skorRengi),
       child: Column(
         children: [
@@ -258,29 +259,29 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(plaka, style: const TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                  Text(plaka, style: TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2)),
                   Text(model, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 12)),
                 ],
               ),
               _buildDnaHalkasi(dnaSkoru, skorRengi),
             ],
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
           Row(
             children: [
               Expanded(
                 child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(foregroundColor: SiberTema.kuantumCyan, side: const BorderSide(color: SiberTema.kuantumCyan)),
+                    style: OutlinedButton.styleFrom(foregroundColor: SiberTema.kuantumCyan, side: BorderSide(color: SiberTema.kuantumCyan)),
                     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AracDnaRaporuScreen(plaka: plaka))),
-                    child: const Text("SAĞLIK RAPORU", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))
+                    child: Text("SAĞLIK RAPORU", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, foregroundColor: SiberTema.oledBlack),
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SiberGozRadari())),
-                    child: const Text("SİBER GÖZ (QR)", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => SiberGozRadari())),
+                    child: Text("SİBER GÖZ (QR)", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))
                 ),
               ),
             ],
@@ -292,12 +293,12 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
 
   Widget _buildDnaHalkasi(double skor, Color renk) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(10),
       decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: renk.withOpacity(0.5), width: 2)),
       child: Column(
         children: [
           Text(skor.toStringAsFixed(0), style: TextStyle(color: renk, fontSize: 16, fontWeight: FontWeight.w900)),
-          const Text("DNA", style: TextStyle(color: SiberTema.textMuted, fontSize: 8)),
+          Text("DNA", style: TextStyle(color: SiberTema.textMuted, fontSize: 8)),
         ],
       ),
     );
@@ -305,11 +306,11 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
 
   Widget _buildSiberMenuButonu({required IconData ikon, required String etiket, required Color renk, required VoidCallback onTap}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: 20),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: SiberTema.oledBlack,
             borderRadius: BorderRadius.circular(16),
@@ -319,7 +320,7 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(ikon, color: renk, size: 24),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Text(etiket, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1))
             ],
           ),
@@ -334,13 +335,13 @@ class _KullaniciPaneliScreenState extends State<KullaniciPaneliScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.garage_outlined, size: 80, color: Colors.white.withOpacity(0.1)),
-          const SizedBox(height: 16),
-          const Text("SİBER GARAJ BOŞ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold, letterSpacing: 2)),
-          const SizedBox(height: 24),
+          SizedBox(height: 16),
+          Text("SİBER GARAJ BOŞ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold, letterSpacing: 2)),
+          SizedBox(height: 24),
           ElevatedButton(
               style: SiberTema.kuantumButonStili(),
               onPressed: _yeniAracEkleOcr,
-              child: const Text("İLK ARACINI MÜHÜRLE")
+              child: Text("İLK ARACINI MÜHÜRLE")
           )
         ],
       ),

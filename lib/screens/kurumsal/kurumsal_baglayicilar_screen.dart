@@ -1,7 +1,8 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 
 class KurumsalBaglayicilarScreen extends StatefulWidget {
-  const KurumsalBaglayicilarScreen({super.key});
+  KurumsalBaglayicilarScreen({super.key});
 
   @override
   State<KurumsalBaglayicilarScreen> createState() => _KurumsalBaglayicilarScreenState();
@@ -19,7 +20,7 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
     if (mevcutDurum) {
       // Bağlantıyı Kes
       onUpdate(false);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$servisAdi bağlantısı ağdan koparıldı.", style: const TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.redAccent));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$servisAdi bağlantısı ağdan koparıldı.", style: TextStyle(color: SiberTema.textMain)), backgroundColor: Colors.redAccent));
       return;
     }
 
@@ -28,28 +29,28 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF111111),
+        backgroundColor: Color(0xFF111111),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 16),
-            const CircularProgressIndicator(color: Color(0xFF00FFC2)),
-            const SizedBox(height: 24),
-            Text("$servisAdi Enterprise API'si Bekleniyor...", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13)),
-            const SizedBox(height: 8),
-            const Text("Gemini OAuth 2.0 Anahtarı Doğrulanıyor", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
+            CircularProgressIndicator(color: Color(0xFF00FFC2)),
+            SizedBox(height: 24),
+            Text("$servisAdi Enterprise API'si Bekleniyor...", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 13)),
+            SizedBox(height: 8),
+            Text("Gemini OAuth 2.0 Anahtarı Doğrulanıyor", style: TextStyle(color: SiberTema.textMuted, fontSize: 11)),
+            SizedBox(height: 16),
           ],
         ),
       ),
     );
 
     // 2 Saniye Sonra Başarılı Bağlantı
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(Duration(seconds: 2), () {
       Navigator.pop(context); // Yükleniyor ekranını kapat
       onUpdate(true); // Switch'i aktif et
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$servisAdi Kuantum Ağına Başarıyla Mühürlendi! 🦅", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: const Color(0xFF00FFC2)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$servisAdi Kuantum Ağına Başarıyla Mühürlendi! 🦅", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: Color(0xFF00FFC2)));
     });
   }
 
@@ -67,23 +68,23 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: accentColor, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text('E N T E R P R I S E', style: TextStyle(color: accentColor, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 6)),
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: accentColor, size: 20), onPressed: () => Navigator.pop(context)),
+        title: Text('E N T E R P R I S E', style: TextStyle(color: accentColor, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 6)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // =========================================================
             // BÜYÜK BAŞLIK VE AÇIKLAMA
             // =========================================================
-            const Text("Bağlayıcılar", style: TextStyle(color: accentColor, fontSize: 32, fontWeight: FontWeight.w600, letterSpacing: -1)),
-            const SizedBox(height: 8),
-            const Text("OtoDNA ağını Google Workspace ve harici kurumsal API'ler ile senkronize edin. Tüm veri akışı uçtan uca şifrelenir.", style: TextStyle(color: textMuted, fontSize: 13, height: 1.5)),
-            const SizedBox(height: 40),
+            Text("Bağlayıcılar", style: TextStyle(color: accentColor, fontSize: 32, fontWeight: FontWeight.w600, letterSpacing: -1)),
+            SizedBox(height: 8),
+            Text("OtoDNA ağını Google Workspace ve harici kurumsal API'ler ile senkronize edin. Tüm veri akışı uçtan uca şifrelenir.", style: TextStyle(color: textMuted, fontSize: 13, height: 1.5)),
+            SizedBox(height: 40),
 
             // =========================================================
             // 1. GOOGLE DRIVE (Belge Arşivi)
@@ -98,7 +99,7 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
               surfaceColor: surfaceColor,
               primaryCyan: primaryCyan,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             // =========================================================
             // 2. GOOGLE CALENDAR (Takvim)
@@ -113,7 +114,7 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
               surfaceColor: surfaceColor,
               primaryCyan: primaryCyan,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             // =========================================================
             // 3. GMAIL ENTERPRISE (Resmi Evrak)
@@ -128,7 +129,7 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
               surfaceColor: surfaceColor,
               primaryCyan: primaryCyan,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             // =========================================================
             // 4. JIRA / HUBSPOT (İş Takibi)
@@ -144,7 +145,7 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
               primaryCyan: primaryCyan,
             ),
 
-            const SizedBox(height: 48),
+            SizedBox(height: 48),
 
             // =========================================================
             // GÜVENLİK MÜHRÜ
@@ -153,12 +154,12 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
               child: Column(
                 children: [
                   Icon(Icons.gpp_good_outlined, color: Colors.white.withOpacity(0.2), size: 32),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Text("Gemini AI API altyapısı ile korunmaktadır.", style: TextStyle(color: SiberTema.textMain.withOpacity(0.3), fontSize: 11)),
                 ],
               ),
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
           ],
         ),
       ),
@@ -168,7 +169,7 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
   // 💎 TESLA MİMARİSİ: BAĞLAYICI (CONNECTOR) KARTI
   Widget _buildConnectorCard({required String servisAdi, required String aciklama, required IconData ikon, required Color ikonRengi, required bool bagliMi, required VoidCallback onToggle, required Color surfaceColor, required Color primaryCyan}) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(16),
@@ -180,7 +181,7 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
           Row(
             children: [
               Icon(ikon, color: bagliMi ? primaryCyan : ikonRengi, size: 28),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               Expanded(
                 child: Text(servisAdi, style: TextStyle(color: bagliMi ? primaryCyan : Colors.white, fontSize: 15, fontWeight: FontWeight.bold, letterSpacing: 0.5)),
               ),
@@ -188,7 +189,7 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
               GestureDetector(
                 onTap: onToggle,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                       color: bagliMi ? primaryCyan.withOpacity(0.1) : Colors.white.withOpacity(0.05),
                       borderRadius: BorderRadius.circular(20),
@@ -202,8 +203,8 @@ class _KurumsalBaglayicilarScreenState extends State<KurumsalBaglayicilarScreen>
               )
             ],
           ),
-          const SizedBox(height: 12),
-          Text(aciklama, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
+          SizedBox(height: 12),
+          Text(aciklama, style: TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.5)),
         ],
       ),
     );

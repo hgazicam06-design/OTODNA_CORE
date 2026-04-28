@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/sifre_sifirla_screen.dart
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 
 class SifreSifirlaScreen extends StatefulWidget {
-  const SifreSifirlaScreen({super.key});
+  SifreSifirlaScreen({super.key});
 
   @override
   State<SifreSifirlaScreen> createState() => _SifreSifirlaScreenState();
@@ -68,7 +69,7 @@ class _SifreSifirlaScreenState extends State<SifreSifirlaScreen> {
             fontFamily: 'Avenir',
           ),
         ),
-        duration: const Duration(seconds: 4),
+        duration: Duration(seconds: 4),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
@@ -85,10 +86,10 @@ class _SifreSifirlaScreenState extends State<SifreSifirlaScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
+            icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan),
             onPressed: () => Navigator.pop(context),
           ),
-          title: const Text(
+          title: Text(
             "ŞİFRE KURTARMA",
             style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir', fontSize: 16),
           ),
@@ -96,8 +97,8 @@ class _SifreSifirlaScreenState extends State<SifreSifirlaScreen> {
         ),
         body: Center(
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -111,13 +112,13 @@ class _SifreSifirlaScreenState extends State<SifreSifirlaScreen> {
                     border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5),
                     boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.2), blurRadius: 20, spreadRadius: 2)],
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Icon(Icons.lock_reset_rounded, color: SiberTema.kuantumCyan, size: 50, shadows: [Shadow(color: SiberTema.kuantumCyan, blurRadius: 10)]),
                   ),
                 ),
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
 
-                const Text(
+                Text(
                   "SİBER KİLİT KIRILIYOR",
                   style: TextStyle(
                     color: SiberTema.textMain,
@@ -127,7 +128,7 @@ class _SifreSifirlaScreenState extends State<SifreSifirlaScreen> {
                     fontFamily: 'Avenir',
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Text(
                   "Karargaha kayıtlı yetkili e-posta adresinizi girin. Kuantum sıfırlama protokolü anında başlatılacaktır.",
                   textAlign: TextAlign.center,
@@ -138,51 +139,51 @@ class _SifreSifirlaScreenState extends State<SifreSifirlaScreen> {
                     fontFamily: 'Avenir',
                   ),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
 
                 // 🔥 3D SİBER FORM ALANI
                 Container(
-                  padding: const EdgeInsets.all(24.0),
+                  padding: EdgeInsets.all(24.0),
                   decoration: BoxDecoration(
                     color: SiberTema.matGrey.withOpacity(0.5),
                     border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
                     borderRadius: BorderRadius.circular(24),
-                    boxShadow: const [BoxShadow(color: Colors.white54, blurRadius: 20, offset: Offset(0, 10))],
+                    boxShadow: [BoxShadow(color: Colors.white54, blurRadius: 20, offset: Offset(0, 10))],
                   ),
                   child: Column(
                     children: [
                       TextField(
                         controller: _emailCtrl,
                         keyboardType: TextInputType.emailAddress,
-                        style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontFamily: 'Avenir', letterSpacing: 1.5, fontWeight: FontWeight.bold),
+                        style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontFamily: 'Avenir', letterSpacing: 1.5, fontWeight: FontWeight.bold),
                         decoration: InputDecoration(
                           hintText: "Siber E-Posta Adresi",
-                          hintStyle: const TextStyle(color: Colors.white30, fontSize: 14, fontFamily: 'Avenir', letterSpacing: 1),
-                          prefixIcon: const Icon(Icons.alternate_email, color: SiberTema.textMuted, size: 22),
+                          hintStyle: TextStyle(color: Colors.white30, fontSize: 14, fontFamily: 'Avenir', letterSpacing: 1),
+                          prefixIcon: Icon(Icons.alternate_email, color: SiberTema.textMuted, size: 22),
                           filled: true,
                           fillColor: SiberTema.oledBlack, // Derin Siyah
-                          contentPadding: const EdgeInsets.symmetric(vertical: 20),
+                          contentPadding: EdgeInsets.symmetric(vertical: 20),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide: BorderSide(color: Colors.white.withOpacity(0.05), width: 1.5),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(color: SiberTema.kuantumCyan, width: 2),
+                            borderSide: BorderSide(color: SiberTema.kuantumCyan, width: 2),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30),
 
                       SizedBox(
                         width: double.infinity,
                         height: 55,
                         child: _isLoading
-                            ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3))
+                            ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3))
                             : ElevatedButton(
                           onPressed: _sifirlamaProtokolunuBaslat,
                           style: SiberTema.kuantumButonStili(), // 🔥 3D Kuantum Butonu
-                          child: const Text(
+                          child: Text(
                             "BAĞLANTIYI GÖNDER",
                             style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir', color: SiberTema.oledBlack),
                           ),

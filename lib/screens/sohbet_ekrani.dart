@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,7 @@ class SohbetEkrani extends StatefulWidget {
   final String karsiTarafId;
   final String karsiTarafIsim;
 
-  const SohbetEkrani({
+  SohbetEkrani({
     super.key,
     required this.karsiTarafId,
     required this.karsiTarafIsim,
@@ -91,7 +92,7 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Ağ Hatası: Mesaj İletilemedi ($e)", style: const TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi),
+        SnackBar(content: Text("Ağ Hatası: Mesaj İletilemedi ($e)", style: TextStyle(color: SiberTema.textMain)), backgroundColor: SiberTema.kanKirmizi),
       );
     }
   }
@@ -107,23 +108,23 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
           elevation: 1,
           shadowColor: SiberTema.kuantumCyan.withOpacity(0.3),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan, size: 20),
+            icon: Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan, size: 20),
             onPressed: () => Navigator.pop(context),
           ),
           title: Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5))),
-                child: const Icon(Icons.person, color: SiberTema.kuantumCyan, size: 18),
+                child: Icon(Icons.person, color: SiberTema.kuantumCyan, size: 18),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(widget.karsiTarafIsim, style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-                    const Text("Kuantum Ağı Bağlantısı Aktif 🟢", style: TextStyle(color: Colors.greenAccent, fontSize: 10, fontFamily: 'Avenir', letterSpacing: 1)),
+                    Text("Kuantum Ağı Bağlantısı Aktif 🟢", style: TextStyle(color: Colors.greenAccent, fontSize: 10, fontFamily: 'Avenir', letterSpacing: 1)),
                   ],
                 ),
               ),
@@ -131,7 +132,7 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
           ),
         ),
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(image: AssetImage('assets/images/radar_grid.png'), fit: BoxFit.cover, opacity: 0.05),
           ),
           child: Column(
@@ -145,16 +146,16 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
                   stream: _db.collection('sohbet_odalari').doc(_sohbetOdasiId).collection('mesajlar').orderBy('zaman', descending: true).snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2));
+                      return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2));
                     }
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                       return Center(child: Text("Siber Tünel Temiz. İlk mesajı siz gönderin.", style: TextStyle(color: SiberTema.textMain.withOpacity(0.3), fontWeight: FontWeight.bold, fontFamily: 'Avenir')));
                     }
 
                     return ListView.builder(
-                      physics: const BouncingScrollPhysics(),
+                      physics: BouncingScrollPhysics(),
                       reverse: true, // Mesajlar alttan yukarı doğru dizilsin
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(16),
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
                         var mesajVerisi = snapshot.data!.docs[index].data() as Map<String, dynamic>;
@@ -182,8 +183,8 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
   // ⚖️ KARARGAH HUKUKİ ZIRHI (SORUMLULUK REDDİ)
   Widget _buildYasalUyariKalkani() {
     return Container(
-      margin: const EdgeInsets.all(12),
-      padding: const EdgeInsets.all(12),
+      margin: EdgeInsets.all(12),
+      padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: SiberTema.altinSari.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
@@ -193,14 +194,14 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.gavel, color: SiberTema.altinSari, size: 24),
-          const SizedBox(width: 12),
+          Icon(Icons.gavel, color: SiberTema.altinSari, size: 24),
+          SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("SİBER UYARI & YASAL BİLDİRİM", style: TextStyle(color: SiberTema.altinSari, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1, fontFamily: 'Avenir')),
-                const SizedBox(height: 4),
+                Text("SİBER UYARI & YASAL BİLDİRİM", style: TextStyle(color: SiberTema.altinSari, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1, fontFamily: 'Avenir')),
+                SizedBox(height: 4),
                 Text(
                   "OtoDNA sistemi üzerinden yapılmayan hiçbir ticaret Karargah güvencesinde değildir. Uygulama dışı ödeme ve işlemlerde tüm sorumluluk size aittir. Bu tüneldeki yazışmalar uyuşmazlık halinde resmi delil kabul edilir.",
                   style: TextStyle(color: SiberTema.textMain.withOpacity(0.8), fontSize: 10, height: 1.4, fontFamily: 'Avenir'),
@@ -217,14 +218,14 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
     return Align(
       alignment: benMiGonderdim ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
+        margin: EdgeInsets.only(bottom: 12),
         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: benMiGonderdim ? SiberTema.kuantumCyan.withOpacity(0.15) : SiberTema.matGrey,
           borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(16),
-            topRight: const Radius.circular(16),
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(16),
             bottomLeft: Radius.circular(benMiGonderdim ? 16 : 0),
             bottomRight: Radius.circular(benMiGonderdim ? 0 : 16),
           ),
@@ -252,7 +253,7 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             color: SiberTema.oledBlack.withOpacity(0.8),
             border: Border(top: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.2))),
@@ -268,29 +269,29 @@ class _SohbetEkraniState extends State<SohbetEkrani> {
                   ),
                   child: TextField(
                     controller: _mesajController,
-                    style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontFamily: 'Avenir'),
+                    style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontFamily: 'Avenir'),
                     textCapitalization: TextCapitalization.sentences,
                     maxLines: null, // Çoklu satır desteği
                     decoration: InputDecoration(
                       hintText: "Siber Ağa Mesaj Yaz...",
                       hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.3), fontSize: 13, fontFamily: 'Avenir'),
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               GestureDetector(
                 onTap: _mesajGonder,
                 child: Container(
-                  padding: const EdgeInsets.all(14),
+                  padding: EdgeInsets.all(14),
                   decoration: BoxDecoration(
                     color: SiberTema.kuantumCyan,
                     shape: BoxShape.circle,
                     boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.4), blurRadius: 15, spreadRadius: 2)],
                   ),
-                  child: const Icon(Icons.send_rounded, color: SiberTema.oledBlack, size: 20),
+                  child: Icon(Icons.send_rounded, color: SiberTema.oledBlack, size: 20),
                 ),
               ),
             ],

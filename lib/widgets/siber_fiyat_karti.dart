@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/widgets/siber_fiyat_karti.dart
 import 'package:flutter/material.dart';
 import '../core/siber_tema.dart';
@@ -6,7 +7,7 @@ import '../core/siber_tema.dart';
 /// Bu bileşen, ağdaki her işlemin finansal DNA'sını kullanıcıya ve bayiye şeffafça sunar.
 class SiberFiyatKarti extends StatelessWidget {
   final double satisFiyati;
-  const SiberFiyatKarti({
+  SiberFiyatKarti({
     super.key,
     required this.satisFiyati,
   });
@@ -20,8 +21,8 @@ class SiberFiyatKarti extends StatelessWidget {
     final double esnafaKalan = satisFiyati - hizmetBedeli;
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 12),
-      padding: const EdgeInsets.all(24),
+      margin: EdgeInsets.symmetric(vertical: 12),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: SiberTema.matGrey.withOpacity(0.1),
         borderRadius: BorderRadius.circular(24),
@@ -43,9 +44,9 @@ class SiberFiyatKarti extends StatelessWidget {
           // 📡 BAŞLIK: SİBER PROTOKOLLER
           Row(
             children: [
-              const Icon(Icons.account_balance_wallet_outlined, color: SiberTema.kuantumCyan, size: 20),
-              const SizedBox(width: 12),
-              const Text(
+              Icon(Icons.account_balance_wallet_outlined, color: SiberTema.kuantumCyan, size: 20),
+              SizedBox(width: 12),
+              Text(
                 "SİBER FİYATLANDIRMA PROTOKOLÜ",
                 style: TextStyle(
                     color: Colors.white54,
@@ -56,7 +57,7 @@ class SiberFiyatKarti extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
 
           // 1. ÜRÜN SATIŞ FİYATI
           _fiyatSatiri(
@@ -66,7 +67,7 @@ class SiberFiyatKarti extends StatelessWidget {
               isMain: true
           ),
 
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
             child: Divider(color: Colors.white10, thickness: 1),
           ),
@@ -77,19 +78,19 @@ class SiberFiyatKarti extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Text(
+                  Text(
                       "SİBER AĞ KESİNTİSİ ",
                       style: TextStyle(color: Colors.redAccent, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                         color: Colors.redAccent.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(4)
                     ),
                     child: Text(
                         "%${(komisyonOrani * 100).toInt()}",
-                        style: const TextStyle(color: Colors.redAccent, fontSize: 9, fontWeight: FontWeight.w900, fontFamily: 'monospace')
+                        style: TextStyle(color: Colors.redAccent, fontSize: 9, fontWeight: FontWeight.w900, fontFamily: 'monospace')
                     ),
                   )
                 ],
@@ -101,11 +102,11 @@ class SiberFiyatKarti extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
 
           // 3. NET KAZANÇ (ESNAFA KALAN)
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: SiberTema.kuantumCyan.withOpacity(0.05),
               borderRadius: BorderRadius.circular(16),
@@ -114,13 +115,13 @@ class SiberFiyatKarti extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                     "NET HAKEDİŞ (CÜZDAN)",
                     style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)
                 ),
                 Text(
                     "₺${esnafaKalan.toStringAsFixed(2)}",
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: SiberTema.kuantumCyan,
                         fontSize: 18,
                         fontWeight: FontWeight.w900,

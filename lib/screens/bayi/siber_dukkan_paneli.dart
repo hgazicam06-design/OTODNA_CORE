@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/bayi/siber_dukkan_paneli.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,7 @@ import '../../core/responsive_kalkan.dart';
 /// 🛡️ KUANTUM DÜKKAN TERMİNALİ (SiberDukkanPaneli V2)
 /// Bayinin ürün eklerken kâr marjını yönettiği ve %12 OtoDNA kesintisini otonom hesaplayan komuta merkezi.
 class SiberDukkanPaneli extends StatefulWidget {
-  const SiberDukkanPaneli({super.key});
+  SiberDukkanPaneli({super.key});
 
   @override
   State<SiberDukkanPaneli> createState() => _SiberDukkanPaneliState();
@@ -28,50 +29,50 @@ class _SiberDukkanPaneliState extends State<SiberDukkanPaneli> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("DİJİTAL DÜKKAN & FİNANSAL RADAR",
+          title: Text("DİJİTAL DÜKKAN & FİNANSAL RADAR",
               style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13, fontFamily: 'Avenir')),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
           actions: [
             IconButton(
-              icon: const Icon(Icons.refresh, color: SiberTema.kuantumCyan),
+              icon: Icon(Icons.refresh, color: SiberTema.kuantumCyan),
               onPressed: () => setState(() {}),
             )
           ],
         ),
         body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(20),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // ── 💰 1. BAYİ GENEL KAZANÇ RADARI ──
-              const Text("BAYİ KAZANÇ ANALİZİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-              const SizedBox(height: 12),
+              Text("BAYİ KAZANÇ ANALİZİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+              SizedBox(height: 12),
               _buildFinansalOzet(),
 
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
 
               // ── 📦 2. SİBER STOK VE FİYAT DNA'SI ──
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Expanded(child: Text("ÜRÜN ENVANTERİ VE FİYAT DNA'SI", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))),
+                  Expanded(child: Text("ÜRÜN ENVANTERİ VE FİYAT DNA'SI", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: SiberTema.kuantumCyan,
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8)
+                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8)
                     ),
                     onPressed: () => _yeniUrunEkleDialog(),
-                    icon: const Icon(Icons.add_shopping_cart, size: 16),
-                    label: const Text("YENİ ÜRÜN", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                    icon: Icon(Icons.add_shopping_cart, size: 16),
+                    label: Text("YENİ ÜRÜN", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
                   )
                 ],
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _buildStokListesi(),
             ],
           ),
@@ -102,14 +103,14 @@ class _SiberDukkanPaneliState extends State<SiberDukkanPaneli> {
         }
 
         return Container(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           decoration: SiberTema.siberCamZirh(renk: SiberTema.matGrey),
           child: Column(
             children: [
               _buildFinansSatiri("TOPLAM STOK DEĞERİ (VİTRİN)", potansiyelCiro, Colors.white),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: Divider(color: SiberTema.textMuted)),
+              Padding(padding: EdgeInsets.symmetric(vertical: 8), child: Divider(color: SiberTema.textMuted)),
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.05), borderRadius: BorderRadius.circular(8), border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.2))),
                 child: _buildFinansSatiri("POTANSİYEL NET KAZANCINIZ", potansiyelNetKar, SiberTema.kuantumCyan, isBold: true),
               ),
@@ -126,19 +127,19 @@ class _SiberDukkanPaneliState extends State<SiberDukkanPaneli> {
       stream: _db.collection('bayi_stoklari').doc(_bayiId).collection('urunler').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Padding(padding: EdgeInsets.all(40), child: Text("ENVANTER BOŞ", style: TextStyle(color: SiberTema.textMuted, letterSpacing: 2, fontFamily: 'Avenir'))));
+          return Center(child: Padding(padding: EdgeInsets.all(40), child: Text("ENVANTER BOŞ", style: TextStyle(color: SiberTema.textMuted, letterSpacing: 2, fontFamily: 'Avenir'))));
         }
 
         return ListView.builder(
           shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+          physics: NeverScrollableScrollPhysics(),
           itemCount: snapshot.data!.docs.length,
           itemBuilder: (context, index) {
             var urun = snapshot.data!.docs[index].data() as Map<String, dynamic>;
 
             return Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(16),
+              margin: EdgeInsets.only(bottom: 12),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: SiberTema.matGrey,
                 borderRadius: BorderRadius.circular(16),
@@ -150,13 +151,13 @@ class _SiberDukkanPaneliState extends State<SiberDukkanPaneli> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(child: Text(urun['urun_adi'].toString().toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1, fontFamily: 'Avenir'))),
-                      Text("${urun['miktar']} ADET", style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontSize: 11, fontFamily: 'Avenir')),
+                      Expanded(child: Text(urun['urun_adi'].toString().toUpperCase(), style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1, fontFamily: 'Avenir'))),
+                      Text("${urun['miktar']} ADET", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontSize: 11, fontFamily: 'Avenir')),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  const Divider(color: SiberTema.textMuted),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 12),
+                  Divider(color: SiberTema.textMuted),
+                  SizedBox(height: 8),
 
                   // 🛡️ ÜRÜN FİNANSAL ANALİZİ (Bayi Ekranı Özel)
                   Row(
@@ -167,26 +168,26 @@ class _SiberDukkanPaneliState extends State<SiberDukkanPaneli> {
                       _fiyatKapsulu("KESİNTİ %12", "-₺${(urun['otodna_kesintisi'] ?? 0).toDouble().toStringAsFixed(2)}", SiberTema.kritikRed),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
 
                   // VİTRİN VE NET KAZANÇ
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text("MÜŞTERİ SATIŞ FİYATI:", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-                        Text("₺${(urun['vitrin_fiyati'] ?? 0).toDouble().toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'monospace')),
+                        Text("MÜŞTERİ SATIŞ FİYATI:", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                        Text("₺${(urun['vitrin_fiyati'] ?? 0).toDouble().toStringAsFixed(2)}", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 14, fontFamily: 'monospace')),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      const Text("SİZİN KAZANCINIZ: ", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontFamily: 'Avenir')),
-                      Text("₺${(urun['net_bayi_kazanci'] ?? 0).toDouble().toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 12, fontFamily: 'monospace')),
+                      Text("SİZİN KAZANCINIZ: ", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontFamily: 'Avenir')),
+                      Text("₺${(urun['net_bayi_kazanci'] ?? 0).toDouble().toStringAsFixed(2)}", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 12, fontFamily: 'monospace')),
                     ],
                   )
                 ],
@@ -209,24 +210,24 @@ class _SiberDukkanPaneliState extends State<SiberDukkanPaneli> {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: SiberTema.matGrey,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: SiberTema.kuantumCyan, width: 2)),
-        title: const Text("YENİ ÜRÜN VE MARJ TANIMLA", style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: SiberTema.kuantumCyan, width: 2)),
+        title: Text("YENİ ÜRÜN VE MARJ TANIMLA", style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               _siberInput(adCtrl, "Ürün Adı (Örn: Bosch Fren Balatası)"),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _siberInput(gelisCtrl, "Birim Geliş Fiyatı (₺)", isNumber: true),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _siberInput(marjCtrl, "Hedef Kâr Marjı (%)", isNumber: true),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _siberInput(miktarCtrl, "Stok Miktarı", isNumber: true),
             ],
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted, fontFamily: 'Avenir'))),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text("İPTAL", style: TextStyle(color: SiberTema.textMuted, fontFamily: 'Avenir'))),
           ElevatedButton(
             style: SiberTema.kuantumButonStili(),
             onPressed: () async {
@@ -272,7 +273,7 @@ class _SiberDukkanPaneliState extends State<SiberDukkanPaneli> {
               await batch.commit();
               if (mounted) Navigator.pop(ctx);
             },
-            child: const Text("MÜHÜRLE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+            child: Text("MÜHÜRLE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           )
         ],
       ),
@@ -283,8 +284,8 @@ class _SiberDukkanPaneliState extends State<SiberDukkanPaneli> {
   Widget _fiyatKapsulu(String baslik, String deger, Color renk) {
     return Column(
       children: [
-        Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 8, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-        const SizedBox(height: 4),
+        Text(baslik, style: TextStyle(color: SiberTema.textMuted, fontSize: 8, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+        SizedBox(height: 4),
         Text(deger, style: TextStyle(color: renk, fontWeight: FontWeight.w900, fontSize: 11, fontFamily: 'monospace')),
       ],
     );
@@ -303,13 +304,13 @@ class _SiberDukkanPaneliState extends State<SiberDukkanPaneli> {
   Widget _siberInput(TextEditingController controller, String hint, {bool isNumber = false}) {
     return TextField(
       controller: controller,
-      keyboardType: isNumber ? const TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
-      style: const TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+      keyboardType: isNumber ? TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
+      style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
       decoration: InputDecoration(
         labelText: hint,
-        labelStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontFamily: 'Avenir'),
-        enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: SiberTema.textMuted)),
-        focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: SiberTema.kuantumCyan, width: 2)),
+        labelStyle: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontFamily: 'Avenir'),
+        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: SiberTema.textMuted)),
+        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: SiberTema.kuantumCyan, width: 2)),
       ),
     );
   }

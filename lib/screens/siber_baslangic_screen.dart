@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +8,7 @@ import '../core/siber_tema.dart';
 import '../auth/otodna_auth_gate.dart';
 
 class SiberBaslangicScreen extends StatefulWidget {
-  const SiberBaslangicScreen({super.key});
+  SiberBaslangicScreen({super.key});
 
   @override
   State<SiberBaslangicScreen> createState() => _SiberBaslangicScreenState();
@@ -24,7 +25,7 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
     super.initState();
 
     // Kalkan için Kuantum Nefes Animasyonu (Görsel İşçilik)
-    _pulseController = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat(reverse: true);
+    _pulseController = AnimationController(vsync: this, duration: Duration(seconds: 2))..repeat(reverse: true);
     _pulseAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut));
 
     // Siber Yönlendirme Motorunu Ateşle
@@ -40,7 +41,7 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
   // --- 🎆 HOLOGRAM VE KAPI KONTROL MOTORU ---
   Future<void> _kuantumHologramKontrolu() async {
     // Sürücüye Karargahın gücünü hissettirmek için 1.5 saniyelik tarama süresi
-    await Future.delayed(const Duration(milliseconds: 1500));
+    await Future.delayed(Duration(milliseconds: 1500));
 
     if (!mounted) return;
 
@@ -75,7 +76,7 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
     if (!mounted) return;
     Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const OtoDnaAuthGate())
+        MaterialPageRoute(builder: (_) => OtoDnaAuthGate())
     );
   }
 
@@ -87,13 +88,13 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
         builder: (context) {
           return Dialog(
             backgroundColor: Colors.transparent,
-            insetPadding: const EdgeInsets.all(24),
+            insetPadding: EdgeInsets.all(24),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(24),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
                 child: Container(
-                  padding: const EdgeInsets.all(32),
+                  padding: EdgeInsets.all(32),
                   decoration: BoxDecoration(
                     color: SiberTema.oledBlack.withOpacity(0.85),
                     border: Border.all(color: SiberTema.altinSari.withOpacity(0.5), width: 2),
@@ -104,23 +105,23 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.celebration_rounded, color: SiberTema.altinSari, size: 50),
-                      const SizedBox(height: 24),
+                      Icon(Icons.celebration_rounded, color: SiberTema.altinSari, size: 50),
+                      SizedBox(height: 24),
                       Text(
                         baslik.toUpperCase(),
                         textAlign: TextAlign.center,
-                        style: const TextStyle(color: SiberTema.altinSari, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2),
+                        style: TextStyle(color: SiberTema.altinSari, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2),
                       ),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.symmetric(vertical: 24),
                         child: Divider(color: SiberTema.textMuted, height: 1),
                       ),
                       Text(
                         mesaj,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(color: SiberTema.textMain, fontSize: 14, height: 1.5, fontWeight: FontWeight.bold),
+                        style: TextStyle(color: SiberTema.textMain, fontSize: 14, height: 1.5, fontWeight: FontWeight.bold),
                       ),
-                      const SizedBox(height: 40),
+                      SizedBox(height: 40),
                       SizedBox(
                         width: double.infinity,
                         height: 50,
@@ -132,7 +133,7 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
                             Navigator.pop(context);
                             _anaKapiyaGecisYap();
                           },
-                          child: const Text("KARARGAHA GEÇ", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900)),
+                          child: Text("KARARGAHA GEÇ", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900)),
                         ),
                       ),
                     ],
@@ -160,22 +161,22 @@ class _SiberBaslangicScreenState extends State<SiberBaslangicScreen> with Single
                 builder: (context, child) {
                   return Transform.scale(
                     scale: _pulseAnimation.value,
-                    child: const Icon(Icons.security, color: SiberTema.kuantumCyan, size: 100),
+                    child: Icon(Icons.security, color: SiberTema.kuantumCyan, size: 100),
                   );
                 },
               ),
-              const SizedBox(height: 40),
-              const Text(
+              SizedBox(height: 40),
+              Text(
                 "OTODNA KARARGAHI ÇEVRİMİÇİ",
                 style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 3),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               Text(
                 "Siber Kalkanlar Aktif, Emir Bekleniyor...",
                 style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 12, fontWeight: FontWeight.w600),
               ),
-              const SizedBox(height: 60),
-              const CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3),
+              SizedBox(height: 60),
+              CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 3),
             ],
           ),
         ),

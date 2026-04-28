@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 import '../../core/responsive_kalkan.dart';
 
 class FirmalarScreen extends StatefulWidget {
-  const FirmalarScreen({super.key});
+  FirmalarScreen({super.key});
 
   @override
   State<FirmalarScreen> createState() => _FirmalarScreenState();
@@ -15,8 +15,8 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
 
   // 🏢 PLAZA KALİTESİ PALET
   final Color primaryTeal = Colors.teal.shade700;
-  final Color bgColor = const Color(0xFFFAFAFC);
-  final Color textColor = const Color(0xFF1E293B);
+  final Color bgColor = Color(0xFFFAFAFC);
+  final Color textColor = Color(0xFF1E293B);
   final Color dangerColor = Colors.redAccent;
 
   // =========================================================================
@@ -129,13 +129,13 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
     } else {
       // 1 Yıldız: Kara Liste Sistemi (Kırmızı Uyarı)
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(color: dangerColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(6), border: Border.all(color: dangerColor.withValues(alpha: 0.5))),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.warning_amber_rounded, color: dangerColor, size: 14),
-            const SizedBox(width: 6),
+            SizedBox(width: 6),
             Text("KARA LİSTE", style: TextStyle(color: dangerColor, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
           ],
         ),
@@ -145,13 +145,13 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
 
   Widget _rozetTasarimi(IconData ikon, Color renk, String metin) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(color: renk.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(6), border: Border.all(color: renk.withValues(alpha: 0.5))),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(ikon, color: renk, size: 14),
-          const SizedBox(width: 6),
+          SizedBox(width: 6),
           Text(metin, style: TextStyle(color: renk, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
         ],
       ),
@@ -183,7 +183,7 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
           centerTitle: true,
           actions: [
             IconButton(icon: Icon(Icons.map_outlined, color: primaryTeal, size: 22), onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text('Plaza Haritası Yükleniyor...'), backgroundColor: primaryTeal));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Plaza Haritası Yükleniyor...'), backgroundColor: primaryTeal));
             })
           ],
         ),
@@ -193,7 +193,7 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
             // MİNİMALİST ARAMA ÇUBUĞU
             // =========================================================================
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white, 
@@ -206,10 +206,10 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                   onChanged: (val) => setState(() => _aramaMetni = val),
                   decoration: InputDecoration(
                       hintText: 'Firma, Usta veya Uzmanlık Ara...',
-                      hintStyle: const TextStyle(color: Colors.white38, fontSize: 13, fontFamily: 'Avenir'),
+                      hintStyle: TextStyle(color: Colors.white38, fontSize: 13, fontFamily: 'Avenir'),
                       prefixIcon: Icon(Icons.search, color: primaryTeal, size: 20),
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 16)
+                      contentPadding: EdgeInsets.symmetric(vertical: 16)
                   ),
                 ),
               ),
@@ -222,8 +222,8 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
               height: 48,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 itemCount: _kategoriler.length,
                 itemBuilder: (context, index) {
                   var kat = _kategoriler[index];
@@ -231,22 +231,22 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                   return GestureDetector(
                     onTap: () => setState(() => _secilenKategori = kat['isim']),
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      margin: const EdgeInsets.only(right: 12),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      duration: Duration(milliseconds: 200),
+                      margin: EdgeInsets.only(right: 12),
+                      padding: EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
                         color: isSelected ? primaryTeal : Colors.white,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: isSelected ? primaryTeal : Colors.black.withValues(alpha: 0.05)),
                         boxShadow: [
-                          if (isSelected) BoxShadow(color: primaryTeal.withValues(alpha: 0.2), blurRadius: 8, offset: const Offset(0, 4))
+                          if (isSelected) BoxShadow(color: primaryTeal.withValues(alpha: 0.2), blurRadius: 8, offset: Offset(0, 4))
                           else BoxShadow(color: Colors.white.withValues(alpha: 0.02), blurRadius: 5)
                         ]
                       ),
                       child: Row(
                         children: [
                           Icon(kat['ikon'], color: isSelected ? Colors.white : Colors.black54, size: 16),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8),
                           Text(kat['isim'], style: TextStyle(color: isSelected ? Colors.white : textColor, fontWeight: FontWeight.bold, fontSize: 12, fontFamily: 'Avenir')),
                         ],
                       ),
@@ -255,7 +255,7 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                 },
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Divider(color: Colors.white.withValues(alpha: 0.05)),
 
             // =========================================================================
@@ -263,8 +263,8 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
             // =========================================================================
             Expanded(
               child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 itemCount: filtrelenmisFirmalar.length,
                 itemBuilder: (context, index) {
                   var firma = filtrelenmisFirmalar[index];
@@ -273,7 +273,7 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                   return Opacity(
                     opacity: isKaraListe ? 0.6 : 1.0,
                     child: Container(
-                      margin: const EdgeInsets.only(bottom: 16),
+                      margin: EdgeInsets.only(bottom: 16),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
@@ -291,7 +291,7 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                         ]
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: EdgeInsets.all(20.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -300,14 +300,14 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                               children: [
                                 // Logo Alanı (Yuvarlak)
                                 Container(
-                                  padding: const EdgeInsets.all(12),
+                                  padding: EdgeInsets.all(12),
                                   decoration: BoxDecoration(
                                     color: isKaraListe ? dangerColor.withValues(alpha: 0.1) : primaryTeal.withValues(alpha: 0.1),
                                     shape: BoxShape.circle
                                   ),
                                   child: Icon(isKaraListe ? Icons.warning_amber_rounded : Icons.business_outlined, color: isKaraListe ? dangerColor : primaryTeal, size: 28)
                                 ),
-                                const SizedBox(width: 16),
+                                SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -319,14 +319,14 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                                           if (firma['onayli']) Icon(Icons.verified, color: primaryTeal, size: 16),
                                         ],
                                       ),
-                                      const SizedBox(height: 6),
+                                      SizedBox(height: 6),
                                       Text(firma['isim'], style: TextStyle(color: isKaraListe ? dangerColor : textColor, fontSize: 16, fontWeight: FontWeight.w900, decoration: isKaraListe ? TextDecoration.lineThrough : TextDecoration.none, fontFamily: 'Avenir')),
-                                      const SizedBox(height: 6),
+                                      SizedBox(height: 6),
                                       Row(
                                         children: [
-                                          const Icon(Icons.location_on_outlined, color: Colors.white38, size: 14),
-                                          const SizedBox(width: 4),
-                                          Text("${firma['ilce']} / ${firma['il']} (${firma['mesafe']})", style: const TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                                          Icon(Icons.location_on_outlined, color: Colors.white38, size: 14),
+                                          SizedBox(width: 4),
+                                          Text("${firma['ilce']} / ${firma['il']} (${firma['mesafe']})", style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                                         ],
                                       ),
                                     ],
@@ -334,7 +334,7 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                                 )
                               ],
                             ),
-                            const SizedBox(height: 20),
+                            SizedBox(height: 20),
 
                             // Uzmanlık Alanları ve Rozet
                             Row(
@@ -346,28 +346,28 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                                     spacing: 6, runSpacing: 6,
                                     children: (firma['uzmanlik'] as List<String>).map((uzmanlik) {
                                       return Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                         decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(6)),
                                         child: Text(uzmanlik, style: TextStyle(color: textColor, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                                       );
                                     }).toList(),
                                   ),
                                 ),
-                                const SizedBox(width: 12),
+                                SizedBox(width: 12),
                                 _buildFirmaRozeti(firma['puan']),
                               ],
                             ),
 
                             // Kara Liste Uyarısı veya Randevu Butonu
                             if (isKaraListe) ...[
-                              const SizedBox(height: 20),
+                              SizedBox(height: 20),
                               Container(
-                                width: double.infinity, padding: const EdgeInsets.all(12),
+                                width: double.infinity, padding: EdgeInsets.all(12),
                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(color: dangerColor.withValues(alpha: 0.5)), color: dangerColor.withValues(alpha: 0.05)),
                                 child: Text("KARA LİSTE UYARISI: Bu firma OtoDNA standartlarına uymadığı veya müşteri şikayeti aldığı için ağdan izole edilmiştir. Randevu oluşturulamaz.", textAlign: TextAlign.center, style: TextStyle(color: dangerColor, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5, height: 1.5, fontFamily: 'Avenir')),
                               )
                             ] else ...[
-                              const SizedBox(height: 20),
+                              SizedBox(height: 20),
                               Row(
                                 children: [
                                   // Yol Tarifi (Şık İkon Buton)
@@ -375,18 +375,18 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                                     onTap: () {},
                                     borderRadius: BorderRadius.circular(12),
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                                       decoration: BoxDecoration(border: Border.all(color: Colors.white.withValues(alpha: 0.1)), borderRadius: BorderRadius.circular(12)),
                                       child: Row(
                                         children: [
                                           Icon(Icons.directions, size: 16, color: textColor),
-                                          const SizedBox(width: 6),
+                                          SizedBox(width: 6),
                                           Text("Yol Tarifi", style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                                         ]
                                       )
                                     ),
                                   ),
-                                  const Spacer(),
+                                  Spacer(),
                                   // Randevu Al (Vurgulu Buton)
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
@@ -394,10 +394,10 @@ class _FirmalarScreenState extends State<FirmalarScreen> {
                                       foregroundColor: Colors.white,
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                       elevation: 0,
-                                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12)
+                                      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12)
                                     ),
                                     onPressed: () { ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${firma['isim']} için Dijital Randevu Talebi İletiliyor...'), backgroundColor: primaryTeal)); },
-                                    child: const Text("Randevu Al", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12, fontFamily: 'Avenir')),
+                                    child: Text("Randevu Al", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12, fontFamily: 'Avenir')),
                                   ),
                                 ],
                               )

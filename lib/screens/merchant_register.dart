@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,7 +13,7 @@ import '../core/responsive_kalkan.dart';
 /// 🦅 OTO DNA ESNAF KAYIT TERMİNALİ - SİBER ONAM MOTORU
 /// [2026-03-28] GÜNCELLEME: %100 GERÇEK FIREBASE ENTEGRASYONU
 class MerchantRegister extends StatefulWidget {
-  const MerchantRegister({super.key});
+  MerchantRegister({super.key});
 
   @override
   State<MerchantRegister> createState() => _MerchantRegisterState();
@@ -113,7 +114,7 @@ class _MerchantRegisterState extends State<MerchantRegister> {
   void _siberUyari(String mesaj, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white)),
+        content: Text(mesaj, style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white)),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -129,21 +130,21 @@ class _MerchantRegisterState extends State<MerchantRegister> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("ESNAF KAYİT TERMİNALİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2)),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text("ESNAF KAYİT TERMİNALİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2)),
           centerTitle: true,
         ),
         body: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600),
+            constraints: BoxConstraints(maxWidth: 600),
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // 🛡️ SİBER BİLGİLENDİRME (Siber Cam Efekti)
                   _buildBilgiPaneli(),
-                  const SizedBox(height: 48),
+                  SizedBox(height: 48),
 
                   // 📄 VERGİ LEVHASI
                   _buildYuklemeKarti(
@@ -153,7 +154,7 @@ class _MerchantRegisterState extends State<MerchantRegister> {
                     isUploaded: _vergiUrl != null,
                     onTap: () => _evrakYukle('VERGİ'),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
 
                   // 📄 İŞLETME RUHSATI
                   _buildYuklemeKarti(
@@ -163,7 +164,7 @@ class _MerchantRegisterState extends State<MerchantRegister> {
                     isUploaded: _ruhsatUrl != null,
                     onTap: () => _evrakYukle('RUHSAT'),
                   ),
-                  const SizedBox(height: 48),
+                  SizedBox(height: 48),
 
                   // 🚀 ATEŞLEME BUTONU
                   _buildFinalizeButon(),
@@ -178,7 +179,7 @@ class _MerchantRegisterState extends State<MerchantRegister> {
 
   Widget _buildBilgiPaneli() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: SiberTema.kuantumCyan.withOpacity(0.05),
         borderRadius: BorderRadius.circular(20),
@@ -186,10 +187,10 @@ class _MerchantRegisterState extends State<MerchantRegister> {
       ),
       child: Column(
         children: [
-          const Icon(Icons.domain_verification, color: SiberTema.kuantumCyan, size: 48),
-          const SizedBox(height: 16),
-          const Text("ANKARA MERKEZ ONAYI", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
-          const SizedBox(height: 8),
+          Icon(Icons.domain_verification, color: SiberTema.kuantumCyan, size: 48),
+          SizedBox(height: 16),
+          Text("ANKARA MERKEZ ONAYI", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          SizedBox(height: 8),
           Text(
             "Evraklarınız şifrelenerek Ankara Karargahına iletilir. İnceleme süreci 24 saat içinde tamamlanacaktır.",
             textAlign: TextAlign.center,
@@ -214,21 +215,21 @@ class _MerchantRegisterState extends State<MerchantRegister> {
           borderRadius: BorderRadius.circular(20),
           onTap: (isUploading || isUploaded) ? null : onTap,
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             child: Row(
               children: [
                 Icon(isUploaded ? Icons.verified : icon, color: kartRengi, size: 28),
-                const SizedBox(width: 16),
+                SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(title, style: TextStyle(color: kartRengi, fontSize: 12, fontWeight: FontWeight.w900)),
-                      Text(isUploaded ? "MÜHÜRLENDİ" : "DOKÜMAN SEÇ", style: const TextStyle(color: SiberTema.textMuted, fontSize: 10)),
+                      Text(isUploaded ? "MÜHÜRLENDİ" : "DOKÜMAN SEÇ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10)),
                     ],
                   ),
                 ),
-                if (isUploading) const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2)),
+                if (isUploading) SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.kuantumCyan, strokeWidth: 2)),
               ],
             ),
           ),
@@ -249,10 +250,10 @@ class _MerchantRegisterState extends State<MerchantRegister> {
           disabledBackgroundColor: SiberTema.kuantumCyan.withOpacity(0.1),
         ),
         onPressed: (ready && !_isFinalizing) ? _basvuruyuTamamla : null,
-        icon: _isFinalizing ? const SizedBox.shrink() : const Icon(Icons.rocket_launch),
+        icon: _isFinalizing ? SizedBox.shrink() : Icon(Icons.rocket_launch),
         label: _isFinalizing
-            ? const CircularProgressIndicator(color: Colors.white)
-            : Text(ready ? "BAŞVURUYU TAMAMLA" : "EVRAKLAR BEKLENİYOR", style: const TextStyle(fontWeight: FontWeight.w900)),
+            ? CircularProgressIndicator(color: Colors.white)
+            : Text(ready ? "BAŞVURUYU TAMAMLA" : "EVRAKLAR BEKLENİYOR", style: TextStyle(fontWeight: FontWeight.w900)),
       ),
     );
   }

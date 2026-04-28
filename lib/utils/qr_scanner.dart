@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +8,7 @@ import 'dart:developer' as developer;
 /// 👁️ OTODNA SİBER GÖZ (QR Tarayıcı)
 /// Aracın DNA'sını saniyeler içinde çözen, Karargaha loglayan ve sisteme bağlayan terminal.
 class QrScannerScreen extends StatefulWidget {
-  const QrScannerScreen({super.key});
+  QrScannerScreen({super.key});
 
   @override
   State<QrScannerScreen> createState() => _QrScannerScreenState();
@@ -16,8 +16,8 @@ class QrScannerScreen extends StatefulWidget {
 
 class _QrScannerScreenState extends State<QrScannerScreen> {
   // 🎨 Siber Tasarım Parametreleri
-  static const Color _primaryCyan = Color(0xFF00FFC2);
-  static const Color _cyberBlack = Color(0xFF0A0A0B);
+  static Color _primaryCyan = Color(0xFF00FFC2);
+  static Color _cyberBlack = Color(0xFF0A0A0B);
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final User? _currentUser = FirebaseAuth.instance.currentUser;
@@ -38,9 +38,9 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text("SİBER GÖZ AKTİF", style: TextStyle(color: _primaryCyan, fontWeight: FontWeight.w900, letterSpacing: 2)),
+        title: Text("SİBER GÖZ AKTİF", style: TextStyle(color: _primaryCyan, fontWeight: FontWeight.w900, letterSpacing: 2)),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: _primaryCyan),
+          icon: Icon(Icons.arrow_back, color: _primaryCyan),
           onPressed: () => context.pop(),
         ),
       ),
@@ -94,7 +94,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
       child: Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.transparent,
             ),
             child: Align(
@@ -123,8 +123,8 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
                 ],
               ),
               child: _isScanned
-                  ? const Center(child: CircularProgressIndicator(color: _primaryCyan))
-                  : const Center(child: Icon(Icons.qr_code_scanner, color: Colors.white24, size: 100)),
+                  ? Center(child: CircularProgressIndicator(color: _primaryCyan))
+                  : Center(child: Icon(Icons.qr_code_scanner, color: Colors.white24, size: 100)),
             ),
           ),
         ],
@@ -138,17 +138,17 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-                color: const Color(0xFF111111),
+                color: Color(0xFF111111),
                 shape: BoxShape.circle,
                 border: Border.all(color: _primaryCyan.withValues(alpha: 0.5), width: 1.5),
                 boxShadow: [BoxShadow(color: _primaryCyan.withValues(alpha: 0.1), blurRadius: 10)]
             ),
             child: Icon(icon, color: _primaryCyan, size: 24),
           ),
-          const SizedBox(height: 8),
-          Text(label, style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+          SizedBox(height: 8),
+          Text(label, style: TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
         ],
       ),
     );
@@ -174,7 +174,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
       // ⛓️ Karargaha Sahte Kod Denemesini (İhlali) Mühürle
       await _taramaIstihbaratiniLogla(code, false);
 
-      Future.delayed(const Duration(seconds: 2), () {
+      Future.delayed(Duration(seconds: 2), () {
         if(mounted) setState(() => _isScanned = false);
       });
     }
@@ -203,7 +203,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
   void _siberBildirim(String mesaj, {bool isError = false}) {
     if(!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(mesaj, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1.2)),
+      content: Text(mesaj, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1.2)),
       backgroundColor: isError ? Colors.redAccent : _primaryCyan,
       behavior: SnackBarBehavior.floating,
     ));

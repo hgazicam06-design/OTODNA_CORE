@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// ⚖️ OTODNA ADLİ RAPOR MODELİ
 /// Mahkemelerde ve uzlaşmalarda kullanılacak dijital delil dosyası.
@@ -24,7 +24,7 @@ class AdliRaporModel {
   // 🛡️ Yasal Uyarı Zırhı
   final bool yasalUyariOkundu;
   
-  static const String yasalUyariMetni = "DİKKAT: Bu rapor OtoDNA Siber Bilirkişi (Yapay Zeka) motoru tarafından oluşturulmuş teknik bir ön tespittir. Algoritmaların hata payı bulunabilir. Nihai ve bağlayıcı karar için OtoDNA Merkez Karargahı ile uzman onayı (görüşme) sağlanması zorunludur.";
+  static String yasalUyariMetni = "DİKKAT: Bu rapor OtoDNA Siber Bilirkişi (Yapay Zeka) motoru tarafından oluşturulmuş teknik bir ön tespittir. Algoritmaların hata payı bulunabilir. Nihai ve bağlayıcı karar için OtoDNA Merkez Karargahı ile uzman onayı (görüşme) sağlanması zorunludur.";
 
   AdliRaporModel({
     this.id,
@@ -33,9 +33,9 @@ class AdliRaporModel {
     required this.ustaUid,
     required this.tedarikciKodu,
     required this.olayTarihi,
-    this.montajOncesiFotolar = const [],
-    this.montajAniVideolar = const [],
-    this.testVerileri = const [],
+    this.montajOncesiFotolar = [],
+    this.montajAniVideolar = [],
+    this.testVerileri = [],
     required this.aiHukmu,
     this.kusurOraniUsta = 0,
     this.kusurOraniParca = 0,

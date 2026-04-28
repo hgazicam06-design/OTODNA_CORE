@@ -1,4 +1,4 @@
-// lib/services/torpido_servisi.dart
+﻿// lib/services/torpido_servisi.dart
 import 'dart:io';
 import 'dart:developer' as developer;
 import 'package:image_picker/image_picker.dart';
@@ -175,7 +175,7 @@ class TorpidoServisi {
   // ── 🧠 OEM KODU YAPAY ZEKA DOĞRULAMASI (MOCK) ──
   Future<bool> oemKoduDogrula(String oemKodu) async {
     developer.log("🤖 AI SORGUSU: OEM Kodu katalogda aranıyor: $oemKodu");
-    await Future.delayed(const Duration(seconds: 2)); // AI Düşünme Süresi
+    await Future.delayed(Duration(seconds: 2)); // AI Düşünme Süresi
     
     // Gerçekte devasa bir yedek parça veritabanına (Kuantum Kataloğuna) istek atılır.
     String kodUpper = oemKodu.toUpperCase();
@@ -188,7 +188,7 @@ class TorpidoServisi {
   // ── 🤖 YAPAY ZEKA OPTİK TARAMA (VISION OCR MOCK) ──
   Future<Map<String, dynamic>> aiOptikTarama(File gorsel) async {
     developer.log("👁️ SİBER GÖZ: Otonom AI optik tarama başlatıldı...");
-    await Future.delayed(const Duration(seconds: 3)); // AI OCR İşlem Süresi
+    await Future.delayed(Duration(seconds: 3)); // AI OCR İşlem Süresi
 
     // 🚨 KATI ADLİ PROTOKOL: Görüntü Kalitesi Kontrolü (Mock)
     // Gerçekte API'nin döndüğü blur/confidence skoruna bakılır.

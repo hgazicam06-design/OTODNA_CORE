@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +12,7 @@ import '../../services/corporate_ai_engine.dart';
 import '../../widgets/siber_rehber_dialog.dart';
 
 class AddProductScreen extends ConsumerStatefulWidget {
-  const AddProductScreen({super.key});
+  AddProductScreen({super.key});
 
   @override
   ConsumerState<AddProductScreen> createState() => _AddProductScreenState();
@@ -49,8 +50,8 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
   }
 
   void _rehberiGoster({bool otomatik = false}) {
-    const String baslik = "SİBER İLAN TERMİNALİ";
-    const String icerik = "OtoDNA Küresel Parça Ağına Hoş Geldiniz!\n\n"
+    String baslik = "SİBER İLAN TERMİNALİ";
+    String icerik = "OtoDNA Küresel Parça Ağına Hoş Geldiniz!\n\n"
         "Parçanın fotoğrafını çekerek veya ruhsat barkodunu okutarak Yapay Zekanın (AI) markayı/parçayı otomatik tanımasını sağlayabilirsiniz.\n\n"
         "ÖNEMLİ: Eklediğiniz parçanın 'Sıfır' mı yoksa 'Çıkma' mı olduğunu doğru seçiniz. Bu veri, Kuantum Şelale Arama Motoru tarafından müşterilere parça bulunurken kullanılacaktır.";
 
@@ -82,12 +83,12 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text("Kuantum Analizi Tamamlandı: Yapay Zeka Tespiti Başarılı! 🦅",
+        content: Text("Kuantum Analizi Tamamlandı: Yapay Zeka Tespiti Başarılı! 🦅",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         backgroundColor: _primaryCyan,
       ));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("AI Radarı Arızası: Parça Tanımlanamadı!",
             style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
         backgroundColor: Colors.redAccent,
@@ -98,7 +99,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
   // 📸 RUHSAT DNA TARAMA
   Future<void> _barkodTara() async {
     _showCyberLoading("Ruhsat DNA'sı Çözülüyor...");
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 2));
     if (!mounted) return;
     Navigator.pop(context);
 
@@ -107,7 +108,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       _oemKoduController.text = "WBA320I-DNA-2026";
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("Şasi DNA'sı Çözüldü: BMW Tespit Edildi! ✅",
           style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
       backgroundColor: Colors.blueAccent,
@@ -125,10 +126,10 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             CircularProgressIndicator(color: _primaryCyan),
-            const SizedBox(height: 16),
-            Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-            const SizedBox(height: 8),
-            const Text("Kuantum Hub Ağı Taranıyor...", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontFamily: 'Avenir')),
+            SizedBox(height: 16),
+            Text(mesaj, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+            SizedBox(height: 8),
+            Text("Kuantum Hub Ağı Taranıyor...", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -140,12 +141,12 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
     final sicil = ref.read(siberSicilProvider).value;
 
     if (sicil == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("🚨 Yetkisiz Erişim: Sicil Kaydı Bulunamadı!")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("🚨 Yetkisiz Erişim: Sicil Kaydı Bulunamadı!")));
       return;
     }
 
     if (_urunAdController.text.isEmpty || _fiyatController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Eksik veri girişi tespit edildi!"), backgroundColor: Colors.redAccent));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Eksik veri girişi tespit edildi!"), backgroundColor: Colors.redAccent));
       return;
     }
 
@@ -174,7 +175,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: const Text("Ürün Kuantum Ağına Başarıyla Mühürlendi! 🚀",
+          content: Text("Ürün Kuantum Ağına Başarıyla Mühürlendi! 🚀",
               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
           backgroundColor: _primaryCyan));
       Navigator.pop(context);
@@ -193,40 +194,40 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent, elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text('S İ B E R   İ L A N   T E R M İ N A L İ',
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text('S İ B E R   İ L A N   T E R M İ N A L İ',
               style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2, fontFamily: 'Avenir')),
           centerTitle: true,
           actions: [
             IconButton(
-              icon: const Icon(Icons.help_outline_rounded, color: SiberTema.kuantumCyan),
+              icon: Icon(Icons.help_outline_rounded, color: SiberTema.kuantumCyan),
               tooltip: "Siber Rehber",
               onPressed: () => _rehberiGoster(otomatik: false),
             )
           ],
         ),
         body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(24.0),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildAIControlPanel(),
-              const SizedBox(height: 32),
-              const Text("ÜRÜN KİMLİĞİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
-              const SizedBox(height: 16),
+              SizedBox(height: 32),
+              Text("ÜRÜN KİMLİĞİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir')),
+              SizedBox(height: 16),
               _buildCyberTextField("Ürün / Parça Adı", _urunAdController, Icons.build_circle_outlined),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               _buildCyberTextField("OEM / Barkod Kodu", _oemKoduController, Icons.qr_code),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               _buildMarkaDisplay(),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               _buildDurumSecici(),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               _buildCyberTextField("Satış Fiyatı (₺)", _fiyatController, Icons.attach_money, isNumber: true),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
               _buildSubmitButton(),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
             ],
           ),
         ),
@@ -236,7 +237,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
   Widget _buildAIControlPanel() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: _surfaceColor,
         borderRadius: BorderRadius.circular(24),
@@ -248,16 +249,16 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
           Row(
             children: [
               Icon(Icons.auto_awesome, color: _primaryCyan, size: 24),
-              const SizedBox(width: 12),
-              const Expanded(child: Text("YAPAY ZEKA (AI) İSTİHBARATI",
+              SizedBox(width: 12),
+              Expanded(child: Text("YAPAY ZEKA (AI) İSTİHBARATI",
                   style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir'))),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Row(
             children: [
               Expanded(child: _buildAIButton("PARÇAYI TANI", Icons.camera_alt_outlined, _primaryCyan, _yapayZekaIleTani)),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(child: _buildAIButton("RUHSAT / ŞASİ", Icons.document_scanner_outlined, Colors.blueAccent, _barkodTara)),
             ],
           ),
@@ -272,28 +273,28 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
         backgroundColor: color.withOpacity(0.1),
         foregroundColor: color,
         elevation: 0,
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: color.withOpacity(0.5))),
       ),
       onPressed: onPressed,
       icon: Icon(icon, size: 20),
-      label: Text(label, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+      label: Text(label, style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
     );
   }
 
   Widget _buildMarkaDisplay() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       decoration: BoxDecoration(color: _cyberBlack, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
       child: Row(
         children: [
-          const Icon(Icons.directions_car_outlined, color: SiberTema.textMuted, size: 20),
-          const SizedBox(width: 16),
+          Icon(Icons.directions_car_outlined, color: SiberTema.textMuted, size: 20),
+          SizedBox(width: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Uyumlu Marka / Model", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-              const SizedBox(height: 4),
+              Text("Uyumlu Marka / Model", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+              SizedBox(height: 4),
               Text(_secilenMarka, style: TextStyle(color: _secilenMarka == "Marka Seçilmedi" ? Colors.white54 : _primaryCyan, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
             ],
           )
@@ -304,7 +305,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
   Widget _buildDurumSecici() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(color: _surfaceColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withOpacity(0.05))),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
@@ -322,8 +323,8 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
                     color: durum.contains("Orijinal") ? _primaryCyan : (durum.contains("Çıkma") ? Colors.orangeAccent : Colors.white54), 
                     size: 18
                   ),
-                  const SizedBox(width: 12),
-                  Text(durum, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                  SizedBox(width: 12),
+                  Text(durum, style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                 ],
               ),
             );
@@ -344,9 +345,9 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       child: ElevatedButton.icon(
         style: SiberTema.kuantumButonStili(),
         onPressed: _isLoading ? null : _urunuAgaMuhurle,
-        icon: _isLoading ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : const Icon(Icons.publish, size: 24, color: Colors.white),
+        icon: _isLoading ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : Icon(Icons.publish, size: 24, color: Colors.white),
         label: Text(_isLoading ? "VERİ AKTARILIYOR..." : "SİBER AĞA MÜHÜRLE",
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, color: Colors.white, fontFamily: 'Avenir')),
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, color: Colors.white, fontFamily: 'Avenir')),
       ),
     );
   }
@@ -357,13 +358,13 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       child: TextField(
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-        style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+        style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 13, fontFamily: 'Avenir'),
           prefixIcon: Icon(icon, color: SiberTema.textMuted, size: 20),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 18),
+          contentPadding: EdgeInsets.symmetric(vertical: 18),
         ),
       ),
     );

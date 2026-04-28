@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 // OLUŞTURDUĞUMUZ DEVASA MODÜLLERİ ÇAĞIRIYORUZ
 import 'home_screen.dart';
@@ -9,7 +9,7 @@ import '../kullanici/siber_cuzdan_screen.dart';
 import '../kullanici/siber_goz_tarayici_screen.dart';
 
 class SiberAnaGovdeScreen extends StatefulWidget {
-  const SiberAnaGovdeScreen({super.key});
+  SiberAnaGovdeScreen({super.key});
 
   @override
   State<SiberAnaGovdeScreen> createState() => _SiberAnaGovdeScreenState();
@@ -21,17 +21,17 @@ class _SiberAnaGovdeScreenState extends State<SiberAnaGovdeScreen> {
 
   // ALT NAVİGASYONDAN GEÇİŞ YAPILACAK SAYFALARIN LİSTESİ
   final List<Widget> _sayfalar = [
-    const HomeScreen(),               // 0. Sekme
-    const OtoDnaCigirScreen(),        // 1. Sekme (Taksi Çığır)
-    const SiberGarajScreen(),         // 2. Sekme (Ortadaki QR butonu için boşluk)
-    const SiberGarajScreen(),         // 3. Sekme
-    const SiberCuzdanScreen(),        // 4. Sekme
+    HomeScreen(),               // 0. Sekme
+    OtoDnaCigirScreen(),        // 1. Sekme (Taksi Çığır)
+    SiberGarajScreen(),         // 2. Sekme (Ortadaki QR butonu için boşluk)
+    SiberGarajScreen(),         // 3. Sekme
+    SiberCuzdanScreen(),        // 4. Sekme
   ];
 
   void _sekmeDegistir(int index) {
     // Ortadaki butona (indeks 2) basılınca sayfa değişmez, QR kamera açılır!
     if (index == 2) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const SiberGozTarayiciScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => SiberGozTarayiciScreen()));
       return;
     }
     setState(() {
@@ -57,15 +57,15 @@ class _SiberAnaGovdeScreenState extends State<SiberAnaGovdeScreen> {
       floatingActionButton: Container(
         height: 64,
         width: 64,
-        margin: const EdgeInsets.only(top: 30),
+        margin: EdgeInsets.only(top: 30),
         child: FloatingActionButton(
           backgroundColor: primaryCyan,
           elevation: 10,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-          child: const Icon(Icons.qr_code_scanner, color: bgColor, size: 32),
+          child: Icon(Icons.qr_code_scanner, color: bgColor, size: 32),
           onPressed: () {
             // Siber Göz Tarayıcıyı Üstten Aç
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const SiberGozTarayiciScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => SiberGozTarayiciScreen()));
           },
         ),
       ),
@@ -80,7 +80,7 @@ class _SiberAnaGovdeScreenState extends State<SiberAnaGovdeScreen> {
         ),
         child: BottomAppBar(
           color: cardColor,
-          shape: const CircularNotchedRectangle(), // Ortadaki butona kavisli yuva yapar
+          shape: CircularNotchedRectangle(), // Ortadaki butona kavisli yuva yapar
           notchMargin: 8.0, // Kavisin boşluğu
           child: SizedBox(
             height: 60,
@@ -127,7 +127,7 @@ class _SiberAnaGovdeScreenState extends State<SiberAnaGovdeScreen> {
             color: isSelected ? primaryCyan : Colors.white54,
             size: isSelected ? 28 : 24,
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: 2),
           Text(
             baslik,
             style: TextStyle(

@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +11,7 @@ import '../core/responsive_kalkan.dart';
 class BayiPaneliScreen extends StatefulWidget {
   final String bayiId; // 🔥 SİBER KİLİDİ ÇÖZEN PARAMETRE!
 
-  const BayiPaneliScreen({super.key, required this.bayiId});
+  BayiPaneliScreen({super.key, required this.bayiId});
 
   @override
   State<BayiPaneliScreen> createState() => _BayiPaneliScreenState();
@@ -24,7 +25,7 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
     super.initState();
     _radarCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3),
+      duration: Duration(seconds: 3),
     )..repeat();
   }
 
@@ -75,7 +76,7 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
   void _siberMesajGoster(String mesaj, Color renk) {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(mesaj, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1)),
+          content: Text(mesaj, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1)),
           backgroundColor: renk,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -121,24 +122,24 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
       backgroundColor: Colors.transparent,
       elevation: 0,
       leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
+          icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20),
           onPressed: () => Navigator.pop(context)
       ),
-      title: const Text('B A Y İ   S . O . S   R A D A R I',
+      title: Text('B A Y İ   S . O . S   R A D A R I',
           style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 3)),
       centerTitle: true,
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 16),
+          padding: EdgeInsets.only(right: 16),
           child: Center(
             child: Container(
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
                   color: SiberTema.kanKirmizi.withOpacity(0.1),
                   shape: BoxShape.circle,
                   border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.3))
               ),
-              child: const Icon(Icons.emergency_recording, color: SiberTema.kanKirmizi, size: 16),
+              child: Icon(Icons.emergency_recording, color: SiberTema.kanKirmizi, size: 16),
             ),
           ),
         )
@@ -148,17 +149,17 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
 
   Widget _buildRadarHeader() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
         children: [
           RotationTransition(
             turns: _radarCtrl,
-            child: const Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 20),
+            child: Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 20),
           ),
-          const SizedBox(width: 12),
-          const Text("CANLI SAHA TAKİBİ",
+          SizedBox(width: 12),
+          Text("CANLI SAHA TAKİBİ",
               style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
-          const Spacer(),
+          Spacer(),
           Text("BAYI_ID: ${widget.bayiId.toUpperCase()}",
               style: TextStyle(color: SiberTema.kuantumCyan.withOpacity(0.4), fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 1)),
         ],
@@ -175,14 +176,14 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasError) return _buildStatusMessage("RADAR BAĞLANTI HATASI!", SiberTema.kanKirmizi);
-        if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+        if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
 
         final data = snapshot.requireData;
         if (data.size == 0) return _buildEmptyRadar();
 
         return ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 100),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.fromLTRB(24, 8, 24, 100),
           itemCount: data.size,
           itemBuilder: (context, index) => _buildSignalCard(data.docs[index]),
         );
@@ -198,14 +199,14 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
     String konum = data['konum_koordinat'] ?? 'Konum Alınamadı';
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: EdgeInsets.only(bottom: 20),
       decoration: SiberTema.siberCamDekoru(borderColor: SiberTema.kanKirmizi.withOpacity(0.3)),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -214,20 +215,20 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.warning_amber_rounded, color: SiberTema.kanKirmizi, size: 24),
-                        const SizedBox(width: 12),
+                        Icon(Icons.warning_amber_rounded, color: SiberTema.kanKirmizi, size: 24),
+                        SizedBox(width: 12),
                         Text(plaka.toUpperCase(),
-                            style: const TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                            style: TextStyle(color: SiberTema.textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                       ],
                     ),
                     _buildPulseIndicator(),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 _buildInfoRow(Icons.person_pin, "SÜRÜCÜ", kullanici.toUpperCase()),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 _buildMapButton(konum),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 Row(
                   children: [
                     Expanded(
@@ -239,7 +240,7 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
                               () => _sinyalDurumGuncelle(doc.id, 'Müdahale Edildi', false, kullaniciId)
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     Expanded(
                       flex: 1,
                       child: _buildActionButton(
@@ -264,9 +265,9 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
     return Row(
       children: [
         Icon(icon, color: SiberTema.textMuted, size: 14),
-        const SizedBox(width: 8),
-        Text("$label: ", style: const TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold)),
-        Text(value, style: const TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5)),
+        SizedBox(width: 8),
+        Text("$label: ", style: TextStyle(color: SiberTema.textMuted, fontSize: 9, fontWeight: FontWeight.bold)),
+        Text(value, style: TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5)),
       ],
     );
   }
@@ -276,7 +277,7 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
       onTap: () => _haritayiAc(konum),
       borderRadius: BorderRadius.circular(12),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.03),
             borderRadius: BorderRadius.circular(12),
@@ -284,9 +285,9 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
         ),
         child: Row(
           children: [
-            const Icon(Icons.location_on, color: Colors.orangeAccent, size: 16),
-            const SizedBox(width: 10),
-            const Expanded(child: Text("HEDEF NAVİGASYONUNU TETİKLE", style: TextStyle(color: Colors.orangeAccent, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1))),
+            Icon(Icons.location_on, color: Colors.orangeAccent, size: 16),
+            SizedBox(width: 10),
+            Expanded(child: Text("HEDEF NAVİGASYONUNU TETİKLE", style: TextStyle(color: Colors.orangeAccent, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1))),
             Icon(Icons.open_in_new, color: Colors.orangeAccent.withOpacity(0.5), size: 14),
           ],
         ),
@@ -300,7 +301,7 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
       child: ElevatedButton.icon(
         onPressed: tap,
         icon: Icon(icon, size: 18),
-        label: Text(label, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1.5)),
+        label: Text(label, style: TextStyle(fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1.5)),
         style: ElevatedButton.styleFrom(
           backgroundColor: isOutline ? Colors.transparent : color,
           foregroundColor: isOutline ? color : Colors.black,
@@ -315,7 +316,7 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
   Widget _buildPulseIndicator() {
     return Container(
       width: 8, height: 8,
-      decoration: const BoxDecoration(color: SiberTema.kanKirmizi, shape: BoxShape.circle),
+      decoration: BoxDecoration(color: SiberTema.kanKirmizi, shape: BoxShape.circle),
     );
   }
 
@@ -325,11 +326,11 @@ class _BayiPaneliScreenState extends State<BayiPaneliScreen> with SingleTickerPr
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.security, color: SiberTema.kuantumCyan.withOpacity(0.1), size: 80),
-          const SizedBox(height: 24),
-          const Text('SAHADA HER ŞEY SAKİN',
+          SizedBox(height: 24),
+          Text('SAHADA HER ŞEY SAKİN',
               style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2)),
-          const SizedBox(height: 8),
-          const Text('Aktif S.O.S sinyali bulunmuyor.\nRadar taramaya devam ediyor...',
+          SizedBox(height: 8),
+          Text('Aktif S.O.S sinyali bulunmuyor.\nRadar taramaya devam ediyor...',
               textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.5)),
         ],
       ),

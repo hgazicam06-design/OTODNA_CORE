@@ -1,4 +1,4 @@
-// lib/widgets/otodna_logo_painter.dart
+﻿// lib/widgets/otodna_logo_painter.dart
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 /// OtoDNA'nın yaşayan, nefes alan ve devreleri Kuantum Turkuazı ile parlayan kalbi.
 class OtoDNALogo extends StatefulWidget {
   final double size;
-  const OtoDNALogo({super.key, this.size = 110});
+  OtoDNALogo({super.key, this.size = 110});
 
   @override
   State<OtoDNALogo> createState() => _OtoDNALogoState();
@@ -21,7 +21,7 @@ class _OtoDNALogoState extends State<OtoDNALogo> with SingleTickerProviderStateM
     // 1.8 saniyelik Siber Nefes (Pulse) Döngüsü
     _ctrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1800),
+      duration: Duration(milliseconds: 1800),
     )..repeat();
   }
 
@@ -47,9 +47,9 @@ class _SiberLogoPainter extends CustomPainter {
   final double t;
 
   // ── 🎨 KARARGAH TASARIM DOKTRİNİ ──
-  static const Color _matGrey = Color(0xFF111111);
-  static const Color _kuantumCyan = Color(0xFF00FFC2);
-  static const Color _oledBlack = Color(0xFF000000);
+  static Color _matGrey = Color(0xFF111111);
+  static Color _kuantumCyan = Color(0xFF00FFC2);
+  static Color _oledBlack = Color(0xFF000000);
 
   _SiberLogoPainter(this.t);
 
@@ -83,7 +83,7 @@ class _SiberLogoPainter extends CustomPainter {
     // Kuantum Turkuazı Arkadan Vuran Parlama (Neon Glow)
     canvas.drawPath(path, Paint()
       ..color = _kuantumCyan.withOpacity(0.3)
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 15)
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 15)
       ..style = PaintingStyle.fill);
 
     // Dişlinin Mat Gri Gövdesi
@@ -161,11 +161,11 @@ class _SiberLogoPainter extends CustomPainter {
 
     // Farlar (Parlan Kuantum Turkuazı)
     for (final fx in [cx - s * 0.90, cx + s * 0.62]) {
-      final rect = RRect.fromRectAndRadius(Rect.fromLTWH(fx, cy - s * 0.12, s * 0.30, s * 0.13), const Radius.circular(3));
+      final rect = RRect.fromRectAndRadius(Rect.fromLTWH(fx, cy - s * 0.12, s * 0.30, s * 0.13), Radius.circular(3));
       // Far Glow
       canvas.drawRRect(rect, Paint()
         ..color = _kuantumCyan.withOpacity(0.8)
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5)
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, 5)
         ..style = PaintingStyle.fill);
       // Far Core
       canvas.drawRRect(rect, Paint()..color = Colors.white..style = PaintingStyle.fill);
@@ -215,7 +215,7 @@ class _SiberLogoPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5));
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 5));
 
     // Ana çizgi
     _polyline(canvas, pts, Paint()
@@ -231,7 +231,7 @@ class _SiberLogoPainter extends CustomPainter {
 
     canvas.drawCircle(ep, er + 4, Paint()
       ..color = _kuantumCyan.withOpacity(alpha * 0.4)
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 6));
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 6));
 
     canvas.drawCircle(ep, er, Paint()..color = _oledBlack.withOpacity(alpha * 0.25)..style = PaintingStyle.fill);
 

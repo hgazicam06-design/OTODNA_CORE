@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +9,7 @@ import '../../core/responsive_kalkan.dart';
 import '../dashboard/siber_finans_merkezi_screen.dart'; // 💰 FİNANS MERKEZİ KÖPRÜSÜ
 
 class AdminDashUI extends StatelessWidget {
-  const AdminDashUI({super.key});
+  AdminDashUI({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class AdminDashUI extends StatelessWidget {
         backgroundColor: Colors.transparent,
         appBar: _adminAppBar(context),
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/images/radar_grid.png'), // Siber ızgara arka planı (Varsa)
               fit: BoxFit.cover,
@@ -27,31 +28,31 @@ class AdminDashUI extends StatelessWidget {
             ),
           ),
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(24),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 1. GAZİ'NİN KASASI (Gerçek Zamanlı Vergi & Pay Hesaplama)
                 _finansalOzetKarti(),
-                const SizedBox(height: 35),
+                SizedBox(height: 35),
 
                 // 2. SOS KRİTİK TAKİP (30 Dakika Kuralı)
                 _adminBaslik("🚨 KRİTİK SOS DURUMU", SiberTema.kanKirmizi),
                 _buildCanliSosMotoru(),
 
-                const SizedBox(height: 35),
+                SizedBox(height: 35),
 
                 // 3. BAYİ İTİBAR VE BLACKLIST (1 Yıldız İnfazı)
                 _adminBaslik("🛡️ BAYİ DENETİM MERKEZİ", Colors.amber),
                 _buildCanliBayiDenetimMotoru(),
 
-                const SizedBox(height: 35),
+                SizedBox(height: 35),
 
                 // 4. BÖLGE SORUMLULARI (7 Bölge Yönetimi)
                 _adminBaslik("🗺️ BÖLGE KOMUTANLARI", SiberTema.kuantumCyan),
                 _bolgeAtamaButonu(context),
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
               ],
             ),
           ),
@@ -82,10 +83,10 @@ class AdminDashUI extends StatelessWidget {
 
         return GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => const SiberFinansMerkeziScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => SiberFinansMerkeziScreen()));
           },
           child: Container(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             decoration: BoxDecoration(
               // 3D İçeri Çökük (Emboss) Kasa Hissi
               gradient: LinearGradient(
@@ -96,19 +97,19 @@ class AdminDashUI extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1.5), // Etkileşim belli olsun diye turkuaz border
               boxShadow: [
-                BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 15, spreadRadius: -2, offset: const Offset(0, 5)),
+                BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 15, spreadRadius: -2, offset: Offset(0, 5)),
               ],
             ),
             child: Column(
               children: [
                 Text("TOPLAM KASA GİRDİSİ (%12)", style: TextStyle(color: SiberTema.textMain.withOpacity(0.6), fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2, fontFamily: 'Avenir')),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Text(
                     "₺${toplamKasaGirdisi.toStringAsFixed(2)}",
-                    style: TextStyle(color: SiberTema.textMain.withOpacity(0.95), fontSize: 36, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir', shadows: const [Shadow(color: Colors.white, blurRadius: 10)])
+                    style: TextStyle(color: SiberTema.textMain.withOpacity(0.95), fontSize: 36, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir', shadows: [Shadow(color: Colors.white, blurRadius: 10)])
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  padding: EdgeInsets.symmetric(vertical: 20),
                   child: Divider(color: Colors.white.withOpacity(0.1), thickness: 1),
                 ),
                 Row(
@@ -119,8 +120,8 @@ class AdminDashUI extends StatelessWidget {
                     Expanded(child: _buildFinansDetay("Net Karargah Kârı (%10)", "₺${netKazanilanKar.toStringAsFixed(2)}", Colors.greenAccent)),
                   ],
                 ),
-                const SizedBox(height: 16),
-                const Row(
+                SizedBox(height: 16),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("SİBER FİNANS KOKPİTİNE GİR", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
@@ -141,7 +142,7 @@ class AdminDashUI extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(baslik, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 11, fontWeight: FontWeight.w600, fontFamily: 'Avenir'), textAlign: TextAlign.center),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         FittedBox(
           fit: BoxFit.scaleDown,
           child: Text(deger, style: TextStyle(color: renk, fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Avenir', shadows: [Shadow(color: renk.withOpacity(0.3), blurRadius: 5)])),
@@ -175,7 +176,7 @@ class AdminDashUI extends StatelessWidget {
             Color alarmRengi = gecenDakika > 30 ? SiberTema.kanKirmizi : Colors.orangeAccent;
 
             return Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+              padding: EdgeInsets.only(bottom: 12),
               child: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -186,13 +187,13 @@ class AdminDashUI extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: alarmRengi.withOpacity(0.4), width: 1.5),
                   boxShadow: [
-                    BoxShadow(color: alarmRengi.withOpacity(0.15), blurRadius: 10, spreadRadius: 1, offset: const Offset(0, 4)),
+                    BoxShadow(color: alarmRengi.withOpacity(0.15), blurRadius: 10, spreadRadius: 1, offset: Offset(0, 4)),
                   ],
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8),
+                  padding: EdgeInsets.all(8),
                   child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 8),
                     leading: _buildNeonIkon(Icons.warning_amber_rounded, alarmRengi),
                     title: Text(musteri, style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontWeight: FontWeight.w700, fontFamily: 'Avenir', fontSize: 14)),
                     subtitle: Text("Bekleme: $gecenDakika dk (Siber Müdahale Gerekli!)", style: TextStyle(color: alarmRengi, fontWeight: FontWeight.w600, fontSize: 12, fontFamily: 'Avenir')),
@@ -200,13 +201,13 @@ class AdminDashUI extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.style, color: Colors.amber, size: 20),
+                          icon: Icon(Icons.style, color: Colors.amber, size: 20),
                           tooltip: "Asılsız İhbar (Sarı Kart)",
                           onPressed: () {},
                         ),
                         Container(
                           decoration: BoxDecoration(
-                              boxShadow: [BoxShadow(color: alarmRengi.withOpacity(0.4), blurRadius: 8, offset: const Offset(0, 2))]
+                              boxShadow: [BoxShadow(color: alarmRengi.withOpacity(0.4), blurRadius: 8, offset: Offset(0, 2))]
                           ),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -232,7 +233,7 @@ class AdminDashUI extends StatelessWidget {
                               
                               await batch.commit();
                             },
-                            child: const Text("MÜDAHALE", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11, fontFamily: 'Avenir', letterSpacing: 1)),
+                            child: Text("MÜDAHALE", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11, fontFamily: 'Avenir', letterSpacing: 1)),
                           ),
                         ),
                       ],
@@ -267,7 +268,7 @@ class AdminDashUI extends StatelessWidget {
             Color dereceRengi = puan >= 4.5 ? Colors.amber : (puan < 3.0 ? SiberTema.kanKirmizi : Colors.white70);
 
             return Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+              padding: EdgeInsets.only(bottom: 12),
               child: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -278,13 +279,13 @@ class AdminDashUI extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: dereceRengi.withOpacity(0.3), width: 1),
                   boxShadow: [
-                    BoxShadow(color: dereceRengi.withOpacity(0.05), blurRadius: 8, spreadRadius: 1, offset: const Offset(0, 3)),
+                    BoxShadow(color: dereceRengi.withOpacity(0.05), blurRadius: 8, spreadRadius: 1, offset: Offset(0, 3)),
                   ],
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8),
+                  padding: EdgeInsets.all(8),
                   child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 8),
                     leading: _buildNeonIkon(puan < 3.0 ? Icons.gavel : Icons.verified, dereceRengi),
                     title: Text(isim, style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontWeight: FontWeight.w700, fontSize: 14, fontFamily: 'Avenir')),
                     subtitle: Text(derece, style: TextStyle(color: dereceRengi, fontWeight: FontWeight.w800, fontSize: 12, fontFamily: 'Avenir')),
@@ -308,26 +309,26 @@ class AdminDashUI extends StatelessWidget {
     title: Text("OTODNA KARA KUTU", style: TextStyle(color: SiberTema.textMain.withOpacity(0.9), fontWeight: FontWeight.w800, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
     centerTitle: true,
     bottom: PreferredSize(
-      preferredSize: const Size.fromHeight(1),
+      preferredSize: Size.fromHeight(1),
       child: Container(color: Colors.white.withOpacity(0.05), height: 1),
     ),
     actions: [
       IconButton(
-          icon: const Icon(Icons.security, color: SiberTema.kuantumCyan),
+          icon: Icon(Icons.security, color: SiberTema.kuantumCyan),
           tooltip: "Yetki Doğrulama",
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Siber Kalkan Aktif. Tam Yetki Onaylandı.", style: TextStyle(fontFamily: 'Avenir', fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Siber Kalkan Aktif. Tam Yetki Onaylandı.", style: TextStyle(fontFamily: 'Avenir', fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan));
           }
       )
     ],
   );
 
   Widget _adminBaslik(String metin, Color renk) => Padding(
-    padding: const EdgeInsets.only(bottom: 16, left: 4),
+    padding: EdgeInsets.only(bottom: 16, left: 4),
     child: Row(
       children: [
         Icon(Icons.radar, color: renk, size: 18),
-        const SizedBox(width: 10),
+        SizedBox(width: 10),
         Text(metin, style: TextStyle(color: SiberTema.textMain.withOpacity(0.85), fontWeight: FontWeight.w800, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
       ],
     ),
@@ -335,10 +336,10 @@ class AdminDashUI extends StatelessWidget {
 
   Widget _bolgeAtamaButonu(BuildContext context) => GestureDetector(
     onTap: () {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Bölge Komutanlığı Atama Protokolü Başlatılıyor...", style: TextStyle(fontFamily: 'Avenir', fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Bölge Komutanlığı Atama Protokolü Başlatılıyor...", style: TextStyle(fontFamily: 'Avenir', fontWeight: FontWeight.bold)), backgroundColor: SiberTema.kuantumCyan));
     },
     child: AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: Duration(milliseconds: 150),
       width: double.infinity,
       height: 65,
       decoration: BoxDecoration(
@@ -350,14 +351,14 @@ class AdminDashUI extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 1.5),
         boxShadow: [
-          BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), offset: const Offset(0, 6), blurRadius: 10),
+          BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.1), offset: Offset(0, 6), blurRadius: 10),
         ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.add_location_alt, size: 24, color: SiberTema.kuantumCyan),
-          const SizedBox(width: 12),
+          Icon(Icons.add_location_alt, size: 24, color: SiberTema.kuantumCyan),
+          SizedBox(width: 12),
           Text(
             "YENİ BÖLGE KOMUTANI ATA",
             style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5, fontFamily: 'Avenir', shadows: [Shadow(color: SiberTema.kuantumCyan.withOpacity(0.5), blurRadius: 5)]),
@@ -369,7 +370,7 @@ class AdminDashUI extends StatelessWidget {
 
   Widget _buildNeonIkon(IconData icon, Color renk) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
           color: renk.withOpacity(0.05),
           shape: BoxShape.circle,
@@ -380,12 +381,12 @@ class AdminDashUI extends StatelessWidget {
     );
   }
 
-  Widget _buildSiberLoader(Color renk) => Center(child: Padding(padding: const EdgeInsets.all(20.0), child: CircularProgressIndicator(color: renk, strokeWidth: 3)));
+  Widget _buildSiberLoader(Color renk) => Center(child: Padding(padding: EdgeInsets.all(20.0), child: CircularProgressIndicator(color: renk, strokeWidth: 3)));
 
   Widget _buildBosDurum(String mesaj, IconData ikon, Color renk) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(24.0),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -399,7 +400,7 @@ class AdminDashUI extends StatelessWidget {
         child: Column(
           children: [
             Icon(ikon, color: renk.withOpacity(0.3), size: 40),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             Text(mesaj, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 13, fontWeight: FontWeight.w600, fontFamily: 'Avenir'), textAlign: TextAlign.center),
           ],
         ),

@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
 /// 🛡️ KUANTUM DESTEK VE İSTİHBARAT MERKEZİ (SupportService)
@@ -7,7 +7,7 @@ class SupportService {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // ── 🗂️ SİBER DESTEK KATEGORİLERİ ──────────────────────────────────────────
-  static const List<String> kategoriler = [
+  static List<String> kategoriler = [
     "Ödeme ve Finans Sorgulama",
     "Usta / Bayi İhlal Bildirimi",
     "Randevu ve Kapora Sorunu",

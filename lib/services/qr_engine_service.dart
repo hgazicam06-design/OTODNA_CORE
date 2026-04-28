@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'dart:developer' as developer;
 
@@ -34,20 +34,20 @@ class QREngineService {
       return Container(
         width: size, height: size,
         decoration: BoxDecoration(color: Colors.red.shade900, borderRadius: BorderRadius.circular(16)),
-        child: const Center(
+        child: Center(
             child: Text("SİBER İHLAL\nEKSİK VERİ", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))
         ),
       );
     }
 
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFF00FFC2), width: 3), // Kuantum Turkuazı
+        border: Border.all(color: Color(0xFF00FFC2), width: 3), // Kuantum Turkuazı
         boxShadow: [
-          BoxShadow(color: const Color(0xFF00FFC2).withValues(alpha: 0.5), blurRadius: 25, spreadRadius: 3)
+          BoxShadow(color: Color(0xFF00FFC2).withValues(alpha: 0.5), blurRadius: 25, spreadRadius: 3)
         ],
       ),
       child: QrImageView(
@@ -55,8 +55,8 @@ class QREngineService {
         version: QrVersions.auto,
         size: size,
         errorCorrectionLevel: QrErrorCorrectLevel.H, // Siber Hasar Kalkanı %30
-        eyeStyle: const QrEyeStyle(eyeShape: QrEyeShape.square, color: Color(0xFF0F172A)),
-        dataModuleStyle: const QrDataModuleStyle(dataModuleShape: QrDataModuleShape.square, color: Color(0xFF0F172A)),
+        eyeStyle: QrEyeStyle(eyeShape: QrEyeShape.square, color: Color(0xFF0F172A)),
+        dataModuleStyle: QrDataModuleStyle(dataModuleShape: QrDataModuleShape.square, color: Color(0xFF0F172A)),
       ),
     );
   }

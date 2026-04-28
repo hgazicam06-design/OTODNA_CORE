@@ -1,15 +1,16 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 
 /// 🦅 OTODNA SİBER PROTOKOL MERKEZİ
 /// [2026-03-28] GÜNCELLEME: Finansal %12 Kuralı ve Karaliste Yasakları İşlendi.
 class KurallarScreen extends StatelessWidget {
-  const KurallarScreen({super.key});
+  KurallarScreen({super.key});
 
   // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET
-  static const Color bgColor = Color(0xFF000000);
-  static const Color surfaceColor = Color(0xFF111111);
-  static const Color primaryCyan = Color(0xFF00FFC2);
-  static const Color dangerColor = Colors.redAccent;
+  static Color bgColor = Color(0xFF000000);
+  static Color surfaceColor = Color(0xFF111111);
+  static Color primaryCyan = Color(0xFF00FFC2);
+  static Color dangerColor = Colors.redAccent;
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +20,10 @@ class KurallarScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: primaryCyan, size: 20),
+          icon: Icon(Icons.arrow_back_ios_new, color: primaryCyan, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           "SİBER SÖZLEŞME VE PROTOKOLLER",
           style: TextStyle(
             color: SiberTema.textMain,
@@ -37,17 +38,17 @@ class KurallarScreen extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 800), // 🖥️ Web / Geniş Ekran Kalkanı
+            constraints: BoxConstraints(maxWidth: 800), // 🖥️ Web / Geniş Ekran Kalkanı
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24.0),
-              physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.all(24.0),
+              physics: BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // 🛡️ SİBER LOGO VE BAŞLIK
                   Center(
                     child: Container(
-                      padding: const EdgeInsets.all(24),
+                      padding: EdgeInsets.all(24),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: surfaceColor,
@@ -60,11 +61,11 @@ class KurallarScreen extends StatelessWidget {
                           )
                         ],
                       ),
-                      child: const Icon(Icons.gavel, color: primaryCyan, size: 64),
+                      child: Icon(Icons.gavel, color: primaryCyan, size: 64),
                     ),
                   ),
-                  const SizedBox(height: 32),
-                  const Text(
+                  SizedBox(height: 32),
+                  Text(
                     'OTODNA DİJİTAL REFERANS PROTOKOLÜ',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -75,8 +76,8 @@ class KurallarScreen extends StatelessWidget {
                         fontFamily: 'Avenir'
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  const Text(
+                  SizedBox(height: 12),
+                  Text(
                     'Kuantum Ağına bağlanan tüm Sürücüler ve Bayiler için bağlayıcıdır. Sistemi kullanan herkes bu mühürlü şartları kabul etmiş sayılır.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -87,7 +88,7 @@ class KurallarScreen extends StatelessWidget {
                         fontFamily: 'Avenir'
                     ),
                   ),
-                  const SizedBox(height: 48),
+                  SizedBox(height: 48),
 
                   // 🚀 BÖLÜM 1: SİSTEMİN ÇALIŞMA PRENSİBİ
                   _buildRuleCard(
@@ -127,7 +128,7 @@ class KurallarScreen extends StatelessWidget {
                     content: 'Sisteme dahil olan her Bayi, OtoDNA üzerinden yapılan işlemlerde müşteriye "Ulusal Çapraz Garanti" vermek zorundadır. Yapılan her işlemin altında ustanın dijital imzası bulunur.',
                   ),
 
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
 
                   // 🔘 ONAY BUTONU
                   SizedBox(
@@ -140,15 +141,15 @@ class KurallarScreen extends StatelessWidget {
                         elevation: 0,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       ),
-                      icon: const Icon(Icons.verified_user, size: 24),
-                      label: const Text(
+                      icon: Icon(Icons.verified_user, size: 24),
+                      label: Text(
                         'PROTOKOLÜ ANLADIM VE MÜHÜRLÜYORUM',
                         style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir'),
                       ),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                 ],
               ),
             ),
@@ -161,8 +162,8 @@ class KurallarScreen extends StatelessWidget {
   // 🧠 YARDIMCI SİBER KART MOTORU
   Widget _buildRuleCard({required IconData icon, required String title, required Color color, required String content}) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 24),
-      padding: const EdgeInsets.all(24),
+      margin: EdgeInsets.only(bottom: 24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(20),
@@ -177,7 +178,7 @@ class KurallarScreen extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
                     color: color.withOpacity(0.1),
                     shape: BoxShape.circle,
@@ -185,7 +186,7 @@ class KurallarScreen extends StatelessWidget {
                 ),
                 child: Icon(icon, color: color, size: 24),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               Expanded(
                 child: Text(
                   title,
@@ -194,13 +195,13 @@ class KurallarScreen extends StatelessWidget {
               ),
             ],
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
             child: Divider(color: SiberTema.textMuted, thickness: 1),
           ),
           Text(
             content,
-            style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.6, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+            style: TextStyle(color: SiberTema.textMuted, fontSize: 12, height: 1.6, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
           ),
         ],
       ),

@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:developer' as developer;
@@ -55,7 +55,7 @@ class LocationService {
 
       // 3. Arka Planda Taramayı Başlat
       _konumRadari = Geolocator.getPositionStream(
-          locationSettings: const LocationSettings(
+          locationSettings: LocationSettings(
             accuracy: LocationAccuracy.high,
             distanceFilter: 10, // Sadece araç 10 metre hareket ettiğinde tetiklen (Batarya tasarrufu)
           )

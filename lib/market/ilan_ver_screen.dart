@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +8,7 @@ import '../../core/siber_tema.dart';
 class IlanVerScreen extends StatefulWidget {
   final Dukkan aktifDukkan;
 
-  const IlanVerScreen({super.key, required this.aktifDukkan});
+  IlanVerScreen({super.key, required this.aktifDukkan});
 
   @override
   State<IlanVerScreen> createState() => _IlanVerScreenState();
@@ -52,17 +53,17 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
                 _buildSiberAppBar(),
                 Expanded(
                   child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.all(20.0),
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.all(20.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildFirmaBilgiBandi(maxLimit: widget.aktifDukkan.maxIlanSiniri),
-                        const SizedBox(height: 24),
+                        SizedBox(height: 24),
                         
                         if (vipMi) ...[
                           _buildVipTopluYuklemeAlani(),
-                          const SizedBox(height: 24),
+                          SizedBox(height: 24),
                         ],
                         
                         if (limitDolduMu)
@@ -70,7 +71,7 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
                         else
                           _buildStandartIlanFormu(),
                           
-                        const SizedBox(height: 40),
+                        SizedBox(height: 40),
                       ],
                     ),
                   ),
@@ -89,25 +90,25 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.4),
-            border: const Border(bottom: BorderSide(color: Colors.white10)),
+            border: Border(bottom: BorderSide(color: Colors.white10)),
           ),
           child: Row(
             children: [
               GestureDetector(
                 onTap: () => Navigator.pop(context),
-                child: const Icon(Icons.arrow_back_ios_new, color: _neonGreen, size: 20),
+                child: Icon(Icons.arrow_back_ios_new, color: _neonGreen, size: 20),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(color: _neonGreen.withOpacity(0.1), shape: BoxShape.circle),
-                child: const Icon(Icons.add_shopping_cart, color: _neonGreen, size: 18),
+                child: Icon(Icons.add_shopping_cart, color: _neonGreen, size: 18),
               ),
-              const SizedBox(width: 12),
-              const Text("Siber Oto Market", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+              SizedBox(width: 12),
+              Text("Siber Oto Market", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
             ],
           ),
         ),
@@ -125,7 +126,7 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.5),
             borderRadius: BorderRadius.circular(16),
@@ -138,12 +139,12 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.aktifDukkan.ad.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 0.5, fontFamily: 'Avenir')),
-                  const SizedBox(height: 6),
+                  Text(widget.aktifDukkan.ad.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 0.5, fontFamily: 'Avenir')),
+                  SizedBox(height: 6),
                   Row(
                     children: [
                       Icon(isVip ? Icons.stars : Icons.storefront, color: isVip ? _siberGold : Colors.white54, size: 14),
-                      const SizedBox(width: 6),
+                      SizedBox(width: 6),
                       Text("Ağ Rozeti: ${widget.aktifDukkan.rozet}", style: TextStyle(color: isVip ? _siberGold : Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                     ],
                   ),
@@ -152,8 +153,8 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Text("Aktif İlan", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-                  Text(limitMetni, style: const TextStyle(color: _neonGreen, fontWeight: FontWeight.w900, fontSize: 16, fontFamily: 'Avenir')),
+                  Text("Aktif İlan", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                  Text(limitMetni, style: TextStyle(color: _neonGreen, fontWeight: FontWeight.w900, fontSize: 16, fontFamily: 'Avenir')),
                 ],
               )
             ],
@@ -167,7 +168,7 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
   Widget _buildVipTopluYuklemeAlani() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.6),
         borderRadius: BorderRadius.circular(20),
@@ -177,15 +178,15 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12),
             decoration: BoxDecoration(color: _siberGold.withOpacity(0.1), shape: BoxShape.circle),
-            child: const Icon(Icons.auto_awesome, color: _siberGold, size: 28),
+            child: Icon(Icons.auto_awesome, color: _siberGold, size: 28),
           ),
-          const SizedBox(height: 16),
-          const Text("VIP TOPLU KİTLE YÜKLEME", style: TextStyle(color: _siberGold, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5, fontFamily: 'Avenir')),
-          const SizedBox(height: 8),
-          const Text("Excel / PDF ağını bağlayın. Kuantum AI binlerce ilanı tek tuşla vitrine dizsin.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4, fontFamily: 'Avenir')),
-          const SizedBox(height: 20),
+          SizedBox(height: 16),
+          Text("VIP TOPLU KİTLE YÜKLEME", style: TextStyle(color: _siberGold, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5, fontFamily: 'Avenir')),
+          SizedBox(height: 8),
+          Text("Excel / PDF ağını bağlayın. Kuantum AI binlerce ilanı tek tuşla vitrine dizsin.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 11, height: 1.4, fontFamily: 'Avenir')),
+          SizedBox(height: 20),
           SizedBox(
             width: double.infinity,
             height: 48,
@@ -196,8 +197,8 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: _siberGold.withOpacity(0.5))),
                 elevation: 0,
               ),
-              icon: const Icon(Icons.file_upload, size: 18),
-              label: const Text("Katalog Ağına Bağlan", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, fontFamily: 'Avenir')),
+              icon: Icon(Icons.file_upload, size: 18),
+              label: Text("Katalog Ağına Bağlan", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, fontFamily: 'Avenir')),
               onPressed: () => _uyariGoster("VIP Kuantum Tarayıcı Başlatılıyor...", isGold: true),
             ),
           )
@@ -210,7 +211,7 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
   Widget _buildLimitDoluUyarisi() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.6),
         borderRadius: BorderRadius.circular(20),
@@ -219,16 +220,16 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
       ),
       child: Column(
         children: [
-          const Icon(Icons.block, color: SiberTema.kanKirmizi, size: 40),
-          const SizedBox(height: 16),
-          const Text("SİBER LİMİT DOLDU", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1, fontFamily: 'Avenir')),
-          const SizedBox(height: 8),
+          Icon(Icons.block, color: SiberTema.kanKirmizi, size: 40),
+          SizedBox(height: 16),
+          Text("SİBER LİMİT DOLDU", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1, fontFamily: 'Avenir')),
+          SizedBox(height: 8),
           Text(
             "Mevcut paketinizle Kuantum Ağına daha fazla ilan basamazsınız. Daha fazla müşteriye ulaşmak için yetki rozetinizi yükseltin.",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12, height: 1.4, fontFamily: 'Avenir'),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
           SizedBox(
             width: double.infinity,
             height: 50,
@@ -238,8 +239,8 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
-              icon: const Icon(Icons.rocket_launch, size: 18),
-              label: const Text("ROZET YÜKSELT (VIP GEÇİŞ)", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
+              icon: Icon(Icons.rocket_launch, size: 18),
+              label: Text("ROZET YÜKSELT (VIP GEÇİŞ)", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
               onPressed: () => _uyariGoster("Siber Kasaya Bağlanılıyor..."),
             ),
           )
@@ -251,7 +252,7 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
   // ─── TEKLİ İLAN FORMU (GLASSMORPHISM) ───
   Widget _buildStandartIlanFormu() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.4),
         borderRadius: BorderRadius.circular(20),
@@ -262,18 +263,18 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
         children: [
           Row(
             children: [
-              const Icon(Icons.add_box_outlined, color: _neonGreen, size: 18),
-              const SizedBox(width: 8),
-              const Text("MANUEL İLAN GİRİŞİ", style: TextStyle(color: _neonGreen, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5, fontFamily: 'Avenir')),
+              Icon(Icons.add_box_outlined, color: _neonGreen, size: 18),
+              SizedBox(width: 8),
+              Text("MANUEL İLAN GİRİŞİ", style: TextStyle(color: _neonGreen, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5, fontFamily: 'Avenir')),
             ],
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
           _buildSiberTextField("Parça / Araç Adı", Icons.title, _adController),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           _buildSiberTextField("Fiyat (TL)", Icons.attach_money, _fiyatController, isNumber: true),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           _buildSiberTextField("Açıklama / Detaylar", Icons.description_outlined, _aciklamaController, maxLines: 4),
-          const SizedBox(height: 32),
+          SizedBox(height: 32),
           SizedBox(
             width: double.infinity,
             height: 56,
@@ -287,8 +288,8 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
               ),
               onPressed: _isProcessing ? null : _ilanYayinla,
               child: _isProcessing
-                  ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 3))
-                  : const Text("AĞA YAYINLA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                  ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 3))
+                  : Text("AĞA YAYINLA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.5, fontFamily: 'Avenir')),
             ),
           ),
         ],
@@ -311,16 +312,16 @@ class _IlanVerScreenState extends State<IlanVerScreen> {
             controller: controller,
             keyboardType: isNumber ? TextInputType.number : TextInputType.text,
             maxLines: maxLines,
-            style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
+            style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir'),
             decoration: InputDecoration(
               prefixIcon: Padding(
                 padding: EdgeInsets.only(bottom: maxLines > 1 ? (maxLines * 10.0) : 0),
                 child: Icon(icon, color: _neonGreen.withOpacity(0.7), size: 18),
               ),
               hintText: hint,
-              hintStyle: const TextStyle(color: Colors.white38, fontSize: 12, fontFamily: 'Avenir'),
+              hintStyle: TextStyle(color: Colors.white38, fontSize: 12, fontFamily: 'Avenir'),
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
             ),
           ),
         ),

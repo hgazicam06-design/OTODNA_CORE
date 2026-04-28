@@ -1,10 +1,11 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirmaUzmanlikSecimScreen extends StatefulWidget {
   final String firmaId; // Kayıt olan firmanın Firebase ID'si
 
-  const FirmaUzmanlikSecimScreen({super.key, required this.firmaId});
+  FirmaUzmanlikSecimScreen({super.key, required this.firmaId});
 
   @override
   State<FirmaUzmanlikSecimScreen> createState() => _FirmaUzmanlikSecimScreenState();
@@ -12,10 +13,10 @@ class FirmaUzmanlikSecimScreen extends StatefulWidget {
 
 class _FirmaUzmanlikSecimScreenState extends State<FirmaUzmanlikSecimScreen> {
   // 🌑 TESLA MİMARİSİ: OLED SİYAH PALET
-  static const Color bgColor = Color(0xFF000000);
-  static const Color surfaceColor = Color(0xFF111111);
-  static const Color primaryCyan = Color(0xFF00FFC2);
-  static const Color dangerColor = Colors.redAccent;
+  static Color bgColor = Color(0xFF000000);
+  static Color surfaceColor = Color(0xFF111111);
+  static Color primaryCyan = Color(0xFF00FFC2);
+  static Color dangerColor = Colors.redAccent;
 
   bool _isProcessing = false;
 
@@ -72,13 +73,13 @@ class _FirmaUzmanlikSecimScreenState extends State<FirmaUzmanlikSecimScreen> {
     _ozelUzmanlikCtrl.clear();
     Navigator.pop(context); // Bottom Sheet'i kapat
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("YENİ UZMANLIK SİBER AĞA İLETİLDİ!", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("YENİ UZMANLIK SİBER AĞA İLETİLDİ!", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan));
   }
 
   // 🚀 FİRMAMIZIN PROFİLİNİ MÜHÜRLEME MOTORU
   Future<void> _kaydiTamamla() async {
     if (_secilenUzmanliklar.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("SİBER İHLAL: En az bir uzmanlık seçmelisiniz!", style: TextStyle(fontWeight: FontWeight.bold)), backgroundColor: dangerColor));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("SİBER İHLAL: En az bir uzmanlık seçmelisiniz!", style: TextStyle(fontWeight: FontWeight.bold)), backgroundColor: dangerColor));
       return;
     }
 
@@ -107,14 +108,14 @@ class _FirmaUzmanlikSecimScreenState extends State<FirmaUzmanlikSecimScreen> {
       await batch.commit();
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("UZMANLIKLAR MÜHÜRLENDİ. SİSTEME GİRİŞ YAPILIYOR... 🦅", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("UZMANLIKLAR MÜHÜRLENDİ. SİSTEME GİRİŞ YAPILIYOR... 🦅", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), backgroundColor: primaryCyan));
 
       // TODO: Başarılı olunca Ana Dashboard'a (Siber Komuta Merkezi) yönlendir.
       // Navigator.pushReplacementNamed(context, '/dashboard');
 
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("AĞ HATASI: $e", style: const TextStyle(fontWeight: FontWeight.bold)), backgroundColor: dangerColor));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("AĞ HATASI: $e", style: TextStyle(fontWeight: FontWeight.bold)), backgroundColor: dangerColor));
     } finally {
       if (mounted) setState(() => _isProcessing = false);
     }
@@ -128,18 +129,18 @@ class _FirmaUzmanlikSecimScreenState extends State<FirmaUzmanlikSecimScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-        title: const Text('S İ B E R   U Z M A N L I K   A Ğ I', style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 3)),
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+        title: Text('S İ B E R   U Z M A N L I K   A Ğ I', style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 3)),
       ),
       body: Column(
         children: [
           // 1. BAŞLIK VE AÇIKLAMA
           Padding(
-            padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+            padding: EdgeInsets.fromLTRB(24, 16, 24, 24),
             child: Column(
               children: [
-                const Text("HANGİ KONULARDA USTASINIZ?", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-                const SizedBox(height: 12),
+                Text("HANGİ KONULARDA USTASINIZ?", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                SizedBox(height: 12),
                 Text("OtoDNA kullanıcıları ince detayları arar. Firmanızın sunduğu tüm spesifik hizmetleri seçin veya listede yoksa kendiniz ekleyin.", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontSize: 12, height: 1.5, fontWeight: FontWeight.bold)),
               ],
             ),
@@ -148,8 +149,8 @@ class _FirmaUzmanlikSecimScreenState extends State<FirmaUzmanlikSecimScreen> {
           // 2. DİNAMİK KUANTUM ÇİPLERİ (Pinterest Style Wrap)
           Expanded(
             child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 24),
               child: Wrap(
                 spacing: 12,
                 runSpacing: 16,
@@ -166,7 +167,7 @@ class _FirmaUzmanlikSecimScreenState extends State<FirmaUzmanlikSecimScreen> {
 
           // 3. ATEŞLEME (MÜHÜRLE) BUTONU
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: surfaceColor,
               border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05))),
@@ -184,11 +185,11 @@ class _FirmaUzmanlikSecimScreenState extends State<FirmaUzmanlikSecimScreen> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
                   icon: _isProcessing
-                      ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                      : const Icon(Icons.fingerprint, size: 24),
+                      ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                      : Icon(Icons.fingerprint, size: 24),
                   label: Text(
                     _isProcessing ? "AĞA YÜKLENİYOR..." : "PROFİLİ SİSTEME MÜHÜRLE",
-                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5),
                   ),
                 ),
               ),
@@ -214,8 +215,8 @@ class _FirmaUzmanlikSecimScreenState extends State<FirmaUzmanlikSecimScreen> {
         });
       },
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        duration: Duration(milliseconds: 300),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
         decoration: BoxDecoration(
           color: isSelected ? primaryCyan : (ozelMi ? Colors.orangeAccent.withOpacity(0.1) : surfaceColor),
           borderRadius: BorderRadius.circular(24),
@@ -228,9 +229,9 @@ class _FirmaUzmanlikSecimScreenState extends State<FirmaUzmanlikSecimScreen> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (isSelected) const Icon(Icons.check_circle, color: Colors.white, size: 16),
-            if (ozelMi && !isSelected) const Icon(Icons.star, color: Colors.orangeAccent, size: 16),
-            if (isSelected || ozelMi) const SizedBox(width: 8),
+            if (isSelected) Icon(Icons.check_circle, color: Colors.white, size: 16),
+            if (ozelMi && !isSelected) Icon(Icons.star, color: Colors.orangeAccent, size: 16),
+            if (isSelected || ozelMi) SizedBox(width: 8),
             Text(
               uzmanlik,
               style: TextStyle(
@@ -258,41 +259,41 @@ class _FirmaUzmanlikSecimScreenState extends State<FirmaUzmanlikSecimScreen> {
           builder: (context) => Padding(
             padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Container(
-              padding: const EdgeInsets.all(32),
+              padding: EdgeInsets.all(32),
               decoration: BoxDecoration(
                 color: surfaceColor,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                 border: Border.all(color: primaryCyan.withOpacity(0.3)),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text("SİSTEMDE OLMAYAN UZMANLIĞI GİRİN", style: TextStyle(color: primaryCyan, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                  const SizedBox(height: 24),
+                  Text("SİSTEMDE OLMAYAN UZMANLIĞI GİRİN", style: TextStyle(color: primaryCyan, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                  SizedBox(height: 24),
                   TextField(
                     controller: _ozelUzmanlikCtrl,
                     textCapitalization: TextCapitalization.characters,
-                    style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.bold),
                     decoration: InputDecoration(
                       hintText: "Örn: PORSCHE MOTOR REKTİFİYE",
                       hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 12),
                       filled: true,
                       fillColor: bgColor,
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-                      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: primaryCyan)),
+                      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: primaryCyan)),
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () => _ozelUzmanlikEkle(_ozelUzmanlikCtrl.text),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryCyan,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      padding: EdgeInsets.symmetric(vertical: 20),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     ),
-                    child: const Text("HAFIZAYA AL VE SEÇ", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                    child: Text("HAFIZAYA AL VE SEÇ", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
                   )
                 ],
               ),
@@ -301,13 +302,13 @@ class _FirmaUzmanlikSecimScreenState extends State<FirmaUzmanlikSecimScreen> {
         );
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
         decoration: BoxDecoration(
           color: bgColor,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: SiberTema.textMuted, width: 1, style: BorderStyle.solid),
         ),
-        child: const Row(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.add, color: SiberTema.kuantumCyan, size: 16),

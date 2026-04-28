@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/bayi/siber_gelismis_urun_ekleme.dart
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ import '../core/responsive_kalkan.dart';
 
 /// 🛡️ KUANTUM DETAYLI ÜRÜN GİRİŞ TERMİNALİ (AI, HUB ve SAAS KOTALI)
 class SiberGelismisUrunEkleme extends StatefulWidget {
-  const SiberGelismisUrunEkleme({super.key});
+  SiberGelismisUrunEkleme({super.key});
 
   @override
   State<SiberGelismisUrunEkleme> createState() => _SiberGelismisUrunEklemeState();
@@ -108,7 +109,7 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
       int itemsToAdd = availableSpace < pdfBatch ? availableSpace : pdfBatch;
 
       developer.log("SİBER ONAY: $itemsToAdd adet ürün faturadan Kuantum ağına aktarılıyor...");
-      await Future.delayed(const Duration(seconds: 3)); // AI Simülasyon Gecikmesi
+      await Future.delayed(Duration(seconds: 3)); // AI Simülasyon Gecikmesi
 
       // 2. ATOMİK TOPLU YÜKLEME (WriteBatch)
       WriteBatch batch = _db.batch();
@@ -179,7 +180,7 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
     HapticFeedback.heavyImpact();
     developer.log("🌐 GOOGLE HUB: $oe için Global İstihbarat Ağı taranıyor...");
 
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 2));
 
     setState(() {
       _aciklamaCtrl.text = "Orijinal fabrika çıkışlı yüksek dayanımlı parça. Global Hub onayı mevcut.";
@@ -335,85 +336,85 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("ÜRÜN & GALERİ MERKEZİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5, fontFamily: 'Avenir')),
+          title: Text("ÜRÜN & GALERİ MERKEZİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1.5, fontFamily: 'Avenir')),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: Form(
           key: _formKey,
           child: ListView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(20),
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.all(20),
             children: [
               // ── 🤖 SİBER ASİSTAN PANELİ VE KAPASİTE RADARI ──
               _buildSiberAsistanPaneli(),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               // ── 📸 GALERİ BÖLÜMÜ ──
               _buildBolumBasligi("MEDYA VE GÖRSEL KANITLAR (Opsiyonel)", Icons.photo_library),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _buildGaleri(),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               // ── 📦 KİMLİK BÖLÜMÜ ──
               _buildBolumBasligi("KİMLİK VE KATEGORİ", Icons.fingerprint),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _buildSiberInput(controller: _stokKoduCtrl, hint: "Stok Kodu / OE Kodu (Örn: A2054210112)", isRequired: true),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _buildSiberInput(controller: _urunAdiCtrl, hint: "Ürün Adı (Örn: Brembo Disk)", isRequired: true),
               Row(
                 children: [
                   Expanded(child: _buildSiberInput(controller: _markaCtrl, hint: "Marka")),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Expanded(child: _buildSiberInput(controller: _kategoriCtrl, hint: "Kategori")),
                 ],
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               // ── 📝 DETAYLAR VE ROZETLER ──
               _buildBolumBasligi("TEKNİK DETAYLAR VE GÜVENCELER", Icons.description),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _buildSiberInput(controller: _aciklamaCtrl, hint: "Ürün Özellikleri (Opsiyonel)", maxLines: 3),
               _buildSiberInput(controller: _uyumluAraclarCtrl, hint: "Uyumlu Araçlar (Hub ile Otonom Çekilebilir)"),
               _buildSiberInput(controller: _etiketlerCtrl, hint: "Arama Etiketleri (Örn: fren, disk)"),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _buildSiberRozet("2 Yıl Garanti Kalkanı", _rozetGaranti, (v) => setState(() => _rozetGaranti = v)),
               _buildSiberRozet("%100 Orijinal Ürün Mührü", _rozetOrijinal, (v) => setState(() => _rozetOrijinal = v)),
               _buildSiberRozet("Kurulum Alıcıya Aittir", _rozetKurulumAliciyaAit, (v) => setState(() => _rozetKurulumAliciyaAit = v)),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               // ── 💰 FİNANS BÖLÜMÜ ──
               _buildBolumBasligi("SİBER FİNANS VE %12 KESİNTİ", Icons.account_balance_wallet),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               Row(
                 children: [
                   Expanded(child: _buildSiberInput(controller: _gelisFiyatiCtrl, hint: "Net Geliş (₺)", isNumber: true, isRequired: true, onChanged: (v) => _siberHesaplamayiTetikle())),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Expanded(child: _buildSiberInput(controller: _kdvOraniCtrl, hint: "KDV (%)", isNumber: true, onChanged: (v) => _siberHesaplamayiTetikle())),
                 ],
               ),
               _buildSiberInput(controller: _karMarjiCtrl, hint: "Hedef Kâr Marjı (%)", isNumber: true, isRequired: true, onChanged: (v) => _siberHesaplamayiTetikle()),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
 
               // 🛡️ OTONOM FİNANS TABLOSU
               if (_musteriVitrinFiyati > 0) _buildFinansPanosu(),
 
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
 
               // 🚀 MÜHÜRLE BUTONU
               SizedBox(
                 height: 60,
                 child: _islemSuruyor
-                    ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                    ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                     : ElevatedButton.icon(
                   style: SiberTema.kuantumButonStili(),
-                  icon: const Icon(Icons.security, color: Colors.black),
-                  label: const Text("TİCARETİ MÜHÜRLE VE YAYINLA", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                  icon: Icon(Icons.security, color: Colors.black),
+                  label: Text("TİCARETİ MÜHÜRLE VE YAYINLA", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                   onPressed: _urunuMarketeFirlat,
                 ),
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
             ],
           ),
         ),
@@ -424,7 +425,7 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
   // ── 🤖 YARDIMCI BİLEŞENLER ──
   Widget _buildSiberAsistanPaneli() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: SiberTema.kuantumCyan.withOpacity(0.05),
         borderRadius: BorderRadius.circular(16),
@@ -436,7 +437,7 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Row(
+              Row(
                 children: [
                   Icon(Icons.smart_toy, color: SiberTema.kuantumCyan, size: 20),
                   SizedBox(width: 8),
@@ -446,38 +447,38 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
               _buildKapasiteRadari(),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Row(
             children: [
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: _islemSuruyor ? null : _pdfYukleVeCozumle,
-                  icon: const Icon(Icons.picture_as_pdf, size: 16),
-                  label: const Text("PDF İLE TOPLU YÜKLE", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                  icon: Icon(Icons.picture_as_pdf, size: 16),
+                  label: Text("PDF İLE TOPLU YÜKLE", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: SiberTema.altinSari,
                     side: BorderSide(color: SiberTema.altinSari.withOpacity(0.5)),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: EdgeInsets.symmetric(vertical: 12),
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: _islemSuruyor ? null : _hubSorgula,
-                  icon: const Icon(Icons.travel_explore, size: 16),
-                  label: const Text("OE İLE HUB'DAN ÇEK", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                  icon: Icon(Icons.travel_explore, size: 16),
+                  label: Text("OE İLE HUB'DAN ÇEK", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: SiberTema.kuantumCyan,
                     side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5)),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: EdgeInsets.symmetric(vertical: 12),
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
-          const Text("PDF butonu aboneliğinize (Normal: 10, Ultra: 10, Plus: 20, VIP: Sınırsız) göre toplu ürün aktarımı yapar.", style: TextStyle(color: Colors.white38, fontSize: 9)),
+          SizedBox(height: 8),
+          Text("PDF butonu aboneliğinize (Normal: 10, Ultra: 10, Plus: 20, VIP: Sınırsız) göre toplu ürün aktarımı yapar.", style: TextStyle(color: Colors.white38, fontSize: 9)),
         ],
       ),
     );
@@ -487,7 +488,7 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
     return FutureBuilder<DocumentSnapshot>(
       future: _db.collection('kullanicilar').doc(_bayiId).get(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const SizedBox();
+        if (!snapshot.hasData) return SizedBox();
         String paket = snapshot.data?.data() != null ? ((snapshot.data!.data() as Map)['abonelik_paketi'] ?? 'NORMAL') : 'NORMAL';
         int max = _getMaxProducts(paket);
 
@@ -496,7 +497,7 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
           builder: (context, countSnap) {
             int current = countSnap.data?.count ?? 0;
             return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(4)),
               child: Text("HACİM: $current / ${max > 900000 ? '∞' : max}", style: TextStyle(color: current >= max ? SiberTema.kanKirmizi : SiberTema.kuantumCyan, fontSize: 9, fontWeight: FontWeight.bold)),
             );
@@ -512,14 +513,14 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
       children: [
         if (_hubResimUrl.isNotEmpty && _secilenGorseller.isEmpty)
           Container(
-            padding: const EdgeInsets.all(8),
-            margin: const EdgeInsets.only(bottom: 12),
+            padding: EdgeInsets.all(8),
+            margin: EdgeInsets.only(bottom: 12),
             decoration: BoxDecoration(color: Colors.green.withOpacity(0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.green)),
-            child: const Row(children: [Icon(Icons.check_circle, color: Colors.green, size: 16), SizedBox(width: 8), Text("Global Hub üzerinden orijinal görsel bağlandı.", style: TextStyle(color: Colors.green, fontSize: 10))]),
+            child: Row(children: [Icon(Icons.check_circle, color: Colors.green, size: 16), SizedBox(width: 8), Text("Global Hub üzerinden orijinal görsel bağlandı.", style: TextStyle(color: Colors.green, fontSize: 10))]),
           ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          physics: const BouncingScrollPhysics(),
+          physics: BouncingScrollPhysics(),
           child: Row(
             children: [
               GestureDetector(
@@ -527,14 +528,14 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
                 child: Container(
                   width: 100, height: 100,
                   decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.kuantumCyan, width: 1.5, style: BorderStyle.solid)),
-                  child: const Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.add_a_photo, color: SiberTema.kuantumCyan), SizedBox(height: 8), Text("FOTO EKLE", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))]),
+                  child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.add_a_photo, color: SiberTema.kuantumCyan), SizedBox(height: 8), Text("FOTO EKLE", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))]),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               ..._secilenGorseller.map((dosya) => Container(
-                width: 100, height: 100, margin: const EdgeInsets.only(right: 12),
+                width: 100, height: 100, margin: EdgeInsets.only(right: 12),
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white24), image: DecorationImage(image: FileImage(dosya), fit: BoxFit.cover)),
-                child: Align(alignment: Alignment.topRight, child: IconButton(icon: const Icon(Icons.cancel, color: SiberTema.kanKirmizi), onPressed: () => setState(() => _secilenGorseller.remove(dosya)))),
+                child: Align(alignment: Alignment.topRight, child: IconButton(icon: Icon(Icons.cancel, color: SiberTema.kanKirmizi), onPressed: () => setState(() => _secilenGorseller.remove(dosya)))),
               )),
             ],
           ),
@@ -545,16 +546,16 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
 
   Widget _buildFinansPanosu() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: SiberTema.siberCamZirh(renk: Colors.black),
       child: Column(
         children: [
           _bilgiSatiri("KDV'Lİ MALİYET:", "₺${_kdvliGelis.toStringAsFixed(2)}", Colors.white54),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           _bilgiSatiri("BAYİ NET KAZANCI:", "₺${_bayiNetHedefi.toStringAsFixed(2)}", SiberTema.altinSari),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           _bilgiSatiri("OTODNA %12 KESİNTİSİ:", "- ₺${_otodnaPayi.toStringAsFixed(2)}", SiberTema.kanKirmizi),
-          const Divider(color: Colors.white24, height: 24),
+          Divider(color: Colors.white24, height: 24),
           _bilgiSatiri("KDV DAHİL MÜŞTERİ FİYATI:", "₺${_musteriVitrinFiyati.toStringAsFixed(2)}", SiberTema.kuantumCyan, isBold: true, isLarge: true),
         ],
       ),
@@ -562,27 +563,27 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
   }
 
   Widget _buildBolumBasligi(String baslik, IconData ikon) {
-    return Row(children: [Icon(ikon, color: SiberTema.kuantumCyan, size: 18), const SizedBox(width: 8), Text(baslik, style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))]);
+    return Row(children: [Icon(ikon, color: SiberTema.kuantumCyan, size: 18), SizedBox(width: 8), Text(baslik, style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'))]);
   }
 
   Widget _buildSiberInput({required TextEditingController controller, required String hint, bool isNumber = false, bool isRequired = false, int maxLines = 1, Function(String)? onChanged}) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.5), borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.white12)),
       child: TextFormField(
         controller: controller, maxLines: maxLines,
-        keyboardType: isNumber ? const TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
-        style: const TextStyle(color: Colors.white, fontSize: 13, fontFamily: 'Avenir'),
+        keyboardType: isNumber ? TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
+        style: TextStyle(color: Colors.white, fontSize: 13, fontFamily: 'Avenir'),
         onChanged: onChanged,
         validator: isRequired ? (v) => v == null || v.isEmpty ? "Zorunlu" : null : null,
-        decoration: InputDecoration(hintText: hint, hintStyle: const TextStyle(color: Colors.white30, fontSize: 11, fontFamily: 'Avenir'), border: InputBorder.none, contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14)),
+        decoration: InputDecoration(hintText: hint, hintStyle: TextStyle(color: Colors.white30, fontSize: 11, fontFamily: 'Avenir'), border: InputBorder.none, contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14)),
       ),
     );
   }
 
   Widget _buildSiberRozet(String baslik, bool deger, Function(bool) onChanged) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(color: SiberTema.matGrey, borderRadius: BorderRadius.circular(8), border: Border.all(color: deger ? SiberTema.kuantumCyan.withOpacity(0.5) : Colors.white10)),
       child: SwitchListTile(
         title: Text(baslik, style: TextStyle(color: deger ? Colors.white : Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
@@ -597,6 +598,6 @@ class _SiberGelismisUrunEklemeState extends State<SiberGelismisUrunEkleme> {
 
   void _siberUyariGoster(String baslik, String mesaj, Color renk) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: SiberTema.matGrey, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)), content: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')), const SizedBox(height: 4), Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir'))])));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: SiberTema.matGrey, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)), content: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')), SizedBox(height: 4), Text(mesaj, style: TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir'))])));
   }
 }

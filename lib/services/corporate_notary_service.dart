@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:developer' as developer;
@@ -27,7 +27,7 @@ class CorporateNotaryService {
     try {
       String uzmanUid = _auth.currentUser?.uid ?? 'BILINMEYEN_UZMAN';
       // Gerçek senaryoda Geolocator ile bayinin anlık konumu çekilmelidir
-      GeoPoint tesisKonumu = const GeoPoint(40.7634, 29.9248);
+      GeoPoint tesisKonumu = GeoPoint(40.7634, 29.9248);
 
       DocumentReference raporRef = _db.collection('arac_dna_raporlari').doc();
       
@@ -67,7 +67,7 @@ class CorporateNotaryService {
       developer.log("OTODNA BİLGİ: $islemId referanslı işlem için müşteri kararı alınıyor...");
 
       // Müşteri konumunu alarak hukuki delil oluşturuyoruz
-      Position position = await Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy: LocationAccuracy.high));
+      Position position = await Geolocator.getCurrentPosition(locationSettings: LocationSettings(accuracy: LocationAccuracy.high));
       GeoPoint musteriKonumu = GeoPoint(position.latitude, position.longitude);
 
       DocumentReference raporRef = _db.collection('arac_dna_raporlari').doc(islemId);

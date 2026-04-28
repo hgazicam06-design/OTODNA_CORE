@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:ui';
@@ -8,7 +8,7 @@ import 'dart:developer' as developer;
 /// 🏎️ OTODNA ANA KARARGAH (User Garage)
 /// SOS Fırlatıcı, Canlı DNA Takip Radarı ve Dijital Ruhsat Paneli.
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -16,9 +16,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   // 🎨 Siber Tasarım Standartları (Komutan Teması)
-  final Color bgColor = const Color(0xFF0A0A0B);
-  final Color primaryCyan = const Color(0xFF00FFC2);
-  final Color alertRed = const Color(0xFFFF4D4D);
+  final Color bgColor = Color(0xFF0A0A0B);
+  final Color primaryCyan = Color(0xFF00FFC2);
+  final Color alertRed = Color(0xFFFF4D4D);
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final User? _currentUser = FirebaseAuth.instance.currentUser;
@@ -37,29 +37,29 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     if (_currentUser == null) {
-      return const Scaffold(backgroundColor: Colors.black, body: Center(child: Text("SİBER KİMLİK YOK!", style: TextStyle(color: Colors.red))));
+      return Scaffold(backgroundColor: Colors.black, body: Center(child: Text("SİBER KİMLİK YOK!", style: TextStyle(color: Colors.red))));
     }
 
     return Scaffold(
       backgroundColor: bgColor,
       body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         slivers: [ // SİBER YAMA: 'slvers' hatası düzeltildi!
           _buildSiberAppBar(),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildDNAStatusCard(), // CANLI RADAR GELDİ
-                  const SizedBox(height: 25),
+                  SizedBox(height: 25),
                   _buildSOSButton(), // 5 SANİYE ZIRHLI SAYAÇ
-                  const SizedBox(height: 30),
+                  SizedBox(height: 30),
                   _buildSectionTitle("DİJİTAL GARAJIM", Icons.directions_car),
-                  const SizedBox(height: 15),
+                  SizedBox(height: 15),
                   _buildVehicleList(),
-                  const SizedBox(height: 30),
+                  SizedBox(height: 30),
                   _buildSectionTitle("SON ETKİLEŞİMLER", Icons.history),
                   _buildActivityFeed(), // CANLI LOG RADARI GELDİ
                 ],
@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: bgColor,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
-        titlePadding: const EdgeInsets.only(left: 20, bottom: 16),
+        titlePadding: EdgeInsets.only(left: 20, bottom: 16),
         title: Text("HOŞ GELDİN, KOMUTAN", style: TextStyle(color: primaryCyan, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2)),
         background: Container(
           decoration: BoxDecoration(
@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return StreamBuilder<QuerySnapshot>(
         stream: _db.collection('araclar').where('sahip_id', isEqualTo: _currentUser!.uid).limit(1).snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: Color(0xFF00FFC2)));
+          if (!snapshot.hasData) return Center(child: CircularProgressIndicator(color: Color(0xFF00FFC2)));
 
           double dnaSkoru = 0.0;
           String plaka = "ARAÇ BULUNAMADI";
@@ -110,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), // Siber Cam Efekti (Glassmorphism)
               child: Container(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.05),
                   borderRadius: BorderRadius.circular(24),
@@ -126,20 +126,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 80, height: 80,
                             child: CircularProgressIndicator(value: dnaSkoru / 100, strokeWidth: 8, color: primaryCyan, backgroundColor: Colors.white10)
                         ),
-                        Text("${dnaSkoru.toInt()}", style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w900)),
+                        Text("${dnaSkoru.toInt()}", style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w900)),
                       ],
                     ),
-                    const SizedBox(width: 20),
+                    SizedBox(width: 20),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("ARAÇ DNA SKORU ($plaka)", style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                          const SizedBox(height: 4),
+                          Text("ARAÇ DNA SKORU ($plaka)", style: TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                          SizedBox(height: 4),
                           Text(dnaSkoru >= 80 ? "KUSURSUZ DURUM" : (dnaSkoru >= 50 ? "BAKIM GEREKLİ" : "KRİTİK RİSK"),
                               style: TextStyle(color: dnaSkoru >= 80 ? primaryCyan : (dnaSkoru >= 50 ? Colors.amber : alertRed), fontSize: 16, fontWeight: FontWeight.w900)
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4),
                           Text("Karargah radarına kilitli.", style: TextStyle(color: primaryCyan.withValues(alpha: 0.6), fontSize: 10)),
                         ],
                       ),
@@ -163,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
 
         // GERÇEK 5 Saniye Radarı
-        _sosTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        _sosTimer = Timer.periodic(Duration(seconds: 1), (timer) {
           setState(() => _sosCounter++);
           if (_sosCounter >= 5) {
             timer.cancel();
@@ -175,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onTapUp: (_) => _sosIptalEt(),
       onTapCancel: () => _sosIptalEt(),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
+        duration: Duration(milliseconds: 300),
         height: 80,
         decoration: BoxDecoration(
           color: _isSosFiring ? alertRed.withValues(alpha: 0.8) : alertRed.withValues(alpha: 0.1),
@@ -188,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.emergency, color: _isSosFiring ? Colors.white : alertRed, size: 28),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Text(
                 _isSosFiring ? "SİNYAL KİLİTLENİYOR: ${5 - _sosCounter}sn" : "ACİL YARDIM (SOS) - 5sn Basılı Tut",
                 style: TextStyle(color: _isSosFiring ? Colors.white : alertRed, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1),
@@ -252,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return StreamBuilder<QuerySnapshot>(
       stream: _db.collection('araclar').where('sahip_id', isEqualTo: _currentUser!.uid).snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: Color(0xFF00FFC2)));
+        if (!snapshot.hasData) return Center(child: CircularProgressIndicator(color: Color(0xFF00FFC2)));
         var docs = snapshot.data!.docs;
 
         if (docs.isEmpty) return _buildEmptyStatus("Siber garajınızda kayıtlı araç bulunmuyor.");
@@ -261,8 +261,8 @@ class _HomeScreenState extends State<HomeScreen> {
           children: docs.map((doc) {
             var car = doc.data() as Map<String, dynamic>;
             return Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(8),
+              margin: EdgeInsets.only(bottom: 12),
+              padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(16),
@@ -270,13 +270,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: ListTile(
                 leading: Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(color: primaryCyan.withValues(alpha: 0.1), shape: BoxShape.circle),
                     child: Icon(Icons.directions_car, color: primaryCyan, size: 24)
                 ),
-                title: Text(car['plaka'] ?? "PLAKA YOK", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-                subtitle: Text("${car['marka'] ?? 'Bilinmeyen'} ${car['model'] ?? 'Model'}", style: const TextStyle(color: Colors.white54, fontSize: 11)),
-                trailing: const Icon(Icons.chevron_right, color: Colors.white24),
+                title: Text(car['plaka'] ?? "PLAKA YOK", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                subtitle: Text("${car['marka'] ?? 'Bilinmeyen'} ${car['model'] ?? 'Model'}", style: TextStyle(color: Colors.white54, fontSize: 11)),
+                trailing: Icon(Icons.chevron_right, color: Colors.white24),
               ),
             );
           }).toList(),
@@ -294,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .limit(3)
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Padding(padding: EdgeInsets.only(top: 15), child: LinearProgressIndicator(color: Color(0xFF00FFC2)));
+        if (!snapshot.hasData) return Padding(padding: EdgeInsets.only(top: 15), child: LinearProgressIndicator(color: Color(0xFF00FFC2)));
         var docs = snapshot.data!.docs;
 
         if (docs.isEmpty) return _buildEmptyStatus("Henüz bir siber etkileşiminiz bulunmuyor.");
@@ -303,13 +303,13 @@ class _HomeScreenState extends State<HomeScreen> {
           children: docs.map((doc) {
             var log = doc.data() as Map<String, dynamic>;
             return Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+              padding: EdgeInsets.only(bottom: 12),
               child: Row(
                 children: [
                   Icon(Icons.radar, color: primaryCyan, size: 16),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Expanded(
-                    child: Text(log['islem_turu'] ?? "BİLİNMEYEN İŞLEM", style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold)),
+                    child: Text(log['islem_turu'] ?? "BİLİNMEYEN İŞLEM", style: TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
@@ -325,8 +325,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Row(
       children: [
         Icon(icon, color: primaryCyan, size: 18),
-        const SizedBox(width: 8),
-        Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5)),
+        SizedBox(width: 8),
+        Text(title, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1.5)),
       ],
     );
   }
@@ -334,9 +334,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildEmptyStatus(String text) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.02), borderRadius: BorderRadius.circular(12)),
-      child: Text(text, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white24, fontSize: 11, fontWeight: FontWeight.bold)),
+      child: Text(text, textAlign: TextAlign.center, style: TextStyle(color: Colors.white24, fontSize: 11, fontWeight: FontWeight.bold)),
     );
   }
 
@@ -344,7 +344,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       backgroundColor: isError ? alertRed : primaryCyan,
-      content: Text(mesaj, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1)),
+      content: Text(mesaj, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1)),
       behavior: SnackBarBehavior.floating,
     ));
   }

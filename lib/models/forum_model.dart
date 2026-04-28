@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// 🦅 OTODNA KUANTUM FORUM VERİ MODELİ
 /// Otomotiv dünyasının kronik sorunlarını, teşhislerini ve çözümlerini
@@ -49,8 +49,8 @@ class ForumPost {
     this.kategori = 'Genel',
     required this.baslik,
     required this.icerik,
-    this.medyaUrlListesi = const [],
-    this.ayniDertBendeDeVarIds = const [],
+    this.medyaUrlListesi = [],
+    this.ayniDertBendeDeVarIds = [],
     this.cozulduMu = false,
     this.cozumIcerigi,
     this.cozenUstaId,

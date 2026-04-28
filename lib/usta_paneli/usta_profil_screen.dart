@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
@@ -7,12 +7,12 @@ import 'dart:developer' as developer;
 class UstaProfilScreen extends StatelessWidget {
   final String bayiId; // SİBER RADAR: Dışarıdan hedeflenen ustanın ID'si
 
-  const UstaProfilScreen({super.key, required this.bayiId});
+  UstaProfilScreen({super.key, required this.bayiId});
 
   // ── 🎨 KARARGAH TASARIM DOKTRİNİ (RENKLER) ──
-  static const Color _kuantumTurkuaz = Color(0xFF00FFC2);
-  static const Color _oledSiyah = Color(0xFF000000);
-  static const Color _matGriKart = Color(0xFF111111);
+  static Color _kuantumTurkuaz = Color(0xFF00FFC2);
+  static Color _oledSiyah = Color(0xFF000000);
+  static Color _matGriKart = Color(0xFF111111);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class UstaProfilScreen extends StatelessWidget {
       future: FirebaseFirestore.instance.collection('bayiler').doc(bayiId).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(backgroundColor: _oledSiyah, body: Center(child: CircularProgressIndicator(color: _kuantumTurkuaz)));
+          return Scaffold(backgroundColor: _oledSiyah, body: Center(child: CircularProgressIndicator(color: _kuantumTurkuaz)));
         }
 
         if (!snapshot.hasData || !snapshot.data!.exists) {
@@ -55,28 +55,28 @@ class UstaProfilScreen extends StatelessWidget {
           ),
           extendBodyBehindAppBar: true,
           body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             child: Column(
               children: [
                 _buildSiberKapak(firmaAdi, lokasyon, rozetYildizi, isBlacklisted),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildIstatistikPanosu(yesilTikSayisi, kirmiziCarpiSayisi, isBlacklisted),
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30),
 
                       if(uzmanliklar.isNotEmpty)
                         _buildUzmanlikAlanlari(uzmanliklar, isBlacklisted),
 
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30),
 
                       _buildOtoDnaEtikSozlesmesi(isBlacklisted),
-                      const SizedBox(height: 40),
+                      SizedBox(height: 40),
 
                       _buildAksiyonButonlari(isBlacklisted),
-                      const SizedBox(height: 50),
+                      SizedBox(height: 50),
                     ],
                   ),
                 )
@@ -94,7 +94,7 @@ class UstaProfilScreen extends StatelessWidget {
       backgroundColor: _oledSiyah,
       appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
       body: Center(
-        child: Text(mesaj, style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, letterSpacing: 2)),
+        child: Text(mesaj, style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, letterSpacing: 2)),
       ),
     );
   }
@@ -103,7 +103,7 @@ class UstaProfilScreen extends StatelessWidget {
   Widget _buildSiberKapak(String firmaAdi, String lokasyon, int rozetYildizi, bool isBlacklisted) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(20, 100, 20, 30),
+      padding: EdgeInsets.fromLTRB(20, 100, 20, 30),
       decoration: BoxDecoration(
         color: _matGriKart,
         border: Border(
@@ -114,7 +114,7 @@ class UstaProfilScreen extends StatelessWidget {
         children: [
           // Kuantum Profil Çerçevesi
           Container(
-            padding: const EdgeInsets.all(5),
+            padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: _oledSiyah,
@@ -135,24 +135,24 @@ class UstaProfilScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
 
           Text(firmaAdi.toUpperCase(),
               textAlign: TextAlign.center,
               style: TextStyle(color: isBlacklisted ? Colors.redAccent : Colors.white, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2)
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
 
           // 🏆 DİNAMİK ROZET MOTORU
           _buildRozetMotoru(rozetYildizi),
 
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.location_on_outlined, color: Colors.white54, size: 16),
-              const SizedBox(width: 6),
-              Text(lokasyon, style: const TextStyle(color: Colors.white54, fontSize: 12, letterSpacing: 1)),
+              Icon(Icons.location_on_outlined, color: Colors.white54, size: 16),
+              SizedBox(width: 6),
+              Text(lokasyon, style: TextStyle(color: Colors.white54, fontSize: 12, letterSpacing: 1)),
             ],
           )
         ],
@@ -183,7 +183,7 @@ class UstaProfilScreen extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
           color: _oledSiyah,
           borderRadius: BorderRadius.circular(8),
@@ -193,7 +193,7 @@ class UstaProfilScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(ikon, color: renk, size: 18),
-          const SizedBox(width: 8),
+          SizedBox(width: 8),
           Text(unvan, style: TextStyle(color: renk, fontWeight: FontWeight.bold, fontSize: 11, letterSpacing: 1.5)),
         ],
       ),
@@ -207,7 +207,7 @@ class UstaProfilScreen extends StatelessWidget {
         Expanded(
           child: _buildIstatistikKarti(Icons.check_circle_outline, yesilTik.toString(), "MÜHÜRLÜ İŞLEM (✅)", isBlacklisted ? Colors.white30 : _kuantumTurkuaz),
         ),
-        const SizedBox(width: 16),
+        SizedBox(width: 16),
         Expanded(
           child: _buildIstatistikKarti(Icons.cancel_outlined, kirmiziCarpi.toString(), "KUSUR TESPİTİ (❌)", Colors.redAccent),
         ),
@@ -217,7 +217,7 @@ class UstaProfilScreen extends StatelessWidget {
 
   Widget _buildIstatistikKarti(IconData ikon, String sayi, String etiket, Color renk) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.symmetric(vertical: 20),
       decoration: BoxDecoration(
           color: _matGriKart,
           borderRadius: BorderRadius.circular(12),
@@ -226,10 +226,10 @@ class UstaProfilScreen extends StatelessWidget {
       child: Column(
         children: [
           Icon(ikon, color: renk, size: 32),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Text(sayi, style: TextStyle(color: renk, fontSize: 24, fontWeight: FontWeight.w900)),
-          const SizedBox(height: 4),
-          Text(etiket, style: const TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 1)),
+          SizedBox(height: 4),
+          Text(etiket, style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 1)),
         ],
       ),
     );
@@ -244,7 +244,7 @@ class UstaProfilScreen extends StatelessWidget {
             "UZMANLIK & BRANŞLAR",
             style: TextStyle(color: isBlacklisted ? Colors.redAccent : _kuantumTurkuaz, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         Wrap(
           spacing: 10, runSpacing: 10,
           children: uzmanliklar.map((u) => _buildCip(u.toString(), isBlacklisted)).toList(),
@@ -255,20 +255,20 @@ class UstaProfilScreen extends StatelessWidget {
 
   Widget _buildCip(String metin, bool isBlacklisted) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
           color: _matGriKart,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: isBlacklisted ? Colors.redAccent.withValues(alpha: 0.3) : Colors.white24)
       ),
-      child: Text(metin, style: const TextStyle(color: Colors.white70, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold)),
+      child: Text(metin, style: TextStyle(color: Colors.white70, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold)),
     );
   }
 
   // ─── 4. 📜 OTO DNA ETİK KURALLARI VE ŞEFFAF GARANTİ ─────────────────────
   Widget _buildOtoDnaEtikSozlesmesi(bool isBlacklisted) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: isBlacklisted ? Colors.red.withValues(alpha: 0.05) : _kuantumTurkuaz.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
@@ -280,12 +280,12 @@ class UstaProfilScreen extends StatelessWidget {
           Row(
             children: [
               Icon(Icons.gavel_outlined, color: isBlacklisted ? Colors.redAccent : _kuantumTurkuaz, size: 22),
-              const SizedBox(width: 10),
-              const Text("OTODNA ETİK & GARANTİ BİLDİRGESİ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 12)),
+              SizedBox(width: 10),
+              Text("OTODNA ETİK & GARANTİ BİLDİRGESİ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 12)),
             ],
           ),
-          const Divider(color: Colors.white24, height: 30),
-          const Text(
+          Divider(color: Colors.white24, height: 30),
+          Text(
             "• NİYET BOZUKLUĞU YOKTUR: Araçlarda mekanik veya elektronik hatalar olabilir. Tüm tespitler tamamen tarafsızdır. Mümkün olduğunca hatalar kullanıcı hatası veya parça hatası olarak şeffafça gösterilir.\n\n"
                 "• SIFIR KÖTÜLEME POLİTİKASI: Ustalarımız meslektaşlarını veya rakip firmaları asla kötülemez.\n\n"
                 "• GARANTİ KOŞULLARI: Bu firmadan alınan sıfır parçalar 1 Yıl, çıkma parçalar 15 Gün OtoDNA Siber Kasa güvencesindedir.",
@@ -304,22 +304,22 @@ class UstaProfilScreen extends StatelessWidget {
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
                 backgroundColor: _matGriKart,
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: const BorderSide(color: Colors.white24))
+                padding: EdgeInsets.symmetric(vertical: 18),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: Colors.white24))
             ),
-            icon: const Icon(Icons.directions_outlined, color: Colors.white),
-            label: const Text("YOL TARİFİ", style: TextStyle(color: Colors.white, letterSpacing: 1, fontWeight: FontWeight.bold)),
+            icon: Icon(Icons.directions_outlined, color: Colors.white),
+            label: Text("YOL TARİFİ", style: TextStyle(color: Colors.white, letterSpacing: 1, fontWeight: FontWeight.bold)),
             onPressed: () {
               developer.log("SİBER BİLGİ: Yol tarifi navigasyon modülü tetiklendi.");
             },
           ),
         ),
-        const SizedBox(width: 16),
+        SizedBox(width: 16),
         Expanded(
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
                 backgroundColor: isBlacklisted ? Colors.redAccent.withValues(alpha: 0.1) : _kuantumTurkuaz,
-                padding: const EdgeInsets.symmetric(vertical: 18),
+                padding: EdgeInsets.symmetric(vertical: 18),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                     side: BorderSide(color: isBlacklisted ? Colors.redAccent : Colors.transparent, width: 2)

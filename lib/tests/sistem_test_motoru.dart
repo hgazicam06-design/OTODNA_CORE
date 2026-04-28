@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:ui';
 import 'dart:developer' as developer;
@@ -15,12 +15,12 @@ class SistemTestMotoru {
 
     try {
       // ── 🛡️ 1. AŞAMA: SİBER GÜVENLİK TESTİ ────────────────────────────────
-      await Future.delayed(const Duration(milliseconds: 800)); // Simülasyon
+      await Future.delayed(Duration(milliseconds: 800)); // Simülasyon
       developer.log("[SİBER TEST 1] Kuantum Ağ Güvenliği ve Şifreleme Protokolü... ONAYLANDI ✅");
       basariliTestler++;
 
       // ── 🌍 2. AŞAMA: KÜRESEL AĞ TESTİ (7 BÖLGE 81 İL) ──────────────────────
-      await Future.delayed(const Duration(milliseconds: 800));
+      await Future.delayed(Duration(milliseconds: 800));
       developer.log("[SİBER TEST 2] 81 İl ve Küresel (GlobalYonetici) Ağı... ONAYLANDI ✅");
       basariliTestler++;
 
@@ -40,7 +40,7 @@ class SistemTestMotoru {
       }
 
       // ── 🧬 4. AŞAMA: SENSÖR VE RADAR TESTİ ─────────────────────────────────
-      await Future.delayed(const Duration(milliseconds: 800));
+      await Future.delayed(Duration(milliseconds: 800));
       developer.log("[SİBER TEST 4] OCR Okuyucu, Barkod Motoru ve Siber Radarlar... ONAYLANDI ✅");
       basariliTestler++;
 
@@ -90,7 +90,7 @@ class SistemTestMotoru {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
             side: BorderSide(
-                color: basarili ? const Color(0xFF00FFC2).withValues(alpha: 0.5) : Colors.redAccent.withValues(alpha: 0.5),
+                color: basarili ? Color(0xFF00FFC2).withValues(alpha: 0.5) : Colors.redAccent.withValues(alpha: 0.5),
                 width: 1.5 // İnce Neon Çerçeve
             ),
           ),
@@ -98,15 +98,15 @@ class SistemTestMotoru {
             children: [
               Icon(
                 basarili ? Icons.security : Icons.warning_amber_rounded,
-                color: basarili ? const Color(0xFF00FFC2) : Colors.redAccent,
+                color: basarili ? Color(0xFF00FFC2) : Colors.redAccent,
                 size: 28,
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(
                 child: Text(
                   basarili ? "SİSTEM ONAYLANDI" : "SİSTEM ÇÖKTÜ",
                   style: TextStyle(
-                    color: basarili ? const Color(0xFF00FFC2) : Colors.redAccent,
+                    color: basarili ? Color(0xFF00FFC2) : Colors.redAccent,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 1.5,
                   ),
@@ -118,16 +118,16 @@ class SistemTestMotoru {
             basarili
                 ? "OtoDNA Kuantum Ağı (Ankara Merkez), %12 finansal kesinti, siber güvenlik ve ağ testlerini başarıyla geçmiştir.\n\nSistem operasyona hazırdır Komutan."
                 : "Finansal ağda veya güvenlik protokollerinde siber ihlal tespit edildi. Lütfen derhal kodları kontrol ediniz.",
-            style: const TextStyle(color: Colors.white70, height: 1.5, fontSize: 14),
+            style: TextStyle(color: Colors.white70, height: 1.5, fontSize: 14),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
               style: TextButton.styleFrom(
-                foregroundColor: basarili ? const Color(0xFF00FFC2) : Colors.redAccent,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                foregroundColor: basarili ? Color(0xFF00FFC2) : Colors.redAccent,
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
-              child: const Text("GÖREVİ ONAYLA", style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+              child: Text("GÖREVİ ONAYLA", style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2)),
             )
           ],
         ),

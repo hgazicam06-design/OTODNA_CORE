@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/bayi_kayit.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // HapticFeedback için gerekli zırh
@@ -16,7 +17,7 @@ import '../core/otodna_hizmet_kutuphanesi.dart';
 class BayiKayitFormu extends StatefulWidget {
   final String ustaId; // Kayıt olan ustanın geçici kimliği (Auth'tan gelir)
 
-  const BayiKayitFormu({super.key, required this.ustaId});
+  BayiKayitFormu({super.key, required this.ustaId});
 
   @override
   State<BayiKayitFormu> createState() => _BayiKayitFormuState();
@@ -94,8 +95,8 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12, fontFamily: 'Avenir')),
+            SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -105,16 +106,16 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
   Widget _buildSiberTextField(String hint, IconData icon, TextEditingController controller, {TextInputType type = TextInputType.text}) {
     return TextField(
       controller: controller,
-      style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold),
+      style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold),
       keyboardType: type,
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
         hintText: hint,
-        hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 12),
+        hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 12),
         filled: true,
         fillColor: Colors.white.withOpacity(0.05),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.textMuted)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.kuantumCyan)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.textMuted)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kuantumCyan)),
       ),
     );
   }
@@ -220,19 +221,19 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
       builder: (context) {
         return AlertDialog(
           backgroundColor: SiberTema.matGrey,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: SiberTema.kuantumCyan, width: 1.5)),
-          title: const Text("YENİ UZMANLIK TALEBİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontFamily: 'Avenir', fontSize: 14)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: SiberTema.kuantumCyan, width: 1.5)),
+          title: Text("YENİ UZMANLIK TALEBİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontFamily: 'Avenir', fontSize: 14)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text("Kütüphanede bulunmayan branşınızı Karargah onayına gönderin. Onaylandıktan sonra profilinize işlenecektir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontFamily: 'Avenir')),
-              const SizedBox(height: 16),
+              Text("Kütüphanede bulunmayan branşınızı Karargah onayına gönderin. Onaylandıktan sonra profilinize işlenecektir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontFamily: 'Avenir')),
+              SizedBox(height: 16),
               TextField(
                 controller: talepCtrl,
-                style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold),
+                style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold),
                 decoration: InputDecoration(
                   hintText: "Örn: Klasik Otomobil Restorasyonu",
-                  hintStyle: const TextStyle(color: SiberTema.textMuted, fontSize: 11),
+                  hintStyle: TextStyle(color: SiberTema.textMuted, fontSize: 11),
                   filled: true,
                   fillColor: Colors.black26,
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
@@ -243,7 +244,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)),
+              child: Text("İPTAL", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -265,7 +266,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                 }
               },
               style: ElevatedButton.styleFrom(backgroundColor: SiberTema.kuantumCyan, foregroundColor: Colors.white),
-              child: const Text("KARARGAHA GÖNDER", style: TextStyle(fontWeight: FontWeight.w900)),
+              child: Text("KARARGAHA GÖNDER", style: TextStyle(fontWeight: FontWeight.w900)),
             )
           ],
         );
@@ -280,28 +281,28 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("BAYİ KAYIT & SÖZLEŞME", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
+          title: Text("BAYİ KAYIT & SÖZLEŞME", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: ListView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(20),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.all(20),
           children: [
             // ── FİRMA PROFİLİ VE RESMİ EVRAKLAR (KAPALI KASA SİSTEMİ) ──
-            const Text("RESMİ FİRMA BİLGİLERİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-            const SizedBox(height: 12),
+            Text("RESMİ FİRMA BİLGİLERİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+            SizedBox(height: 12),
             _buildSiberTextField("Firma Tam Ünvanı", Icons.business, _firmaUnvaniCtrl),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             Row(
               children: [
                 Expanded(child: _buildSiberTextField("Vergi Dairesi", Icons.account_balance, _vergiDairesiCtrl)),
-                const SizedBox(width: 12),
+                SizedBox(width: 12),
                 Expanded(child: _buildSiberTextField("VKN / TCKN", Icons.numbers, _vergiNoCtrl, type: TextInputType.number)),
               ],
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             Row(
               children: [
                 // Profil Fotoğrafı
@@ -317,7 +318,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                         image: _profilFoto != null ? DecorationImage(image: FileImage(_profilFoto!), fit: BoxFit.cover) : null,
                       ),
                       child: _profilFoto == null 
-                          ? const Column(
+                          ? Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.person_add_alt_1, color: SiberTema.kuantumCyan, size: 30),
@@ -329,7 +330,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12),
                 // Vergi Levhası
                 Expanded(
                   child: GestureDetector(
@@ -343,7 +344,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                         image: _vergiLevhasi != null ? DecorationImage(image: FileImage(_vergiLevhasi!), fit: BoxFit.cover) : null,
                       ),
                       child: _vergiLevhasi == null 
-                          ? const Column(
+                          ? Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.document_scanner, color: SiberTema.kuantumCyan, size: 30),
@@ -357,29 +358,29 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
 
             // ── İLETİŞİM AĞI (TEXT FIELDS) ──
-            const Text("SİBER İLETİŞİM AĞI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-            const SizedBox(height: 12),
+            Text("SİBER İLETİŞİM AĞI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+            SizedBox(height: 12),
             _buildSiberTextField("İş Yeri Telefonu", Icons.phone, _isTelefonuCtrl, type: TextInputType.phone),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             _buildSiberTextField("Cep Telefonu", Icons.smartphone, _cepTelefonuCtrl, type: TextInputType.phone),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             _buildSiberTextField("WhatsApp Numarası", Icons.chat, _whatsappCtrl, type: TextInputType.phone),
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
 
             // 1. UZMANLIK SEÇİMİ (PİNTEREST USULÜ KARTLAR VE SİBER ÇİPLER)
-            const Text("ATÖLYE UZMANLIK ALANLARINIZI SEÇİN", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-            const SizedBox(height: 12),
+            Text("ATÖLYE UZMANLIK ALANLARINIZI SEÇİN", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+            SizedBox(height: 12),
             
             ...SiberHizmetKutuphanesi.masterListe.entries.map((entry) {
               String kategori = entry.key;
               List<String> branslar = entry.value;
               
               return Container(
-                margin: const EdgeInsets.only(bottom: 16),
-                padding: const EdgeInsets.all(16),
+                margin: EdgeInsets.only(bottom: 16),
+                padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.03), // Siber Cam Efekti (Glassmorphism taban)
                   borderRadius: BorderRadius.circular(16),
@@ -394,17 +395,17 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                     // Kategori Başlığı
                     Row(
                       children: [
-                        const Icon(Icons.auto_awesome_mosaic_rounded, color: SiberTema.kuantumCyan, size: 18),
-                        const SizedBox(width: 8),
+                        Icon(Icons.auto_awesome_mosaic_rounded, color: SiberTema.kuantumCyan, size: 18),
+                        SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             kategori,
-                            style: const TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.2, fontFamily: 'Avenir'),
+                            style: TextStyle(color: SiberTema.textMain, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.2, fontFamily: 'Avenir'),
                           ),
                         ),
                       ],
                     ),
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.symmetric(vertical: 12),
                       child: Divider(color: SiberTema.textMuted, thickness: 1),
                     ),
@@ -448,37 +449,37 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
               );
             }),
             
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             
             // ── 🚀 YENİ BRANŞ EKLEME BUTONU ──
             Align(
               alignment: Alignment.centerRight,
               child: TextButton.icon(
                 onPressed: _yeniBransTalepEt,
-                icon: const Icon(Icons.add_circle_outline, color: SiberTema.kuantumCyan, size: 16),
-                label: const Text("LİSTEDE YOK MU? YENİ EKLE", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
+                icon: Icon(Icons.add_circle_outline, color: SiberTema.kuantumCyan, size: 16),
+                label: Text("LİSTEDE YOK MU? YENİ EKLE", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
                 style: TextButton.styleFrom(
                   backgroundColor: SiberTema.kuantumCyan.withOpacity(0.1),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5))),
                 ),
               ),
             ),
 
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
 
             // 2. OTODNA SİBER İMECE VE KVKK SÖZLEŞMESİ
-            const Text("YASAL PROTOKOL", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
-            const SizedBox(height: 8),
+            Text("YASAL PROTOKOL", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+            SizedBox(height: 8),
             Container(
               height: 180,
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: SiberTema.kanKirmizi.withOpacity(0.05),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.5), width: 1.5),
               ),
-              child: const SingleChildScrollView(
+              child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Text(
                   "OTODNA SİBER İMECE VE KVKK SÖZLEŞMESİ:\n\n"
@@ -492,7 +493,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
               ),
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
 
             // 3. ONAY MEKANİZMASI
             Container(
@@ -518,16 +519,16 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
               ),
             ),
 
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
 
             // 4. MÜHÜRLEME BUTONU
             SizedBox(
               height: 60,
               child: _islemSuruyor
-                  ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                  ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                   : ElevatedButton.icon(
-                icon: const Icon(Icons.security, color: Colors.white, size: 24),
-                label: const Text("SİSTEME KAYDOL VE MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                icon: Icon(Icons.security, color: Colors.white, size: 24),
+                label: Text("SİSTEME KAYDOL VE MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _sozlesmeOnay ? SiberTema.kuantumCyan : Colors.white10,
                   foregroundColor: _sozlesmeOnay ? Colors.black : Colors.white30,
@@ -538,7 +539,7 @@ class _BayiKayitFormuState extends State<BayiKayitFormu> {
                 onPressed: _sozlesmeOnay ? _kayitTamamla : null,
               ),
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
           ],
         ),
       ),

@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/bayi/hizli_bayi_onboarding.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +14,7 @@ import 'bayi_kayıt.dart';
 class SiberHizliBayiOnboarding extends StatelessWidget {
   final String sektorKodu; // Deep Link (WhatsApp) üzerinden gelen kod
 
-  const SiberHizliBayiOnboarding({super.key, required this.sektorKodu});
+  SiberHizliBayiOnboarding({super.key, required this.sektorKodu});
 
   // ── 🧠 YAPAY ZEKA SEKTÖREL MESAJ MOTORU ──
   Map<String, String> _sektorelVeriGetir(String sektor) {
@@ -59,7 +60,7 @@ class SiberHizliBayiOnboarding extends StatelessWidget {
     developer.log("🚀 SİBER GEÇİŞ: $sektorKodu için kayıt protokolü başlatıldı.");
 
     // SİBER NOT: Gerçek yönlendirme mühürü
-    Navigator.push(context, MaterialPageRoute(builder: (_) => const BayiKayitFormu(ustaId: 'YENI_KAYIT')));
+    Navigator.push(context, MaterialPageRoute(builder: (_) => BayiKayitFormu(ustaId: 'YENI_KAYIT')));
   }
 
   @override
@@ -72,13 +73,13 @@ class SiberHizliBayiOnboarding extends StatelessWidget {
         backgroundColor: Colors.transparent,
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
+            padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // 🛡️ SİBER LOGO / İKON (Hologram Efekti)
                 Container(
-                  padding: const EdgeInsets.all(30),
+                  padding: EdgeInsets.all(30),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: SiberTema.kuantumCyan.withOpacity(0.1),
@@ -89,24 +90,24 @@ class SiberHizliBayiOnboarding extends StatelessWidget {
                   ),
                   child: Icon(_getSiberIkon(veri["ikon"]!), color: SiberTema.kuantumCyan, size: 80),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
 
                 // 🚀 SEKTÖREL BAŞLIK
                 Text(
                   veri["baslik"]!,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: SiberTema.textMain,
                     fontWeight: FontWeight.w900,
                     fontSize: 22,
                     letterSpacing: 2,
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
 
                 // 📜 HEDEF ODAKLI MESAJ (Cam Efektli Zırh)
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: SiberTema.matGrey.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(16),
@@ -115,7 +116,7 @@ class SiberHizliBayiOnboarding extends StatelessWidget {
                   child: Text(
                     veri["mesaj"]!,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: SiberTema.textMuted,
                       fontSize: 13,
                       height: 1.6,
@@ -125,7 +126,7 @@ class SiberHizliBayiOnboarding extends StatelessWidget {
                   ),
                 ),
 
-                const Spacer(),
+                Spacer(),
 
                 // 🔐 ATEŞLEME (KAYIT) BUTONU
                 SizedBox(
@@ -133,8 +134,8 @@ class SiberHizliBayiOnboarding extends StatelessWidget {
                   height: 65,
                   child: ElevatedButton.icon(
                     onPressed: () => _kayitTerminalineGec(context),
-                    icon: const Icon(Icons.fingerprint, color: SiberTema.oledBlack, size: 28),
-                    label: const Text(
+                    icon: Icon(Icons.fingerprint, color: SiberTema.oledBlack, size: 28),
+                    label: Text(
                       "KARARGAHA KATIL",
                       style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 2, color: SiberTema.oledBlack),
                     ),

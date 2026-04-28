@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/core/responsive_kalkan.dart
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,7 @@ class ResponsiveKalkan extends StatelessWidget {
   final Widget child;
   final bool isOledBackground;
 
-  const ResponsiveKalkan({
+  ResponsiveKalkan({
     super.key,
     required this.child,
     this.isOledBackground = true,
@@ -30,7 +31,7 @@ class ResponsiveKalkan extends StatelessWidget {
             child: ConstrainedBox(
               // 📐 DİSİPLİN KURALI: Ekran ne kadar büyük olursa olsun,
               // içerik 600px genişliği aşarak görsel hiyerarşiyi bozamaz.
-              constraints: const BoxConstraints(maxWidth: 600),
+              constraints: BoxConstraints(maxWidth: 600),
               child: child,
             ),
           ),

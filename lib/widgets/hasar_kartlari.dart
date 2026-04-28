@@ -1,4 +1,4 @@
-// lib/widgets/hasar_kartlari.dart
+﻿// lib/widgets/hasar_kartlari.dart
 import 'package:flutter/material.dart';
 
 /// 🛡️ KUANTUM HASAR GÖRSELLEŞTİRME MODÜLÜ (SiberHasarKarti)
@@ -7,15 +7,15 @@ class SiberHasarKarti extends StatelessWidget {
   final String parcaAdi;
   final String hasarDurumu;
 
-  const SiberHasarKarti({
+  SiberHasarKarti({
     super.key,
     required this.parcaAdi,
     required this.hasarDurumu,
   });
 
   // ── 🎨 KARARGAH TASARIM DOKTRİNİ ──
-  static const Color _matGrey = Color(0xFF111111);
-  static const Color _kuantumCyan = Color(0xFF00FFC2);
+  static Color _matGrey = Color(0xFF111111);
+  static Color _kuantumCyan = Color(0xFF00FFC2);
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +38,8 @@ class SiberHasarKarti extends StatelessWidget {
     }
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      margin: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
         color: _matGrey,
         borderRadius: BorderRadius.circular(12),
@@ -59,7 +59,7 @@ class SiberHasarKarti extends StatelessWidget {
           Expanded(
             child: Text(
               parcaAdi.toUpperCase(),
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w900,
                 fontSize: 12,
@@ -70,7 +70,7 @@ class SiberHasarKarti extends StatelessWidget {
 
           // ── DURUM MÜHRÜ (SİBER ÇİP) ──
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color: durumRengi.withOpacity(0.15),
               borderRadius: BorderRadius.circular(8),

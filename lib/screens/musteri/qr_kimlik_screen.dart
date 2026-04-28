@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class QrKimlikScreen extends StatefulWidget {
-  const QrKimlikScreen({super.key});
+  QrKimlikScreen({super.key});
 
   @override
   State<QrKimlikScreen> createState() => _QrKimlikScreenState();
@@ -12,11 +12,11 @@ class QrKimlikScreen extends StatefulWidget {
 
 class _QrKimlikScreenState extends State<QrKimlikScreen> with SingleTickerProviderStateMixin {
   // 🏢 FİLDİŞİ SEDEF PALET (Siyah İptal)
-  final Color bgColor = const Color(0xFFFDFBF7);
+  final Color bgColor = Color(0xFFFDFBF7);
   final Color surfaceColor = Colors.white;
   final Color primaryTeal = Colors.teal.shade700;
-  final Color textMuted = const Color(0xFF64748B);
-  final Color textMain = const Color(0xFF1E293B);
+  final Color textMuted = Color(0xFF64748B);
+  final Color textMain = Color(0xFF1E293B);
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final User? _currentUser = FirebaseAuth.instance.currentUser;
@@ -26,7 +26,7 @@ class _QrKimlikScreenState extends State<QrKimlikScreen> with SingleTickerProvid
   void initState() {
     super.initState();
     // Güvenlik Kalkanı Yanıp Sönme Efekti (Kuantum Nabzı)
-    _pulseController = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat(reverse: true);
+    _pulseController = AnimationController(vsync: this, duration: Duration(seconds: 2))..repeat(reverse: true);
   }
 
   @override
@@ -40,7 +40,7 @@ class _QrKimlikScreenState extends State<QrKimlikScreen> with SingleTickerProvid
     if (_currentUser == null) {
       return Scaffold(
           backgroundColor: bgColor,
-          body: const Center(child: Text("SİBER KİMLİK HATASI! AĞA ERİŞİM YOK.", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.w900, letterSpacing: 1)))
+          body: Center(child: Text("SİBER KİMLİK HATASI! AĞA ERİŞİM YOK.", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.w900, letterSpacing: 1)))
       );
     }
 
@@ -67,28 +67,28 @@ class _QrKimlikScreenState extends State<QrKimlikScreen> with SingleTickerProvid
 
             return Center(
               child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(color: primaryTeal.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: primaryTeal.withOpacity(0.3))),
                       child: Icon(Icons.lock_person_outlined, color: primaryTeal, size: 40),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
                     Text("SİBER ANAHTAR AKTİF", style: TextStyle(color: textMain, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     Text("Servis danışmanına veya ustaya bu Kuantum QR'ı okutarak aracınızın genetik dosyasına güvenli erişim yetkisi verebilirsiniz.", textAlign: TextAlign.center, style: TextStyle(color: textMuted, fontSize: 11, height: 1.5)),
-                    const SizedBox(height: 48),
+                    SizedBox(height: 48),
 
                     // 💎 NABIZ GİBİ ATAN QR KOD HOLOGRAMI
                     AnimatedBuilder(
                         animation: _pulseController,
                         builder: (context, child) {
                           return Container(
-                            padding: const EdgeInsets.all(24),
+                            padding: EdgeInsets.all(24),
                             decoration: BoxDecoration(
                                 color: Colors.white, // QR okuyucular için zemin beyaz kalmalı
                                 borderRadius: BorderRadius.circular(32),
@@ -101,31 +101,31 @@ class _QrKimlikScreenState extends State<QrKimlikScreen> with SingleTickerProvid
                               version: QrVersions.auto,
                               size: 200.0,
                               backgroundColor: Colors.white,
-                              eyeStyle: const QrEyeStyle(eyeShape: QrEyeShape.square, color: Colors.white),
-                              dataModuleStyle: const QrDataModuleStyle(dataModuleShape: QrDataModuleShape.square, color: Colors.white),
+                              eyeStyle: QrEyeStyle(eyeShape: QrEyeShape.square, color: Colors.white),
+                              dataModuleStyle: QrDataModuleStyle(dataModuleShape: QrDataModuleShape.square, color: Colors.white),
                             ),
                           );
                         }
                     ),
 
-                    const SizedBox(height: 48),
+                    SizedBox(height: 48),
 
                     // 💎 PLAKA VE ZAMANLAYICI KARTI
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(24),
+                      padding: EdgeInsets.all(24),
                       decoration: BoxDecoration(color: surfaceColor, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withOpacity(0.05)), boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.02), blurRadius: 10)]),
                       child: Column(
                         children: [
                           Text("HEDEF PLAKA", style: TextStyle(color: textMuted, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                          const SizedBox(height: 8),
+                          SizedBox(height: 8),
                           Text(plaka.toUpperCase(), style: TextStyle(color: primaryTeal, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 3)),
-                          Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Divider(color: Colors.white.withOpacity(0.05))),
+                          Padding(padding: EdgeInsets.symmetric(vertical: 20), child: Divider(color: Colors.white.withOpacity(0.05))),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.timer_outlined, color: Colors.orangeAccent, size: 18),
-                              const SizedBox(width: 8),
+                              Icon(Icons.timer_outlined, color: Colors.orangeAccent, size: 18),
+                              SizedBox(width: 8),
                               Expanded(child: Text("Güvenlik ihlalini önlemek için bu kod 3 dakika içinde kendini imha edecektir.", style: TextStyle(color: Colors.orange.shade700, fontSize: 10, fontWeight: FontWeight.bold, height: 1.4))),
                             ],
                           )

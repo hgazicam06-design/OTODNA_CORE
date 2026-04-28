@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import '../kullanici/siber_profil_screen.dart'; // SİBER PROFİL KÖPRÜSÜ
 import '../kullanici/siber_dna_radar_screen.dart'; // SİBER ARAÇ RADARI
@@ -8,7 +9,7 @@ import '../../models/ad_campaign_model.dart';
 import '../../widgets/siber_hedefli_reklam_panosu.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -21,9 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void _testTiklama(String modulAdi) {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('$modulAdi Açılıyor...', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-          backgroundColor: const Color(0xFF00FFC2),
-          duration: const Duration(seconds: 1),
+          content: Text('$modulAdi Açılıyor...', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          backgroundColor: Color(0xFF00FFC2),
+          duration: Duration(seconds: 1),
         )
     );
   }
@@ -42,37 +43,37 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.menu, color: accentColor), onPressed: () => _testTiklama("Yan Menü")),
-        title: const Text('O T O D N A', style: TextStyle(color: accentColor, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 6)),
+        leading: IconButton(icon: Icon(Icons.menu, color: accentColor), onPressed: () => _testTiklama("Yan Menü")),
+        title: Text('O T O D N A', style: TextStyle(color: accentColor, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 6)),
         centerTitle: true,
         actions: [
-          IconButton(icon: const Icon(Icons.person_outline, color: accentColor), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SiberProfilScreen()))),
+          IconButton(icon: Icon(Icons.person_outline, color: accentColor), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SiberProfilScreen()))),
         ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Gazi", style: TextStyle(color: accentColor, fontSize: 32, fontWeight: FontWeight.w600, letterSpacing: -1)),
-              const SizedBox(height: 32),
+              Text("Gazi", style: TextStyle(color: accentColor, fontSize: 32, fontWeight: FontWeight.w600, letterSpacing: -1)),
+              SizedBox(height: 32),
 
-              const Text("Aktif Araç", style: TextStyle(color: textMuted, fontSize: 13, fontWeight: FontWeight.w600)),
-              const SizedBox(height: 12),
+              Text("Aktif Araç", style: TextStyle(color: textMuted, fontSize: 13, fontWeight: FontWeight.w600)),
+              SizedBox(height: 12),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(24),
+                padding: EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: surfaceColor,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.directions_car_outlined, color: accentColor, size: 40),
-                    const SizedBox(width: 20),
-                    const Expanded(
+                    Icon(Icons.directions_car_outlined, color: accentColor, size: 40),
+                    SizedBox(width: 20),
+                    Expanded(
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -86,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
               SiberHedefliReklamPanosu(
                 kampanya: OtoDNACampaign(
                   id: "cmp_test_001",
@@ -98,14 +99,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   aktifMi: true,
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
 
-              const Text("Ağ Modülleri", style: TextStyle(color: textMuted, fontSize: 13, fontWeight: FontWeight.w600)),
-              const SizedBox(height: 16),
+              Text("Ağ Modülleri", style: TextStyle(color: textMuted, fontSize: 13, fontWeight: FontWeight.w600)),
+              SizedBox(height: 16),
 
               GridView.count(
                 shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
+                physics: NeverScrollableScrollPhysics(),
                 crossAxisCount: 2,
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
@@ -122,17 +123,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
 
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
 
               Row(
                 children: [
                   Expanded(child: _buildSadeButon("Akıllı Tarama", Icons.camera_alt_outlined, false)),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16),
                   Expanded(child: _buildSadeButon("Acil Durum", Icons.sos_outlined, true)),
                 ],
               ),
 
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
             ],
           ),
         ),
@@ -151,14 +152,14 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _seciliSekme,
         onTap: (index) {
           if (index == 1) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const SiberDnaRadarScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => SiberDnaRadarScreen()));
           } else if (index == 3) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const SiberProfilScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => SiberProfilScreen()));
           } else {
             setState(() => _seciliSekme = index);
           }
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(icon: Padding(padding: EdgeInsets.only(bottom: 6), child: Icon(Icons.home_filled)), label: "Ana Sayfa"),
           BottomNavigationBarItem(icon: Padding(padding: EdgeInsets.only(bottom: 6), child: Icon(Icons.directions_car_outlined)), label: "Araçlarım"),
           BottomNavigationBarItem(icon: Padding(padding: EdgeInsets.only(bottom: 6), child: Icon(Icons.grid_view_outlined)), label: "Hizmetler"),
@@ -172,20 +173,20 @@ class _HomeScreenState extends State<HomeScreen> {
     return InkWell(
       onTap: () {
         if (baslik == "İkinci El Market") {
-          Navigator.push(context, MaterialPageRoute(builder: (_) => const SiberIkinciElMarket()));
+          Navigator.push(context, MaterialPageRoute(builder: (_) => SiberIkinciElMarket()));
         } else if (baslik == "OtoDNA Çığır") {
-          Navigator.push(context, MaterialPageRoute(builder: (_) => const OtoDnaCigirScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (_) => OtoDnaCigirScreen()));
         } else if (baslik == "Şoför Kokpiti") {
-          Navigator.push(context, MaterialPageRoute(builder: (_) => const SurucuKokpitiScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (_) => SurucuKokpitiScreen()));
         } else {
           _testTiklama(baslik);
         }
       },
       borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: const Color(0xFF111111),
+          color: Color(0xFF111111),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
@@ -193,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Icon(ikon, color: SiberTema.kuantumCyan, size: 28),
-            Text(baslik, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w500)),
+            Text(baslik, style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.w500)),
           ],
         ),
       ),
@@ -205,16 +206,16 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () => _testTiklama(text),
       borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: isDanger ? Colors.redAccent.withOpacity(0.1) : const Color(0xFF111111),
+          color: isDanger ? Colors.redAccent.withOpacity(0.1) : Color(0xFF111111),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, color: isDanger ? Colors.redAccent : Colors.white, size: 20),
-            const SizedBox(width: 8),
+            SizedBox(width: 8),
             Text(text, style: TextStyle(color: isDanger ? Colors.redAccent : Colors.white, fontSize: 13, fontWeight: FontWeight.w600)),
           ],
         ),

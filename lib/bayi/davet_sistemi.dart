@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/bayi/davet_sistemi.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +15,7 @@ import '../core/responsive_kalkan.dart';
 class DavetSistemiPaneli extends StatefulWidget {
   final String gonderenId; // Daveti fırlatan Karargah mensubunun ID'si
 
-  const DavetSistemiPaneli({super.key, required this.gonderenId});
+  DavetSistemiPaneli({super.key, required this.gonderenId});
 
   @override
   State<DavetSistemiPaneli> createState() => _DavetSistemiPaneliState();
@@ -102,8 +103,8 @@ Hemen Kaydolun: https://otodna.com/davet?ref=\${widget.gonderenId}
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir')),
+            SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -117,27 +118,27 @@ Hemen Kaydolun: https://otodna.com/davet?ref=\${widget.gonderenId}
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("KARARGAH DAVET SİSTEMİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
+          title: Text("KARARGAH DAVET SİSTEMİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
         ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _talimatKutusu("SİBER PROTOKOL: Otomotiv sektöründeki paydaşları Kuantum Ağına katarak Karargahın gücünü artırabilirsiniz."),
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
 
                 // 📜 DAVET METNİ ÖNİZLEMESİ (Cam Efektli Kutu)
-                const Text("GÖNDERİLECEK ŞİFRELİ METİN:", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
-                const SizedBox(height: 12),
+                Text("GÖNDERİLECEK ŞİFRELİ METİN:", style: TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                SizedBox(height: 12),
                 Expanded(
                   child: Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(20),
+                    padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: SiberTema.matGrey.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(16),
@@ -146,7 +147,7 @@ Hemen Kaydolun: https://otodna.com/davet?ref=\${widget.gonderenId}
                         BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 20, spreadRadius: 2),
                       ],
                     ),
-                    child: const SingleChildScrollView(
+                    child: SingleChildScrollView(
                       physics: BouncingScrollPhysics(),
                       child: Text(
                         _davetMetni,
@@ -156,17 +157,17 @@ Hemen Kaydolun: https://otodna.com/davet?ref=\${widget.gonderenId}
                   ),
                 ),
 
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
 
                 // 🚀 ATEŞLEME BUTONU
                 SizedBox(
                   height: 60,
                   width: double.infinity,
                   child: _islemSuruyor
-                      ? const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                      ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
                       : ElevatedButton.icon(
-                    icon: const Icon(Icons.send_to_mobile, color: Colors.black, size: 24),
-                    label: const Text("DAVETİYEYİ FIRLAT", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
+                    icon: Icon(Icons.send_to_mobile, color: Colors.black, size: 24),
+                    label: Text("DAVETİYEYİ FIRLAT", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
                     style: SiberTema.kuantumButonStili(),
                     onPressed: _davetiyeFirlat,
                   ),
@@ -180,7 +181,7 @@ Hemen Kaydolun: https://otodna.com/davet?ref=\${widget.gonderenId}
   }
 
   Widget _talimatKutusu(String metin) => Container(
-    padding: const EdgeInsets.all(16),
+    padding: EdgeInsets.all(16),
     decoration: BoxDecoration(
         color: SiberTema.kuantumCyan.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
@@ -188,9 +189,9 @@ Hemen Kaydolun: https://otodna.com/davet?ref=\${widget.gonderenId}
     ),
     child: Row(
       children: [
-        const Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 30),
-        const SizedBox(width: 12),
-        Expanded(child: Text(metin, style: const TextStyle(color: Colors.white70, fontSize: 11, height: 1.5, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
+        Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 30),
+        SizedBox(width: 12),
+        Expanded(child: Text(metin, style: TextStyle(color: Colors.white70, fontSize: 11, height: 1.5, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
       ],
     ),
   );

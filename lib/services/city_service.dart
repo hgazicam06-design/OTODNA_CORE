@@ -1,10 +1,10 @@
-import 'dart:developer' as developer;
+﻿import 'dart:developer' as developer;
 
 /// 🛡️ KUANTUM COĞRAFİ İSTİHBARAT MOTORU (CityService)
 /// Ankara Merkezli 7 Bölge, 81 İl, İlçeler ve Küresel Genişleme İskeleti
 class CityService {
   // 🇹🇷 TÜRKİYE: 7 BÖLGE VE 81 İL (Eksiksiz Siber Harita)
-  static const Map<String, List<String>> _turkiyeIller = {
+  static Map<String, List<String>> _turkiyeIller = {
     'İÇ ANADOLU (MERKEZ KARARGAH)': ['ANKARA', 'KONYA', 'KAYSERİ', 'ESKİŞEHİR', 'SİVAS', 'KIRIKKALE', 'AKSARAY', 'KARAMAN', 'KIRŞEHİR', 'NİĞDE', 'NEVŞEHİR', 'YOZGAT', 'ÇANKIRI'],
     'MARMARA': ['İSTANBUL', 'BURSA', 'KOCAELİ', 'BALIKESİR', 'TEKİRDAĞ', 'EDİRNE', 'KIRKLARELİ', 'ÇANAKKALE', 'YALOVA', 'SAKARYA', 'BİLECİK'],
     'EGE': ['İZMİR', 'MANİSA', 'AYDIN', 'DENİZLİ', 'MUĞLA', 'AFYONKARAHİSAR', 'KÜTAHYA', 'UŞAK'],
@@ -17,7 +17,7 @@ class CityService {
   // 🎯 SİBER İLÇE RADARI
   // Not: Sistemin hantallaşmaması için temel iskelet kurulmuştur.
   // İleride tüm ilçeler buraya veya Firebase'e eklenebilir.
-  static const Map<String, List<String>> _turkiyeIlceler = {
+  static Map<String, List<String>> _turkiyeIlceler = {
     'ANKARA': ['ÇANKAYA', 'KEÇİÖREN', 'YENİMAHALLE', 'MAMAK', 'ETİMESGUT', 'SİNCAN', 'ALTINDAĞ', 'GÖLBAŞI', 'PURSAKLAR', 'POLATLI'],
     'İSTANBUL': ['KADIKÖY', 'ŞİŞLİ', 'BEŞİKTAŞ', 'ÜSKÜDAR', 'MALTEPE', 'PENDİK', 'ÜMRANİYE', 'KARTAL', 'BAKIRKÖY', 'ESENYURT', 'BEYLİKDÜZÜ'],
     'İZMİR': ['KONAK', 'KARŞIYAKA', 'BORNOVA', 'BUCA', 'ÇİĞLİ', 'GAZİEMİR', 'BALÇOVA', 'KARABAĞLAR', 'BAYRAKLI', 'ALİAĞA'],
@@ -27,7 +27,7 @@ class CityService {
   };
 
   // 🌍 KÜRESEL GENİŞLEME İSKELETİ (Uluslararası Operasyonlar İçin)
-  static const Map<String, Map<String, List<String>>> _kureselAg = {
+  static Map<String, Map<String, List<String>>> _kureselAg = {
     'TÜRKİYE': _turkiyeIller,
     // İleride 'ALMANYA' vb. eklenecek.
   };

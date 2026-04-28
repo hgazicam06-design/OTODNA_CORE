@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/screens/admin/siber_bayi_rozet_yonetimi_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +13,7 @@ import '../../widgets/premium_rozet_widget.dart';
 
 /// 🛡️ YÜKSEK KONSEY: BAYİ ROZET VE YILDIZ YÖNETİMİ
 class SiberBayiRozetYonetimiScreen extends StatelessWidget {
-  const SiberBayiRozetYonetimiScreen({super.key});
+  SiberBayiRozetYonetimiScreen({super.key});
 
   void _yildizAyarla(BuildContext context, String bayiId, int guncelYildiz, String bayiAd) {
     showDialog(
@@ -24,12 +25,12 @@ class SiberBayiRozetYonetimiScreen extends StatelessWidget {
             return AlertDialog(
               backgroundColor: SiberTema.oledBlack,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5))),
-              title: const Text("BAYİ RÜTBESİNİ GÜNCELLE", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 14)),
+              title: Text("BAYİ RÜTBESİNİ GÜNCELLE", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 14)),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text("$bayiAd isimli bayinin yıldızını seçin. Rozet otonom olarak atanacaktır.", style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
-                  const SizedBox(height: 24),
+                  Text("$bayiAd isimli bayinin yıldızını seçin. Rozet otonom olarak atanacaktır.", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+                  SizedBox(height: 24),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(5, (index) {
@@ -46,17 +47,17 @@ class SiberBayiRozetYonetimiScreen extends StatelessWidget {
                       );
                     }),
                   ),
-                  const SizedBox(height: 16),
-                  if (secilenYildiz == 5) const Text("🌟 ALTIN BAYİ", style: TextStyle(color: SiberTema.altinSari, fontWeight: FontWeight.bold)),
-                  if (secilenYildiz == 4) const Text("🛡️ GÜMÜŞ BAYİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)),
-                  if (secilenYildiz == 3) const Text("🛡️ BRONZ BAYİ", style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.bold)),
-                  if (secilenYildiz <= 1) const Text("🚨 BLACKLIST (SİSTEMDEN İZOLE)", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 16),
+                  if (secilenYildiz == 5) Text("🌟 ALTIN BAYİ", style: TextStyle(color: SiberTema.altinSari, fontWeight: FontWeight.bold)),
+                  if (secilenYildiz == 4) Text("🛡️ GÜMÜŞ BAYİ", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)),
+                  if (secilenYildiz == 3) Text("🛡️ BRONZ BAYİ", style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.bold)),
+                  if (secilenYildiz <= 1) Text("🚨 BLACKLIST (SİSTEMDEN İZOLE)", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)),
                 ],
               ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted)),
+                  child: Text("İPTAL", style: TextStyle(color: SiberTema.textMuted)),
                 ),
                 ElevatedButton(
                   style: SiberTema.kuantumButonStili(),
@@ -79,12 +80,12 @@ class SiberBayiRozetYonetimiScreen extends StatelessWidget {
                         'tarih': FieldValue.serverTimestamp(),
                       });
 
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Bayi mühürlendi ve İstihbarata işlendi!"), backgroundColor: SiberTema.kuantumCyan));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Bayi mühürlendi ve İstihbarata işlendi!"), backgroundColor: SiberTema.kuantumCyan));
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Güncelleme başarısız!"), backgroundColor: SiberTema.kanKirmizi));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Güncelleme başarısız!"), backgroundColor: SiberTema.kanKirmizi));
                     }
                   },
-                  child: const Text("MÜHÜRLE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900)),
+                  child: Text("MÜHÜRLE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900)),
                 )
               ],
             );
@@ -103,21 +104,21 @@ class SiberBayiRozetYonetimiScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: const Text("ROZET & YILDIZ MERKEZİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13, fontFamily: 'Avenir')),
-          iconTheme: const IconThemeData(color: SiberTema.kuantumCyan),
+          title: Text("ROZET & YILDIZ MERKEZİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13, fontFamily: 'Avenir')),
+          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
           centerTitle: true,
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection('bayiler').snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+            if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Center(child: Text("Sistemde kayıtlı bayi bulunmuyor.", style: TextStyle(color: SiberTema.textMuted)));
+              return Center(child: Text("Sistemde kayıtlı bayi bulunmuyor.", style: TextStyle(color: SiberTema.textMuted)));
             }
 
             return ListView.builder(
-              padding: const EdgeInsets.all(16),
-              physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.all(16),
+              physics: BouncingScrollPhysics(),
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 var doc = snapshot.data!.docs[index];
@@ -127,25 +128,25 @@ class SiberBayiRozetYonetimiScreen extends StatelessWidget {
                 String rozet = bayi['rozet'] ?? "Boş";
 
                 return Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  padding: const EdgeInsets.all(16),
+                  margin: EdgeInsets.only(bottom: 16),
+                  padding: EdgeInsets.all(16),
                   decoration: SiberTema.siberCamZirh(renk: Colors.black),
                   child: Row(
                     children: [
                       // SİBER PREMIUM ROZET GÖRSELİ
                       PremiumRozet(rozetTipi: rozet, boyut: 32),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16),
                       
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(bayiAd.toUpperCase(), style: const TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900)),
-                            const SizedBox(height: 4),
+                            Text(bayiAd.toUpperCase(), style: TextStyle(color: SiberTema.textMain, fontSize: 14, fontWeight: FontWeight.w900)),
+                            SizedBox(height: 4),
                             Row(
                               children: [
-                                Text("$rozet Bayi", style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
-                                const SizedBox(width: 8),
+                                Text("$rozet Bayi", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.bold)),
+                                SizedBox(width: 8),
                                 Row(
                                   children: List.generate(5, (starIdx) {
                                     return Icon(
@@ -163,7 +164,7 @@ class SiberBayiRozetYonetimiScreen extends StatelessWidget {
 
                       // GÜNCELLE BUTONU
                       IconButton(
-                        icon: const Icon(Icons.edit_outlined, color: SiberTema.kuantumCyan),
+                        icon: Icon(Icons.edit_outlined, color: SiberTema.kuantumCyan),
                         onPressed: () => _yildizAyarla(context, doc.id, yildiz, bayiAd),
                       )
                     ],

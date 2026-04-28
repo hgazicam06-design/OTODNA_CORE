@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// 🌍 OTODNA GLOBAL KUANTUM KULÜP VERİ MODELİ
 /// Milyonlarca kullanıcının marka/model bazlı birleştiği,
@@ -18,8 +18,8 @@ class VehicleClub {
     required this.modelName,
     required this.kurucuId,
     required this.adminIds,
-    this.moderatorIds = const [],
-    this.yasakliUyeler = const [],
+    this.moderatorIds = [],
+    this.yasakliUyeler = [],
     this.ulkeKodu = "TR",
     this.uyeSayisi = 0,
   });

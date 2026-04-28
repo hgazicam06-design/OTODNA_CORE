@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,7 +14,7 @@ class RandevuOnayScreen extends StatefulWidget {
   final String islemTipi;
   final double kaporaBedeli;
 
-  const RandevuOnayScreen({
+  RandevuOnayScreen({
     super.key,
     this.ustaId = "SİBER-USTA-001",
     this.islemTipi = "KUANTUM EKSPERTİZ",
@@ -40,7 +41,7 @@ class _RandevuOnayScreenState extends State<RandevuOnayScreen> {
 
     try {
       // 1. KUANTUM AĞI DOĞRULAMA (Simülasyon - Ödeme Onayı)
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(Duration(seconds: 2));
 
       // 2. FİREBASE ATOMİK İŞLEM (WriteBatch)
       WriteBatch batch = _db.batch();
@@ -72,7 +73,7 @@ class _RandevuOnayScreenState extends State<RandevuOnayScreen> {
       if (!mounted) return;
       _siberMesajGoster("SÖZLEŞME MÜHÜRLENDİ! RANDEVU ONAYLANDI. 🦅");
 
-      Future.delayed(const Duration(seconds: 2), () {
+      Future.delayed(Duration(seconds: 2), () {
         if (mounted) Navigator.pop(context);
       });
 
@@ -86,7 +87,7 @@ class _RandevuOnayScreenState extends State<RandevuOnayScreen> {
   void _siberMesajGoster(String mesaj, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 1)),
+        content: Text(mesaj, style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 1)),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
         behavior: SnackBarBehavior.floating,
       ),
@@ -102,37 +103,37 @@ class _RandevuOnayScreenState extends State<RandevuOnayScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
-          title: const Text("SİBER SÖZLEŞME ONAYI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan, size: 20), onPressed: () => Navigator.pop(context)),
+          title: Text("SİBER SÖZLEŞME ONAYI", style: TextStyle(color: SiberTema.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
           centerTitle: true,
         ),
         body: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600),
+            constraints: BoxConstraints(maxWidth: 600),
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24.0),
-              physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.all(24.0),
+              physics: BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // 1. MÜHÜR LOGOSU
                   Center(
                     child: Container(
-                      padding: const EdgeInsets.all(24),
+                      padding: EdgeInsets.all(24),
                       decoration: BoxDecoration(
                         color: SiberTema.matGrey.withOpacity(0.1),
                         shape: BoxShape.circle,
                         border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 2),
                         boxShadow: [BoxShadow(color: SiberTema.kuantumCyan.withOpacity(0.05), blurRadius: 40)],
                       ),
-                      child: const Icon(Icons.gavel, color: SiberTema.kuantumCyan, size: 64),
+                      child: Icon(Icons.gavel, color: SiberTema.kuantumCyan, size: 64),
                     ),
                   ),
-                  const SizedBox(height: 32),
-                  const Text("AKILLI RANDEVU PROTOKOLÜ", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                  const SizedBox(height: 8),
-                  Text("İŞLEM: ${widget.islemTipi.toUpperCase()}", textAlign: TextAlign.center, style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-                  const SizedBox(height: 48),
+                  SizedBox(height: 32),
+                  Text("AKILLI RANDEVU PROTOKOLÜ", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.textMain, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                  SizedBox(height: 8),
+                  Text("İŞLEM: ${widget.islemTipi.toUpperCase()}", textAlign: TextAlign.center, style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+                  SizedBox(height: 48),
 
                   // 2. KESİN KURALLAR (Cam Paneller)
                   _buildProtokolMaddesi(
@@ -154,7 +155,7 @@ class _RandevuOnayScreenState extends State<RandevuOnayScreen> {
                     Colors.orangeAccent,
                   ),
 
-                  const SizedBox(height: 48),
+                  SizedBox(height: 48),
 
                   // 3. FİNANSAL ATEŞLEME BUTONU
                   SizedBox(
@@ -168,17 +169,17 @@ class _RandevuOnayScreenState extends State<RandevuOnayScreen> {
                         elevation: 0,
                       ),
                       icon: _isProcessing
-                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
-                          : const Icon(Icons.fingerprint, size: 24),
+                          ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: SiberTema.oledBlack, strokeWidth: 2))
+                          : Icon(Icons.fingerprint, size: 24),
                       label: Text(
                         _isProcessing ? "AĞ DOĞRULANIYOR..." : "PROTOKOLÜ KABUL ET VE ÖDE",
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5),
                       ),
                     ),
                   ),
 
                   // 4. MERKEZ BİLGİLENDİRMESİ
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(top: 24),
                     child: Text(
                         "OtoDNA Kuantum Ağı %12 Finansal Kesinti Protokolü devrededir.",
@@ -197,8 +198,8 @@ class _RandevuOnayScreenState extends State<RandevuOnayScreen> {
 
   Widget _buildProtokolMaddesi(IconData icon, String baslik, String icerik, Color vurguRengi) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(20),
+      margin: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: SiberTema.matGrey.withOpacity(0.05),
         borderRadius: BorderRadius.circular(16),
@@ -208,18 +209,18 @@ class _RandevuOnayScreenState extends State<RandevuOnayScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12),
             decoration: BoxDecoration(color: vurguRengi.withOpacity(0.1), shape: BoxShape.circle),
             child: Icon(icon, color: vurguRengi, size: 24),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(baslik, style: TextStyle(color: vurguRengi, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-                const SizedBox(height: 8),
-                Text(icerik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.5, fontWeight: FontWeight.bold)),
+                SizedBox(height: 8),
+                Text(icerik, style: TextStyle(color: SiberTema.textMuted, fontSize: 11, height: 1.5, fontWeight: FontWeight.bold)),
               ],
             ),
           ),

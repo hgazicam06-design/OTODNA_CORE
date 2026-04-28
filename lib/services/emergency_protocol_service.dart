@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'dart:developer' as developer;
 
@@ -65,7 +65,7 @@ class EmergencyProtocolService {
   void _startAdminEscalationTimer(String sosId, String userId) {
     // SİBER NOT: Gerçek ve devasa bir ekosistemde bu işlem Firebase Cloud Functions (Sunucu) ile yapılmalıdır.
     // MVP aşaması için istemci (client) tarafında 30 dakikalık Kuantum Sayacı başlatılıyor.
-    Timer(const Duration(minutes: 30), () async {
+    Timer(Duration(minutes: 30), () async {
       try {
         final docSnapshot = await _db.collection('emergencies').doc(sosId).get();
 

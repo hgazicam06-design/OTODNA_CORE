@@ -1,4 +1,4 @@
-// lib/admin/imece_transfer.dart
+﻿// lib/admin/imece_transfer.dart
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +10,7 @@ import 'package:otodna/core/responsive_kalkan.dart';
 enum KararTipi { INCELEME, MUSTERI_HATASI, PARCA_GARANTI, ARABULUCU }
 
 class ImeceAdaletPaneli extends StatefulWidget {
-  const ImeceAdaletPaneli({super.key});
+  ImeceAdaletPaneli({super.key});
 
   @override
   State<ImeceAdaletPaneli> createState() => _ImeceAdaletPaneliState();
@@ -128,7 +128,7 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
         return AlertDialog(
           backgroundColor: Colors.black,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: SiberTema.altinSari.withOpacity(0.5))),
-          title: const Row(
+          title: Row(
             children: [
               Icon(Icons.balance, color: SiberTema.altinSari),
               SizedBox(width: 10),
@@ -139,31 +139,31 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Talep Edilen: ₺\${talepEdilen.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 16),
-              const Text("Adil Görülen Onarım Bedelini Giriniz:", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
-              const SizedBox(height: 8),
+              Text("Talep Edilen: ₺\${talepEdilen.toStringAsFixed(2)}", style: TextStyle(color: SiberTema.kanKirmizi, fontWeight: FontWeight.bold)),
+              SizedBox(height: 16),
+              Text("Adil Görülen Onarım Bedelini Giriniz:", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+              SizedBox(height: 8),
               TextField(
                 controller: tutarController,
                 keyboardType: TextInputType.number,
-                style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900),
+                style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900),
                 decoration: InputDecoration(
                   prefixText: "₺ ",
-                  prefixStyle: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900),
+                  prefixStyle: TextStyle(color: SiberTema.kuantumCyan, fontSize: 24, fontWeight: FontWeight.w900),
                   filled: true,
                   fillColor: Colors.white.withOpacity(0.05),
                   enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.3))),
-                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: SiberTema.altinSari)),
+                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: SiberTema.altinSari)),
                 ),
               ),
-              const SizedBox(height: 12),
-              const Text("Sisteme girilen bu tutar üzerinden %12 Karargah payı kesilecek ve para transferi anında gerçekleşecektir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontStyle: FontStyle.italic)),
+              SizedBox(height: 12),
+              Text("Sisteme girilen bu tutar üzerinden %12 Karargah payı kesilecek ve para transferi anında gerçekleşecektir.", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontStyle: FontStyle.italic)),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)),
+              child: Text("İPTAL", style: TextStyle(color: SiberTema.textMuted, fontWeight: FontWeight.bold)),
             ),
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(backgroundColor: SiberTema.altinSari, foregroundColor: Colors.white),
@@ -174,8 +174,8 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
                   _kuantumHukmuVer(belgeId, vakaData, KararTipi.ARABULUCU, onaylananTutar: girilenTutar);
                 }
               },
-              icon: const Icon(Icons.gavel, size: 16),
-              label: const Text("MÜHRÜ VUR & AKTAR", style: TextStyle(fontWeight: FontWeight.w900)),
+              icon: Icon(Icons.gavel, size: 16),
+              label: Text("MÜHRÜ VUR & AKTAR", style: TextStyle(fontWeight: FontWeight.w900)),
             ),
           ],
         );
@@ -201,16 +201,16 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.gavel, color: SiberTema.altinSari), onPressed: () => Navigator.pop(context)),
-          title: const Text("SİBER MAHKEME & HAKEM DİVANI", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 14)),
+          leading: IconButton(icon: Icon(Icons.gavel, color: SiberTema.altinSari), onPressed: () => Navigator.pop(context)),
+          title: Text("SİBER MAHKEME & HAKEM DİVANI", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 14)),
           centerTitle: true,
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(2),
-            child: Container(decoration: BoxDecoration(boxShadow: [BoxShadow(color: SiberTema.altinSari.withOpacity(0.5), blurRadius: 10)], gradient: const LinearGradient(colors: [Colors.transparent, SiberTema.altinSari, Colors.transparent])), height: 2),
+            preferredSize: Size.fromHeight(2),
+            child: Container(decoration: BoxDecoration(boxShadow: [BoxShadow(color: SiberTema.altinSari.withOpacity(0.5), blurRadius: 10)], gradient: LinearGradient(colors: [Colors.transparent, SiberTema.altinSari, Colors.transparent])), height: 2),
           ),
         ),
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/images/radar_grid.png'),
               fit: BoxFit.cover,
@@ -231,7 +231,7 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
       stream: FirebaseFirestore.instance.collection('imece_talepleri').where('durum', isEqualTo: 'BEKLEMEDE').orderBy('talep_tarihi', descending: false).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) return _buildKuantumLoader("VAKALAR TARANIYOR...");
-        if (snapshot.hasError) return Center(child: Text("Siber Ağ Hatası: \${snapshot.error}", style: const TextStyle(color: SiberTema.kanKirmizi)));
+        if (snapshot.hasError) return Center(child: Text("Siber Ağ Hatası: \${snapshot.error}", style: TextStyle(color: SiberTema.kanKirmizi)));
 
         final docs = snapshot.data?.docs ?? [];
         if (docs.isEmpty) {
@@ -240,7 +240,7 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.balance, color: Colors.white.withOpacity(0.2), size: 60),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 Text("DİVAN TEMİZ. Bekleyen Dava Yok.", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5), fontWeight: FontWeight.bold, letterSpacing: 1)),
               ],
             ),
@@ -248,8 +248,8 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
         }
 
         return ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(20),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.all(20),
           itemCount: docs.length,
           itemBuilder: (context, index) {
             var vakaData = docs[index].data() as Map<String, dynamic>;
@@ -268,7 +268,7 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
     String ustaNotu = vakaData['usta_notu'] ?? 'Savunma girilmemiş.';
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24),
+      padding: EdgeInsets.only(bottom: 24),
       child: _buildCamEfektliKutu(
         borderColor: SiberTema.altinSari.withOpacity(0.4),
         child: Column(
@@ -276,49 +276,49 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
           children: [
             // 1. VAKA ÖZETİ
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(color: SiberTema.kanKirmizi.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.kanKirmizi.withOpacity(0.3))),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text("TALEP EDİLEN BEDEL", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                      Text("₺\${tutar.toStringAsFixed(2)}", style: const TextStyle(color: SiberTema.kanKirmizi, fontSize: 22, fontWeight: FontWeight.w900)),
+                      Text("TALEP EDİLEN BEDEL", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                      Text("₺\${tutar.toStringAsFixed(2)}", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 22, fontWeight: FontWeight.w900)),
                     ],
                   ),
-                  const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted)),
+                  Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(color: SiberTema.textMuted)),
                   _vakaDetaySatiri(Icons.error_outline, "Hatalı İşlem Yapan:", hataliBayi, SiberTema.kanKirmizi),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   _vakaDetaySatiri(Icons.build_circle, "Yolda Onaran Bayi:", onaranBayi, SiberTema.kuantumCyan),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
 
             // 2. SAVUNMA VE KANITLAR
-            const Text("USTA SAVUNMASI & KANITLAR", style: TextStyle(color: SiberTema.altinSari, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
-            const SizedBox(height: 8),
+            Text("USTA SAVUNMASI & KANITLAR", style: TextStyle(color: SiberTema.altinSari, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
+            SizedBox(height: 8),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(color: Colors.white.withOpacity(0.5), borderRadius: BorderRadius.circular(12), border: Border.all(color: SiberTema.textMuted)),
               child: Text(ustaNotu, style: TextStyle(color: SiberTema.textMain.withOpacity(0.8), fontSize: 13, height: 1.5)),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             Row(
               children: [
                 _buildNeonIkon(Icons.image_search, Colors.white54),
-                const SizedBox(width: 12),
-                const Text("Kanıt Görselleri (Sisteme Yüklendi)", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+                SizedBox(width: 12),
+                Text("Kanıt Görselleri (Sisteme Yüklendi)", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
               ],
             ),
 
-            const Padding(padding: EdgeInsets.symmetric(vertical: 20), child: Divider(color: SiberTema.textMuted)),
+            Padding(padding: EdgeInsets.symmetric(vertical: 20), child: Divider(color: SiberTema.textMuted)),
 
             // 3. ADMİN KARAR MERKEZİ (4'LÜ HAKEM SİSTEMİ)
-            const Center(child: Text("HAKEM KARARI & SİBER MÜHÜR", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2))),
-            const SizedBox(height: 16),
+            Center(child: Text("HAKEM KARARI & SİBER MÜHÜR", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2))),
+            SizedBox(height: 16),
             
             Row(
               children: [
@@ -330,7 +330,7 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
                     () => _kuantumHukmuVer(belgeId, vakaData, KararTipi.INCELEME)
                   ),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Expanded(
                   child: _buildHakemButonu(
                     "MÜŞTERİ HATASI", 
@@ -341,7 +341,7 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Row(
               children: [
                 Expanded(
@@ -352,20 +352,20 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
                     () => _kuantumHukmuVer(belgeId, vakaData, KararTipi.PARCA_GARANTI)
                   ),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Expanded(
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: SiberTema.altinSari, 
                       foregroundColor: SiberTema.oledBlack, 
-                      padding: const EdgeInsets.symmetric(vertical: 14), 
+                      padding: EdgeInsets.symmetric(vertical: 14), 
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), 
                       elevation: 10, 
                       shadowColor: SiberTema.altinSari.withOpacity(0.5)
                     ),
                     onPressed: () => _arabulucuDiyaloguAc(belgeId, vakaData),
-                    icon: const Icon(Icons.balance, size: 18),
-                    label: const Text("ARABULUCU (HAKEM)", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11)),
+                    icon: Icon(Icons.balance, size: 18),
+                    label: Text("ARABULUCU (HAKEM)", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11)),
                   ),
                 ),
               ],
@@ -380,13 +380,13 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
     return OutlinedButton.icon(
       style: OutlinedButton.styleFrom(
         foregroundColor: renk,
-        padding: const EdgeInsets.symmetric(vertical: 14), 
+        padding: EdgeInsets.symmetric(vertical: 14), 
         side: BorderSide(color: renk.withOpacity(0.5)), 
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
       ),
       onPressed: onTapped,
       icon: Icon(ikon, size: 16),
-      label: Text(baslik, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 10)),
+      label: Text(baslik, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10)),
     );
   }
 
@@ -394,10 +394,10 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
     return Row(
       children: [
         Icon(ikon, color: renk, size: 20),
-        const SizedBox(width: 12),
-        Text(baslik, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
-        const Spacer(),
-        Text(deger, style: const TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
+        SizedBox(width: 12),
+        Text(baslik, style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+        Spacer(),
+        Text(deger, style: TextStyle(color: SiberTema.textMain, fontSize: 13, fontWeight: FontWeight.bold)),
       ],
     );
   }
@@ -408,7 +408,7 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           decoration: BoxDecoration(color: Colors.white.withOpacity(0.4), borderRadius: BorderRadius.circular(16), border: Border.all(color: borderColor), boxShadow: [BoxShadow(color: SiberTema.altinSari.withOpacity(0.05), blurRadius: 20)]),
           child: child,
         ),
@@ -418,7 +418,7 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
 
   Widget _buildNeonIkon(IconData icon, Color renk) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: EdgeInsets.all(8),
       decoration: BoxDecoration(color: renk.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: renk.withOpacity(0.3))),
       child: Icon(icon, color: renk, size: 18),
     );
@@ -429,9 +429,9 @@ class _ImeceAdaletPaneliState extends State<ImeceAdaletPaneli> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircularProgressIndicator(color: SiberTema.altinSari, strokeWidth: 3),
-          const SizedBox(height: 20),
-          Text(yazi, style: const TextStyle(color: SiberTema.altinSari, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          CircularProgressIndicator(color: SiberTema.altinSari, strokeWidth: 3),
+          SizedBox(height: 20),
+          Text(yazi, style: TextStyle(color: SiberTema.altinSari, fontWeight: FontWeight.w900, letterSpacing: 2)),
         ],
       ),
     );

@@ -1,4 +1,4 @@
-// lib/widgets/double_check_tile.dart
+﻿// lib/widgets/double_check_tile.dart
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
@@ -12,7 +12,7 @@ class SiberCifteMuhur extends StatefulWidget {
   // Seçim değiştiğinde ana sayfaya (örn: Firebase'e yazacak olan metoda) veriyi yollar
   final Function(bool kontrolEdildi, bool degisti) onDegisim;
 
-  const SiberCifteMuhur({
+  SiberCifteMuhur({
     super.key,
     required this.baslik,
     this.initialKontrol = false,
@@ -29,9 +29,9 @@ class _SiberCifteMuhurState extends State<SiberCifteMuhur> {
   late bool _degisti;
 
   // ── 🎨 KARARGAH TASARIM DOKTRİNİ ──
-  static const Color _matGrey = Color(0xFF111111);
-  static const Color _kuantumCyan = Color(0xFF00FFC2);
-  static const Color _uyariOrange = Colors.orangeAccent;
+  static Color _matGrey = Color(0xFF111111);
+  static Color _kuantumCyan = Color(0xFF00FFC2);
+  static Color _uyariOrange = Colors.orangeAccent;
 
   @override
   void initState() {
@@ -76,9 +76,9 @@ class _SiberCifteMuhurState extends State<SiberCifteMuhur> {
     bool isAktif = _kontrolEdildi || _degisti;
 
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      duration: Duration(milliseconds: 300),
+      margin: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: isAktif ? _kuantumCyan.withOpacity(0.05) : _matGrey,
         borderRadius: BorderRadius.circular(12),

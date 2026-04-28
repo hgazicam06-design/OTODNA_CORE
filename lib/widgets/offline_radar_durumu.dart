@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/widgets/offline_radar_durumu.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import '../core/siber_tema.dart';
 class OfflineRadarDurumu extends StatefulWidget {
   final Widget child;
 
-  const OfflineRadarDurumu({super.key, required this.child});
+  OfflineRadarDurumu({super.key, required this.child});
 
   @override
   State<OfflineRadarDurumu> createState() => _OfflineRadarDurumuState();
@@ -60,8 +61,8 @@ class _OfflineRadarDurumuState extends State<OfflineRadarDurumu> {
               bottom: false,
               child: Container(
                 color: SiberTema.kanKirmizi,
-                padding: const EdgeInsets.all(8.0),
-                child: const Row(
+                padding: EdgeInsets.all(8.0),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.wifi_off, color: Colors.white, size: 16),

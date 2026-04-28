@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
@@ -7,7 +8,7 @@ import 'dart:async';
 import '../core/siber_tema.dart';
 
 class SiberGozTarayici extends StatefulWidget {
-  const SiberGozTarayici({super.key});
+  SiberGozTarayici({super.key});
 
   @override
   State<SiberGozTarayici> createState() => _SiberGozTarayiciState();
@@ -28,7 +29,7 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
     _siberKamerayiBaslat();
 
     // Radar çizgisi için yukarı-aşağı animasyon
-    _radarController = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat(reverse: true);
+    _radarController = AnimationController(vsync: this, duration: Duration(seconds: 2))..repeat(reverse: true);
     _radarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _radarController, curve: Curves.easeInOut));
   }
 
@@ -64,7 +65,7 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
 
     // 🧠 İleride buraya Google ML Kit veya özel bir OCR/Obje Tanıma API'si gelecek.
     // Şimdilik Karargahın gücünü göstermek için 3 saniyelik bir siber analiz simüle ediyoruz.
-    Timer(const Duration(seconds: 3), () {
+    Timer(Duration(seconds: 3), () {
       setState(() => _isTaraniyor = false);
       _siberSonucPaneliniAc();
     });
@@ -78,12 +79,12 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
       backgroundColor: Colors.transparent,
       builder: (context) {
         return ClipRRect(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
             child: Container(
               height: MediaQuery.of(context).size.height * 0.75,
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               decoration: BoxDecoration(
                 color: SiberTema.oledBlack.withOpacity(0.8),
                 border: Border(top: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 2)),
@@ -92,40 +93,40 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(child: Container(width: 50, height: 4, decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(10)))),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
 
                   // PARÇA KİMLİĞİ
                   Row(
                     children: [
-                      Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), shape: BoxShape.circle), child: const Icon(Icons.memory, color: SiberTema.kuantumCyan, size: 32)),
-                      const SizedBox(width: 16),
+                      Container(padding: EdgeInsets.all(12), decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), shape: BoxShape.circle), child: Icon(Icons.memory, color: SiberTema.kuantumCyan, size: 32)),
+                      SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text("BOSCH FREN BALATASI TAKIMI", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
+                            Text("BOSCH FREN BALATASI TAKIMI", style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 1)),
                             Text("OEM Kodu: 8V0698151C", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Avenir', letterSpacing: 2)),
                           ],
                         ),
                       )
                     ],
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
 
-                  const Text("TİCARİ AĞ GEÇİDİ (En Yakın Tedarikçiler)", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
-                  const SizedBox(height: 16),
+                  Text("TİCARİ AĞ GEÇİDİ (En Yakın Tedarikçiler)", style: TextStyle(color: SiberTema.textMuted, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
+                  SizedBox(height: 16),
 
                   // TİCARİ SEÇENEKLER (Bu butonlar ileride Oto Marketleri listeleyecek)
                   Expanded(
                     child: ListView(
-                      physics: const BouncingScrollPhysics(),
+                      physics: BouncingScrollPhysics(),
                       children: [
                         _buildTicariAksiyonButonu(ikon: Icons.verified, baslik: "ORİJİNAL (SIFIR)", altBaslik: "Murat Plaza Garantili - %30 Marj", renk: Colors.blue),
-                        const SizedBox(height: 12),
+                        SizedBox(height: 12),
                         _buildTicariAksiyonButonu(ikon: Icons.settings_suggest, baslik: "YAN SANAYİ (MUADİL)", altBaslik: "A Kalite Onaylı Üretim", renk: Colors.orange),
-                        const SizedBox(height: 12),
+                        SizedBox(height: 12),
                         _buildTicariAksiyonButonu(ikon: Icons.recycling, baslik: "ÇIKMA PARÇA", altBaslik: "Test Edilmiş Orijinal Hurda", renk: Colors.green),
-                        const SizedBox(height: 12),
+                        SizedBox(height: 12),
                         _buildTicariAksiyonButonu(ikon: Icons.handshake, baslik: "İKİNCİ EL", altBaslik: "Kullanıcıdan Kullanıcıya", renk: Colors.purple),
                       ],
                     ),
@@ -145,7 +146,7 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
         // İleride haritada o marketi gösterecek rota
       },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: renk.withOpacity(0.05),
           border: Border.all(color: renk.withOpacity(0.3)),
@@ -154,7 +155,7 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
         child: Row(
           children: [
             Icon(ikon, color: renk, size: 28),
-            const SizedBox(width: 16),
+            SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,7 +175,7 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     if (!_isKameraHazir || _kameraKontrolcusu == null) {
-      return Scaffold(backgroundColor: SiberTema.oledBlack, body: const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)));
+      return Scaffold(backgroundColor: SiberTema.oledBlack, body: Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan)));
     }
 
     return Scaffold(
@@ -192,7 +193,7 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
               fit: StackFit.expand,
               children: [
                 Container(
-                  decoration: const BoxDecoration(color: Colors.white, backgroundBlendMode: BlendMode.dstOut),
+                  decoration: BoxDecoration(color: Colors.white, backgroundBlendMode: BlendMode.dstOut),
                 ),
                 Center(
                   child: Container(
@@ -250,12 +251,12 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
             child: Align(
               alignment: Alignment.topLeft,
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(16.0),
                 child: Row(
                   children: [
-                    IconButton(icon: const Icon(Icons.close, color: SiberTema.kuantumCyan, size: 32), onPressed: () => Navigator.pop(context)),
-                    const SizedBox(width: 8),
-                    const Text("SİBER GÖZ AKTİF", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 2)),
+                    IconButton(icon: Icon(Icons.close, color: SiberTema.kuantumCyan, size: 32), onPressed: () => Navigator.pop(context)),
+                    SizedBox(width: 8),
+                    Text("SİBER GÖZ AKTİF", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, fontFamily: 'Avenir', letterSpacing: 2)),
                   ],
                 ),
               ),
@@ -266,11 +267,11 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 50.0),
+              padding: EdgeInsets.only(bottom: 50.0),
               child: GestureDetector(
                 onTap: _isTaraniyor ? null : _parcayiMatristeAra,
                 child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
+                  duration: Duration(milliseconds: 300),
                   width: _isTaraniyor ? 80 : 100,
                   height: _isTaraniyor ? 80 : 100,
                   decoration: BoxDecoration(
@@ -281,8 +282,8 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
                   ),
                   child: Center(
                     child: _isTaraniyor
-                        ? const CircularProgressIndicator(color: SiberTema.kuantumCyan)
-                        : const Icon(Icons.document_scanner, color: SiberTema.kuantumCyan, size: 40),
+                        ? CircularProgressIndicator(color: SiberTema.kuantumCyan)
+                        : Icon(Icons.document_scanner, color: SiberTema.kuantumCyan, size: 40),
                   ),
                 ),
               ),
@@ -301,10 +302,10 @@ class _SiberGozTarayiciState extends State<SiberGozTarayici> with SingleTickerPr
         height: 40,
         decoration: BoxDecoration(
           border: Border(
-            top: (alignment == Alignment.topLeft || alignment == Alignment.topRight) ? const BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
-            bottom: (alignment == Alignment.bottomLeft || alignment == Alignment.bottomRight) ? const BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
-            left: (alignment == Alignment.topLeft || alignment == Alignment.bottomLeft) ? const BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
-            right: (alignment == Alignment.topRight || alignment == Alignment.bottomRight) ? const BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
+            top: (alignment == Alignment.topLeft || alignment == Alignment.topRight) ? BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
+            bottom: (alignment == Alignment.bottomLeft || alignment == Alignment.bottomRight) ? BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
+            left: (alignment == Alignment.topLeft || alignment == Alignment.bottomLeft) ? BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
+            right: (alignment == Alignment.topRight || alignment == Alignment.bottomRight) ? BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
           ),
         ),
       ),

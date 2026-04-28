@@ -1,4 +1,4 @@
-// lib/admin_merkez.dart
+﻿// lib/admin_merkez.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +9,7 @@ import 'package:otodna/core/responsive_kalkan.dart';
 // import 'package:otodna/core/siber_tema.dart'; // Sizin projenizdeki tema dosyanız
 
 class AdminMerkezScreen extends StatefulWidget {
-  const AdminMerkezScreen({super.key});
+  AdminMerkezScreen({super.key});
 
   @override
   State<AdminMerkezScreen> createState() => _AdminMerkezScreenState();
@@ -20,10 +20,10 @@ class _AdminMerkezScreenState extends State<AdminMerkezScreen> {
   bool _cikisYapiliyor = false;
 
   // Siber Renk Paleti
-  static const Color _oledBlack = Color(0xFF000000);
-  static const Color _matGrey = Color(0xFF111111);
-  static const Color _kuantumCyan = Color(0xFF00FFC2);
-  static const Color _alertRed = Color(0xFFFF4D4D);
+  static Color _oledBlack = Color(0xFF000000);
+  static Color _matGrey = Color(0xFF111111);
+  static Color _kuantumCyan = Color(0xFF00FFC2);
+  static Color _alertRed = Color(0xFFFF4D4D);
 
   // ── 🔒 SİBER ÇIKIŞ PROTOKOLÜ (LOGLAMALI) ──
   Future<void> _guvenliAgaVeda() async {
@@ -59,41 +59,41 @@ class _AdminMerkezScreenState extends State<AdminMerkezScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: const Text(
+          title: Text(
               "SİBER KOMUTA MERKEZİ",
               style: TextStyle(color: _alertRed, fontWeight: FontWeight.w900, letterSpacing: 2)
           ),
           centerTitle: true,
           actions: [
             if (_cikisYapiliyor)
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(right: 16.0),
                 child: Center(child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: _alertRed, strokeWidth: 2))),
               )
             else
               IconButton(
-                icon: const Icon(Icons.power_settings_new, color: _alertRed),
+                icon: Icon(Icons.power_settings_new, color: _alertRed),
                 onPressed: _guvenliAgaVeda,
                 tooltip: "Karargahtan Çık",
               )
           ],
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // ── 🛡️ İSTİHBARAT ÖZETİ (HEADER) ──
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(24),
+                padding: EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: _alertRed.withOpacity(0.05),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: _alertRed.withOpacity(0.3), width: 1.5),
                   boxShadow: [BoxShadow(color: _alertRed.withOpacity(0.1), blurRadius: 20)],
                 ),
-                child: const Column(
+                child: Column(
                   children: [
                     Icon(Icons.admin_panel_settings, color: _alertRed, size: 60),
                     SizedBox(height: 16),
@@ -104,14 +104,14 @@ class _AdminMerkezScreenState extends State<AdminMerkezScreen> {
                 ),
               ),
 
-              const SizedBox(height: 30),
-              const Text("AKTİF CEPHELER", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
-              const SizedBox(height: 16),
+              SizedBox(height: 30),
+              Text("AKTİF CEPHELER", style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+              SizedBox(height: 16),
 
               // ── 🚀 KUANTUM GEÇİTLERİ (YÖNLENDİRME MENÜSÜ) ──
               Expanded(
                 child: ListView(
-                  physics: const BouncingScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   children: [
                     _buildSiberGecit(
                         baslik: "GLOBAL SİBER AĞ",
@@ -156,25 +156,25 @@ class _AdminMerkezScreenState extends State<AdminMerkezScreen> {
   // ── 🔧 ARAYÜZ YARDIMCISI: SİBER BUTON ──
   Widget _buildSiberGecit({required String baslik, required String detay, required IconData ikon, required Color renk, required VoidCallback onTap}) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: _matGrey,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white.withOpacity(0.05)),
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         leading: Container(
-          padding: const EdgeInsets.all(12),
+          padding: EdgeInsets.all(12),
           decoration: BoxDecoration(color: renk.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: renk.withOpacity(0.5))),
           child: Icon(ikon, color: renk, size: 24),
         ),
-        title: Text(baslik, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
+        title: Text(baslik, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
         subtitle: Padding(
-          padding: const EdgeInsets.only(top: 4.0),
-          child: Text(detay, style: const TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+          padding: EdgeInsets.only(top: 4.0),
+          child: Text(detay, style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
         ),
-        trailing: const Icon(Icons.chevron_right, color: Colors.white24),
+        trailing: Icon(Icons.chevron_right, color: Colors.white24),
         onTap: onTap,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         splashColor: renk.withOpacity(0.1),

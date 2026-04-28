@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart'; // 🚀 pubspec.yaml'da eklendiğinden emin ol!
@@ -12,7 +13,7 @@ import '../core/responsive_kalkan.dart';
 // import '../bayi/ekspertiz_kokpiti_screen.dart';
 
 class SiberGozTerminali extends StatefulWidget {
-  const SiberGozTerminali({super.key});
+  SiberGozTerminali({super.key});
 
   @override
   State<SiberGozTerminali> createState() => _SiberGozTerminaliState();
@@ -78,7 +79,7 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
   void _siberUyariVer(String mesaj, bool isError) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(mesaj, style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir', fontSize: 12)),
+        content: Text(mesaj, style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir', fontSize: 12)),
         backgroundColor: isError ? SiberTema.kanKirmizi : SiberTema.kuantumCyan.withOpacity(0.8), // 🛠️ alarmRed yerine kanKirmizi kullanıldı
         behavior: SnackBarBehavior.floating,
       ),
@@ -94,8 +95,8 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("SİBER GÖZ: ARAÇ TANIMA", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')), // 🛠️ siberFont yerine Avenir kullanıldı
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          title: Text("SİBER GÖZ: ARAÇ TANIMA", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')), // 🛠️ siberFont yerine Avenir kullanıldı
           centerTitle: true,
         ),
         body: Stack(
@@ -142,8 +143,8 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 50),
-                    const Text(
+                    SizedBox(height: 50),
+                    Text(
                       "QR KODU SİBER GÖZ HİZASINA GETİRİN",
                       style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 3, fontFamily: 'Avenir'), // 🛠️ siberFont düzeltildi
                     ),
@@ -167,12 +168,12 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
 
   Widget _buildAltBilgiPaneli() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: SiberTema.oledBlack.withOpacity(0.9),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: SiberTema.textMuted, width: 1.5),
-        boxShadow: const [BoxShadow(color: Colors.white54, blurRadius: 20, offset: Offset(0, 10))],
+        boxShadow: [BoxShadow(color: Colors.white54, blurRadius: 20, offset: Offset(0, 10))],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -180,15 +181,15 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
           Row(
             children: [
               _buildStatusLed(_isLoading),
-              const SizedBox(width: 12),
-              const Text("SİSTEM DURUMU:", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
-              const Spacer(),
-              Text(_isLoading ? "DNA ANALİZİ YAPILIYOR..." : "RADAR AKTİF", style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
+              SizedBox(width: 12),
+              Text("SİSTEM DURUMU:", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+              Spacer(),
+              Text(_isLoading ? "DNA ANALİZİ YAPILIYOR..." : "RADAR AKTİF", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
             ],
           ),
           if (_isLoading) ...[
-            const SizedBox(height: 20),
-            const LinearProgressIndicator(backgroundColor: Colors.white10, color: SiberTema.kuantumCyan, minHeight: 2),
+            SizedBox(height: 20),
+            LinearProgressIndicator(backgroundColor: Colors.white10, color: SiberTema.kuantumCyan, minHeight: 2),
           ]
         ],
       ),
@@ -201,10 +202,10 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
       height: 20,
       decoration: BoxDecoration(
         border: Border(
-          top: (index == 0 || index == 1) ? const BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
-          bottom: (index == 2 || index == 3) ? const BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
-          left: (index == 0 || index == 2) ? const BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
-          right: (index == 1 || index == 3) ? const BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
+          top: (index == 0 || index == 1) ? BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
+          bottom: (index == 2 || index == 3) ? BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
+          left: (index == 0 || index == 2) ? BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
+          right: (index == 1 || index == 3) ? BorderSide(color: SiberTema.kuantumCyan, width: 4) : BorderSide.none,
         ),
       ),
     );
@@ -216,9 +217,9 @@ class _SiberGozTerminaliState extends State<SiberGozTerminali> {
       height: 8,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: active ? const Color(0xFFFFB300) : SiberTema.kuantumCyan,
+          color: active ? Color(0xFFFFB300) : SiberTema.kuantumCyan,
           boxShadow: [
-            BoxShadow(color: active ? const Color(0xFFFFB300) : SiberTema.kuantumCyan, blurRadius: 10, spreadRadius: 1),
+            BoxShadow(color: active ? Color(0xFFFFB300) : SiberTema.kuantumCyan, blurRadius: 10, spreadRadius: 1),
           ]
       ),
     );

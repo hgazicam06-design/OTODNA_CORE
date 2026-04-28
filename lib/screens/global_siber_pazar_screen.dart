@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,7 +7,7 @@ import '../core/responsive_kalkan.dart';
 import '../core/otodna_mega_protocol.dart'; // 🦅 PROTOKOL ENTEGRASYONU
 
 class GlobalSiberPazarScreen extends StatefulWidget {
-  const GlobalSiberPazarScreen({super.key});
+  GlobalSiberPazarScreen({super.key});
 
   @override
   State<GlobalSiberPazarScreen> createState() => _GlobalSiberPazarScreenState();
@@ -28,18 +29,18 @@ class _GlobalSiberPazarScreenState extends State<GlobalSiberPazarScreen> {
         appBar: AppBar(
           backgroundColor: SiberTema.oledBlack.withOpacity(0.9),
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
-          title: const Text("GLOBAL SİBER PAZAR",
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          title: Text("GLOBAL SİBER PAZAR",
               style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 4, fontFamily: 'monospace')),
           centerTitle: true,
         ),
         body: Container(
-          decoration: const BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/radar_grid.png'), fit: BoxFit.cover, opacity: 0.05)),
+          decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/radar_grid.png'), fit: BoxFit.cover, opacity: 0.05)),
           child: Column(
             children: [
               _buildAramaMotoru(),
               _buildKategoriRadari(),
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               _buildIlanListesi(),
             ],
           ),
@@ -50,16 +51,16 @@ class _GlobalSiberPazarScreenState extends State<GlobalSiberPazarScreen> {
 
   Widget _buildAramaMotoru() {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: EdgeInsets.all(20.0),
       child: SiberTema.siberCamKalkan(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: TextField(
-          style: const TextStyle(color: SiberTema.textMain, fontFamily: 'monospace', fontWeight: FontWeight.bold),
+          style: TextStyle(color: SiberTema.textMain, fontFamily: 'monospace', fontWeight: FontWeight.bold),
           decoration: InputDecoration(
             hintText: "OEM, Parça Kodu veya İsim İle Tara...",
             hintStyle: TextStyle(color: SiberTema.textMain.withOpacity(0.3), fontSize: 10, letterSpacing: 1),
             border: InputBorder.none,
-            icon: const Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 20),
+            icon: Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 20),
           ),
           onChanged: (deger) => setState(() => _aramaMetni = deger.trim().toLowerCase()),
         ),
@@ -72,8 +73,8 @@ class _GlobalSiberPazarScreenState extends State<GlobalSiberPazarScreen> {
       height: 45,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         itemCount: _kategoriler.length,
         itemBuilder: (context, index) {
           String kat = _kategoriler[index];
@@ -81,9 +82,9 @@ class _GlobalSiberPazarScreenState extends State<GlobalSiberPazarScreen> {
           return GestureDetector(
             onTap: () => setState(() => _seciliKategori = kat),
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              margin: const EdgeInsets.only(right: 10),
-              padding: const EdgeInsets.symmetric(horizontal: 22),
+              duration: Duration(milliseconds: 300),
+              margin: EdgeInsets.only(right: 10),
+              padding: EdgeInsets.symmetric(horizontal: 22),
               decoration: BoxDecoration(
                 color: isSelected ? SiberTema.kuantumCyan.withOpacity(0.1) : Colors.white.withOpacity(0.02),
                 borderRadius: BorderRadius.circular(12),
@@ -105,7 +106,7 @@ class _GlobalSiberPazarScreenState extends State<GlobalSiberPazarScreen> {
       child: StreamBuilder<QuerySnapshot>(
         stream: _db.collection('ilanlar').where('aktif_mi', isEqualTo: true).orderBy('yayin_tarihi', descending: true).snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+          if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
 
           final docs = snapshot.data?.docs.where((doc) {
             var data = doc.data() as Map<String, dynamic>;
@@ -119,8 +120,8 @@ class _GlobalSiberPazarScreenState extends State<GlobalSiberPazarScreen> {
           if (docs.isEmpty) return _buildBosDurum();
 
           return GridView.builder(
-            padding: const EdgeInsets.all(20),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            padding: EdgeInsets.all(20),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, childAspectRatio: 0.75, crossAxisSpacing: 15, mainAxisSpacing: 15),
             itemCount: docs.length,
             itemBuilder: (context, index) {
@@ -158,22 +159,22 @@ class _GlobalSiberPazarScreenState extends State<GlobalSiberPazarScreen> {
                   color: Colors.white,
                   child: ilan['gorsel_url'] != null
                       ? Image.network(ilan['gorsel_url'], fit: BoxFit.cover)
-                      : const Icon(Icons. Dionysus, color: SiberTema.textMuted), // Kuantum İkon
+                      : Icon(Icons. Dionysus, color: SiberTema.textMuted), // Kuantum İkon
                 ),
               ),
               Expanded(
                 flex: 2,
                 child: Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: EdgeInsets.all(12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(ilan['baslik']?.toUpperCase() ?? '', maxLines: 1, overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.w900)),
-                      Text("OEM: ${ilan['parca_kodu'] ?? 'YOK'}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 8, fontFamily: 'monospace')),
+                          style: TextStyle(color: SiberTema.textMain, fontSize: 10, fontWeight: FontWeight.w900)),
+                      Text("OEM: ${ilan['parca_kodu'] ?? 'YOK'}", style: TextStyle(color: SiberTema.textMuted, fontSize: 8, fontFamily: 'monospace')),
                       Text("₺${sonFiyat.toStringAsFixed(2)}",
-                          style: const TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
+                          style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
                     ],
                   ),
                 ),
@@ -189,9 +190,9 @@ class _GlobalSiberPazarScreenState extends State<GlobalSiberPazarScreen> {
 
   Widget _buildMühür() {
     return Container(
-      padding: const EdgeInsets.all(4),
+      padding: EdgeInsets.all(4),
       decoration: BoxDecoration(color: SiberTema.kuantumCyan.withOpacity(0.1), shape: BoxShape.circle, border: Border.all(color: SiberTema.kuantumCyan, width: 0.5)),
-      child: const Icon(Icons.verified, color: SiberTema.kuantumCyan, size: 10),
+      child: Icon(Icons.verified, color: SiberTema.kuantumCyan, size: 10),
     );
   }
 
@@ -200,8 +201,8 @@ class _GlobalSiberPazarScreenState extends State<GlobalSiberPazarScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.radar, size: 50, color: SiberTema.textMuted),
-          const SizedBox(height: 16),
+          Icon(Icons.radar, size: 50, color: SiberTema.textMuted),
+          SizedBox(height: 16),
           Text("RADAR TEMİZ: VERİ BULUNAMADI",
               style: TextStyle(color: SiberTema.textMain.withOpacity(0.2), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
         ],

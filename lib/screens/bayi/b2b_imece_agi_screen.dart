@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/bayi/b2b_imece_agi_screen.dart
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import '../core/responsive_kalkan.dart';
 /// 🛡️ B2B İMECE AĞI (Bayiler Arası Kuantum Ticaret Merkezi)
 /// Bayilerin parça paslaştığı ve %12 Karargah kesintisiyle çalışan otonom terminal.
 class B2bImeceAgiScreen extends StatefulWidget {
-  const B2bImeceAgiScreen({super.key});
+  B2bImeceAgiScreen({super.key});
 
   @override
   State<B2bImeceAgiScreen> createState() => _B2bImeceAgiScreenState();
@@ -103,35 +104,35 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         backgroundColor: SiberTema.matGrey,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: SiberTema.kuantumCyan)),
-        title: const Text("TEDARİK PROTOKOLÜ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: SiberTema.kuantumCyan)),
+        title: Text("TEDARİK PROTOKOLÜ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Hedef: $talepEdenFirma", style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
-            const SizedBox(height: 4),
-            Text("Parça: $parcaAdi", style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
-            const Text("Satış Fiyatı (TL):", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
+            Text("Hedef: $talepEdenFirma", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+            SizedBox(height: 4),
+            Text("Parça: $parcaAdi", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold)),
+            SizedBox(height: 16),
+            Text("Satış Fiyatı (TL):", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
             TextField(
               controller: fiyatController,
               keyboardType: TextInputType.number,
-              style: const TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 18),
+              style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.bold, fontSize: 18),
               decoration: InputDecoration(
                 filled: true,
                 fillColor: SiberTema.oledBlack,
-                prefixIcon: const Icon(Icons.currency_lira, color: SiberTema.kuantumCyan),
+                prefixIcon: Icon(Icons.currency_lira, color: SiberTema.kuantumCyan),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
               ),
             ),
-            const SizedBox(height: 12),
-            const Text("DİKKAT: Karargah bu işlemden otonom olarak %12 hizmet ve vergi kesintisi yapacaktır.", style: TextStyle(color: SiberTema.altinSari, fontSize: 10)),
+            SizedBox(height: 12),
+            Text("DİKKAT: Karargah bu işlemden otonom olarak %12 hizmet ve vergi kesintisi yapacaktır.", style: TextStyle(color: SiberTema.altinSari, fontSize: 10)),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("İPTAL", style: TextStyle(color: SiberTema.textMuted))),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text("İPTAL", style: TextStyle(color: SiberTema.textMuted))),
           ElevatedButton(
             style: SiberTema.kuantumButonStili(),
             onPressed: () async {
@@ -144,7 +145,7 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
               Navigator.pop(context);
               await _tedarikIsleminiMuhurle(talepId, girilenFiyat);
             },
-            child: const Text("SATIŞI MÜHÜRLE", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)),
+            child: Text("SATIŞI MÜHÜRLE", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.bold)),
           )
         ],
       ),
@@ -214,31 +215,31 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
             return Padding(
               padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
               child: Container(
-                padding: const EdgeInsets.all(24),
+                padding: EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: SiberTema.matGrey,
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
                   border: Border.all(color: SiberTema.textMuted),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("SİBER YARDIM SİNYALİ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
-                    const SizedBox(height: 20),
+                    Text("SİBER YARDIM SİNYALİ", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                    SizedBox(height: 20),
                     _buildSiberTextField("Aranan Parça (Örn: G20 KARBON TAMPON)", Icons.settings, _parcaAdiController),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     _buildSiberTextField("Araç Marka/Model", Icons.directions_car, _aracModeliController),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     _buildSiberTextField("Ekstra Detay (İsteğe Bağlı)", Icons.notes, _aciklamaController),
-                    const SizedBox(height: 16),
-                    const Text("SİNYAL ACİLİYETİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 16),
+                    Text("SİNYAL ACİLİYETİ", style: TextStyle(color: SiberTema.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 8),
                     Row(
                       children: [
                         Expanded(
                           child: RadioListTile<String>(
-                            title: const Text("NORMAL", style: TextStyle(color: SiberTema.textMain, fontSize: 12)),
+                            title: Text("NORMAL", style: TextStyle(color: SiberTema.textMain, fontSize: 12)),
                             activeColor: SiberTema.kuantumCyan,
                             value: "NORMAL",
                             groupValue: _aciliyetDurumu,
@@ -247,7 +248,7 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
                         ),
                         Expanded(
                           child: RadioListTile<String>(
-                            title: const Text("KIRMIZI KOD (ACİL)", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 12, fontWeight: FontWeight.bold)),
+                            title: Text("KIRMIZI KOD (ACİL)", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 12, fontWeight: FontWeight.bold)),
                             activeColor: SiberTema.kanKirmizi,
                             value: "ACIL",
                             groupValue: _aciliyetDurumu,
@@ -256,14 +257,14 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton.icon(
                         style: SiberTema.kuantumButonStili(),
-                        icon: const Icon(Icons.radar, color: SiberTema.oledBlack),
-                        label: const Text("AĞA SİNYAL FIRLAT", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                        icon: Icon(Icons.radar, color: SiberTema.oledBlack),
+                        label: Text("AĞA SİNYAL FIRLAT", style: TextStyle(color: SiberTema.oledBlack, fontWeight: FontWeight.w900, letterSpacing: 1)),
                         onPressed: _islemSuruyor ? null : _yeniTalepFirlat,
                       ),
                     )
@@ -279,10 +280,10 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
   Widget _buildSiberTextField(String hint, IconData icon, TextEditingController controller) {
     return TextField(
       controller: controller,
-      style: const TextStyle(color: SiberTema.textMain, fontSize: 14),
+      style: TextStyle(color: SiberTema.textMain, fontSize: 14),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.white30, fontSize: 12),
+        hintStyle: TextStyle(color: Colors.white30, fontSize: 12),
         prefixIcon: Icon(icon, color: SiberTema.kuantumCyan, size: 20),
         filled: true,
         fillColor: SiberTema.oledBlack,
@@ -303,8 +304,8 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
-            const SizedBox(height: 4),
-            Text(mesaj, style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+            SizedBox(height: 4),
+            Text(mesaj, style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
           ],
         ),
       ),
@@ -317,13 +318,13 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent, // Zırh OLED Siyah verir
         appBar: AppBar(
-          title: const Text("B2B İMECE AĞI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          title: Text("B2B İMECE AĞI", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2)),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: SiberTema.kuantumCyan), onPressed: () => Navigator.pop(context)),
           actions: [
             IconButton(
-              icon: const Icon(Icons.add_circle, color: SiberTema.kuantumCyan, size: 28),
+              icon: Icon(Icons.add_circle, color: SiberTema.kuantumCyan, size: 28),
               tooltip: "Yeni Sinyal Fırlat",
               onPressed: _talepFormuAc,
             )
@@ -334,9 +335,9 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
             // 📡 RADAR BİLGİLENDİRMESİ
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(12),
               color: SiberTema.kuantumCyan.withOpacity(0.1),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.radar, color: SiberTema.kuantumCyan, size: 16),
@@ -355,18 +356,18 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+                    return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
                   }
 
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: Text("Şu an ağda aktif bir parça talebi bulunmuyor.", style: TextStyle(color: Colors.white30)),
                     );
                   }
 
                   return ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.all(16),
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.all(16),
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       var talep = snapshot.data!.docs[index];
@@ -375,7 +376,7 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
                       bool isBenimTalebim = data['talep_eden_id'] == _currentUser?.uid;
 
                       return Container(
-                        margin: const EdgeInsets.only(bottom: 16),
+                        margin: EdgeInsets.only(bottom: 16),
                         decoration: BoxDecoration(
                           color: SiberTema.matGrey,
                           borderRadius: BorderRadius.circular(16),
@@ -383,7 +384,7 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
                           boxShadow: isAcil ? [BoxShadow(color: SiberTema.kanKirmizi.withOpacity(0.2), blurRadius: 10)] : null,
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(16),
+                          padding: EdgeInsets.all(16),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -391,7 +392,7 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                     decoration: BoxDecoration(
                                       color: isAcil ? SiberTema.kanKirmizi.withOpacity(0.2) : SiberTema.kuantumCyan.withOpacity(0.1),
                                       borderRadius: BorderRadius.circular(4),
@@ -402,27 +403,27 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
                                       style: TextStyle(color: isAcil ? SiberTema.kanKirmizi : SiberTema.kuantumCyan, fontSize: 9, fontWeight: FontWeight.w900),
                                     ),
                                   ),
-                                  Text("Talep Eden: ${data['talep_eden_firma']}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 10)),
+                                  Text("Talep Eden: ${data['talep_eden_firma']}", style: TextStyle(color: SiberTema.textMuted, fontSize: 10)),
                                 ],
                               ),
-                              const SizedBox(height: 16),
-                              Text(data['parca_adi'], style: const TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                              const SizedBox(height: 4),
-                              Text("Uyumlu Araç: ${data['arac_modeli']}", style: const TextStyle(color: SiberTema.textMuted, fontSize: 12)),
+                              SizedBox(height: 16),
+                              Text(data['parca_adi'], style: TextStyle(color: SiberTema.textMain, fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                              SizedBox(height: 4),
+                              Text("Uyumlu Araç: ${data['arac_modeli']}", style: TextStyle(color: SiberTema.textMuted, fontSize: 12)),
                               if (data['aciklama'] != null && data['aciklama'].toString().isNotEmpty) ...[
-                                const SizedBox(height: 8),
-                                Text("Not: ${data['aciklama']}", style: const TextStyle(color: Colors.white30, fontSize: 11, fontStyle: FontStyle.italic)),
+                                SizedBox(height: 8),
+                                Text("Not: ${data['aciklama']}", style: TextStyle(color: Colors.white30, fontSize: 11, fontStyle: FontStyle.italic)),
                               ],
-                              const SizedBox(height: 16),
+                              SizedBox(height: 16),
 
                               // Aksiyon Butonu
                               SizedBox(
                                 width: double.infinity,
                                 child: isBenimTalebim
                                     ? OutlinedButton.icon(
-                                  style: OutlinedButton.styleFrom(side: const BorderSide(color: SiberTema.textMuted), foregroundColor: Colors.white54),
-                                  icon: const Icon(Icons.hourglass_empty, size: 16),
-                                  label: const Text("KENDİ TALEBİNİZ - BEKLENİYOR"),
+                                  style: OutlinedButton.styleFrom(side: BorderSide(color: SiberTema.textMuted), foregroundColor: Colors.white54),
+                                  icon: Icon(Icons.hourglass_empty, size: 16),
+                                  label: Text("KENDİ TALEBİNİZ - BEKLENİYOR"),
                                   onPressed: null,
                                 )
                                     : ElevatedButton.icon(
@@ -430,8 +431,8 @@ class _B2bImeceAgiScreenState extends State<B2bImeceAgiScreen> {
                                     backgroundColor: isAcil ? SiberTema.kanKirmizi : SiberTema.kuantumCyan,
                                     foregroundColor: SiberTema.oledBlack,
                                   ),
-                                  icon: const Icon(Icons.handshake),
-                                  label: const Text("TEDARİK SAĞLA & SAT", style: TextStyle(fontWeight: FontWeight.w900)),
+                                  icon: Icon(Icons.handshake),
+                                  label: Text("TEDARİK SAĞLA & SAT", style: TextStyle(fontWeight: FontWeight.w900)),
                                   onPressed: () => _tedarikSagla(talep.id, data['talep_eden_firma'], data['parca_adi']),
                                 ),
                               )

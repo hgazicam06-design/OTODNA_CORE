@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/notification_service.dart';
 
@@ -7,7 +7,7 @@ class BildirimDetayScreen extends StatelessWidget {
   final String bildirimId;
   final Map<String, dynamic> data;
 
-  const BildirimDetayScreen({
+  BildirimDetayScreen({
     super.key,
     required this.saseNo,
     required this.bildirimId,
@@ -44,39 +44,39 @@ class BildirimDetayScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.all(20),
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // ÜST KART: Sinyal Türü ve İkon
             Center(
               child: Container(
-                padding: const EdgeInsets.all(24),
+                padding: EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: primaryTeal.withValues(alpha: 0.05),
                   border: Border.all(color: primaryTeal.withValues(alpha: 0.2), width: 2),
                   boxShadow: [BoxShadow(color: primaryTeal.withValues(alpha: 0.05), blurRadius: 20, spreadRadius: 5)],
                 ),
-                child: Text(notifService.turIcon(tur), style: const TextStyle(fontSize: 60)),
+                child: Text(notifService.turIcon(tur), style: TextStyle(fontSize: 60)),
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             Center(
               child: Text(
                 notifService.turLabel(tur).toUpperCase(),
                 style: TextStyle(color: primaryTeal, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2, fontFamily: 'Avenir'),
               ),
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
 
             // ORTA KART: Bildirim İçeriği
-            const Text("SİNYAL İÇERİĞİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
-            const SizedBox(height: 12),
+            Text("SİNYAL İÇERİĞİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+            SizedBox(height: 12),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: _cardColor,
                 borderRadius: BorderRadius.circular(16),
@@ -85,16 +85,16 @@ class BildirimDetayScreen extends StatelessWidget {
               ),
               child: Text(
                 mesaj,
-                style: const TextStyle(color: _textColor, fontSize: 14, height: 1.5, fontFamily: 'Avenir', fontWeight: FontWeight.w600),
+                style: TextStyle(color: _textColor, fontSize: 14, height: 1.5, fontFamily: 'Avenir', fontWeight: FontWeight.w600),
               ),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
 
             // ALT KART: Güvenlik ve Ağ Verileri (IP, Tarih)
-            const Text("SİBER AĞ İZLERİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
-            const SizedBox(height: 12),
+            Text("SİBER AĞ İZLERİ", style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontFamily: 'Avenir')),
+            SizedBox(height: 12),
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: _cardColor,
                 borderRadius: BorderRadius.circular(16),
@@ -103,9 +103,9 @@ class BildirimDetayScreen extends StatelessWidget {
               child: Column(
                 children: [
                   _buildAgaVeriSatiri(Icons.wifi_tethering, "Gönderici IP", ip, Colors.redAccent),
-                  Padding(padding: const EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white.withValues(alpha: 0.05))),
+                  Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white.withValues(alpha: 0.05))),
                   _buildAgaVeriSatiri(Icons.security, "Hedef Şase", saseNo, _textColor),
-                  Padding(padding: const EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white.withValues(alpha: 0.05))),
+                  Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Divider(color: Colors.white.withValues(alpha: 0.05))),
                   _buildAgaVeriSatiri(Icons.access_time, "Zaman Damgası", tarih != null ? _formatDate(tarih) : "Bilinmiyor", _textColor),
                 ],
               ),
@@ -120,9 +120,9 @@ class BildirimDetayScreen extends StatelessWidget {
     return Row(
       children: [
         Icon(icon, color: Colors.white38, size: 18),
-        const SizedBox(width: 12),
-        Text(baslik, style: const TextStyle(color: Colors.white54, fontSize: 13, fontFamily: 'Avenir')),
-        const Spacer(),
+        SizedBox(width: 12),
+        Text(baslik, style: TextStyle(color: Colors.white54, fontSize: 13, fontFamily: 'Avenir')),
+        Spacer(),
         Text(deger, style: TextStyle(color: degerRengi, fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'monospace', letterSpacing: 1)),
       ],
     );

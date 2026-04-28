@@ -1,3 +1,4 @@
+﻿import 'package:otodna/core/siber_tema.dart';
 // lib/widgets/siber_reklam_karti.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,25 +9,25 @@ import '../core/siber_tema.dart';
 class SiberReklamKarti extends StatelessWidget {
   final OtoDNACampaign kampanya;
 
-  const SiberReklamKarti({super.key, required this.kampanya});
+  SiberReklamKarti({super.key, required this.kampanya});
 
   @override
   Widget build(BuildContext context) {
-    if (!kampanya.aktifMi) return const SizedBox.shrink();
+    if (!kampanya.aktifMi) return SizedBox.shrink();
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: SiberTema.siberCamZirh(renk: Colors.black),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 📡 SPONSORLU MÜHÜRÜ (NEON)
           Padding(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12),
             child: Row(
               children: [
-                const Icon(Icons.verified, color: SiberTema.kuantumCyan, size: 14),
-                const SizedBox(width: 6),
+                Icon(Icons.verified, color: SiberTema.kuantumCyan, size: 14),
+                SizedBox(width: 6),
                 Text(
                   "SPONSORLU DİSTRİBÜTÖR",
                   style: TextStyle(
@@ -43,7 +44,7 @@ class SiberReklamKarti extends StatelessWidget {
           // 🖼️ KUANTUM GÖRSELİ
           if (kampanya.gorselUrl.isNotEmpty)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: EdgeInsets.symmetric(horizontal: 12),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.network(
@@ -54,21 +55,21 @@ class SiberReklamKarti extends StatelessWidget {
                   errorBuilder: (c, e, s) => Container(
                       height: 150,
                       color: Colors.white10,
-                      child: const Icon(Icons.wifi_off, color: Colors.white24)
+                      child: Icon(Icons.wifi_off, color: Colors.white24)
                   ),
                 ),
               ),
             ),
 
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(kampanya.kampanyaBaslik.toUpperCase(), style: SiberTema.kuantumBaslik.copyWith(fontSize: 16)),
-                const SizedBox(height: 4),
-                Text(kampanya.sirketAd, style: const TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 16),
+                SizedBox(height: 4),
+                Text(kampanya.sirketAd, style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold)),
+                SizedBox(height: 16),
 
                 // 💰 ETKİLEŞİM BUTONU
                 SizedBox(
@@ -76,7 +77,7 @@ class SiberReklamKarti extends StatelessWidget {
                   child: ElevatedButton(
                     style: SiberTema.kuantumButonStili(renk: SiberTema.kuantumCyan),
                     onPressed: () => _reklamTiklamaMotoru(context),
-                    child: const Text("FIRSATI YAKALA", style: TextStyle(fontWeight: FontWeight.w900)),
+                    child: Text("FIRSATI YAKALA", style: TextStyle(fontWeight: FontWeight.w900)),
                   ),
                 ),
               ],
@@ -120,11 +121,11 @@ class SiberReklamKarti extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              backgroundColor: const Color(0xFF111111),
+              backgroundColor: Color(0xFF111111),
               behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: const BorderSide(color: Color(0xFF00FFC2), width: 1.5)),
-              content: const Text("YÖNLENDİRİLİYOR...", style: TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold, letterSpacing: 1)),
-              duration: const Duration(seconds: 2),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: Color(0xFF00FFC2), width: 1.5)),
+              content: Text("YÖNLENDİRİLİYOR...", style: TextStyle(color: Color(0xFF00FFC2), fontWeight: FontWeight.bold, letterSpacing: 1)),
+              duration: Duration(seconds: 2),
             )
         );
       }
@@ -135,7 +136,7 @@ class SiberReklamKarti extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.redAccent.withOpacity(0.9),
-              content: const Text("BAĞLANTI HATASI: Kuantum Ağına ulaşılamıyor.", style: TextStyle(fontWeight: FontWeight.bold)),
+              content: Text("BAĞLANTI HATASI: Kuantum Ağına ulaşılamıyor.", style: TextStyle(fontWeight: FontWeight.bold)),
             )
         );
       }
