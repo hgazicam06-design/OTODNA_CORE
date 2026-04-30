@@ -93,7 +93,7 @@ class OtoDnaAuthGate extends ConsumerWidget {
 
               // 🧠 KUANTUM YÖNLENDİRME MERKEZİ (Özgür Kullanım Protokolü)
               if (role == "ADMIN" || role == "BOLGE_KOMUTANI" || role == "SUPER_ADMIN" || role == "BASKAN") {
-                return const SuperAdminScreen();
+                return SuperAdminScreen();
               } else if (role == "BAYI") {
                 // 🛡️ SİBER ZIRH: Bayi belgelerini Karargaha mühürledi mi?
                 bool belgelerYuklendi = userData['belgeler_yuklendi'] ?? false;
@@ -103,9 +103,9 @@ class OtoDnaAuthGate extends ConsumerWidget {
                   return BayiMerkezi(bayiId: user.uid);
                 }
               } else if (role == "USTA") {
-                return const UstaPanelScreen();
+                return UstaPanelScreen();
               } else {
-                return const HomeScreen();
+                return HomeScreen();
               }
             },
           );

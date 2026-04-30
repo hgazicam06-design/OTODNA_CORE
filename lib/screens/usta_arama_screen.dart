@@ -205,7 +205,7 @@ class _UstaAramaScreenState extends State<UstaAramaScreen> with SingleTickerProv
                                 physics: BouncingScrollPhysics(),
                                 padding: EdgeInsets.symmetric(horizontal: 24),
                                 children: [
-                                  _buildSiberUstaKarti("MURAT PLAZA SERVİSİ", "ANKARA", 4.9, "1.2 KM"),
+                                  _buildSiberUstaKarti("OTODNA YETKİLİ SERVİSİ", "ANKARA", 4.9, "1.2 KM"),
                                   _buildSiberUstaKarti("HASSAS MOTOR REKTEFİYE", "ANKARA", 3.8, "3.4 KM"),
                                   _buildSiberUstaKarti("STANDART KAPORTA", "ANKARA", 2.1, "5.0 KM"),
                                   _buildSiberUstaKarti("KORSAN ELEKTRONİK", "ANKARA", 1.0, "8.2 KM"), // Kara Liste simülasyonu

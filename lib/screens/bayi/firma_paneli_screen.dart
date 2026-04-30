@@ -1,4 +1,4 @@
-﻿import 'package:otodna/core/siber_tema.dart';
+import 'package:otodna/core/siber_tema.dart';
 // lib/bayi/firma_paneli_screen.dart
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -142,7 +142,7 @@ class _FirmaPaneliScreenState extends State<FirmaPaneliScreen> with SingleTicker
               double aylikCiro = (bayiData['aylik_ciro'] ?? 0).toDouble();
 
               // 💰 FİNANS VE KOMİSYON MOTORU
-              double komisyonOrani = firmaAdi.toUpperCase().contains("MURAT PLAZA") ? 0.30 : 0.12;
+              double komisyonOrani = 0.12;
               double otodnaKesintisi = aylikCiro * komisyonOrani;
               double netHakedis = aylikCiro - otodnaKesintisi;
 

@@ -1,11 +1,10 @@
-﻿import 'package:otodna/core/siber_tema.dart';
+import 'package:otodna/core/siber_tema.dart';
 // lib/bayi/bayi_merkez.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 import 'package:go_router/go_router.dart';
-
 
 // 🚀 KARARGAH ZIRHLARI VE MERKEZİ TEMA BAĞLANTISI
 import '../core/siber_tema.dart';
@@ -28,6 +27,12 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   late TabController _tabController;
   bool _islemSuruyor = false; // 🔒 DOUBLE SPEND KORUMASI
+
+  // ⚜️ PLATINUM PLAZA VIP PALETİ
+  static const Color darkGold = Color(0xFFB8860B);
+  static const Color bgIvory = Color(0xFFFAFAFC);
+  static const Color textDark = Color(0xFF2C2519);
+  static const Color cardWhite = Colors.white;
 
   @override
   void initState() {
@@ -84,7 +89,7 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
 
       HapticFeedback.vibrate();
       if (mounted) {
-        _siberUyariGoster("TALEP MÜHÜRLENDİ!", "₺${cekilebilirBakiye.toStringAsFixed(2)} aktarım talebi Finans Merkezine ulaştı.", SiberTema.kuantumCyan);
+        _siberUyariGoster("TALEP MÜHÜRLENDİ!", "₺${cekilebilirBakiye.toStringAsFixed(2)} aktarım talebi Finans Merkezine ulaştı.", darkGold);
       }
 
     } catch (e) {
@@ -100,7 +105,7 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: SiberTema.matGrey,
+        backgroundColor: cardWhite,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: renk, width: 2)),
         content: Column(
@@ -109,7 +114,7 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
           children: [
             Text(baslik, style: TextStyle(color: renk, fontWeight: FontWeight.w900, letterSpacing: 1.5, fontFamily: 'Avenir')),
             SizedBox(height: 4),
-            Text(mesaj, style: TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Avenir')),
+            Text(mesaj, style: TextStyle(color: textDark.withOpacity(0.7), fontSize: 12, fontFamily: 'Avenir')),
           ],
         ),
       ),
@@ -119,17 +124,17 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     return ResponsiveKalkan(
-      isOledBackground: true,
+      isOledBackground: false,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: bgIvory,
         appBar: AppBar(
-          title: Text("BAYİ YÖNETİM PANELİ", style: TextStyle(color: SiberTema.kuantumCyan, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
-          backgroundColor: Colors.transparent,
+          title: Text("BAYİ YÖNETİM PANELİ", style: TextStyle(color: darkGold, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 14, fontFamily: 'Avenir')),
+          backgroundColor: bgIvory,
           elevation: 0,
-          iconTheme: IconThemeData(color: SiberTema.kuantumCyan),
+          iconTheme: IconThemeData(color: darkGold),
           actions: [
             IconButton(
-              icon: Icon(Icons.people_alt_outlined, color: SiberTema.kuantumCyan),
+              icon: Icon(Icons.people_alt_outlined, color: darkGold),
               tooltip: 'Personel Ağı',
               onPressed: () {
                 HapticFeedback.lightImpact();
@@ -139,10 +144,10 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
           ],
           bottom: TabBar(
             controller: _tabController,
-            indicatorColor: SiberTema.kuantumCyan,
+            indicatorColor: darkGold,
             indicatorWeight: 3,
-            labelColor: SiberTema.kuantumCyan,
-            unselectedLabelColor: Colors.white30,
+            labelColor: darkGold,
+            unselectedLabelColor: textDark.withOpacity(0.3),
             labelStyle: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 11, fontFamily: 'Avenir'),
             tabs: [
               Tab(icon: Icon(Icons.shopping_cart_outlined), text: "SEPETİM"),
@@ -166,8 +171,8 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                   decoration: BoxDecoration(
-                    color: Colors.black,
-                    border: Border(bottom: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.3), width: 1)),
+                    color: cardWhite,
+                    border: Border(bottom: BorderSide(color: darkGold.withOpacity(0.2), width: 1)),
                   ),
                   child: Row(
                     children: [
@@ -176,13 +181,13 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("SİSTEM DURUMU: ${rozet.toUpperCase()}", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900)),
+                          Text("SİSTEM DURUMU: ${rozet.toUpperCase()}", style: TextStyle(color: textDark, fontSize: 13, fontWeight: FontWeight.w900)),
                           SizedBox(height: 4),
                           Row(
                             children: List.generate(5, (starIdx) {
                               return Icon(
                                 starIdx < yildiz ? Icons.star : Icons.star_border,
-                                color: starIdx < yildiz ? SiberTema.altinSari : Colors.white24,
+                                color: starIdx < yildiz ? SiberTema.altinSari : Colors.black12,
                                 size: 14,
                               );
                             }),
@@ -217,11 +222,11 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.shopping_cart_checkout, color: SiberTema.kuantumCyan.withOpacity(0.3), size: 80),
+          Icon(Icons.shopping_cart_checkout, color: darkGold.withOpacity(0.3), size: 80),
           SizedBox(height: 16),
-          Text("SİBER SEPET BOŞ", style: TextStyle(color: Colors.white54, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+          Text("SİBER SEPET BOŞ", style: TextStyle(color: textDark.withOpacity(0.5), letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
           SizedBox(height: 8),
-          Text("Firmalar arası B2B tedarik ağı buraya düşer.", style: TextStyle(color: Colors.white30, fontSize: 11, fontFamily: 'Avenir')),
+          Text("Firmalar arası B2B tedarik ağı buraya düşer.", style: TextStyle(color: textDark.withOpacity(0.3), fontSize: 11, fontFamily: 'Avenir')),
         ],
       ),
     );
@@ -233,7 +238,7 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
       stream: _db.collection('siparisler').where('bayi_id', isEqualTo: widget.bayiId).orderBy('tarih', descending: true).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan));
+          return Center(child: CircularProgressIndicator(color: darkGold));
         }
 
         // 🛡️ DÜZELTME: Veri Yoksa Güvenli Boş Ekran Döndür
@@ -242,9 +247,9 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.inventory_2_outlined, color: Colors.white12, size: 80),
+                Icon(Icons.inventory_2_outlined, color: Colors.black12, size: 80),
                 SizedBox(height: 16),
-                Text("SİPARİŞ BULUNAMADI", style: TextStyle(color: Colors.white54, letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
+                Text("SİPARİŞ BULUNAMADI", style: TextStyle(color: textDark.withOpacity(0.5), letterSpacing: 2, fontWeight: FontWeight.w900, fontFamily: 'Avenir')),
               ],
             ),
           );
@@ -266,7 +271,7 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
         data['plaka'] ?? "PLAKA YOK",
         data['urun_adi'] ?? "ÜRÜN",
         data['durum'] ?? "BEKLIYOR",
-        SiberTema.kuantumCyan
+        darkGold
     );
   }
 
@@ -274,9 +279,10 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
     return Container(
       margin: EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: SiberTema.matGrey,
+        color: cardWhite,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: renk.withOpacity(0.3)),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: Offset(0, 4))],
       ),
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -285,17 +291,17 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
           decoration: BoxDecoration(color: renk.withOpacity(0.1), shape: BoxShape.circle),
           child: Icon(Icons.directions_car_outlined, color: renk, size: 24),
         ),
-        title: Text(plaka, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
+        title: Text(plaka, style: TextStyle(color: textDark, fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Avenir')),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 4),
-            Text(urun, style: TextStyle(color: Colors.white54, fontSize: 11, fontFamily: 'Avenir')),
+            Text(urun, style: TextStyle(color: textDark.withOpacity(0.6), fontSize: 11, fontFamily: 'Avenir')),
             SizedBox(height: 4),
             Text("DURUM: $durum", style: TextStyle(color: renk, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, fontFamily: 'Avenir')),
           ],
         ),
-        trailing: Icon(Icons.arrow_forward_ios, color: Colors.white30, size: 16),
+        trailing: Icon(Icons.arrow_forward_ios, color: Colors.black26, size: 16),
       ),
     );
   }
@@ -337,16 +343,16 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
           padding: EdgeInsets.all(20),
           child: Column(
             children: [
-              _buildFinansOzetPaneli("SAF İŞÇİLİK GELİRİ (%100 SİZİN)", toplamIscilik, SiberTema.kuantumCyan),
+              _buildFinansOzetPaneli("SAF İŞÇİLİK GELİRİ (%100 SİZİN)", toplamIscilik, darkGold),
               SizedBox(height: 12),
-              _buildFinansOzetPaneli("PARÇA SATIŞ GELİRİ", toplamParcaSatisi, Colors.white),
+              _buildFinansOzetPaneli("PARÇA SATIŞ GELİRİ", toplamParcaSatisi, textDark),
               SizedBox(height: 12),
               _buildFinansOzetPaneli("OTODNA TEDARİK PAYI (%${(kesintiOrani * 100).toInt()})", otodnaKesintisi, SiberTema.kanKirmizi, isNegative: true),
               SizedBox(height: 12),
-              _buildFinansOzetPaneli("BEKLEYEN HAKEDİŞ (PROVİZYON)", bekleyenHakedis, Colors.amberAccent),
+              _buildFinansOzetPaneli("BEKLEYEN HAKEDİŞ (PROVİZYON)", bekleyenHakedis, Colors.orange),
 
               SizedBox(height: 24),
-              Divider(color: Colors.white24, height: 1),
+              Divider(color: darkGold.withOpacity(0.2), height: 1),
               SizedBox(height: 24),
 
               // SİBER NET KASA KARTI
@@ -354,15 +360,15 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
                 width: double.infinity,
                 padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: SiberTema.kuantumCyan.withOpacity(0.05),
+                  color: darkGold.withOpacity(0.05),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: SiberTema.kuantumCyan.withOpacity(0.5), width: 2),
+                  border: Border.all(color: darkGold.withOpacity(0.5), width: 2),
                 ),
                 child: Column(
                   children: [
-                    Text("NET ÇEKİLEBİLİR BAKİYE", style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
+                    Text("NET ÇEKİLEBİLİR BAKİYE", style: TextStyle(color: textDark.withOpacity(0.6), fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold, fontFamily: 'Avenir')),
                     SizedBox(height: 8),
-                    Text("₺${netKasa.toStringAsFixed(2)}", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 32, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
+                    Text("₺${netKasa.toStringAsFixed(2)}", style: TextStyle(color: darkGold, fontSize: 32, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
                   ],
                 ),
               ),
@@ -374,11 +380,16 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
                 width: double.infinity,
                 height: 60,
                 child: _islemSuruyor
-                    ? Center(child: CircularProgressIndicator(color: SiberTema.kuantumCyan))
+                    ? Center(child: CircularProgressIndicator(color: darkGold))
                     : ElevatedButton.icon(
-                  icon: Icon(Icons.account_balance_outlined, color: Colors.black),
+                  icon: Icon(Icons.account_balance_outlined, color: Colors.white),
                   label: Text("HAKEDİŞİ BANKAYA AKTAR", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, fontSize: 13, fontFamily: 'Avenir')),
-                  style: SiberTema.kuantumButonStili(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: darkGold,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    elevation: 4,
+                  ),
                   onPressed: () => _hakedisTalebiOlustur(netKasa),
                 ),
               )
@@ -392,11 +403,11 @@ class _BayiMerkeziState extends State<BayiMerkezi> with SingleTickerProviderStat
   Widget _buildFinansOzetPaneli(String baslik, double tutar, Color renk, {bool isNegative = false}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      decoration: BoxDecoration(color: SiberTema.matGrey.withOpacity(0.5), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white12)),
+      decoration: BoxDecoration(color: cardWhite, borderRadius: BorderRadius.circular(12), border: Border.all(color: darkGold.withOpacity(0.1)), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 4)]),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(child: Text(baslik, style: TextStyle(color: Colors.white70, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
+          Expanded(child: Text(baslik, style: TextStyle(color: textDark.withOpacity(0.7), fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.bold, fontFamily: 'Avenir'))),
           Text("${isNegative ? '-' : ''}₺${tutar.toStringAsFixed(2)}", style: TextStyle(color: renk, fontSize: 14, fontWeight: FontWeight.w900, fontFamily: 'monospace')),
         ],
       ),

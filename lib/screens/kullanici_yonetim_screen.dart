@@ -1,8 +1,8 @@
-﻿import 'package:otodna/core/siber_tema.dart';
+import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// 🚀 KARARGAH ZIRHLARI VE SERVİSLER
+// ?? KARARGAH ZIRHLARI VE SERVİSLER
 import '../core/siber_tema.dart';
 import '../core/responsive_kalkan.dart';
 import '../core/turkiye_haritasi.dart';
@@ -34,7 +34,7 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
     super.dispose();
   }
 
-  // --- 🔴 SİBER İHRAÇ PROTOKOLÜ ---
+  // --- ?? SİBER İHRAÇ PROTOKOLÜ ---
   // Rütbeyi geri alır ve personeli standart kullanıcı statüsüne çeker
   Future<void> _komutanliktanIhracEt(String kullaniciId, String isim) async {
     setState(() => _isProcessing = true);
@@ -51,7 +51,7 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
     }
   }
 
-  // --- 🟢 SİBER ATAMA PROTOKOLÜ VE BÖLGE SEÇİM EKRANI ---
+  // --- ?? SİBER ATAMA PROTOKOLÜ VE BÖLGE SEÇİM EKRANI ---
   // Personeli seçilen bölgenin mutlak komutanı olarak mühürler
   void _komutanAtaDialogAc(String kullaniciId, String isim) {
     String? seciliBolge;
@@ -208,7 +208,7 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
     );
   }
 
-  // --- 🛡️ 1. SEKME: AKTİF BÖLGE KOMUTANLARI ---
+  // --- ??? 1. SEKME: AKTİF BÖLGE KOMUTANLARI ---
   Widget _buildAktifKomutanlarSekmesi() {
     return StreamBuilder<QuerySnapshot>(
       stream: _db.collection('kullanicilar').where('rol', isEqualTo: 'bolge_yoneticisi').snapshots(),
@@ -258,7 +258,7 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
     );
   }
 
-  // --- 👥 2. SEKME: STANDART KULLANICILAR ---
+  // --- ?? 2. SEKME: STANDART KULLANICILAR ---
   Widget _buildStandartKullanicilarSekmesi() {
     return StreamBuilder<QuerySnapshot>(
       stream: _db.collection('kullanicilar').where('rol', isEqualTo: 'kullanici').snapshots(),
@@ -299,14 +299,7 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
                       ],
                     ),
                   ),
-                  OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5)),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    ),
-                    onPressed: () => _komutanAtaDialogAc(id, isim),
-                    child: Text("YETKİ VER", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 10, fontWeight: FontWeight.w900)),
-                  )
+                  Column(mainAxisAlignment: MainAxisAlignment.center, children: [OutlinedButton(style: OutlinedButton.styleFrom(side: BorderSide(color: SiberTema.kuantumCyan.withOpacity(0.5)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)), minimumSize: Size(90, 30), padding: EdgeInsets.zero), onPressed: () => _komutanAtaDialogAc(id, isim), child: Text("BÖLGE ATA", style: TextStyle(color: SiberTema.kuantumCyan, fontSize: 9, fontWeight: FontWeight.w900))), SizedBox(height: 4), OutlinedButton(style: OutlinedButton.styleFrom(side: BorderSide(color: SiberTema.kanKirmizi.withOpacity(0.5)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)), minimumSize: Size(90, 30), padding: EdgeInsets.zero), onPressed: () => _superAdminAtaDialogAc(id, isim), child: Text("MUTLAK GÜÇ", style: TextStyle(color: SiberTema.kanKirmizi, fontSize: 9, fontWeight: FontWeight.w900)))])
                 ],
               ),
             );
@@ -326,6 +319,63 @@ class _KullaniciYonetimScreenState extends State<KullaniciYonetimScreen> with Si
           Text(mesaj, style: TextStyle(color: SiberTema.textMain.withOpacity(0.4), fontSize: 12, letterSpacing: 2, fontWeight: FontWeight.bold)),
         ],
       ),
+    );
+  }
+  // --- 👑 MUTLAK GÜÇ (SÜPER ADMİN) ATAMA PROTOKOLÜ ---
+  void _superAdminAtaDialogAc(String kullaniciId, String isim) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: SiberTema.matGrey,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(color: SiberTema.kanKirmizi.withOpacity(0.8), width: 2),
+          ),
+          title: Row(
+            children: [
+              Icon(Icons.local_fire_department, color: SiberTema.kanKirmizi),
+              SizedBox(width: 8),
+              Expanded(child: Text("MUTLAK GÜÇ DEVRİ: $isim", style: TextStyle(color: SiberTema.textMain, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1))),
+            ],
+          ),
+          content: Text("DİKKAT: Bu personele tüm ağın ve bölgelerin SÜPER ADMİN yetkisi verilecek. Her şeye hakim olacak. Onaylıyor musunuz?", style: TextStyle(color: SiberTema.textMain.withOpacity(0.8), fontSize: 12)),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("İPTAL", style: TextStyle(color: SiberTema.textMain.withOpacity(0.5))),
+            ),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: SiberTema.kanKirmizi,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              onPressed: () async {
+                Navigator.pop(context);
+                setState(() => _isProcessing = true);
+
+                try {
+                  await _yetkiServisi.superAdminAta(
+                      kullaniciId: kullaniciId,
+                      isim: isim
+                  );
+                  if (!mounted) return;
+                  _siberUyariVer("SÜPER ADMİN ATANDI! Mutlak Güç Devredildi.", isError: false, icon: Icons.local_fire_department);
+                } catch (e) {
+                  if (!mounted) return;
+                  _siberUyariVer(e.toString(), isError: true);
+                } finally {
+                  if (mounted) setState(() => _isProcessing = false);
+                }
+              },
+              icon: Icon(Icons.flash_on, size: 16),
+              label: Text("ONAYLA VE MÜHÜRLE", style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+            ),
+          ],
+        );
+      }
     );
   }
 }

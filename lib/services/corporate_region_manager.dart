@@ -161,6 +161,49 @@ class CorporateRegionManager {
     }
   }
 
+  /// Bir kullanıcıyı Yüksek Konsey'e (Süper Admin) atar. Tüm sistem ve bölgelerde mutlak yetkiye sahip olur.
+  Future<void> superAdminAta({
+    required String kullaniciId,
+    required String isim,
+  }) async {
+    try {
+      WriteBatch batch = _db.batch();
+
+      // 1. Kullanıcı rolünü en üst seviyeye çıkar
+      DocumentReference userRef = _db.collection('kullanicilar').doc(kullaniciId);
+      batch.set(userRef, {
+        'rol': 'super_admin',
+        'sorumlu_bolge': 'TÜM AĞ (KÜRESEL)',
+        'rutbe_guncelleme_tarihi': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+
+      // 2. Yöneticiler Listesine Yüksek Konsey Olarak Ekle
+      BolgeYoneticisi yeni = BolgeYoneticisi(
+        id: kullaniciId,
+        isim: isim,
+        sorumluOlduguBolge: 'KÜRESEL',
+        rutbe: 'Süper Admin (Mutlak Güç)',
+      );
+      DocumentReference yoneticiRef = _db.collection('bolge_yoneticileri').doc(kullaniciId);
+      // yetki_seviyesi 99 yaparak en yüksek yetkiyi veriyoruz
+      Map<String, dynamic> yoneticiData = yeni.toMap();
+      yoneticiData['yetki_seviyesi'] = 99; 
+      batch.set(yoneticiRef, yoneticiData);
+
+      // 3. Logla
+      DocumentReference logRef = _db.collection('sistem_loglari').doc();
+      batch.set(logRef, {
+        'islem_turu': 'MUTLAK_GUC_ATAMASI',
+        'islem_detayi': 'YÜKSEK KONSEY: $isim, Sistemin SÜPER ADMİNİ olarak yetkilendirildi. Her şeye hakim.',
+        'tarih': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
+    } catch (e) {
+      throw Exception("Süper Admin atama işlemi başarısız oldu.");
+    }
+  }
+
   /// Mevcut bir bölge yöneticisini görevden alır ve yetkilerini sıfırlar.
   Future<void> yoneticiliktenIhracEt(String kullaniciId, String isim) async {
     try {

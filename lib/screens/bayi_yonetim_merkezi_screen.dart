@@ -1,4 +1,4 @@
-﻿import 'package:otodna/core/siber_tema.dart';
+import 'package:otodna/core/siber_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -107,7 +107,7 @@ class _BayiYonetimMerkeziScreenState extends State<BayiYonetimMerkeziScreen> {
         "arac_gruplari": _seciliAracGruplari.toList(),
         "tanitim_metni": _tanitimController.text.trim(),
         "komisyon_orani": 0.12, // ⚡ MUTLAK FİNANSAL KURAL
-        "is_murat_plaza": _firmaAdiController.text.trim().toUpperCase().contains("MURAT PLAZA"),
+        "is_vip_plaza": false, // Gelecekte eklenebilecek VIP flag
         "aktif_mi": true,
         "onay": false,
         "rozet": "Bronz", // Yeni bayiler Bronz seviyesinden başlar

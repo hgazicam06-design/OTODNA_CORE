@@ -34,6 +34,7 @@ android {
         release {
             // Canlıya alırken imza ayarları buraya gelecek
             signingConfig = signingConfigs.getByName("debug")
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
 }
