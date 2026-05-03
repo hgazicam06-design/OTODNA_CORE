@@ -117,5 +117,10 @@ OtoDNA sadece binek araçlar için değil; turizm şirketleri, devlet daireleri,
 *   **Siber Telsiz (Walkie-Talkie) ve Özel Gruplar:** Filonun başındaki yönetici, sahadaki şoförlerle iletişim kurmak için dış uygulamalara (WhatsApp vb.) ihtiyaç duymaz. Uygulama içinde özel "Operasyon Grupları" (Örn: Gece Vardiyası Taksi, Ankara Sevkiyatı) kurabilir. Gömülü "Bas-Konuş (Siber Telsiz)" özelliğiyle seçtiği bir gruba veya tüm filoya tek tuşla anında sesli anons geçebilir.
 *   **Canlı Görüntülü ve Sesli Arama (WebRTC Entegrasyonu):** Acil bir kaza veya arıza anında şoför, doğrudan Karargah yöneticisini veya OtoDNA destek hattını uygulama üzerinden **Görüntülü veya Sesli** arayabilir. *(Maliyet Notu: Bu özellik ZegoCloud veya Agora API'leriyle kodlandığında aylık ilk 10.000 dakika tamamen ücretsizdir. Aşım durumunda ise 1.000 dakika başına sadece 1-2 dolar gibi komik bir maliyeti vardır. Sadece Premium/Kurumsal filolara sunulacağı için onlardan alınan abonelik ücretleri bu server maliyetini fazlasıyla çıkaracaktır. Kısacası maliyeti sistem için sıfıra yakındır).*
 
+### [YAPILACAK] 19. Siber İletişim Zırhı: Görüntülü/Sesli Arama ve Numara Gizleme (Tüm Premium Ağ)
+Sadece filolar için değil, tüm Premium üyeler için geçerli bir "Güvenli İletişim Ağı" kurulur:
+*   **Kişisel Numara Gizliliği (App-to-App Arama):** OtoDNA pazar yerinde araba kiralarken, parça satın alırken veya usta ile pazarlık yaparken **kimse şahsi cep telefonu numarasını vermek zorunda değildir.** Taraflar, uygulama içindeki "Ara" butonuna basarak birbirlerini doğrudan Sesli veya Görüntülü olarak arayabilir (WebRTC altyapısı).
+*   **Kişisel Kalkan (Block System):** Eğer karşı taraf (bir esnaf, alıcı veya satıcı) rahatsız edici veya uygunsuz aramalar yaparsa, kullanıcı tek bir tuşla o kişiyi engelleyebilir. Engellenen taraf bir daha çağrı fırlatamaz. Bu, iletişim güvenliğini zirveye taşır.
+
 ---
 *Not: Bu belge, Karargah strateji toplantıları sonucunda Ünal Bey'in yol haritasını beslemek için mühürlenmiştir.*
