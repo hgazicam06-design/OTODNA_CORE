@@ -103,5 +103,11 @@ OtoDNA, kullanıcıları sadece araç sahibi olduklarında değil, ehliyet alma 
 *   **Yapay Zeka Sınav Simülatörü:** Sürücü adaylarını sınava hazırlamak için devasa bir Kuantum Test Motoru devreye girer. Geçmiş 10 yıla ait çıkmış tüm ehliyet sınavı soruları yapay zekaya (Gemini) entegre edilir. Sistem kullanıcıya her seferinde benzersiz, otonom deneme sınavları oluşturup çözdürür.
 *   **Otonom Eğitmen:** Sistem sadece doğru/yanlış yapıp geçmez; kullanıcı yanlış şıkkı işaretlediğinde tıpkı gerçek bir hoca gibi anında araya girip *"Bu soruda 'Geçiş Üstünlüğü' kuralını ihlal ettin, doğrusu şudur..."* diyerek sorunun mantığını sesli ve yazılı olarak anlatır. Yapay Zeka, çıkmış soruların algoritmik analizini yaparak gelecekte çıkabilecek olası "Zor Senaryo" sorularını da otonom olarak kendi üretip adaya sorar.
 
+### [YAPILACAK] 17. Siber Rent-A-Car (Filo Takip ve Kapalı İhale Kiralama)
+OtoDNA, araç kiralama sektöründeki (Rent-a-Car) şirketler ve araba kiralamak isteyen siviller için çift taraflı bir kalkan oluşturur:
+*   **Aracım Nerede? (Geçici Takip Yetkisi):** Rent-A-Car firmalarının en büyük korkusu araçlarının çalınması veya kaybolmasıdır. Bir sivil araç kiraladığında, OtoDNA uygulamasını indirmesi zorunlu tutulur. Kullanıcı, kiralama süresi boyunca uygulamadan firmaya **"Geçici Konum Yetkisi"** verir. Firma kendi OtoDNA Admin panelinden, kiraladığı aracın anlık konumunu ve hızını (kullanıcının telefonu veya araçtaki çip üzerinden) saniye saniye takip eder. Kiralama süresi bittiğinde yetki otonom olarak düşer.
+*   **Kapalı İhale (Tersine Açık Artırma) ile Araç Kiralama:** Kullanıcı tek tek Rent-a-Car firmalarını gezmez. Uygulamaya girip talebini yazar: *"Bana 3 günlüğüne, elektrikli veya LPG'li, otomatik vites bir araç lazım."* Bu talep, o şehirdeki tüm OtoDNA onaylı Rent-a-Car firmalarının ekranına düşer. Firmalar kendi ellerindeki müsait araçlara göre teklif verir. 
+*   **Sivil Gizliliği:** Bu teklifler açık bir pazar yerinde listelenmez, **Kapalı İhale** usulüyle sadece aracı kiralamak isteyen kullanıcının ekranına düşer. Kullanıcı gelen fiyatları, araç özelliklerini ve firma güvenilirlik puanlarını karşılaştırıp en uygun olanı tek tuşla onaylar ve kiralar.
+
 ---
 *Not: Bu belge, Karargah strateji toplantıları sonucunda Ünal Bey'in yol haritasını beslemek için mühürlenmiştir.*
