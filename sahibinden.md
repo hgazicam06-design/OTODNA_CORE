@@ -61,7 +61,12 @@ Usta sisteme "Hizmet Veren" olarak eklendiğinde doğrudan uzmanlık seçemez. �
 
 Örneğin, bir "Oto Elektrikçi" hem Otomobil hem Kamyon hem de Motosiklet kutucuklarını işaretleyerek tüm bu grupların elektrik işlerine baktığını tek ekranda belirtebilir.
 
-### B. Adım 2: Kuantum Garaj Hizmet Hiyerarşisi (Detaylı Üst ve Alt Hizmetler)
+### B. Adım 2: Nöbetçi ve 7/24 Hizmet Zırhı (Gece Operasyonları)
+Bir arıza gece 03:00'te yaşandığında standart çalışma saatleri işe yaramaz. Bu yüzden kayıt aşamasında firmalara **"Nöbetçi / 7-24 Hizmet Veriyor musunuz?"** seçeneği sunulur. 
+*   Eğer bir Oto Elektrikçi, Lastikçi veya Çekici bu yetkiyi açarsa, akşam mesai saati bittiğinde uygulamada kapanmaz; "Açık / Nöbetçi" olarak yeşil renkte parlamaya devam eder.
+*   Gece saatlerinde arama yapan yolda kalmış sivil kullanıcının karşısına boş ve kapalı dükkanlar çıkarılmaz; sistem otonom olarak sadece "Nöbetçi" olan Kuantum Garajlarını en yakından en uzağa doğru filtreler.
+
+### C. Adım 3: Kuantum Garaj Hizmet Hiyerarşisi (Detaylı Üst ve Alt Hizmetler)
 Araç tipi seçildikten sonra, o tipe ait "civatasına kadar" detaylandırılmış arama motoru (etiket) altyapısı açılır. Bayi/Usta sunduğu spesifik alt hizmetleri işaretler:
 
 1.  **Oto Servis, Mekanik & Motor (Genel Bakım):**
