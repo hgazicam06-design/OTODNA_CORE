@@ -97,5 +97,11 @@ OtoDNA, aracın tüm sağlık geçmişine, hasar kayıtlarına, değişen parça
 *   **Otonom Sigorta ve Kasko:** Kullanıcı "Teklif Al" butonuna bastığında, sistem aracın risk skorunu (temiz geçmişini) bildiği için anlaştığımız sigorta şirketlerinin API'lerinden saniyeler içinde piyasadaki en uygun Trafik Sigortası ve Kasko tekliflerini çeker ve Karargah üzerinden poliçe keser. OtoDNA sicili temiz olan araçlara özel ekstra "OtoDNA İndirimi" yansıtılır.
 *   **Mekanik Garanti (Motor ve Şanzıman Kalkanı):** Araç, OtoDNA Kuantum Garajlarında (bizim ustalarımızda) düzenli bakım görüyorsa, sistem araca otonom olarak güvenir. Bu araçlara (Örn: 1 Yıl / 20.000 KM) OtoDNA tarafından "Motor ve Şanzıman Garantisi" satılır. Bu garanti altındaki bir aracın motoru veya şanzımanı arızalanırsa, masrafı OtoDNA Garanti Havuzu karşılar ve araç ağımızdaki en yakın ustaya yönlendirilerek ücretsiz onarılır.
 
+### [YAPILACAK] 16. OtoDNA Siber Sürücü Okulu ve Kurs Ağı
+OtoDNA, kullanıcıları sadece araç sahibi olduklarında değil, ehliyet alma aşamasında da ekosisteme dahil eden bir "Eğitim Karargahı" kurar:
+*   **Sürücü Kursu Pazaryeri:** Ehliyet almak isteyen sivil adaylar veya ehliyetini kaptırıp yeniden kursa yazılması gerekenler için sistemdeki anlaşmalı Sürücü Kursları listelenir. Kullanıcı fiyata, konuma ve başarı puanına göre kursunu seçip Karargah üzerinden tek tuşla kayıt olabilir.
+*   **Yapay Zeka Sınav Simülatörü:** Sürücü adaylarını sınava hazırlamak için devasa bir Kuantum Test Motoru devreye girer. Geçmiş 10 yıla ait çıkmış tüm ehliyet sınavı soruları yapay zekaya (Gemini) entegre edilir. Sistem kullanıcıya her seferinde benzersiz, otonom deneme sınavları oluşturup çözdürür.
+*   **Otonom Eğitmen:** Sistem sadece doğru/yanlış yapıp geçmez; kullanıcı yanlış şıkkı işaretlediğinde tıpkı gerçek bir hoca gibi anında araya girip *"Bu soruda 'Geçiş Üstünlüğü' kuralını ihlal ettin, doğrusu şudur..."* diyerek sorunun mantığını sesli ve yazılı olarak anlatır. Yapay Zeka, çıkmış soruların algoritmik analizini yaparak gelecekte çıkabilecek olası "Zor Senaryo" sorularını da otonom olarak kendi üretip adaya sorar.
+
 ---
 *Not: Bu belge, Karargah strateji toplantıları sonucunda Ünal Bey'in yol haritasını beslemek için mühürlenmiştir.*
