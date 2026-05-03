@@ -59,14 +59,15 @@ Müşterilerin uygulamaya bağlılığını artırmak için kapalı devre bir pu
 ### [KESİN YAPILACAK] 10. Artırılmış Gerçeklik (AR) Parça Uyumluluk Radarı
 Kullanıcı Mega Market'te bir çelik jant, rüzgarlık veya multimedya ekranı beğendiğinde, telefonunun kamerasını kendi aracına tutar. Artırılmış Gerçeklik (ARCore/ARKit) sayesinde o parçanın kendi aracının üzerinde fiziksel olarak nasıl duracağını satın almadan önce otonom olarak (3D) görür.
 
-### [KESİN YAPILACAK] 11. Siber Otopark Radarı (Donanımsız Kapalı Alan Navigasyonu)
-Yer altı otoparklarında veya AVM/Hastanelerde GPS sinyallerinin koptuğu durumlarda yaşanan "Aracım hangi katta/nerede?" sorununu OBD2 çipi olmadan (sadece yazılımla) çözmek için 4 aşamalı bir kalkan devreye girer:
-*   **Çözüm 1: Akıllı Fotoğraf (Görsel Bilet):** Kullanıcı aracı park ettiğinde kolonun (Örn: B-4) veya aracın durduğu yerin fotoğrafını uygulamadan çeker. Uygulama bu fotoğrafı saat, tarih ve manuel girilen kat bilgisiyle birlikte "Otopark Biletiniz" olarak ana ekrana sabitler.
-*   **Çözüm 2: Zemin İçi Haritalama (Indoor Mapping):** Büyük AVM ve hastanelerin otopark planları (A Blok, B Blok vb.) uygulamanın harita sistemine gömülür. Kullanıcı park anında, sistemin sunduğu bu kapalı alan haritasına manuel olarak "Buraya Park Ettim" pini (işareti) bırakır.
-*   **Çözüm 3: Barometrik Kat Hafızası:** Akıllı telefonlardaki barometre (basınç sensörü) kullanılarak, araç park edildiği andaki rakım/basınç kaydedilir. Dönüşte sistem hava basıncı farkına bakarak *"Aracınız -3. Katta"* şeklinde nokta atışı kat tespiti yapar.
-*   **Çözüm 4: Wi-Fi ve Hücresel Ağ Üçgenlemesi:** Otoparkta GPS olmasa dahi, içerideki Wi-Fi ağlarının veya baz istasyonlarının sinyal güçleri analiz edilerek (Triangulation) aracın otopark içerisindeki tahmini bölgesi haritada daraltılır.
+### [KESİN YAPILACAK] 11. Siber Konum Hafızası (Açık ve Kapalı Alan Araç Bulucu)
+Kullanıcının ister sokakta, ister ormanda, ister yer altı otoparkında olsun "Aracım tam olarak nerede?" sorununu OBD2 çipi olmadan (yazılımla) net bir şekilde çözmek için Kuantum Ağı aşağıdaki 5 aşamalı kalkanı devreye sokar:
+*   **Çözüm 1: Otonom GPS Sabitleme (Açık Alanlar İçin):** Kullanıcı araca binip Bluetooth ile teybe/multimedyaya bağlandığında sistem bunu bilir. Motor durdurulup kullanıcı araçtan uzaklaştığında **Bluetooth bağlantısı kopar**. Uygulama bu kopma anını bir tetikleyici (Trigger) olarak kullanır ve o saniyelik net GPS koordinatlarını (açık havadaysa) arka planda otonom olarak kaydeder. Kullanıcı döndüğünde uygulama ona yaya navigasyonu ile araca kadar metre metre yol tarifi verir.
+*   **Çözüm 2: Akıllı Fotoğraf (Görsel Bilet):** GPS'in koptuğu kapalı otoparklarda kullanıcı park anında kolonun (Örn: B-4) fotoğrafını çeker. Uygulama bu fotoğrafı saat, tarih ve kat bilgisiyle birlikte "Otopark Biletiniz" olarak ana ekrana sabitler.
+*   **Çözüm 3: Zemin İçi Haritalama (Indoor Mapping):** Büyük AVM ve hastanelerin otopark planları (A Blok, B Blok vb.) uygulamanın harita sistemine gömülür. Kullanıcı park anında, sistemin sunduğu bu kapalı alan haritasına manuel olarak "Buraya Park Ettim" pini bırakır.
+*   **Çözüm 4: Barometrik Kat Hafızası:** Akıllı telefonlardaki barometre (basınç sensörü) kullanılarak, araç park edildiği andaki rakım/basınç kaydedilir. Dönüşte sistem hava basıncı farkına bakarak *"Aracınız -3. Katta"* şeklinde nokta atışı kat tespiti yapar.
+*   **Çözüm 5: Wi-Fi ve Hücresel Ağ Üçgenlemesi:** Kapalı alanda içerideki Wi-Fi ağlarının veya baz istasyonlarının sinyal güçleri analiz edilerek aracın tahmini bölgesi haritada daraltılır.
 
-*(Not: Madde 8'deki OBD2 Çipi ilerleyen aşamalarda bu sisteme entegre edilerek "Sıcak/Soğuk" sinyal radarı olarak eklenecektir).*
+*(Not: Madde 8'deki OBD2 Çipi ilerleyen aşamalarda bu sisteme entegre edilerek zifiri karanlıkta bile "Sıcak/Soğuk" sinyal radarı olarak eklenecektir).*
 
 ---
 *Not: Bu belge, Karargah strateji toplantıları sonucunda Ünal Bey'in yol haritasını beslemek için mühürlenmiştir.*
