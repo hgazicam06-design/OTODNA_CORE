@@ -83,5 +83,14 @@ Uygulamada kullanıcının tüm servis ve bayi etkileşimlerini saklayan "Geçmi
 *   **Garanti ve Siber Mahkeme Kayıtları:** Değişen parçaların "Garanti Süresi Kalan Gün" sayacı, kullanıcının o ziyarette yüklediği "Öncesi/Sonrası" fotoğrafları ve eğer yaşandıysa Siber Mahkeme (itiraz/savunma) sonuçları bu sayfada şeffafça listelenir.
 *   **Bayi Sadakat Skoru:** Kullanıcı aynı bayiyi birden fazla kez ziyaret ettiyse, sistem o bayiye özel sadakat indirimlerini bu ekrandan otonom olarak hesaplayıp kullanıcıya teklif eder.
 
+### [YAPILACAK] 14. Kuantum Hukuk ve Trafik Asistanı (Yapay Zeka Sesli Yanıt)
+Kullanıcıların trafik kuralları ve kanunlarla ilgili her türlü kriz anında danışabilecekleri, Karargah destekli otonom bir "Hukuk Asistanı" entegre edilecektir:
+*   **Detaylı Hukuki Analiz:** Kullanıcı örneğin *"Ehliyetsiz araç kullanmanın cezası nedir?"* diye arattığında, asistan yüzeysel bir cevap vermez. Detaylı bir kanun otopsisi yapar: 
+    *   *Sürücüye kesilen ceza ne kadar?*
+    *   *Araç sahibi farklıysa ona kesilen ek ceza (Ruhsat sahibine ceza) ne kadar?*
+    *   *İlk yakalanma ile ikinci yakalanma arasındaki katlamalı farklar nelerdir?*
+*   **Kriz Anı Yönlendirmesi:** *"Aracımda uygunsuz/yasaklı bir şey yakalattım, ne olur?"* veya *"Çevirmeye alkollü girdim"* gibi spesifik ve adli sorularda sistem Karayolları Trafik Kanunu ve TCK (Türk Ceza Kanunu) maddelerine göre net, detaylı ve bağlayıcı olmayan hukuki rehberlik sunar.
+*   **Sesli (Voice) Yanıt Sistemi:** Panik anında veya direksiyon başında kullanıcının uzun metinler okumasına gerek kalmaz. Yapay Zeka entegrasyonuyla asistan tüm hukuki senaryoları ve cezaları vatandaşa bir avukat gibi **sesli olarak (yazılıya ek olarak)** anlatır.
+
 ---
 *Not: Bu belge, Karargah strateji toplantıları sonucunda Ünal Bey'in yol haritasını beslemek için mühürlenmiştir.*
