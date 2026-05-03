@@ -69,5 +69,13 @@ Kullanıcının ister sokakta, ister ormanda, ister yer altı otoparkında olsun
 
 *(Not: Madde 8'deki OBD2 Çipi ilerleyen aşamalarda bu sisteme entegre edilerek zifiri karanlıkta bile "Sıcak/Soğuk" sinyal radarı olarak eklenecektir).*
 
+### [YAPILACAK] 12. e-Devlet ve Finansal Araç Zırhı (HGS, Ceza, Haciz ve Men Entegrasyonu)
+OtoDNA, aracın sadece mekanik değil, "Resmi ve Finansal" sağlığını da takip eden bir siber kalkan görevi görür:
+*   **Otonom HGS/OGS Radarı:** Araç GPS üzerinden ücretli bir yola veya köprüye yaklaştığında sistem bunu algılar. Kullanıcı gişeden geçerken ekrana anında bildirim düşer: *"Osmangazi Köprüsü Geçişi. Ödenmemiş HGS Bakiyeniz Var."* Cüzdandaki kayıtlı kredi kartı ile tek tuşla HGS/OGS bakiyesi yüklenir veya geçiş ücreti Karargah üzerinden anında ödenir.
+*   **Ceza ve Borç Taraması:** Plaka entegrasyonuyla aracın MTV, trafik cezası veya otopark borçları uygulamanın ana ekranında "Risk Skoru" olarak görünür. Kullanıcı gecikme faizine girmeden borcunu tek tuşla ödeyebilir.
+*   **Haciz, Rehin ve Trafikten Men Asistanı:** Aracın üzerinde haciz, rehin veya "Trafikten Men" (Çekme Belgeli) durumu varsa uygulama bunu tespit eder ve kullanıcıyı uyarır.
+    *   *Meni Kaldırma Operasyonu:* Eğer men sebebi "Muayene Eksikliği" ise uygulama otonom olarak **TÜVTÜRK randevusu** alır ve muayene eksikliklerini (Örn: Far ayarı, fren testi) gidermek için aracı en yakın "OtoDNA Kuantum Garaj" ustalarına yönlendirir.
+    *   Eğer men sebebi "Vergi/Ceza Borcu" ise, sistem borçları listeler, kullanıcı ödemeyi yapar ve OtoDNA (hukuki rehberlik sunarak) men kaldırma sürecini otonom olarak yönetir.
+
 ---
 *Not: Bu belge, Karargah strateji toplantıları sonucunda Ünal Bey'in yol haritasını beslemek için mühürlenmiştir.*
