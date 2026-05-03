@@ -59,5 +59,11 @@ Müşterilerin uygulamaya bağlılığını artırmak için kapalı devre bir pu
 ### [KESİN YAPILACAK] 10. Artırılmış Gerçeklik (AR) Parça Uyumluluk Radarı
 Kullanıcı Mega Market'te bir çelik jant, rüzgarlık veya multimedya ekranı beğendiğinde, telefonunun kamerasını kendi aracına tutar. Artırılmış Gerçeklik (ARCore/ARKit) sayesinde o parçanın kendi aracının üzerinde fiziksel olarak nasıl duracağını satın almadan önce otonom olarak (3D) görür.
 
+### [KESİN YAPILACAK] 11. Siber Otopark Radarı (Kapalı Alan Navigasyonu)
+Yer altı otoparklarında veya AVM'lerde GPS sinyallerinin koptuğu durumlarda yaşanan "Aracım hangi katta/nerede?" sorununu çözmek için Kuantum Ağı üç aşamalı bir füzyon kullanır:
+*   **Barometrik Kat Hafızası:** Akıllı telefonlardaki barometre (basınç sensörü) kullanılarak, araç park edildiği andaki rakım/basınç kaydedilir. Kullanıcı otoparka döndüğünde sistem GPS'e ihtiyaç duymadan *"Aracınız -3. Katta"* şeklinde nokta atışı kat tespiti yapar.
+*   **AR (Artırılmış Gerçeklik) Görsel Çapa:** Kullanıcı aracından indiğinde uygulamanın kamerasını park ettiği kolona (Örn: B-4) tutar. Gemini AI (Vision) o kolonu zihnine kazır. Dönüşte AR kamerası açıldığında, ekranda beliren holografik oklar kullanıcıyı o kolona kadar götürür.
+*   **Sıcaklık (RSSI) Radarı:** Araçta OtoDNA OBD2 çipi (Madde 8) varsa, kullanıcı araca 50 metre yaklaştığında telefon Bluetooth sinyalini yakalar. Ekranda bir radar belirir; kullanıcı araca yaklaştıkça ekran kızarır (Sıcak), uzaklaştıkça maviye döner (Soğuk). Bu sayede zifiri karanlıkta bile nokta atışı yer tespiti yapılır.
+
 ---
 *Not: Bu belge, Karargah strateji toplantıları sonucunda Ünal Bey'in yol haritasını beslemek için mühürlenmiştir.*
