@@ -122,5 +122,14 @@ Sadece filolar için değil, tüm Premium üyeler için geçerli bir "Güvenli �
 *   **Kişisel Numara Gizliliği (App-to-App Arama):** OtoDNA pazar yerinde araba kiralarken, parça satın alırken veya usta ile pazarlık yaparken **kimse şahsi cep telefonu numarasını vermek zorunda değildir.** Taraflar, uygulama içindeki "Ara" butonuna basarak birbirlerini doğrudan Sesli veya Görüntülü olarak arayabilir (WebRTC altyapısı).
 *   **Kişisel Kalkan (Block System):** Eğer karşı taraf (bir esnaf, alıcı veya satıcı) rahatsız edici veya uygunsuz aramalar yaparsa, kullanıcı tek bir tuşla o kişiyi engelleyebilir. Engellenen taraf bir daha çağrı fırlatamaz. Bu, iletişim güvenliğini zirveye taşır.
 
+### [YAPILACAK] 20. Karargah Risk Yönetimi ve Siber Savunma Doktrini (Sıfır Tolerans)
+Sistemin kendi ağırlığı altında çökmemesi ve kusursuz bir "Yıkılmaz Kale" olması için şu 6 operasyonel kural kod tabanına mühürlenir:
+1.  **Sunucu Maliyeti (RTDB):** Anlık araç takiplerinde pahalı olan Firestore yerine, sadece anlık ve ucuz olan Firebase Realtime Database (RTDB) kullanılır. İşletme için "en uygunu" neyse o yapılır, ileride ihtiyaç olursa daha profesyonel dev sunuculara geçilir.
+2.  **Mekanik Garanti (Sıfır Hata):** Kasko ve garanti havuzu dolandırıcılığına karşı sıfır tolerans vardır. İşlemi yapan ustanın puanı mükemmel olmalı, takılan parçanın seri numarası (Kuantum Barkodu) detaylıca taranıp eşleştirilmeli ve işlemin videosu kanıt olarak Karargaha yüklenmelidir.
+3.  **Siber Zırh (Yıkılmaz Kale):** Kodların en derinlerine ve veritabanı uçlarına (API) dışarıdan gelecek saldırılara karşı askeri düzeyde "Siber Zırh" eklenecektir. Uygulama, hukuki ve donanımsal olarak dış müdahalelere tamamen kapalı olmalıdır.
+4.  **Batarya ve Optimizasyon:** Uygulamanın şoförlerin şarjını sömürmesini engellemek için karanlık/tasarruf modu (Siber Tasarruf) aktifleştirilir. 
+5.  **Müşteri Sadakati (Tanıdık Ustaya Son):** "Aracınız cebinizde" felsefesiyle sivil kullanıcıya yaklaşılır. Kullanıcının sanayide "tanıdık birine" ihtiyacı yoktur, OtoDNA ona en uygun ve en kaliteli hizmeti verecek tek otoritedir. Bu potaya firmalardan önce *sivil kullanıcılar* çekilir.
+6.  **Kargo ve Pazar Yeri Dedektifi (Yapay Zeka):** Yüksek fiyatlı ve riskli kargo gönderimlerinde süreç Yapay Zeka dedektifi ile izlenir. Gönderici, paketi kargolarken video çeker ve üzerine OtoDNA QR mührü yapıştırır. Alıcı, paketi açarken bu QR'ı okutmak **zorundadır**. Yüksek riskli ürünlerde onaydan sonra 15 günlük "Siber Deneme Süresi" başlar. Uygulama perde arkasında tüm delilleri (video, log, saat) toplar; eğer adli bir süreç (dolandırıcılık) yaşanırsa şirket avukatları doğrudan "Uygulamanın topladığı bu dijital delillerle" devreye girer.
+
 ---
 *Not: Bu belge, Karargah strateji toplantıları sonucunda Ünal Bey'in yol haritasını beslemek için mühürlenmiştir.*
