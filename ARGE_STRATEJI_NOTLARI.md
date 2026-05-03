@@ -76,6 +76,12 @@ OtoDNA, aracın sadece mekanik değil, "Resmi ve Finansal" sağlığını da tak
 *   **Haciz, Rehin ve Trafikten Men Asistanı:** Aracın üzerinde haciz, rehin veya "Trafikten Men" (Çekme Belgeli) durumu varsa uygulama bunu tespit eder ve kullanıcıyı uyarır.
     *   *Meni Kaldırma Operasyonu:* Eğer men sebebi "Muayene Eksikliği" ise uygulama otonom olarak **TÜVTÜRK randevusu** alır ve muayene eksikliklerini (Örn: Far ayarı, fren testi) gidermek için aracı en yakın "OtoDNA Kuantum Garaj" ustalarına yönlendirir.
     *   Eğer men sebebi "Vergi/Ceza Borcu" ise, sistem borçları listeler, kullanıcı ödemeyi yapar ve OtoDNA (hukuki rehberlik sunarak) men kaldırma sürecini otonom olarak yönetir.
+### [YAPILACAK] 13. Siber Garaj Geçmişim (OtoDNA Bayi Ziyaret Günlüğü)
+Uygulamada kullanıcının tüm servis ve bayi etkileşimlerini saklayan "Geçmişim" adında detaylı bir log (kripto sicil) sayfası oluşturulacaktır. Bu sayfa sıradan bir liste değil, aracın dijital sağlık karnesi gibi çalışır:
+*   **Ziyaret Detayları:** Hangi OtoDNA bayisine (Örn: X Oto Kaporta), hangi tarihte ve saatte gidildi? 
+*   **İşlem ve Finansal Otopsi:** O ziyarette araca hangi işlemler yapıldı, hangi parçalar değişti ve Karargah üzerinden toplam ne kadar ücret ödendi?
+*   **Garanti ve Siber Mahkeme Kayıtları:** Değişen parçaların "Garanti Süresi Kalan Gün" sayacı, kullanıcının o ziyarette yüklediği "Öncesi/Sonrası" fotoğrafları ve eğer yaşandıysa Siber Mahkeme (itiraz/savunma) sonuçları bu sayfada şeffafça listelenir.
+*   **Bayi Sadakat Skoru:** Kullanıcı aynı bayiyi birden fazla kez ziyaret ettiyse, sistem o bayiye özel sadakat indirimlerini bu ekrandan otonom olarak hesaplayıp kullanıcıya teklif eder.
 
 ---
 *Not: Bu belge, Karargah strateji toplantıları sonucunda Ünal Bey'in yol haritasını beslemek için mühürlenmiştir.*

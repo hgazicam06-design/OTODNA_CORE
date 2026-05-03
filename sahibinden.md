@@ -68,8 +68,8 @@ Araç tipi seçildikten sonra, o tipe ait "civatasına kadar" detaylandırılmı
     *   Periyodik Yağ ve Filtre Bakımı, Motor Rektifiye, Triger Seti Değişimi, Supap Ayarı, Conta ve Keçe Yenileme.
 2.  **Oto Fren Sistemleri (Fren Uzmanı):**
     *   Ön/Arka Fren Balata Değişimi, Fren Diski Torna/Değişim, Fren Ana Merkezi, Westinghouse Tamiri, ABS Beyin Tamiri, Fren Hortumları ve Hidrolik Yenileme.
-3.  **Ön Takım, Süspansiyon & Direksiyon:**
-    *   Direksiyon Kutusu Tamiri (Direksiyoncu), Torsiyon Tamiri, Amortisör ve Helezon Değişimi, Rotil, Salıncak ve Burç Yenileme, Aks Tamiri.
+3.  **Ön Takım, Süspansiyon & Direksiyon (Amortisörcü):**
+    *   Amortisör Revizyonu ve Değişimi (Amortisörcü), Direksiyon Kutusu Tamiri (Direksiyoncu), Torsiyon Tamiri, Helezon Yay Değişimi, Rotil, Salıncak ve Burç Yenileme, Aks Tamiri.
 4.  **Debriyaj & Şanzıman Sistemleri:**
     *   Manuel Şanzıman Tamiri, Otomatik Şanzıman (DSG, CVT, EDC, Tork Konvertörlü) Revizyonu, Baskı Balata (Kavrama) Değişimi, Volan Tamiri, Şanzıman Beyni (Mechatronic) Onarımı.
 5.  **Turbo, Enjeksiyon & Pompa Servis Merkezi:**
