@@ -92,5 +92,10 @@ Kullanıcıların trafik kuralları ve kanunlarla ilgili her türlü kriz anınd
 *   **Kriz Anı Yönlendirmesi:** *"Aracımda uygunsuz/yasaklı bir şey yakalattım, ne olur?"* veya *"Çevirmeye alkollü girdim"* gibi spesifik ve adli sorularda sistem Karayolları Trafik Kanunu ve TCK (Türk Ceza Kanunu) maddelerine göre net, detaylı ve bağlayıcı olmayan hukuki rehberlik sunar.
 *   **Sesli (Voice) Yanıt Sistemi:** Panik anında veya direksiyon başında kullanıcının uzun metinler okumasına gerek kalmaz. Yapay Zeka entegrasyonuyla asistan tüm hukuki senaryoları ve cezaları vatandaşa bir avukat gibi **sesli olarak (yazılıya ek olarak)** anlatır.
 
+### [YAPILACAK] 15. OtoDNA Siber Sigorta ve Mekanik Kalkan (Garanti Ağı)
+OtoDNA, aracın tüm sağlık geçmişine, hasar kayıtlarına, değişen parçalarına ve borçlarına hakim olduğu için devasa bir veri tabanına (Big Data) sahiptir. Bu paha biçilemez veri gücü kullanılarak uygulamaya **"OtoDNA Sigorta"** modülü eklenecektir:
+*   **Otonom Sigorta ve Kasko:** Kullanıcı "Teklif Al" butonuna bastığında, sistem aracın risk skorunu (temiz geçmişini) bildiği için anlaştığımız sigorta şirketlerinin API'lerinden saniyeler içinde piyasadaki en uygun Trafik Sigortası ve Kasko tekliflerini çeker ve Karargah üzerinden poliçe keser. OtoDNA sicili temiz olan araçlara özel ekstra "OtoDNA İndirimi" yansıtılır.
+*   **Mekanik Garanti (Motor ve Şanzıman Kalkanı):** Araç, OtoDNA Kuantum Garajlarında (bizim ustalarımızda) düzenli bakım görüyorsa, sistem araca otonom olarak güvenir. Bu araçlara (Örn: 1 Yıl / 20.000 KM) OtoDNA tarafından "Motor ve Şanzıman Garantisi" satılır. Bu garanti altındaki bir aracın motoru veya şanzımanı arızalanırsa, masrafı OtoDNA Garanti Havuzu karşılar ve araç ağımızdaki en yakın ustaya yönlendirilerek ücretsiz onarılır.
+
 ---
 *Not: Bu belge, Karargah strateji toplantıları sonucunda Ünal Bey'in yol haritasını beslemek için mühürlenmiştir.*
