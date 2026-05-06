@@ -132,4 +132,13 @@ Sistemin kendi ağırlığı altında çökmemesi ve kusursuz bir "Yıkılmaz Ka
 6.  **Kargo ve Pazar Yeri Dedektifi (Yapay Zeka):** Yüksek fiyatlı ve riskli kargo gönderimlerinde süreç Yapay Zeka dedektifi ile izlenir. Gönderici, paketi kargolarken video çeker ve üzerine OtoDNA QR mührü yapıştırır. Alıcı, paketi açarken bu QR'ı okutmak **zorundadır**. Yüksek riskli ürünlerde onaydan sonra 15 günlük "Siber Deneme Süresi" başlar. Uygulama perde arkasında tüm delilleri (video, log, saat) toplar; eğer adli bir süreç (dolandırıcılık) yaşanırsa şirket avukatları doğrudan "Uygulamanın topladığı bu dijital delillerle" devreye girer.
 
 ---
+
+### [YAPILACAK] 21. KÜRESEL GENİŞLEME DOKTRİNİ (Global Operasyon Kuralları)
+OtoDNA, Türkiye merkezli başlayan ancak sınırları aşan global bir otomotiv ekosistemidir. Bu vizyon doğrultusunda şu 4 evrensel yasa (Siber Kalkan) sisteme mühürlenmiştir:
+1.  **"Karargah Ankara, Hizmet Tüm Dünya":** Sistemin ana beyni ve veri yönetimi tek merkezden koordine edilir ancak hizmet (JDM, EU, US) tüm kıtalarda aktiftir. Ülkelere göre "Ülke Yöneticisi" atanarak lokal finans ve yetkilendirmeler sağlanır.
+2.  **1 Şasi = 1 Dijital Kimlik (Unique VIN Registration):** Araç dünyanın neresinde olursa olsun, şasi numarasından arama yapıldığında tüm veriler (hasar, bakım, km) evrensel servis defterinde tek ekranda çıkar. Bir şasiye sadece bir dijital üyelik/kimlik açılabilir. Aynı şasi sisteme tekrar girilmek istendiğinde sistem Kuantum Ağında çakışmayı sezer ve anında **"Bu şasi numarası için Kuantum kayıt bulunmaktadır"** ikazı vererek mükerrer kaydı ve dolandırıcılığı donanımsal olarak engeller.
+3.  **Elektrikli Araç (EV) Sağlık Radarı:** Uygulama içerisinde var olan "EV Sağlığı" modülü OBD cihazlarıyla zorunlu entegre çalışarak ikinci el pazarında batarya (SOH) durumlarını net olarak ortaya koyar.
+4.  **Siber Sertifika (NFC/QR) ile Sahte Parça Engelleme:** OtoDNA Mega Market'te yan sanayi ürünler "yan sanayi" etiketiyle dürüstçe satılabilir. Ancak **hiçbir bayi yan sanayi bir parçayı orijinal (OEM) diye satamaz.** Orijinal satılan parçalar "OtoDNA Siber Sertifikası" (NFC/QR) ile taranıp doğrulanır ve alıcıya %100 güvence verilir.
+
+---
 *Not: Bu belge, Karargah strateji toplantıları sonucunda Ünal Bey'in yol haritasını beslemek için mühürlenmiştir.*
