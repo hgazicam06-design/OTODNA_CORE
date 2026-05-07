@@ -676,6 +676,11 @@ Pazar yerinin yanı sıra devasa bir yardımlaşma (İmece) ağı bulunur. Sadec
 *   Servisteki (Kuantum Garajdaki) işlem bitip mühürlendiğinde, PDF çıktısının sonuna "OtoDNA Garantisi" ibaresi taşıyan taranabilir bir Kripto QR basılır.
 *   Girişlerde sadece e-posta/şifre yeterli değildir; Firebase Phone Auth ile SMS (OTP) kodunun girilmesi Kuantum güvenliği için zorunludur.
 
+### 4.7. Adli Bilişim ve Tüketici Hakları Protokolü (adli.md)
+Sıfır araçlarda yaşanan fabrika hataları (Ayıplı Mal) ve bayi dirençlerine karşı tüketicinin korunması için "Siber Mahkeme" vizyonu `adli.md` dosyasına mühürlenmiştir:
+*   **Siber Bilirkişi Raporu:** Fabrikanın tamir dayatmasına karşı değiştirilemez (Immutable) servis logları ve Kuantum Değer Kaybı Hesaplaması.
+*   **Adli Vakalar Şeffaflığı:** Kilometre düşürme, change (şase değiştirme), gizli hasar ve sahte parça kullanımlarının Kuantum ağında tespit edilip engellenmesi.
+
 ---
 
 ## 🤖 5. YAPAY ZEKA (ORTAK) DEĞERLENDİRMESİ VE STRATEJİK ÖNERİLER
