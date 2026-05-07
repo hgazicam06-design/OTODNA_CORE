@@ -690,6 +690,11 @@ OtoDNA'nın sadece arızalarda kullanılan bir tamirci ağı değil; Turizm şir
 *   **Batarya Sağlığı (SOH) Radarı:** ELM 327 (OBD2) cihazı ile batarya şarj döngüsü ve %SOH verileri doğrudan Karargaha aktarılır. Batarya yorgunluğu (gizli hasar) tespit edilirse araca "Kırmızı X" damgası vurulur.
 *   **Yüksek Voltaj (HV) İzole Katmanı:** Sadece HV sertifikasına sahip "Aktif Revizyon" yetkilileri EV araçlara müdahale formu açabilir. Lojistik kurtarmalarda (S.O.S) sadece ahtapot/kayar kasa çekiciler ve mobil şarj üniteleri bölgeye sevk edilir.
 
+### 4.10. Küresel Siber Navigasyon ve Radar Kalkanı (unal_bey_icin_siber_navigasyon_rehberi.md)
+OtoDNA, Google Maps altyapısını kullanarak kendi özel HUD (Head-Up Display) tasarımına sahip savaş uçağı stili bir navigasyon sistemine geçmiştir:
+*   **Ayrıcalıklı Bayi Ağı (Altın Kalkan):** Haritadaki sıradan mekanlar (Google Places) küçük/silik görünürken, OtoDNA'ya kayıtlı bayiler ve aktif revizyon merkezleri devasa "Altın Kalkan" sembolleriyle mücevher gibi parlar.
+*   **Otonom Radar Uyarısı:** Yurt içi veya yurt dışında kullanıcı hız sınırını aştığında veya radara/EDS'ye yaklaştığında, harita üzerinden bağımsız kırmızı flaşörlü "Siber Radar" uyarıları fırlatılır.
+
 ---
 
 ## 🤖 5. YAPAY ZEKA (ORTAK) DEĞERLENDİRMESİ VE STRATEJİK ÖNERİLER
