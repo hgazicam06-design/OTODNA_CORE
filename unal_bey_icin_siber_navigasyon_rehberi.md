@@ -1,158 +1,85 @@
-# Ünal Bey İçin Geliştirme Rehberi: Ücretsiz Siber Navigasyon Motoru
+# Ünal Bey İçin Geliştirme Rehberi: Google Destekli Özelleştirilmiş OtoDNA Siber Navigasyonu
 
-Sayın Ünal Bey, Google Maps API anahtarı (ve kredi kartı zorunluluğu) süreçlerini atlamak ve platformu tamamen bağımsız hale getirmek için **Sıfır Maliyetli Siber Navigasyon** (OpenStreetMap + OSRM) stratejisine geçiş yapıyoruz. 
+Sayın Ünal Bey, navigasyon altyapımızı küresel çapta (Türkiye ve Yurt Dışı) en yüksek stabiliteyle çalıştırmak ve radarları/istasyonları canlı çekmek için **Google Maps SDK** altyapısına geçiş yapıyoruz. 
 
-Aşağıdaki adımları uygulayarak projeye hiçbir API anahtarı gerekmeden harita ve rota çizme özelliğini entegre edebilirsiniz.
+Ancak bu standart bir Google Haritalar görünümü OLMAYACAK. Uygulama içi (In-App) haritamız, **OtoDNA'nın kendine has HUD (Head-Up Display)** tasarımına sahip olacak.
 
-## 1. Gerekli Kütüphanelerin Eklenmesi
-Lütfen `pubspec.yaml` dosyanıza aşağıdaki paketleri ekleyin ve `flutter pub get` çalıştırın:
+---
+
+## 1. Siber Harita Katmanları ve Özel Semboller (Custom Markers)
+Google veritabanındaki standart mekanlar (benzinlikler, sıradan tamirciler, hastaneler vb.) Google'ın kendi ikonlarıyla görünürken, **OtoDNA Sistemine Kayıtlı Bayiler ve Aktif Revizyon Garajları** haritada devasa ve özel sembollerle parlayacak.
+
+### A. İşaretçi (Marker) Hiyerarşisi
+*   **Sıradan İstasyonlar (Google Places):** Standart harita ikonlarıyla (küçük ve sönük) görünür.
+*   **OtoDNA Yetkili Bayileri:** Harita üzerinde 3D tasarımlı, etrafında hale (glow) yanan **"OtoDNA Altın Kalkan"** ikonuyla görünür. Kullanıcı haritayı kaydırdıkça bu bayiler diğer mekanların arasından "VIP" olarak sıyrılır.
+*   **Elektrikli Şarj & Radar Noktaları:** Harita üzerinde Karargahın belirlediği özel Siber Radar pingleri ile işaretlenir.
+
+---
+
+## 2. Kurulum ve Google Maps SDK Entegrasyonu
+Lütfen `pubspec.yaml` dosyanıza aşağıdaki paketleri ekleyin:
 ```yaml
 dependencies:
-  flutter_map: ^6.1.0
-  latlong2: ^0.9.0
-  http: ^1.2.2
+  google_maps_flutter: ^2.5.0
+  flutter_polyline_points: ^2.0.0
+  geolocator: ^11.0.0
 ```
 
-*(Not: AndroidManifest veya AppDelegate içinde herhangi bir key ayarı yapmanıza GEREK YOKTUR. Doğrudan çalışır.)*
+*(Not: AndroidManifest.xml ve AppDelegate.swift içine Google Cloud Console'dan alacağımız Google Maps API anahtarını eklememiz gerekmektedir.)*
 
 ---
 
-## 2. Siber Harita ve Rota Servisi
-Bu servis, ücretsiz OSRM (Open Source Routing Machine) altyapısını kullanarak A noktasından B noktasına çizilecek rotanın koordinatlarını hesaplar.
-
-**Dosya Yolu:** `lib/services/siber_navigasyon_servisi.dart`
+## 3. OtoDNA Karanlık Tema (Siber HUD Map Style)
+Google haritasının standart açık renkli görünümünü kapatıp, harita zeminine tamamen OtoDNA'ya has "Siber Karanlık Tema" (Dark Mode Overlay) giydireceğiz.
 
 ```dart
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:latlong2/latlong.dart';
-import 'dart:developer' as developer;
-
-class SiberNavigasyonServisi {
-  /// OSRM Public API (Tamamen Ücretsiz)
-  static const String _osrmBaseUrl = "http://router.project-osrm.org/route/v1/driving";
-
-  /// İki nokta arasındaki rotayı (çizgi koordinatlarını) getirir.
-  static Future<List<LatLng>> rotaCiz(LatLng baslangic, LatLng hedef) async {
-    developer.log("🗺️ SİBER NAVİGASYON: Rota hesaplanıyor...");
-    
-    // OSRM formatı: lon,lat;lon,lat
-    final String url = "\$_osrmBaseUrl/\${baslangic.longitude},\${baslangic.latitude};\${hedef.longitude},\${hedef.latitude}?geometries=geojson";
-
-    try {
-      final response = await http.get(Uri.parse(url));
-      
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final routes = data['routes'] as List;
-        
-        if (routes.isNotEmpty) {
-          final geometry = routes[0]['geometry']['coordinates'] as List;
-          
-          // OSRM [lon, lat] döner, biz [lat, lon] (LatLng) formatına çeviriyoruz
-          List<LatLng> polylinePoints = geometry.map((coord) {
-            return LatLng(coord[1].toDouble(), coord[0].toDouble());
-          }).toList();
-          
-          developer.log("✅ SİBER NAVİGASYON: Rota başarıyla çizildi.");
-          return polylinePoints;
-        }
-      }
-      return [];
-    } catch (e) {
-      developer.log("💥 SİBER NAVİGASYON ÇÖKTÜ: \$e");
-      return [];
-    }
+// Harita yüklendiğinde Google Maps Controller'a bu JSON stili basılacak:
+const String otoDnaMapStyle = '''
+[
+  {
+    "elementType": "geometry",
+    "stylers": [{"color": "#1A1A1D"}] // Siyah/Kurşuni Zemin
+  },
+  {
+    "elementType": "labels.text.fill",
+    "stylers": [{"color": "#C5A059"}] // OtoDNA Gold Rengi Sokak İsimleri
+  },
+  {
+    "featureType": "road",
+    "elementType": "geometry",
+    "stylers": [{"color": "#333333"}] // Asfalt Rengi
   }
-}
+]
+''';
 ```
 
 ---
 
-## 3. Harita Arayüzü (Siber Radar Ekranı)
-Aşağıdaki kod parçacığını, kullanıcıların veya bayilerin haritayı göreceği ekrana (örneğin `SiberRadarScreen`) doğrudan yapıştırabilirsiniz.
+## 4. Özel OtoDNA Bayi Sembolü Çizimi
+Google Maps üzerinde standart kırmızı pin yerine, kendi tasarımımız olan `otodna_kalkan_marker.png` ikonunu haritaya basacağız. Bu sayede OtoDNA bayileri haritada mücevher gibi parlayacak.
 
 ```dart
-import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class SiberRadarScreen extends StatefulWidget {
-  @override
-  _SiberRadarScreenState createState() => _SiberRadarScreenState();
+Future<BitmapDescriptor> getOtoDnaMarker() async {
+  return await BitmapDescriptor.fromAssetImage(
+    const ImageConfiguration(size: Size(64, 64)), // Normalden daha büyük
+    'assets/images/otodna_kalkan_marker.png', // Özel bayi ikonumuz
+  );
 }
 
-class _SiberRadarScreenState extends State<SiberRadarScreen> {
-  // Örnek: Başlangıç (Maslak) - Hedef (Kadıköy)
-  final LatLng baslangicKonumu = LatLng(41.1126, 29.0213);
-  final LatLng hedefKonumu = LatLng(40.9904, 29.0292);
-  
-  List<LatLng> _cizilecekRota = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _rotayiHazirla();
-  }
-
-  void _rotayiHazirla() async {
-    // Yukarıda oluşturduğumuz servisten rotayı çek
-    // final rota = await SiberNavigasyonServisi.rotaCiz(baslangicKonumu, hedefKonumu);
-    // setState(() { _cizilecekRota = rota; });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Siber Radar (Ağ Bağlantısı Aktif)"),
-        backgroundColor: Colors.black,
-      ),
-      body: FlutterMap(
-        options: MapOptions(
-          initialCenter: baslangicKonumu,
-          initialZoom: 11.0,
-        ),
-        children: [
-          // 1. Zemin (Karanlık Tema OpenStreetMap)
-          TileLayer(
-            urlTemplate: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-            subdomains: const ['a', 'b', 'c', 'd'],
-          ),
-          
-          // 2. Rota Çizgisi (Polyline)
-          PolylineLayer(
-            polylines: [
-              Polyline(
-                points: _cizilecekRota,
-                strokeWidth: 4.0,
-                color: Colors.amberAccent, // Siber Altın Rengi
-              ),
-            ],
-          ),
-          
-          // 3. İşaretçiler (Bayi ve Araç Konumu)
-          MarkerLayer(
-            markers: [
-              Marker(
-                point: baslangicKonumu,
-                width: 40,
-                height: 40,
-                child: Icon(Icons.my_location, color: Colors.blueAccent, size: 30),
-              ),
-              Marker(
-                point: hedefKonumu,
-                width: 40,
-                height: 40,
-                child: Icon(Icons.location_on, color: Colors.redAccent, size: 40),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
+// Marker oluştururken:
+Marker(
+  markerId: MarkerId('bayi_1'),
+  position: LatLng(41.1126, 29.0213),
+  icon: customOtoDnaMarker, // Farklı ve OtoDNA'ya has sembol!
+  infoWindow: InfoWindow(title: "OtoDNA Yetkili Siber Garaj"),
+)
 ```
 
-> **Not:** Ünal Bey, bu kodda kullanılan harita zemini (TileLayer) **CartoDB Dark Matter** temasıdır. Google Maps kullanmadan uygulamaya o aradığımız "Siber/Hacker" karanlık estetiğini ve altın sarısı rota çizimini bedavaya verecektir.
+---
+
+## 5. Küresel (Yurt Dışı) Radar ve Uyarı Sistemi
+Google Directions API sayesinde rota çizildiğinde, yol üzerindeki hız kameraları, EDS noktaları ve dinlenme tesisleri Karargah algoritmasından geçirilir. 
+* Eğer kullanıcı hız limitini aşıyorsa veya ileride bir tuzak radar varsa, Google'dan bağımsız olarak ekranın üstünde **"OtoDNA Siber Uyarı: 1KM Sonra Radar"** HUD bildirimi (Kırmızı Flaş) çakar.
+* Bu otonom sistem, dünyanın neresinde olursanız olun (Türkiye veya Yurt Dışı) kendi özel navigasyonumuz gibi çalışarak sizi korur.
