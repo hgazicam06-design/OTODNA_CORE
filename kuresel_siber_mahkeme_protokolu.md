@@ -14,13 +14,16 @@ Gemini AI Hakimi (CorporateLegalEngine), GPS veya araç plakası üzerinden kull
 *   **🇬🇧 İngiltere (Consumer Rights Act 2015):**
     *   Araç satın alındıktan sonraki ilk 30 gün içinde "Kısa Süreli Reddetme Hakkı" otomatik olarak işletilir.
 
-## 2. DİLLER ARASI SİBER ÇEVİRİ (BABEL KALKANI)
+## 2. DİLLER ARASI SİBER ÇEVİRİ VE ARAYÜZ (BABEL KALKANI)
 Bir gurbetçi veya expat için en büyük zorluk, bulunduğu ülkenin hukuki diliyle baş etmektir.
+*   **Otonom Arayüz (UI):** OtoDNA, kullanıcının cihaz diline göre otomatik şekil değiştirir. Uygulamayı Almanya'da açan bir Türk tüm arayüzü ve yabancı hasar kayıtlarını Türkçe okurken, sistemdeki Alman bir avukat kendi paneline girdiğinde her şeyi Almanca görür.
 *   **Siber Senaryo:** Almanya'da yaşayan bir Türk, sıfır aldığı BMW'sindeki arıza için OtoDNA uygulamasına girer. Derdini (savunmasını) **Türkçe** olarak sesli veya yazılı anlatır.
 *   **Gemini Çıktısı:** Siber Mahkeme, bu Türkçe anlatımı analiz eder ve arka planda Alman Tüketici Mahkemelerine (Amtsgericht) sunulmaya hazır, kusursuz hukuki **Almanca (Juristisches Deutsch)** bir dilekçeyi (PDF) saniyeler içinde üretip Kripto QR ile mühürler.
 
 ## 3. ULUSLARARASI ŞASE VE SİCİL TEMİZLİĞİ (CROSS-BORDER FORENSICS)
-Araçlar sınır ötesi satıldığında (Örn: ABD'den Dubai'ye, Almanya'dan Türkiye'ye), geçmişleri "Change" (Yıkanma) işlemine maruz kalabilir.
+Araçlar sınır ötesi satıldığında (Örn: ABD'den Dubai'ye, Almanya'dan Türkiye'ye), geçmişleri sınır geçişlerinde "Change" (Yıkanma) işlemine maruz kalabilir. Plaka ve ruhsat değişse bile "Şase Numarası (VIN)" sabittir ve OtoDNA şaseyi küresel olarak takip eder.
+*   **Gurbetçi ve İthalat Senaryosu (Almanya -> Türkiye):** Almanya'da ağır kaza yapıp DAT (TÜV) kayıtlarına "Total Loss" olarak işlenen bir araç Türkiye'ye getirilip (ithal veya permi yoluyla) satıldığında, Türkiye'deki TRAMER sorgusu "Temiz/Hasarsız" çıkabilir. OtoDNA Kuantum Sicil motoru, şaseyi uluslararası ağda taradığı için Türkiye'deki alıcıyı anında uyarır: *"Dikkat! Bu aracın Türkiye TRAMER'i temiz görünse de, 2024 yılında Almanya DAT kayıtlarında ağır kazası vardır."*
+*   **Babel İstihbaratı:** Alman TÜV/DAT kayıtlarındaki o yabancı dildeki hasar raporları ve ekspertiz verileri, Türk alıcının ekranına Gemini yapay zekası tarafından anında **Türkçeye çevrilerek** yansıtılır.
 *   **Kuantum Sicil Birleştirme:** OtoDNA; Amerikan CARFAX, Avrupa DAT ve Türkiye TRAMER verilerini tek bir Kuantum Şase DNA'sında birleştirir.
 *   **Salvage (Hurda) Radarı:** Amerika'da sel hasarlı (Salvage/Flood) olarak hurdaya ayrılan bir araç, Dubai'ye veya Avrupa'ya getirilip "Hatasız" diye satılmaya kalkıldığında, Kuantum Sicil anında "KIRMIZI X: ULUSLARARASI GİZLİ HASAR" bayrağını çeker.
 
