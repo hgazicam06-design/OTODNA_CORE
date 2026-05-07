@@ -681,6 +681,15 @@ Sıfır araçlarda yaşanan fabrika hataları (Ayıplı Mal) ve bayi dirençleri
 *   **Siber Bilirkişi Raporu:** Fabrikanın tamir dayatmasına karşı değiştirilemez (Immutable) servis logları ve Kuantum Değer Kaybı Hesaplaması.
 *   **Adli Vakalar Şeffaflığı:** Kilometre düşürme, change (şase değiştirme), gizli hasar ve sahte parça kullanımlarının Kuantum ağında tespit edilip engellenmesi.
 
+### 4.8. Küresel Hizmet ve Kuantum Forum Mimarisi (hizmetler_ve_forum_mimarisi.md)
+OtoDNA'nın sadece arızalarda kullanılan bir tamirci ağı değil; Turizm şirketleri, Ekspertizler, Rent-a-car'lar, Sürücü Kursları, Dernekler ve İş Makinalarını kapsayan küresel bir otomotiv ekosistemi (Oto-Metaverse) olduğu tasdiklenmiştir.
+*   **Yetki Zırhlı İletişim (Siber Forum):** Sistemdeki her firmanın ve bireysel kullanıcının sahip olduğu iletişim (Post/Form) sayfası; "Sadece Ailem", "Herkes Görsün", "Sadece Ben" ve "Kaydet Sonra Yayınla (Taslak)" şeklinde 4 kademeli askeri gizlilik zırhıyla korunur. Aktif revizyon (ağır tamir) yapanlar "Hizmetler" altından ayrılıp üst rütbede tutulur.
+
+### 4.9. Elektrikli ve Hibrit Araçlar Kuantum Protokolü (elektrikli_arac_protokolu.md)
+İçten yanmalı motor (ICE) kurallarının geçersiz olduğu EV ve PHEV araçlar için Karargahın "Yüksek Voltaj (HV)" ve "Batarya Zırhı" protokolleri mühürlenmiştir:
+*   **Batarya Sağlığı (SOH) Radarı:** ELM 327 (OBD2) cihazı ile batarya şarj döngüsü ve %SOH verileri doğrudan Karargaha aktarılır. Batarya yorgunluğu (gizli hasar) tespit edilirse araca "Kırmızı X" damgası vurulur.
+*   **Yüksek Voltaj (HV) İzole Katmanı:** Sadece HV sertifikasına sahip "Aktif Revizyon" yetkilileri EV araçlara müdahale formu açabilir. Lojistik kurtarmalarda (S.O.S) sadece ahtapot/kayar kasa çekiciler ve mobil şarj üniteleri bölgeye sevk edilir.
+
 ---
 
 ## 🤖 5. YAPAY ZEKA (ORTAK) DEĞERLENDİRMESİ VE STRATEJİK ÖNERİLER

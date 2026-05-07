@@ -132,3 +132,36 @@ Bir araç ikinci elde satıldığında ve Karargah üzerinden **Araç Devir (Mü
 Araç devri onaylandığı milisaniye içinde `arac_devir_servisi` çalışır ve Dijital Torpido'yu ikiye ayırır:
 *   **Silinen Şahsi Dosyalar:** Eski kullanıcıya ait tüm trafik cezası makbuzları, yakıt fişleri, şahsi ehliyet fotoğrafları, araç ruhsat kopyası (kişisel bilgileri içerdiği için) ve OGS/HGS dökümleri atomik bir işlemle (`FieldValue.delete`) tamamen imha edilir. Yeni alıcı bunları kesinlikle göremez.
 *   **Korunan Genetik Dosyalar (Araç Sicili):** Aracın genetiğini (DNA'sını) ilgilendiren teknik belgeler ise ebediyen kalır. Ekspertiz raporları, Motor Değişim (Revizyon) faturaları, ağır bakım servis fişleri, değişen yedek parça garanti sertifikaları ve "Kırmızı X" ihlal logları silinmez. Bu belgeler yeni sahibinin "Dijital Torpidosuna" aracın kusursuz özgeçmişi olarak aktarılır.
+
+---
+
+## 8. S.O.S MÜDAHALE VE LİYAKAT MOTORU (KRİZ YÖNETİMİ)
+
+Acil durumlarda (Kaza, yolda kalma, şarj/yakıt bitmesi) fırlatılan S.O.S sinyallerinin yönetimi, Karargahın "Liyakat Algoritması" ile bayiler arasında bir prestij ve hayatta kalma yarışına dönüştürülür:
+
+### 8.1. Ödül, Ceza ve Şeffaf Radar
+*   **Ödüllendirme (Kuantum Boost):** Bölgesine düşen S.O.S sinyaline *"Müdahale Ediyorum"* diyerek sahaya inen ve sorunu çözen bayi/çekici, sistem tarafından otonom olarak ödüllendirilir. Arama sonuçlarında (SEO) üst sıralara çıkarılır, komisyon oranlarında anlık indirimler kazanır ve profiline "Siber Kahraman" rozeti işlenir. Çalışan her zaman üste çıkar.
+*   **Cezalandırma (Siber Düşüş):** Radarına S.O.S sinyali düşmesine rağmen sürekli *"Reddet"* diyen veya sinyali görmezden gelen firmaların "İtibar Puanı" yapay zeka tarafından sinsice düşürülür. Algoritma bu firmaları zamanla vitrinin en karanlık sayfalarına iter.
+*   **Bayi Arası Şeffaflık:** Fırlatılan bir S.O.S sinyalini hangi firmanın üzerine aldığı, o bölgedeki diğer tüm bayiler tarafından harita üzerinde şeffafça görülür. (Örn: *"Gazi Oto Kurtarma sinyali devraldı"*). Bu, bayiler arasında rekabet yaratır ve sahipsiz iş kalmasını önler.
+
+### 8.2. Kuantum Kapanış Raporu (Mühürleme)
+S.O.S krizi başarıyla çözüldüğünde sisteme bir **"S.O.S Başarıyla Giderildi"** bildirimi düşer. Bu bildirim Kara Kutuya (`sistem_loglari`) şu adli detaylarla mühürlenir:
+*   Bölgedeki hangi bayiler çağrıyı gördü, kim es geçti?
+*   Olay yerine hangi kurtarıcı (Çekici Plakası/Şoför) ulaştı?
+*   Araç sahadan alınıp hangi servise/bayiye teslim edildi?
+Tüm bu zincirleme lojistik verisi, kullanıcının "Dijital Torpidosuna" ve Karargah istihbaratına şeffafça kazınır.
+
+---
+
+## 9. SİBER KEŞİF VE MEKAN İSTİHBARATI (BÜYÜK VERİ)
+
+OtoDNA sadece arızalarda değil, aracın tüm yaşam döngüsünde arka planda (Background Location) sessizce çalışarak devasa bir "Mekan İstihbaratı" (POI - Point of Interest) toplar. Bu veri, OtoDNA kullanıcılarını yollardaki en ayrıcalıklı VIP zümre haline getirir.
+
+### 9.1. Arka Plan Veri Hasadı ve Yol Radarı
+Kullanıcı seyahat ederken Karargah; gidilen yolları, duraklanan dinlenme tesislerini, girilen yakıt ve elektrikli şarj istasyonlarını saniye saniye kaydeder (`yol_bilgisayari_screen.dart`). 
+*   **Spesifik S.O.S Çağrıları:** Yolda kalan bir araç artık sadece "Bozuldum" demez. Sistemdeki özel çiplerle **"Benzinim Bitti"** veya **"Bataryam Bitti"** şeklinde spesifik S.O.S fırlatır. Sistem, en yakın (istihbaratı toplanmış) mobil şarj istasyonunu veya akaryakıt destek aracını otonom olarak yönlendirir.
+
+### 9.2. Kuantum Değerlendirme ve VIP İmtiyaz Kalkanı
+*   **Otonom İnceleme (Review) Talebi:** Kullanıcı bir dinlenme tesisinden veya şarj istasyonundan ayrıldığında sistem titrer: *"Gazi Dinlenme Tesisleri'nden ayrıldınız. Hizmet kalitesi nasıldı?"*
+*   **OtoDNA İtibar Baskısı:** Tesislerin hijyeni, yakıt kalitesi veya yemek fiyatları OtoDNA ekosistemi içinde oylanır. Bu veriler harita üzerinde diğer tüm OtoDNA kullanıcılarına açıkça gösterilir (Örn: "Burada durmayın, yemekler kötü ve şarj cihazları bozuk").
+*   **Zorunlu Saygı (VIP Ayrıcalık):** Bu şeffaf istihbarat ağı sayesinde, otoyol üzerindeki hiçbir tesis veya istasyon OtoDNA kullanıcısına kötü hizmet veremez. *"Bu müşteri OtoDNA üyesi, kötü puan verirse binlerce aracı kaybederiz"* korkusuyla (veya bilinciyle), OtoDNA ismini veya logosunu gören her işletme, Karargah üyelerine VIP, düzgün ve ayrıcalıklı hizmet vermek zorunda kalır.
