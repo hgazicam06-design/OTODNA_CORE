@@ -1,6 +1,6 @@
 # 🚀 OTODNA SİBER KARARGAH: NİHAİ VİZYON (SON BİLDİRGE)
 
-Bu belge, OtoDNA ekosisteminin mevcut sınırlarını aşıp "Küresel Bir Otomotiv Devletine (Oto-Metaverse)" dönüşmesi için belirlenen **5 Büyük Ufuk Çizgisini** mühürler.
+Bu belge, OtoDNA ekosisteminin mevcut sınırlarını aşıp "Küresel Bir Otomotiv Devletine (Oto-Metaverse)" dönüşmesi için belirlenen **6 Büyük Ufuk Çizgisini** mühürler.
 
 ---
 
@@ -38,3 +38,9 @@ OtoDNA ekosisteminde motor değişimi ("Aracın Kalp Nakli"), kullanıcıyı yor
 *   **Sürtünmesiz Güncelleme:** Kullanıcı motorun değiştiğini uygulamaya bildirir ve SMS/E-posta onayıyla işlemi tamamlar. Uygulama, eski motor numarasını arka planda (Dijital Torpido) ebediyen mühürler ve yeni numarayı günceller.
 *   **Zaman Damgalı Şeffaflık:** Bizim için kritik olan; motorun nereden alındığı, saat kaçta ve kim tarafından takıldığıdır. Bu veriler Kuantum Ağı'na kazınır ve aracı sonradan alacak kişinin önüne net bir şekilde konur.
 *   **Uyarı Kalkanı:** Biz polis değiliz ancak kullanıcıyı koruruz. Muayene ve ruhsat işletme zorunlulukları hatırlatılarak kullanıcının yasal olarak ağır kusur durumuna düşmesi (Noter/TÜVTÜRK iptali) engellenir.
+
+## 6. SAYRİKS Takip Radarı ve Lonca Meclisi (Siber Notlar)
+İşlem mühürlendiğinde dosya kapanmaz; otonom siber takip başlar:
+*   **Kuantum Gözlem Paneli:** Ustanın "Şüpheli" gördüğü durumlar (Örn: Motor kulağında çatlak) araca sarı ünlem (⚠️) olarak mühürlenir. Bu not silinemez ve sonraki bakımlarda ilk uyarı olarak çıkar.
+*   **Lonca Meclisi (Usta Konseyi):** Kapatılan dosyalar, ekosistemdeki uzman ustaların (Motorcu, Şasici vb.) incelemesine sunulur. Uzmanlar siber imzalarıyla alt notlar ekleyebilir.
+*   **Otonom Takip (Radar Alarmı):** Ustanın belirlediği vade (Örn: 5.000 km sonra) dolduğunda Karargah, kullanıcıya doğrudan "Siber Komutan Gazi, kontrol vakti geldi!" şeklinde otonom bildirim fırlatarak kusurların gözden kaçmasını engeller.
