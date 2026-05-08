@@ -47,13 +47,12 @@ OtoDNA ekosisteminde motor değişimi ("Aracın Kalp Nakli"), kullanıcıyı yor
 *   **Kuantum Temizlik Protokolü (Arşivleme):** Bir arıza giderildiğinde veya şüphe ortadan kalktığında veri asla silinmez, "ARŞİV/TAMAMLANDI" statüsüne çekilerek pasif radara alınır. Aktif radardaki sarı ünlem (⚠️) kalkar ve alarm iptal edilerek kullanıcıya "Şüpheli bölge başarıyla temizlendi" zafer bildirimi fırlatılır. Bu eşsiz hafıza, gelecekteki olası bir uyuşmazlıkta geçmişi Siber Mahkeme'nin önüne anında döker.
 
 ## 7. Ağır Hasar ve Pert Protokolü (Kanıt Mercii ve Şeffaflık)
-OtoDNA, ağır hasarlı veya pert araçlar için bir "Yargıç" veya "Polis" değil, tamamen tarafsız bir **"Kanıt Mercii"dir.** Bir araç pert olduğunda veya ağır hasar aldığında Karargah kimseyi sistemden atmaz, sadece şeffaflığı mühürler:
-*   **Şeffaf Sicil (Kanıt Toplama):** Araç ağır hasar aldığında hasarın boyutu, fotoğrafları ve belgeleri aracın "Dijital Ekspertiz" raporuna (OtoDNA) kalıcı olarak işlenir. Araca ait hiçbir geçmiş kanıt silinmez.
-*   **Özgür Ticaret ve Bilinçli Alıcı:** Pert veya hasarlı bir araç onarılıp (toplanıp) tekrar satılabilir veya kullanılabilir. OtoDNA ticarete engel olmaz veya kullanıcıyı cezalandırmaz. Karargahın tek amacı, aracı alacak yeni kişinin bu aracın "Ağır Hasar Kayıtlı" olduğunu tüm şeffaflığıyla bilmesidir.
-*   **Adil Piyasa Fiyatlaması:** Aracın tüm geçmişi OtoDNA raporunda şeffaf çıkacağı için, pert aracın satışı piyasa şartlarında kendi değerine (ücretine) göre dürüstçe gerçekleşir. Satıcı yalan söyleyemez, alıcı sürprizle karşılaşmaz. Her şey kanıta dayalıdır.
+OtoDNA, insanları korkutan bir sistem değil, tüm çıplaklığıyla gerçeği masaya koyan bir **"Kanıt Mercii"dir.** Bir araç pert olduğunda veya ağır hasar aldığında Karargah aracı dışlamaz; sadece değişen parçaları, hasar durumunu ve miktarını alıcının önüne serer:
+*   **Şeffaf Sicil:** Aracın hasar boyutu, fotoğrafları ve belgeleri aracın "Dijital Ekspertiz" raporuna işlenir. 
+*   **Özgür Ticaret ve Bilinçli Alıcı:** Araç ağır hasarlı olabilir, alacak kişi de bunu bilerek, buna uygun bir fiyatla aracı almak isteyebilir. OtoDNA ticarete engel olmaz; aracı alan kişinin her şeyi şeffafça, sürpriz yaşamadan bilmesini sağlar. Fiyatlama, şeffaf kanıtlara göre serbest piyasada belirlenir.
 
-## 8. Şeffaf Hasar Borsası (Hasarlı Araç Galerisi)
-Karargahın ticaret hacmini genişleten ve şeffaflık protokolünü en üst seviyeye çıkaran pazar yeri, gizli saklı işlerin bittiği yerdir:
-*   **Mühürlü Hasar Raporu:** Galeride satılan hasarlı aracın kaza anındaki fotoğrafları ve ustanın (Lonca Meclisi) raporu ilanın en başında yer alır. Hasar durumu şeffafça ilan edilir.
-*   **Parça Envanteri ve Onarım Geçmişi:** Araç pert ise sağlam parçalar usta onayıyla listelenir. Araç onarılıp satılıyorsa, kullanılan her parçanın (çıkma/sıfır) faturası sistemde açıkça görünür. Hasarlı bölgeye özel Kuantum Turkuazı yerine "Uyarı Sarısı" teması kullanılarak alıcının dikkati çekilir.
-*   **Siber Emanet (Escrow) Ticareti:** Alıcı kaporayı Karargah havuzuna yatırır. Araç teslim edildiğinde ve usta ilandaki hasar dışında gizli bir ayıp olmadığını onayladığında para satıcıya aktarılır. Dolandırıcılık ihtimali sıfırlanmıştır.
+## 8. Şeffaf Hasar Borsası (Hasarlı Araç Galerisi ve Hurdacılar)
+Karargahın ticaret hacmini genişleten ve ağır hasarlı araçların bile güvenle alınıp satılabildiği özel bir pazar yeri:
+*   **"Ağır Hasarlı Araçlar" Kategorisi:** OtoDNA galerisinde özel bir buton/kategori yer alır. İsteyen herkes hasarlı aracını buraya kaydedip satabilir. İlanlarda mühürlü hasar raporu, hasar durumu ve parça envanteri şeffafça listelenir.
+*   **Hurdacılar Entegrasyonu:** Uygulama içindeki hizmetler sekmesinde yer alan "Hurdacılar" modülü ile doğrudan bağlantı kurulur. Kullanıcılar ve ustalar, hasarlı araçlardan çıkan sağlam parçaları buraya satabilir veya toplamak istedikleri araçlar için buradan yedek parça çekebilirler. Her şey kayıtlı ve şeffaftır.
+*   **Siber Emanet ve %2 Kapora Kuralı:** Satılan araçlar için, anlaşılan araç bedelinin **%2'si uygulamaya kapora olarak yatar**. Araç teslimi ve şeffaflık onayı (ilanda yazılandan farklı bir durum olmaması) sağlandığında kapora satıcıya aktarılır. **OtoDNA, yatan bu kaporanın içinden %12 oranında kendi sistem komisyonunu (Karargah Payı) keser.** Tüm finansal akış bu şeffaf kuralla kayıt altına alınır.
