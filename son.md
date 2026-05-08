@@ -1,6 +1,6 @@
 # 🚀 OTODNA SİBER KARARGAH: NİHAİ VİZYON (SON BİLDİRGE)
 
-Bu belge, OtoDNA ekosisteminin mevcut sınırlarını aşıp "Küresel Bir Otomotiv Devletine (Oto-Metaverse)" dönüşmesi için belirlenen **6 Büyük Ufuk Çizgisini** mühürler.
+Bu belge, OtoDNA ekosisteminin mevcut sınırlarını aşıp "Küresel Bir Otomotiv Devletine (Oto-Metaverse)" dönüşmesi için belirlenen **7 Büyük Ufuk Çizgisini** mühürler.
 
 ---
 
@@ -45,3 +45,9 @@ OtoDNA ekosisteminde motor değişimi ("Aracın Kalp Nakli"), kullanıcıyı yor
 *   **Lonca Meclisi (Usta Konseyi):** Kapatılan dosyalar, ekosistemdeki uzman ustaların (Motorcu, Şasici vb.) incelemesine sunulur. Uzmanlar siber imzalarıyla alt notlar ekleyebilir.
 *   **Otonom Takip (Radar Alarmı):** Ustanın belirlediği vade (Örn: 5.000 km sonra) dolduğunda Karargah, kullanıcıya doğrudan "Siber Komutan Gazi, kontrol vakti geldi!" şeklinde otonom bildirim fırlatarak kusurların gözden kaçmasını engeller.
 *   **Kuantum Temizlik Protokolü (Arşivleme):** Bir arıza giderildiğinde veya şüphe ortadan kalktığında veri asla silinmez, "ARŞİV/TAMAMLANDI" statüsüne çekilerek pasif radara alınır. Aktif radardaki sarı ünlem (⚠️) kalkar ve alarm iptal edilerek kullanıcıya "Şüpheli bölge başarıyla temizlendi" zafer bildirimi fırlatılır. Bu eşsiz hafıza, gelecekteki olası bir uyuşmazlıkta geçmişi Siber Mahkeme'nin önüne anında döker.
+
+## 7. Pert ve Ağır Hasar Protokolü (Siber Kilit ve Dijital Kelepçe)
+Araç ağır hasar aldığında, pert olduğunda veya trafikten men edildiğinde sistem bir "Siber Savcı" gibi davranarak aracın kimliğini ebediyen mühürler:
+*   **DNA İmhası ve Pert Mührü:** Araç pert olduğunda OtoDNA skoru sıfırlanır. Aracın hasar boyutu ve kanıtları buluta değiştirilemez şekilde işlenir. Parçalanacak araçların sağlam parçaları "Pert Araçtan Çıkma" olarak, orijinal şase referansıyla şeffafça listelenir.
+*   **Dijital Kelepçe (Trafikten Men):** Araç trafikten men edilirse, aracın QR kodu okutulduğunda kırmızı "⚠️ TRAFİKTEN MEN EDİLMİŞTİR" uyarısı fırlatılır. Ticari yol yardımı kesilir, sadece sağlık ve kaza (S.O.S) moduna izin verilir.
+*   **Kötü Niyet Algoritması ve Blacklist:** Pert aracını "hatasız" diye satmaya veya sisteme o şekilde kaydetmeye çalışan usta/kullanıcı "Blacklist" statüsüne alınarak ekosistemden kalıcı olarak dışlanır. Pert mühürleri usta/eksper kararı olmadan asla silinemez.
