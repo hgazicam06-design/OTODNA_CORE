@@ -1,6 +1,6 @@
 # 🚀 OTODNA SİBER KARARGAH: NİHAİ VİZYON (SON BİLDİRGE)
 
-Bu belge, OtoDNA ekosisteminin mevcut sınırlarını aşıp "Küresel Bir Otomotiv Devletine (Oto-Metaverse)" dönüşmesi için belirlenen **8 Büyük Ufuk Çizgisini** mühürler.
+Bu belge, OtoDNA ekosisteminin mevcut sınırlarını aşıp "Küresel Bir Otomotiv Devletine (Oto-Metaverse)" dönüşmesi için belirlenen **10 Büyük Ufuk Çizgisini** mühürler.
 
 ---
 
@@ -56,3 +56,15 @@ Karargahın ticaret hacmini genişleten ve ağır hasarlı araçların bile güv
 *   **"Ağır Hasarlı Araçlar" Kategorisi:** OtoDNA galerisinde özel bir buton/kategori yer alır. İsteyen herkes hasarlı aracını buraya kaydedip satabilir. İlanlarda mühürlü hasar raporu, hasar durumu ve parça envanteri şeffafça listelenir.
 *   **Hurdacılar Entegrasyonu:** Uygulama içindeki hizmetler sekmesinde yer alan "Hurdacılar" modülü ile doğrudan bağlantı kurulur. Kullanıcılar ve ustalar, hasarlı araçlardan çıkan sağlam parçaları buraya satabilir veya toplamak istedikleri araçlar için buradan yedek parça çekebilirler. Her şey kayıtlı ve şeffaftır.
 *   **Siber Emanet ve %2 Kapora Kuralı:** Satılan araçlar için, anlaşılan araç bedelinin **%2'si uygulamaya kapora olarak yatar**. Araç teslimi ve şeffaflık onayı (ilanda yazılandan farklı bir durum olmaması) sağlandığında kapora satıcıya aktarılır. **OtoDNA, yatan bu kaporanın içinden %12 oranında kendi sistem komisyonunu (Karargah Payı) keser.** Tüm finansal akış bu şeffaf kuralla kayıt altına alınır.
+
+## 9. Siber Kardeşlik ve Medeniyet Kalkanı (Lonca Ahlakı)
+OtoDNA formlarında ve etkileşim alanlarında rekabet veya düşmanlık değil, dayanışma ve saygı esastır:
+*   **Kötüleme ve Hakaret Engeli:** Bayiler veya ustalar birbirini kötüleyemez, birbirinin açığını arayamaz. Sistemdeki "Medeniyet Kalkanı" küfür, argo ve hakareti anında filtreler. Tüm sorunlar profesyonelce, somut verilerle ve medeni bir dille ifade edilir.
+*   **Samimiyet ve Destek:** Soğuk ve aşırı resmi (Örn: "Bey" gibi unvanlar) hitaplar yerine saygı, sevgi ve yardımlaşmaya dayalı samimi bir aile ortamı kurulur. Ustalar "ben bilmem" demez, birbirine omuz verir.
+
+## 10. Kolektif Zeka, Ödül Sistemi ve Sosyal Kanıt
+Otonom bir bilgi havuzu ve dürüstlüğü ödüllendiren siber teşvik mekanizması:
+*   **Kolektif Zeka (Arıza Kütüphanesi):** Formlarda çözülen ve mühürlenen arızalar Karargahın "Onaylı Çözümler" havuzuna kaydedilir. Başka bir kullanıcı aynı arızayı sorduğunda yapay zeka anında eski onaylı çözümü önüne getirerek kullanıcıyı bilgilendirir.
+*   **Aktif Destek Ödülleri:** Diğer kullanıcılara ve ustalara yardımcı olan aktif üyeler "Siber İtibar Puanı" kazanır. Puanı yükselen bayiler Karargah tarafından ödüllendirilir (Örn: Komisyon indirimleri).
+*   **Spam ve Yanıltıcı Bilgi Filtresi:** Sırf puan kasmak için gereksiz yorum yapanlar veya kullanıcıyı kasten yanıltanlar sistem tarafından tespit edilip filtrelenir ve uyarılır. Sistem tamamen dürüstlük üzerine kuruludur.
+*   **Doğrulanmış Tecrübe Paylaşımı:** İşlem mühürlendikten sonra işlemi yaptıran kullanıcıya doğrudan "Tecrübenizi paylaşmak ister misiniz?" diye sorulur. Yapılan yorumlar bizzat o işlemi yaptıran kişi tarafından yapıldığı için doğrulanmış referans olarak yayınlanır ve sahte yorumların önüne geçilerek gerçek bir sosyal kanıt oluşturulur.
