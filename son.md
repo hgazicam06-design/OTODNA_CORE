@@ -60,7 +60,7 @@ Karargahın ticaret hacmini genişleten ve ağır hasarlı araçların bile güv
 ## 9. Siber Kardeşlik ve Medeniyet Kalkanı (Lonca Ahlakı)
 OtoDNA formlarında ve etkileşim alanlarında rekabet veya düşmanlık değil, dayanışma ve saygı esastır:
 *   **Kötüleme ve Hakaret Engeli:** Bayiler veya ustalar birbirini kötüleyemez, birbirinin açığını arayamaz. Sistemdeki "Medeniyet Kalkanı" küfür, argo ve hakareti anında filtreler. Tüm sorunlar profesyonelce, somut verilerle ve medeni bir dille ifade edilir.
-*   **Samimiyet ve Destek:** Soğuk ve aşırı resmi (Örn: "Bey" gibi unvanlar) hitaplar yerine saygı, sevgi ve yardımlaşmaya dayalı samimi bir aile ortamı kurulur. Ustalar "ben bilmem" demez, birbirine omuz verir.
+*   **Samimiyet ve Destek:** İnsanlar birbirine "Bey", "Kardeş", "Arkadaş" veya "Ahbap" diyebilir; hitap şekillerine takılmıyoruz. Önemli olan tek şey, herkesin birbirine saygı ve sevgi çerçevesinde yaklaşması, konuların medeni bir şekilde konuşulup işin çözülmesidir. Ustalar "ben bilmem" demez, birbirine omuz verir.
 
 ## 10. Kolektif Zeka, Ödül Sistemi ve Sosyal Kanıt
 Otonom bir bilgi havuzu ve dürüstlüğü ödüllendiren siber teşvik mekanizması:
