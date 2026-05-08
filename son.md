@@ -61,6 +61,7 @@ Karargahın ticaret hacmini genişleten ve ağır hasarlı araçların bile güv
 OtoDNA formlarında ve etkileşim alanlarında rekabet veya düşmanlık değil, dayanışma ve saygı esastır:
 *   **Kötüleme ve Hakaret Engeli:** Bayiler veya ustalar birbirini kötüleyemez, birbirinin açığını arayamaz. Sistemdeki "Medeniyet Kalkanı" küfür, argo ve hakareti anında filtreler. Tüm sorunlar profesyonelce, somut verilerle ve medeni bir dille ifade edilir.
 *   **Samimiyet ve Destek:** İnsanlar birbirine "Bey", "Kardeş", "Arkadaş" veya "Ahbap" diyebilir; hitap şekillerine takılmıyoruz. Önemli olan tek şey, herkesin birbirine saygı ve sevgi çerçevesinde yaklaşması, konuların medeni bir şekilde konuşulup işin çözülmesidir. Ustalar "ben bilmem" demez, birbirine omuz verir.
+*   **Siber Disiplin ve Savunma Hakkı:** Uygulama içinde gereksiz sohbet açan, işi yapan ustayla dalga geçen veya platformu kasten kötüleyen kişilerin forumlara yazması engellenir. OtoDNA bir hizmettir; beğenmeyen ve rahatsız olan kullanmak zorunda değildir. Ancak "Siber Mahkeme" adaleti gereği, engelleme yapılmadan önce kullanıcıya eyleminin nedeni sorulur ve savunması istenir. Eğer makul ve yapıcı bir açıklama yoksa kullanıcının sohbet/yazma yetkisi dondurulur.
 
 ## 10. Kolektif Zeka, Ödül Sistemi ve Sosyal Kanıt
 Otonom bir bilgi havuzu ve dürüstlüğü ödüllendiren siber teşvik mekanizması:
