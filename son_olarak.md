@@ -25,11 +25,21 @@
 *   **Siber Disiplin:** Sisteme gereksiz görsel yükleyen, boş sohbet/kayıt açan ve uygulamayı "ihtiyaç değil oyun gibi" kullananların hesapları, "Siber Mahkeme" üzerinden savunmaları alındıktan sonra dondurulacaktır.
 *   **Şeffaf Adli Vizyon:** Ağır hasarlı araçlar sistemden atılmaz (OtoDNA Yargıç/Polis değildir). OtoDNA şeffaf bir Kanıt Merciidir. Ağır hasarlı araçlar da OtoDNA üzerinden, durumları şeffafça mühürlenerek alınıp satılabilir. Kullanıcı ne aldığını net olarak bilir.
 
-## 6. KAPALI İHALE BORSASI VE RESMİ KURUM ENTEGRASYONU
-*   **Ağır Hasarlı (Pert) Araç İhaleleri:** Araç sahipleri ağır hasarlı araçlarını satmak için "İhaleye Çıkar" seçeneğini kullanır. Sisteme kayıtlı "Otomotiv Geri Dönüşüm (Hurdacı)" firmaları aracı almak için "Kapalı Zarf (Blind Auction)" usulüyle gizli teklif verir. İhaleye katılmak için Karargah havuzuna teminat (Örn: 5.000 TL) yatırılması zorunludur. Süre bitiminde kazanan firmaya satış yapılır, sistem komisyonunu keser. Şeffaflık gereği satış rakamı tüm katılanlara "Zafer Bildirimi" olarak gönderilir.
-*   **Devlet ve İcra İhaleleri (Hacizli Araçlar):** Devletin (icra/vergi dairelerinin) açtığı hacizli araç ihaleleri Karargah sistemine entegre edilecektir. OtoDNA üyesi VIP galericiler ve yetkili bayiler, "Resmi İhale Terminali" üzerinden devletin hacizli araç listelerini görüp kapalı tekliflerini (teminatlarıyla birlikte) sunabilecektir. Bu entegrasyon OtoDNA'yı piyasanın en büyük B2G (Devletten İşletmeye) araç tedarik ağına dönüştürecektir.
-*   **Resmi İhale Brokerliği Kâr Modeli (Fiyatlandırma Hariç Strateji):** Devlet ihaleleri üzerinden Karargahın gelir elde edeceği otonom kurgular şunlardır:
-    *   **Ultra VIP Terminal Ayrıcalığı:** Bu resmi ihale havuzu standart üyelere kapalıdır, sadece en üst düzey VIP paket sahiplerine sunularak abonelik satışı patlatılacaktır.
-    *   **Yapay Zeka Rapor Özetleri:** Karmaşık bilirkişi PDF raporları Gemini AI tarafından okunup tek sayfalık "Siber Hasar ve Kâr Raporu" olarak (mikro-ödemelerle) satılacaktır.
-    *   **Lojistik (Çekici) Ağı Komisyonu:** Kazanılan aracın farklı bir şehirden veya Yediemin otoparkından Karargaha (galeriye) getirilmesi için OtoDNA S.O.S/Kurtarıcı ağı kullanılacak ve nakliye üzerinden komisyon alınacaktır.
-    *   **Onarım (Kuantum Garaj) Yönlendirmesi:** Masraflı alınan icra araçlarının onarımı için sistem, galericiyi doğrudan OtoDNA yetkili servislerine yönlendirecek ve devasa tamirat faturaları üzerinden aracı komisyonunu kesecektir.
+## 6. KAPALI İHALE BORSASI VE RESMİ KURUM ENTEGRASYONU (Ünal Bey İçin Teknik Kılavuz)
+
+Bu modül, Karargahın sadece bir pazar yeri değil, kendi içinde otonom bir "Borsa" gibi çalışmasını sağlayacak en kritik finansal motordur. Geliştirme (UI/UX ve Backend) adımları şu şekildedir:
+
+### A. Şahsi/Ağır Hasarlı Araç İhaleleri (Kapalı Zarf Algoritması)
+*   **İhale Butonu (UI):** Kullanıcı araç yüklerken `isAuction: true` yapacak bir "[ ] Aracı İhaleye Çıkar (Geri Dönüşüm)" Checkbox'ı eklenmeli.
+*   **Teminat Havuzu (Backend):** Sisteme kayıtlı "Otomotiv Geri Dönüşüm (Hurdacı)" firmalarının teklif verebilmesi için sistemde `locked_balance` (Teminat) alanı olmalı. İhaleye girmek isteyen bayiden önce provizyon (teminat) alınır. Para yatmadan `Teklif Ver` butonu pasif kalır (Disable state).
+*   **Kör Teklif (Blind Bid) Mantığı:** İhale sayfasında diğer bayilerin teklifleri ASLA ekrana basılmaz (Veritabanında şifreli/gizli tutulur). Bayi sadece kendi verdiği maksimum teklifi görebilir.
+*   **Otonom Kapanış ve Bildirim:** İhale süresi (`auction_end_time`) dolduğunda Cloud Function devreye girer. En yüksek teklifi satıcıya sunar. Satış onaylandığında kaybedenlerin teminatı serbest bırakılır (`locked_balance` iptali). Kazananın işlemi tamamlanır ve sistem FCM (Firebase Cloud Messaging) ile tüm katılımcılara şeffaf "Zafer Bildirimi" atar.
+
+### B. Devlet ve İcra İhaleleri (B2G - UYAP Entegrasyonu)
+Bu modül, devletin UYAP e-Satış veya Yediemin otoparklarındaki hacizli araçlarını OtoDNA'ya çeken otonom bir terminaldir. Fiyatlandırma parametreleri daha sonra Admin panelden yönetilecek olup işleyiş şöyledir:
+*   **Kuantum Veri Kazıyıcı (Scraper/API):** İlerleyen süreçte UYAP'tan veya resmi API'lerden çekilen hacizli araç verileri (Şase, Hasar, İhale Başlangıç Bedeli) otonom olarak `official_auctions` koleksiyonuna yazılacaktır.
+*   **Erişim Kısıtlaması (Role-Based Access - Ultra VIP):** Bu terminal ekranı (UI) standart kullanıcılara tamamen kapalı (Hidden) olmalıdır. Sadece Firestore'da `user_role: "ultra_vip_gallery"` yetkisine sahip olanlar bu ekrana girebilir. Bu durum abonelik satışını patlatacak en büyük silahtır.
+*   **Gemini AI Rapor Modülü:** UYAP'tan gelen karmaşık PDF bilirkişi raporları galericiye okutulmaz. Gemini AI API'sine yollanıp 1 sayfalık temiz bir JSON özeti (Tahmini masraf, kâr marjı) çıkarılır. Bu "Siber Hasar Raporunu" açmak kredi sistemine (mikro-ödeme) bağlı olacaktır.
+*   **Çapraz Satış Butonları (Lojistik ve Tamir):** Galerici ihaleyi kazandığında ekranda anında 2 devasa buton belirmelidir:
+    *   `[Aracı Karargaha Çek - Çekici Çağır]` -> Doğrudan S.O.S modülünü tetikler, çekici yönlendirir (Karargah lojistik komisyonu alır).
+    *   `[Aracı Kuantum Garajda Tamir Et]` -> Doğrudan OtoDNA yetkili servisine randevu açar (Karargah tamir faturasından komisyon alır).
