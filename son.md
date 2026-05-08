@@ -1,6 +1,6 @@
 # 🚀 OTODNA SİBER KARARGAH: NİHAİ VİZYON (SON BİLDİRGE)
 
-Bu belge, OtoDNA ekosisteminin mevcut sınırlarını aşıp "Küresel Bir Otomotiv Devletine (Oto-Metaverse)" dönüşmesi için belirlenen **7 Büyük Ufuk Çizgisini** mühürler.
+Bu belge, OtoDNA ekosisteminin mevcut sınırlarını aşıp "Küresel Bir Otomotiv Devletine (Oto-Metaverse)" dönüşmesi için belirlenen **8 Büyük Ufuk Çizgisini** mühürler.
 
 ---
 
@@ -51,3 +51,9 @@ OtoDNA, ağır hasarlı veya pert araçlar için bir "Yargıç" veya "Polis" de�
 *   **Şeffaf Sicil (Kanıt Toplama):** Araç ağır hasar aldığında hasarın boyutu, fotoğrafları ve belgeleri aracın "Dijital Ekspertiz" raporuna (OtoDNA) kalıcı olarak işlenir. Araca ait hiçbir geçmiş kanıt silinmez.
 *   **Özgür Ticaret ve Bilinçli Alıcı:** Pert veya hasarlı bir araç onarılıp (toplanıp) tekrar satılabilir veya kullanılabilir. OtoDNA ticarete engel olmaz veya kullanıcıyı cezalandırmaz. Karargahın tek amacı, aracı alacak yeni kişinin bu aracın "Ağır Hasar Kayıtlı" olduğunu tüm şeffaflığıyla bilmesidir.
 *   **Adil Piyasa Fiyatlaması:** Aracın tüm geçmişi OtoDNA raporunda şeffaf çıkacağı için, pert aracın satışı piyasa şartlarında kendi değerine (ücretine) göre dürüstçe gerçekleşir. Satıcı yalan söyleyemez, alıcı sürprizle karşılaşmaz. Her şey kanıta dayalıdır.
+
+## 8. Şeffaf Hasar Borsası (Hasarlı Araç Galerisi)
+Karargahın ticaret hacmini genişleten ve şeffaflık protokolünü en üst seviyeye çıkaran pazar yeri, gizli saklı işlerin bittiği yerdir:
+*   **Mühürlü Hasar Raporu:** Galeride satılan hasarlı aracın kaza anındaki fotoğrafları ve ustanın (Lonca Meclisi) raporu ilanın en başında yer alır. Hasar durumu şeffafça ilan edilir.
+*   **Parça Envanteri ve Onarım Geçmişi:** Araç pert ise sağlam parçalar usta onayıyla listelenir. Araç onarılıp satılıyorsa, kullanılan her parçanın (çıkma/sıfır) faturası sistemde açıkça görünür. Hasarlı bölgeye özel Kuantum Turkuazı yerine "Uyarı Sarısı" teması kullanılarak alıcının dikkati çekilir.
+*   **Siber Emanet (Escrow) Ticareti:** Alıcı kaporayı Karargah havuzuna yatırır. Araç teslim edildiğinde ve usta ilandaki hasar dışında gizli bir ayıp olmadığını onayladığında para satıcıya aktarılır. Dolandırıcılık ihtimali sıfırlanmıştır.
