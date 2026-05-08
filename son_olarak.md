@@ -43,3 +43,10 @@ Bu modül, devletin UYAP e-Satış veya Yediemin otoparklarındaki hacizli araç
 *   **Çapraz Satış Butonları (Lojistik ve Tamir):** Galerici ihaleyi kazandığında ekranda anında 2 devasa buton belirmelidir:
     *   `[Aracı Karargaha Çek - Çekici Çağır]` -> Doğrudan S.O.S modülünü tetikler, çekici yönlendirir (Karargah lojistik komisyonu alır).
     *   `[Aracı Kuantum Garajda Tamir Et]` -> Doğrudan OtoDNA yetkili servisine randevu açar (Karargah tamir faturasından komisyon alır).
+
+## 7. SİBER ZIRH VE HİBRİT DOĞRULAMA (Maliyet Optimizasyonu)
+Karargahın Firebase altyapısındaki en büyük (ve tek) gideri olan SMS (OTP) doğrulama maliyetlerini optimize etmek ve aynı zamanda "Siber Mahkeme" vizyonu için gerekli olan yasal hesap verilebilirliği korumak adına **"Akıllı Geçiş (Hibrit Doğrulama)"** modeli mühürlenmiştir:
+*   **1. Kapı (Ücretsiz İzleyici Modu):** Uygulamayı indiren herkes sadece **Google/Apple veya E-posta** ile ücretsiz giriş yapabilir. Bu kullanıcılar içerideki ilanları gezebilir, forumları okuyabilir ve fiyatlara bakabilir. Bize SMS maliyeti **0 TL**'dir.
+*   **2. Kapı (Siber Zırh ve SMS Şartı):** Kullanıcı eğer Karargaha maddi bir fayda sağlayacak veya piyasaya etki edecek *aktif bir eylem* yapmak isterse (İlan Yüklemek, İhaleye Teklif Vermek, Kapora Yatırmak, Ustaya Randevu Almak veya Yorum Yazmak), sistem anında otonom bir duvar çeker:
+    > *"Siber Zırh: Karargahta işlem yapabilmek ve güvenliği sağlamak için Telefon Numaranızı doğrulamanız gerekmektedir."*
+*   **Sonuç:** Bu sayede sahte e-posta hesaplarıyla ihaleleri sabote etmek veya sahte yorum yazmak (Trollük) tamamen engellenir. Dolandırıcılık vakalarında polise verilecek gerçek bir GSM numarası elde edilir. Karargah ise SMS masrafını "boş gezenlere" değil, sadece "işlem yapıp komisyon kazandıracak" gerçek müşterilere harcayarak kasasını korur.
