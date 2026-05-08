@@ -33,8 +33,8 @@ Sadece firmalar için değil, uygulamayı kullanan bireysel (sivil) vatandaşlar
 *   **Kimdir?** Yolda kalmış diğer OtoDNA kullanıcılarının S.O.S sinyallerine karşılıkksız yardıma giden, Kuantum Sicil ağında hiçbir ihlali bulunmayan, en üst düzey "Elit" kullanıcılardır.
 *   **Yetkileri:** Bu rütbeye ulaşanların "Siber Mahkeme" (Avukatlık ve Adli Bilişim) masrafları Karargah tarafından karşılanır. Yeni donanımlar (Örn: Ücretsiz ELM 327 cihazı) bu sınıfa hediye edilir ve profillerinde "Siber Şövalye Altın Rozeti" parlar. Müşteri değil, sistemin birer elçisidirler.
 
-## 5. SAYRİKS Protokolü: Motor Değişimi ve Adli Sicil (Kalp Nakli)
-OtoDNA ekosisteminde motor değişimi sadece mekanik bir süreç değil, **"Aracın Kalp Nakli"** olarak kabul edilen adli bir zorunluluk zinciridir.
-*   **Yasal Zorunluluk Zırhı:** Yeni motorun faturası, TSE onaylı projesi ve TÜVTÜRK tespit muayenesi Karargah tarafından "Şart" kabul edilir. Faturasız motor doğrudan "Çalıntı/Kara Liste" statüsüne alınır.
-*   **DNA Skoru Güncellemesi:** Yeni motor montajı sıfır ise mekanik puan artar, ancak aracın "Orijinallik" skoru dinamik olarak düşürülür. İşlemi yapan usta, süreci OtoDNA Lonca Meclisi üzerinden videolu olarak mühürler.
-*   **Kuantum AI Denetimi:** OBD2 üzerinden yeni takılan ECU (Beyin) ile eski veriler çaprazlanır; kilometre veya voltaj uyuşmazlığında otonom adli alarm fırlatılır. İşletilmeyen motor, ağır kusur ve satış iptal nedeni olarak kırmızıyla mühürlenir.
+## 5. SAYRİKS Protokolü: Kullanıcı Dostu Motor Değişimi ve Şeffaflık Sicili
+OtoDNA ekosisteminde motor değişimi ("Aracın Kalp Nakli"), kullanıcıyı yormayan, pürüzsüz bir şeffaflık sürecidir. Karargah bu süreçte "Yargı Mercii" gibi davranmaz, sadece bir sonraki alıcı için "Şeffaflık Teminatı" sağlar.
+*   **Sürtünmesiz Güncelleme:** Kullanıcı motorun değiştiğini uygulamaya bildirir ve SMS/E-posta onayıyla işlemi tamamlar. Uygulama, eski motor numarasını arka planda (Dijital Torpido) ebediyen mühürler ve yeni numarayı günceller.
+*   **Zaman Damgalı Şeffaflık:** Bizim için kritik olan; motorun nereden alındığı, saat kaçta ve kim tarafından takıldığıdır. Bu veriler Kuantum Ağı'na kazınır ve aracı sonradan alacak kişinin önüne net bir şekilde konur.
+*   **Uyarı Kalkanı:** Biz polis değiliz ancak kullanıcıyı koruruz. Muayene ve ruhsat işletme zorunlulukları hatırlatılarak kullanıcının yasal olarak ağır kusur durumuna düşmesi (Noter/TÜVTÜRK iptali) engellenir.

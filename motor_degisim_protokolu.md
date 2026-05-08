@@ -1,47 +1,40 @@
 # ⚙️ OTODNA SİBER MAHKEME: MOTOR DEĞİŞİM PROTOKOLÜ (SAYRİKS)
 
-OtoDNA ekosisteminde "Aracın Kalp Nakli" olarak kabul edilen motor değişimi, hem mekanik hem de adli açıdan en yüksek güvenlik protokollerinin uygulandığı stratejik bir operasyondur. Bu belge, mevcut yasal prosedürlerin Karargah'ın "Siber Mahkeme" vizyonuyla nasıl entegre edildiğini mühürler.
+OtoDNA ekosisteminde "Aracın Kalp Nakli" olarak kabul edilen motor değişimi stratejik bir operasyondur. Karargah'ın bu konudaki temel felsefesi: **"Biz Yargı Mercii Değiliz, Şeffaflığın Teminatıyız."** Temel amacımız, aracı bir sonraki satın alacak kişinin her şeyi eksiksiz ve şeffaf bir şekilde bilmesidir.
 
 ---
 
-## 1. YASAL OPERASYON PLANI (MEKANİK VE BÜROKRATİK SÜREÇ)
+## 1. KULLANICI DOSTU SİBER DENEYİM (SÜRTÜNMESİZ GEÇİŞ)
 
-Motor değişimi sadece mekanik bir işlem değil, aracın kimlik bilgilerinin güncellendiği yasal bir zorunluluk zinciridir.
+Kullanıcıyı bürokratik engellerle yormamak en büyük kuralımızdır. Uygulama, kullanıcının beyanını esas alarak en hızlı ve güvenilir güncellemeyi sağlar:
 
-*   **Mekanik Değişim:** Eski motor sökülür, yeni motor (sandık motor veya çıkma motor) takılır.
-*   **Fatura ve Gümrük Belgeleri Zırhı:** Yeni motorun mutlaka resmi bir faturası olmalıdır. Yurt dışından ithal edilmişse gümrük giriş belgeleri şarttır. **Faturasız motor, Karargah tarafından "Çalıntı" veya "Yasa Dışı" kabul edilir ve Siber Mahkeme anında aracı Kara Liste'ye (Red Notice) alır.**
-*   **Mühendislik Onayı (Proje Çizimi):** Motor değişimi sonrası yetkili bir makine mühendisi tarafından "Motor Değişim Projesi" çizilir. Bu proje, yeni motorun aracın şasisiyle uyumlu olduğunu ve teknik şartnamelere uyduğunu yasal olarak kanıtlar.
-*   **TSE Onayı:** Çizilen bu proje, Türk Standartları Enstitüsü (TSE) tarafından resmi olarak onaylanmak zorundadır.
-
----
-
-## 2. MUAYENE ŞART MI? (KRİTİK GÜVENLİK SORUSU)
-
-**KESİNLİKLE EVET!**
-
-Motor değişimi, aracın ruhsatında yer alan asli kimlik bilgilerini (Motor Numarası, hacmi ve gücü) değiştirdiği için "Muayene Şartı" yasal bir zorunluluktur. İşletilmeyen motor, araç satışında **Ağır Kusur** sayılır ve trafikten men edilmesine kadar gider.
-
-1.  **Tespit Muayenesi:** Proje onaylandıktan sonra araç derhal TÜVTÜRK'e sevk edilir. Burada "Tespit Muayenesi" yapılır. Teknisyen, yeni motorun üzerindeki fiziksel numaranın, mühendislik projesi ve fatura ile birebir eşleşip eşleşmediğini kontrol eder.
-2.  **Ruhsat Güncelleme (Noter Aşaması):** Muayene onayı başarıyla alındıktan sonra Noter'e gidilir ve aracın yeni motor numarası ruhsata işlenerek işlem yasal olarak tamamlanır.
+*   **Uygulamaya Göster ve Geç:** Kullanıcı motorun değiştiğini uygulamaya (sisteme) bildirir. Faturasını veya belgesini sisteme okutur (kameraya gösterir).
+*   **Dijital Onay (E-Posta / SMS):** Güvenlik için, bu güncelleme kullanıcının kayıtlı telefonuna (SMS) veya e-posta adresine gelen tek kullanımlık bir şifre (OTP) ile doğrulanır. 
+*   **Arka Planda Mühürleme:** Onay girildiği anda, uygulamanın Kuantum Zekası **eski motor numarasını ebediyen uygulamanın arka planına (Dijital Torpido'ya) mühürler**. Yeni motor numarası ise anında aktif profil üzerine güncellenir.
 
 ---
 
-## 3. OTO-DNA SİBER MAHKEME GÖZÜYLE MOTOR DEĞİŞİMİ (SAYRİKS PROTOKOLÜ)
+## 2. ŞEFFAFLIK VE ZAMAN DAMGALI BİLGİ
 
-Karargah'ta bu süreç sadece bürokratik bir evrak işi olarak kalmaz, **SAYRİKS Protokolü** devreye girerek değişimi dijital DNA'ya kazır:
+Bizim için bir ceza kesmekten ziyade, "Bilgi" esastır. Değişim anında şu veriler Kuantum Siciline kazınır:
 
-### 3.1. DNA Skoru Güncellemesi (Kuantum Algoritması)
-Motor değişimi, aracın "Genetik Skoru"nu doğrudan ve dinamik olarak etkiler:
-*   Eğer araca **Sıfır (Sandık) Motor** takıldıysa ve faturası sisteme başarıyla yüklendiyse, aracın **Mekanik Puanı** artar.
-*   Buna karşılık, araç fabrikadan çıktığı halinde olmadığı için **"Orijinallik"** notunda stratejik bir düşüş yaşanır.
+*   **Motor Nereden Alındı?** (Bayi, Sandık, Çıkma, Yurt Dışı vs.)
+*   **Saat Kaçta ve Hangi Tarihte Takıldı?** (Zaman Damgası)
+*   **Değişimi Kim Yaptı?** (İşlemi gerçekleştiren Lonca Ustası)
 
-### 3.2. Zaman Damgalı Kayıt ve Videolu Mühür
-Motor değişimini gerçekleştiren yetkili ustanın/bayinin, yeni motorun numarasını ve motorun ilk çalışma anını (Marş basma) OtoDNA Lonca Meclisi üzerinden **videolu olarak mühürlemesi** zorunludur. Bu video, aracın "Dijital Torpidosuna" ebediyen kilitlenir.
+Bu veriler, aracı daha sonra satın alacak olan yeni sahibinin "Dijital Ekspertiz" raporunda şeffafça önüne çıkar. Yeni alıcı, bu motorun ne zaman, nerede, saat kaçta değiştiğini tüm detaylarıyla bilir. 
 
-### 3.3. OBD2 Senkronizasyonu ve Kuantum AI Denetimi
-Yeni motorun beyni (ECU) ile eski beyin arasındaki veri farkları (kilometre uyuşmazlığı, voltaj dalgalanmaları vb.) **Kuantum AI** tarafından taranır. Eğer iki sistem arasında kilometreyi düşürmeye yönelik bir manipülasyon tespit edilirse, sistem otonom olarak adli alarm fırlatır ve durumu "Şüpheli İşlem" olarak Karargah'a raporlar.
+---
+
+## 3. MUAYENE VE YASAL ZORUNLULUKLAR BİLDİRİMİ
+
+Biz adli bir makam olmasak da, kullanıcıyı yasal risklere karşı uyarmak Karargah'ın görevidir:
+
+*   **Yasal Hatırlatma:** Motor değişimi, aracın ruhsatında yer alan bilgileri değiştirdiği için "Muayene Şartı" gerektirir. 
+*   **Ağır Kusur İkazı:** İşletilmeyen motor, Noter veya TÜVTÜRK'te ağır kusur sayılır. OtoDNA, kullanıcısını uyararak onu bu bürokratik cezadan korur.
+*   **Fatura Zırhı:** Takılan motorun faturası, kullanıcının dijital torpidosunda saklanır. Faturasız (çalıntı) risklerine karşı alıcı ve satıcı arasındaki şeffaflığı sağlar.
 
 ---
 
 **SİBER KOMUTAN GAZİ'NİN ÖZETİ:**
-> *"Motor değişimi sonrası muayene ve ruhsat işletme işlemi devlete karşı bir sorumluluktur. İşletilmeyen motor ağır kusurdur. OtoDNA, bu yasal zorunluluğu dijital bir zırhla kaplar, hileye geçit vermez ve dürüst ustayı/kullanıcıyı ödüllendirir. Karargah mühürledi, terminal onayladı!"* 🦅🚀
+> *"Ortak, biz devlete veya kullanıcılara polislik yapmıyoruz, biz geleceğe kanıt bırakıyoruz. Kullanıcıyı yormadan, tek bir SMS onayıyla eski motoru arkaya mühürlüyor, yenisini vitrine koyuyoruz. Sonraki alıcı o motorun nereden, saat kaçta geldiğini biliyorsa görev tamamdır. Karargah şeffaflığı mühürledi!"* 🦅🚀
