@@ -1,6 +1,6 @@
 # 🚀 OTODNA SİBER KARARGAH: NİHAİ VİZYON (SON BİLDİRGE)
 
-Bu belge, OtoDNA ekosisteminin mevcut sınırlarını aşıp "Küresel Bir Otomotiv Devletine (Oto-Metaverse)" dönüşmesi için belirlenen **10 Büyük Ufuk Çizgisini** mühürler.
+Bu belge, OtoDNA ekosisteminin mevcut sınırlarını aşıp "Küresel Bir Otomotiv Devletine (Oto-Metaverse)" dönüşmesi için belirlenen **11 Büyük Ufuk Çizgisini** mühürler.
 
 ---
 
@@ -69,3 +69,12 @@ Otonom bir bilgi havuzu ve dürüstlüğü ödüllendiren siber teşvik mekanizm
 *   **Aktif Destek Ödülleri:** Diğer kullanıcılara ve ustalara yardımcı olan aktif üyeler "Siber İtibar Puanı" kazanır. Puanı yükselen bayiler Karargah tarafından ödüllendirilir (Örn: Komisyon indirimleri).
 *   **Spam ve Yanıltıcı Bilgi Filtresi (Siber Dürüstlük Denetimi):** Sırf puan kasmak için kısa/anlamsız (spam) yorum yapanların puan kazanması engellenir. Kullanıcıyı kasten yanıltan bayilere -50 Puan cezası verilir ve kademeli yaptırımlar uygulanır. Yanıltmaya devam eden bayinin profili "⚠️ Güvenilirlik Onayı Bekleniyor" ibaresiyle işaretlenerek ticari hacmi kısıtlanır. Sistem tamamen dürüstlük üzerine kuruludur.
 *   **Doğrulanmış Tecrübe Paylaşımı:** İşlem mühürlendikten sonra işlemi yaptıran kullanıcıya doğrudan "Tecrübenizi paylaşmak ister misiniz?" diye sorulur. Yapılan yorumlar bizzat o işlemi yaptıran kişi tarafından yapıldığı için doğrulanmış referans olarak yayınlanır ve sahte yorumların önüne geçilerek gerçek bir sosyal kanıt oluşturulur.
+
+## 11. Siber Kalkanlar: Davranışsal Disiplin ve Randevu Hukuku
+Sistemi manipüle etmeye çalışan veya diğer kullanıcıların/ustaların zamanını çalan davranışlara karşı OtoDNA'nın siber zırhları şunlardır:
+*   **"Ölücü" Teklif Kalkanı:** Araç veya parça alımında "Siber Teklif Modu" ile alt limitler belirlenir (Örn: %15'ten aşağı teklif verilemez). Aşırı düşük teklifler satıcıya ulaşmadan sistem tarafından reddedilir.
+*   **Siber Randevu Disiplini (ÖNEMLİ):** Disiplinli hizmet almak ve garantili OtoDNA takibi istemek için randevuların *uygulama üzerinden* alınması şarttır. "Aracım şu saatte şu bayide işlem görecek" diye bildirmeden doğrudan bayiye gidenlerin yaptırdıkları işlemden OtoDNA sorumlu değildir ve hiçbir yaptırım uygulamaz.
+*   **Randevu İhlali ve Kapora Cezası:** Randevu alan kullanıcı Karargaha kapora (Örn: 200 TL) öder. Kullanıcı mazeretsiz randevuya gitmezse OtoDNA kendi randevu bedelini/komisyonunu keser, kaporanın yarısı (kalan miktar) zamanı çalınan ustaya aktarılır. Kullanıcı **2. kez randevuya gitmezse** bu cayma bedeli katlanarak artar (Örn: 200 TL'den 2000 TL'ye çıkar). Bu 2000 TL üzerinden de standart %12 OtoDNA kesintisi yapılır, kalanı yine ustaya yatar.
+*   **İtibar Suikasti ve Şantaj Engeli:** "İndirim yapmazsan 1 yıldız veririm" diyerek ustaya şantaj yapan kullanıcıların logları Siber Mahkemece incelenir ve hesapları (Blacklist) imha edilir. Haklı olan haklıdır!
+*   **Müşteri Çalma (Siber Korsanlık):** Forumda açıkça bir usta tarafından çözümü ve fiyatı verilen müşteriye özelden ulaşıp "daha ucuza yaparım" diyerek emek çalan bayiler "Lonca İhaneti" suçundan yargılanır ve puanları düşürülür.
+*   **Sahte İtibar ve Yorum Koruması:** Akraba veya eş dost üzerinden sahte yorumla puan kasmaya çalışanlar, Kuantum Radar (IP ve lokasyon analizi) ile engellenir. Sadece gerçek ve Kuantum Ağına mühürlü işlemler itibar puanı kazandırır.
